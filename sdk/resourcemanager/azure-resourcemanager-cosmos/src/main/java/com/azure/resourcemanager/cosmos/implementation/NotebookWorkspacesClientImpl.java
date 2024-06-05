@@ -38,9 +38,10 @@ import com.azure.resourcemanager.cosmos.fluent.models.NotebookWorkspaceInner;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceListResult;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in NotebookWorkspacesClient.
@@ -58,7 +59,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Initializes an instance of NotebookWorkspacesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     NotebookWorkspacesClientImpl(CosmosDBManagementClientImpl client) {
@@ -153,7 +154,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Gets the notebook workspace resources of an existing Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +193,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Gets the notebook workspace resources of an existing Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -231,7 +232,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Gets the notebook workspace resources of an existing Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -247,7 +248,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Gets the notebook workspace resources of an existing Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -265,7 +266,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Gets the notebook workspace resources of an existing Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,7 +282,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Gets the notebook workspace resources of an existing Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -299,7 +300,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Gets the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -340,7 +341,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Gets the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -381,7 +382,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Gets the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -399,7 +400,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Gets the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -417,7 +418,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Gets the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -434,7 +435,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -483,7 +484,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -532,7 +533,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -555,7 +556,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -579,7 +580,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -593,13 +594,15 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     public SyncPoller<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName,
         NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, notebookWorkspaceName,
-            notebookCreateUpdateParameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, notebookWorkspaceName,
+                notebookCreateUpdateParameters)
+            .getSyncPoller();
     }
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -614,13 +617,15 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     public SyncPoller<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName,
         NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, notebookWorkspaceName,
-            notebookCreateUpdateParameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, accountName, notebookWorkspaceName,
+                notebookCreateUpdateParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -640,7 +645,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -661,7 +666,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -681,7 +686,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -702,7 +707,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -742,7 +747,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -782,7 +787,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -802,7 +807,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -824,7 +829,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -841,7 +846,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -859,7 +864,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -877,7 +882,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -896,7 +901,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -911,7 +916,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Deletes the notebook workspace for a Cosmos DB account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -928,7 +933,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Retrieves the connection info for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -970,7 +975,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Retrieves the connection info for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1011,7 +1016,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Retrieves the connection info for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1029,7 +1034,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Retrieves the connection info for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1048,7 +1053,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Retrieves the connection info for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1066,7 +1071,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Regenerates the auth token for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1107,7 +1112,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Regenerates the auth token for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1147,7 +1152,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Regenerates the auth token for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1167,7 +1172,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Regenerates the auth token for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1189,7 +1194,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Regenerates the auth token for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1207,7 +1212,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Regenerates the auth token for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1226,7 +1231,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Regenerates the auth token for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1244,7 +1249,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Regenerates the auth token for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1263,7 +1268,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Regenerates the auth token for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1279,7 +1284,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Regenerates the auth token for the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1296,7 +1301,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Starts the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1336,7 +1341,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Starts the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1376,7 +1381,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Starts the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1396,7 +1401,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Starts the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1418,7 +1423,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Starts the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1435,7 +1440,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Starts the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1453,7 +1458,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Starts the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1471,7 +1476,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Starts the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1490,7 +1495,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Starts the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
@@ -1505,7 +1510,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
     /**
      * Starts the notebook workspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.

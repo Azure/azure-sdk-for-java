@@ -6,9 +6,11 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.TableGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.TableGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
 /**
@@ -30,11 +32,20 @@ public final class TableGetResultsInner extends ArmResourceProperties {
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB Table.
-     * 
+     *
      * @return the innerProperties value.
      */
     private TableGetProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TableGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
     }
 
     /**
@@ -57,7 +68,7 @@ public final class TableGetResultsInner extends ArmResourceProperties {
 
     /**
      * Get the resource property: The resource property.
-     * 
+     *
      * @return the resource value.
      */
     public TableGetPropertiesResource resource() {
@@ -66,7 +77,7 @@ public final class TableGetResultsInner extends ArmResourceProperties {
 
     /**
      * Set the resource property: The resource property.
-     * 
+     *
      * @param resource the resource value to set.
      * @return the TableGetResultsInner object itself.
      */
@@ -80,7 +91,7 @@ public final class TableGetResultsInner extends ArmResourceProperties {
 
     /**
      * Get the options property: The options property.
-     * 
+     *
      * @return the options value.
      */
     public TableGetPropertiesOptions options() {
@@ -89,7 +100,7 @@ public final class TableGetResultsInner extends ArmResourceProperties {
 
     /**
      * Set the options property: The options property.
-     * 
+     *
      * @param options the options value to set.
      * @return the TableGetResultsInner object itself.
      */
@@ -103,7 +114,7 @@ public final class TableGetResultsInner extends ArmResourceProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

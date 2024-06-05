@@ -20,8 +20,7 @@ public class GremlinGraphResource {
     private String id;
 
     /*
-     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within
-     * the graph
+     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the graph
      */
     @JsonProperty(value = "indexingPolicy")
     private IndexingPolicy indexingPolicy;
@@ -39,8 +38,7 @@ public class GremlinGraphResource {
     private Integer defaultTtl;
 
     /*
-     * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the
-     * Azure Cosmos DB service.
+     * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos DB service.
      */
     @JsonProperty(value = "uniqueKeyPolicy")
     private UniqueKeyPolicy uniqueKeyPolicy;
@@ -268,8 +266,8 @@ public class GremlinGraphResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model GremlinGraphResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model GremlinGraphResource"));
         }
         if (indexingPolicy() != null) {
             indexingPolicy().validate();

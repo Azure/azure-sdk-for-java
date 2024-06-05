@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ApiType;
 import com.azure.resourcemanager.cosmos.models.RestorableLocationResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the innerProperties property: The properties of a restorable database account.
-     * 
+     *
      * @return the innerProperties value.
      */
     private RestorableDatabaseAccountProperties innerProperties() {
@@ -63,7 +64,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the id property: The unique resource identifier of the ARM resource.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -72,7 +73,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the name property: The name of the ARM resource.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -81,7 +82,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the type property: The type of Azure resource.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -90,7 +91,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the location property: The location of the resource group to which the resource belongs.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -99,7 +100,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Set the location property: The location of the resource group to which the resource belongs.
-     * 
+     *
      * @param location the location value to set.
      * @return the RestorableDatabaseAccountGetResultInner object itself.
      */
@@ -110,7 +111,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the accountName property: The name of the global database account.
-     * 
+     *
      * @return the accountName value.
      */
     public String accountName() {
@@ -119,7 +120,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Set the accountName property: The name of the global database account.
-     * 
+     *
      * @param accountName the accountName value to set.
      * @return the RestorableDatabaseAccountGetResultInner object itself.
      */
@@ -133,7 +134,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the creationTime property: The creation time of the restorable database account (ISO-8601 format).
-     * 
+     *
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -142,7 +143,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Set the creationTime property: The creation time of the restorable database account (ISO-8601 format).
-     * 
+     *
      * @param creationTime the creationTime value to set.
      * @return the RestorableDatabaseAccountGetResultInner object itself.
      */
@@ -155,34 +156,9 @@ public final class RestorableDatabaseAccountGetResultInner {
     }
 
     /**
-     * Get the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
-     * format).
-     * 
-     * @return the deletionTime value.
-     */
-    public OffsetDateTime deletionTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().deletionTime();
-    }
-
-    /**
-     * Set the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
-     * format).
-     * 
-     * @param deletionTime the deletionTime value to set.
-     * @return the RestorableDatabaseAccountGetResultInner object itself.
-     */
-    public RestorableDatabaseAccountGetResultInner withDeletionTime(OffsetDateTime deletionTime) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RestorableDatabaseAccountProperties();
-        }
-        this.innerProperties().withDeletionTime(deletionTime);
-        return this;
-    }
-
-    /**
      * Get the oldestRestorableTime property: The least recent time at which the database account can be restored to
      * (ISO-8601 format).
-     * 
+     *
      * @return the oldestRestorableTime value.
      */
     public OffsetDateTime oldestRestorableTime() {
@@ -192,7 +168,7 @@ public final class RestorableDatabaseAccountGetResultInner {
     /**
      * Set the oldestRestorableTime property: The least recent time at which the database account can be restored to
      * (ISO-8601 format).
-     * 
+     *
      * @param oldestRestorableTime the oldestRestorableTime value to set.
      * @return the RestorableDatabaseAccountGetResultInner object itself.
      */
@@ -205,8 +181,33 @@ public final class RestorableDatabaseAccountGetResultInner {
     }
 
     /**
+     * Get the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
+     * format).
+     *
+     * @return the deletionTime value.
+     */
+    public OffsetDateTime deletionTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().deletionTime();
+    }
+
+    /**
+     * Set the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
+     * format).
+     *
+     * @param deletionTime the deletionTime value to set.
+     * @return the RestorableDatabaseAccountGetResultInner object itself.
+     */
+    public RestorableDatabaseAccountGetResultInner withDeletionTime(OffsetDateTime deletionTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableDatabaseAccountProperties();
+        }
+        this.innerProperties().withDeletionTime(deletionTime);
+        return this;
+    }
+
+    /**
      * Get the apiType property: The API type of the restorable database account.
-     * 
+     *
      * @return the apiType value.
      */
     public ApiType apiType() {
@@ -215,7 +216,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Get the restorableLocations property: List of regions where the of the database account can be restored from.
-     * 
+     *
      * @return the restorableLocations value.
      */
     public List<RestorableLocationResource> restorableLocations() {
@@ -224,7 +225,7 @@ public final class RestorableDatabaseAccountGetResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

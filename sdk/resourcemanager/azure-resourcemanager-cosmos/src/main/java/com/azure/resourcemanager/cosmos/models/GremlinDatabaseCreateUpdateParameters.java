@@ -40,6 +40,15 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
      * {@inheritDoc}
      */
     @Override
+    public GremlinDatabaseCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public GremlinDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -111,8 +120,9 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model GremlinDatabaseCreateUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model GremlinDatabaseCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

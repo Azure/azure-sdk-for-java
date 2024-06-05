@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -38,6 +39,12 @@ public final class RestoreParameters extends RestoreParametersBase {
     @JsonProperty(value = "tablesToRestore")
     private List<String> tablesToRestore;
 
+    /*
+     * The source backup location for restore.
+     */
+    @JsonProperty(value = "sourceBackupLocation")
+    private String sourceBackupLocation;
+
     /**
      * Creates an instance of RestoreParameters class.
      */
@@ -46,7 +53,7 @@ public final class RestoreParameters extends RestoreParametersBase {
 
     /**
      * Get the restoreMode property: Describes the mode of the restore.
-     * 
+     *
      * @return the restoreMode value.
      */
     public RestoreMode restoreMode() {
@@ -55,7 +62,7 @@ public final class RestoreParameters extends RestoreParametersBase {
 
     /**
      * Set the restoreMode property: Describes the mode of the restore.
-     * 
+     *
      * @param restoreMode the restoreMode value to set.
      * @return the RestoreParameters object itself.
      */
@@ -66,7 +73,7 @@ public final class RestoreParameters extends RestoreParametersBase {
 
     /**
      * Get the databasesToRestore property: List of specific databases available for restore.
-     * 
+     *
      * @return the databasesToRestore value.
      */
     public List<DatabaseRestoreResource> databasesToRestore() {
@@ -75,7 +82,7 @@ public final class RestoreParameters extends RestoreParametersBase {
 
     /**
      * Set the databasesToRestore property: List of specific databases available for restore.
-     * 
+     *
      * @param databasesToRestore the databasesToRestore value to set.
      * @return the RestoreParameters object itself.
      */
@@ -86,7 +93,7 @@ public final class RestoreParameters extends RestoreParametersBase {
 
     /**
      * Get the gremlinDatabasesToRestore property: List of specific gremlin databases available for restore.
-     * 
+     *
      * @return the gremlinDatabasesToRestore value.
      */
     public List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore() {
@@ -95,7 +102,7 @@ public final class RestoreParameters extends RestoreParametersBase {
 
     /**
      * Set the gremlinDatabasesToRestore property: List of specific gremlin databases available for restore.
-     * 
+     *
      * @param gremlinDatabasesToRestore the gremlinDatabasesToRestore value to set.
      * @return the RestoreParameters object itself.
      */
@@ -107,7 +114,7 @@ public final class RestoreParameters extends RestoreParametersBase {
 
     /**
      * Get the tablesToRestore property: List of specific tables available for restore.
-     * 
+     *
      * @return the tablesToRestore value.
      */
     public List<String> tablesToRestore() {
@@ -116,12 +123,32 @@ public final class RestoreParameters extends RestoreParametersBase {
 
     /**
      * Set the tablesToRestore property: List of specific tables available for restore.
-     * 
+     *
      * @param tablesToRestore the tablesToRestore value to set.
      * @return the RestoreParameters object itself.
      */
     public RestoreParameters withTablesToRestore(List<String> tablesToRestore) {
         this.tablesToRestore = tablesToRestore;
+        return this;
+    }
+
+    /**
+     * Get the sourceBackupLocation property: The source backup location for restore.
+     *
+     * @return the sourceBackupLocation value.
+     */
+    public String sourceBackupLocation() {
+        return this.sourceBackupLocation;
+    }
+
+    /**
+     * Set the sourceBackupLocation property: The source backup location for restore.
+     *
+     * @param sourceBackupLocation the sourceBackupLocation value to set.
+     * @return the RestoreParameters object itself.
+     */
+    public RestoreParameters withSourceBackupLocation(String sourceBackupLocation) {
+        this.sourceBackupLocation = sourceBackupLocation;
         return this;
     }
 
@@ -144,8 +171,17 @@ public final class RestoreParameters extends RestoreParametersBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RestoreParameters withRestoreWithTtlDisabled(Boolean restoreWithTtlDisabled) {
+        super.withRestoreWithTtlDisabled(restoreWithTtlDisabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

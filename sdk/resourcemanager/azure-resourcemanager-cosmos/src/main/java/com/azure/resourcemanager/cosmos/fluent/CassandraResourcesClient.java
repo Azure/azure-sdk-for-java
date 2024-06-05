@@ -15,13 +15,16 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.models.CassandraKeyspaceGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.CassandraTableGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.CassandraViewGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.CassandraTableCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.CassandraViewCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in CassandraResourcesClient.
@@ -29,7 +32,7 @@ import reactor.core.publisher.Mono;
 public interface CassandraResourcesClient {
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +47,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,7 +62,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -75,7 +78,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -91,7 +94,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -107,7 +110,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -124,7 +127,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -139,7 +142,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -157,7 +160,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -174,7 +177,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -191,7 +194,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -209,7 +212,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -226,7 +229,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -242,7 +245,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -260,7 +263,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -275,7 +278,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -290,7 +293,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -305,7 +308,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -321,7 +324,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -335,7 +338,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -348,7 +351,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -363,7 +366,7 @@ public interface CassandraResourcesClient {
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -380,7 +383,7 @@ public interface CassandraResourcesClient {
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -397,7 +400,7 @@ public interface CassandraResourcesClient {
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -415,7 +418,7 @@ public interface CassandraResourcesClient {
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -431,7 +434,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -449,7 +452,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -467,7 +470,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -485,7 +488,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -504,7 +507,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -521,7 +524,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -538,7 +541,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -556,7 +559,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -572,7 +575,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -588,7 +591,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -603,7 +606,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -620,7 +623,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -635,7 +638,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -650,7 +653,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -666,7 +669,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -682,7 +685,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -698,7 +701,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -714,7 +717,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -731,7 +734,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -746,7 +749,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -761,7 +764,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -777,7 +780,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -793,7 +796,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -809,7 +812,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -826,7 +829,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -843,7 +846,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -860,7 +863,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -877,7 +880,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -893,7 +896,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -911,7 +914,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -929,7 +932,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -947,7 +950,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -967,7 +970,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -985,7 +988,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1003,7 +1006,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1022,7 +1025,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1038,7 +1041,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1054,7 +1057,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1070,7 +1073,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1087,7 +1090,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1103,7 +1106,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1117,7 +1120,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1134,7 +1137,7 @@ public interface CassandraResourcesClient {
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1152,7 +1155,7 @@ public interface CassandraResourcesClient {
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1170,7 +1173,7 @@ public interface CassandraResourcesClient {
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1189,7 +1192,7 @@ public interface CassandraResourcesClient {
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1206,7 +1209,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1226,7 +1229,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1245,7 +1248,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1264,7 +1267,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1284,7 +1287,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1303,7 +1306,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1321,7 +1324,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1341,7 +1344,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1358,7 +1361,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1375,7 +1378,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1392,7 +1395,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1410,7 +1413,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1426,7 +1429,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1442,7 +1445,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1459,7 +1462,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1476,7 +1479,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1493,7 +1496,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1510,7 +1513,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1528,7 +1531,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1544,7 +1547,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1560,7 +1563,7 @@ public interface CassandraResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1574,4 +1577,794 @@ public interface CassandraResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ThroughputSettingsGetResultsInner migrateCassandraTableToManualThroughput(String resourceGroupName,
         String accountName, String keyspaceName, String tableName, Context context);
+
+    /**
+     * Lists the Cassandra materialized views under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the Cassandra views and their properties as paginated response
+     * with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CassandraViewGetResultsInner> listCassandraViewsAsync(String resourceGroupName, String accountName,
+        String keyspaceName);
+
+    /**
+     * Lists the Cassandra materialized views under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the Cassandra views and their properties as paginated response
+     * with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CassandraViewGetResultsInner> listCassandraViews(String resourceGroupName, String accountName,
+        String keyspaceName);
+
+    /**
+     * Lists the Cassandra materialized views under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the Cassandra views and their properties as paginated response
+     * with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CassandraViewGetResultsInner> listCassandraViews(String resourceGroupName, String accountName,
+        String keyspaceName, Context context);
+
+    /**
+     * Gets the Cassandra view under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Cassandra view under an existing Azure Cosmos DB database account along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CassandraViewGetResultsInner>> getCassandraViewWithResponseAsync(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName);
+
+    /**
+     * Gets the Cassandra view under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Cassandra view under an existing Azure Cosmos DB database account on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CassandraViewGetResultsInner> getCassandraViewAsync(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName);
+
+    /**
+     * Gets the Cassandra view under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Cassandra view under an existing Azure Cosmos DB database account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CassandraViewGetResultsInner> getCassandraViewWithResponse(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName, Context context);
+
+    /**
+     * Gets the Cassandra view under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Cassandra view under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CassandraViewGetResultsInner getCassandraView(String resourceGroupName, String accountName, String keyspaceName,
+        String viewName);
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra View.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param createUpdateCassandraViewParameters The parameters to provide for the current Cassandra View.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra view along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createUpdateCassandraViewWithResponseAsync(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName,
+        CassandraViewCreateUpdateParameters createUpdateCassandraViewParameters);
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra View.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param createUpdateCassandraViewParameters The parameters to provide for the current Cassandra View.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB Cassandra view.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<CassandraViewGetResultsInner>, CassandraViewGetResultsInner>
+        beginCreateUpdateCassandraViewAsync(String resourceGroupName, String accountName, String keyspaceName,
+            String viewName, CassandraViewCreateUpdateParameters createUpdateCassandraViewParameters);
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra View.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param createUpdateCassandraViewParameters The parameters to provide for the current Cassandra View.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Cassandra view.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CassandraViewGetResultsInner>, CassandraViewGetResultsInner> beginCreateUpdateCassandraView(
+        String resourceGroupName, String accountName, String keyspaceName, String viewName,
+        CassandraViewCreateUpdateParameters createUpdateCassandraViewParameters);
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra View.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param createUpdateCassandraViewParameters The parameters to provide for the current Cassandra View.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB Cassandra view.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CassandraViewGetResultsInner>, CassandraViewGetResultsInner> beginCreateUpdateCassandraView(
+        String resourceGroupName, String accountName, String keyspaceName, String viewName,
+        CassandraViewCreateUpdateParameters createUpdateCassandraViewParameters, Context context);
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra View.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param createUpdateCassandraViewParameters The parameters to provide for the current Cassandra View.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra view on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CassandraViewGetResultsInner> createUpdateCassandraViewAsync(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName, CassandraViewCreateUpdateParameters createUpdateCassandraViewParameters);
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra View.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param createUpdateCassandraViewParameters The parameters to provide for the current Cassandra View.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra view.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CassandraViewGetResultsInner createUpdateCassandraView(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName, CassandraViewCreateUpdateParameters createUpdateCassandraViewParameters);
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra View.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param createUpdateCassandraViewParameters The parameters to provide for the current Cassandra View.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra view.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CassandraViewGetResultsInner createUpdateCassandraView(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName, CassandraViewCreateUpdateParameters createUpdateCassandraViewParameters,
+        Context context);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteCassandraViewWithResponseAsync(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteCassandraViewAsync(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteCassandraView(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteCassandraView(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName, Context context);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteCassandraViewAsync(String resourceGroupName, String accountName, String keyspaceName,
+        String viewName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteCassandraView(String resourceGroupName, String accountName, String keyspaceName, String viewName);
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteCassandraView(String resourceGroupName, String accountName, String keyspaceName, String viewName,
+        Context context);
+
+    /**
+     * Gets the RUs per second of the Cassandra view under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Cassandra view under an existing Azure Cosmos DB database account with the
+     * provided name along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ThroughputSettingsGetResultsInner>> getCassandraViewThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String viewName);
+
+    /**
+     * Gets the RUs per second of the Cassandra view under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Cassandra view under an existing Azure Cosmos DB database account with the
+     * provided name on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ThroughputSettingsGetResultsInner> getCassandraViewThroughputAsync(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName);
+
+    /**
+     * Gets the RUs per second of the Cassandra view under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Cassandra view under an existing Azure Cosmos DB database account with the
+     * provided name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ThroughputSettingsGetResultsInner> getCassandraViewThroughputWithResponse(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName, Context context);
+
+    /**
+     * Gets the RUs per second of the Cassandra view under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Cassandra view under an existing Azure Cosmos DB database account with the
+     * provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner getCassandraViewThroughput(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName);
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra view.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> updateCassandraViewThroughputWithResponseAsync(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters);
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra view.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraViewThroughputAsync(String resourceGroupName, String accountName, String keyspaceName,
+            String viewName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra view.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraViewThroughput(String resourceGroupName, String accountName, String keyspaceName,
+            String viewName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra view.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraViewThroughput(String resourceGroupName, String accountName, String keyspaceName,
+            String viewName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context);
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra view.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ThroughputSettingsGetResultsInner> updateCassandraViewThroughputAsync(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters);
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra view.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner updateCassandraViewThroughput(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra view.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra view.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner updateCassandraViewThroughput(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName, ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> migrateCassandraViewToAutoscaleWithResponseAsync(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraViewToAutoscaleAsync(String resourceGroupName, String accountName, String keyspaceName,
+            String viewName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraViewToAutoscale(String resourceGroupName, String accountName, String keyspaceName,
+            String viewName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraViewToAutoscale(String resourceGroupName, String accountName, String keyspaceName,
+            String viewName, Context context);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ThroughputSettingsGetResultsInner> migrateCassandraViewToAutoscaleAsync(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner migrateCassandraViewToAutoscale(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner migrateCassandraViewToAutoscale(String resourceGroupName, String accountName,
+        String keyspaceName, String viewName, Context context);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> migrateCassandraViewToManualThroughputWithResponseAsync(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraViewToManualThroughputAsync(String resourceGroupName, String accountName,
+            String keyspaceName, String viewName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraViewToManualThroughput(String resourceGroupName, String accountName, String keyspaceName,
+            String viewName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateCassandraViewToManualThroughput(String resourceGroupName, String accountName, String keyspaceName,
+            String viewName, Context context);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ThroughputSettingsGetResultsInner> migrateCassandraViewToManualThroughputAsync(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner migrateCassandraViewToManualThroughput(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName);
+
+    /**
+     * Migrate an Azure Cosmos DB Cassandra view from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param viewName Cosmos DB view name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ThroughputSettingsGetResultsInner migrateCassandraViewToManualThroughput(String resourceGroupName,
+        String accountName, String keyspaceName, String viewName, Context context);
 }

@@ -35,6 +35,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.SqlResourcesClient;
 import com.azure.resourcemanager.cosmos.fluent.models.BackupInformationInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ClientEncryptionKeyGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.models.PhysicalPartitionStorageInfoCollectionInner;
+import com.azure.resourcemanager.cosmos.fluent.models.PhysicalPartitionThroughputInfoResultInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlContainerGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlDatabaseGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleAssignmentGetResultsInner;
@@ -46,6 +48,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResul
 import com.azure.resourcemanager.cosmos.models.ClientEncryptionKeyCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.ClientEncryptionKeysListResult;
 import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
+import com.azure.resourcemanager.cosmos.models.MergeParameters;
+import com.azure.resourcemanager.cosmos.models.RedistributeThroughputParameters;
+import com.azure.resourcemanager.cosmos.models.RetrieveThroughputParameters;
 import com.azure.resourcemanager.cosmos.models.SqlContainerCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlContainerListResult;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseCreateUpdateParameters;
@@ -61,9 +66,10 @@ import com.azure.resourcemanager.cosmos.models.SqlTriggerListResult;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionListResult;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in SqlResourcesClient.
@@ -81,7 +87,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Initializes an instance of SqlResourcesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     SqlResourcesClientImpl(CosmosDBManagementClientImpl client) {
@@ -179,6 +185,40 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ClientEncryptionKeysListResult>> listClientEncryptionKeys(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ClientEncryptionKeyGetResultsInner>> getClientEncryptionKey(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("clientEncryptionKeyName") String clientEncryptionKeyName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createUpdateClientEncryptionKey(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("clientEncryptionKeyName") String clientEncryptionKeyName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -219,6 +259,29 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName,
             @QueryParam("api-version") String apiVersion, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/partitionMerge")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> sqlDatabasePartitionMerge(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MergeParameters mergeParameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/partitionMerge")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> listSqlContainerPartitionMerge(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MergeParameters mergeParameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default")
@@ -263,37 +326,49 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys")
-        @ExpectedResponses({ 200 })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/retrieveThroughputDistribution")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClientEncryptionKeysListResult>> listClientEncryptionKeys(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> sqlDatabaseRetrieveThroughputDistribution(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RetrieveThroughputParameters retrieveThroughputParameters,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClientEncryptionKeyGetResultsInner>> getClientEncryptionKey(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("clientEncryptionKeyName") String clientEncryptionKeyName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/redistributeThroughput")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createUpdateClientEncryptionKey(@HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> sqlDatabaseRedistributeThroughput(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("clientEncryptionKeyName") String clientEncryptionKeyName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RedistributeThroughputParameters redistributeThroughputParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/retrieveThroughputDistribution")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> sqlContainerRetrieveThroughputDistribution(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters,
+            @BodyParam("application/json") RetrieveThroughputParameters retrieveThroughputParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/redistributeThroughput")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> sqlContainerRedistributeThroughput(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("databaseName") String databaseName, @PathParam("containerName") String containerName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RedistributeThroughputParameters redistributeThroughputParameters,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -520,7 +595,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -558,7 +633,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -597,7 +672,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -613,7 +688,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -631,7 +706,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -647,7 +722,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -665,7 +740,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -705,7 +780,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -745,7 +820,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -764,7 +839,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -783,7 +858,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -800,7 +875,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -847,7 +922,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -895,7 +970,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -918,7 +993,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -942,7 +1017,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -956,13 +1031,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
         String resourceGroupName, String accountName, String databaseName,
         SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
-        return this.beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
-            createUpdateSqlDatabaseParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
+                createUpdateSqlDatabaseParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -977,13 +1054,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
         String resourceGroupName, String accountName, String databaseName,
         SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, Context context) {
-        return this.beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
-            createUpdateSqlDatabaseParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
+                createUpdateSqlDatabaseParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1002,7 +1081,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1022,7 +1101,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1041,7 +1120,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1061,7 +1140,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1100,7 +1179,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1138,7 +1217,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1158,7 +1237,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1180,7 +1259,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1197,7 +1276,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1215,7 +1294,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1232,7 +1311,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1251,7 +1330,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1266,7 +1345,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1283,7 +1362,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
      * name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1325,7 +1404,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
      * name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1366,7 +1445,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
      * name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1386,7 +1465,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
      * name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1406,7 +1485,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
      * name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1425,7 +1504,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1473,7 +1552,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1522,7 +1601,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1545,7 +1624,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1570,7 +1649,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1584,13 +1663,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1605,13 +1686,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1630,7 +1713,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1651,7 +1734,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1670,7 +1753,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1690,7 +1773,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1731,7 +1814,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1771,7 +1854,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1792,7 +1875,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1816,7 +1899,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1834,7 +1917,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1854,7 +1937,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1872,7 +1955,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1891,7 +1974,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1908,7 +1991,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1926,7 +2009,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1967,7 +2050,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2007,7 +2090,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2029,7 +2112,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2053,7 +2136,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2071,7 +2154,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2092,7 +2175,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2110,7 +2193,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2124,12 +2207,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     private Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToManualThroughputAsync(String resourceGroupName,
         String accountName, String databaseName, Context context) {
         return beginMigrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2146,7 +2230,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2163,1789 +2247,8 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     }
 
     /**
-     * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlContainerGetResultsInner>> listSqlContainersSinglePageAsync(String resourceGroupName,
-        String accountName, String databaseName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listSqlContainers(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<SqlContainerGetResultsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlContainerGetResultsInner>> listSqlContainersSinglePageAsync(String resourceGroupName,
-        String accountName, String databaseName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listSqlContainers(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                accountName, databaseName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
-    }
-
-    /**
-     * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties as paginated response with
-     * {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SqlContainerGetResultsInner> listSqlContainersAsync(String resourceGroupName, String accountName,
-        String databaseName) {
-        return new PagedFlux<>(() -> listSqlContainersSinglePageAsync(resourceGroupName, accountName, databaseName));
-    }
-
-    /**
-     * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties as paginated response with
-     * {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlContainerGetResultsInner> listSqlContainersAsync(String resourceGroupName, String accountName,
-        String databaseName, Context context) {
-        return new PagedFlux<>(
-            () -> listSqlContainersSinglePageAsync(resourceGroupName, accountName, databaseName, context));
-    }
-
-    /**
-     * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlContainerGetResultsInner> listSqlContainers(String resourceGroupName, String accountName,
-        String databaseName) {
-        return new PagedIterable<>(listSqlContainersAsync(resourceGroupName, accountName, databaseName));
-    }
-
-    /**
-     * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the containers and their properties as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlContainerGetResultsInner> listSqlContainers(String resourceGroupName, String accountName,
-        String databaseName, Context context) {
-        return new PagedIterable<>(listSqlContainersAsync(resourceGroupName, accountName, databaseName, context));
-    }
-
-    /**
-     * Gets the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlContainerGetResultsInner>> getSqlContainerWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept,
-                context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlContainerGetResultsInner>> getSqlContainerWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL container under an existing Azure Cosmos DB database account on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlContainerGetResultsInner> getSqlContainerAsync(String resourceGroupName, String accountName,
-        String databaseName, String containerName) {
-        return getSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlContainerGetResultsInner> getSqlContainerWithResponse(String resourceGroupName,
-        String accountName, String databaseName, String containerName, Context context) {
-        return getSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context)
-            .block();
-    }
-
-    /**
-     * Gets the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the SQL container under an existing Azure Cosmos DB database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlContainerGetResultsInner getSqlContainer(String resourceGroupName, String accountName,
-        String databaseName, String containerName) {
-        return getSqlContainerWithResponse(resourceGroupName, accountName, databaseName, containerName, Context.NONE)
-            .getValue();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainerWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (createUpdateSqlContainerParameters == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter createUpdateSqlContainerParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlContainerParameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.createUpdateSqlContainer(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
-                this.client.getApiVersion(), createUpdateSqlContainerParameters, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainerWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (createUpdateSqlContainerParameters == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter createUpdateSqlContainerParameters is required and cannot be null."));
-        } else {
-            createUpdateSqlContainerParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createUpdateSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(),
-            createUpdateSqlContainerParameters, accept, context);
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
-        beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseName,
-            String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlContainerWithResponseAsync(resourceGroupName,
-            accountName, databaseName, containerName, createUpdateSqlContainerParameters);
-        return this.client.<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResult(mono,
-            this.client.getHttpPipeline(), SqlContainerGetResultsInner.class, SqlContainerGetResultsInner.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
-        beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseName,
-            String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlContainerWithResponseAsync(resourceGroupName,
-            accountName, databaseName, containerName, createUpdateSqlContainerParameters, context);
-        return this.client.<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResult(mono,
-            this.client.getHttpPipeline(), SqlContainerGetResultsInner.class, SqlContainerGetResultsInner.class,
-            context);
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
-        beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName,
-            String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return this.beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
-            createUpdateSqlContainerParameters).getSyncPoller();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
-        beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName,
-            String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
-            Context context) {
-        return this.beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
-            createUpdateSqlContainerParameters, context).getSyncPoller();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlContainerGetResultsInner> createUpdateSqlContainerAsync(String resourceGroupName, String accountName,
-        String databaseName, String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
-            createUpdateSqlContainerParameters).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlContainerGetResultsInner> createUpdateSqlContainerAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context) {
-        return beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
-            createUpdateSqlContainerParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlContainerGetResultsInner createUpdateSqlContainer(String resourceGroupName, String accountName,
-        String databaseName, String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return createUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
-            createUpdateSqlContainerParameters).block();
-    }
-
-    /**
-     * Create or update an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlContainerGetResultsInner createUpdateSqlContainer(String resourceGroupName, String accountName,
-        String databaseName, String containerName,
-        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context) {
-        return createUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
-            createUpdateSqlContainerParameters, context).block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteSqlContainerWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context -> service.deleteSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                    resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteSqlContainerWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service.deleteSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            accountName, databaseName, containerName, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(String resourceGroupName, String accountName,
-        String databaseName, String containerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(String resourceGroupName, String accountName,
-        String databaseName, String containerName) {
-        return this.beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName)
-            .getSyncPoller();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(String resourceGroupName, String accountName,
-        String databaseName, String containerName, Context context) {
-        return this.beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName,
-        String containerName) {
-        return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName,
-        String containerName, Context context) {
-        return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlContainer(String resourceGroupName, String accountName, String databaseName,
-        String containerName) {
-        deleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName).block();
-    }
-
-    /**
-     * Deletes an existing Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSqlContainer(String resourceGroupName, String accountName, String databaseName,
-        String containerName, Context context) {
-        deleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context).block();
-    }
-
-    /**
-     * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getSqlContainerThroughput(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
-                this.client.getApiVersion(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getSqlContainerThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> getSqlContainerThroughputAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName) {
-        return getSqlContainerThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, containerName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ThroughputSettingsGetResultsInner> getSqlContainerThroughputWithResponse(String resourceGroupName,
-        String accountName, String databaseName, String containerName, Context context) {
-        return getSqlContainerThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, containerName,
-            context).block();
-    }
-
-    /**
-     * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner getSqlContainerThroughput(String resourceGroupName, String accountName,
-        String databaseName, String containerName) {
-        return getSqlContainerThroughputWithResponse(resourceGroupName, accountName, databaseName, containerName,
-            Context.NONE).getValue();
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughputWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (updateThroughputParameters == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter updateThroughputParameters is required and cannot be null."));
-        } else {
-            updateThroughputParameters.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.updateSqlContainerThroughput(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
-                this.client.getApiVersion(), updateThroughputParameters, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughputWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        if (updateThroughputParameters == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter updateThroughputParameters is required and cannot be null."));
-        } else {
-            updateThroughputParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.updateSqlContainerThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(),
-            updateThroughputParameters, accept, context);
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName,
-            String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateSqlContainerThroughputWithResponseAsync(resourceGroupName,
-            accountName, databaseName, containerName, updateThroughputParameters);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
-            ThroughputSettingsGetResultsInner.class, this.client.getContext());
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName,
-            String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateSqlContainerThroughputWithResponseAsync(resourceGroupName,
-            accountName, databaseName, containerName, updateThroughputParameters, context);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
-            ThroughputSettingsGetResultsInner.class, context);
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName,
-            String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
-            updateThroughputParameters).getSyncPoller();
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName,
-            String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
-            updateThroughputParameters, context).getSyncPoller();
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> updateSqlContainerThroughputAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
-            updateThroughputParameters).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThroughputSettingsGetResultsInner> updateSqlContainerThroughputAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
-            updateThroughputParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner updateSqlContainerThroughput(String resourceGroupName, String accountName,
-        String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return updateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
-            updateThroughputParameters).block();
-    }
-
-    /**
-     * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner updateSqlContainerThroughput(String resourceGroupName, String accountName,
-        String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters,
-        Context context) {
-        return updateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
-            updateThroughputParameters, context).block();
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscaleWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.migrateSqlContainerToAutoscale(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
-                this.client.getApiVersion(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscaleWithResponseAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.migrateSqlContainerToAutoscale(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName,
-            String containerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToAutoscaleWithResponseAsync(resourceGroupName,
-            accountName, databaseName, containerName);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
-            ThroughputSettingsGetResultsInner.class, this.client.getContext());
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName,
-            String containerName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToAutoscaleWithResponseAsync(resourceGroupName,
-            accountName, databaseName, containerName, context);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
-            ThroughputSettingsGetResultsInner.class, context);
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName,
-            String containerName) {
-        return this
-            .beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName)
-            .getSyncPoller();
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName,
-            String containerName, Context context) {
-        return this.beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName,
-            containerName, context).getSyncPoller();
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName) {
-        return beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName, Context context) {
-        return beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(String resourceGroupName,
-        String accountName, String databaseName, String containerName) {
-        return migrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName).block();
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(String resourceGroupName,
-        String accountName, String databaseName, String containerName, Context context) {
-        return migrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName, context)
-            .block();
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.migrateSqlContainerToManualThroughput(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
-                this.client.getApiVersion(), accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughputWithResponseAsync(
-        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (containerName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.migrateSqlContainerToManualThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName,
-            String databaseName, String containerName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToManualThroughputWithResponseAsync(
-            resourceGroupName, accountName, databaseName, containerName);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
-            ThroughputSettingsGetResultsInner.class, this.client.getContext());
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName,
-            String databaseName, String containerName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToManualThroughputWithResponseAsync(
-            resourceGroupName, accountName, databaseName, containerName, context);
-        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
-            ThroughputSettingsGetResultsInner.class, context);
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName,
-            String containerName) {
-        return this.beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
-            containerName).getSyncPoller();
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
-        beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName,
-            String containerName, Context context) {
-        return this.beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
-            containerName, context).getSyncPoller();
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName) {
-        return beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
-            containerName).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(String resourceGroupName,
-        String accountName, String databaseName, String containerName, Context context) {
-        return beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
-            containerName, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(String resourceGroupName,
-        String accountName, String databaseName, String containerName) {
-        return migrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName, containerName)
-            .block();
-    }
-
-    /**
-     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseName Cosmos DB database name.
-     * @param containerName Cosmos DB container name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB resource throughput.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(String resourceGroupName,
-        String accountName, String databaseName, String containerName, Context context) {
-        return migrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
-            context).block();
-    }
-
-    /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3988,7 +2291,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4031,7 +2334,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4050,7 +2353,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4070,7 +2373,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4088,7 +2391,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4108,7 +2411,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4154,7 +2457,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4201,7 +2504,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4221,7 +2524,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4241,7 +2544,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4261,7 +2564,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4315,7 +2618,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4369,7 +2672,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4395,7 +2698,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4423,7 +2726,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4439,14 +2742,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName,
             String clientEncryptionKeyName,
             ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
-        return this.beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
-            clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
+                clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4463,14 +2768,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName,
             String clientEncryptionKeyName,
             ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context) {
-        return this.beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
-            clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
+                clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4487,13 +2794,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
         return beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
             clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4511,13 +2818,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context) {
         return beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
             clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4539,7 +2846,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4560,8 +2867,3566 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     }
 
     /**
+     * Lists the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the containers and their properties along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SqlContainerGetResultsInner>> listSqlContainersSinglePageAsync(String resourceGroupName,
+        String accountName, String databaseName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listSqlContainers(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, accountName, databaseName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SqlContainerGetResultsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the containers and their properties along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SqlContainerGetResultsInner>> listSqlContainersSinglePageAsync(String resourceGroupName,
+        String accountName, String databaseName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listSqlContainers(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                accountName, databaseName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
+    }
+
+    /**
+     * Lists the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the containers and their properties as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SqlContainerGetResultsInner> listSqlContainersAsync(String resourceGroupName, String accountName,
+        String databaseName) {
+        return new PagedFlux<>(() -> listSqlContainersSinglePageAsync(resourceGroupName, accountName, databaseName));
+    }
+
+    /**
+     * Lists the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the containers and their properties as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SqlContainerGetResultsInner> listSqlContainersAsync(String resourceGroupName, String accountName,
+        String databaseName, Context context) {
+        return new PagedFlux<>(
+            () -> listSqlContainersSinglePageAsync(resourceGroupName, accountName, databaseName, context));
+    }
+
+    /**
+     * Lists the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the containers and their properties as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SqlContainerGetResultsInner> listSqlContainers(String resourceGroupName, String accountName,
+        String databaseName) {
+        return new PagedIterable<>(listSqlContainersAsync(resourceGroupName, accountName, databaseName));
+    }
+
+    /**
+     * Lists the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the containers and their properties as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SqlContainerGetResultsInner> listSqlContainers(String resourceGroupName, String accountName,
+        String databaseName, Context context) {
+        return new PagedIterable<>(listSqlContainersAsync(resourceGroupName, accountName, databaseName, context));
+    }
+
+    /**
+     * Gets the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SqlContainerGetResultsInner>> getSqlContainerWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SqlContainerGetResultsInner>> getSqlContainerWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Gets the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SQL container under an existing Azure Cosmos DB database account on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SqlContainerGetResultsInner> getSqlContainerAsync(String resourceGroupName, String accountName,
+        String databaseName, String containerName) {
+        return getSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SQL container under an existing Azure Cosmos DB database account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SqlContainerGetResultsInner> getSqlContainerWithResponse(String resourceGroupName,
+        String accountName, String databaseName, String containerName, Context context) {
+        return getSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context)
+            .block();
+    }
+
+    /**
+     * Gets the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SQL container under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlContainerGetResultsInner getSqlContainer(String resourceGroupName, String accountName,
+        String databaseName, String containerName) {
+        return getSqlContainerWithResponse(resourceGroupName, accountName, databaseName, containerName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB container along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainerWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (createUpdateSqlContainerParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter createUpdateSqlContainerParameters is required and cannot be null."));
+        } else {
+            createUpdateSqlContainerParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createUpdateSqlContainer(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
+                this.client.getApiVersion(), createUpdateSqlContainerParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB container along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createUpdateSqlContainerWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (createUpdateSqlContainerParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter createUpdateSqlContainerParameters is required and cannot be null."));
+        } else {
+            createUpdateSqlContainerParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.createUpdateSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(),
+            createUpdateSqlContainerParameters, accept, context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB container.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
+        beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseName,
+            String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlContainerWithResponseAsync(resourceGroupName,
+            accountName, databaseName, containerName, createUpdateSqlContainerParameters);
+        return this.client.<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlContainerGetResultsInner.class, SqlContainerGetResultsInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB container.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
+        beginCreateUpdateSqlContainerAsync(String resourceGroupName, String accountName, String databaseName,
+            String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createUpdateSqlContainerWithResponseAsync(resourceGroupName,
+            accountName, databaseName, containerName, createUpdateSqlContainerParameters, context);
+        return this.client.<SqlContainerGetResultsInner, SqlContainerGetResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlContainerGetResultsInner.class, SqlContainerGetResultsInner.class,
+            context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB container.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
+        beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName,
+            String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return this
+            .beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
+                createUpdateSqlContainerParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB container.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
+        beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName,
+            String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
+            Context context) {
+        return this
+            .beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
+                createUpdateSqlContainerParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB container on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SqlContainerGetResultsInner> createUpdateSqlContainerAsync(String resourceGroupName, String accountName,
+        String databaseName, String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
+            createUpdateSqlContainerParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB container on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SqlContainerGetResultsInner> createUpdateSqlContainerAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context) {
+        return beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
+            createUpdateSqlContainerParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlContainerGetResultsInner createUpdateSqlContainer(String resourceGroupName, String accountName,
+        String databaseName, String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
+        return createUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
+            createUpdateSqlContainerParameters).block();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param createUpdateSqlContainerParameters The parameters to provide for the current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlContainerGetResultsInner createUpdateSqlContainer(String resourceGroupName, String accountName,
+        String databaseName, String containerName,
+        SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters, Context context) {
+        return createUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
+            createUpdateSqlContainerParameters, context).block();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteSqlContainerWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(
+                context -> service.deleteSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteSqlContainerWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        context = this.client.mergeContext(context);
+        return service.deleteSqlContainer(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, databaseName, containerName, this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(String resourceGroupName, String accountName,
+        String databaseName, String containerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteSqlContainerAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteSqlContainerWithResponseAsync(resourceGroupName, accountName, databaseName, containerName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(String resourceGroupName, String accountName,
+        String databaseName, String containerName) {
+        return this.beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDeleteSqlContainer(String resourceGroupName, String accountName,
+        String databaseName, String containerName, Context context) {
+        return this.beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName,
+        String containerName) {
+        return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteSqlContainerAsync(String resourceGroupName, String accountName, String databaseName,
+        String containerName, Context context) {
+        return beginDeleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSqlContainer(String resourceGroupName, String accountName, String databaseName,
+        String containerName) {
+        deleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName).block();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSqlContainer(String resourceGroupName, String accountName, String databaseName,
+        String containerName, Context context) {
+        deleteSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName, context).block();
+    }
+
+    /**
+     * Merges the partitions of a SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> sqlDatabasePartitionMergeWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, MergeParameters mergeParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (mergeParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mergeParameters is required and cannot be null."));
+        } else {
+            mergeParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.sqlDatabasePartitionMerge(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName,
+                this.client.getApiVersion(), mergeParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Merges the partitions of a SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> sqlDatabasePartitionMergeWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, MergeParameters mergeParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (mergeParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mergeParameters is required and cannot be null."));
+        } else {
+            mergeParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.sqlDatabasePartitionMerge(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, this.client.getApiVersion(), mergeParameters, accept,
+            context);
+    }
+
+    /**
+     * Merges the partitions of a SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginSqlDatabasePartitionMergeAsync(String resourceGroupName, String accountName, String databaseName,
+            MergeParameters mergeParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = sqlDatabasePartitionMergeWithResponseAsync(resourceGroupName, accountName, databaseName, mergeParameters);
+        return this.client
+            .<PhysicalPartitionStorageInfoCollectionInner, PhysicalPartitionStorageInfoCollectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PhysicalPartitionStorageInfoCollectionInner.class,
+                PhysicalPartitionStorageInfoCollectionInner.class, this.client.getContext());
+    }
+
+    /**
+     * Merges the partitions of a SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginSqlDatabasePartitionMergeAsync(String resourceGroupName, String accountName, String databaseName,
+            MergeParameters mergeParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = sqlDatabasePartitionMergeWithResponseAsync(resourceGroupName,
+            accountName, databaseName, mergeParameters, context);
+        return this.client
+            .<PhysicalPartitionStorageInfoCollectionInner, PhysicalPartitionStorageInfoCollectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PhysicalPartitionStorageInfoCollectionInner.class,
+                PhysicalPartitionStorageInfoCollectionInner.class, context);
+    }
+
+    /**
+     * Merges the partitions of a SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginSqlDatabasePartitionMerge(String resourceGroupName, String accountName, String databaseName,
+            MergeParameters mergeParameters) {
+        return this.beginSqlDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Merges the partitions of a SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginSqlDatabasePartitionMerge(String resourceGroupName, String accountName, String databaseName,
+            MergeParameters mergeParameters, Context context) {
+        return this
+            .beginSqlDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Merges the partitions of a SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionStorageInfoCollectionInner> sqlDatabasePartitionMergeAsync(String resourceGroupName,
+        String accountName, String databaseName, MergeParameters mergeParameters) {
+        return beginSqlDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Merges the partitions of a SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionStorageInfoCollectionInner> sqlDatabasePartitionMergeAsync(String resourceGroupName,
+        String accountName, String databaseName, MergeParameters mergeParameters, Context context) {
+        return beginSqlDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Merges the partitions of a SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionStorageInfoCollectionInner sqlDatabasePartitionMerge(String resourceGroupName,
+        String accountName, String databaseName, MergeParameters mergeParameters) {
+        return sqlDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters).block();
+    }
+
+    /**
+     * Merges the partitions of a SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionStorageInfoCollectionInner sqlDatabasePartitionMerge(String resourceGroupName,
+        String accountName, String databaseName, MergeParameters mergeParameters, Context context) {
+        return sqlDatabasePartitionMergeAsync(resourceGroupName, accountName, databaseName, mergeParameters, context)
+            .block();
+    }
+
+    /**
+     * Merges the partitions of a SQL Container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> listSqlContainerPartitionMergeWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName, MergeParameters mergeParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (mergeParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mergeParameters is required and cannot be null."));
+        } else {
+            mergeParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listSqlContainerPartitionMerge(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
+                this.client.getApiVersion(), mergeParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Merges the partitions of a SQL Container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> listSqlContainerPartitionMergeWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName, MergeParameters mergeParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (mergeParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mergeParameters is required and cannot be null."));
+        } else {
+            mergeParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listSqlContainerPartitionMerge(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), mergeParameters,
+            accept, context);
+    }
+
+    /**
+     * Merges the partitions of a SQL Container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginListSqlContainerPartitionMergeAsync(String resourceGroupName, String accountName, String databaseName,
+            String containerName, MergeParameters mergeParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = listSqlContainerPartitionMergeWithResponseAsync(resourceGroupName,
+            accountName, databaseName, containerName, mergeParameters);
+        return this.client
+            .<PhysicalPartitionStorageInfoCollectionInner, PhysicalPartitionStorageInfoCollectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PhysicalPartitionStorageInfoCollectionInner.class,
+                PhysicalPartitionStorageInfoCollectionInner.class, this.client.getContext());
+    }
+
+    /**
+     * Merges the partitions of a SQL Container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginListSqlContainerPartitionMergeAsync(String resourceGroupName, String accountName, String databaseName,
+            String containerName, MergeParameters mergeParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = listSqlContainerPartitionMergeWithResponseAsync(resourceGroupName,
+            accountName, databaseName, containerName, mergeParameters, context);
+        return this.client
+            .<PhysicalPartitionStorageInfoCollectionInner, PhysicalPartitionStorageInfoCollectionInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PhysicalPartitionStorageInfoCollectionInner.class,
+                PhysicalPartitionStorageInfoCollectionInner.class, context);
+    }
+
+    /**
+     * Merges the partitions of a SQL Container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginListSqlContainerPartitionMerge(String resourceGroupName, String accountName, String databaseName,
+            String containerName, MergeParameters mergeParameters) {
+        return this
+            .beginListSqlContainerPartitionMergeAsync(resourceGroupName, accountName, databaseName, containerName,
+                mergeParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Merges the partitions of a SQL Container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of list of physical partitions and their properties returned by a
+     * merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionStorageInfoCollectionInner>, PhysicalPartitionStorageInfoCollectionInner>
+        beginListSqlContainerPartitionMerge(String resourceGroupName, String accountName, String databaseName,
+            String containerName, MergeParameters mergeParameters, Context context) {
+        return this
+            .beginListSqlContainerPartitionMergeAsync(resourceGroupName, accountName, databaseName, containerName,
+                mergeParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Merges the partitions of a SQL Container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionStorageInfoCollectionInner> listSqlContainerPartitionMergeAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        MergeParameters mergeParameters) {
+        return beginListSqlContainerPartitionMergeAsync(resourceGroupName, accountName, databaseName, containerName,
+            mergeParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Merges the partitions of a SQL Container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionStorageInfoCollectionInner> listSqlContainerPartitionMergeAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        MergeParameters mergeParameters, Context context) {
+        return beginListSqlContainerPartitionMergeAsync(resourceGroupName, accountName, databaseName, containerName,
+            mergeParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Merges the partitions of a SQL Container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionStorageInfoCollectionInner listSqlContainerPartitionMerge(String resourceGroupName,
+        String accountName, String databaseName, String containerName, MergeParameters mergeParameters) {
+        return listSqlContainerPartitionMergeAsync(resourceGroupName, accountName, databaseName, containerName,
+            mergeParameters).block();
+    }
+
+    /**
+     * Merges the partitions of a SQL Container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param mergeParameters The parameters for the merge operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of physical partitions and their properties returned by a merge operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionStorageInfoCollectionInner listSqlContainerPartitionMerge(String resourceGroupName,
+        String accountName, String databaseName, String containerName, MergeParameters mergeParameters,
+        Context context) {
+        return listSqlContainerPartitionMergeAsync(resourceGroupName, accountName, databaseName, containerName,
+            mergeParameters, context).block();
+    }
+
+    /**
+     * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getSqlContainerThroughput(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
+                this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ThroughputSettingsGetResultsInner>> getSqlContainerThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getSqlContainerThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> getSqlContainerThroughputAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName) {
+        return getSqlContainerThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, containerName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ThroughputSettingsGetResultsInner> getSqlContainerThroughputWithResponse(String resourceGroupName,
+        String accountName, String databaseName, String containerName, Context context) {
+        return getSqlContainerThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, containerName,
+            context).block();
+    }
+
+    /**
+     * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner getSqlContainerThroughput(String resourceGroupName, String accountName,
+        String databaseName, String containerName) {
+        return getSqlContainerThroughputWithResponse(resourceGroupName, accountName, databaseName, containerName,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughputWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.updateSqlContainerThroughput(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
+                this.client.getApiVersion(), updateThroughputParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateSqlContainerThroughputWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.updateSqlContainerThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(),
+            updateThroughputParameters, accept, context);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName,
+            String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateSqlContainerThroughputWithResponseAsync(resourceGroupName,
+            accountName, databaseName, containerName, updateThroughputParameters);
+        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
+            ThroughputSettingsGetResultsInner.class, this.client.getContext());
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlContainerThroughputAsync(String resourceGroupName, String accountName, String databaseName,
+            String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateSqlContainerThroughputWithResponseAsync(resourceGroupName,
+            accountName, databaseName, containerName, updateThroughputParameters, context);
+        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
+            ThroughputSettingsGetResultsInner.class, context);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName,
+            String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        return this
+            .beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+                updateThroughputParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName,
+            String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
+        return this
+            .beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> updateSqlContainerThroughputAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        return beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+            updateThroughputParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ThroughputSettingsGetResultsInner> updateSqlContainerThroughputAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
+        return beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+            updateThroughputParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner updateSqlContainerThroughput(String resourceGroupName, String accountName,
+        String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        return updateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+            updateThroughputParameters).block();
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param updateThroughputParameters The parameters to provide for the RUs per second of the current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner updateSqlContainerThroughput(String resourceGroupName, String accountName,
+        String databaseName, String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return updateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+            updateThroughputParameters, context).block();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscaleWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.migrateSqlContainerToAutoscale(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
+                this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToAutoscaleWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.migrateSqlContainerToAutoscale(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName,
+            String containerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToAutoscaleWithResponseAsync(resourceGroupName,
+            accountName, databaseName, containerName);
+        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
+            ThroughputSettingsGetResultsInner.class, this.client.getContext());
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName,
+            String containerName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToAutoscaleWithResponseAsync(resourceGroupName,
+            accountName, databaseName, containerName, context);
+        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
+            ThroughputSettingsGetResultsInner.class, context);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName,
+            String containerName) {
+        return this
+            .beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName,
+            String containerName, Context context) {
+        return this
+            .beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName) {
+        return beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName, Context context) {
+        return beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(String resourceGroupName,
+        String accountName, String databaseName, String containerName) {
+        return migrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName).block();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner migrateSqlContainerToAutoscale(String resourceGroupName,
+        String accountName, String databaseName, String containerName, Context context) {
+        return migrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName, context)
+            .block();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.migrateSqlContainerToManualThroughput(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
+                this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> migrateSqlContainerToManualThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.migrateSqlContainerToManualThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName,
+            String databaseName, String containerName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToManualThroughputWithResponseAsync(
+            resourceGroupName, accountName, databaseName, containerName);
+        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
+            ThroughputSettingsGetResultsInner.class, this.client.getContext());
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToManualThroughputAsync(String resourceGroupName, String accountName,
+            String databaseName, String containerName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = migrateSqlContainerToManualThroughputWithResponseAsync(
+            resourceGroupName, accountName, databaseName, containerName, context);
+        return this.client.<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ThroughputSettingsGetResultsInner.class,
+            ThroughputSettingsGetResultsInner.class, context);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName,
+            String containerName) {
+        return this
+            .beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
+                containerName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName,
+            String containerName, Context context) {
+        return this
+            .beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
+                containerName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName) {
+        return beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
+            containerName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToManualThroughputAsync(String resourceGroupName,
+        String accountName, String databaseName, String containerName, Context context) {
+        return beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
+            containerName, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(String resourceGroupName,
+        String accountName, String databaseName, String containerName) {
+        return migrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName, containerName)
+            .block();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner migrateSqlContainerToManualThroughput(String resourceGroupName,
+        String accountName, String databaseName, String containerName, Context context) {
+        return migrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+            context).block();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> sqlDatabaseRetrieveThroughputDistributionWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (retrieveThroughputParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter retrieveThroughputParameters is required and cannot be null."));
+        } else {
+            retrieveThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.sqlDatabaseRetrieveThroughputDistribution(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName,
+                this.client.getApiVersion(), retrieveThroughputParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> sqlDatabaseRetrieveThroughputDistributionWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (retrieveThroughputParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter retrieveThroughputParameters is required and cannot be null."));
+        } else {
+            retrieveThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.sqlDatabaseRetrieveThroughputDistribution(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, this.client.getApiVersion(),
+            retrieveThroughputParameters, accept, context);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlDatabaseRetrieveThroughputDistributionAsync(String resourceGroupName, String accountName,
+            String databaseName, RetrieveThroughputParameters retrieveThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = sqlDatabaseRetrieveThroughputDistributionWithResponseAsync(
+            resourceGroupName, accountName, databaseName, retrieveThroughputParameters);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlDatabaseRetrieveThroughputDistributionAsync(String resourceGroupName, String accountName,
+            String databaseName, RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = sqlDatabaseRetrieveThroughputDistributionWithResponseAsync(
+            resourceGroupName, accountName, databaseName, retrieveThroughputParameters, context);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, context);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlDatabaseRetrieveThroughputDistribution(String resourceGroupName, String accountName,
+            String databaseName, RetrieveThroughputParameters retrieveThroughputParameters) {
+        return this
+            .beginSqlDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+                retrieveThroughputParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlDatabaseRetrieveThroughputDistribution(String resourceGroupName, String accountName,
+            String databaseName, RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        return this
+            .beginSqlDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+                retrieveThroughputParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionThroughputInfoResultInner> sqlDatabaseRetrieveThroughputDistributionAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        return beginSqlDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            retrieveThroughputParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionThroughputInfoResultInner> sqlDatabaseRetrieveThroughputDistributionAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        return beginSqlDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            retrieveThroughputParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner sqlDatabaseRetrieveThroughputDistribution(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        return sqlDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            retrieveThroughputParameters).block();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner sqlDatabaseRetrieveThroughputDistribution(
+        String resourceGroupName, String accountName, String databaseName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        return sqlDatabaseRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            retrieveThroughputParameters, context).block();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> sqlDatabaseRedistributeThroughputWithResponseAsync(String resourceGroupName,
+        String accountName, String databaseName, RedistributeThroughputParameters redistributeThroughputParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (redistributeThroughputParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter redistributeThroughputParameters is required and cannot be null."));
+        } else {
+            redistributeThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.sqlDatabaseRedistributeThroughput(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName,
+                this.client.getApiVersion(), redistributeThroughputParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> sqlDatabaseRedistributeThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (redistributeThroughputParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter redistributeThroughputParameters is required and cannot be null."));
+        } else {
+            redistributeThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.sqlDatabaseRedistributeThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, this.client.getApiVersion(), redistributeThroughputParameters,
+            accept, context);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlDatabaseRedistributeThroughputAsync(String resourceGroupName, String accountName, String databaseName,
+            RedistributeThroughputParameters redistributeThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = sqlDatabaseRedistributeThroughputWithResponseAsync(resourceGroupName,
+            accountName, databaseName, redistributeThroughputParameters);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlDatabaseRedistributeThroughputAsync(String resourceGroupName, String accountName, String databaseName,
+            RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = sqlDatabaseRedistributeThroughputWithResponseAsync(resourceGroupName,
+            accountName, databaseName, redistributeThroughputParameters, context);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, context);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlDatabaseRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
+            RedistributeThroughputParameters redistributeThroughputParameters) {
+        return this
+            .beginSqlDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+                redistributeThroughputParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlDatabaseRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
+            RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        return this
+            .beginSqlDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+                redistributeThroughputParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionThroughputInfoResultInner> sqlDatabaseRedistributeThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RedistributeThroughputParameters redistributeThroughputParameters) {
+        return beginSqlDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+            redistributeThroughputParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionThroughputInfoResultInner> sqlDatabaseRedistributeThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName,
+        RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        return beginSqlDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+            redistributeThroughputParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner sqlDatabaseRedistributeThroughput(String resourceGroupName,
+        String accountName, String databaseName, RedistributeThroughputParameters redistributeThroughputParameters) {
+        return sqlDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+            redistributeThroughputParameters).block();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner sqlDatabaseRedistributeThroughput(String resourceGroupName,
+        String accountName, String databaseName, RedistributeThroughputParameters redistributeThroughputParameters,
+        Context context) {
+        return sqlDatabaseRedistributeThroughputAsync(resourceGroupName, accountName, databaseName,
+            redistributeThroughputParameters, context).block();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> sqlContainerRetrieveThroughputDistributionWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (retrieveThroughputParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter retrieveThroughputParameters is required and cannot be null."));
+        } else {
+            retrieveThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.sqlContainerRetrieveThroughputDistribution(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
+                this.client.getApiVersion(), retrieveThroughputParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> sqlContainerRetrieveThroughputDistributionWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (retrieveThroughputParameters == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter retrieveThroughputParameters is required and cannot be null."));
+        } else {
+            retrieveThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.sqlContainerRetrieveThroughputDistribution(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
+            this.client.getApiVersion(), retrieveThroughputParameters, accept, context);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlContainerRetrieveThroughputDistributionAsync(String resourceGroupName, String accountName,
+            String databaseName, String containerName, RetrieveThroughputParameters retrieveThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = sqlContainerRetrieveThroughputDistributionWithResponseAsync(
+            resourceGroupName, accountName, databaseName, containerName, retrieveThroughputParameters);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlContainerRetrieveThroughputDistributionAsync(String resourceGroupName, String accountName,
+            String databaseName, String containerName, RetrieveThroughputParameters retrieveThroughputParameters,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = sqlContainerRetrieveThroughputDistributionWithResponseAsync(
+            resourceGroupName, accountName, databaseName, containerName, retrieveThroughputParameters, context);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, context);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlContainerRetrieveThroughputDistribution(String resourceGroupName, String accountName,
+            String databaseName, String containerName, RetrieveThroughputParameters retrieveThroughputParameters) {
+        return this
+            .beginSqlContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+                containerName, retrieveThroughputParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlContainerRetrieveThroughputDistribution(String resourceGroupName, String accountName,
+            String databaseName, String containerName, RetrieveThroughputParameters retrieveThroughputParameters,
+            Context context) {
+        return this
+            .beginSqlContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+                containerName, retrieveThroughputParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionThroughputInfoResultInner> sqlContainerRetrieveThroughputDistributionAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        return beginSqlContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            containerName, retrieveThroughputParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionThroughputInfoResultInner> sqlContainerRetrieveThroughputDistributionAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        return beginSqlContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            containerName, retrieveThroughputParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner sqlContainerRetrieveThroughputDistribution(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        RetrieveThroughputParameters retrieveThroughputParameters) {
+        return sqlContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            containerName, retrieveThroughputParameters).block();
+    }
+
+    /**
+     * Retrieve throughput distribution for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param retrieveThroughputParameters The parameters to provide for retrieving throughput distribution for the
+     * current SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner sqlContainerRetrieveThroughputDistribution(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        RetrieveThroughputParameters retrieveThroughputParameters, Context context) {
+        return sqlContainerRetrieveThroughputDistributionAsync(resourceGroupName, accountName, databaseName,
+            containerName, retrieveThroughputParameters, context).block();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> sqlContainerRedistributeThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        RedistributeThroughputParameters redistributeThroughputParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (redistributeThroughputParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter redistributeThroughputParameters is required and cannot be null."));
+        } else {
+            redistributeThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.sqlContainerRedistributeThroughput(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, databaseName, containerName,
+                this.client.getApiVersion(), redistributeThroughputParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> sqlContainerRedistributeThroughputWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (containerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter containerName is required and cannot be null."));
+        }
+        if (redistributeThroughputParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter redistributeThroughputParameters is required and cannot be null."));
+        } else {
+            redistributeThroughputParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.sqlContainerRedistributeThroughput(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, databaseName, containerName, this.client.getApiVersion(),
+            redistributeThroughputParameters, accept, context);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlContainerRedistributeThroughputAsync(String resourceGroupName, String accountName, String databaseName,
+            String containerName, RedistributeThroughputParameters redistributeThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = sqlContainerRedistributeThroughputWithResponseAsync(resourceGroupName,
+            accountName, databaseName, containerName, redistributeThroughputParameters);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlContainerRedistributeThroughputAsync(String resourceGroupName, String accountName, String databaseName,
+            String containerName, RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = sqlContainerRedistributeThroughputWithResponseAsync(resourceGroupName,
+            accountName, databaseName, containerName, redistributeThroughputParameters, context);
+        return this.client
+            .<PhysicalPartitionThroughputInfoResultInner, PhysicalPartitionThroughputInfoResultInner>getLroResult(mono,
+                this.client.getHttpPipeline(), PhysicalPartitionThroughputInfoResultInner.class,
+                PhysicalPartitionThroughputInfoResultInner.class, context);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlContainerRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
+            String containerName, RedistributeThroughputParameters redistributeThroughputParameters) {
+        return this
+            .beginSqlContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+                redistributeThroughputParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<PhysicalPartitionThroughputInfoResultInner>, PhysicalPartitionThroughputInfoResultInner>
+        beginSqlContainerRedistributeThroughput(String resourceGroupName, String accountName, String databaseName,
+            String containerName, RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        return this
+            .beginSqlContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+                redistributeThroughputParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhysicalPartitionThroughputInfoResultInner> sqlContainerRedistributeThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        RedistributeThroughputParameters redistributeThroughputParameters) {
+        return beginSqlContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+            redistributeThroughputParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PhysicalPartitionThroughputInfoResultInner> sqlContainerRedistributeThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName, String containerName,
+        RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        return beginSqlContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+            redistributeThroughputParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL container.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner sqlContainerRedistributeThroughput(String resourceGroupName,
+        String accountName, String databaseName, String containerName,
+        RedistributeThroughputParameters redistributeThroughputParameters) {
+        return sqlContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+            redistributeThroughputParameters).block();
+    }
+
+    /**
+     * Redistribute throughput for an Azure Cosmos DB SQL container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param containerName Cosmos DB container name.
+     * @param redistributeThroughputParameters The parameters to provide for redistributing throughput for the current
+     * SQL container.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB PhysicalPartitionThroughputInfoResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhysicalPartitionThroughputInfoResultInner sqlContainerRedistributeThroughput(String resourceGroupName,
+        String accountName, String databaseName, String containerName,
+        RedistributeThroughputParameters redistributeThroughputParameters, Context context) {
+        return sqlContainerRedistributeThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+            redistributeThroughputParameters, context).block();
+    }
+
+    /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4608,7 +6473,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4655,7 +6520,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4675,7 +6540,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4696,7 +6561,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4716,7 +6581,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4737,7 +6602,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4788,7 +6653,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4839,7 +6704,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4860,7 +6725,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4881,7 +6746,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4901,7 +6766,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4959,7 +6824,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5016,7 +6881,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5042,7 +6907,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5071,7 +6936,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5088,13 +6953,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName,
             String containerName, String storedProcedureName,
             SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
-        return this.beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName,
-            containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName, createUpdateSqlStoredProcedureParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5112,13 +6979,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName,
             String containerName, String storedProcedureName,
             SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context) {
-        return this.beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName,
-            containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName, createUpdateSqlStoredProcedureParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5136,12 +7005,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
         return beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
             storedProcedureName, createUpdateSqlStoredProcedureParameters).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5160,12 +7029,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context) {
         return beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
             storedProcedureName, createUpdateSqlStoredProcedureParameters, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5187,7 +7056,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5210,7 +7079,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5258,7 +7127,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5306,7 +7175,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5328,7 +7197,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5352,7 +7221,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5366,13 +7235,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(String resourceGroupName,
         String accountName, String databaseName, String containerName, String storedProcedureName) {
-        return this.beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
-            storedProcedureName).getSyncPoller();
+        return this
+            .beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5387,13 +7258,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(String resourceGroupName,
         String accountName, String databaseName, String containerName, String storedProcedureName, Context context) {
-        return this.beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
-            storedProcedureName, context).getSyncPoller();
+        return this
+            .beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName, context)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5413,7 +7286,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5434,7 +7307,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5453,7 +7326,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5473,7 +7346,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5520,7 +7393,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5567,7 +7440,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5587,7 +7460,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5608,7 +7481,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5628,7 +7501,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5649,7 +7522,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5700,7 +7573,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5751,7 +7624,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5772,7 +7645,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5795,7 +7668,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5815,7 +7688,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5876,7 +7749,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5936,7 +7809,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5964,7 +7837,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5995,7 +7868,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6013,13 +7886,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName,
             String containerName, String userDefinedFunctionName,
             SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
-        return this.beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName,
-            containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6039,14 +7914,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             String containerName, String userDefinedFunctionName,
             SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
             Context context) {
-        return this.beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName,
-            containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context)
+        return this
+            .beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6065,12 +7941,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
         return beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
             userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6091,12 +7967,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters, Context context) {
         return beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
             userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6119,7 +7995,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6143,7 +8019,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6191,7 +8067,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6240,7 +8116,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6262,7 +8138,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6287,7 +8163,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6301,13 +8177,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(String resourceGroupName,
         String accountName, String databaseName, String containerName, String userDefinedFunctionName) {
-        return this.beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
-            userDefinedFunctionName).getSyncPoller();
+        return this
+            .beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6323,13 +8201,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(String resourceGroupName,
         String accountName, String databaseName, String containerName, String userDefinedFunctionName,
         Context context) {
-        return this.beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
-            userDefinedFunctionName, context).getSyncPoller();
+        return this
+            .beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName, context)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6349,7 +8229,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6370,7 +8250,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6389,7 +8269,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6409,7 +8289,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6456,7 +8336,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6503,7 +8383,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6523,7 +8403,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6544,7 +8424,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6563,7 +8443,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6584,7 +8464,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6633,7 +8513,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6681,7 +8561,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6702,7 +8582,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6723,7 +8603,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6743,7 +8623,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6799,7 +8679,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6855,7 +8735,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6881,7 +8761,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6908,7 +8788,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6924,13 +8804,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName,
         SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
-        return this.beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName,
-            triggerName, createUpdateSqlTriggerParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
+                createUpdateSqlTriggerParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6947,13 +8829,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName,
         SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context) {
-        return this.beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName,
-            triggerName, createUpdateSqlTriggerParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
+                createUpdateSqlTriggerParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6975,7 +8859,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6994,12 +8878,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context) {
         return beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName,
             triggerName, createUpdateSqlTriggerParameters, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7021,7 +8905,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7044,7 +8928,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7091,7 +8975,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7137,7 +9021,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7159,7 +9043,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7183,7 +9067,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7203,7 +9087,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7218,13 +9102,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(String resourceGroupName, String accountName,
         String databaseName, String containerName, String triggerName, Context context) {
-        return this.beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
-            context).getSyncPoller();
+        return this
+            .beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7239,12 +9125,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public Mono<Void> deleteSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName,
         String containerName, String triggerName) {
         return beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7265,7 +9152,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7283,7 +9170,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7303,7 +9190,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7345,7 +9232,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7387,7 +9274,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7405,7 +9292,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7423,7 +9310,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7441,7 +9328,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7491,7 +9378,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7541,7 +9428,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7564,7 +9451,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7589,7 +9476,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7603,13 +9490,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
         beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName,
             SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
-        return this.beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
-            createUpdateSqlRoleDefinitionParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
+                createUpdateSqlRoleDefinitionParameters)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7624,13 +9513,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
         beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName,
             SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
-        return this.beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
-            createUpdateSqlRoleDefinitionParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
+                createUpdateSqlRoleDefinitionParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7650,7 +9541,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7671,7 +9562,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7691,7 +9582,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7712,7 +9603,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7753,7 +9644,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7794,7 +9685,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7814,7 +9705,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7836,7 +9727,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7853,7 +9744,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7872,7 +9763,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7890,7 +9781,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7909,7 +9800,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7924,7 +9815,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7941,7 +9832,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7979,7 +9870,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8017,7 +9908,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8033,7 +9924,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8050,7 +9941,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8066,7 +9957,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8083,7 +9974,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8124,7 +10015,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8165,7 +10056,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8183,7 +10074,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8201,7 +10092,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8219,7 +10110,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8268,7 +10159,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8317,7 +10208,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8340,7 +10231,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8365,7 +10256,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8379,13 +10270,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
         beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName,
             SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
-        return this.beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
-            createUpdateSqlRoleAssignmentParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
+                createUpdateSqlRoleAssignmentParameters)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8400,13 +10293,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
         beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName,
             SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
-        return this.beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
-            createUpdateSqlRoleAssignmentParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
+                createUpdateSqlRoleAssignmentParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8426,7 +10321,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8447,7 +10342,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8467,7 +10362,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8488,7 +10383,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8529,7 +10424,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8570,7 +10465,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8590,7 +10485,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8612,7 +10507,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8629,7 +10524,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8648,7 +10543,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8666,7 +10561,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8685,7 +10580,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8700,7 +10595,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8717,7 +10612,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8755,7 +10650,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8793,7 +10688,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8809,7 +10704,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8826,7 +10721,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8842,7 +10737,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8859,7 +10754,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -8910,7 +10805,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -8961,7 +10856,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -8985,7 +10880,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9010,7 +10905,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9025,13 +10920,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
             String containerName, ContinuousBackupRestoreLocation location) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName,
-            containerName, location).getSyncPoller();
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName,
+                location)
+            .getSyncPoller();
     }
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9047,13 +10944,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
             String containerName, ContinuousBackupRestoreLocation location, Context context) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName,
-            containerName, location, context).getSyncPoller();
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName,
+                location, context)
+            .getSyncPoller();
     }
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9073,7 +10972,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9095,7 +10994,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9115,7 +11014,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.

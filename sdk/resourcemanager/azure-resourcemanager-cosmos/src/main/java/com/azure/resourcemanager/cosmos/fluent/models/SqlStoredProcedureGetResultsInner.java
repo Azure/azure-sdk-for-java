@@ -6,8 +6,10 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
 /**
@@ -29,11 +31,20 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB storedProcedure.
-     * 
+     *
      * @return the innerProperties value.
      */
     private SqlStoredProcedureGetProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlStoredProcedureGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
     }
 
     /**
@@ -56,7 +67,7 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
 
     /**
      * Get the resource property: The resource property.
-     * 
+     *
      * @return the resource value.
      */
     public SqlStoredProcedureGetPropertiesResource resource() {
@@ -65,7 +76,7 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
 
     /**
      * Set the resource property: The resource property.
-     * 
+     *
      * @param resource the resource value to set.
      * @return the SqlStoredProcedureGetResultsInner object itself.
      */
@@ -79,7 +90,7 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

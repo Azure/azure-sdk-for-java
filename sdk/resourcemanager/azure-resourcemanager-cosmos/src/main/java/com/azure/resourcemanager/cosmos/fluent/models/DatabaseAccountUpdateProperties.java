@@ -10,10 +10,13 @@ import com.azure.resourcemanager.cosmos.models.ApiProperties;
 import com.azure.resourcemanager.cosmos.models.BackupPolicy;
 import com.azure.resourcemanager.cosmos.models.Capability;
 import com.azure.resourcemanager.cosmos.models.Capacity;
+import com.azure.resourcemanager.cosmos.models.CapacityMode;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
 import com.azure.resourcemanager.cosmos.models.CorsPolicy;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKeysMetadata;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
+import com.azure.resourcemanager.cosmos.models.DiagnosticLogSettings;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.MinimalTlsVersion;
@@ -21,6 +24,7 @@ import com.azure.resourcemanager.cosmos.models.NetworkAclBypass;
 import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -53,9 +57,7 @@ public final class DatabaseAccountUpdateProperties {
     private Boolean isVirtualNetworkFilterEnabled;
 
     /*
-     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an
-     * outage. Automatic failover will result in a new write region for the account and is chosen based on the failover
-     * priorities configured for the account.
+     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an outage. Automatic failover will result in a new write region for the account and is chosen based on the failover priorities configured for the account.
      */
     @JsonProperty(value = "enableAutomaticFailover")
     private Boolean enableAutomaticFailover;
@@ -103,8 +105,7 @@ public final class DatabaseAccountUpdateProperties {
     private String keyVaultKeyUri;
 
     /*
-     * The default identity for accessing key vault used in features like customer managed keys. The default identity
-     * needs to be explicitly set by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity" and more.
+     * The default identity for accessing key vault used in features like customer managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity" and more.
      */
     @JsonProperty(value = "defaultIdentity")
     private String defaultIdentity;
@@ -164,6 +165,12 @@ public final class DatabaseAccountUpdateProperties {
     private List<String> networkAclBypassResourceIds;
 
     /*
+     * The Object representing the different Diagnostic log settings for the Cosmos DB Account.
+     */
+    @JsonProperty(value = "diagnosticLogSettings")
+    private DiagnosticLogSettings diagnosticLogSettings;
+
+    /*
      * Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
      */
     @JsonProperty(value = "disableLocalAuth")
@@ -176,8 +183,19 @@ public final class DatabaseAccountUpdateProperties {
     private Capacity capacity;
 
     /*
-     * This property is ignored during the update operation, as the metadata is read-only. The object represents the
-     * metadata for the Account Keys of the Cosmos DB account.
+     * Indicates the capacityMode of the Cosmos DB account.
+     */
+    @JsonProperty(value = "capacityMode")
+    private CapacityMode capacityMode;
+
+    /*
+     * Flag to indicate whether to enable MaterializedViews on the Cosmos DB account
+     */
+    @JsonProperty(value = "enableMaterializedViews")
+    private Boolean enableMaterializedViews;
+
+    /*
+     * This property is ignored during the update operation, as the metadata is read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
      */
     @JsonProperty(value = "keysMetadata", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseAccountKeysMetadata keysMetadata;
@@ -189,24 +207,40 @@ public final class DatabaseAccountUpdateProperties {
     private Boolean enablePartitionMerge;
 
     /*
-     * Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with
-     * Tls 1.2.
-     */
-    @JsonProperty(value = "minimalTlsVersion")
-    private MinimalTlsVersion minimalTlsVersion;
-
-    /*
      * Flag to indicate enabling/disabling of Burst Capacity Preview feature on the account
      */
     @JsonProperty(value = "enableBurstCapacity")
     private Boolean enableBurstCapacity;
 
     /*
-     * Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property
-     * provides troubleshooting guidance.
+     * Indicates the minimum allowed Tls version. The default is Tls 1.0, except for Cassandra and Mongo API's, which only work with Tls 1.2.
+     */
+    @JsonProperty(value = "minimalTlsVersion")
+    private MinimalTlsVersion minimalTlsVersion;
+
+    /*
+     * Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property provides troubleshooting guidance.
      */
     @JsonProperty(value = "customerManagedKeyStatus")
     private String customerManagedKeyStatus;
+
+    /*
+     * Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
+     */
+    @JsonProperty(value = "enablePriorityBasedExecution")
+    private Boolean enablePriorityBasedExecution;
+
+    /*
+     * Enum to indicate default Priority Level of request for Priority Based Execution.
+     */
+    @JsonProperty(value = "defaultPriorityLevel")
+    private DefaultPriorityLevel defaultPriorityLevel;
+
+    /*
+     * Flag to indicate enabling/disabling of Per-Region Per-partition autoscale Preview feature on the account
+     */
+    @JsonProperty(value = "enablePerRegionPerPartitionAutoscale")
+    private Boolean enablePerRegionPerPartitionAutoscale;
 
     /**
      * Creates an instance of DatabaseAccountUpdateProperties class.
@@ -216,7 +250,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the consistencyPolicy property: The consistency policy for the Cosmos DB account.
-     * 
+     *
      * @return the consistencyPolicy value.
      */
     public ConsistencyPolicy consistencyPolicy() {
@@ -225,7 +259,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the consistencyPolicy property: The consistency policy for the Cosmos DB account.
-     * 
+     *
      * @param consistencyPolicy the consistencyPolicy value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -237,7 +271,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Get the locations property: An array that contains the georeplication locations enabled for the Cosmos DB
      * account.
-     * 
+     *
      * @return the locations value.
      */
     public List<Location> locations() {
@@ -247,7 +281,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Set the locations property: An array that contains the georeplication locations enabled for the Cosmos DB
      * account.
-     * 
+     *
      * @param locations the locations value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -258,7 +292,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the ipRules property: List of IpRules.
-     * 
+     *
      * @return the ipRules value.
      */
     public List<IpAddressOrRange> ipRules() {
@@ -267,7 +301,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the ipRules property: List of IpRules.
-     * 
+     *
      * @param ipRules the ipRules value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -279,7 +313,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Get the isVirtualNetworkFilterEnabled property: Flag to indicate whether to enable/disable Virtual Network ACL
      * rules.
-     * 
+     *
      * @return the isVirtualNetworkFilterEnabled value.
      */
     public Boolean isVirtualNetworkFilterEnabled() {
@@ -289,7 +323,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Set the isVirtualNetworkFilterEnabled property: Flag to indicate whether to enable/disable Virtual Network ACL
      * rules.
-     * 
+     *
      * @param isVirtualNetworkFilterEnabled the isVirtualNetworkFilterEnabled value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -302,7 +336,7 @@ public final class DatabaseAccountUpdateProperties {
      * Get the enableAutomaticFailover property: Enables automatic failover of the write region in the rare event that
      * the region is unavailable due to an outage. Automatic failover will result in a new write region for the account
      * and is chosen based on the failover priorities configured for the account.
-     * 
+     *
      * @return the enableAutomaticFailover value.
      */
     public Boolean enableAutomaticFailover() {
@@ -313,7 +347,7 @@ public final class DatabaseAccountUpdateProperties {
      * Set the enableAutomaticFailover property: Enables automatic failover of the write region in the rare event that
      * the region is unavailable due to an outage. Automatic failover will result in a new write region for the account
      * and is chosen based on the failover priorities configured for the account.
-     * 
+     *
      * @param enableAutomaticFailover the enableAutomaticFailover value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -324,7 +358,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the capabilities property: List of Cosmos DB capabilities for the account.
-     * 
+     *
      * @return the capabilities value.
      */
     public List<Capability> capabilities() {
@@ -333,7 +367,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the capabilities property: List of Cosmos DB capabilities for the account.
-     * 
+     *
      * @param capabilities the capabilities value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -344,7 +378,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the virtualNetworkRules property: List of Virtual Network ACL rules configured for the Cosmos DB account.
-     * 
+     *
      * @return the virtualNetworkRules value.
      */
     public List<VirtualNetworkRule> virtualNetworkRules() {
@@ -353,7 +387,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the virtualNetworkRules property: List of Virtual Network ACL rules configured for the Cosmos DB account.
-     * 
+     *
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -364,7 +398,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the enableMultipleWriteLocations property: Enables the account to write in multiple locations.
-     * 
+     *
      * @return the enableMultipleWriteLocations value.
      */
     public Boolean enableMultipleWriteLocations() {
@@ -373,7 +407,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the enableMultipleWriteLocations property: Enables the account to write in multiple locations.
-     * 
+     *
      * @param enableMultipleWriteLocations the enableMultipleWriteLocations value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -384,7 +418,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the enableCassandraConnector property: Enables the cassandra connector on the Cosmos DB C* account.
-     * 
+     *
      * @return the enableCassandraConnector value.
      */
     public Boolean enableCassandraConnector() {
@@ -393,7 +427,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the enableCassandraConnector property: Enables the cassandra connector on the Cosmos DB C* account.
-     * 
+     *
      * @param enableCassandraConnector the enableCassandraConnector value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -404,7 +438,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the connectorOffer property: The cassandra connector offer type for the Cosmos DB database C* account.
-     * 
+     *
      * @return the connectorOffer value.
      */
     public ConnectorOffer connectorOffer() {
@@ -413,7 +447,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the connectorOffer property: The cassandra connector offer type for the Cosmos DB database C* account.
-     * 
+     *
      * @param connectorOffer the connectorOffer value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -425,7 +459,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Get the disableKeyBasedMetadataWriteAccess property: Disable write operations on metadata resources (databases,
      * containers, throughput) via account keys.
-     * 
+     *
      * @return the disableKeyBasedMetadataWriteAccess value.
      */
     public Boolean disableKeyBasedMetadataWriteAccess() {
@@ -435,7 +469,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Set the disableKeyBasedMetadataWriteAccess property: Disable write operations on metadata resources (databases,
      * containers, throughput) via account keys.
-     * 
+     *
      * @param disableKeyBasedMetadataWriteAccess the disableKeyBasedMetadataWriteAccess value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -447,7 +481,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the keyVaultKeyUri property: The URI of the key vault.
-     * 
+     *
      * @return the keyVaultKeyUri value.
      */
     public String keyVaultKeyUri() {
@@ -456,7 +490,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the keyVaultKeyUri property: The URI of the key vault.
-     * 
+     *
      * @param keyVaultKeyUri the keyVaultKeyUri value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -469,7 +503,7 @@ public final class DatabaseAccountUpdateProperties {
      * Get the defaultIdentity property: The default identity for accessing key vault used in features like customer
      * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
      * "SystemAssignedIdentity" and more.
-     * 
+     *
      * @return the defaultIdentity value.
      */
     public String defaultIdentity() {
@@ -480,7 +514,7 @@ public final class DatabaseAccountUpdateProperties {
      * Set the defaultIdentity property: The default identity for accessing key vault used in features like customer
      * managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity",
      * "SystemAssignedIdentity" and more.
-     * 
+     *
      * @param defaultIdentity the defaultIdentity value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -491,7 +525,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     * 
+     *
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -500,7 +534,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     * 
+     *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -511,7 +545,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
-     * 
+     *
      * @return the enableFreeTier value.
      */
     public Boolean enableFreeTier() {
@@ -520,7 +554,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the enableFreeTier property: Flag to indicate whether Free Tier is enabled.
-     * 
+     *
      * @param enableFreeTier the enableFreeTier value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -531,7 +565,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the apiProperties property: API specific properties. Currently, supported only for MongoDB API.
-     * 
+     *
      * @return the apiProperties value.
      */
     public ApiProperties apiProperties() {
@@ -540,7 +574,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the apiProperties property: API specific properties. Currently, supported only for MongoDB API.
-     * 
+     *
      * @param apiProperties the apiProperties value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -551,7 +585,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
-     * 
+     *
      * @return the enableAnalyticalStorage value.
      */
     public Boolean enableAnalyticalStorage() {
@@ -560,7 +594,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the enableAnalyticalStorage property: Flag to indicate whether to enable storage analytics.
-     * 
+     *
      * @param enableAnalyticalStorage the enableAnalyticalStorage value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -571,7 +605,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the analyticalStorageConfiguration property: Analytical storage specific properties.
-     * 
+     *
      * @return the analyticalStorageConfiguration value.
      */
     public AnalyticalStorageConfiguration analyticalStorageConfiguration() {
@@ -580,7 +614,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the analyticalStorageConfiguration property: Analytical storage specific properties.
-     * 
+     *
      * @param analyticalStorageConfiguration the analyticalStorageConfiguration value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -592,7 +626,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the backupPolicy property: The object representing the policy for taking backups on an account.
-     * 
+     *
      * @return the backupPolicy value.
      */
     public BackupPolicy backupPolicy() {
@@ -601,7 +635,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the backupPolicy property: The object representing the policy for taking backups on an account.
-     * 
+     *
      * @param backupPolicy the backupPolicy value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -612,7 +646,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the cors property: The CORS policy for the Cosmos DB database account.
-     * 
+     *
      * @return the cors value.
      */
     public List<CorsPolicy> cors() {
@@ -621,7 +655,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the cors property: The CORS policy for the Cosmos DB database account.
-     * 
+     *
      * @param cors the cors value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -632,7 +666,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Get the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
-     * 
+     *
      * @return the networkAclBypass value.
      */
     public NetworkAclBypass networkAclBypass() {
@@ -641,7 +675,7 @@ public final class DatabaseAccountUpdateProperties {
 
     /**
      * Set the networkAclBypass property: Indicates what services are allowed to bypass firewall checks.
-     * 
+     *
      * @param networkAclBypass the networkAclBypass value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -653,7 +687,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Get the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
      * the Cosmos DB account.
-     * 
+     *
      * @return the networkAclBypassResourceIds value.
      */
     public List<String> networkAclBypassResourceIds() {
@@ -663,7 +697,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Set the networkAclBypassResourceIds property: An array that contains the Resource Ids for Network Acl Bypass for
      * the Cosmos DB account.
-     * 
+     *
      * @param networkAclBypassResourceIds the networkAclBypassResourceIds value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -673,9 +707,31 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
+     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     *
+     * @return the diagnosticLogSettings value.
+     */
+    public DiagnosticLogSettings diagnosticLogSettings() {
+        return this.diagnosticLogSettings;
+    }
+
+    /**
+     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     *
+     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
+        this.diagnosticLogSettings = diagnosticLogSettings;
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
-     * 
+     *
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -685,7 +741,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Set the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
-     * 
+     *
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -697,7 +753,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Get the capacity property: The object that represents all properties related to capacity enforcement on an
      * account.
-     * 
+     *
      * @return the capacity value.
      */
     public Capacity capacity() {
@@ -707,7 +763,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Set the capacity property: The object that represents all properties related to capacity enforcement on an
      * account.
-     * 
+     *
      * @param capacity the capacity value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -717,9 +773,51 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
+     * Get the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     *
+     * @return the capacityMode value.
+     */
+    public CapacityMode capacityMode() {
+        return this.capacityMode;
+    }
+
+    /**
+     * Set the capacityMode property: Indicates the capacityMode of the Cosmos DB account.
+     *
+     * @param capacityMode the capacityMode value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withCapacityMode(CapacityMode capacityMode) {
+        this.capacityMode = capacityMode;
+        return this;
+    }
+
+    /**
+     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     *
+     * @return the enableMaterializedViews value.
+     */
+    public Boolean enableMaterializedViews() {
+        return this.enableMaterializedViews;
+    }
+
+    /**
+     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     *
+     * @param enableMaterializedViews the enableMaterializedViews value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withEnableMaterializedViews(Boolean enableMaterializedViews) {
+        this.enableMaterializedViews = enableMaterializedViews;
+        return this;
+    }
+
+    /**
      * Get the keysMetadata property: This property is ignored during the update operation, as the metadata is
      * read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
-     * 
+     *
      * @return the keysMetadata value.
      */
     public DatabaseAccountKeysMetadata keysMetadata() {
@@ -729,7 +827,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Get the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
      * account.
-     * 
+     *
      * @return the enablePartitionMerge value.
      */
     public Boolean enablePartitionMerge() {
@@ -739,7 +837,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Set the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
      * account.
-     * 
+     *
      * @param enablePartitionMerge the enablePartitionMerge value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -749,31 +847,9 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
-     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
-     * Cassandra and Mongo APIs only work with Tls 1.2.
-     * 
-     * @return the minimalTlsVersion value.
-     */
-    public MinimalTlsVersion minimalTlsVersion() {
-        return this.minimalTlsVersion;
-    }
-
-    /**
-     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default value is Tls 1.2.
-     * Cassandra and Mongo APIs only work with Tls 1.2.
-     * 
-     * @param minimalTlsVersion the minimalTlsVersion value to set.
-     * @return the DatabaseAccountUpdateProperties object itself.
-     */
-    public DatabaseAccountUpdateProperties withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
-        this.minimalTlsVersion = minimalTlsVersion;
-        return this;
-    }
-
-    /**
      * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
      * the account.
-     * 
+     *
      * @return the enableBurstCapacity value.
      */
     public Boolean enableBurstCapacity() {
@@ -783,7 +859,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
      * the account.
-     * 
+     *
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -793,9 +869,31 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
+     * Get the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @return the minimalTlsVersion value.
+     */
+    public MinimalTlsVersion minimalTlsVersion() {
+        return this.minimalTlsVersion;
+    }
+
+    /**
+     * Set the minimalTlsVersion property: Indicates the minimum allowed Tls version. The default is Tls 1.0, except for
+     * Cassandra and Mongo API's, which only work with Tls 1.2.
+     *
+     * @param minimalTlsVersion the minimalTlsVersion value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withMinimalTlsVersion(MinimalTlsVersion minimalTlsVersion) {
+        this.minimalTlsVersion = minimalTlsVersion;
+        return this;
+    }
+
+    /**
      * Get the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
      * account. In case there are errors, the property provides troubleshooting guidance.
-     * 
+     *
      * @return the customerManagedKeyStatus value.
      */
     public String customerManagedKeyStatus() {
@@ -805,7 +903,7 @@ public final class DatabaseAccountUpdateProperties {
     /**
      * Set the customerManagedKeyStatus property: Indicates the status of the Customer Managed Key feature on the
      * account. In case there are errors, the property provides troubleshooting guidance.
-     * 
+     *
      * @param customerManagedKeyStatus the customerManagedKeyStatus value to set.
      * @return the DatabaseAccountUpdateProperties object itself.
      */
@@ -815,8 +913,75 @@ public final class DatabaseAccountUpdateProperties {
     }
 
     /**
+     * Get the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     *
+     * @return the enablePriorityBasedExecution value.
+     */
+    public Boolean enablePriorityBasedExecution() {
+        return this.enablePriorityBasedExecution;
+    }
+
+    /**
+     * Set the enablePriorityBasedExecution property: Flag to indicate enabling/disabling of Priority Based Execution
+     * Preview feature on the account.
+     *
+     * @param enablePriorityBasedExecution the enablePriorityBasedExecution value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withEnablePriorityBasedExecution(Boolean enablePriorityBasedExecution) {
+        this.enablePriorityBasedExecution = enablePriorityBasedExecution;
+        return this;
+    }
+
+    /**
+     * Get the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     *
+     * @return the defaultPriorityLevel value.
+     */
+    public DefaultPriorityLevel defaultPriorityLevel() {
+        return this.defaultPriorityLevel;
+    }
+
+    /**
+     * Set the defaultPriorityLevel property: Enum to indicate default Priority Level of request for Priority Based
+     * Execution.
+     *
+     * @param defaultPriorityLevel the defaultPriorityLevel value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties withDefaultPriorityLevel(DefaultPriorityLevel defaultPriorityLevel) {
+        this.defaultPriorityLevel = defaultPriorityLevel;
+        return this;
+    }
+
+    /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of Per-Region
+     * Per-partition autoscale Preview feature on the account.
+     *
+     * @return the enablePerRegionPerPartitionAutoscale value.
+     */
+    public Boolean enablePerRegionPerPartitionAutoscale() {
+        return this.enablePerRegionPerPartitionAutoscale;
+    }
+
+    /**
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of Per-Region
+     * Per-partition autoscale Preview feature on the account.
+     *
+     * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties
+        withEnablePerRegionPerPartitionAutoscale(Boolean enablePerRegionPerPartitionAutoscale) {
+        this.enablePerRegionPerPartitionAutoscale = enablePerRegionPerPartitionAutoscale;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -846,6 +1011,9 @@ public final class DatabaseAccountUpdateProperties {
         }
         if (cors() != null) {
             cors().forEach(e -> e.validate());
+        }
+        if (diagnosticLogSettings() != null) {
+            diagnosticLogSettings().validate();
         }
         if (capacity() != null) {
             capacity().validate();
