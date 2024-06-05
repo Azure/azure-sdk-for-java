@@ -3,11 +3,13 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosAsyncContainer
+import com.azure.cosmos.{CosmosAsyncContainer, CosmosEndToEndOperationLatencyPolicyConfigBuilder}
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.{CosmosItemIdentity, CosmosReadManyRequestOptions}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+
+import java.time.Duration
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -23,6 +25,12 @@ private[spark] class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
   val classType: Class[TSparkRow]
 ) extends BufferedIterator[TSparkRow] with BasicLoggingTrait with AutoCloseable {
 
+  private val maxOperationTimeout = Duration.ofSeconds(65)
+  private val queryOptionsWithEnd2EndTimeout = queryOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
+    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(maxOperationTimeout)
+      .enable(true)
+      .build
+  )
   private[spark] var currentItemIterator: Option[BufferedIterator[TSparkRow]] = None
   private val readManyFilterBatchIterator = readManyFilterList.grouped(pageSize)
 
@@ -68,7 +76,7 @@ private[spark] class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
     val feedResponse = ImplementationBridgeHelpers
       .CosmosAsyncContainerHelper
       .getCosmosAsyncContainerAccessor
-      .readMany(container, readManyFilterList.asJava, queryOptions, classType)
+      .readMany(container, readManyFilterList.asJava, queryOptionsWithEnd2EndTimeout, classType)
       .block()
 
     if (operationContextAndListener.isDefined) {
