@@ -52,25 +52,25 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
     /**
      * The service client containing this operation class.
      */
-    private final AVSClientImpl client;
+    private final AvsClientImpl client;
 
     /**
      * Initializes an instance of WorkloadNetworkVmGroupsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    WorkloadNetworkVmGroupsClientImpl(AVSClientImpl client) {
+    WorkloadNetworkVmGroupsClientImpl(AvsClientImpl client) {
         this.service = RestProxy.create(WorkloadNetworkVmGroupsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AVSClientWorkloadNetworkVmGroups to be used by the proxy service to
+     * The interface defining all the services for AvsClientWorkloadNetworkVmGroups to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AVSClientWorkloadNet")
+    @ServiceInterface(name = "AvsClientWorkloadNet")
     public interface WorkloadNetworkVmGroupsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups")

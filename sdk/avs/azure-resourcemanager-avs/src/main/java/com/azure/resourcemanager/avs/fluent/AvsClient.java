@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for AVSClient class.
+ * The interface for AvsClient class.
  */
-public interface AVSClient {
+public interface AvsClient {
     /**
      * Gets Server parameter.
      * 

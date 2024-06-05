@@ -45,8 +45,8 @@ public final class WorkloadNetworkPublicIpImpl implements WorkloadNetworkPublicI
         return this.innerModel().numberOfPublicIPs();
     }
 
-    public String publicIPBlock() {
-        return this.innerModel().publicIPBlock();
+    public String publicIpBlock() {
+        return this.innerModel().publicIpBlock();
     }
 
     public WorkloadNetworkPublicIpProvisioningState provisioningState() {

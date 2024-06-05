@@ -5,25 +5,25 @@
 package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIPProperties;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpProperties;
 import org.junit.jupiter.api.Assertions;
 
-public final class WorkloadNetworkPublicIPPropertiesTests {
+public final class WorkloadNetworkPublicIpPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkPublicIPProperties model = BinaryData.fromString(
+        WorkloadNetworkPublicIpProperties model = BinaryData.fromString(
             "{\"displayName\":\"qwcsdbnwdcfhuc\",\"numberOfPublicIPs\":3846405596035643939,\"publicIPBlock\":\"vglsbjjca\",\"provisioningState\":\"Building\"}")
-            .toObject(WorkloadNetworkPublicIPProperties.class);
+            .toObject(WorkloadNetworkPublicIpProperties.class);
         Assertions.assertEquals("qwcsdbnwdcfhuc", model.displayName());
         Assertions.assertEquals(3846405596035643939L, model.numberOfPublicIPs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkPublicIPProperties model
-            = new WorkloadNetworkPublicIPProperties().withDisplayName("qwcsdbnwdcfhuc")
+        WorkloadNetworkPublicIpProperties model
+            = new WorkloadNetworkPublicIpProperties().withDisplayName("qwcsdbnwdcfhuc")
                 .withNumberOfPublicIPs(3846405596035643939L);
-        model = BinaryData.fromObject(model).toObject(WorkloadNetworkPublicIPProperties.class);
+        model = BinaryData.fromObject(model).toObject(WorkloadNetworkPublicIpProperties.class);
         Assertions.assertEquals("qwcsdbnwdcfhuc", model.displayName());
         Assertions.assertEquals(3846405596035643939L, model.numberOfPublicIPs());
     }

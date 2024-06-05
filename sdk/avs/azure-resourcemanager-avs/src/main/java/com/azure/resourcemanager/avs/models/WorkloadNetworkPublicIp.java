@@ -55,11 +55,11 @@ public interface WorkloadNetworkPublicIp {
     Long numberOfPublicIPs();
 
     /**
-     * Gets the publicIPBlock property: CIDR Block of the Public IP Block.
+     * Gets the publicIpBlock property: CIDR Block of the Public IP Block.
      * 
-     * @return the publicIPBlock value.
+     * @return the publicIpBlock value.
      */
-    String publicIPBlock();
+    String publicIpBlock();
 
     /**
      * Gets the provisioningState property: The provisioning state.

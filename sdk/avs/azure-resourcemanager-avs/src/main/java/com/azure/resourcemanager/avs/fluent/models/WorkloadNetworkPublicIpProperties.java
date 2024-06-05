@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * NSX Public IP Block Properties.
  */
 @Fluent
-public final class WorkloadNetworkPublicIPProperties {
+public final class WorkloadNetworkPublicIpProperties {
     /*
      * Display name of the Public IP Block.
      */
@@ -29,7 +29,7 @@ public final class WorkloadNetworkPublicIPProperties {
      * CIDR Block of the Public IP Block.
      */
     @JsonProperty(value = "publicIPBlock", access = JsonProperty.Access.WRITE_ONLY)
-    private String publicIPBlock;
+    private String publicIpBlock;
 
     /*
      * The provisioning state
@@ -38,9 +38,9 @@ public final class WorkloadNetworkPublicIPProperties {
     private WorkloadNetworkPublicIpProvisioningState provisioningState;
 
     /**
-     * Creates an instance of WorkloadNetworkPublicIPProperties class.
+     * Creates an instance of WorkloadNetworkPublicIpProperties class.
      */
-    public WorkloadNetworkPublicIPProperties() {
+    public WorkloadNetworkPublicIpProperties() {
     }
 
     /**
@@ -56,9 +56,9 @@ public final class WorkloadNetworkPublicIPProperties {
      * Set the displayName property: Display name of the Public IP Block.
      * 
      * @param displayName the displayName value to set.
-     * @return the WorkloadNetworkPublicIPProperties object itself.
+     * @return the WorkloadNetworkPublicIpProperties object itself.
      */
-    public WorkloadNetworkPublicIPProperties withDisplayName(String displayName) {
+    public WorkloadNetworkPublicIpProperties withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -76,20 +76,20 @@ public final class WorkloadNetworkPublicIPProperties {
      * Set the numberOfPublicIPs property: Number of Public IPs requested.
      * 
      * @param numberOfPublicIPs the numberOfPublicIPs value to set.
-     * @return the WorkloadNetworkPublicIPProperties object itself.
+     * @return the WorkloadNetworkPublicIpProperties object itself.
      */
-    public WorkloadNetworkPublicIPProperties withNumberOfPublicIPs(Long numberOfPublicIPs) {
+    public WorkloadNetworkPublicIpProperties withNumberOfPublicIPs(Long numberOfPublicIPs) {
         this.numberOfPublicIPs = numberOfPublicIPs;
         return this;
     }
 
     /**
-     * Get the publicIPBlock property: CIDR Block of the Public IP Block.
+     * Get the publicIpBlock property: CIDR Block of the Public IP Block.
      * 
-     * @return the publicIPBlock value.
+     * @return the publicIpBlock value.
      */
-    public String publicIPBlock() {
-        return this.publicIPBlock;
+    public String publicIpBlock() {
+        return this.publicIpBlock;
     }
 
     /**

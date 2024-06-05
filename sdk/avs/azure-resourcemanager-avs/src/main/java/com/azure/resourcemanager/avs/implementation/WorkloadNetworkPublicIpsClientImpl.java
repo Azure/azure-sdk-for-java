@@ -50,25 +50,25 @@ public final class WorkloadNetworkPublicIpsClientImpl implements WorkloadNetwork
     /**
      * The service client containing this operation class.
      */
-    private final AVSClientImpl client;
+    private final AvsClientImpl client;
 
     /**
      * Initializes an instance of WorkloadNetworkPublicIpsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    WorkloadNetworkPublicIpsClientImpl(AVSClientImpl client) {
+    WorkloadNetworkPublicIpsClientImpl(AvsClientImpl client) {
         this.service = RestProxy.create(WorkloadNetworkPublicIpsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AVSClientWorkloadNetworkPublicIps to be used by the proxy service to
+     * The interface defining all the services for AvsClientWorkloadNetworkPublicIps to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AVSClientWorkloadNet")
+    @ServiceInterface(name = "AvsClientWorkloadNet")
     public interface WorkloadNetworkPublicIpsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs")

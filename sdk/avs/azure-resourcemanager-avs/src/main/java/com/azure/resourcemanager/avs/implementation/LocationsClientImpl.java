@@ -40,25 +40,25 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final AVSClientImpl client;
+    private final AvsClientImpl client;
 
     /**
      * Initializes an instance of LocationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    LocationsClientImpl(AVSClientImpl client) {
+    LocationsClientImpl(AvsClientImpl client) {
         this.service
             = RestProxy.create(LocationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AVSClientLocations to be used by the proxy service to perform REST
+     * The interface defining all the services for AvsClientLocations to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AVSClientLocations")
+    @ServiceInterface(name = "AvsClientLocations")
     public interface LocationsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AVS/locations/{location}/checkTrialAvailability")

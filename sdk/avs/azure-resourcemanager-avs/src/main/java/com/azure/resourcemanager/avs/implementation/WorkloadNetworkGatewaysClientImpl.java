@@ -42,25 +42,25 @@ public final class WorkloadNetworkGatewaysClientImpl implements WorkloadNetworkG
     /**
      * The service client containing this operation class.
      */
-    private final AVSClientImpl client;
+    private final AvsClientImpl client;
 
     /**
      * Initializes an instance of WorkloadNetworkGatewaysClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    WorkloadNetworkGatewaysClientImpl(AVSClientImpl client) {
+    WorkloadNetworkGatewaysClientImpl(AvsClientImpl client) {
         this.service = RestProxy.create(WorkloadNetworkGatewaysService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AVSClientWorkloadNetworkGateways to be used by the proxy service to
+     * The interface defining all the services for AvsClientWorkloadNetworkGateways to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AVSClientWorkloadNet")
+    @ServiceInterface(name = "AvsClientWorkloadNet")
     public interface WorkloadNetworkGatewaysService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/gateways")

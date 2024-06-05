@@ -52,25 +52,25 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
     /**
      * The service client containing this operation class.
      */
-    private final AVSClientImpl client;
+    private final AvsClientImpl client;
 
     /**
      * Initializes an instance of WorkloadNetworkDnsServicesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    WorkloadNetworkDnsServicesClientImpl(AVSClientImpl client) {
+    WorkloadNetworkDnsServicesClientImpl(AvsClientImpl client) {
         this.service = RestProxy.create(WorkloadNetworkDnsServicesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AVSClientWorkloadNetworkDnsServices to be used by the proxy service
+     * The interface defining all the services for AvsClientWorkloadNetworkDnsServices to be used by the proxy service
      * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AVSClientWorkloadNet")
+    @ServiceInterface(name = "AvsClientWorkloadNet")
     public interface WorkloadNetworkDnsServicesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices")

@@ -19,7 +19,7 @@ public final class WorkloadNetworkPublicIpInner extends ProxyResource {
      * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
-    private WorkloadNetworkPublicIPProperties innerProperties;
+    private WorkloadNetworkPublicIpProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -38,7 +38,7 @@ public final class WorkloadNetworkPublicIpInner extends ProxyResource {
      * 
      * @return the innerProperties value.
      */
-    private WorkloadNetworkPublicIPProperties innerProperties() {
+    private WorkloadNetworkPublicIpProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -68,7 +68,7 @@ public final class WorkloadNetworkPublicIpInner extends ProxyResource {
      */
     public WorkloadNetworkPublicIpInner withDisplayName(String displayName) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new WorkloadNetworkPublicIPProperties();
+            this.innerProperties = new WorkloadNetworkPublicIpProperties();
         }
         this.innerProperties().withDisplayName(displayName);
         return this;
@@ -91,19 +91,19 @@ public final class WorkloadNetworkPublicIpInner extends ProxyResource {
      */
     public WorkloadNetworkPublicIpInner withNumberOfPublicIPs(Long numberOfPublicIPs) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new WorkloadNetworkPublicIPProperties();
+            this.innerProperties = new WorkloadNetworkPublicIpProperties();
         }
         this.innerProperties().withNumberOfPublicIPs(numberOfPublicIPs);
         return this;
     }
 
     /**
-     * Get the publicIPBlock property: CIDR Block of the Public IP Block.
+     * Get the publicIpBlock property: CIDR Block of the Public IP Block.
      * 
-     * @return the publicIPBlock value.
+     * @return the publicIpBlock value.
      */
-    public String publicIPBlock() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicIPBlock();
+    public String publicIpBlock() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpBlock();
     }
 
     /**

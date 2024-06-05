@@ -52,25 +52,25 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
     /**
      * The service client containing this operation class.
      */
-    private final AVSClientImpl client;
+    private final AvsClientImpl client;
 
     /**
      * Initializes an instance of WorkloadNetworkSegmentsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    WorkloadNetworkSegmentsClientImpl(AVSClientImpl client) {
+    WorkloadNetworkSegmentsClientImpl(AvsClientImpl client) {
         this.service = RestProxy.create(WorkloadNetworkSegmentsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AVSClientWorkloadNetworkSegments to be used by the proxy service to
+     * The interface defining all the services for AvsClientWorkloadNetworkSegments to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AVSClientWorkloadNet")
+    @ServiceInterface(name = "AvsClientWorkloadNet")
     public interface WorkloadNetworkSegmentsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments")

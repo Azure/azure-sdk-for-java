@@ -224,12 +224,12 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIPProperties",
+  "name" : "com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpInner",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpInner",
+  "name" : "com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpProperties",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

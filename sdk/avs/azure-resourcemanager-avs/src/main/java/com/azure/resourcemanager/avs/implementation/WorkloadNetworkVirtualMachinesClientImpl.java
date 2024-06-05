@@ -42,25 +42,25 @@ public final class WorkloadNetworkVirtualMachinesClientImpl implements WorkloadN
     /**
      * The service client containing this operation class.
      */
-    private final AVSClientImpl client;
+    private final AvsClientImpl client;
 
     /**
      * Initializes an instance of WorkloadNetworkVirtualMachinesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    WorkloadNetworkVirtualMachinesClientImpl(AVSClientImpl client) {
+    WorkloadNetworkVirtualMachinesClientImpl(AvsClientImpl client) {
         this.service = RestProxy.create(WorkloadNetworkVirtualMachinesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AVSClientWorkloadNetworkVirtualMachines to be used by the proxy
+     * The interface defining all the services for AvsClientWorkloadNetworkVirtualMachines to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AVSClientWorkloadNet")
+    @ServiceInterface(name = "AvsClientWorkloadNet")
     public interface WorkloadNetworkVirtualMachinesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/virtualMachines")

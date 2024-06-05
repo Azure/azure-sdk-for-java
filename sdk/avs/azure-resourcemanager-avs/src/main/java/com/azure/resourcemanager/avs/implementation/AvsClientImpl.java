@@ -25,7 +25,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.avs.fluent.AddonsClient;
 import com.azure.resourcemanager.avs.fluent.AuthorizationsClient;
-import com.azure.resourcemanager.avs.fluent.AVSClient;
+import com.azure.resourcemanager.avs.fluent.AvsClient;
 import com.azure.resourcemanager.avs.fluent.CloudLinksClient;
 import com.azure.resourcemanager.avs.fluent.ClustersClient;
 import com.azure.resourcemanager.avs.fluent.DatastoresClient;
@@ -60,10 +60,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the AVSClientImpl type.
+ * Initializes a new instance of the AvsClientImpl type.
  */
-@ServiceClient(builder = AVSClientBuilder.class)
-public final class AVSClientImpl implements AVSClient {
+@ServiceClient(builder = AvsClientBuilder.class)
+public final class AvsClientImpl implements AvsClient {
     /**
      * Server parameter.
      */
@@ -513,7 +513,7 @@ public final class AVSClientImpl implements AVSClient {
     }
 
     /**
-     * Initializes an instance of AVSClient client.
+     * Initializes an instance of AvsClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -522,7 +522,7 @@ public final class AVSClientImpl implements AVSClient {
      * @param endpoint Server parameter.
      * @param subscriptionId The ID of the target subscription.
      */
-    AVSClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
+    AvsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
         AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
@@ -684,5 +684,5 @@ public final class AVSClientImpl implements AVSClient {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AVSClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvsClientImpl.class);
 }

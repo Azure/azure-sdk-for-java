@@ -50,25 +50,25 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
     /**
      * The service client containing this operation class.
      */
-    private final AVSClientImpl client;
+    private final AvsClientImpl client;
 
     /**
      * Initializes an instance of IscsiPathsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    IscsiPathsClientImpl(AVSClientImpl client) {
+    IscsiPathsClientImpl(AvsClientImpl client) {
         this.service
             = RestProxy.create(IscsiPathsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AVSClientIscsiPaths to be used by the proxy service to perform REST
+     * The interface defining all the services for AvsClientIscsiPaths to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AVSClientIscsiPaths")
+    @ServiceInterface(name = "AvsClientIscsiPaths")
     public interface IscsiPathsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths")
