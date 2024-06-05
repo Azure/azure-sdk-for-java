@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
@@ -18,6 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.semconv.ServiceAttributes;
+import io.opentelemetry.semconv.incubating.ServiceIncubatingAttributes;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -160,12 +161,12 @@ public class TelemetryItemExporter {
         telemetryItemBatchKey.resource.getAttributes().forEach((k, v) -> builder.addProperty(k.getKey(), v.toString()));
         String roleName = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE.toString());
         if (roleName != null) {
-            builder.addProperty(ResourceAttributes.SERVICE_NAME.getKey(), roleName);
+            builder.addProperty(ServiceAttributes.SERVICE_NAME.getKey(), roleName);
             builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), roleName);
         }
         String roleInstance = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString());
         if (roleInstance != null) {
-            builder.addProperty(ResourceAttributes.SERVICE_INSTANCE_ID.getKey(), roleInstance);
+            builder.addProperty(ServiceIncubatingAttributes.SERVICE_INSTANCE_ID.getKey(), roleInstance);
             builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), roleInstance);
         }
         String internalSdkVersion = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString());
