@@ -196,9 +196,8 @@ feature-management:
             end: "Mon, 01 July 2019 00:00:00 GMT"
 ```
 
-The time window can be configured to recur periodically. This can be useful for the scenarios where one may need to turn on a feature during a low or high traffic period of a day or certain days of a week. To expand the individual time window to recurring time windows, the recurrence rule should be specified in the `recurrence` parameter.
+The time window can be configured to recur periodically. This can be useful in the scenario where you have to enable/disable a feature during low or high traffic periods of a day or for certain days of the week. To expand the individual time window to recurring time windows, the recurrence rule should be specified in the `recurrence` parameter.
 
-**Note:** `start` and `end` must be both specified to enable `recurrence`.
 
 ```yaml
 feature-management:
@@ -218,29 +217,32 @@ feature-management:
                 type: "Numbered"
                 numberOfOccurrences: 3
 ```
-
-The `recurrence` settings is made up of two parts: `pattern` (how often the time window will repeat) and `range` (for how long the recurrence pattern will repeat). To create a recurrence rule, you must specify both `pattern` and `range`. Any pattern type can work with any range type.
+To create a recurrence rule, you need to specify 3 parts: `start`, `end` and `recurrence`. 
+The `start` and `end` parameters define the time window which need to recur periodically. 
+The `recurrence` parameter is made up of two parts: `pattern` (how often the time window will repeat) and `range` (for how long the recurrence pattern will repeat). To create a recurrence rule, you must specify both `pattern` and `range`. Any pattern type can work with any range type. 
 
 **Advanced:** The time zone offset of the `start` property will apply to the recurrence settings.
 
 #### Recurrence Pattern
 
-There are two possible recurrence pattern types: `Daily` and `Weekly`. For example, a time window could repeat "every day", "every 3 days", "every Monday" or "every other Friday".
+There are two possible recurrence pattern types: `Daily` and `Weekly`. 
+
+`Daily` causes an event to repeat based on a number of days between each occurrence. For example, "every day" or "every 3 days".
+
+`Weekly` causes an event to repeat on the same day or days of the week, based on the number of weeks between each set of occurrences. For example, "every Monday" or "every other Friday".
 
 * Parameters
 
   Property | Relevance | Description
   -----------|-------|-----
-  **type** | Required  | Two valid values: `Daily`, `Weekly`.
+  **type** | Required  | `Daily`/`Weekly`.
   **interval** | Optional  | Specifies the interval between each start time of occurrence. Default value is 1. <br/>For example, if the interval is 2 with `Daily` type, and current occurrence is 2:00 AM ~ 3:00 AM on 2024/05/11, then the next occurrence should be 2:00 AM ~ 3:00 AM on 2024/05/13
-  **daysOfWeek** | Optional  | Specifies on which day(s) of the week the event occurs. It's required when `Weekly` type, not applicable for `Daily` type. 
-  **firstDayOfWeek** | Optional  | Specifies which day is considered the first day of the week. Default value is `Sunday`. Not applicable for `Daily` type. 
+  **daysOfWeek** | Required/Optional  | Specifies on which day(s) of the week the event occurs. It's required when `Weekly` type, negatively for `Daily` type. 
+  **firstDayOfWeek** | Optional  | Specifies which day is considered the first day of the week. Default value is `Sunday`. Negatively for `Daily` type. 
   
   * Example
     * Daily
   
-        The daily recurrence pattern causes the time window to repeat based on interval between each occurrence.
-
         The following example will repeat from 2:00 AM to 3:00 AM on every 2 days
 
         ```yaml
@@ -256,8 +258,6 @@ There are two possible recurrence pattern types: `Daily` and `Weekly`. For examp
 
     * Weekly
   
-      The weekly recurrence pattern causes the time window to repeat on the same day or days of the week, based on the number of weeks between each set of occurrences.
-
       The following example will repeat from 2:00 AM to 3:00 AM on every other Monday and Tuesday
 
         ```yaml
@@ -273,6 +273,20 @@ There are two possible recurrence pattern types: `Daily` and `Weekly`. For examp
           range:
             type: "NoEnd"
         ```
+      The following example shows a time window starts on one day and ends on another, repeat every week.
+
+        ```yaml
+        start: "Mon, 13 May 2024 02:00:00 GMT"
+        end: "Mon, 14 May 2024 03:00:00 GMT"
+        recurrence:
+          pattern:
+            type: "Weekly"
+            interval: 1
+            daysOfWeek: 
+              - Monday
+          range:
+            type: "NoEnd"
+        ```
 
     **Note:** `start` must be a valid first occurrence which fits the recurrence pattern. For example, if we define to repeat on every other Monday and Tuesday, then the start time should be in Monday or Tuesday. <br /> Additionally, the duration of the time window cannot be longer than how frequently it occurs. For example, it is invalid to have a 25-hour time window recur every day.
 
@@ -284,9 +298,9 @@ There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered
   
     Property | Relevance | Description                                                                           |
     -----------|---------------|-------------
-    **type** | Required  | Three valid values: `NoEnd`, `EndDate` and `Numbered`.
-    **endDate** | Optional  |  Specifies the date time to stop applying the pattern. Note that as long as the start time of the last occurrence falls before the end date, the end time of that occurrence is allowed to extend beyond it. <br /> It's required for `EndDate` type, not applicable for `NoEnd` and `Numbered` type.
-    **NumberOfOccurrences** | Required | Specifies the number of days that it will occur. <br /> It's required for `Numbered` type, not applicable for `NoEnd` and `EndDate` type.
+    **type** | Required  | `NoEnd`/`EndDate`/`Numbered`.
+    **endDate** | Required/Optional  |  Specifies the date time to stop applying the pattern. Note that as long as the start time of the last occurrence falls before the end date, the end time of that occurrence is allowed to extend beyond it. <br /> It's required for `EndDate` type, negatively for `NoEnd` and `Numbered` type.
+    **NumberOfOccurrences** | Required/Optional | Specifies the number of days that it will occur. <br /> It's required for `Numbered` type, negatively for `NoEnd` and `EndDate` type.
 
   * Example
     * `NoEnd`
