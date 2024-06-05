@@ -18,7 +18,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 This section includes changes in `spring-cloud-azure-service` module.
 
 #### Bugs Fixed
-- Update `REDIS_SCOPE_AZURE` to the latest [#](https://github.com/Azure/azure-sdk-for-java/pull/).
+- Update `REDIS_SCOPE_AZURE` to the latest [#40494](https://github.com/Azure/azure-sdk-for-java/pull/40494).
 
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
