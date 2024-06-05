@@ -9,10 +9,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
@@ -24,7 +22,6 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
-import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
