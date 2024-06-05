@@ -117,6 +117,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
         this.isPrefetchDisabled = isPrefetchDisabled;
+        // asyncClient.isV2() true indicates that the user chose v2 "Sync Receive", so this backing asyncClient was
+        // also built to use v2 stack.
         this.isV2 = asyncClient.isV2();
         this.syncReceiver = new SynchronousReceiver(LOGGER, asyncClient);
         this.tracer = asyncClient.getInstrumentation().getTracer();
@@ -567,6 +569,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             return syncReceiver.receive(maxMessages, maxWaitTime);
         }
 
+        // V1: queue the work and return IterableStream backed by the work.
+        //
         // There are two subscribers to this emitter. One is the timeout between messages subscription in
         // SynchronousReceiverWork.start() and the other is the IterableStream(emitter.asFlux());
         // Since the subscriptions may happen at different times, we want to replay results to downstream subscribers.
@@ -837,6 +841,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
         Sinks.Many<ServiceBusReceivedMessage> emitter) {
+        assert !isV2;
 
         final long id = idGenerator.getAndIncrement();
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime, emitter);
@@ -872,15 +877,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         if (isFirstWork) {
             LOGGER.atVerbose().addKeyValue(WORK_ID_KEY, work.getId()).log("Receive request queued up.");
             // The 'subscribeWith' has side effects hence must not be called from the above block synchronized using 'createSubscriberLock'.
-            if (asyncClient.isV2()) {
-                if (asyncClient.isSessionEnabled()) {
-                    asyncClient.sessionSyncReceiveV2().subscribeWith(messageSubscriber);
-                } else {
-                    asyncClient.nonSessionSyncReceiveV2().subscribeWith(messageSubscriber);
-                }
-            } else {
-                asyncClient.receiveMessagesNoBackPressure().subscribeWith(messageSubscriber);
-            }
+            asyncClient.receiveMessagesNoBackPressure().subscribeWith(messageSubscriber);
         } else {
             messageSubscriber.queueWork(work);
             LOGGER.atVerbose().addKeyValue(WORK_ID_KEY, work.getId()).log("Receive request queued up.");
