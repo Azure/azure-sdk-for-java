@@ -2070,7 +2070,8 @@ public abstract class HttpClientTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertEquals(0, queryParams.get("constantParam1").size());
+        assertTrue(queryParams.containsKey("constantParam1"));
+        assertNull(queryParams.get("constantParam1"));
     }
 
     @Test

@@ -243,18 +243,21 @@ public class HttpClientTestsServer {
             final String paramName = queryParamParts[0];
             final String paramValue = queryParamParts.length == 2 ? queryParamParts[1] : null;
 
-            queryParamsMap.compute(paramName, (key, value) -> {
-                if (value == null) {
-                    value = new ArrayList<>();
+            List<String> currentValues = queryParamsMap.get(paramName);
+
+            if (!CoreUtils.isNullOrEmpty(paramValue)) {
+                if (currentValues == null) {
+                    currentValues = new ArrayList<>();
                 }
 
-                if (paramValue != null) {
-                    value.add(paramValue);
-                }
+                currentValues.add(paramValue);
 
-                return value;
-            });
+                queryParamsMap.put(paramName, currentValues);
+            } else {
+                queryParamsMap.put(paramName, null);
+            }
         }
+
         return queryParamsMap;
     }
 

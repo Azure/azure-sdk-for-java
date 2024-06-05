@@ -178,19 +178,19 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     paramValue = null;
                 }
 
-                queryParams.compute(paramName, (key, value) -> {
-                    // If the value of a query parameter is empty or null, we still need to add its name to the map,
-                    // which is why we will associate an empty list to it.
-                    if (value == null) {
-                        value = new ArrayList<>();
+                List<String> currentValues = queryParams.get(paramName);
+
+                if (!CoreUtils.isNullOrEmpty(paramValue)) {
+                    if (currentValues == null) {
+                        currentValues = new ArrayList<>();
                     }
 
-                    if (!CoreUtils.isNullOrEmpty(paramValue)) {
-                        value.add(paramValue);
-                    }
+                    currentValues.add(paramValue);
 
-                    return value;
-                });
+                    queryParams.put(paramName, currentValues);
+                } else {
+                    queryParams.put(paramName, null);
+                }
             }
         }
 
@@ -377,7 +377,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                                           ObjectSerializer serializer) {
         // First we add the constant query parameters.
         for (Map.Entry<String, List<String>> entry : queryParams.entrySet()) {
-            if (entry.getValue().isEmpty()) {
+            if (entry.getValue() == null || entry.getValue().isEmpty()) {
                 urlBuilder.addQueryParameter(entry.getKey(), null);
             } else {
                 for (String paramValue : entry.getValue()) {
