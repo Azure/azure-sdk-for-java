@@ -43,14 +43,4 @@ public class LogbackSelfDiagConfig {
         }
     }
 
-    /**
-     * A bean execute the Logback self-diagnostics
-     *
-     * @param selfDiagnosticsLogger The self-diagnostics logger
-     * @return A CommandLineRunner bean execute the Logback self-diagnostics
-     */
-    @Bean
-    public CommandLineRunner logbackSelfDiagnostics(Logger selfDiagnosticsLogger) {
-        return new LogbackSelfDiag(selfDiagnosticsLogger);
-    }
 }
