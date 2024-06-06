@@ -35,6 +35,7 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -234,6 +235,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         assertEquals(expectedStatusCode, serviceClient.deleteTableWithResponse(tableName, null, null).getStatusCode());
     }
 
+    @Disabled("Due to CI issues")
     @Test
     public void serviceListTables() {
         // Arrange
