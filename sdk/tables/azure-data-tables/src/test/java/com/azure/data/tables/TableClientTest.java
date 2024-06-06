@@ -79,9 +79,8 @@ public class TableClientTest extends TableClientTestBase {
 
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
-        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        tableClient = getClientBuilder(tableName, endpoint, credential, true).buildClient();
+        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
+        tableClient = getClientBuilder(tableName, connectionString).buildClient();
         tableClient.createTable();
     }
 
@@ -93,9 +92,8 @@ public class TableClientTest extends TableClientTestBase {
     public void createTable() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
-        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        final TableClient tableClient2 = getClientBuilder(tableName2, endpoint, credential, true).buildClient();
+        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
+        final TableClient tableClient2 = getClientBuilder(tableName2, connectionString).buildClient();
 
         // Act & Assert
         assertNotNull(tableClient2.createTable());
@@ -149,9 +147,8 @@ public class TableClientTest extends TableClientTestBase {
     public void createTableWithResponse() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
-        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        final TableClient tableClient2 = getClientBuilder(tableName2, endpoint, credential, true).buildClient();
+        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
+        final TableClient tableClient2 = getClientBuilder(tableName2, connectionString).buildClient();
         final int expectedStatusCode = 204;
 
         // Act & Assert

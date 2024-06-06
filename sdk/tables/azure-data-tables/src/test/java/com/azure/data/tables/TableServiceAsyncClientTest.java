@@ -73,9 +73,8 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
 
     @Override
     protected void beforeTest() {
-        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        serviceClient = getClientBuilder(endpoint, credential, true).buildAsyncClient();
+        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
+        serviceClient = getClientBuilder(connectionString).buildAsyncClient();
     }
 
     @Test
