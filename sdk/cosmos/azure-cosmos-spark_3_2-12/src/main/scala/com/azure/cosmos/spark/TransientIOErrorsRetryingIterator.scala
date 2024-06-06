@@ -127,6 +127,14 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
           }(TransientIOErrorsRetryingIterator.executionContext),
           maxPageRetrievalTimeout)
       } catch {
+
+        case endToEndTimeoutException: OperationCancelledException =>
+          val message = s"End-to-end timeout hit when trying to retrieve the next page. Continuation" +
+            s"token: $lastContinuationToken, Context: $operationContextString"
+
+          logError(message, throwable = endToEndTimeoutException)
+
+          throw endToEndTimeoutException
         case timeoutException: TimeoutException =>
 
           val message = s"Attempting to retrieve the next page timed out. Continuation" +

@@ -90,6 +90,22 @@ private[spark] class TransientIOErrorsRetryingReadManyIterator[TSparkRow]
         }(TransientIOErrorsRetryingReadManyIterator.executionContext),
         maxPageRetrievalTimeout)
     } catch {
+      case endToEndTimeoutException: OperationCancelledException =>
+        val operationContextString = operationContextAndListener match {
+          case Some(o) => if (o.getOperationContext != null) {
+            o.getOperationContext.toString
+          } else {
+            "n/a"
+          }
+          case None => "n/a"
+        }
+
+        val message = s"End-to-end timeout hit when trying to retrieve the next page. Filter: " +
+          s"$readManyFilterList, Context: $operationContextString"
+
+        logError(message, throwable = endToEndTimeoutException)
+
+        throw endToEndTimeoutException
       case timeoutException: TimeoutException =>
 
         val operationContextString = operationContextAndListener match {
