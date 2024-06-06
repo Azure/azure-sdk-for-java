@@ -91,7 +91,6 @@ extends:
               - ${{ parameters.LanguageFilter }}
               - ${{ parameters.MatrixFilters }}
             AdditionalParameters:
-              BuildParallelization: 1
               DisableAzureResourceCreation: true
               ServiceDirectory: cosmos
               ACCOUNT_HOST: 'https://localhost:8081/'
