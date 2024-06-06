@@ -38,6 +38,7 @@ public final class TestUtils {
     public static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
 
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
+    public static final String[] REMOVE_SANITIZER_ID = {"AZSDK2003", "AZSDK2030"};
 
     // Local test files
     static final String CONTENT_FORM_JPG = "Form_1.jpg";

@@ -146,7 +146,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertNull(disk.osType());
         Assertions.assertNotNull(disk.source());
         Assertions.assertEquals(disk.source().type(), CreationSourceType.COPIED_FROM_DISK);
-        Assertions.assertTrue(disk.source().sourceId().equalsIgnoreCase(emptyDisk.id()));
+        assertResourceIdEquals(disk.source().sourceId(), emptyDisk.id());
 
         computeManager.disks().deleteById(emptyDisk.id());
         computeManager.disks().deleteById(disk.id());
@@ -224,7 +224,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertNull(snapshot.osType());
         Assertions.assertNotNull(snapshot.source());
         Assertions.assertEquals(snapshot.source().type(), CreationSourceType.COPIED_FROM_DISK);
-        Assertions.assertTrue(snapshot.source().sourceId().equalsIgnoreCase(emptyDisk.id()));
+        assertResourceIdEquals(snapshot.source().sourceId(), emptyDisk.id());
 
         Disk fromSnapshotDisk =
             computeManager
@@ -245,7 +245,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertNull(fromSnapshotDisk.osType());
         Assertions.assertNotNull(fromSnapshotDisk.source());
         Assertions.assertEquals(fromSnapshotDisk.source().type(), CreationSourceType.COPIED_FROM_SNAPSHOT);
-        Assertions.assertTrue(fromSnapshotDisk.source().sourceId().equalsIgnoreCase(snapshot.id()));
+        assertResourceIdEquals(snapshot.source().sourceId(), emptyDisk.id());
     }
 
     // test-proxy playback

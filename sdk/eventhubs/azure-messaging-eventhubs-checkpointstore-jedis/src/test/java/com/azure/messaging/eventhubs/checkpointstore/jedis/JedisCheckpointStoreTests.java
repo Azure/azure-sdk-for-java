@@ -39,7 +39,6 @@ import static org.mockito.Answers.RETURNS_SMART_NULLS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -165,9 +164,12 @@ public class JedisCheckpointStoreTests {
         List<PartitionOwnership> partitionOwnershipList = Collections.singletonList(partitionOwnership);
 
         when(jedisPool.getResource()).thenReturn(jedis);
-        when(jedis.hmget(KEY, PARTITION_OWNERSHIP)).thenReturn(Collections.singletonList(null));
+        when(jedis.sadd(eq(PREFIX), eq(PARTITION_OWNERSHIP), any())).thenReturn(0L);
         when(jedis.hsetnx(eq(KEY), eq(PARTITION_OWNERSHIP), any())).thenReturn(1L);
         when(jedis.time()).thenReturn(Collections.singletonList("10000000"));
+        Transaction transaction = mock(Transaction.class, RETURNS_SMART_NULLS);
+        when(transaction.exec()).thenReturn(Collections.singletonList(1L));
+        when(jedis.multi()).thenReturn(transaction);
 
         StepVerifier.create(store.claimOwnership(partitionOwnershipList))
             .assertNext(partitionOwnershipTest -> {
@@ -200,6 +202,8 @@ public class JedisCheckpointStoreTests {
                 assertEquals("ownerOne", partitionOwnershipTest.getOwnerId());
             })
             .verifyComplete();
+
+        verify(jedis, times(1)).sadd(eq(PREFIX), eq(KEY));
     }
 
     /**
@@ -218,15 +222,13 @@ public class JedisCheckpointStoreTests {
         when(jedis.watch(KEY)).thenReturn("OK");
         when(jedis.multi()).thenReturn(transaction);
 
-        // 2023-03-13T20:45:44Z and 0 ms.
-        when(jedis.time()).thenReturn(Arrays.asList("1678740344", "0"));
-
-        // Returns 1 on success and 0 when it could not add a field.
-        when(jedis.hsetnx(eq(KEY), eq(PARTITION_OWNERSHIP), any(byte[].class))).thenReturn(0L);
+        when(jedis.time()).thenReturn(Arrays.asList("1678740344"));
 
         StepVerifier.create(store.claimOwnership(partitionOwnershipList))
             .expectError(AzureException.class)
             .verify();
+
+        verify(jedis, times(1)).sadd(eq(PREFIX), eq(KEY));
     }
 
     /**
@@ -247,10 +249,7 @@ public class JedisCheckpointStoreTests {
         when(jedis.multi()).thenReturn(transaction);
 
         // 2023-03-13T20:45:44Z and 0 ms.
-        when(jedis.time()).thenReturn(Arrays.asList("1678740344", "0"));
-
-        // Returns 1 on success. Any other value is an error.
-        when(jedis.hsetnx(eq(KEY), eq(PARTITION_OWNERSHIP), any(byte[].class))).thenReturn(0L);
+        when(jedis.time()).thenReturn(Arrays.asList("1678740344"));
 
         // Act & Assert
         StepVerifier.create(store.claimOwnership(partitionOwnershipList))
@@ -258,7 +257,7 @@ public class JedisCheckpointStoreTests {
             .verify();
 
         verify(jedis).unwatch();
-        verify(transaction, never()).exec();
+        verify(jedis, times(1)).sadd(eq(PREFIX), eq(KEY));
     }
 
     /**
@@ -319,11 +318,11 @@ public class JedisCheckpointStoreTests {
         StepVerifier.create(store.claimOwnership(partitionsToClaim))
             .assertNext(first -> {
                 assertEquals(owner2, first.getOwnerId());
-                assertEquals(lastModifiedTime, first.getLastModifiedTime());
+                assertEquals(lastModifiedTime * 1000, first.getLastModifiedTime());
             })
             .assertNext(second -> {
                 assertEquals(owner3, second.getOwnerId());
-                assertEquals(lastModifiedTime, second.getLastModifiedTime());
+                assertEquals(lastModifiedTime * 1000, second.getLastModifiedTime());
             })
             .expectComplete()
             .verify();
@@ -431,7 +430,7 @@ public class JedisCheckpointStoreTests {
         StepVerifier.create(store.claimOwnership(partitionsToClaim))
             .assertNext(first -> {
                 assertEquals(owner2, first.getOwnerId());
-                assertEquals(lastModifiedTime, first.getLastModifiedTime());
+                assertEquals(lastModifiedTime * 1000, first.getLastModifiedTime());
             })
             .expectErrorMatches(error -> {
                 // The scenario where unsuccessfulReturns is given when the transaction is executed.
@@ -449,7 +448,7 @@ public class JedisCheckpointStoreTests {
         assertNotNull(actualBytes1);
 
         PartitionOwnership actual = JSON_SERIALIZER.deserializeFromBytes(actualBytes1, type);
-        assertEquals(MODIFIED_TIME, actual.getLastModifiedTime());
+        assertEquals(lastModifiedTime * 1000, actual.getLastModifiedTime());
         assertEquals(owner2, actual.getOwnerId());
     }
 

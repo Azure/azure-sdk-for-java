@@ -64,8 +64,8 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientRoutingIntents to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientRoutingIntents to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
@@ -163,7 +163,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
         } else {
             routingIntentParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -214,7 +214,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
         } else {
             routingIntentParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -303,8 +303,10 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdate(String resourceGroupName,
         String virtualHubName, String routingIntentName, RoutingIntentInner routingIntentParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routingIntentName,
-            routingIntentParameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -323,7 +325,8 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
     public Mono<RoutingIntentInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
         String routingIntentName, RoutingIntentInner routingIntentParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -419,7 +422,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter routingIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -462,7 +465,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter routingIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -554,7 +557,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter routingIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -596,7 +599,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter routingIntentName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -776,7 +779,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -816,7 +819,7 @@ public final class RoutingIntentsClientImpl implements RoutingIntentsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

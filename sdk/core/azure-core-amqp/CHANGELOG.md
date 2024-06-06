@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Expose and use port when parsing `ConnectionStringProperties`. (#40415)[https://github.com/Azure/azure-sdk-for-java/pull/40415]
+
 ### Other Changes
 
 ## 2.9.4 (2024-05-01)

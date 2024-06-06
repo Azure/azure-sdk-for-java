@@ -6,17 +6,31 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
 /**
  * Firewall Policy NAT Rule Collection.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleCollectionType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "ruleCollectionType",
+    defaultImpl = FirewallPolicyNatRuleCollection.class,
+    visible = true)
 @JsonTypeName("FirewallPolicyNatRuleCollection")
 @Fluent
 public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCollection {
+    /*
+     * The type of the rule collection.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleCollectionType", required = true)
+    private FirewallPolicyRuleCollectionType ruleCollectionType
+        = FirewallPolicyRuleCollectionType.FIREWALL_POLICY_NAT_RULE_COLLECTION;
+
     /*
      * The action type of a Nat rule collection.
      */
@@ -36,8 +50,18 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
     }
 
     /**
+     * Get the ruleCollectionType property: The type of the rule collection.
+     *
+     * @return the ruleCollectionType value.
+     */
+    @Override
+    public FirewallPolicyRuleCollectionType ruleCollectionType() {
+        return this.ruleCollectionType;
+    }
+
+    /**
      * Get the action property: The action type of a Nat rule collection.
-     * 
+     *
      * @return the action value.
      */
     public FirewallPolicyNatRuleCollectionAction action() {
@@ -46,7 +70,7 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
 
     /**
      * Set the action property: The action type of a Nat rule collection.
-     * 
+     *
      * @param action the action value to set.
      * @return the FirewallPolicyNatRuleCollection object itself.
      */
@@ -57,7 +81,7 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
 
     /**
      * Get the rules property: List of rules included in a rule collection.
-     * 
+     *
      * @return the rules value.
      */
     public List<FirewallPolicyRule> rules() {
@@ -66,7 +90,7 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
 
     /**
      * Set the rules property: List of rules included in a rule collection.
-     * 
+     *
      * @param rules the rules value to set.
      * @return the FirewallPolicyNatRuleCollection object itself.
      */
@@ -95,7 +119,7 @@ public final class FirewallPolicyNatRuleCollection extends FirewallPolicyRuleCol
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

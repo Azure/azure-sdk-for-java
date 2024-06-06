@@ -838,6 +838,24 @@ abstract class CosmosCatalogITestBase extends IntegrationSpec with CosmosClient 
     }
   }
 
+  it can "list all containers in a database" in {
+    val databaseName = getAutoCleanableDatabaseName
+    cosmosClient.createDatabase(databaseName).block()
+
+    // create multiple containers under the same database
+    val containerName1 = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+    val containerName2 = RandomStringUtils.randomAlphabetic(6).toLowerCase + System.currentTimeMillis()
+    cosmosClient.getDatabase(databaseName).createContainer(containerName1, "/id").block()
+    cosmosClient.getDatabase(databaseName).createContainer(containerName2, "/id").block()
+
+    val containers  = spark.sql(s"SHOW TABLES FROM testCatalog.$databaseName").collect()
+    containers should have size 2
+    containers
+     .filter(
+       row => row.getAs[String]("tableName").equals(containerName1)
+        || row.getAs[String]("tableName").equals(containerName2)) should have size 2
+  }
+
   private def getTblProperties(spark: SparkSession, databaseName: String, containerName: String) = {
     val descriptionDf = spark.sql(s"DESCRIBE TABLE EXTENDED testCatalog.$databaseName.$containerName;")
     val tblPropertiesRowsArray = descriptionDf

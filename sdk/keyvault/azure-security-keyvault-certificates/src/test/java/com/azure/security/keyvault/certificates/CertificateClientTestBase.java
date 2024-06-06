@@ -130,6 +130,11 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
             .credential(credential)
             .httpClient(httpClient);
 
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+        }
+
         if (interceptorManager.isPlaybackMode()) {
             return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
         } else {

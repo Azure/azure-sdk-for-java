@@ -37,8 +37,10 @@ public final class BackupResourceConfigResourceInnerTests {
         BackupResourceConfigResourceInner model = new BackupResourceConfigResourceInner().withLocation("hmtzopbsphrup")
             .withTags(mapOf("ycm", "sybbejhph", "htbmuf", "xaobhdxbmtqioqjz", "rxybqsoq", "ownoizhw"))
             .withProperties(new BackupResourceConfig().withStorageModelType(StorageType.INVALID)
-                .withStorageType(StorageType.ZONE_REDUNDANT).withStorageTypeState(StorageTypeState.INVALID)
-                .withCrossRegionRestoreFlag(false).withDedupState(DedupState.INVALID)
+                .withStorageType(StorageType.ZONE_REDUNDANT)
+                .withStorageTypeState(StorageTypeState.INVALID)
+                .withCrossRegionRestoreFlag(false)
+                .withDedupState(DedupState.INVALID)
                 .withXcoolState(XcoolState.DISABLED))
             .withEtag("m");
         model = BinaryData.fromObject(model).toObject(BackupResourceConfigResourceInner.class);

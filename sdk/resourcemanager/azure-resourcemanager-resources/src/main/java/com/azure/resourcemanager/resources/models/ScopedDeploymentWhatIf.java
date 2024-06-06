@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deployment What-if operation parameters. */
+/**
+ * Deployment What-if operation parameters.
+ */
 @Fluent
 public final class ScopedDeploymentWhatIf {
     /*
@@ -23,13 +25,15 @@ public final class ScopedDeploymentWhatIf {
     @JsonProperty(value = "properties", required = true)
     private DeploymentWhatIfProperties properties;
 
-    /** Creates an instance of ScopedDeploymentWhatIf class. */
+    /**
+     * Creates an instance of ScopedDeploymentWhatIf class.
+     */
     public ScopedDeploymentWhatIf() {
     }
 
     /**
      * Get the location property: The location to store the deployment data.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -38,7 +42,7 @@ public final class ScopedDeploymentWhatIf {
 
     /**
      * Set the location property: The location to store the deployment data.
-     *
+     * 
      * @param location the location value to set.
      * @return the ScopedDeploymentWhatIf object itself.
      */
@@ -49,7 +53,7 @@ public final class ScopedDeploymentWhatIf {
 
     /**
      * Get the properties property: The deployment properties.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentWhatIfProperties properties() {
@@ -58,7 +62,7 @@ public final class ScopedDeploymentWhatIf {
 
     /**
      * Set the properties property: The deployment properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ScopedDeploymentWhatIf object itself.
      */
@@ -69,20 +73,19 @@ public final class ScopedDeploymentWhatIf {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property location in model ScopedDeploymentWhatIf"));
         }
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model ScopedDeploymentWhatIf"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model ScopedDeploymentWhatIf"));
         } else {
             properties().validate();
         }

@@ -90,7 +90,8 @@ public abstract class FeedOperationState {
             null,
             clientAccessor.getConnectionMode(cosmosAsyncClient),
             clientAccessor.getUserAgent(cosmosAsyncClient),
-            this.sequenceNumberGenerator.incrementAndGet());
+            this.sequenceNumberGenerator.incrementAndGet(),
+            fluxOptions.getQueryText());
         this.ctxHolder = new AtomicReference<>(cosmosCtx);
     }
 
@@ -167,7 +168,8 @@ public abstract class FeedOperationState {
             snapshot.getTrackingId(),
             snapshot.getConnectionMode(),
             snapshot.getUserAgent(),
-            this.sequenceNumberGenerator.incrementAndGet()
+            this.sequenceNumberGenerator.incrementAndGet(),
+            fluxOptions.getQueryText()
         );
         Double samplingRateSnapshot = this.samplingRate.get();
         if (samplingRateSnapshot != null) {

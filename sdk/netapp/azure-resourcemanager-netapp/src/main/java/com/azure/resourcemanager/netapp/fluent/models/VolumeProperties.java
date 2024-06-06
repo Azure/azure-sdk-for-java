@@ -55,9 +55,7 @@ public final class VolumeProperties {
     /*
      * usageThreshold
      * 
-     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
-     * Specified in bytes.
+     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis. Specified in bytes.
      */
     @JsonProperty(value = "usageThreshold", required = true)
     private long usageThreshold;
@@ -87,14 +85,13 @@ public final class VolumeProperties {
     /*
      * Snapshot ID
      * 
-     * UUID v4 or resource identifier used to identify the Snapshot.
+     * Resource identifier used to identify the Snapshot.
      */
     @JsonProperty(value = "snapshotId")
     private String snapshotId;
 
     /*
-     * If enabled (true) the snapshot the volume was created from will be automatically deleted after the volume create
-     * operation has finished. Defaults to false
+     * If enabled (true) the snapshot the volume was created from will be automatically deleted after the volume create operation has finished.  Defaults to false
      */
     @JsonProperty(value = "deleteBaseSnapshot")
     private Boolean deleteBaseSnapshot;
@@ -102,7 +99,7 @@ public final class VolumeProperties {
     /*
      * Backup ID
      * 
-     * UUID v4 or resource identifier used to identify the Backup.
+     * Resource identifier used to identify the Backup.
      */
     @JsonProperty(value = "backupId")
     private String backupId;
@@ -174,8 +171,7 @@ public final class VolumeProperties {
     private Boolean isRestoring;
 
     /*
-     * If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the
-     * volume's snapshots (defaults to true).
+     * If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the volume's snapshots (defaults to true).
      */
     @JsonProperty(value = "snapshotDirectoryVisible")
     private Boolean snapshotDirectoryVisible;
@@ -193,8 +189,7 @@ public final class VolumeProperties {
     private SecurityStyle securityStyle;
 
     /*
-     * Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol volume. To be used with swagger
-     * version 2020-08-01 or later
+     * Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol volume. To be used with swagger version 2020-08-01 or later
      */
     @JsonProperty(value = "smbEncryption")
     private Boolean smbEncryption;
@@ -222,8 +217,7 @@ public final class VolumeProperties {
     private Boolean smbContinuouslyAvailable;
 
     /*
-     * Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for
-     * manual qosType volume
+     * Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for manual qosType volume
      */
     @JsonProperty(value = "throughputMibps")
     private Float throughputMibps;
@@ -235,15 +229,13 @@ public final class VolumeProperties {
     private Float actualThroughputMibps;
 
     /*
-     * Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource =
-     * 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp, Microsoft.KeyVault'
+     * Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp, Microsoft.KeyVault'
      */
     @JsonProperty(value = "encryptionKeySource")
     private EncryptionKeySource encryptionKeySource;
 
     /*
-     * The resource ID of private endpoint for KeyVault. It must reside in the same VNET as the volume. Only applicable
-     * if encryptionKeySource = 'Microsoft.KeyVault'.
+     * The resource ID of private endpoint for KeyVault. It must reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'.
      */
     @JsonProperty(value = "keyVaultPrivateEndpointResourceId")
     private String keyVaultPrivateEndpointResourceId;
@@ -267,37 +259,28 @@ public final class VolumeProperties {
     private Integer coolnessPeriod;
 
     /*
-     * coolAccessRetrievalPolicy determines the data retrieval behavior from the cool tier to standard storage based on
-     * the read pattern for cool access enabled volumes. The possible values for this field are:
-     * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
-     * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
-     * reads.
-     * Never - No client-driven data is pulled from cool tier to standard storage.
+     * coolAccessRetrievalPolicy determines the data retrieval behavior from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values for this field are: 
+     *  Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
+     *  OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random reads.
+     *  Never - No client-driven data is pulled from cool tier to standard storage.
      */
     @JsonProperty(value = "coolAccessRetrievalPolicy")
     private CoolAccessRetrievalPolicy coolAccessRetrievalPolicy;
 
     /*
-     * UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set
-     * group ID (2) and sticky (1) attributes. Second digit selects permission for the owner of the file: read (4),
-     * write (2) and execute (1). Third selects permissions for other users in the same group. the fourth for other
-     * users not in the group. 0755 - gives read/write/execute permissions to owner and read/execute to group and other
-     * users.
+     * UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and read/execute to group and other users.
      */
     @JsonProperty(value = "unixPermissions")
     private String unixPermissions;
 
     /*
-     * When a volume is being restored from another volume's snapshot, will show the percentage completion of this
-     * cloning process. When this value is empty/null there is no cloning process currently happening on this volume.
-     * This value will update every 5 minutes during cloning.
+     * When a volume is being restored from another volume's snapshot, will show the percentage completion of this cloning process. When this value is empty/null there is no cloning process currently happening on this volume. This value will update every 5 minutes during cloning.
      */
     @JsonProperty(value = "cloneProgress", access = JsonProperty.Access.WRITE_ONLY)
     private Integer cloneProgress;
 
     /*
-     * Flag indicating whether file access logs are enabled for the volume, based on active diagnostic settings present
-     * on the volume.
+     * Flag indicating whether file access logs are enabled for the volume, based on active diagnostic settings present on the volume.
      */
     @JsonProperty(value = "fileAccessLogs", access = JsonProperty.Access.WRITE_ONLY)
     private FileAccessLogs fileAccessLogs;
@@ -337,8 +320,7 @@ public final class VolumeProperties {
     private Long defaultGroupQuotaInKiBs;
 
     /*
-     * Maximum number of files allowed. Needs a service request in order to be changed. Only allowed to be changed if
-     * volume quota is more than 4TiB.
+     * Maximum number of files allowed. Needs a service request in order to be changed. Only allowed to be changed if volume quota is more than 4TiB.
      */
     @JsonProperty(value = "maximumNumberOfFiles", access = JsonProperty.Access.WRITE_ONLY)
     private Long maximumNumberOfFiles;
@@ -368,8 +350,7 @@ public final class VolumeProperties {
     private String t2Network;
 
     /*
-     * Volume spec name is the application specific designation or identifier for the particular volume in a volume
-     * group for e.g. data, log
+     * Volume spec name is the application specific designation or identifier for the particular volume in a volume group for e.g. data, log
      */
     @JsonProperty(value = "volumeSpecName")
     private String volumeSpecName;
@@ -397,8 +378,7 @@ public final class VolumeProperties {
     /*
      * Provisioned Availability Zone
      * 
-     * The availability zone where the volume is provisioned. This refers to the logical availability zone where the
-     * volume resides.
+     * The availability zone where the volume is provisioned. This refers to the logical availability zone where the volume resides.
      */
     @JsonProperty(value = "provisionedAvailabilityZone", access = JsonProperty.Access.WRITE_ONLY)
     private String provisionedAvailabilityZone;
@@ -572,7 +552,7 @@ public final class VolumeProperties {
     /**
      * Get the snapshotId property: Snapshot ID
      * 
-     * UUID v4 or resource identifier used to identify the Snapshot.
+     * Resource identifier used to identify the Snapshot.
      * 
      * @return the snapshotId value.
      */
@@ -583,7 +563,7 @@ public final class VolumeProperties {
     /**
      * Set the snapshotId property: Snapshot ID
      * 
-     * UUID v4 or resource identifier used to identify the Snapshot.
+     * Resource identifier used to identify the Snapshot.
      * 
      * @param snapshotId the snapshotId value to set.
      * @return the VolumeProperties object itself.
@@ -618,7 +598,7 @@ public final class VolumeProperties {
     /**
      * Get the backupId property: Backup ID
      * 
-     * UUID v4 or resource identifier used to identify the Backup.
+     * Resource identifier used to identify the Backup.
      * 
      * @return the backupId value.
      */
@@ -629,7 +609,7 @@ public final class VolumeProperties {
     /**
      * Set the backupId property: Backup ID
      * 
-     * UUID v4 or resource identifier used to identify the Backup.
+     * Resource identifier used to identify the Backup.
      * 
      * @param backupId the backupId value to set.
      * @return the VolumeProperties object itself.
@@ -840,8 +820,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol
-     * or CIFS protocol.
+     * Get the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol or
+     * CIFS protocol.
      * 
      * @return the securityStyle value.
      */
@@ -850,8 +830,8 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol
-     * or CIFS protocol.
+     * Set the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol or
+     * CIFS protocol.
      * 
      * @param securityStyle the securityStyle value to set.
      * @return the VolumeProperties object itself.
@@ -1094,9 +1074,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
-     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
-     * values for this field are:
+     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are:
      * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
      * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
      * reads.
@@ -1109,9 +1089,9 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
-     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
-     * values for this field are:
+     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are:
      * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
      * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
      * reads.
@@ -1293,8 +1273,7 @@ public final class VolumeProperties {
     }
 
     /**
-     * Get the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume
-     * group.
+     * Get the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
      * 
      * @return the capacityPoolResourceId value.
      */
@@ -1303,8 +1282,7 @@ public final class VolumeProperties {
     }
 
     /**
-     * Set the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume
-     * group.
+     * Set the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
      * 
      * @param capacityPoolResourceId the capacityPoolResourceId value to set.
      * @return the VolumeProperties object itself.
@@ -1473,15 +1451,15 @@ public final class VolumeProperties {
      */
     public void validate() {
         if (creationToken() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property creationToken in model VolumeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property creationToken in model VolumeProperties"));
         }
         if (exportPolicy() != null) {
             exportPolicy().validate();
         }
         if (subnetId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property subnetId in model VolumeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property subnetId in model VolumeProperties"));
         }
         if (mountTargets() != null) {
             mountTargets().forEach(e -> e.validate());

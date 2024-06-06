@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsListDiagnosticsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * AppServiceEnvironments_ListDiagnostics.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ListDiagnostics.json
      */
     /**
      * Sample code: Get diagnostic information for an App Service Environment.
@@ -19,7 +18,10 @@ public final class AppServiceEnvironmentsListDiagnosticsSamples {
      */
     public static void
         getDiagnosticInformationForAnAppServiceEnvironment(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().listDiagnosticsWithResponse("test-rg",
-            "test-ase", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .listDiagnosticsWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

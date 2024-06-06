@@ -104,8 +104,9 @@ public final class AzureReachabilityReportLocation {
      */
     public void validate() {
         if (country() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property country in model AzureReachabilityReportLocation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property country in model AzureReachabilityReportLocation"));
         }
     }
 

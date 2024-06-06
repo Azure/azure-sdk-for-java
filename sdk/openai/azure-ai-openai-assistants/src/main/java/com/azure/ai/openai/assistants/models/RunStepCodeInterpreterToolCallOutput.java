@@ -22,7 +22,6 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
      */
     @Generated
     protected RunStepCodeInterpreterToolCallOutput() {
-        this.type = "RunStepCodeInterpreterToolCallOutput";
     }
 
     /**
@@ -90,7 +89,7 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
      * The object type.
      */
     @Generated
-    private String type;
+    private String type = "RunStepCodeInterpreterToolCallOutput";
 
     /**
      * Get the type property: The object type.

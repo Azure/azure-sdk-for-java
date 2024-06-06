@@ -284,13 +284,24 @@ public final class UrlBuilder {
     }
 
     private static boolean writeQueryValues(StringBuilder builder, String key, List<String> values, boolean first) {
-        for (String value : values) {
+        if (CoreUtils.isNullOrEmpty(values)) {
             if (!first) {
                 builder.append('&');
             }
 
-            builder.append(key).append('=').append(value);
+            builder.append(key);
+
             first = false;
+        } else {
+            for (String value : values) {
+                if (!first) {
+                    builder.append('&');
+                }
+
+                builder.append(key).append('=').append(value);
+
+                first = false;
+            }
         }
 
         return first;

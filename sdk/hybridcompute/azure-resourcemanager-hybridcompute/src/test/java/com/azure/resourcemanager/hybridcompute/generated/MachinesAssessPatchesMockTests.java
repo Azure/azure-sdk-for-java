@@ -20,7 +20,7 @@ public final class MachinesAssessPatchesMockTests {
     @Test
     public void testAssessPatches() throws Exception {
         String responseStr
-            = "{\"status\":\"InProgress\",\"assessmentActivityId\":\"f7ef0e4e-ba75-47a0-be99-9d10c1198bf4\",\"rebootPending\":false,\"availablePatchCountByClassification\":{\"security\":647520979,\"critical\":1866114755,\"definition\":1640419759,\"updateRollup\":1091324962,\"featurePack\":47208488,\"servicePack\":699852198,\"tools\":1290354736,\"updates\":1853467009,\"other\":1860324343},\"startDateTime\":\"2021-05-19T00:01:37Z\",\"lastModifiedDateTime\":\"2020-12-22T02:15:52Z\",\"startedBy\":\"User\",\"patchServiceUsed\":\"WU_WSUS\",\"osType\":\"Windows\"}";
+            = "{\"status\":\"Failed\",\"assessmentActivityId\":\"cd519191-3529-454e-8c76-00fe44572388\",\"rebootPending\":true,\"availablePatchCountByClassification\":{\"security\":2009658341,\"critical\":1885722966,\"definition\":1771051614,\"updateRollup\":1009217276,\"featurePack\":224865055,\"servicePack\":2134277506,\"tools\":186835160,\"updates\":847251167,\"other\":1074409808},\"startDateTime\":\"2021-10-10T00:01:47Z\",\"lastModifiedDateTime\":\"2021-05-11T01:17:38Z\",\"startedBy\":\"Platform\",\"patchServiceUsed\":\"Unknown\",\"osType\":\"Linux\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class MachinesAssessPatchesMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         MachineAssessPatchesResult response
-            = manager.machines().assessPatches("bdaxconfozauorsu", "okwbqplh", com.azure.core.util.Context.NONE);
+            = manager.machines().assessPatches("nsiru", "hzmme", com.azure.core.util.Context.NONE);
 
     }
 }

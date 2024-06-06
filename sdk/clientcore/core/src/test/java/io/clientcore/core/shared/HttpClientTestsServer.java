@@ -6,6 +6,7 @@ package io.clientcore.core.shared;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
+import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import org.eclipse.jetty.server.Response;
@@ -21,6 +22,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
@@ -223,7 +225,40 @@ public class HttpClientTestsServer {
             responseBody.headers(headers);
         }
 
+        if (!CoreUtils.isNullOrEmpty(req.getQueryString())) {
+            Map<String, List<String>> queryParams = parseQueryParams(req);
+
+            responseBody.queryParams(queryParams);
+        }
+
         handleRequest(resp, contentType, SERIALIZER.serializeToBytes(responseBody));
+    }
+
+    private static Map<String, List<String>> parseQueryParams(HttpServletRequest req) {
+        String[] queryParams = req.getQueryString().split("&");
+        Map<String, List<String>> queryParamsMap = new HashMap<>();
+
+        for (String queryParam : queryParams) {
+            final String[] queryParamParts = queryParam.split("=");
+            final String paramName = queryParamParts[0];
+            final String paramValue = queryParamParts.length == 2 ? queryParamParts[1] : null;
+
+            List<String> currentValues = queryParamsMap.get(paramName);
+
+            if (!CoreUtils.isNullOrEmpty(paramValue)) {
+                if (currentValues == null) {
+                    currentValues = new ArrayList<>();
+                }
+
+                currentValues.add(paramValue);
+
+                queryParamsMap.put(paramName, currentValues);
+            } else {
+                queryParamsMap.put(paramName, null);
+            }
+        }
+
+        return queryParamsMap;
     }
 
     private static String cleanseUrl(HttpServletRequest req) {

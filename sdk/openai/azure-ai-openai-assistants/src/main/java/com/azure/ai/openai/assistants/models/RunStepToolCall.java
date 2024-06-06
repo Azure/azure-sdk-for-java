@@ -30,7 +30,6 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
      */
     @Generated
     protected RunStepToolCall(String id) {
-        this.type = "RunStepToolCall";
         this.id = id;
     }
 
@@ -116,7 +115,7 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
      * The object type.
      */
     @Generated
-    private String type;
+    private String type = "RunStepToolCall";
 
     /**
      * Get the type property: The object type.

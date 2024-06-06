@@ -156,7 +156,7 @@ class QueryParameter {
         if (value != null) {
             return name + "=" + value;
         } else if (isNullOrEmpty(values)) {
-            return "";
+            return name;
         }
 
         checkCachedStringValue();

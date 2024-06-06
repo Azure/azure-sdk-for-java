@@ -19,8 +19,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -30,16 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
-    private JobRouterAsyncClient routerAsyncClient;
-
-    private JobRouterAdministrationAsyncClient administrationAsyncClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createWorker(HttpClient httpClient) throws InterruptedException {
+    public void createWorker(HttpClient httpClient) {
         // Setup
-        routerAsyncClient = getRouterAsyncClient(httpClient);
-        administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
+        JobRouterAsyncClient routerAsyncClient = getRouterAsyncClient(httpClient);
+        JobRouterAdministrationAsyncClient administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
         /**
          * Setup queue
          */
@@ -47,22 +44,16 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
         String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            distributionPolicyId,
-            Duration.ofSeconds(10),
+            distributionPolicyId, Duration.ofSeconds(10),
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
+                .setMaxConcurrentOffers(10))
             .setName(distributionPolicyName);
         DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueId = String.format("%s-CreateWorker-Queue", JAVA_LIVE_TESTS);
         String queueName = String.format("%s-Name", queueId);
-        Map<String, RouterValue> queueLabels = new HashMap<String, RouterValue>() {
-            {
-                put("Label_1", new RouterValue("Value_1"));
-            }
-        };
+        Map<String, RouterValue> queueLabels = Collections.singletonMap("Label_1", new RouterValue("Value_1"));
 
         CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
             .setLabels(queueLabels)
@@ -74,30 +65,12 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
          */
         String workerId = String.format("%s-CreateWorker-Worker", JAVA_LIVE_TESTS);
 
-        Map<String, RouterValue> labels = new HashMap<String, RouterValue>() {
-            {
-                put("Label", new RouterValue("Value"));
-            }
-        };
-
-        Map<String, RouterValue> tags = new HashMap<String, RouterValue>() {
-            {
-                put("Tag", new RouterValue("Value"));
-            }
-        };
+        Map<String, RouterValue> labels = Collections.singletonMap("Label", new RouterValue("Value"));
+        Map<String, RouterValue> tags = Collections.singletonMap("Tag", new RouterValue("Value"));
 
         RouterChannel channel = new RouterChannel("router-channel", 1);
-        List<RouterChannel> channels = new ArrayList<RouterChannel>() {
-            {
-                add(channel);
-            }
-        };
-
-        List<String> queues = new ArrayList<String>() {
-            {
-                add(jobQueue.getId());
-            }
-        };
+        List<RouterChannel> channels = Collections.singletonList(channel);
+        List<String> queues = Collections.singletonList(jobQueue.getId());
 
         CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
             .setLabels(labels)
@@ -134,12 +107,8 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
         sleepIfRunningAgainstService(2000);
 
         deserialized.setAvailableForOffers(true);
-        deserialized.setChannels(new ArrayList<RouterChannel>() {
-            {
-                add(new RouterChannel("channel1", 5));
-                add(new RouterChannel("channel2", 5));
-            }
-        });
+        deserialized.setChannels(Arrays.asList(new RouterChannel("channel1", 5), new RouterChannel("channel2", 5)));
+
         RouterWorker updatedWorker = routerAsyncClient.updateWorker(workerId, deserialized).block();
 
         assertEquals(workerId, updatedWorker.getId());

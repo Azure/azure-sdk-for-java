@@ -801,8 +801,8 @@ public class ShareFileAsyncClient {
     Mono<Response<Void>> abortCopyWithResponse(String copyId, ShareRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        return azureFileStorageClient.getFiles().abortCopyWithResponseAsync(shareName, filePath, copyId, null,
-            requestConditions.getLeaseId(), context).map(response -> new SimpleResponse<>(response, null));
+        return azureFileStorageClient.getFiles().abortCopyNoCustomHeadersWithResponseAsync(shareName, filePath, copyId,
+            null, requestConditions.getLeaseId(), context);
     }
 
     /**
@@ -1270,8 +1270,8 @@ public class ShareFileAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(ShareRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        return azureFileStorageClient.getFiles().deleteWithResponseAsync(shareName, filePath, null,
-            requestConditions.getLeaseId(), context).map(response -> new SimpleResponse<>(response, null));
+        return azureFileStorageClient.getFiles()
+            .deleteNoCustomHeadersWithResponseAsync(shareName, filePath, null, requestConditions.getLeaseId(), context);
     }
 
     /**

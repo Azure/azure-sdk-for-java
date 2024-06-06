@@ -9,9 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class IpGroupsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/IpGroupsListBySubscription.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/IpGroupsListBySubscription.json
      */
     /**
      * Sample code: List_IpGroups.
