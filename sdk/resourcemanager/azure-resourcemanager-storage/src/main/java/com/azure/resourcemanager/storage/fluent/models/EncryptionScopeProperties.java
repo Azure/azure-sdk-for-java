@@ -9,14 +9,16 @@ import com.azure.resourcemanager.storage.models.EncryptionScopeKeyVaultPropertie
 import com.azure.resourcemanager.storage.models.EncryptionScopeSource;
 import com.azure.resourcemanager.storage.models.EncryptionScopeState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** Properties of the encryption scope. */
+/**
+ * Properties of the encryption scope.
+ */
 @Fluent
 public final class EncryptionScopeProperties {
     /*
-     * The provider for the encryption scope. Possible values (case-insensitive):  Microsoft.Storage,
-     * Microsoft.KeyVault.
+     * The provider for the encryption scope. Possible values (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.
      */
     @JsonProperty(value = "source")
     private EncryptionScopeSource source;
@@ -40,20 +42,20 @@ public final class EncryptionScopeProperties {
     private OffsetDateTime lastModifiedTime;
 
     /*
-     * The key vault properties for the encryption scope. This is a required field if encryption scope 'source'
-     * attribute is set to 'Microsoft.KeyVault'.
+     * The key vault properties for the encryption scope. This is a required field if encryption scope 'source' attribute is set to 'Microsoft.KeyVault'.
      */
     @JsonProperty(value = "keyVaultProperties")
     private EncryptionScopeKeyVaultProperties keyVaultProperties;
 
     /*
-     * A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed
-     * keys for data at rest.
+     * A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest.
      */
     @JsonProperty(value = "requireInfrastructureEncryption")
     private Boolean requireInfrastructureEncryption;
 
-    /** Creates an instance of EncryptionScopeProperties class. */
+    /**
+     * Creates an instance of EncryptionScopeProperties class.
+     */
     public EncryptionScopeProperties() {
     }
 

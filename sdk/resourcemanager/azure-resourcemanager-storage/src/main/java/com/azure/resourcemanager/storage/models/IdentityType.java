@@ -6,20 +6,31 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** The identity type. */
+/**
+ * The identity type.
+ */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
-    /** Static value None for IdentityType. */
+    /**
+     * Static value None for IdentityType.
+     */
     public static final IdentityType NONE = fromString("None");
 
-    /** Static value SystemAssigned for IdentityType. */
+    /**
+     * Static value SystemAssigned for IdentityType.
+     */
     public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
-    /** Static value UserAssigned for IdentityType. */
+    /**
+     * Static value UserAssigned for IdentityType.
+     */
     public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");
 
-    /** Static value SystemAssigned,UserAssigned for IdentityType. */
+    /**
+     * Static value SystemAssigned,UserAssigned for IdentityType.
+     */
     public static final IdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned,UserAssigned");
 
     /**

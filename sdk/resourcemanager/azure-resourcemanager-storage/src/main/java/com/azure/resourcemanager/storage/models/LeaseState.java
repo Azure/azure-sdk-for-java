@@ -6,23 +6,36 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Lease state of the container. */
+/**
+ * Lease state of the container.
+ */
 public final class LeaseState extends ExpandableStringEnum<LeaseState> {
-    /** Static value Available for LeaseState. */
+    /**
+     * Static value Available for LeaseState.
+     */
     public static final LeaseState AVAILABLE = fromString("Available");
 
-    /** Static value Leased for LeaseState. */
+    /**
+     * Static value Leased for LeaseState.
+     */
     public static final LeaseState LEASED = fromString("Leased");
 
-    /** Static value Expired for LeaseState. */
+    /**
+     * Static value Expired for LeaseState.
+     */
     public static final LeaseState EXPIRED = fromString("Expired");
 
-    /** Static value Breaking for LeaseState. */
+    /**
+     * Static value Breaking for LeaseState.
+     */
     public static final LeaseState BREAKING = fromString("Breaking");
 
-    /** Static value Broken for LeaseState. */
+    /**
+     * Static value Broken for LeaseState.
+     */
     public static final LeaseState BROKEN = fromString("Broken");
 
     /**

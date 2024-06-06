@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -15,13 +16,19 @@ import java.util.Collection;
  * location is temporarily unavailable.
  */
 public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicationStatus> {
-    /** Static value Live for GeoReplicationStatus. */
+    /**
+     * Static value Live for GeoReplicationStatus.
+     */
     public static final GeoReplicationStatus LIVE = fromString("Live");
 
-    /** Static value Bootstrap for GeoReplicationStatus. */
+    /**
+     * Static value Bootstrap for GeoReplicationStatus.
+     */
     public static final GeoReplicationStatus BOOTSTRAP = fromString("Bootstrap");
 
-    /** Static value Unavailable for GeoReplicationStatus. */
+    /**
+     * Static value Unavailable for GeoReplicationStatus.
+     */
     public static final GeoReplicationStatus UNAVAILABLE = fromString("Unavailable");
 
     /**

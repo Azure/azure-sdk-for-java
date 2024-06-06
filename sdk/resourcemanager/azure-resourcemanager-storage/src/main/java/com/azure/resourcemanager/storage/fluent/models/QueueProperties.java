@@ -7,9 +7,12 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
-/** The QueueProperties model. */
+/**
+ * The QueueProperties model.
+ */
 @Fluent
 public final class QueueProperties {
     /*
@@ -20,13 +23,14 @@ public final class QueueProperties {
     private Map<String, String> metadata;
 
     /*
-     * Integer indicating an approximate number of messages in the queue. This number is not lower than the actual
-     * number of messages in the queue, but could be higher.
+     * Integer indicating an approximate number of messages in the queue. This number is not lower than the actual number of messages in the queue, but could be higher.
      */
     @JsonProperty(value = "approximateMessageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer approximateMessageCount;
 
-    /** Creates an instance of QueueProperties class. */
+    /**
+     * Creates an instance of QueueProperties class.
+     */
     public QueueProperties() {
     }
 
