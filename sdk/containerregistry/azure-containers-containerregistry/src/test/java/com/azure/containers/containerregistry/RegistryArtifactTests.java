@@ -9,6 +9,8 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
@@ -23,6 +25,7 @@ import static com.azure.containers.containerregistry.TestUtils.V4_TAG_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
 
     @BeforeEach
