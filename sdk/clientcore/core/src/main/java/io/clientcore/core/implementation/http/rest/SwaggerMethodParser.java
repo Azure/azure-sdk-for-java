@@ -154,7 +154,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (requestQueryParams != null) {
             for (final String queryParam : requestQueryParams) {
-                if (CoreUtils.isNullOrEmpty(queryParam)) {
+                if (isNullOrEmpty(queryParam)) {
                     throw new IllegalStateException("Query parameters cannot be null or empty.");
                 }
 
@@ -180,7 +180,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
                 List<String> currentValues = queryParams.get(paramName);
 
-                if (!CoreUtils.isNullOrEmpty(paramValue)) {
+                if (!isNullOrEmpty(paramValue)) {
                     if (currentValues == null) {
                         currentValues = new ArrayList<>();
                     }

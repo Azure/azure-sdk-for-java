@@ -284,7 +284,7 @@ public final class UrlBuilder {
     }
 
     private static boolean writeQueryValues(StringBuilder builder, String key, List<String> values, boolean first) {
-        if (CoreUtils.isNullOrEmpty(values)) {
+        if (isNullOrEmpty(values)) {
             if (!first) {
                 builder.append('&');
             }
