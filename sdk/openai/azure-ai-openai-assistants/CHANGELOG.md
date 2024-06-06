@@ -125,6 +125,13 @@ There are 3 main areas for vector stores into which its models and operations ca
 
 - A combination of inputs for `uploadFile` would allow users to not send `String filename` to the service resulting always in an error, as this is actually mandatory.
 
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` to version `1.15.1`.
+
 
 ## 1.0.0-beta.2 (2024-02-13)
 
