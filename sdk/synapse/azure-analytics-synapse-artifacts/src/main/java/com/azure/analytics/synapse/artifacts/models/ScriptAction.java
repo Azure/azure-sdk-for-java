@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Custom script action to run on HDI ondemand cluster once it's up.
- */
+/** Custom script action to run on HDI ondemand cluster once it's up. */
 @Fluent
 public final class ScriptAction {
     /*
@@ -36,15 +34,12 @@ public final class ScriptAction {
     @JsonProperty(value = "parameters")
     private String parameters;
 
-    /**
-     * Creates an instance of ScriptAction class.
-     */
-    public ScriptAction() {
-    }
+    /** Creates an instance of ScriptAction class. */
+    public ScriptAction() {}
 
     /**
      * Get the name property: The user provided name of the script action.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -53,7 +48,7 @@ public final class ScriptAction {
 
     /**
      * Set the name property: The user provided name of the script action.
-     * 
+     *
      * @param name the name value to set.
      * @return the ScriptAction object itself.
      */
@@ -64,7 +59,7 @@ public final class ScriptAction {
 
     /**
      * Get the uri property: The URI for the script action.
-     * 
+     *
      * @return the uri value.
      */
     public String getUri() {
@@ -73,7 +68,7 @@ public final class ScriptAction {
 
     /**
      * Set the uri property: The URI for the script action.
-     * 
+     *
      * @param uri the uri value to set.
      * @return the ScriptAction object itself.
      */
@@ -84,7 +79,7 @@ public final class ScriptAction {
 
     /**
      * Get the roles property: The node types on which the script action should be executed.
-     * 
+     *
      * @return the roles value.
      */
     public Object getRoles() {
@@ -93,7 +88,7 @@ public final class ScriptAction {
 
     /**
      * Set the roles property: The node types on which the script action should be executed.
-     * 
+     *
      * @param roles the roles value to set.
      * @return the ScriptAction object itself.
      */
@@ -104,7 +99,7 @@ public final class ScriptAction {
 
     /**
      * Get the parameters property: The parameters for the script action.
-     * 
+     *
      * @return the parameters value.
      */
     public String getParameters() {
@@ -113,7 +108,7 @@ public final class ScriptAction {
 
     /**
      * Set the parameters property: The parameters for the script action.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the ScriptAction object itself.
      */

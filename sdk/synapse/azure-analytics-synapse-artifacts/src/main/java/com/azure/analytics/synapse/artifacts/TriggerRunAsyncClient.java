@@ -15,17 +15,14 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the asynchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class TriggerRunAsyncClient {
-    @Generated
-    private final TriggerRunsImpl serviceClient;
+    @Generated private final TriggerRunsImpl serviceClient;
 
     /**
      * Initializes an instance of TriggerRunAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -35,7 +32,7 @@ public final class TriggerRunAsyncClient {
 
     /**
      * Rerun single trigger instance by runId.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,7 +48,7 @@ public final class TriggerRunAsyncClient {
 
     /**
      * Rerun single trigger instance by runId.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,7 +64,7 @@ public final class TriggerRunAsyncClient {
 
     /**
      * Cancel single trigger instance by runId.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,7 +80,7 @@ public final class TriggerRunAsyncClient {
 
     /**
      * Cancel single trigger instance by runId.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +96,7 @@ public final class TriggerRunAsyncClient {
 
     /**
      * Query trigger runs.
-     * 
+     *
      * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -108,14 +105,14 @@ public final class TriggerRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerRunsQueryResponse>>
-        queryTriggerRunsByWorkspaceWithResponse(RunFilterParameters filterParameters) {
+    public Mono<Response<TriggerRunsQueryResponse>> queryTriggerRunsByWorkspaceWithResponse(
+            RunFilterParameters filterParameters) {
         return this.serviceClient.queryTriggerRunsByWorkspaceWithResponseAsync(filterParameters);
     }
 
     /**
      * Query trigger runs.
-     * 
+     *
      * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

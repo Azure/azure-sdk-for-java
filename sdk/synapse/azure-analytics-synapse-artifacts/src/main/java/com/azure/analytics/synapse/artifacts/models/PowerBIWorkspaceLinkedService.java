@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Power BI Workspace linked service.
- */
+/** Power BI Workspace linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("PowerBIWorkspace")
 @JsonFlatten
@@ -32,15 +30,12 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.tenantId", required = true)
     private String tenantId;
 
-    /**
-     * Creates an instance of PowerBIWorkspaceLinkedService class.
-     */
-    public PowerBIWorkspaceLinkedService() {
-    }
+    /** Creates an instance of PowerBIWorkspaceLinkedService class. */
+    public PowerBIWorkspaceLinkedService() {}
 
     /**
      * Get the workspaceId property: The Power BI workspace id.
-     * 
+     *
      * @return the workspaceId value.
      */
     public String getWorkspaceId() {
@@ -49,7 +44,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
 
     /**
      * Set the workspaceId property: The Power BI workspace id.
-     * 
+     *
      * @param workspaceId the workspaceId value to set.
      * @return the PowerBIWorkspaceLinkedService object itself.
      */
@@ -60,7 +55,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
 
     /**
      * Get the tenantId property: The tenant id to which the Power BI workspace belongs.
-     * 
+     *
      * @return the tenantId value.
      */
     public String getTenantId() {
@@ -69,7 +64,7 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
 
     /**
      * Set the tenantId property: The tenant id to which the Power BI workspace belongs.
-     * 
+     *
      * @param tenantId the tenantId value to set.
      * @return the PowerBIWorkspaceLinkedService object itself.
      */
@@ -78,36 +73,28 @@ public class PowerBIWorkspaceLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PowerBIWorkspaceLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PowerBIWorkspaceLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PowerBIWorkspaceLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PowerBIWorkspaceLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

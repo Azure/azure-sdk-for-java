@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A copy activity excel source.
- */
+/** A copy activity excel source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ExcelSource")
 @Fluent
@@ -29,15 +27,12 @@ public final class ExcelSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /**
-     * Creates an instance of ExcelSource class.
-     */
-    public ExcelSource() {
-    }
+    /** Creates an instance of ExcelSource class. */
+    public ExcelSource() {}
 
     /**
      * Get the storeSettings property: Excel store settings.
-     * 
+     *
      * @return the storeSettings value.
      */
     public StoreReadSettings getStoreSettings() {
@@ -46,7 +41,7 @@ public final class ExcelSource extends CopySource {
 
     /**
      * Set the storeSettings property: Excel store settings.
-     * 
+     *
      * @param storeSettings the storeSettings value to set.
      * @return the ExcelSource object itself.
      */
@@ -58,7 +53,7 @@ public final class ExcelSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -68,7 +63,7 @@ public final class ExcelSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @param additionalColumns the additionalColumns value to set.
      * @return the ExcelSource object itself.
      */
@@ -77,27 +72,21 @@ public final class ExcelSource extends CopySource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ExcelSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ExcelSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ExcelSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

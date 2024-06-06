@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Request body structure for creating data flow debug session.
- */
+/** Request body structure for creating data flow debug session. */
 @Fluent
 public final class CreateDataFlowDebugSessionRequest {
     /*
@@ -37,16 +35,13 @@ public final class CreateDataFlowDebugSessionRequest {
     @JsonProperty(value = "integrationRuntime")
     private IntegrationRuntimeDebugResource integrationRuntime;
 
-    /**
-     * Creates an instance of CreateDataFlowDebugSessionRequest class.
-     */
-    public CreateDataFlowDebugSessionRequest() {
-    }
+    /** Creates an instance of CreateDataFlowDebugSessionRequest class. */
+    public CreateDataFlowDebugSessionRequest() {}
 
     /**
      * Get the computeType property: Compute type of the cluster. The value will be overwritten by the same setting in
      * integration runtime if provided.
-     * 
+     *
      * @return the computeType value.
      */
     public String getComputeType() {
@@ -56,7 +51,7 @@ public final class CreateDataFlowDebugSessionRequest {
     /**
      * Set the computeType property: Compute type of the cluster. The value will be overwritten by the same setting in
      * integration runtime if provided.
-     * 
+     *
      * @param computeType the computeType value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
@@ -68,7 +63,7 @@ public final class CreateDataFlowDebugSessionRequest {
     /**
      * Get the coreCount property: Core count of the cluster. The value will be overwritten by the same setting in
      * integration runtime if provided.
-     * 
+     *
      * @return the coreCount value.
      */
     public Integer getCoreCount() {
@@ -78,7 +73,7 @@ public final class CreateDataFlowDebugSessionRequest {
     /**
      * Set the coreCount property: Core count of the cluster. The value will be overwritten by the same setting in
      * integration runtime if provided.
-     * 
+     *
      * @param coreCount the coreCount value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
@@ -89,7 +84,7 @@ public final class CreateDataFlowDebugSessionRequest {
 
     /**
      * Get the timeToLive property: Time to live setting of the cluster in minutes.
-     * 
+     *
      * @return the timeToLive value.
      */
     public Integer getTimeToLive() {
@@ -98,7 +93,7 @@ public final class CreateDataFlowDebugSessionRequest {
 
     /**
      * Set the timeToLive property: Time to live setting of the cluster in minutes.
-     * 
+     *
      * @param timeToLive the timeToLive value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */
@@ -109,7 +104,7 @@ public final class CreateDataFlowDebugSessionRequest {
 
     /**
      * Get the integrationRuntime property: Set to use integration runtime setting for data flow debug session.
-     * 
+     *
      * @return the integrationRuntime value.
      */
     public IntegrationRuntimeDebugResource getIntegrationRuntime() {
@@ -118,7 +113,7 @@ public final class CreateDataFlowDebugSessionRequest {
 
     /**
      * Set the integrationRuntime property: Set to use integration runtime setting for data flow debug session.
-     * 
+     *
      * @param integrationRuntime the integrationRuntime value to set.
      * @return the CreateDataFlowDebugSessionRequest object itself.
      */

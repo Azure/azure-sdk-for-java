@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The Dynamics CRM entity dataset.
- */
+/** The Dynamics CRM entity dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DynamicsCrmEntity")
 @JsonFlatten
@@ -26,16 +24,12 @@ public class DynamicsCrmEntityDataset extends Dataset {
     @JsonProperty(value = "typeProperties.entityName")
     private Object entityName;
 
-    /**
-     * Creates an instance of DynamicsCrmEntityDataset class.
-     */
-    public DynamicsCrmEntityDataset() {
-    }
+    /** Creates an instance of DynamicsCrmEntityDataset class. */
+    public DynamicsCrmEntityDataset() {}
 
     /**
-     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType
-     * string).
-     * 
+     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
+     *
      * @return the entityName value.
      */
     public Object getEntityName() {
@@ -43,9 +37,8 @@ public class DynamicsCrmEntityDataset extends Dataset {
     }
 
     /**
-     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType
-     * string).
-     * 
+     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
+     *
      * @param entityName the entityName value to set.
      * @return the DynamicsCrmEntityDataset object itself.
      */
@@ -54,63 +47,49 @@ public class DynamicsCrmEntityDataset extends Dataset {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsCrmEntityDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsCrmEntityDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsCrmEntityDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsCrmEntityDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsCrmEntityDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsCrmEntityDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsCrmEntityDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

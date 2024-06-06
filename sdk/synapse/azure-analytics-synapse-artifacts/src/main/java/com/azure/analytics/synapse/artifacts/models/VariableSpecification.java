@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Definition of a single variable for a Pipeline.
- */
+/** Definition of a single variable for a Pipeline. */
 @Fluent
 public final class VariableSpecification {
     /*
@@ -24,15 +22,12 @@ public final class VariableSpecification {
     @JsonProperty(value = "defaultValue")
     private Object defaultValue;
 
-    /**
-     * Creates an instance of VariableSpecification class.
-     */
-    public VariableSpecification() {
-    }
+    /** Creates an instance of VariableSpecification class. */
+    public VariableSpecification() {}
 
     /**
      * Get the type property: Variable type.
-     * 
+     *
      * @return the type value.
      */
     public VariableType getType() {
@@ -41,7 +36,7 @@ public final class VariableSpecification {
 
     /**
      * Set the type property: Variable type.
-     * 
+     *
      * @param type the type value to set.
      * @return the VariableSpecification object itself.
      */
@@ -52,7 +47,7 @@ public final class VariableSpecification {
 
     /**
      * Get the defaultValue property: Default value of variable.
-     * 
+     *
      * @return the defaultValue value.
      */
     public Object getDefaultValue() {
@@ -61,7 +56,7 @@ public final class VariableSpecification {
 
     /**
      * Set the defaultValue property: Default value of variable.
-     * 
+     *
      * @param defaultValue the defaultValue value to set.
      * @return the VariableSpecification object itself.
      */

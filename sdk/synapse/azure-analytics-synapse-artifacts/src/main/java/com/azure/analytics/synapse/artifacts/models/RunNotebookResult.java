@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Result of run notebook.
- */
+/** Result of run notebook. */
 @Fluent
 public final class RunNotebookResult {
     /*
@@ -60,15 +58,12 @@ public final class RunNotebookResult {
     @JsonProperty(value = "error")
     private RunNotebookError error;
 
-    /**
-     * Creates an instance of RunNotebookResult class.
-     */
-    public RunNotebookResult() {
-    }
+    /** Creates an instance of RunNotebookResult class. */
+    public RunNotebookResult() {}
 
     /**
      * Get the runId property: Run id.
-     * 
+     *
      * @return the runId value.
      */
     public String getRunId() {
@@ -77,7 +72,7 @@ public final class RunNotebookResult {
 
     /**
      * Set the runId property: Run id.
-     * 
+     *
      * @param runId the runId value to set.
      * @return the RunNotebookResult object itself.
      */
@@ -88,7 +83,7 @@ public final class RunNotebookResult {
 
     /**
      * Get the runStatus property: Status of the run notebook.
-     * 
+     *
      * @return the runStatus value.
      */
     public String getRunStatus() {
@@ -97,7 +92,7 @@ public final class RunNotebookResult {
 
     /**
      * Set the runStatus property: Status of the run notebook.
-     * 
+     *
      * @param runStatus the runStatus value to set.
      * @return the RunNotebookResult object itself.
      */
@@ -108,7 +103,7 @@ public final class RunNotebookResult {
 
     /**
      * Get the lastCheckedOn property: Timestamp of last update.
-     * 
+     *
      * @return the lastCheckedOn value.
      */
     public String getLastCheckedOn() {
@@ -117,7 +112,7 @@ public final class RunNotebookResult {
 
     /**
      * Set the lastCheckedOn property: Timestamp of last update.
-     * 
+     *
      * @param lastCheckedOn the lastCheckedOn value to set.
      * @return the RunNotebookResult object itself.
      */
@@ -128,7 +123,7 @@ public final class RunNotebookResult {
 
     /**
      * Get the sessionId property: Livy session id.
-     * 
+     *
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -137,7 +132,7 @@ public final class RunNotebookResult {
 
     /**
      * Set the sessionId property: Livy session id.
-     * 
+     *
      * @param sessionId the sessionId value to set.
      * @return the RunNotebookResult object itself.
      */
@@ -148,7 +143,7 @@ public final class RunNotebookResult {
 
     /**
      * Get the sparkPool property: SparkPool name.
-     * 
+     *
      * @return the sparkPool value.
      */
     public String getSparkPool() {
@@ -157,7 +152,7 @@ public final class RunNotebookResult {
 
     /**
      * Set the sparkPool property: SparkPool name.
-     * 
+     *
      * @param sparkPool the sparkPool value to set.
      * @return the RunNotebookResult object itself.
      */
@@ -168,7 +163,7 @@ public final class RunNotebookResult {
 
     /**
      * Get the sessionDetail property: Run notebook session details.
-     * 
+     *
      * @return the sessionDetail value.
      */
     public Object getSessionDetail() {
@@ -177,7 +172,7 @@ public final class RunNotebookResult {
 
     /**
      * Set the sessionDetail property: Run notebook session details.
-     * 
+     *
      * @param sessionDetail the sessionDetail value to set.
      * @return the RunNotebookResult object itself.
      */
@@ -188,7 +183,7 @@ public final class RunNotebookResult {
 
     /**
      * Get the exitValue property: Output of exit command.
-     * 
+     *
      * @return the exitValue value.
      */
     public String getExitValue() {
@@ -197,7 +192,7 @@ public final class RunNotebookResult {
 
     /**
      * Set the exitValue property: Output of exit command.
-     * 
+     *
      * @param exitValue the exitValue value to set.
      * @return the RunNotebookResult object itself.
      */
@@ -208,7 +203,7 @@ public final class RunNotebookResult {
 
     /**
      * Get the error property: Run notebook error.
-     * 
+     *
      * @return the error value.
      */
     public RunNotebookError getError() {
@@ -217,7 +212,7 @@ public final class RunNotebookResult {
 
     /**
      * Set the error property: Run notebook error.
-     * 
+     *
      * @param error the error value to set.
      * @return the RunNotebookResult object itself.
      */

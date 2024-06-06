@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Web linked service.
- */
+/** Web linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Web")
 @Fluent
@@ -24,15 +22,12 @@ public final class WebLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private WebLinkedServiceTypeProperties typeProperties;
 
-    /**
-     * Creates an instance of WebLinkedService class.
-     */
-    public WebLinkedService() {
-    }
+    /** Creates an instance of WebLinkedService class. */
+    public WebLinkedService() {}
 
     /**
      * Get the typeProperties property: Web linked service properties.
-     * 
+     *
      * @return the typeProperties value.
      */
     public WebLinkedServiceTypeProperties getTypeProperties() {
@@ -41,7 +36,7 @@ public final class WebLinkedService extends LinkedService {
 
     /**
      * Set the typeProperties property: Web linked service properties.
-     * 
+     *
      * @param typeProperties the typeProperties value to set.
      * @return the WebLinkedService object itself.
      */
@@ -50,36 +45,28 @@ public final class WebLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

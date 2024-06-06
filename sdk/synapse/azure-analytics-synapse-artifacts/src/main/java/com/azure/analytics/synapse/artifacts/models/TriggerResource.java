@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Trigger resource type.
- */
+/** Trigger resource type. */
 @Fluent
 public final class TriggerResource extends SubResource {
     /*
@@ -18,15 +16,12 @@ public final class TriggerResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private Trigger properties;
 
-    /**
-     * Creates an instance of TriggerResource class.
-     */
-    public TriggerResource() {
-    }
+    /** Creates an instance of TriggerResource class. */
+    public TriggerResource() {}
 
     /**
      * Get the properties property: Properties of the trigger.
-     * 
+     *
      * @return the properties value.
      */
     public Trigger getProperties() {
@@ -35,7 +30,7 @@ public final class TriggerResource extends SubResource {
 
     /**
      * Set the properties property: Properties of the trigger.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the TriggerResource object itself.
      */

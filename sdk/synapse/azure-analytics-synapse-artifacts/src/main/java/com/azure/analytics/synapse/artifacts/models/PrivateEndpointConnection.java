@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * A private endpoint connection.
- */
+/** A private endpoint connection. */
 @JsonFlatten
 @Fluent
 public class PrivateEndpointConnection extends ProxyResource {
@@ -32,15 +30,12 @@ public class PrivateEndpointConnection extends ProxyResource {
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /**
-     * Creates an instance of PrivateEndpointConnection class.
-     */
-    public PrivateEndpointConnection() {
-    }
+    /** Creates an instance of PrivateEndpointConnection class. */
+    public PrivateEndpointConnection() {}
 
     /**
      * Get the privateEndpoint property: The private endpoint which the connection belongs to.
-     * 
+     *
      * @return the privateEndpoint value.
      */
     public PrivateEndpoint getPrivateEndpoint() {
@@ -49,7 +44,7 @@ public class PrivateEndpointConnection extends ProxyResource {
 
     /**
      * Set the privateEndpoint property: The private endpoint which the connection belongs to.
-     * 
+     *
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnection object itself.
      */
@@ -60,7 +55,7 @@ public class PrivateEndpointConnection extends ProxyResource {
 
     /**
      * Get the privateLinkServiceConnectionState property: Connection state of the private endpoint connection.
-     * 
+     *
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState getPrivateLinkServiceConnectionState() {
@@ -69,19 +64,19 @@ public class PrivateEndpointConnection extends ProxyResource {
 
     /**
      * Set the privateLinkServiceConnectionState property: Connection state of the private endpoint connection.
-     * 
+     *
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnection object itself.
      */
-    public PrivateEndpointConnection
-        setPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnection setPrivateLinkServiceConnectionState(
+            PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the private endpoint connection.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String getProvisioningState() {

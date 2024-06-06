@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The key authorization type integration runtime.
- */
+/** The key authorization type integration runtime. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authorizationType")
 @JsonTypeName("Key")
 @Fluent
@@ -22,15 +20,12 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
     @JsonProperty(value = "key", required = true)
     private SecureString key;
 
-    /**
-     * Creates an instance of LinkedIntegrationRuntimeKeyAuthorization class.
-     */
-    public LinkedIntegrationRuntimeKeyAuthorization() {
-    }
+    /** Creates an instance of LinkedIntegrationRuntimeKeyAuthorization class. */
+    public LinkedIntegrationRuntimeKeyAuthorization() {}
 
     /**
      * Get the key property: The key used for authorization.
-     * 
+     *
      * @return the key value.
      */
     public SecureString getKey() {
@@ -39,7 +34,7 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
 
     /**
      * Set the key property: The key used for authorization.
-     * 
+     *
      * @param key the key value to set.
      * @return the LinkedIntegrationRuntimeKeyAuthorization object itself.
      */

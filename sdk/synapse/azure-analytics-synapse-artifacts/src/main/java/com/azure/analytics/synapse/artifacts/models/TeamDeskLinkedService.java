@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Linked service for TeamDesk.
- */
+/** Linked service for TeamDesk. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TeamDesk")
 @JsonFlatten
@@ -57,15 +55,12 @@ public class TeamDeskLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /**
-     * Creates an instance of TeamDeskLinkedService class.
-     */
-    public TeamDeskLinkedService() {
-    }
+    /** Creates an instance of TeamDeskLinkedService class. */
+    public TeamDeskLinkedService() {}
 
     /**
      * Get the authenticationType property: The authentication type to use.
-     * 
+     *
      * @return the authenticationType value.
      */
     public TeamDeskAuthenticationType getAuthenticationType() {
@@ -74,7 +69,7 @@ public class TeamDeskLinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: The authentication type to use.
-     * 
+     *
      * @param authenticationType the authenticationType value to set.
      * @return the TeamDeskLinkedService object itself.
      */
@@ -85,7 +80,7 @@ public class TeamDeskLinkedService extends LinkedService {
 
     /**
      * Get the url property: The url to connect TeamDesk source. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the url value.
      */
     public Object getUrl() {
@@ -94,7 +89,7 @@ public class TeamDeskLinkedService extends LinkedService {
 
     /**
      * Set the url property: The url to connect TeamDesk source. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param url the url value to set.
      * @return the TeamDeskLinkedService object itself.
      */
@@ -106,7 +101,7 @@ public class TeamDeskLinkedService extends LinkedService {
     /**
      * Get the userName property: The username of the TeamDesk source. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the userName value.
      */
     public Object getUserName() {
@@ -116,7 +111,7 @@ public class TeamDeskLinkedService extends LinkedService {
     /**
      * Set the userName property: The username of the TeamDesk source. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param userName the userName value to set.
      * @return the TeamDeskLinkedService object itself.
      */
@@ -127,7 +122,7 @@ public class TeamDeskLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password of the TeamDesk source.
-     * 
+     *
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -136,7 +131,7 @@ public class TeamDeskLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password of the TeamDesk source.
-     * 
+     *
      * @param password the password value to set.
      * @return the TeamDeskLinkedService object itself.
      */
@@ -147,7 +142,7 @@ public class TeamDeskLinkedService extends LinkedService {
 
     /**
      * Get the apiToken property: The api token for the TeamDesk source.
-     * 
+     *
      * @return the apiToken value.
      */
     public SecretBase getApiToken() {
@@ -156,7 +151,7 @@ public class TeamDeskLinkedService extends LinkedService {
 
     /**
      * Set the apiToken property: The api token for the TeamDesk source.
-     * 
+     *
      * @param apiToken the apiToken value to set.
      * @return the TeamDeskLinkedService object itself.
      */
@@ -166,9 +161,9 @@ public class TeamDeskLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -176,9 +171,9 @@ public class TeamDeskLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the TeamDeskLinkedService object itself.
      */
@@ -187,36 +182,28 @@ public class TeamDeskLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TeamDeskLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TeamDeskLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TeamDeskLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TeamDeskLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
