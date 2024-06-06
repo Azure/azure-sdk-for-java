@@ -454,8 +454,8 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(ShareServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getServices()
-            .setPropertiesNoCustomHeadersWithResponseAsync(properties, null, context);
+        return azureFileStorageClient.getServices().setPropertiesWithResponseAsync(properties, null, context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
@@ -653,7 +653,8 @@ public final class ShareServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares()
-            .deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null, deleteSnapshots, null, context);
+            .deleteWithResponseAsync(shareName, snapshot, null, deleteSnapshots, null, context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
