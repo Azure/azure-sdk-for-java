@@ -574,8 +574,7 @@ public class DataLakeServiceClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
-        return new AccountSasImplUtil(accountSasSignatureValues, null)
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+        return blobServiceClient.generateAccountSas(accountSasSignatureValues, context);
     }
 
     /**
