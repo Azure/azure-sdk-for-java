@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -20,8 +21,7 @@ public final class ApplicationGatewayRewriteRule {
     private String name;
 
     /*
-     * Rule Sequence of the rewrite rule that determines the order of execution of a particular rule in a
-     * RewriteRuleSet.
+     * Rule Sequence of the rewrite rule that determines the order of execution of a particular rule in a RewriteRuleSet.
      */
     @JsonProperty(value = "ruleSequence")
     private Integer ruleSequence;
@@ -46,7 +46,7 @@ public final class ApplicationGatewayRewriteRule {
 
     /**
      * Get the name property: Name of the rewrite rule that is unique within an Application Gateway.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -55,7 +55,7 @@ public final class ApplicationGatewayRewriteRule {
 
     /**
      * Set the name property: Name of the rewrite rule that is unique within an Application Gateway.
-     * 
+     *
      * @param name the name value to set.
      * @return the ApplicationGatewayRewriteRule object itself.
      */
@@ -67,7 +67,7 @@ public final class ApplicationGatewayRewriteRule {
     /**
      * Get the ruleSequence property: Rule Sequence of the rewrite rule that determines the order of execution of a
      * particular rule in a RewriteRuleSet.
-     * 
+     *
      * @return the ruleSequence value.
      */
     public Integer ruleSequence() {
@@ -77,7 +77,7 @@ public final class ApplicationGatewayRewriteRule {
     /**
      * Set the ruleSequence property: Rule Sequence of the rewrite rule that determines the order of execution of a
      * particular rule in a RewriteRuleSet.
-     * 
+     *
      * @param ruleSequence the ruleSequence value to set.
      * @return the ApplicationGatewayRewriteRule object itself.
      */
@@ -88,7 +88,7 @@ public final class ApplicationGatewayRewriteRule {
 
     /**
      * Get the conditions property: Conditions based on which the action set execution will be evaluated.
-     * 
+     *
      * @return the conditions value.
      */
     public List<ApplicationGatewayRewriteRuleCondition> conditions() {
@@ -97,7 +97,7 @@ public final class ApplicationGatewayRewriteRule {
 
     /**
      * Set the conditions property: Conditions based on which the action set execution will be evaluated.
-     * 
+     *
      * @param conditions the conditions value to set.
      * @return the ApplicationGatewayRewriteRule object itself.
      */
@@ -108,7 +108,7 @@ public final class ApplicationGatewayRewriteRule {
 
     /**
      * Get the actionSet property: Set of actions to be done as part of the rewrite Rule.
-     * 
+     *
      * @return the actionSet value.
      */
     public ApplicationGatewayRewriteRuleActionSet actionSet() {
@@ -117,7 +117,7 @@ public final class ApplicationGatewayRewriteRule {
 
     /**
      * Set the actionSet property: Set of actions to be done as part of the rewrite Rule.
-     * 
+     *
      * @param actionSet the actionSet value to set.
      * @return the ApplicationGatewayRewriteRule object itself.
      */
@@ -128,7 +128,7 @@ public final class ApplicationGatewayRewriteRule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

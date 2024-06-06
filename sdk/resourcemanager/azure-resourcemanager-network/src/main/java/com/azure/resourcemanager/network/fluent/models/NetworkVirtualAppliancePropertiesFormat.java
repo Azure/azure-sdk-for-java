@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.DelegationProperties;
 import com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties;
+import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePropertiesFormatNetworkProfile;
 import com.azure.resourcemanager.network.models.PartnerManagedResourceProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties;
@@ -74,6 +75,12 @@ public final class NetworkVirtualAppliancePropertiesFormat {
      */
     @JsonProperty(value = "virtualApplianceNics", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualApplianceNicProperties> virtualApplianceNics;
+
+    /*
+     * Network Profile containing configurations for Public and Private NIC.
+     */
+    @JsonProperty(value = "networkProfile")
+    private NetworkVirtualAppliancePropertiesFormatNetworkProfile networkProfile;
 
     /*
      * Details required for Additional Network Interface.
@@ -298,6 +305,27 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     }
 
     /**
+     * Get the networkProfile property: Network Profile containing configurations for Public and Private NIC.
+     * 
+     * @return the networkProfile value.
+     */
+    public NetworkVirtualAppliancePropertiesFormatNetworkProfile networkProfile() {
+        return this.networkProfile;
+    }
+
+    /**
+     * Set the networkProfile property: Network Profile containing configurations for Public and Private NIC.
+     * 
+     * @param networkProfile the networkProfile value to set.
+     * @return the NetworkVirtualAppliancePropertiesFormat object itself.
+     */
+    public NetworkVirtualAppliancePropertiesFormat
+        withNetworkProfile(NetworkVirtualAppliancePropertiesFormatNetworkProfile networkProfile) {
+        this.networkProfile = networkProfile;
+        return this;
+    }
+
+    /**
      * Get the additionalNics property: Details required for Additional Network Interface.
      * 
      * @return the additionalNics value.
@@ -436,6 +464,9 @@ public final class NetworkVirtualAppliancePropertiesFormat {
         }
         if (virtualApplianceNics() != null) {
             virtualApplianceNics().forEach(e -> e.validate());
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
         }
         if (additionalNics() != null) {
             additionalNics().forEach(e -> e.validate());

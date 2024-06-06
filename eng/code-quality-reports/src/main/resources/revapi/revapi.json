@@ -493,6 +493,12 @@
         {
           "regex": true,
           "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
+          "old": ".*? com\\.azure\\.resourcemanager\\.network\\.models.*",
+          "justification": "Jackson annotation changed."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
           "old": ".*? com\\.azure\\.resourcemanager\\.cosmos\\.models.*",
           "justification": "Jackson annotation changed."
         },

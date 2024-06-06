@@ -11,8 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupI
  */
 public final class ApplicationSecurityGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * ApplicationSecurityGroupCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ApplicationSecurityGroupCreate.json
      */
     /**
      * Sample code: Create application security group.
@@ -20,7 +19,11 @@ public final class ApplicationSecurityGroupsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createApplicationSecurityGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getApplicationSecurityGroups().createOrUpdate("rg1", "test-asg",
-            new ApplicationSecurityGroupInner().withLocation("westus"), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getApplicationSecurityGroups()
+            .createOrUpdate("rg1", "test-asg", new ApplicationSecurityGroupInner().withLocation("westus"),
+                com.azure.core.util.Context.NONE);
     }
 }

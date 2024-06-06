@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewayConnectionsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * VirtualNetworkGatewayConnectionsList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkGatewayConnectionsList.json
      */
     /**
      * Sample code: ListVirtualNetworkGatewayConnectionsinResourceGroup.
@@ -19,7 +18,10 @@ public final class VirtualNetworkGatewayConnectionsListByResourceGroupSamples {
      */
     public static void
         listVirtualNetworkGatewayConnectionsinResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGatewayConnections().listByResourceGroup("rg1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGatewayConnections()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }
