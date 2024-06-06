@@ -2898,7 +2898,6 @@ public class FileApiTest extends DataLakeTestBase {
             FileQueryOptions optionsOs = new FileQueryOptions(expression, os).setInputSerialization(inSer)
                 .setOutputSerialization(outSer);
 
-            // This test may need to be updated to follow the same pattern as BlobClientBase.queryWithResponse
             InputStream qqStream = fc.openQueryInputStreamWithResponse(optionsIs).getValue();
             byte[] queryData = assertDoesNotThrow(() -> readFromInputStream(qqStream, expectedData.length));
             TestUtils.assertArraysEqual(expectedData, queryData);

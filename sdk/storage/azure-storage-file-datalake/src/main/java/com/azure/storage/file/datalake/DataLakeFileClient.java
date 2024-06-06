@@ -1540,20 +1540,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      * that represents the stream to use for reading the query response.
      */
     public Response<InputStream> openQueryInputStreamWithResponse(FileQueryOptions queryOptions) {
-        try {
-            BlobQueryResponse response = blockBlobClient.queryWithResponse(Transforms.toBlobQueryOptions(queryOptions),
-                null, null);
-            FileQueryResponse fileQueryResponse = Transforms.toFileQueryResponse(response);
-            // Create input stream from the data.
-            if (fileQueryResponse == null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
-            }
-            return new ResponseBase<>(fileQueryResponse.getRequest(), fileQueryResponse.getStatusCode(),
-                fileQueryResponse.getHeaders(), fileQueryResponse.getValue(),
-                fileQueryResponse.getDeserializedHeaders());
-        } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(DataLakeImplUtils.transformBlobStorageException(e)));
-        }
+            return DataLakeImplUtils.returnOrConvertException(() ->
+                blockBlobClient.openQueryInputStreamWithResponse(Transforms.toBlobQueryOptions(queryOptions)),  LOGGER);
     }
 
     /**
