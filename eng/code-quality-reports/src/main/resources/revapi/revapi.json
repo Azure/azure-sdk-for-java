@@ -494,7 +494,7 @@
           "regex": true,
           "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
           "old": "class com\\.azure\\.resourcemanager\\.cosmos\\.models.*",
-          "justification": "Fix incorrect json attributes."
+          "justification": "Jackson annotation changed."
         },
         {
           "regex": true,
