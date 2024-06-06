@@ -796,6 +796,8 @@ public abstract class BinaryData implements Closeable {
     /**
      * An empty {@link BinaryData} that is immutable, used in situations where there is no binary data, but a
      * {@link BinaryData} instance is expected.
+     *
+     * @return The singleton instance of an empty {@link BinaryData}.
      */
     public static BinaryData empty() {
         return BinaryData.EMPTY;
