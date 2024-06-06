@@ -15,6 +15,8 @@ import com.azure.core.util.Context;
 import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -40,7 +42,9 @@ import static com.azure.containers.containerregistry.TestUtils.getAuthority;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryClientIntegrationTests extends ContainerRegistryClientsTestBase {
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
@@ -80,6 +84,27 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     public void listRepositoryNames(HttpClient httpClient) {
         ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
         ContainerRegistryClient registryClient = getContainerRegistryClient(httpClient);
+
+        StepVerifier.create(registryAsyncClient.listRepositoryNames())
+            .recordWith(ArrayList::new)
+            .thenConsumeWhile(x -> true)
+            .expectRecordedMatches(this::validateRepositories)
+            .verifyComplete();
+
+        List<String> repositories = registryClient.listRepositoryNames().stream().collect(Collectors.toList());
+        validateRepositories(repositories);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void longListRepositoryNames(HttpClient httpClient) {
+        assumeTrue(getTestMode() == TestMode.LIVE);
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
+        ContainerRegistryClient registryClient = getContainerRegistryClient(httpClient);
+
+        for (int i = 0; i < 120; i++) {
+            TestUtils.importImage(getTestMode(), HELLO_WORLD_REPOSITORY_NAME + i, Arrays.asList("latest"));
+        }
 
         StepVerifier.create(registryAsyncClient.listRepositoryNames())
             .recordWith(ArrayList::new)
@@ -191,7 +216,7 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     public void audienceTest(HttpClient httpClient) {
         Assumptions.assumeFalse(getTestMode().equals(TestMode.PLAYBACK));
         Assumptions.assumeFalse(REGISTRY_ENDPOINT == null);
-        Assumptions.assumeTrue(getAuthority(REGISTRY_ENDPOINT).equals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
+        assumeTrue(getAuthority(REGISTRY_ENDPOINT).equals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
         ContainerRegistryClient registryClient = getContainerRegistryBuilder(httpClient)
             .audience(ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD)
             .buildClient();

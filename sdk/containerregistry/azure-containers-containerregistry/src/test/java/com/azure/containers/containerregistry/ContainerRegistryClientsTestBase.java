@@ -107,7 +107,7 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
         ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
             .endpoint(getEndpoint(endpoint))
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
             .credential(credential);
 
         if (interceptorManager.isRecordMode()) {
