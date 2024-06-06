@@ -1,14 +1,18 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
+## 1.12.0 (2024-06-06)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for response timeout and per-request response timeout. ([#40017](https://github.com/Azure/azure-sdk-for-java/pull/40017))
 
 ### Other Changes
+
+- Fixed errant warning about `okio` being included on the module path multiple times. ([#40115](https://github.com/Azure/azure-sdk-for-java/pull/40155))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
 
 ## 1.11.21 (2024-05-01)
 
