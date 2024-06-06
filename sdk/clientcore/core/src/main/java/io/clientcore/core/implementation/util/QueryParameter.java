@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.implementation.util.ImplUtils.stringJoin;
+
 /**
  * Represents a single parameter to be added to a query string.
  * <p>
@@ -86,7 +89,7 @@ class QueryParameter {
     public String getValue() {
         if (value != null) {
             return value;
-        } else if (CoreUtils.isNullOrEmpty(values)) {
+        } else if (isNullOrEmpty(values)) {
             return "";
         }
 
@@ -102,7 +105,7 @@ class QueryParameter {
     public String[] getValues() {
         if (value != null) {
             return new String[]{value};
-        } else if (!CoreUtils.isNullOrEmpty(values)) {
+        } else if (!isNullOrEmpty(values)) {
             return values.toArray(new String[0]);
         } else {
             return EMPTY_QUERY_PARAMETER_ARRAY;
@@ -117,7 +120,7 @@ class QueryParameter {
     public List<String> getValuesList() {
         if (value != null) {
             return Collections.singletonList(value);
-        } else if (!CoreUtils.isNullOrEmpty(values)) {
+        } else if (!isNullOrEmpty(values)) {
             return Collections.unmodifiableList(values);
         } else {
             return Collections.emptyList();
@@ -152,7 +155,7 @@ class QueryParameter {
     public String toString() {
         if (value != null) {
             return name + "=" + value;
-        } else if (CoreUtils.isNullOrEmpty(values)) {
+        } else if (isNullOrEmpty(values)) {
             return name;
         }
 
@@ -161,6 +164,6 @@ class QueryParameter {
     }
 
     private void checkCachedStringValue() {
-        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, CoreUtils.stringJoin(",", values));
+        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, stringJoin(",", values));
     }
 }

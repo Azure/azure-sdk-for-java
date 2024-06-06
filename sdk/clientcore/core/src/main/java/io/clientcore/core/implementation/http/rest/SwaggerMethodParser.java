@@ -25,7 +25,6 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
 import io.clientcore.core.implementation.util.Base64Url;
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.implementation.util.UrlBuilder;
 import io.clientcore.core.util.ClientLogger;
@@ -57,6 +56,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static io.clientcore.core.implementation.TypeUtil.typeImplementsInterface;
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
  * This class contains the metadata of a {@link Method} contained in a Swagger interface used to make REST API calls in
@@ -154,7 +154,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (requestQueryParams != null) {
             for (final String queryParam : requestQueryParams) {
-                if (CoreUtils.isNullOrEmpty(queryParam)) {
+                if (isNullOrEmpty(queryParam)) {
                     throw new IllegalStateException("Query parameters cannot be null or empty.");
                 }
 
@@ -180,7 +180,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
                 List<String> currentValues = queryParams.get(paramName);
 
-                if (!CoreUtils.isNullOrEmpty(paramValue)) {
+                if (!isNullOrEmpty(paramValue)) {
                     if (currentValues == null) {
                         currentValues = new ArrayList<>();
                     }
@@ -344,7 +344,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
             String host = substitutedHost.substring(index + 3);
 
-            if (!CoreUtils.isNullOrEmpty(host)) {
+            if (!isNullOrEmpty(host)) {
                 urlBuilder.setHost(host);
             } else {
                 urlBuilder.setHost(substitutedHost);
@@ -540,7 +540,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             result = swaggerMethodArguments[bodyContentMethodParameterIndex];
         }
 
-        if (!CoreUtils.isNullOrEmpty(formSubstitutions) && swaggerMethodArguments != null) {
+        if (!isNullOrEmpty(formSubstitutions) && swaggerMethodArguments != null) {
             result = formSubstitutions.stream()
                 .map(substitution -> serializeFormData(serializer, substitution.getUrlParameterName(),
                     swaggerMethodArguments[substitution.getMethodParameterIndex()], substitution.shouldEncode()))
@@ -668,7 +668,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
     private static String applySubstitutions(String originalValue, List<RangeReplaceSubstitution> substitutions,
                                              Object[] methodArguments, ObjectSerializer serializer) {
-        if (methodArguments == null || CoreUtils.isNullOrEmpty(substitutions)) {
+        if (methodArguments == null || isNullOrEmpty(substitutions)) {
             return originalValue;
         }
 
