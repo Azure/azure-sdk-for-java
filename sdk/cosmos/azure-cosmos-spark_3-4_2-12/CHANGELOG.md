@@ -1,12 +1,6 @@
 ## Release History
 
-### 4.33.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.32.1 (2024-06-07)
 
 #### Other Changes
 * Added retries when retrieving new pages for query or readMany operations are timing out to avoid unbounded awaits. - See [PR 40506](https://github.com/Azure/azure-sdk-for-java/pull/40506)
