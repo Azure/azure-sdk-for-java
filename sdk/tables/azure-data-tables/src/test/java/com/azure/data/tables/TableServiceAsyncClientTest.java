@@ -54,7 +54,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests methods for {@link TableServiceAsyncClient}.
  */
-@Disabled
 public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(100);
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
