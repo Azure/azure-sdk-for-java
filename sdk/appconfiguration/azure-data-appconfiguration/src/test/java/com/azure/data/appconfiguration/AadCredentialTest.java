@@ -10,7 +10,7 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +26,6 @@ import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUM
  */
 public class AadCredentialTest extends TestProxyTestBase {
     private static ConfigurationClient client;
-    private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     static String connectionString;
     static TokenCredential tokenCredential;
 
@@ -41,9 +40,8 @@ public class AadCredentialTest extends TestProxyTestBase {
                 .httpClient(interceptorManager.getPlaybackClient())
                 .buildClient();
         } else {
-            connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
-            String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
+            tokenCredential = new AzurePowerShellCredentialBuilder().build();
+            String endpoint = Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .endpoint(endpoint)
                 .credential(tokenCredential)
