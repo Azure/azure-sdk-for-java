@@ -378,8 +378,8 @@
         },
         {
           "code": "java.annotation.added",
-          "old" : "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
-          "new" : "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
+          "old": "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
+          "new": "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
           "justification": "Ignore CosmosDiagnosticsContext in CosmosDiagnostics to avoid stackoverflow error."
         },
         {
@@ -389,27 +389,27 @@
           "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "justification": "Adding missing Jackson annotations to Job Router models."
         },
-		{
+        {
           "regex": true,
           "code": "java\\.method\\.removed",
           "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "justification": "Remove setter for Value from RouterWorkerSelector/RouterQueueSelector since it's in the constructor."
         },
-		{
+        {
           "regex": true,
           "code": "java\\.method\\.numberOfParametersChanged",
           "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "justification": "Make Value mandatory in RouterWorkerSelector/RouterQueueSelector constructor."
         },
-		{
+        {
           "regex": true,
           "code": "java\\.annotation\\.attributeValueChanged",
           "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "justification": "Fix incorrect json attributes."
         },
-		{
+        {
           "regex": true,
           "code": "java\\.method\\.returnTypeTypeParametersChanged",
           "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
@@ -423,7 +423,7 @@
           "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
           "justification": "Accept Router models rather than BinaryData."
         },
-		{
+        {
           "regex": true,
           "code": "java\\.method\\.returnTypeChanged",
           "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
@@ -482,6 +482,13 @@
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.data\\.tables\\.models.*",
           "justification": "Removing Jackson annotations from Tables in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Removing Jackson annotations from Job Router in transition to stream-style."
         },
         {
           "regex": true,
