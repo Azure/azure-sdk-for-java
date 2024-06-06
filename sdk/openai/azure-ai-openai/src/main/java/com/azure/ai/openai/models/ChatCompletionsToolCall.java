@@ -25,6 +25,12 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
     private final String id;
 
     /*
+     * The ordered index associated with this tool call.
+     */
+    @Generated
+    private final int index;
+
+    /*
      * The object type.
      */
     @Generated
@@ -38,6 +44,16 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
     @Generated
     public String getId() {
         return this.id;
+    }
+
+    /**
+     * Get the index property: The ordered index associated with this tool call.
+     *
+     * @return the index value.
+     */
+    @Generated
+    public int getIndex() {
+        return this.index;
     }
 
     /**
@@ -58,6 +74,7 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeIntField("index", this.index);
         jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
@@ -104,19 +121,22 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
     static ChatCompletionsToolCall fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
+            int index = 0;
             String type = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
+                } else if ("index".equals(fieldName)) {
+                    index = reader.getInt();
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            ChatCompletionsToolCall deserializedChatCompletionsToolCall = new ChatCompletionsToolCall(id);
+            ChatCompletionsToolCall deserializedChatCompletionsToolCall = new ChatCompletionsToolCall(id, index);
             deserializedChatCompletionsToolCall.type = type;
             return deserializedChatCompletionsToolCall;
         });
@@ -126,9 +146,11 @@ public class ChatCompletionsToolCall implements JsonSerializable<ChatCompletions
      * Creates an instance of ChatCompletionsToolCall class.
      *
      * @param id the id value to set.
+     * @param index the index value to set.
      */
     @Generated
-    public ChatCompletionsToolCall(String id) {
+    public ChatCompletionsToolCall(String id, int index) {
         this.id = id;
+        this.index = index;
     }
 }

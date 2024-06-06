@@ -64,6 +64,7 @@ public class StreamingToolCall {
         IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId, chatCompletionsOptions);
 
         String toolCallId = null;
+        int toolCallIndex = 0;
         String functionName = null;
         StringBuilder functionArguments = new StringBuilder();
         CompletionsFinishReason finishReason = null;
@@ -96,6 +97,7 @@ public class StreamingToolCall {
         }
 
         System.out.println("Tool Call Id: " + toolCallId);
+        System.out.println("Tool Call Index: " + toolCallIndex);
         System.out.println("Function Name: " + functionName);
         System.out.println("Function Arguments: " + functionArguments);
         System.out.println("Finish Reason: " + finishReason);
@@ -111,7 +113,7 @@ public class StreamingToolCall {
             // - The tool call id
             // - The function description
             FunctionCall functionCall = new FunctionCall(functionName, functionArguments.toString());
-            ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
+            ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, toolCallIndex, functionCall);
             ChatRequestAssistantMessage assistantRequestMessage = new ChatRequestAssistantMessage("");
             assistantRequestMessage.setToolCalls(Arrays.asList(functionToolCall));
 
