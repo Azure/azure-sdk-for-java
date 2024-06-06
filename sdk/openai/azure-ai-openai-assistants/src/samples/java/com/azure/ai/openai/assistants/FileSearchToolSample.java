@@ -49,7 +49,7 @@ public class FileSearchToolSample {
 
         Path filePath = Paths.get("src", "samples", "resources", fileName);
         BinaryData fileData = BinaryData.fromFile(filePath);
-        FileDetails fileDetails = new FileDetails(fileData).setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(fileData, fileName);
 
         AssistantsClient client = new AssistantsClientBuilder()
                 .credential(new KeyCredential(apiKey))

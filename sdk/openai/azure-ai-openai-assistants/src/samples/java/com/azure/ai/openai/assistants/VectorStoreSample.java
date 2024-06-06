@@ -67,13 +67,11 @@ public class VectorStoreSample {
 
         // Step 2: Upload files and add them to a Vector Store
         String fileName = "20210203_alphabet_10K.pdf";
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-                .setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
         OpenAIFile googleFile = client.uploadFile(fileDetails, ASSISTANTS);
 
         fileName = "20231231_brk_10k.pdf";
-        fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-                .setFilename(fileName);
+        fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
         OpenAIFile berkshireFile = client.uploadFile(fileDetails, ASSISTANTS);
 
         // Create a vector store called "Financial Statements"
@@ -101,8 +99,7 @@ public class VectorStoreSample {
         // Step 4: Create a thread
         // Upload the user provided file to OpenAI
         fileName = "20220924_aapl_10k.pdf";
-        fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-                .setFilename(fileName);
+        fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
         OpenAIFile appleFile = client.uploadFile(fileDetails, ASSISTANTS);
 
         // Create a thread and attach the file to the message
