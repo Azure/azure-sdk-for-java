@@ -134,20 +134,24 @@ public final class ClientEncryptionIncludedPath {
      */
     public void validate() {
         if (path() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property path in model ClientEncryptionIncludedPath"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property path in model ClientEncryptionIncludedPath"));
         }
         if (clientEncryptionKeyId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clientEncryptionKeyId in model ClientEncryptionIncludedPath"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientEncryptionKeyId in model ClientEncryptionIncludedPath"));
         }
         if (encryptionType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property encryptionType in model ClientEncryptionIncludedPath"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property encryptionType in model ClientEncryptionIncludedPath"));
         }
         if (encryptionAlgorithm() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property encryptionAlgorithm in model ClientEncryptionIncludedPath"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property encryptionAlgorithm in model ClientEncryptionIncludedPath"));
         }
     }
 
