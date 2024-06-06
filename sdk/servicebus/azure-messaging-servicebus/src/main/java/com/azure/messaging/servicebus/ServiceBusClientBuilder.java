@@ -1140,7 +1140,7 @@ public final class ServiceBusClientBuilder implements
         private static final String NON_SESSION_SYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.nonSession.syncReceive.v2";
         private static final ConfigurationProperty<Boolean> NON_SESSION_SYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(NON_SESSION_SYNC_RECEIVE_KEY)
             .environmentVariableName(NON_SESSION_SYNC_RECEIVE_KEY)
-            .defaultValue(false) // 'Non-Session' Sync Receiver Client is not on the new v2 stack by default.
+            .defaultValue(true) // 'Non-Session' Sync Receiver Client is on the new v2 stack by default.
             .shared(true)
             .build();
         private final AtomicReference<Boolean> nonSessionSyncReceiveFlag = new AtomicReference<>();
@@ -1172,7 +1172,7 @@ public final class ServiceBusClientBuilder implements
         private static final String SESSION_SYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.session.syncReceive.v2";
         private static final ConfigurationProperty<Boolean> SESSION_SYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_SYNC_RECEIVE_KEY)
             .environmentVariableName(SESSION_SYNC_RECEIVE_KEY)
-            .defaultValue(false) // 'Session' Sync Receiver Client is not on the new v2 stack by default
+            .defaultValue(true) // 'Session' Sync Receiver Client is on the new v2 stack by default
             .shared(true)
             .build();
         private final AtomicReference<Boolean> sessionSyncReceiveFlag = new AtomicReference<>();
@@ -1193,13 +1193,13 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Non-Session SyncClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         * Non-Session SyncClient is on the v2 stack by default, but the application may opt out.
          *
          * @param configuration the client configuration.
          * @return true if Sync receive should use the v2 stack.
          */
         boolean isNonSessionSyncReceiveEnabled(Configuration configuration) {
-            return isOptedIn(configuration, NON_SESSION_SYNC_RECEIVE_PROPERTY, nonSessionSyncReceiveFlag);
+            return !isOptedOut(configuration, NON_SESSION_SYNC_RECEIVE_PROPERTY, nonSessionSyncReceiveFlag);
         }
 
         /**
@@ -1233,13 +1233,13 @@ public final class ServiceBusClientBuilder implements
         }
 
         /**
-         * Session SyncClient is not on the v2 stack by default, but the application may opt into the v2 stack.
+         * Session SyncClient is on the v2 stack by default, but the application may opt out.
          *
          * @param configuration the client configuration.
          * @return true if session Sync receive should use the v2 stack.
          */
         boolean isSessionSyncReceiveEnabled(Configuration configuration) {
-            return isOptedIn(configuration, SESSION_SYNC_RECEIVE_PROPERTY, sessionSyncReceiveFlag);
+            return !isOptedOut(configuration, SESSION_SYNC_RECEIVE_PROPERTY, sessionSyncReceiveFlag);
         }
 
         // Obtain the shared connection-cache based on the V2-Stack.
