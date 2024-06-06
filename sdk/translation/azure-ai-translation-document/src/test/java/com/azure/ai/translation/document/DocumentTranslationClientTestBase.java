@@ -24,7 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +57,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         
 
         if (!interceptorManager.isLiveMode()) {
-            //addTestProxySanitizers();
+            addTestProxySanitizers();
         }
 
         documentTranslationClientbuilder.credential(new AzureKeyCredential(key));
@@ -97,7 +96,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         }
 
         if (!interceptorManager.isLiveMode()) {
-            //addTestProxySanitizers();
+            addTestProxySanitizers();
         }
 
         singleDocumentTranslationClientbuilder.credential(new AzureKeyCredential(key));
@@ -141,12 +140,12 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             blobContainerClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {
             blobContainerClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-        }else if (!interceptorManager.isLiveMode()) {
+        } else if (!interceptorManager.isLiveMode()) {
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
-        }      
+        }     
 
         if (!interceptorManager.isLiveMode()) {
-            //addTestProxySanitizers();
+            addTestProxySanitizers();
         }
 
         return blobContainerClientBuilder.buildClient();
@@ -162,12 +161,12 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             blobClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {
             blobClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-        }else if (!interceptorManager.isLiveMode()) {
+        } else if (!interceptorManager.isLiveMode()) {
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         }
 
         if (!interceptorManager.isLiveMode()) {
-            //addTestProxySanitizers();
+            addTestProxySanitizers();
         }
 
         return blobClientBuilder.buildClient();
