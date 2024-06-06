@@ -4,14 +4,7 @@
 
 ### Breaking Changes
 
-#### `models.ServiceResourceCreateUpdateParameters` was modified.
-
-* `instanceCount()` was removed.
-* `instanceSize()` was removed.
-* `serviceType()` was removed.
-* `withInstanceCount(java.lang.Integer)` was removed.
-* `withInstanceSize(com.azure.resourcemanager.cosmos.models.ServiceSize)` was removed.
-* `withServiceType(com.azure.resourcemanager.cosmos.models.ServiceType)` was removed.
+- Properties under `ServiceResourceCreateUpdateParameters` class is moved to `ServiceResourceCreateUpdateProperties` class of its "properties" property.
 
 ### Other Changes
 
