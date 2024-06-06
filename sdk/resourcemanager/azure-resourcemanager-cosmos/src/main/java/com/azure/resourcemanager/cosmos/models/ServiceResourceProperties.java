@@ -10,8 +10,10 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,9 +23,9 @@ import java.util.Map;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "serviceType",
-    defaultImpl = ServiceResourceProperties.class)
+    defaultImpl = ServiceResourceProperties.class,
+    visible = true)
 @JsonTypeName("ServiceResourceProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DataTransfer", value = DataTransferServiceResourceProperties.class),
@@ -34,6 +36,13 @@ import java.util.Map;
         value = MaterializedViewsBuilderServiceResourceProperties.class) })
 @Fluent
 public class ServiceResourceProperties {
+    /*
+     * ServiceType for the service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "serviceType", required = true)
+    private ServiceType serviceType;
+
     /*
      * Time of the last state change (ISO-8601 format).
      */
@@ -68,11 +77,21 @@ public class ServiceResourceProperties {
      * Creates an instance of ServiceResourceProperties class.
      */
     public ServiceResourceProperties() {
+        this.serviceType = ServiceType.fromString("ServiceResourceProperties");
+    }
+
+    /**
+     * Get the serviceType property: ServiceType for the service.
+     *
+     * @return the serviceType value.
+     */
+    public ServiceType serviceType() {
+        return this.serviceType;
     }
 
     /**
      * Get the creationTime property: Time of the last state change (ISO-8601 format).
-     * 
+     *
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -81,7 +100,7 @@ public class ServiceResourceProperties {
 
     /**
      * Get the instanceSize property: Instance type for the service.
-     * 
+     *
      * @return the instanceSize value.
      */
     public ServiceSize instanceSize() {
@@ -90,7 +109,7 @@ public class ServiceResourceProperties {
 
     /**
      * Set the instanceSize property: Instance type for the service.
-     * 
+     *
      * @param instanceSize the instanceSize value to set.
      * @return the ServiceResourceProperties object itself.
      */
@@ -101,7 +120,7 @@ public class ServiceResourceProperties {
 
     /**
      * Get the instanceCount property: Instance count for the service.
-     * 
+     *
      * @return the instanceCount value.
      */
     public Integer instanceCount() {
@@ -110,7 +129,7 @@ public class ServiceResourceProperties {
 
     /**
      * Set the instanceCount property: Instance count for the service.
-     * 
+     *
      * @param instanceCount the instanceCount value to set.
      * @return the ServiceResourceProperties object itself.
      */
@@ -121,7 +140,7 @@ public class ServiceResourceProperties {
 
     /**
      * Get the status property: Describes the status of a service.
-     * 
+     *
      * @return the status value.
      */
     public ServiceStatus status() {
@@ -130,7 +149,7 @@ public class ServiceResourceProperties {
 
     /**
      * Get the additionalProperties property: Services response resource.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -140,7 +159,7 @@ public class ServiceResourceProperties {
 
     /**
      * Set the additionalProperties property: Services response resource.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the ServiceResourceProperties object itself.
      */
@@ -159,7 +178,7 @@ public class ServiceResourceProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
