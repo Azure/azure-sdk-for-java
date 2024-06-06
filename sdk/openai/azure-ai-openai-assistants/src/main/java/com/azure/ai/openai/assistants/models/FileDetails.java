@@ -50,6 +50,7 @@ public final class FileDetails {
         this.content = content;
         this.filename = filename;
     }
+
     /**
      * Get the content property: The content of the file.
      *
