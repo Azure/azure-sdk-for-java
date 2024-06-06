@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkVirtualAppliancesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * NetworkVirtualApplianceListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualApplianceListByResourceGroup.json
      */
     /**
      * Sample code: List all Network Virtual Appliance for a given resource group.
@@ -19,7 +18,10 @@ public final class NetworkVirtualAppliancesListByResourceGroupSamples {
      */
     public static void
         listAllNetworkVirtualApplianceForAGivenResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkVirtualAppliances().listByResourceGroup("rg1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkVirtualAppliances()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

@@ -230,8 +230,8 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if
-     * gatewayType is not VPN.
+     * Get the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if gatewayType
+     * is not VPN.
      * 
      * @return the vpnGatewayGeneration value.
      */
@@ -240,8 +240,8 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if
-     * gatewayType is not VPN.
+     * Set the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if gatewayType
+     * is not VPN.
      * 
      * @param vpnGatewayGeneration the vpnGatewayGeneration value to set.
      * @return the VirtualNetworkGatewayInner object itself.
@@ -701,8 +701,9 @@ public final class VirtualNetworkGatewayInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model VirtualNetworkGatewayInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model VirtualNetworkGatewayInner"));
         } else {
             innerProperties().validate();
         }

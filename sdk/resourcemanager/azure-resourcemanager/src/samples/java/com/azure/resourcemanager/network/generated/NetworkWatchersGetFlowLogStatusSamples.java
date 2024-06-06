@@ -11,8 +11,7 @@ import com.azure.resourcemanager.network.models.FlowLogStatusParameters;
  */
 public final class NetworkWatchersGetFlowLogStatusSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * NetworkWatcherFlowLogStatusQuery.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkWatcherFlowLogStatusQuery.json
      */
     /**
      * Sample code: Get flow log status.
@@ -20,9 +19,13 @@ public final class NetworkWatchersGetFlowLogStatusSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getFlowLogStatus(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkWatchers().getFlowLogStatus("rg1", "nw1",
-            new FlowLogStatusParameters().withTargetResourceId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkWatchers()
+            .getFlowLogStatus("rg1", "nw1",
+                new FlowLogStatusParameters().withTargetResourceId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
+                com.azure.core.util.Context.NONE);
     }
 }

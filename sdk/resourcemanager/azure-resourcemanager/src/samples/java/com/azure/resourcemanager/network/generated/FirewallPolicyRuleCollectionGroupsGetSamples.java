@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * FirewallPolicyNatRuleCollectionGroupGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyNatRuleCollectionGroupGet.json
      */
     /**
      * Sample code: Get FirewallPolicyNatRuleCollectionGroup.
@@ -18,13 +17,15 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getFirewallPolicyNatRuleCollectionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups().getWithResponse("rg1",
-            "firewallPolicy", "ruleCollectionGroup1", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
+            .getWithResponse("rg1", "firewallPolicy", "ruleCollectionGroup1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * FirewallPolicyRuleCollectionGroupWithWebCategoriesGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup With Web Categories.
@@ -33,13 +34,15 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
      */
     public static void
         getFirewallPolicyRuleCollectionGroupWithWebCategories(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups().getWithResponse("rg1",
-            "firewallPolicy", "ruleCollectionGroup1", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
+            .getWithResponse("rg1", "firewallPolicy", "ruleCollectionGroup1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * FirewallPolicyRuleCollectionGroupGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyRuleCollectionGroupGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup.
@@ -47,13 +50,15 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getFirewallPolicyRuleCollectionGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups().getWithResponse("rg1",
-            "firewallPolicy", "ruleCollectionGroup1", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
+            .getWithResponse("rg1", "firewallPolicy", "ruleCollectionGroup1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * FirewallPolicyRuleCollectionGroupWithIpGroupsGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup With IpGroups.
@@ -62,7 +67,10 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
      */
     public static void
         getFirewallPolicyRuleCollectionGroupWithIpGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFirewallPolicyRuleCollectionGroups().getWithResponse("rg1",
-            "firewallPolicy", "ruleGroup1", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFirewallPolicyRuleCollectionGroups()
+            .getWithResponse("rg1", "firewallPolicy", "ruleGroup1", com.azure.core.util.Context.NONE);
     }
 }
