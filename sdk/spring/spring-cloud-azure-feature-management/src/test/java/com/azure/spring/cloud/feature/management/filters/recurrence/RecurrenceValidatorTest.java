@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RecurrenceValidatorTest {
@@ -314,14 +315,15 @@ public class RecurrenceValidatorTest {
 
 
     private void consumeValidationTestData(Map<String, Object> parameters, String errorMessage) {
-        try {
-            final TimeWindowFilter filter = new TimeWindowFilter();
-            final FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
-            context.setParameters(parameters);
-            filter.evaluate(context);
-        } catch (final Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertTrue(e.getMessage().contains(errorMessage));
-        }
+        final TimeWindowFilter filter = new TimeWindowFilter();
+        final FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
+
+        final IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> {
+                context.setParameters(parameters);
+                filter.evaluate(context);
+            });
+        assertTrue(exception.getMessage().contains(errorMessage));
     }
 }

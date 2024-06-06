@@ -39,7 +39,7 @@ public class RecurrenceValidator {
             paramName = String.format("%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE);
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
         }
-        if (settings.getEnd().isBefore(settings.getStart())) {
+        if (!settings.getEnd().isAfter(settings.getStart())) {
             paramName = TIME_WINDOW_FILTER_SETTING_END;
             reason = RecurrenceConstants.OUT_OF_RANGE;
         }

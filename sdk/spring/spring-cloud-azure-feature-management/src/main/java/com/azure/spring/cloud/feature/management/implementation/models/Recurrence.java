@@ -17,7 +17,7 @@ public class Recurrence {
     /**
      * The recurrence range specifying how long the recurrence pattern repeats
      * */
-    private RecurrenceRange range = new RecurrenceRange();
+    private RecurrenceRange range;
 
     /**
      * @return the recurrence pattern specifying how often the time window repeats
@@ -44,8 +44,6 @@ public class Recurrence {
      * @param range the recurrence range to be set
      * */
     public void setRange(RecurrenceRange range) {
-        if (range != null) {
-            this.range = range;
-        }
+        this.range = range;
     }
 }
