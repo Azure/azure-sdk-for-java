@@ -6,13 +6,10 @@ package com.azure.containers.containerregistry;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.util.Collections;
@@ -23,13 +20,8 @@ import static com.azure.containers.containerregistry.TestUtils.HTTP_STATUS_CODE_
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBase {
-    private ContainerRegistryAsyncClient registryAsyncClient;
-    private ContainerRegistryClient registryClient;
-    private ContainerRepositoryAsync asyncClient;
-    private ContainerRepository client;
-    private HttpClient httpClient;
+
     private final String repositoryName = HELLO_WORLD_SEATTLE_REPOSITORY_NAME;
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
@@ -54,21 +46,12 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
     @BeforeEach
     void beforeEach() {
         TestUtils.importImage(getTestMode(), repositoryName, Collections.singletonList("latest"));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            httpClient = interceptorManager.getPlaybackClient();
-        } else {
-            httpClient = HttpClient.createDefault();
-        }
-
-        registryClient = getContainerRegistryClient(httpClient);
-        registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
-        asyncClient = registryAsyncClient.getRepository(repositoryName);
-        client = registryClient.getRepository(repositoryName);
     }
 
 
     @Test
     public void deleteRepositoryByRegistryWithResponseAsyncClient() {
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(getHttpClient());
         StepVerifier.create(registryAsyncClient.deleteRepositoryWithResponse(repositoryName))
             .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
             .verifyComplete();
@@ -80,6 +63,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     @Test
     public void deleteRepositoryByRegistryAsyncClient() {
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(getHttpClient());
         StepVerifier.create(registryAsyncClient.deleteRepository(repositoryName))
             .verifyComplete();
 
@@ -89,6 +73,9 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     @Test
     public void deleteRepositoryWithResponseAsyncClient() {
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(getHttpClient());
+        ContainerRepositoryAsync asyncClient = registryAsyncClient.getRepository(repositoryName);
+
         StepVerifier.create(asyncClient.deleteWithResponse())
             .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
             .verifyComplete();
@@ -100,6 +87,9 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     @Test
     public void deleteRepositoryAsyncClient() {
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(getHttpClient());
+        ContainerRepositoryAsync asyncClient = registryAsyncClient.getRepository(repositoryName);
+
         StepVerifier.create(asyncClient.delete())
             .verifyComplete();
         StepVerifier.create(asyncClient.delete())
@@ -108,28 +98,36 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     @Test
     public void deleteRepositoryWithResponseByRegistryClient() {
+        ContainerRegistryClient registryClient = getContainerRegistryClient(getHttpClient());
         Response<Void> response = registryClient.deleteRepositoryWithResponse(HELLO_WORLD_SEATTLE_REPOSITORY_NAME, Context.NONE);
         assertEquals(HTTP_STATUS_CODE_202, response.getStatusCode());
     }
 
     @Test
     public void deleteRepositoryByRegistryClient() {
+        ContainerRegistryClient registryClient = getContainerRegistryClient(getHttpClient());
         // This should not throw.
         registryClient.deleteRepository(HELLO_WORLD_SEATTLE_REPOSITORY_NAME);
     }
 
     @Test
     public void deleteRepositoryWithResponseClient() {
+        ContainerRegistryClient registryClient = getContainerRegistryClient(getHttpClient());
+        ContainerRepository client = registryClient.getRepository(repositoryName);
         client.deleteWithResponse(Context.NONE);
     }
 
     @Test
     public void deleteRepositoryClient() {
+        ContainerRegistryClient registryClient = getContainerRegistryClient(getHttpClient());
+        ContainerRepository client = registryClient.getRepository(repositoryName);
         client.delete();
     }
 
     @Test
     public void getRepositoryTestThrows() {
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(getHttpClient());
+        ContainerRegistryClient registryClient = getContainerRegistryClient(getHttpClient());
         assertThrows(NullPointerException.class, () -> registryClient.getRepository(null));
         assertThrows(IllegalArgumentException.class, () -> registryClient.getRepository(""));
         assertThrows(NullPointerException.class, () -> registryAsyncClient.getRepository(null));
@@ -138,6 +136,8 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     @Test
     public void getArtifactTestThrows() {
+        ContainerRegistryClient registryClient = getContainerRegistryClient(getHttpClient());
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(getHttpClient());
         assertThrows(NullPointerException.class, () -> registryClient.getArtifact(HELLO_WORLD_REPOSITORY_NAME, null));
         assertThrows(IllegalArgumentException.class, () -> registryClient.getArtifact(HELLO_WORLD_REPOSITORY_NAME, ""));
         assertThrows(NullPointerException.class, () -> registryClient.getArtifact(null, "digest"));

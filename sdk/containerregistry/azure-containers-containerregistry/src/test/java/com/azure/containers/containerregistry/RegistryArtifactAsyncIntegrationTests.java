@@ -13,6 +13,8 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -40,9 +42,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClientsTestBase {
-    private RegistryArtifactAsync asyncClient;
-    private RegistryArtifact client;
 
     @BeforeEach
     void beforeEach() {
@@ -90,8 +91,8 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getMultiArchitectureImagePropertiesWithResponse(HttpClient httpClient) {
-        asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
-        client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifactAsync asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifact client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
         Mono<Response<ArtifactManifestProperties>> safeTestRegistyArtifacts = asyncClient.getManifestPropertiesWithResponse()
             .flatMap(res -> {
@@ -118,8 +119,8 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getMultiArchitectureImagePropertiesWithResponseThrows(HttpClient httpClient) {
-        asyncClient = getRegistryArtifactAsyncClient(httpClient, DIGEST_UNKNOWN);
-        client = getRegistryArtifactClient(httpClient, DIGEST_UNKNOWN);
+        RegistryArtifactAsync asyncClient = getRegistryArtifactAsyncClient(httpClient, DIGEST_UNKNOWN);
+        RegistryArtifact client = getRegistryArtifactClient(httpClient, DIGEST_UNKNOWN);
 
         StepVerifier.create(asyncClient.getManifestPropertiesWithResponse())
             .verifyError(ResourceNotFoundException.class);
@@ -136,8 +137,8 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     public void listTagProperties(HttpClient httpClient) {
         String digest = getDigest(httpClient);
 
-        asyncClient = getRegistryArtifactAsyncClient(httpClient, digest);
-        client = getRegistryArtifactClient(httpClient, digest);
+        RegistryArtifactAsync asyncClient = getRegistryArtifactAsyncClient(httpClient, digest);
+        RegistryArtifact client = getRegistryArtifactClient(httpClient, digest);
         StepVerifier.create(asyncClient.listTagProperties())
             .recordWith(ArrayList::new)
             .thenConsumeWhile(x -> true)
@@ -165,9 +166,8 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listTagPropertiesWithPageSize(HttpClient httpClient) {
-
-        asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
-        client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifactAsync asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifact client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
         StepVerifier.create(asyncClient.listTagProperties().byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
@@ -182,8 +182,8 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listTagPropertiesWithInvalidPageSize(HttpClient httpClient) {
-        asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
-        client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifactAsync asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifact client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
         StepVerifier.create(asyncClient.listTagProperties().byPage(-1))
             .verifyError(IllegalArgumentException.class);
@@ -194,8 +194,8 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listTagPropertiesWithPageSizeAndOrderBy(HttpClient httpClient) {
-        asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
-        client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifactAsync asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifact client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
         StepVerifier.create(asyncClient.listTagProperties(ArtifactTagOrder.LAST_UPDATED_ON_ASCENDING).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
@@ -210,8 +210,8 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listTagPropertiesWithPageSizeNoOrderBy(HttpClient httpClient) {
-        asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
-        client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifactAsync asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifact client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
         StepVerifier.create(asyncClient.listTagProperties(ArtifactTagOrder.NONE).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
@@ -225,8 +225,8 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getTagProperties(HttpClient httpClient) {
-        asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
-        client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifactAsync asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifact client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
         StepVerifier.create(asyncClient.getTagPropertiesWithResponse(V1_TAG_NAME))
             .assertNext(res -> validateTagProperties(res, V1_TAG_NAME))
@@ -243,8 +243,8 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getTagPropertiesWithResponseThrows(HttpClient httpClient) {
-        asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
-        client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifactAsync asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifact client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
         StepVerifier.create(asyncClient.getTagPropertiesWithResponse(TAG_UNKNOWN))
             .verifyError(ResourceNotFoundException.class);
@@ -277,8 +277,8 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void convenienceMethods(HttpClient httpClient) {
-        asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
-        client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifactAsync asyncClient = getRegistryArtifactAsyncClient(httpClient, LATEST_TAG_NAME);
+        RegistryArtifact client = getRegistryArtifactClient(httpClient, LATEST_TAG_NAME);
 
         String registryEndpoint = REGISTRY_ENDPOINT;
         String registryName = REGISTRY_NAME;

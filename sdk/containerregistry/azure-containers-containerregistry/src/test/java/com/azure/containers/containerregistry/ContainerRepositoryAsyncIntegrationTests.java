@@ -13,6 +13,8 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -34,27 +36,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryClientsTestBase {
 
-    private ContainerRepositoryAsync asyncClient;
-    private ContainerRepository client;
-    private ContainerRepositoryProperties contentProperties;
-
     @BeforeEach
     void beforeEach() {
         TestUtils.importImage(getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
-    }
-
-    @AfterEach
-    void afterEach() {
-        if (getTestMode() == TestMode.PLAYBACK) {
-            return;
-        }
-
-        if (contentProperties == null) {
-            return;
-        }
-
-        client = getContainerRepository(HttpClient.createDefault());
-        client.updateProperties(defaultRepoWriteableProperties);
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
@@ -96,8 +80,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getPropertiesWithResponse(HttpClient httpClient) {
-        asyncClient = getContainerRepositoryAsync(httpClient);
-        client = getContainerRepository(httpClient);
+        ContainerRepositoryAsync asyncClient = getContainerRepositoryAsync(httpClient);
+        ContainerRepository client = getContainerRepository(httpClient);
 
         StepVerifier.create(asyncClient.getPropertiesWithResponse())
             .assertNext(this::validateProperties)
@@ -114,8 +98,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getUnknownRepositoryPropertiesWithResponse(HttpClient httpClient) {
-        asyncClient = getUnknownContainerRepositoryAsync(httpClient);
-        client = getUnknownContainerRepository(httpClient);
+        ContainerRepositoryAsync asyncClient = getUnknownContainerRepositoryAsync(httpClient);
+        ContainerRepository client = getUnknownContainerRepository(httpClient);
 
         StepVerifier.create(asyncClient.getPropertiesWithResponse())
             .verifyError(ResourceNotFoundException.class);
@@ -131,8 +115,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listArtifacts(HttpClient httpClient) {
-        asyncClient = getContainerRepositoryAsync(httpClient);
-        client = getContainerRepository(httpClient);
+        ContainerRepositoryAsync asyncClient = getContainerRepositoryAsync(httpClient);
+        ContainerRepository client = getContainerRepository(httpClient);
 
         StepVerifier.create(asyncClient.listManifestProperties())
             .recordWith(ArrayList::new)
@@ -149,8 +133,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listArtifactsWithPageSize(HttpClient httpClient) {
-        asyncClient = getContainerRepositoryAsync(httpClient);
-        client = getContainerRepository(httpClient);
+        ContainerRepositoryAsync asyncClient = getContainerRepositoryAsync(httpClient);
+        ContainerRepository client = getContainerRepository(httpClient);
 
         StepVerifier.create(asyncClient.listManifestProperties().byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
@@ -170,8 +154,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listArtifactsWithPageSizeAndOrderBy(HttpClient httpClient) {
-        asyncClient = getContainerRepositoryAsync(httpClient);
-        client = getContainerRepository(httpClient);
+        ContainerRepositoryAsync asyncClient = getContainerRepositoryAsync(httpClient);
+        ContainerRepository client = getContainerRepository(httpClient);
 
         StepVerifier.create(asyncClient.listManifestProperties(ArtifactManifestOrder.LAST_UPDATED_ON_ASCENDING).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
@@ -191,8 +175,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listArtifactsWithPageSizeNoOrderBy(HttpClient httpClient) {
-        asyncClient = getContainerRepositoryAsync(httpClient);
-        client = getContainerRepository(httpClient);
+        ContainerRepositoryAsync asyncClient = getContainerRepositoryAsync(httpClient);
+        ContainerRepository client = getContainerRepository(httpClient);
 
         StepVerifier.create(asyncClient.listManifestProperties(ArtifactManifestOrder.NONE).byPage(PAGESIZE_2))
             .recordWith(ArrayList::new)
@@ -206,10 +190,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void updateProperties(HttpClient httpClient) {
-        asyncClient = getContainerRepositoryAsync(httpClient);
-        client = getContainerRepository(httpClient);
-
-        contentProperties = repoWriteableProperties;
+        ContainerRepositoryAsync asyncClient = getContainerRepositoryAsync(httpClient);
+        ContainerRepository client = getContainerRepository(httpClient);
 
         StepVerifier.create(asyncClient.updatePropertiesWithResponse(repoWriteableProperties))
             .assertNext(res -> validateRepoContentProperties(res.getValue()))
@@ -236,8 +218,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getArtifactRegistry(HttpClient httpClient) {
-        asyncClient = getContainerRepositoryAsync(httpClient);
-        client = getContainerRepository(httpClient);
+        ContainerRepositoryAsync asyncClient = getContainerRepositoryAsync(httpClient);
+        ContainerRepository client = getContainerRepository(httpClient);
 
         RegistryArtifactAsync registryArtifactAsync = asyncClient.getArtifact(LATEST_TAG_NAME);
         assertNotNull(registryArtifactAsync);
@@ -253,8 +235,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getArtifactTestThrows(HttpClient httpClient) {
-        asyncClient = getContainerRepositoryAsync(httpClient);
-        client = getContainerRepository(httpClient);
+        ContainerRepositoryAsync asyncClient = getContainerRepositoryAsync(httpClient);
+        ContainerRepository client = getContainerRepository(httpClient);
 
         assertThrows(NullPointerException.class, () -> client.getArtifact(null));
         assertThrows(IllegalArgumentException.class, () -> client.getArtifact(""));
@@ -266,8 +248,8 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void convenienceMethods(HttpClient httpClient) {
-        asyncClient = getContainerRepositoryAsync(httpClient);
-        client = getContainerRepository(httpClient);
+        ContainerRepositoryAsync asyncClient = getContainerRepositoryAsync(httpClient);
+        ContainerRepository client = getContainerRepository(httpClient);
 
         String registryEndpoint = REGISTRY_ENDPOINT;
         if (getTestMode() == TestMode.PLAYBACK) {

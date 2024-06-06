@@ -42,10 +42,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ContainerRegistryClientIntegrationTests extends ContainerRegistryClientsTestBase {
-
-    private ContainerRegistryAsyncClient registryAsyncClient;
-    private ContainerRegistryClient registryClient;
-
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
             .assertAsync()
@@ -82,8 +78,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listRepositoryNames(HttpClient httpClient) {
-        registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
-        registryClient = getContainerRegistryClient(httpClient);
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
+        ContainerRegistryClient registryClient = getContainerRegistryClient(httpClient);
 
         StepVerifier.create(registryAsyncClient.listRepositoryNames())
             .recordWith(ArrayList::new)
@@ -98,8 +94,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listRepositoryNamesWithPageSize(HttpClient httpClient) {
-        registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
-        registryClient = getContainerRegistryClient(httpClient);
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
+        ContainerRegistryClient registryClient = getContainerRegistryClient(httpClient);
 
         StepVerifier.create(registryAsyncClient.listRepositoryNames().byPage(PAGESIZE_1))
             .recordWith(ArrayList::new)
@@ -116,8 +112,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listRepositoryNamesWithInvalidPageSize(HttpClient httpClient) {
-        registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
-        registryClient = getContainerRegistryClient(httpClient);
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
+        ContainerRegistryClient registryClient = getContainerRegistryClient(httpClient);
 
         ArrayList<String> repositories = new ArrayList<>();
         assertThrows(IllegalArgumentException.class, () -> registryClient.listRepositoryNames().iterableByPage(-1)
@@ -130,8 +126,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void deleteRepositoryWithResponseThrows(HttpClient httpClient) {
-        registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
-        registryClient = getContainerRegistryClient(httpClient);
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
+        ContainerRegistryClient registryClient = getContainerRegistryClient(httpClient);
 
         StepVerifier.create(registryAsyncClient.deleteRepositoryWithResponse(null))
             .verifyError(NullPointerException.class);
@@ -144,8 +140,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getContainerRepository(HttpClient httpClient) {
-        registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
-        registryClient = getContainerRegistryClient(httpClient);
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
+        ContainerRegistryClient registryClient = getContainerRegistryClient(httpClient);
 
         ContainerRepositoryAsync repositoryAsync = registryAsyncClient.getRepository(HELLO_WORLD_REPOSITORY_NAME);
         assertNotNull(repositoryAsync);
@@ -161,8 +157,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getArtifactRegistry(HttpClient httpClient) {
-        registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
-        registryClient = getContainerRegistryClient(httpClient);
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
+        ContainerRegistryClient registryClient = getContainerRegistryClient(httpClient);
 
         RegistryArtifactAsync registryArtifactAsync = registryAsyncClient.getArtifact(HELLO_WORLD_REPOSITORY_NAME, LATEST_TAG_NAME);
         assertNotNull(registryArtifactAsync);
@@ -178,8 +174,8 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void convenienceProperties(HttpClient httpClient) {
-        registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
-        registryClient = getContainerRegistryClient(httpClient);
+        ContainerRegistryAsyncClient registryAsyncClient = getContainerRegistryAsyncClient(httpClient);
+        ContainerRegistryClient registryClient = getContainerRegistryClient(httpClient);
 
         String registryEndpoint = REGISTRY_ENDPOINT;
         if (getTestMode() == TestMode.PLAYBACK) {

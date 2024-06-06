@@ -94,6 +94,10 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
         }
     }
 
+    HttpClient getHttpClient() {
+        return interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : HttpClient.createDefault();
+    }
+
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient) {
         TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
         return getContainerRegistryBuilder(httpClient, credential);
