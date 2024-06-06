@@ -1303,8 +1303,11 @@ public class BlobAsyncApiTests extends BlobTestBase {
         // There is a sas token attached at the end. Only check that the path is the same.
         StepVerifier.create(destBlob.getProperties())
             .assertNext(r -> {
-                // disable recording copy source URL since the URL is redacted in playback mode
-                assertNotNull(r.getCopySource());
+                try {
+                    assertTrue(r.getCopySource().contains(new URL(sourceBlob.getBlobUrl()).getPath()));
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
                 assertEquals("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", r.getObjectReplicationDestinationPolicyId());
             })
             .verifyComplete();
@@ -1862,8 +1865,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 assertNotNull(it.getValue());
                 assertNotNull(it.getValue().getCopyId());
                 if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
-                    // disable recording copy source URL since the URL is redacted in playback mode
-                    assertNotNull(it.getValue().getCopySourceUrl());
+                    assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
                 } else {
                     assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
                 }
@@ -1883,8 +1885,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             assertNotNull(it.getValue());
             assertNotNull(it.getValue().getCopyId());
             if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
-                // disable recording copy source URL since the URL is redacted in playback mode
-                assertNotNull(it.getValue().getCopySourceUrl());
+                assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
             } else {
                 assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
             }

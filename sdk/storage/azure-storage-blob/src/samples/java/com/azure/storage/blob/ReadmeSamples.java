@@ -360,8 +360,6 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-setProxy
         ProxyOptions options = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 888));
         BlobServiceClient client = new BlobServiceClientBuilder()
-            .endpoint("<ENDPOINT>")
-            .sasToken("<SAS_TOKEN>")
             .httpClient(new NettyAsyncHttpClientBuilder().proxy(options).build())
             .buildClient();
         // END: readme-sample-setProxy
@@ -372,8 +370,6 @@ public class ReadmeSamples {
         HttpClientOptions clientOptions = new HttpClientOptions()
             .setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 888)));
         BlobServiceClient client = new BlobServiceClientBuilder()
-            .endpoint("<ENDPOINT>")
-            .sasToken("<SAS_TOKEN>")
             .clientOptions(clientOptions)
             .buildClient();
         // END: readme-sample-setProxy2

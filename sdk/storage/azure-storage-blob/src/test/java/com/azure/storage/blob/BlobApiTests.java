@@ -96,7 +96,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -360,66 +359,6 @@ public class BlobApiTests extends BlobTestBase {
         bc.uploadWithResponse(blobUploadOptions, null, null);
         BlobProperties properties = bc.getProperties();
         assertEquals(AccessTier.COLD, properties.getAccessTier());
-    }
-
-    @LiveOnly
-    @Test
-    public void uploadAndDownloadAndUploadAgain() {
-        byte[] randomData = getRandomByteArray(20 * Constants.MB);
-        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
-
-        String blobName = generateBlobName();
-        BlobClient blobClient = cc.getBlobClient(blobName);
-
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong((long) Constants.MB)
-            .setMaxSingleUploadSizeLong(2L * Constants.MB)
-            .setMaxConcurrency(5);
-        BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(input)
-            .setParallelTransferOptions(parallelTransferOptions);
-
-        blobClient.uploadWithResponse(parallelUploadOptions, null, null);
-
-        InputStream inputStream = blobClient.openInputStream();
-
-        // Upload the downloaded content to a different location
-        String blobName2 = generateBlobName();
-
-        parallelUploadOptions = new BlobParallelUploadOptions(inputStream)
-            .setParallelTransferOptions(parallelTransferOptions);
-
-        BlobClient blobClient2 = cc.getBlobClient(blobName2);
-        blobClient2.uploadWithResponse(parallelUploadOptions, null, null);
-    }
-
-    @LiveOnly
-    @Test
-    public void uploadAndDownloadAndUploadAgainWithSize() {
-        byte[] randomData = getRandomByteArray(20 * Constants.MB);
-        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
-
-        String blobName = generateBlobName();
-        BlobClient blobClient = cc.getBlobClient(blobName);
-
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-            .setBlockSizeLong((long) Constants.MB)
-            .setMaxSingleUploadSizeLong(2L * Constants.MB)
-            .setMaxConcurrency(5);
-        BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(input)
-            .setParallelTransferOptions(parallelTransferOptions);
-
-        blobClient.uploadWithResponse(parallelUploadOptions, null, null);
-
-        InputStream inputStream = blobClient.openInputStream();
-
-        // Upload the downloaded content to a different location
-        String blobName2 = generateBlobName();
-
-        parallelUploadOptions = new BlobParallelUploadOptions(inputStream, 20 * Constants.MB)
-            .setParallelTransferOptions(parallelTransferOptions);
-
-        BlobClient blobClient2 = cc.getBlobClient(blobName2);
-        blobClient2.uploadWithResponse(parallelUploadOptions, null, null);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -1442,8 +1381,7 @@ public class BlobApiTests extends BlobTestBase {
             "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca");
 
         // There is a sas token attached at the end. Only check that the path is the same.
-        // disable recording copy source URL since the URL is redacted in playback mode
-        assertNotNull(destProperties.getCopySource());
+        assertTrue(destProperties.getCopySource().contains(new URL(sourceBlob.getBlobUrl()).getPath()));
         assertEquals(destProperties.getObjectReplicationDestinationPolicyId(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80");
         assertEquals(destDownloadHeaders.getDeserializedHeaders().getObjectReplicationDestinationPolicyId(),
             "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80");
@@ -1947,8 +1885,7 @@ public class BlobApiTests extends BlobTestBase {
             assertNotNull(it.getValue());
             assertNotNull(it.getValue().getCopyId());
             if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
-                // disable recording copy source URL since the URL is redacted in playback mode
-                assertNotNull(it.getValue().getCopySourceUrl());
+                assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
             } else {
                 assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
             }
@@ -1968,8 +1905,7 @@ public class BlobApiTests extends BlobTestBase {
             assertNotNull(it.getValue());
             assertNotNull(it.getValue().getCopyId());
             if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
-                // disable recording copy source URL since the URL is redacted in playback mode
-                assertNotNull(it.getValue().getCopySourceUrl());
+                assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
             } else {
                 assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
             }

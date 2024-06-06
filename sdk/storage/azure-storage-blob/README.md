@@ -554,8 +554,6 @@ BlobServiceClient blobStorageClient = new BlobServiceClientBuilder()
 ```java readme-sample-setProxy
 ProxyOptions options = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 888));
 BlobServiceClient client = new BlobServiceClientBuilder()
-    .endpoint("<ENDPOINT>")
-    .sasToken("<SAS_TOKEN>")
     .httpClient(new NettyAsyncHttpClientBuilder().proxy(options).build())
     .buildClient();
 ```
@@ -568,8 +566,6 @@ Allow the client builder to determine the `HttpClient` type to be used but const
 HttpClientOptions clientOptions = new HttpClientOptions()
     .setProxyOptions(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 888)));
 BlobServiceClient client = new BlobServiceClientBuilder()
-    .endpoint("<ENDPOINT>")
-    .sasToken("<SAS_TOKEN>")
     .clientOptions(clientOptions)
     .buildClient();
 ```

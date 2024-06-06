@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobDownloadResponse;
@@ -34,9 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@LiveOnly
 public class CPKTests extends BlobTestBase {
-    // LiveOnly because "x-ms-encryption-key-sha256 cannot be stored in recordings"
     private CustomerProvidedKey key;
     private BlobContainerClient cpkContainer;
     private BlockBlobClient cpkBlockBlob;
@@ -60,7 +57,6 @@ public class CPKTests extends BlobTestBase {
         BlockBlobClient existingBlobSetup = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient();
         existingBlobSetup.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         cpkExistingBlob = existingBlobSetup;
-
     }
 
     @Test
