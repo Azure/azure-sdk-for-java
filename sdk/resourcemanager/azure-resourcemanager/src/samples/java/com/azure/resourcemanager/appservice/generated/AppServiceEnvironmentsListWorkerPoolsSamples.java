@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsListWorkerPoolsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * AppServiceEnvironments_ListWorkerPools.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ListWorkerPools.json
      */
     /**
      * Sample code: Get all worker pools of an App Service Environment.
@@ -19,7 +18,10 @@ public final class AppServiceEnvironmentsListWorkerPoolsSamples {
      */
     public static void
         getAllWorkerPoolsOfAnAppServiceEnvironment(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().listWorkerPools("test-rg", "test-ase",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .listWorkerPools("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

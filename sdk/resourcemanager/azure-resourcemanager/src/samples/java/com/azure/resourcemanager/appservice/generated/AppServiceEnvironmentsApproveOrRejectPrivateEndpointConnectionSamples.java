@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
+import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
 
 /**
@@ -12,8 +12,7 @@ import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
  */
 public final class AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * AppServiceEnvironments_ApproveOrRejectPrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ApproveOrRejectPrivateEndpointConnection.json
      */
     /**
      * Sample code: Approves or rejects a private endpoint connection.
@@ -22,11 +21,14 @@ public final class AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectio
      */
     public static void
         approvesOrRejectsAPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().approveOrRejectPrivateEndpointConnection(
-            "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98",
-            new PrivateLinkConnectionApprovalRequestResource()
-                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("Approved")
-                    .withDescription("Approved by johndoe@company.com")),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .approveOrRejectPrivateEndpointConnection("test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98",
+                new RemotePrivateEndpointConnectionArmResourceInner()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("Approved")
+                        .withDescription("Approved by johndoe@company.com")),
+                com.azure.core.util.Context.NONE);
     }
 }

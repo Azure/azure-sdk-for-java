@@ -79,12 +79,14 @@ public final class MigrateMySqlRequestProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectionString in model MigrateMySqlRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model MigrateMySqlRequestProperties"));
         }
         if (migrationType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property migrationType in model MigrateMySqlRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property migrationType in model MigrateMySqlRequestProperties"));
         }
     }
 
