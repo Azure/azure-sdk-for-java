@@ -42,6 +42,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -64,6 +66,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Tests {@link TableClient}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class TableClientTest extends TableClientTestBase {
     private TableClient tableClient;
 

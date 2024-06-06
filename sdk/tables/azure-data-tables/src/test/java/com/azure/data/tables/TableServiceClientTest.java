@@ -37,6 +37,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
@@ -60,6 +62,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests methods for {@link TableServiceClient}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class TableServiceClientTest extends TableServiceClientTestBase {
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
     private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();

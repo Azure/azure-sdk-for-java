@@ -34,6 +34,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
@@ -54,6 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests methods for {@link TableServiceAsyncClient}.
  */
+@Execution(ExecutionMode.SAME_THREAD)
 public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(100);
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
