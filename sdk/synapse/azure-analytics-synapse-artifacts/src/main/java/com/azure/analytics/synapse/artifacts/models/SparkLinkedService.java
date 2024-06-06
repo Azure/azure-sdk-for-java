@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Spark Server linked service.
- */
+/** Spark Server linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Spark")
 @JsonFlatten
@@ -109,15 +107,12 @@ public class SparkLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /**
-     * Creates an instance of SparkLinkedService class.
-     */
-    public SparkLinkedService() {
-    }
+    /** Creates an instance of SparkLinkedService class. */
+    public SparkLinkedService() {}
 
     /**
      * Get the host property: IP address or host name of the Spark server.
-     * 
+     *
      * @return the host value.
      */
     public Object getHost() {
@@ -126,7 +121,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Set the host property: IP address or host name of the Spark server.
-     * 
+     *
      * @param host the host value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -137,7 +132,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Get the port property: The TCP port that the Spark server uses to listen for client connections.
-     * 
+     *
      * @return the port value.
      */
     public Object getPort() {
@@ -146,7 +141,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Set the port property: The TCP port that the Spark server uses to listen for client connections.
-     * 
+     *
      * @param port the port value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -157,7 +152,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Get the serverType property: The type of Spark server.
-     * 
+     *
      * @return the serverType value.
      */
     public SparkServerType getServerType() {
@@ -166,7 +161,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Set the serverType property: The type of Spark server.
-     * 
+     *
      * @param serverType the serverType value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -177,7 +172,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Get the thriftTransportProtocol property: The transport protocol to use in the Thrift layer.
-     * 
+     *
      * @return the thriftTransportProtocol value.
      */
     public SparkThriftTransportProtocol getThriftTransportProtocol() {
@@ -186,7 +181,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Set the thriftTransportProtocol property: The transport protocol to use in the Thrift layer.
-     * 
+     *
      * @param thriftTransportProtocol the thriftTransportProtocol value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -197,7 +192,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Get the authenticationType property: The authentication method used to access the Spark server.
-     * 
+     *
      * @return the authenticationType value.
      */
     public SparkAuthenticationType getAuthenticationType() {
@@ -206,7 +201,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: The authentication method used to access the Spark server.
-     * 
+     *
      * @param authenticationType the authenticationType value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -217,7 +212,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Get the username property: The user name that you use to access Spark Server.
-     * 
+     *
      * @return the username value.
      */
     public Object getUsername() {
@@ -226,7 +221,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Set the username property: The user name that you use to access Spark Server.
-     * 
+     *
      * @param username the username value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -237,7 +232,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password corresponding to the user name that you provided in the Username field.
-     * 
+     *
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -246,7 +241,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password corresponding to the user name that you provided in the Username field.
-     * 
+     *
      * @param password the password value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -257,7 +252,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Get the httpPath property: The partial URL corresponding to the Spark server.
-     * 
+     *
      * @return the httpPath value.
      */
     public Object getHttpPath() {
@@ -266,7 +261,7 @@ public class SparkLinkedService extends LinkedService {
 
     /**
      * Set the httpPath property: The partial URL corresponding to the Spark server.
-     * 
+     *
      * @param httpPath the httpPath value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -278,7 +273,7 @@ public class SparkLinkedService extends LinkedService {
     /**
      * Get the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
      * value is false.
-     * 
+     *
      * @return the enableSsl value.
      */
     public Object getEnableSsl() {
@@ -288,7 +283,7 @@ public class SparkLinkedService extends LinkedService {
     /**
      * Set the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
      * value is false.
-     * 
+     *
      * @param enableSsl the enableSsl value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -298,10 +293,10 @@ public class SparkLinkedService extends LinkedService {
     }
 
     /**
-     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR.
-     * 
+     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
+     *
      * @return the trustedCertPath value.
      */
     public Object getTrustedCertPath() {
@@ -309,10 +304,10 @@ public class SparkLinkedService extends LinkedService {
     }
 
     /**
-     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR.
-     * 
+     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
+     *
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -324,7 +319,7 @@ public class SparkLinkedService extends LinkedService {
     /**
      * Get the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
      * from a specified PEM file. The default value is false.
-     * 
+     *
      * @return the useSystemTrustStore value.
      */
     public Object getUseSystemTrustStore() {
@@ -334,7 +329,7 @@ public class SparkLinkedService extends LinkedService {
     /**
      * Set the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
      * from a specified PEM file. The default value is false.
-     * 
+     *
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -346,7 +341,7 @@ public class SparkLinkedService extends LinkedService {
     /**
      * Get the allowHostNameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
      * the host name of the server when connecting over SSL. The default value is false.
-     * 
+     *
      * @return the allowHostNameCNMismatch value.
      */
     public Object getAllowHostNameCNMismatch() {
@@ -356,7 +351,7 @@ public class SparkLinkedService extends LinkedService {
     /**
      * Set the allowHostNameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
      * the host name of the server when connecting over SSL. The default value is false.
-     * 
+     *
      * @param allowHostNameCNMismatch the allowHostNameCNMismatch value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -368,7 +363,7 @@ public class SparkLinkedService extends LinkedService {
     /**
      * Get the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
      * The default value is false.
-     * 
+     *
      * @return the allowSelfSignedServerCert value.
      */
     public Object getAllowSelfSignedServerCert() {
@@ -378,7 +373,7 @@ public class SparkLinkedService extends LinkedService {
     /**
      * Set the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
      * The default value is false.
-     * 
+     *
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -388,9 +383,9 @@ public class SparkLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -398,9 +393,9 @@ public class SparkLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SparkLinkedService object itself.
      */
@@ -409,36 +404,28 @@ public class SparkLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SparkLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SparkLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SparkLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SparkLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

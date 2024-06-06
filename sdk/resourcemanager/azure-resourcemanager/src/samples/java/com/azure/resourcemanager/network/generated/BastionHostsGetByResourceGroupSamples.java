@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class BastionHostsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/BastionHostDeveloperGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/BastionHostDeveloperGet.json
      */
     /**
      * Sample code: Get Developer Bastion Host.
@@ -18,13 +17,15 @@ public final class BastionHostsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDeveloperBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getBastionHosts().getByResourceGroupWithResponse("rg1",
-            "bastionhostdeveloper'", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getBastionHosts()
+            .getByResourceGroupWithResponse("rg1", "bastionhostdeveloper'", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/BastionHostGetWithZones.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/BastionHostGetWithZones.json
      */
     /**
      * Sample code: Get Bastion Host With Zones.
@@ -32,13 +33,15 @@ public final class BastionHostsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getBastionHostWithZones(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getBastionHosts().getByResourceGroupWithResponse("rg1",
-            "bastionhosttenant'", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getBastionHosts()
+            .getByResourceGroupWithResponse("rg1", "bastionhosttenant'", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/BastionHostGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/BastionHostGet.json
      */
     /**
      * Sample code: Get Bastion Host.
@@ -46,7 +49,10 @@ public final class BastionHostsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getBastionHosts().getByResourceGroupWithResponse("rg1",
-            "bastionhosttenant'", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getBastionHosts()
+            .getByResourceGroupWithResponse("rg1", "bastionhosttenant'", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Azure ML Update Resource management activity.
- */
+/** Azure ML Update Resource management activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureMLUpdateResource")
 @JsonFlatten
@@ -34,21 +32,18 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
 
     /*
      * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the
-     * update operation. Type: string (or Expression with resultType string).
+     * update operation.  Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.trainedModelFilePath", required = true)
     private Object trainedModelFilePath;
 
-    /**
-     * Creates an instance of AzureMLUpdateResourceActivity class.
-     */
-    public AzureMLUpdateResourceActivity() {
-    }
+    /** Creates an instance of AzureMLUpdateResourceActivity class. */
+    public AzureMLUpdateResourceActivity() {}
 
     /**
      * Get the trainedModelName property: Name of the Trained Model module in the Web Service experiment to be updated.
      * Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the trainedModelName value.
      */
     public Object getTrainedModelName() {
@@ -58,7 +53,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * Set the trainedModelName property: Name of the Trained Model module in the Web Service experiment to be updated.
      * Type: string (or Expression with resultType string).
-     * 
+     *
      * @param trainedModelName the trainedModelName value to set.
      * @return the AzureMLUpdateResourceActivity object itself.
      */
@@ -70,7 +65,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * Get the trainedModelLinkedServiceName property: Name of Azure Storage linked service holding the .ilearner file
      * that will be uploaded by the update operation.
-     * 
+     *
      * @return the trainedModelLinkedServiceName value.
      */
     public LinkedServiceReference getTrainedModelLinkedServiceName() {
@@ -80,12 +75,12 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
     /**
      * Set the trainedModelLinkedServiceName property: Name of Azure Storage linked service holding the .ilearner file
      * that will be uploaded by the update operation.
-     * 
+     *
      * @param trainedModelLinkedServiceName the trainedModelLinkedServiceName value to set.
      * @return the AzureMLUpdateResourceActivity object itself.
      */
-    public AzureMLUpdateResourceActivity
-        setTrainedModelLinkedServiceName(LinkedServiceReference trainedModelLinkedServiceName) {
+    public AzureMLUpdateResourceActivity setTrainedModelLinkedServiceName(
+            LinkedServiceReference trainedModelLinkedServiceName) {
         this.trainedModelLinkedServiceName = trainedModelLinkedServiceName;
         return this;
     }
@@ -94,7 +89,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * Get the trainedModelFilePath property: The relative file path in trainedModelLinkedService to represent the
      * .ilearner file that will be uploaded by the update operation. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the trainedModelFilePath value.
      */
     public Object getTrainedModelFilePath() {
@@ -105,7 +100,7 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * Set the trainedModelFilePath property: The relative file path in trainedModelLinkedService to represent the
      * .ilearner file that will be uploaded by the update operation. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param trainedModelFilePath the trainedModelFilePath value to set.
      * @return the AzureMLUpdateResourceActivity object itself.
      */
@@ -114,72 +109,56 @@ public class AzureMLUpdateResourceActivity extends ExecutionActivity {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureMLUpdateResourceActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureMLUpdateResourceActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureMLUpdateResourceActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureMLUpdateResourceActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureMLUpdateResourceActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureMLUpdateResourceActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureMLUpdateResourceActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureMLUpdateResourceActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

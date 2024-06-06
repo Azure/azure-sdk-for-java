@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Request body structure for data flow expression preview.
- */
+/** Request body structure for data flow expression preview. */
 @Fluent
 public final class DataFlowDebugCommandRequest {
     /*
@@ -30,15 +28,12 @@ public final class DataFlowDebugCommandRequest {
     @JsonProperty(value = "commandPayload")
     private DataFlowDebugCommandPayload commandPayload;
 
-    /**
-     * Creates an instance of DataFlowDebugCommandRequest class.
-     */
-    public DataFlowDebugCommandRequest() {
-    }
+    /** Creates an instance of DataFlowDebugCommandRequest class. */
+    public DataFlowDebugCommandRequest() {}
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     * 
+     *
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -47,7 +42,7 @@ public final class DataFlowDebugCommandRequest {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     * 
+     *
      * @param sessionId the sessionId value to set.
      * @return the DataFlowDebugCommandRequest object itself.
      */
@@ -58,7 +53,7 @@ public final class DataFlowDebugCommandRequest {
 
     /**
      * Get the command property: The command type.
-     * 
+     *
      * @return the command value.
      */
     public DataFlowDebugCommandType getCommand() {
@@ -67,7 +62,7 @@ public final class DataFlowDebugCommandRequest {
 
     /**
      * Set the command property: The command type.
-     * 
+     *
      * @param command the command value to set.
      * @return the DataFlowDebugCommandRequest object itself.
      */
@@ -78,7 +73,7 @@ public final class DataFlowDebugCommandRequest {
 
     /**
      * Get the commandPayload property: The command payload object.
-     * 
+     *
      * @return the commandPayload value.
      */
     public DataFlowDebugCommandPayload getCommandPayload() {
@@ -87,7 +82,7 @@ public final class DataFlowDebugCommandRequest {
 
     /**
      * Set the commandPayload property: The command payload object.
-     * 
+     *
      * @param commandPayload the commandPayload value to set.
      * @return the DataFlowDebugCommandRequest object itself.
      */

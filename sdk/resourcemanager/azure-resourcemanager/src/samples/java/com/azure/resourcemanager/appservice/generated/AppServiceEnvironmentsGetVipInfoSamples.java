@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsGetVipInfoSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/AppServiceEnvironments_GetVipInfo.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_GetVipInfo.json
      */
     /**
      * Sample code: Get IP addresses assigned to an App Service Environment.
@@ -20,7 +18,10 @@ public final class AppServiceEnvironmentsGetVipInfoSamples {
      */
     public static void
         getIPAddressesAssignedToAnAppServiceEnvironment(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().getVipInfoWithResponse("test-rg",
-            "test-ase", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .getVipInfoWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

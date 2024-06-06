@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LinkConnectionRefreshStatus model.
- */
+/** The LinkConnectionRefreshStatus model. */
 @Immutable
 public final class LinkConnectionRefreshStatus {
     /*
@@ -24,15 +22,12 @@ public final class LinkConnectionRefreshStatus {
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /**
-     * Creates an instance of LinkConnectionRefreshStatus class.
-     */
-    public LinkConnectionRefreshStatus() {
-    }
+    /** Creates an instance of LinkConnectionRefreshStatus class. */
+    public LinkConnectionRefreshStatus() {}
 
     /**
      * Get the refreshStatus property: Link connection refresh status.
-     * 
+     *
      * @return the refreshStatus value.
      */
     public String getRefreshStatus() {
@@ -41,7 +36,7 @@ public final class LinkConnectionRefreshStatus {
 
     /**
      * Get the errorMessage property: Link connection refresh error message.
-     * 
+     *
      * @return the errorMessage value.
      */
     public String getErrorMessage() {

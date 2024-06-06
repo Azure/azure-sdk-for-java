@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class StaticRoutesConfig {
     /*
-     * Boolean indicating whether static routes on this connection are automatically propagate to route tables which
-     * this connection propagates to.
+     * Boolean indicating whether static routes on this connection are automatically propagate to route tables which this connection propagates to.
      */
     @JsonProperty(value = "propagateStaticRoutes", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean propagateStaticRoutes;

@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The GitHubAccessTokenResponse model.
- */
+/** The GitHubAccessTokenResponse model. */
 @Fluent
 public final class GitHubAccessTokenResponse {
     /*
@@ -18,15 +16,12 @@ public final class GitHubAccessTokenResponse {
     @JsonProperty(value = "gitHubAccessToken")
     private String gitHubAccessToken;
 
-    /**
-     * Creates an instance of GitHubAccessTokenResponse class.
-     */
-    public GitHubAccessTokenResponse() {
-    }
+    /** Creates an instance of GitHubAccessTokenResponse class. */
+    public GitHubAccessTokenResponse() {}
 
     /**
      * Get the gitHubAccessToken property: The gitHubAccessToken property.
-     * 
+     *
      * @return the gitHubAccessToken value.
      */
     public String getGitHubAccessToken() {
@@ -35,7 +30,7 @@ public final class GitHubAccessTokenResponse {
 
     /**
      * Set the gitHubAccessToken property: The gitHubAccessToken property.
-     * 
+     *
      * @param gitHubAccessToken the gitHubAccessToken value to set.
      * @return the GitHubAccessTokenResponse object itself.
      */

@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Linked service for SAP ERP Central Component(SAP ECC).
- */
+/** Linked service for SAP ERP Central Component(SAP ECC). */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapEcc")
 @JsonFlatten
@@ -47,16 +45,13 @@ public class SapEccLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
 
-    /**
-     * Creates an instance of SapEccLinkedService class.
-     */
-    public SapEccLinkedService() {
-    }
+    /** Creates an instance of SapEccLinkedService class. */
+    public SapEccLinkedService() {}
 
     /**
      * Get the url property: The URL of SAP ECC OData API. For example,
      * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the url value.
      */
     public String getUrl() {
@@ -66,7 +61,7 @@ public class SapEccLinkedService extends LinkedService {
     /**
      * Set the url property: The URL of SAP ECC OData API. For example,
      * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param url the url value to set.
      * @return the SapEccLinkedService object itself.
      */
@@ -78,7 +73,7 @@ public class SapEccLinkedService extends LinkedService {
     /**
      * Get the username property: The username for Basic authentication. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the username value.
      */
     public String getUsername() {
@@ -88,7 +83,7 @@ public class SapEccLinkedService extends LinkedService {
     /**
      * Set the username property: The username for Basic authentication. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param username the username value to set.
      * @return the SapEccLinkedService object itself.
      */
@@ -99,7 +94,7 @@ public class SapEccLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password for Basic authentication.
-     * 
+     *
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -108,7 +103,7 @@ public class SapEccLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password for Basic authentication.
-     * 
+     *
      * @param password the password value to set.
      * @return the SapEccLinkedService object itself.
      */
@@ -118,10 +113,10 @@ public class SapEccLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
-     * be provided. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
+     * provided. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public String getEncryptedCredential() {
@@ -129,10 +124,10 @@ public class SapEccLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
-     * be provided. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
+     * provided. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapEccLinkedService object itself.
      */
@@ -141,36 +136,28 @@ public class SapEccLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapEccLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapEccLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapEccLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapEccLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

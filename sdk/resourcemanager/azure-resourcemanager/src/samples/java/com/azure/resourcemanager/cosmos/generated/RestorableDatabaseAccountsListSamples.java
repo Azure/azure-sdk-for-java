@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class RestorableDatabaseAccountsListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBRestorableDatabaseAccountNoLocationList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBRestorableDatabaseAccountNoLocationList.json
      */
     /**
      * Sample code: CosmosDBRestorableDatabaseAccountNoLocationList.
@@ -19,7 +18,10 @@ public final class RestorableDatabaseAccountsListSamples {
      */
     public static void
         cosmosDBRestorableDatabaseAccountNoLocationList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getRestorableDatabaseAccounts()
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getRestorableDatabaseAccounts()
             .list(com.azure.core.util.Context.NONE);
     }
 }

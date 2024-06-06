@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SparkServiceError model.
- */
+/** The SparkServiceError model. */
 @Fluent
 public final class SparkServiceError {
     /*
@@ -30,15 +28,12 @@ public final class SparkServiceError {
     @JsonProperty(value = "source")
     private SparkErrorSource source;
 
-    /**
-     * Creates an instance of SparkServiceError class.
-     */
-    public SparkServiceError() {
-    }
+    /** Creates an instance of SparkServiceError class. */
+    public SparkServiceError() {}
 
     /**
      * Get the message property: The message property.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -47,7 +42,7 @@ public final class SparkServiceError {
 
     /**
      * Set the message property: The message property.
-     * 
+     *
      * @param message the message value to set.
      * @return the SparkServiceError object itself.
      */
@@ -58,7 +53,7 @@ public final class SparkServiceError {
 
     /**
      * Get the errorCode property: The errorCode property.
-     * 
+     *
      * @return the errorCode value.
      */
     public String getErrorCode() {
@@ -67,7 +62,7 @@ public final class SparkServiceError {
 
     /**
      * Set the errorCode property: The errorCode property.
-     * 
+     *
      * @param errorCode the errorCode value to set.
      * @return the SparkServiceError object itself.
      */
@@ -78,7 +73,7 @@ public final class SparkServiceError {
 
     /**
      * Get the source property: The source property.
-     * 
+     *
      * @return the source value.
      */
     public SparkErrorSource getSource() {
@@ -87,7 +82,7 @@ public final class SparkServiceError {
 
     /**
      * Set the source property: The source property.
-     * 
+     *
      * @param source the source value to set.
      * @return the SparkServiceError object itself.
      */

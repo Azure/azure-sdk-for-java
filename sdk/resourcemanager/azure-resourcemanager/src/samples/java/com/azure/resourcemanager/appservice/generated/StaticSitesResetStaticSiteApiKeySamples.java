@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmR
  */
 public final class StaticSitesResetStaticSiteApiKeySamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ResetStaticSiteApiKey.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ResetStaticSiteApiKey.json
      */
     /**
      * Sample code: Reset the api key for a static site.
@@ -20,9 +19,13 @@ public final class StaticSitesResetStaticSiteApiKeySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void resetTheApiKeyForAStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().resetStaticSiteApiKeyWithResponse(
-            "rg", "testStaticSite0", new StaticSiteResetPropertiesArmResource()
-                .withRepositoryToken("fakeTokenPlaceholder").withShouldUpdateRepository(true),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .resetStaticSiteApiKeyWithResponse("rg", "testStaticSite0",
+                new StaticSiteResetPropertiesArmResource().withRepositoryToken("fakeTokenPlaceholder")
+                    .withShouldUpdateRepository(true),
+                com.azure.core.util.Context.NONE);
     }
 }

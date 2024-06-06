@@ -53,7 +53,6 @@ import com.azure.resourcemanager.appservice.models.DatabaseConnectionCollection;
 import com.azure.resourcemanager.appservice.models.DatabaseConnectionPatchRequest;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.PrivateEndpointConnectionCollection;
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteBasicAuthPropertiesCollection;
 import com.azure.resourcemanager.appservice.models.StaticSiteBuildCollection;
 import com.azure.resourcemanager.appservice.models.StaticSiteCollection;
@@ -71,9 +70,10 @@ import com.azure.resourcemanager.appservice.models.StaticSitesWorkflowPreviewReq
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in StaticSitesClient.
@@ -92,7 +92,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Initializes an instance of StaticSitesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     StaticSitesClientImpl(WebSiteManagementClientImpl client) {
@@ -102,8 +102,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
-     * The interface defining all the services for WebSiteManagementClientStaticSites to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for WebSiteManagementClientStaticSites to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
@@ -664,7 +664,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
+            @BodyParam("application/json") RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -1002,9 +1002,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Generates a preview workflow file for the static site
-     * 
+     *
      * Description for Generates a preview workflow file for the static site.
-     * 
+     *
      * @param location Location where you plan to create the static site.
      * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
      * properties. See example.
@@ -1044,9 +1044,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Generates a preview workflow file for the static site
-     * 
+     *
      * Description for Generates a preview workflow file for the static site.
-     * 
+     *
      * @param location Location where you plan to create the static site.
      * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
      * properties. See example.
@@ -1085,9 +1085,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Generates a preview workflow file for the static site
-     * 
+     *
      * Description for Generates a preview workflow file for the static site.
-     * 
+     *
      * @param location Location where you plan to create the static site.
      * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
      * properties. See example.
@@ -1105,9 +1105,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Generates a preview workflow file for the static site
-     * 
+     *
      * Description for Generates a preview workflow file for the static site.
-     * 
+     *
      * @param location Location where you plan to create the static site.
      * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
      * properties. See example.
@@ -1125,9 +1125,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Generates a preview workflow file for the static site
-     * 
+     *
      * Description for Generates a preview workflow file for the static site.
-     * 
+     *
      * @param location Location where you plan to create the static site.
      * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
      * properties. See example.
@@ -1144,9 +1144,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get all Static Sites for a subscription.
-     * 
+     *
      * Description for Get all Static Sites for a subscription.
-     * 
+     *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1172,9 +1172,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get all Static Sites for a subscription.
-     * 
+     *
      * Description for Get all Static Sites for a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1202,9 +1202,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get all Static Sites for a subscription.
-     * 
+     *
      * Description for Get all Static Sites for a subscription.
-     * 
+     *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of static sites as paginated response with {@link PagedFlux}.
@@ -1216,9 +1216,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get all Static Sites for a subscription.
-     * 
+     *
      * Description for Get all Static Sites for a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1233,9 +1233,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get all Static Sites for a subscription.
-     * 
+     *
      * Description for Get all Static Sites for a subscription.
-     * 
+     *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of static sites as paginated response with {@link PagedIterable}.
@@ -1247,9 +1247,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get all Static Sites for a subscription.
-     * 
+     *
      * Description for Get all Static Sites for a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1263,9 +1263,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static sites in the specified resource group.
-     * 
+     *
      * Description for Gets all static sites in the specified resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1298,9 +1298,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static sites in the specified resource group.
-     * 
+     *
      * Description for Gets all static sites in the specified resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1334,9 +1334,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static sites in the specified resource group.
-     * 
+     *
      * Description for Gets all static sites in the specified resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1351,9 +1351,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static sites in the specified resource group.
-     * 
+     *
      * Description for Gets all static sites in the specified resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1369,9 +1369,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static sites in the specified resource group.
-     * 
+     *
      * Description for Gets all static sites in the specified resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1385,9 +1385,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static sites in the specified resource group.
-     * 
+     *
      * Description for Gets all static sites in the specified resource group.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1402,9 +1402,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of a static site.
-     * 
+     *
      * Description for Gets the details of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1439,9 +1439,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of a static site.
-     * 
+     *
      * Description for Gets the details of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -1476,9 +1476,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of a static site.
-     * 
+     *
      * Description for Gets the details of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1494,9 +1494,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of a static site.
-     * 
+     *
      * Description for Gets the details of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -1513,9 +1513,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of a static site.
-     * 
+     *
      * Description for Gets the details of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1530,9 +1530,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -1574,9 +1574,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -1618,9 +1618,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -1642,9 +1642,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -1667,9 +1667,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -1686,9 +1686,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -1707,9 +1707,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -1727,9 +1727,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -1748,9 +1748,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -1767,9 +1767,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -1787,9 +1787,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site.
-     * 
+     *
      * Description for Deletes a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1823,9 +1823,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site.
-     * 
+     *
      * Description for Deletes a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
      * @param context The context to associate with this operation.
@@ -1860,9 +1860,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site.
-     * 
+     *
      * Description for Deletes a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1879,9 +1879,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site.
-     * 
+     *
      * Description for Deletes a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
      * @param context The context to associate with this operation.
@@ -1901,9 +1901,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site.
-     * 
+     *
      * Description for Deletes a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1918,9 +1918,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site.
-     * 
+     *
      * Description for Deletes a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
      * @param context The context to associate with this operation.
@@ -1936,9 +1936,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site.
-     * 
+     *
      * Description for Deletes a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1953,9 +1953,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site.
-     * 
+     *
      * Description for Deletes a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
      * @param context The context to associate with this operation.
@@ -1971,9 +1971,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site.
-     * 
+     *
      * Description for Deletes a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1987,9 +1987,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site.
-     * 
+     *
      * Description for Deletes a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
      * @param context The context to associate with this operation.
@@ -2004,9 +2004,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -2048,9 +2048,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -2092,9 +2092,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -2112,9 +2112,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -2132,9 +2132,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
@@ -2151,9 +2151,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of users of a static site.
-     * 
+     *
      * Description for Gets the list of users of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for the users.
@@ -2195,9 +2195,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of users of a static site.
-     * 
+     *
      * Description for Gets the list of users of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for the users.
@@ -2240,9 +2240,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of users of a static site.
-     * 
+     *
      * Description for Gets the list of users of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for the users.
@@ -2260,9 +2260,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of users of a static site.
-     * 
+     *
      * Description for Gets the list of users of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for the users.
@@ -2281,9 +2281,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of users of a static site.
-     * 
+     *
      * Description for Gets the list of users of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for the users.
@@ -2300,9 +2300,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of users of a static site.
-     * 
+     *
      * Description for Gets the list of users of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for the users.
@@ -2320,9 +2320,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes the user entry from the static site.
-     * 
+     *
      * Description for Deletes the user entry from the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the staticsite.
      * @param authprovider The auth provider for this user.
@@ -2365,9 +2365,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes the user entry from the static site.
-     * 
+     *
      * Description for Deletes the user entry from the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the staticsite.
      * @param authprovider The auth provider for this user.
@@ -2410,9 +2410,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes the user entry from the static site.
-     * 
+     *
      * Description for Deletes the user entry from the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the staticsite.
      * @param authprovider The auth provider for this user.
@@ -2431,9 +2431,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes the user entry from the static site.
-     * 
+     *
      * Description for Deletes the user entry from the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the staticsite.
      * @param authprovider The auth provider for this user.
@@ -2452,9 +2452,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes the user entry from the static site.
-     * 
+     *
      * Description for Deletes the user entry from the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the staticsite.
      * @param authprovider The auth provider for this user.
@@ -2470,9 +2470,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Updates a user entry with the listed roles
-     * 
+     *
      * Description for Updates a user entry with the listed roles.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for this user.
@@ -2524,9 +2524,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Updates a user entry with the listed roles
-     * 
+     *
      * Description for Updates a user entry with the listed roles.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for this user.
@@ -2577,9 +2577,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Updates a user entry with the listed roles
-     * 
+     *
      * Description for Updates a user entry with the listed roles.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for this user.
@@ -2599,9 +2599,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Updates a user entry with the listed roles
-     * 
+     *
      * Description for Updates a user entry with the listed roles.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for this user.
@@ -2623,9 +2623,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Updates a user entry with the listed roles
-     * 
+     *
      * Description for Updates a user entry with the listed roles.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for this user.
@@ -2645,9 +2645,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site builds for a particular static site.
-     * 
+     *
      * Description for Gets all static site builds for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2685,9 +2685,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site builds for a particular static site.
-     * 
+     *
      * Description for Gets all static site builds for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -2726,9 +2726,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site builds for a particular static site.
-     * 
+     *
      * Description for Gets all static site builds for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2744,9 +2744,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site builds for a particular static site.
-     * 
+     *
      * Description for Gets all static site builds for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -2764,9 +2764,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site builds for a particular static site.
-     * 
+     *
      * Description for Gets all static site builds for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2781,9 +2781,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site builds for a particular static site.
-     * 
+     *
      * Description for Gets all static site builds for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -2800,9 +2800,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of a static site build.
-     * 
+     *
      * Description for Gets the details of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -2842,9 +2842,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of a static site build.
-     * 
+     *
      * Description for Gets the details of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -2884,9 +2884,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of a static site build.
-     * 
+     *
      * Description for Gets the details of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -2904,9 +2904,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of a static site build.
-     * 
+     *
      * Description for Gets the details of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -2924,9 +2924,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of a static site build.
-     * 
+     *
      * Description for Gets the details of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -2943,9 +2943,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site build.
-     * 
+     *
      * Description for Deletes a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -2985,9 +2985,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site build.
-     * 
+     *
      * Description for Deletes a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3027,9 +3027,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site build.
-     * 
+     *
      * Description for Deletes a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3049,9 +3049,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site build.
-     * 
+     *
      * Description for Deletes a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3073,9 +3073,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site build.
-     * 
+     *
      * Description for Deletes a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3092,9 +3092,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site build.
-     * 
+     *
      * Description for Deletes a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3112,9 +3112,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site build.
-     * 
+     *
      * Description for Deletes a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3131,9 +3131,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site build.
-     * 
+     *
      * Description for Deletes a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3152,9 +3152,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site build.
-     * 
+     *
      * Description for Deletes a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3169,9 +3169,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a static site build.
-     * 
+     *
      * Description for Deletes a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3187,9 +3187,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the app settings of a static site build.
-     * 
+     *
      * Description for Creates or updates the app settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3236,9 +3236,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the app settings of a static site build.
-     * 
+     *
      * Description for Creates or updates the app settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3286,9 +3286,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the app settings of a static site build.
-     * 
+     *
      * Description for Creates or updates the app settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3307,9 +3307,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the app settings of a static site build.
-     * 
+     *
      * Description for Creates or updates the app settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3330,9 +3330,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the app settings of a static site build.
-     * 
+     *
      * Description for Creates or updates the app settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3351,9 +3351,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the function app settings of a static site build.
-     * 
+     *
      * Description for Creates or updates the function app settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3400,9 +3400,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the function app settings of a static site build.
-     * 
+     *
      * Description for Creates or updates the function app settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3450,9 +3450,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the function app settings of a static site build.
-     * 
+     *
      * Description for Creates or updates the function app settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3471,9 +3471,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the function app settings of a static site build.
-     * 
+     *
      * Description for Creates or updates the function app settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3494,9 +3494,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the function app settings of a static site build.
-     * 
+     *
      * Description for Creates or updates the function app settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3515,7 +3515,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3558,7 +3558,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3602,7 +3602,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3621,7 +3621,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3641,7 +3641,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3658,7 +3658,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3676,7 +3676,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overview of a database connection for a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3723,7 +3723,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overview of a database connection for a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3769,7 +3769,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overview of a database connection for a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3788,7 +3788,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overview of a database connection for a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3808,7 +3808,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overview of a database connection for a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3827,9 +3827,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site build
-     * 
+     *
      * Description for Create or update a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3884,9 +3884,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site build
-     * 
+     *
      * Description for Create or update a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3941,9 +3941,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site build
-     * 
+     *
      * Description for Create or update a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3964,9 +3964,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site build
-     * 
+     *
      * Description for Create or update a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -3988,9 +3988,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site build
-     * 
+     *
      * Description for Create or update a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4011,7 +4011,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Delete a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4057,7 +4057,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Delete a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4103,7 +4103,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Delete a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4122,7 +4122,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Delete a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4142,7 +4142,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Delete a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4160,9 +4160,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site build
-     * 
+     *
      * Description for Create or update a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4217,9 +4217,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site build
-     * 
+     *
      * Description for Create or update a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4274,9 +4274,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site build
-     * 
+     *
      * Description for Create or update a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4297,9 +4297,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site build
-     * 
+     *
      * Description for Create or update a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4321,9 +4321,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site build
-     * 
+     *
      * Description for Create or update a database connection for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4344,7 +4344,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of a database connection for a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4391,7 +4391,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of a database connection for a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4438,7 +4438,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of a database connection for a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4457,7 +4457,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of a database connection for a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4477,7 +4477,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of a database connection for a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4496,9 +4496,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a particular static site build.
-     * 
+     *
      * Description for Gets the functions of a particular static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4542,9 +4542,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a particular static site build.
-     * 
+     *
      * Description for Gets the functions of a particular static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4588,9 +4588,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a particular static site build.
-     * 
+     *
      * Description for Gets the functions of a particular static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4609,9 +4609,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a particular static site build.
-     * 
+     *
      * Description for Gets the functions of a particular static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4631,9 +4631,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a particular static site build.
-     * 
+     *
      * Description for Gets the functions of a particular static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4650,9 +4650,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a particular static site build.
-     * 
+     *
      * Description for Gets the functions of a particular static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4671,9 +4671,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site build.
-     * 
+     *
      * Description for Gets the application settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4713,9 +4713,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site build.
-     * 
+     *
      * Description for Gets the application settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4755,9 +4755,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site build.
-     * 
+     *
      * Description for Gets the application settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4775,9 +4775,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site build.
-     * 
+     *
      * Description for Gets the application settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4796,9 +4796,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site build.
-     * 
+     *
      * Description for Gets the application settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4816,9 +4816,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site build.
-     * 
+     *
      * Description for Gets the application settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4859,9 +4859,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site build.
-     * 
+     *
      * Description for Gets the application settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4901,9 +4901,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site build.
-     * 
+     *
      * Description for Gets the application settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4921,9 +4921,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site build.
-     * 
+     *
      * Description for Gets the application settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4942,9 +4942,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site build.
-     * 
+     *
      * Description for Gets the application settings of a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -4962,7 +4962,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5006,7 +5006,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5050,7 +5050,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5069,7 +5069,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5089,7 +5089,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5107,7 +5107,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5126,9 +5126,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site build
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5174,9 +5174,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site build
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5221,9 +5221,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site build
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5244,9 +5244,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site build
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5268,9 +5268,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site build
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5288,9 +5288,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site build
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5310,9 +5310,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function app registered with a static site build
-     * 
+     *
      * Description for Gets the details of the user provided function app registered with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5360,9 +5360,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function app registered with a static site build
-     * 
+     *
      * Description for Gets the details of the user provided function app registered with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5410,9 +5410,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function app registered with a static site build
-     * 
+     *
      * Description for Gets the details of the user provided function app registered with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5431,9 +5431,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function app registered with a static site build
-     * 
+     *
      * Description for Gets the details of the user provided function app registered with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5454,9 +5454,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function app registered with a static site build
-     * 
+     *
      * Description for Gets the details of the user provided function app registered with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5475,9 +5475,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5537,9 +5537,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5599,9 +5599,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5634,9 +5634,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5666,9 +5666,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5703,9 +5703,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5724,15 +5724,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String environmentName, String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope) {
         final Boolean isForced = null;
-        return this.beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name,
-            environmentName, functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced).getSyncPoller();
+        return this
+            .beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
+                functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced)
+            .getSyncPoller();
     }
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5755,16 +5757,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String environmentName, String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
             Context context) {
-        return this.beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name,
-            environmentName, functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context)
+        return this
+            .beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
+                functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context)
             .getSyncPoller();
     }
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5787,14 +5790,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Boolean isForced) {
         return beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
             functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5814,14 +5817,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         final Boolean isForced = null;
         return beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
             functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5845,14 +5848,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context context) {
         return beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
             functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5875,9 +5878,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site build
-     * 
+     *
      * Description for Register a user provided function app with a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5904,9 +5907,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detach the user provided function app from the static site build
-     * 
+     *
      * Description for Detach the user provided function app from the static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -5952,9 +5955,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detach the user provided function app from the static site build
-     * 
+     *
      * Description for Detach the user provided function app from the static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -6000,9 +6003,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detach the user provided function app from the static site build
-     * 
+     *
      * Description for Detach the user provided function app from the static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -6021,9 +6024,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detach the user provided function app from the static site build
-     * 
+     *
      * Description for Detach the user provided function app from the static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -6043,9 +6046,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detach the user provided function app from the static site build
-     * 
+     *
      * Description for Detach the user provided function app from the static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -6063,9 +6066,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * Description for Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName Name of the environment.
@@ -6115,9 +6118,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * Description for Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName Name of the environment.
@@ -6167,9 +6170,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * Description for Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName Name of the environment.
@@ -6191,9 +6194,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * Description for Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName Name of the environment.
@@ -6218,9 +6221,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * Description for Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName Name of the environment.
@@ -6234,15 +6237,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(String resourceGroupName,
         String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
-        return this.beginCreateZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-            staticSiteZipDeploymentEnvelope).getSyncPoller();
+        return this
+            .beginCreateZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
+                staticSiteZipDeploymentEnvelope)
+            .getSyncPoller();
     }
 
     /**
      * Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * Description for Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName Name of the environment.
@@ -6258,15 +6263,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(String resourceGroupName,
         String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope,
         Context context) {
-        return this.beginCreateZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-            staticSiteZipDeploymentEnvelope, context).getSyncPoller();
+        return this
+            .beginCreateZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
+                staticSiteZipDeploymentEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
      * Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * Description for Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName Name of the environment.
@@ -6286,9 +6293,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * Description for Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName Name of the environment.
@@ -6309,9 +6316,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * Description for Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName Name of the environment.
@@ -6330,9 +6337,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * Description for Deploys zipped content to a specific environment of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName Name of the environment.
@@ -6352,9 +6359,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the app settings of a static site.
-     * 
+     *
      * Description for Creates or updates the app settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site app settings to update.
@@ -6396,9 +6403,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the app settings of a static site.
-     * 
+     *
      * Description for Creates or updates the app settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site app settings to update.
@@ -6439,9 +6446,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the app settings of a static site.
-     * 
+     *
      * Description for Creates or updates the app settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site app settings to update.
@@ -6459,9 +6466,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the app settings of a static site.
-     * 
+     *
      * Description for Creates or updates the app settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site app settings to update.
@@ -6480,9 +6487,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the app settings of a static site.
-     * 
+     *
      * Description for Creates or updates the app settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site app settings to update.
@@ -6500,9 +6507,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * Description for Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6541,9 +6548,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * Description for Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -6582,9 +6589,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * Description for Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6601,9 +6608,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * Description for Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -6621,9 +6628,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * Description for Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6639,9 +6646,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * Description for Gets the basic auth properties for a static site as a collection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -6658,9 +6665,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the basic auth properties for a static site.
-     * 
+     *
      * Description for Gets the basic auth properties for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
@@ -6700,9 +6707,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the basic auth properties for a static site.
-     * 
+     *
      * Description for Gets the basic auth properties for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
@@ -6742,9 +6749,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the basic auth properties for a static site.
-     * 
+     *
      * Description for Gets the basic auth properties for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
@@ -6762,9 +6769,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the basic auth properties for a static site.
-     * 
+     *
      * Description for Gets the basic auth properties for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
@@ -6782,9 +6789,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the basic auth properties for a static site.
-     * 
+     *
      * Description for Gets the basic auth properties for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
@@ -6801,9 +6808,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Adds or updates basic auth for a static site.
-     * 
+     *
      * Description for Adds or updates basic auth for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
@@ -6852,9 +6859,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Adds or updates basic auth for a static site.
-     * 
+     *
      * Description for Adds or updates basic auth for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
@@ -6902,9 +6909,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Adds or updates basic auth for a static site.
-     * 
+     *
      * Description for Adds or updates basic auth for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
@@ -6923,9 +6930,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Adds or updates basic auth for a static site.
-     * 
+     *
      * Description for Adds or updates basic auth for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
@@ -6946,9 +6953,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Adds or updates basic auth for a static site.
-     * 
+     *
      * Description for Adds or updates basic auth for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
@@ -6967,9 +6974,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the function app settings of a static site.
-     * 
+     *
      * Description for Creates or updates the function app settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site function app settings to update.
@@ -7011,9 +7018,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the function app settings of a static site.
-     * 
+     *
      * Description for Creates or updates the function app settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site function app settings to update.
@@ -7054,9 +7061,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the function app settings of a static site.
-     * 
+     *
      * Description for Creates or updates the function app settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site function app settings to update.
@@ -7074,9 +7081,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the function app settings of a static site.
-     * 
+     *
      * Description for Creates or updates the function app settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site function app settings to update.
@@ -7095,9 +7102,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates or updates the function app settings of a static site.
-     * 
+     *
      * Description for Creates or updates the function app settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site function app settings to update.
@@ -7115,9 +7122,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates an invitation link for a user with the role
-     * 
+     *
      * Description for Creates an invitation link for a user with the role.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
@@ -7162,9 +7169,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates an invitation link for a user with the role
-     * 
+     *
      * Description for Creates an invitation link for a user with the role.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
@@ -7209,9 +7216,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates an invitation link for a user with the role
-     * 
+     *
      * Description for Creates an invitation link for a user with the role.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
@@ -7230,9 +7237,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates an invitation link for a user with the role
-     * 
+     *
      * Description for Creates an invitation link for a user with the role.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
@@ -7252,9 +7259,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates an invitation link for a user with the role
-     * 
+     *
      * Description for Creates an invitation link for a user with the role.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
@@ -7272,9 +7279,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site custom domains for a particular static site.
-     * 
+     *
      * Description for Gets all static site custom domains for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7313,9 +7320,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site custom domains for a particular static site.
-     * 
+     *
      * Description for Gets all static site custom domains for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @param context The context to associate with this operation.
@@ -7354,9 +7361,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site custom domains for a particular static site.
-     * 
+     *
      * Description for Gets all static site custom domains for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7373,9 +7380,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site custom domains for a particular static site.
-     * 
+     *
      * Description for Gets all static site custom domains for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @param context The context to associate with this operation.
@@ -7393,9 +7400,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site custom domains for a particular static site.
-     * 
+     *
      * Description for Gets all static site custom domains for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7411,9 +7418,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets all static site custom domains for a particular static site.
-     * 
+     *
      * Description for Gets all static site custom domains for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @param context The context to associate with this operation.
@@ -7430,9 +7437,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets an existing custom domain for a particular static site.
-     * 
+     *
      * Description for Gets an existing custom domain for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @param domainName The custom domain name.
@@ -7472,9 +7479,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets an existing custom domain for a particular static site.
-     * 
+     *
      * Description for Gets an existing custom domain for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @param domainName The custom domain name.
@@ -7514,9 +7521,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets an existing custom domain for a particular static site.
-     * 
+     *
      * Description for Gets an existing custom domain for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @param domainName The custom domain name.
@@ -7534,9 +7541,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets an existing custom domain for a particular static site.
-     * 
+     *
      * Description for Gets an existing custom domain for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @param domainName The custom domain name.
@@ -7554,9 +7561,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets an existing custom domain for a particular static site.
-     * 
+     *
      * Description for Gets an existing custom domain for a particular static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @param domainName The custom domain name.
@@ -7573,9 +7580,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to create.
@@ -7625,9 +7632,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to create.
@@ -7678,9 +7685,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to create.
@@ -7706,9 +7713,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to create.
@@ -7737,9 +7744,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to create.
@@ -7755,15 +7762,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         SyncPoller<PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomain(String resourceGroupName, String name, String domainName,
             StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope) {
-        return this.beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope).getSyncPoller();
+        return this
+            .beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
+                staticSiteCustomDomainRequestPropertiesEnvelope)
+            .getSyncPoller();
     }
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to create.
@@ -7781,15 +7790,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         beginCreateOrUpdateStaticSiteCustomDomain(String resourceGroupName, String name, String domainName,
             StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
             Context context) {
-        return this.beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
+                staticSiteCustomDomainRequestPropertiesEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to create.
@@ -7810,9 +7821,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to create.
@@ -7831,14 +7842,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         Context context) {
         return beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
             staticSiteCustomDomainRequestPropertiesEnvelope, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to create.
@@ -7859,9 +7870,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to create.
@@ -7884,9 +7895,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a custom domain.
-     * 
+     *
      * Description for Deletes a custom domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
@@ -7925,9 +7936,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a custom domain.
-     * 
+     *
      * Description for Deletes a custom domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
@@ -7966,9 +7977,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a custom domain.
-     * 
+     *
      * Description for Deletes a custom domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
@@ -7988,9 +7999,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a custom domain.
-     * 
+     *
      * Description for Deletes a custom domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
@@ -8012,9 +8023,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a custom domain.
-     * 
+     *
      * Description for Deletes a custom domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
@@ -8031,9 +8042,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a custom domain.
-     * 
+     *
      * Description for Deletes a custom domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
@@ -8052,9 +8063,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a custom domain.
-     * 
+     *
      * Description for Deletes a custom domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
@@ -8071,9 +8082,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a custom domain.
-     * 
+     *
      * Description for Deletes a custom domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
@@ -8092,9 +8103,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a custom domain.
-     * 
+     *
      * Description for Deletes a custom domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
@@ -8109,9 +8120,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a custom domain.
-     * 
+     *
      * Description for Deletes a custom domain.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
@@ -8128,9 +8139,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * Description for Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to validate.
@@ -8179,9 +8190,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * Description for Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to validate.
@@ -8231,9 +8242,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * Description for Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to validate.
@@ -8256,9 +8267,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * Description for Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to validate.
@@ -8284,9 +8295,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * Description for Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to validate.
@@ -8301,15 +8312,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSite(String resourceGroupName,
         String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope) {
-        return this.beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope).getSyncPoller();
+        return this
+            .beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
+                staticSiteCustomDomainRequestPropertiesEnvelope)
+            .getSyncPoller();
     }
 
     /**
      * Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * Description for Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to validate.
@@ -8326,15 +8339,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
         Context context) {
-        return this.beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope, context).getSyncPoller();
+        return this
+            .beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
+                staticSiteCustomDomainRequestPropertiesEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
      * Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * Description for Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to validate.
@@ -8355,9 +8370,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * Description for Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to validate.
@@ -8376,14 +8391,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         Context context) {
         return beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
             staticSiteCustomDomainRequestPropertiesEnvelope, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * Description for Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to validate.
@@ -8402,9 +8417,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * Description for Validates a particular custom domain can be added to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to validate.
@@ -8425,7 +8440,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8463,7 +8478,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -8502,7 +8517,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8518,7 +8533,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -8536,7 +8551,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8551,7 +8566,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overviews of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -8568,7 +8583,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overview of a database connection for a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8609,7 +8624,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overview of a database connection for a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8650,7 +8665,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overview of a database connection for a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8668,7 +8683,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overview of a database connection for a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8686,7 +8701,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns overview of a database connection for a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8704,9 +8719,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site
-     * 
+     *
      * Description for Create or update a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8756,9 +8771,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site
-     * 
+     *
      * Description for Create or update a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8808,9 +8823,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site
-     * 
+     *
      * Description for Create or update a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8829,9 +8844,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site
-     * 
+     *
      * Description for Create or update a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8852,9 +8867,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site
-     * 
+     *
      * Description for Create or update a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8873,7 +8888,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Delete a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8913,7 +8928,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Delete a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8953,7 +8968,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Delete a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8971,7 +8986,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Delete a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -8990,7 +9005,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Delete a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -9005,9 +9020,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site
-     * 
+     *
      * Description for Create or update a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -9056,9 +9071,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site
-     * 
+     *
      * Description for Create or update a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -9108,9 +9123,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site
-     * 
+     *
      * Description for Create or update a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -9129,9 +9144,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site
-     * 
+     *
      * Description for Create or update a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -9152,9 +9167,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Create or update a database connection for a static site
-     * 
+     *
      * Description for Create or update a database connection for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -9173,7 +9188,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of a database connection for a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -9215,7 +9230,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of a database connection for a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -9256,7 +9271,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of a database connection for a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -9274,7 +9289,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of a database connection for a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -9293,7 +9308,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of a database connection for a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
@@ -9311,9 +9326,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detaches a static site.
-     * 
+     *
      * Description for Detaches a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9347,9 +9362,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detaches a static site.
-     * 
+     *
      * Description for Detaches a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
      * @param context The context to associate with this operation.
@@ -9384,9 +9399,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detaches a static site.
-     * 
+     *
      * Description for Detaches a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9403,9 +9418,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detaches a static site.
-     * 
+     *
      * Description for Detaches a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
      * @param context The context to associate with this operation.
@@ -9425,9 +9440,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detaches a static site.
-     * 
+     *
      * Description for Detaches a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9442,9 +9457,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detaches a static site.
-     * 
+     *
      * Description for Detaches a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
      * @param context The context to associate with this operation.
@@ -9461,9 +9476,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detaches a static site.
-     * 
+     *
      * Description for Detaches a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9479,9 +9494,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detaches a static site.
-     * 
+     *
      * Description for Detaches a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
      * @param context The context to associate with this operation.
@@ -9498,9 +9513,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detaches a static site.
-     * 
+     *
      * Description for Detaches a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9514,9 +9529,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detaches a static site.
-     * 
+     *
      * Description for Detaches a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
      * @param context The context to associate with this operation.
@@ -9531,9 +9546,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a static site.
-     * 
+     *
      * Description for Gets the functions of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9572,9 +9587,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a static site.
-     * 
+     *
      * Description for Gets the functions of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -9613,9 +9628,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a static site.
-     * 
+     *
      * Description for Gets the functions of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9632,9 +9647,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a static site.
-     * 
+     *
      * Description for Gets the functions of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -9652,9 +9667,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a static site.
-     * 
+     *
      * Description for Gets the functions of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9670,9 +9685,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the functions of a static site.
-     * 
+     *
      * Description for Gets the functions of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -9689,9 +9704,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site.
-     * 
+     *
      * Description for Gets the application settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9726,9 +9741,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site.
-     * 
+     *
      * Description for Gets the application settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -9763,9 +9778,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site.
-     * 
+     *
      * Description for Gets the application settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9781,9 +9796,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site.
-     * 
+     *
      * Description for Gets the application settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -9800,9 +9815,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site.
-     * 
+     *
      * Description for Gets the application settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9817,9 +9832,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Lists the roles configured for the static site.
-     * 
+     *
      * Description for Lists the roles configured for the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9854,9 +9869,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Lists the roles configured for the static site.
-     * 
+     *
      * Description for Lists the roles configured for the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -9891,9 +9906,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Lists the roles configured for the static site.
-     * 
+     *
      * Description for Lists the roles configured for the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9909,9 +9924,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Lists the roles configured for the static site.
-     * 
+     *
      * Description for Lists the roles configured for the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -9928,9 +9943,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Lists the roles configured for the static site.
-     * 
+     *
      * Description for Lists the roles configured for the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9945,9 +9960,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site.
-     * 
+     *
      * Description for Gets the application settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9982,9 +9997,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site.
-     * 
+     *
      * Description for Gets the application settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -10019,9 +10034,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site.
-     * 
+     *
      * Description for Gets the application settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10037,9 +10052,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site.
-     * 
+     *
      * Description for Gets the application settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -10056,9 +10071,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the application settings of a static site.
-     * 
+     *
      * Description for Gets the application settings of a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10073,9 +10088,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Lists the secrets for an existing static site.
-     * 
+     *
      * Description for Lists the secrets for an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10110,9 +10125,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Lists the secrets for an existing static site.
-     * 
+     *
      * Description for Lists the secrets for an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -10147,9 +10162,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Lists the secrets for an existing static site.
-     * 
+     *
      * Description for Lists the secrets for an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10165,9 +10180,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Lists the secrets for an existing static site.
-     * 
+     *
      * Description for Lists the secrets for an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -10184,9 +10199,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Lists the secrets for an existing static site.
-     * 
+     *
      * Description for Lists the secrets for an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10201,9 +10216,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of private endpoint connections associated with a static site
-     * 
+     *
      * Description for Gets the list of private endpoint connections associated with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10241,9 +10256,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of private endpoint connections associated with a static site
-     * 
+     *
      * Description for Gets the list of private endpoint connections associated with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -10281,9 +10296,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of private endpoint connections associated with a static site
-     * 
+     *
      * Description for Gets the list of private endpoint connections associated with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10300,9 +10315,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of private endpoint connections associated with a static site
-     * 
+     *
      * Description for Gets the list of private endpoint connections associated with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -10320,9 +10335,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of private endpoint connections associated with a static site
-     * 
+     *
      * Description for Gets the list of private endpoint connections associated with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10338,9 +10353,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the list of private endpoint connections associated with a static site
-     * 
+     *
      * Description for Gets the list of private endpoint connections associated with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -10357,9 +10372,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10402,9 +10417,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10447,9 +10462,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10467,9 +10482,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10488,9 +10503,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets a private endpoint connection
-     * 
+     *
      * Description for Gets a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10508,9 +10523,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10524,7 +10539,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -10560,9 +10575,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10577,7 +10592,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -10612,9 +10627,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10628,7 +10643,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public
         PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionAsync(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         Mono<Response<Flux<ByteBuffer>>> mono = approveOrRejectPrivateEndpointConnectionWithResponseAsync(
             resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper);
         return this.client
@@ -10639,9 +10655,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10656,8 +10672,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     private
         PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionAsync(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
-            Context context) {
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = approveOrRejectPrivateEndpointConnectionWithResponseAsync(
             resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, context);
@@ -10669,9 +10685,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10685,16 +10701,19 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public
         SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
-        return this.beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
-            privateEndpointConnectionName, privateEndpointWrapper).getSyncPoller();
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
+        return this
+            .beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
+                privateEndpointWrapper)
+            .getSyncPoller();
     }
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10709,17 +10728,19 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public
         SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
-            Context context) {
-        return this.beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
-            privateEndpointConnectionName, privateEndpointWrapper, context).getSyncPoller();
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
+        return this
+            .beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
+                privateEndpointWrapper, context)
+            .getSyncPoller();
     }
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10732,17 +10753,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         return beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
             privateEndpointConnectionName, privateEndpointWrapper).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10756,17 +10777,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         return beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
             privateEndpointConnectionName, privateEndpointWrapper, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10779,16 +10800,16 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         return approveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
             privateEndpointWrapper).block();
     }
 
     /**
      * Approves or rejects a private endpoint connection
-     * 
+     *
      * Description for Approves or rejects a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10802,16 +10823,16 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         return approveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
             privateEndpointWrapper, context).block();
     }
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10852,9 +10873,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10895,9 +10916,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10917,9 +10938,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10941,9 +10962,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10961,9 +10982,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -10983,9 +11004,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -11003,9 +11024,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -11024,9 +11045,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -11043,9 +11064,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deletes a private endpoint connection
-     * 
+     *
      * Description for Deletes a private endpoint connection.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -11064,9 +11085,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11102,9 +11123,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param context The context to associate with this operation.
@@ -11140,9 +11161,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11158,9 +11179,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param context The context to associate with this operation.
@@ -11177,9 +11198,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the private link resources
-     * 
+     *
      * Description for Gets the private link resources.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11194,9 +11215,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Resets the api key for an existing static site.
-     * 
+     *
      * Description for Resets the api key for an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
@@ -11238,9 +11259,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Resets the api key for an existing static site.
-     * 
+     *
      * Description for Resets the api key for an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
@@ -11282,9 +11303,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Resets the api key for an existing static site.
-     * 
+     *
      * Description for Resets the api key for an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
@@ -11302,9 +11323,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Resets the api key for an existing static site.
-     * 
+     *
      * Description for Resets the api key for an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
@@ -11323,9 +11344,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Resets the api key for an existing static site.
-     * 
+     *
      * Description for Resets the api key for an existing static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
@@ -11341,7 +11362,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11379,7 +11400,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -11418,7 +11439,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11435,7 +11456,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -11453,7 +11474,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11469,7 +11490,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of database connections for a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -11486,9 +11507,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11527,9 +11548,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -11569,9 +11590,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11588,9 +11609,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -11609,9 +11630,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11627,9 +11648,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function apps registered with a static site
-     * 
+     *
      * Description for Gets the details of the user provided function apps registered with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -11646,9 +11667,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function app registered with a static site
-     * 
+     *
      * Description for Gets the details of the user provided function app registered with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
@@ -11691,9 +11712,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function app registered with a static site
-     * 
+     *
      * Description for Gets the details of the user provided function app registered with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
@@ -11735,9 +11756,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function app registered with a static site
-     * 
+     *
      * Description for Gets the details of the user provided function app registered with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
@@ -11755,9 +11776,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function app registered with a static site
-     * 
+     *
      * Description for Gets the details of the user provided function app registered with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
@@ -11777,9 +11798,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Gets the details of the user provided function app registered with a static site
-     * 
+     *
      * Description for Gets the details of the user provided function app registered with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
@@ -11797,9 +11818,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -11853,9 +11874,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -11910,9 +11931,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -11943,9 +11964,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -11973,9 +11994,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -12008,9 +12029,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -12028,15 +12049,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope) {
         final Boolean isForced = null;
-        return this.beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
-            staticSiteUserProvidedFunctionEnvelope, isForced).getSyncPoller();
+        return this
+            .beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
+                staticSiteUserProvidedFunctionEnvelope, isForced)
+            .getSyncPoller();
     }
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -12058,15 +12081,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
             Context context) {
-        return this.beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
-            staticSiteUserProvidedFunctionEnvelope, isForced, context).getSyncPoller();
+        return this
+            .beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
+                staticSiteUserProvidedFunctionEnvelope, isForced, context)
+            .getSyncPoller();
     }
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -12090,9 +12115,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -12114,9 +12139,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -12138,14 +12163,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         Context context) {
         return beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
             staticSiteUserProvidedFunctionEnvelope, isForced, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -12167,9 +12192,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Register a user provided function app with a static site
-     * 
+     *
      * Description for Register a user provided function app with a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app to register with the static site.
@@ -12195,9 +12220,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detach the user provided function app from the static site
-     * 
+     *
      * Description for Detach the user provided function app from the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
@@ -12238,9 +12263,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detach the user provided function app from the static site
-     * 
+     *
      * Description for Detach the user provided function app from the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
@@ -12280,9 +12305,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detach the user provided function app from the static site
-     * 
+     *
      * Description for Detach the user provided function app from the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
@@ -12300,9 +12325,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detach the user provided function app from the static site
-     * 
+     *
      * Description for Detach the user provided function app from the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
@@ -12321,9 +12346,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Detach the user provided function app from the static site
-     * 
+     *
      * Description for Detach the user provided function app from the static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
@@ -12339,9 +12364,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a static site.
-     * 
+     *
      * Description for Deploys zipped content to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
@@ -12385,9 +12410,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a static site.
-     * 
+     *
      * Description for Deploys zipped content to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
@@ -12431,9 +12456,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a static site.
-     * 
+     *
      * Description for Deploys zipped content to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
@@ -12454,9 +12479,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a static site.
-     * 
+     *
      * Description for Deploys zipped content to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
@@ -12479,9 +12504,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a static site.
-     * 
+     *
      * Description for Deploys zipped content to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
@@ -12500,9 +12525,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a static site.
-     * 
+     *
      * Description for Deploys zipped content to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
@@ -12516,15 +12541,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(String resourceGroupName,
         String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
-        return this.beginCreateZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope,
-            context).getSyncPoller();
+        return this
+            .beginCreateZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Deploys zipped content to a static site.
-     * 
+     *
      * Description for Deploys zipped content to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
@@ -12538,14 +12565,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Mono<Void> createZipDeploymentForStaticSiteAsync(String resourceGroupName, String name,
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
         return beginCreateZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deploys zipped content to a static site.
-     * 
+     *
      * Description for Deploys zipped content to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
@@ -12565,9 +12593,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a static site.
-     * 
+     *
      * Description for Deploys zipped content to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
@@ -12584,9 +12612,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Deploys zipped content to a static site.
-     * 
+     *
      * Description for Deploys zipped content to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
@@ -12605,7 +12633,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -12653,7 +12681,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -12702,7 +12730,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -12723,7 +12751,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -12747,7 +12775,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -12767,7 +12795,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -12782,13 +12810,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateBackend(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
         Context context) {
-        return this.beginValidateBackendAsync(resourceGroupName, name, linkedBackendName,
-            staticSiteLinkedBackendEnvelope, context).getSyncPoller();
+        return this
+            .beginValidateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Validates that a backend can be linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -12802,12 +12832,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Mono<Void> validateBackendAsync(String resourceGroupName, String name, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
         return beginValidateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validates that a backend can be linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -12827,7 +12858,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -12844,7 +12875,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -12863,7 +12894,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -12917,7 +12948,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -12971,7 +13002,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -12994,7 +13025,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13019,7 +13050,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13034,13 +13065,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        return this.beginValidateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope).getSyncPoller();
+        return this
+            .beginValidateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
+                staticSiteLinkedBackendEnvelope)
+            .getSyncPoller();
     }
 
     /**
      * Validates that a backend can be linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13056,13 +13089,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        return this.beginValidateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope, context).getSyncPoller();
+        return this
+            .beginValidateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
+                staticSiteLinkedBackendEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
      * Validates that a backend can be linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13082,7 +13117,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13104,7 +13139,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13123,7 +13158,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Validates that a backend can be linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13144,7 +13179,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13183,7 +13218,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -13222,7 +13257,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13239,7 +13274,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -13257,7 +13292,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13273,7 +13308,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param context The context to associate with this operation.
@@ -13290,7 +13325,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13334,7 +13369,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13378,7 +13413,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13396,7 +13431,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13416,7 +13451,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13433,7 +13468,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns details of all backends linked to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -13451,7 +13486,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns the details of a linked backend linked to a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -13492,7 +13527,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns the details of a linked backend linked to a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -13533,7 +13568,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns the details of a linked backend linked to a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -13551,7 +13586,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns the details of a linked backend linked to a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -13569,7 +13604,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns the details of a linked backend linked to a static site by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
@@ -13586,7 +13621,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
@@ -13635,7 +13670,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
@@ -13685,7 +13720,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
@@ -13709,7 +13744,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
@@ -13735,7 +13770,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
@@ -13755,7 +13790,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
@@ -13777,7 +13812,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
@@ -13796,7 +13831,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
@@ -13817,7 +13852,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
@@ -13835,7 +13870,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
@@ -13856,7 +13891,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Unlink a backend from a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend linked to the static site.
@@ -13898,7 +13933,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Unlink a backend from a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend linked to the static site.
@@ -13939,7 +13974,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Unlink a backend from a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend linked to the static site.
@@ -13957,7 +13992,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Unlink a backend from a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend linked to the static site.
@@ -13977,7 +14012,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Unlink a backend from a static site.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend linked to the static site.
@@ -13993,7 +14028,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns the details of a linked backend linked to a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14040,7 +14075,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns the details of a linked backend linked to a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14086,7 +14121,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns the details of a linked backend linked to a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14105,7 +14140,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns the details of a linked backend linked to a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14125,7 +14160,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Returns the details of a linked backend linked to a static site build by name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14144,7 +14179,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14199,7 +14234,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14254,7 +14289,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14279,7 +14314,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14307,7 +14342,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14322,13 +14357,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuild(String resourceGroupName, String name, String environmentName, String linkedBackendName,
             StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        return this.beginLinkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope).getSyncPoller();
+        return this
+            .beginLinkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
+                staticSiteLinkedBackendEnvelope)
+            .getSyncPoller();
     }
 
     /**
      * Link backend to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14344,13 +14381,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuild(String resourceGroupName, String name, String environmentName, String linkedBackendName,
             StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        return this.beginLinkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope, context).getSyncPoller();
+        return this
+            .beginLinkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
+                staticSiteLinkedBackendEnvelope, context)
+            .getSyncPoller();
     }
 
     /**
      * Link backend to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14371,7 +14410,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14393,7 +14432,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14414,7 +14453,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Link backend to a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14436,7 +14475,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Unlink a backend from a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14483,7 +14522,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Unlink a backend from a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14530,7 +14569,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Unlink a backend from a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14550,7 +14589,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Unlink a backend from a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14571,7 +14610,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Unlink a backend from a static site build.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
@@ -14590,9 +14629,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14617,9 +14656,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -14645,9 +14684,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14674,9 +14713,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -14703,9 +14742,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14734,9 +14773,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -14764,9 +14803,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14795,9 +14834,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -14825,9 +14864,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14855,9 +14894,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -14885,9 +14924,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14916,9 +14955,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -14946,9 +14985,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -14977,9 +15016,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -15007,9 +15046,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15039,9 +15078,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -15070,9 +15109,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15101,9 +15140,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -15131,9 +15170,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15162,9 +15201,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -15192,9 +15231,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15222,9 +15261,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -15252,9 +15291,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15284,9 +15323,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -15314,9 +15353,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15345,9 +15384,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -15374,9 +15413,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15405,9 +15444,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -15435,9 +15474,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15467,9 +15506,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -15498,9 +15537,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15529,9 +15568,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -15559,9 +15598,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -15591,9 +15630,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

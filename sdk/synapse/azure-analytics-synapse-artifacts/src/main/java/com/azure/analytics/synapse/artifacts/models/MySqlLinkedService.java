@@ -12,19 +12,60 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Linked service for MySQL data source.
- */
+/** Linked service for MySQL data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MySql")
 @JsonFlatten
 @Fluent
 public class MySqlLinkedService extends LinkedService {
     /*
+     * The version of the MySQL driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can support
+     * connection string and property bag, V2 can only support connection string.
+     */
+    @JsonProperty(value = "typeProperties.driverVersion")
+    private Object driverVersion;
+
+    /*
      * The connection string.
      */
-    @JsonProperty(value = "typeProperties.connectionString", required = true)
+    @JsonProperty(value = "typeProperties.connectionString")
     private Object connectionString;
+
+    /*
+     * Server name for connection. Type: string.
+     */
+    @JsonProperty(value = "typeProperties.server")
+    private Object server;
+
+    /*
+     * The port for the connection. Type: integer.
+     */
+    @JsonProperty(value = "typeProperties.port")
+    private Object port;
+
+    /*
+     * Username for authentication. Type: string.
+     */
+    @JsonProperty(value = "typeProperties.username")
+    private Object username;
+
+    /*
+     * Database name for connection. Type: string.
+     */
+    @JsonProperty(value = "typeProperties.database")
+    private Object database;
+
+    /*
+     * SSL mode for connection. Type: integer. 0: disable, 1: prefer, 2: require, 3: verify-ca, 4: verify-full.
+     */
+    @JsonProperty(value = "typeProperties.sslMode")
+    private Object sslMode;
+
+    /*
+     * Use system trust store for connection. Type: integer. 0: enable, 1: disable.
+     */
+    @JsonProperty(value = "typeProperties.useSystemTrustStore")
+    private Object useSystemTrustStore;
 
     /*
      * The Azure key vault secret reference of password in connection string.
@@ -39,15 +80,34 @@ public class MySqlLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of MySqlLinkedService class. */
+    public MySqlLinkedService() {}
+
     /**
-     * Creates an instance of MySqlLinkedService class.
+     * Get the driverVersion property: The version of the MySQL driver. Type: string. V1 or empty for legacy driver, V2
+     * for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     *
+     * @return the driverVersion value.
      */
-    public MySqlLinkedService() {
+    public Object getDriverVersion() {
+        return this.driverVersion;
+    }
+
+    /**
+     * Set the driverVersion property: The version of the MySQL driver. Type: string. V1 or empty for legacy driver, V2
+     * for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     *
+     * @param driverVersion the driverVersion value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService setDriverVersion(Object driverVersion) {
+        this.driverVersion = driverVersion;
+        return this;
     }
 
     /**
      * Get the connectionString property: The connection string.
-     * 
+     *
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -56,7 +116,7 @@ public class MySqlLinkedService extends LinkedService {
 
     /**
      * Set the connectionString property: The connection string.
-     * 
+     *
      * @param connectionString the connectionString value to set.
      * @return the MySqlLinkedService object itself.
      */
@@ -66,8 +126,132 @@ public class MySqlLinkedService extends LinkedService {
     }
 
     /**
+     * Get the server property: Server name for connection. Type: string.
+     *
+     * @return the server value.
+     */
+    public Object getServer() {
+        return this.server;
+    }
+
+    /**
+     * Set the server property: Server name for connection. Type: string.
+     *
+     * @param server the server value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService setServer(Object server) {
+        this.server = server;
+        return this;
+    }
+
+    /**
+     * Get the port property: The port for the connection. Type: integer.
+     *
+     * @return the port value.
+     */
+    public Object getPort() {
+        return this.port;
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer.
+     *
+     * @param port the port value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService setPort(Object port) {
+        this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. Type: string.
+     *
+     * @return the username value.
+     */
+    public Object getUsername() {
+        return this.username;
+    }
+
+    /**
+     * Set the username property: Username for authentication. Type: string.
+     *
+     * @param username the username value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService setUsername(Object username) {
+        this.username = username;
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string.
+     *
+     * @return the database value.
+     */
+    public Object getDatabase() {
+        return this.database;
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string.
+     *
+     * @param database the database value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService setDatabase(Object database) {
+        this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1: prefer, 2: require, 3:
+     * verify-ca, 4: verify-full.
+     *
+     * @return the sslMode value.
+     */
+    public Object getSslMode() {
+        return this.sslMode;
+    }
+
+    /**
+     * Set the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1: prefer, 2: require, 3:
+     * verify-ca, 4: verify-full.
+     *
+     * @param sslMode the sslMode value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService setSslMode(Object sslMode) {
+        this.sslMode = sslMode;
+        return this;
+    }
+
+    /**
+     * Get the useSystemTrustStore property: Use system trust store for connection. Type: integer. 0: enable, 1:
+     * disable.
+     *
+     * @return the useSystemTrustStore value.
+     */
+    public Object getUseSystemTrustStore() {
+        return this.useSystemTrustStore;
+    }
+
+    /**
+     * Set the useSystemTrustStore property: Use system trust store for connection. Type: integer. 0: enable, 1:
+     * disable.
+     *
+     * @param useSystemTrustStore the useSystemTrustStore value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    public MySqlLinkedService setUseSystemTrustStore(Object useSystemTrustStore) {
+        this.useSystemTrustStore = useSystemTrustStore;
+        return this;
+    }
+
+    /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
-     * 
+     *
      * @return the password value.
      */
     public AzureKeyVaultSecretReference getPassword() {
@@ -76,7 +260,7 @@ public class MySqlLinkedService extends LinkedService {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string.
-     * 
+     *
      * @param password the password value to set.
      * @return the MySqlLinkedService object itself.
      */
@@ -86,9 +270,9 @@ public class MySqlLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -96,9 +280,9 @@ public class MySqlLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MySqlLinkedService object itself.
      */
@@ -107,36 +291,28 @@ public class MySqlLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MySqlLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MySqlLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MySqlLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MySqlLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

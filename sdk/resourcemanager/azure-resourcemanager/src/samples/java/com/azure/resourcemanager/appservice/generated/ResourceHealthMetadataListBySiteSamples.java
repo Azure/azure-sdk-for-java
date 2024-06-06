@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class ResourceHealthMetadataListBySiteSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ListResourceHealthMetadataBySite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListResourceHealthMetadataBySite.json
      */
     /**
      * Sample code: List ResourceHealthMetadata for a site.
@@ -18,7 +17,10 @@ public final class ResourceHealthMetadataListBySiteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listResourceHealthMetadataForASite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getResourceHealthMetadatas().listBySite("Default-Web-NorthCentralUS",
-            "newsiteinnewASE-NCUS", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getResourceHealthMetadatas()
+            .listBySite("Default-Web-NorthCentralUS", "newsiteinnewASE-NCUS", com.azure.core.util.Context.NONE);
     }
 }

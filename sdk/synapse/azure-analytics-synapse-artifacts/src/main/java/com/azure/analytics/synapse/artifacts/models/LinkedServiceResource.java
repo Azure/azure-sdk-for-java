@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Linked service resource type.
- */
+/** Linked service resource type. */
 @Fluent
 public final class LinkedServiceResource extends SubResource {
     /*
@@ -18,15 +16,12 @@ public final class LinkedServiceResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private LinkedService properties;
 
-    /**
-     * Creates an instance of LinkedServiceResource class.
-     */
-    public LinkedServiceResource() {
-    }
+    /** Creates an instance of LinkedServiceResource class. */
+    public LinkedServiceResource() {}
 
     /**
      * Get the properties property: Properties of linked service.
-     * 
+     *
      * @return the properties value.
      */
     public LinkedService getProperties() {
@@ -35,7 +30,7 @@ public final class LinkedServiceResource extends SubResource {
 
     /**
      * Set the properties property: Properties of linked service.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the LinkedServiceResource object itself.
      */

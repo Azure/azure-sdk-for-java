@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesDetachStaticSiteSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/DetachStaticSite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DetachStaticSite.json
      */
     /**
      * Sample code: Detach a static site.
@@ -18,7 +17,10 @@ public final class StaticSitesDetachStaticSiteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void detachAStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().detachStaticSite("rg", "testStaticSite0",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .detachStaticSite("rg", "testStaticSite0", com.azure.core.util.Context.NONE);
     }
 }

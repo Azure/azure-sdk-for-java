@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Mapping data flow.
- */
+/** Mapping data flow. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MappingDataFlow")
 @JsonFlatten
@@ -49,15 +47,12 @@ public class MappingDataFlow extends DataFlow {
     @JsonProperty(value = "typeProperties.scriptLines")
     private List<String> scriptLines;
 
-    /**
-     * Creates an instance of MappingDataFlow class.
-     */
-    public MappingDataFlow() {
-    }
+    /** Creates an instance of MappingDataFlow class. */
+    public MappingDataFlow() {}
 
     /**
      * Get the sources property: List of sources in data flow.
-     * 
+     *
      * @return the sources value.
      */
     public List<DataFlowSource> getSources() {
@@ -66,7 +61,7 @@ public class MappingDataFlow extends DataFlow {
 
     /**
      * Set the sources property: List of sources in data flow.
-     * 
+     *
      * @param sources the sources value to set.
      * @return the MappingDataFlow object itself.
      */
@@ -77,7 +72,7 @@ public class MappingDataFlow extends DataFlow {
 
     /**
      * Get the sinks property: List of sinks in data flow.
-     * 
+     *
      * @return the sinks value.
      */
     public List<DataFlowSink> getSinks() {
@@ -86,7 +81,7 @@ public class MappingDataFlow extends DataFlow {
 
     /**
      * Set the sinks property: List of sinks in data flow.
-     * 
+     *
      * @param sinks the sinks value to set.
      * @return the MappingDataFlow object itself.
      */
@@ -97,7 +92,7 @@ public class MappingDataFlow extends DataFlow {
 
     /**
      * Get the transformations property: List of transformations in data flow.
-     * 
+     *
      * @return the transformations value.
      */
     public List<Transformation> getTransformations() {
@@ -106,7 +101,7 @@ public class MappingDataFlow extends DataFlow {
 
     /**
      * Set the transformations property: List of transformations in data flow.
-     * 
+     *
      * @param transformations the transformations value to set.
      * @return the MappingDataFlow object itself.
      */
@@ -117,7 +112,7 @@ public class MappingDataFlow extends DataFlow {
 
     /**
      * Get the script property: DataFlow script.
-     * 
+     *
      * @return the script value.
      */
     public String getScript() {
@@ -126,7 +121,7 @@ public class MappingDataFlow extends DataFlow {
 
     /**
      * Set the script property: DataFlow script.
-     * 
+     *
      * @param script the script value to set.
      * @return the MappingDataFlow object itself.
      */
@@ -137,7 +132,7 @@ public class MappingDataFlow extends DataFlow {
 
     /**
      * Get the scriptLines property: Data flow script lines.
-     * 
+     *
      * @return the scriptLines value.
      */
     public List<String> getScriptLines() {
@@ -146,7 +141,7 @@ public class MappingDataFlow extends DataFlow {
 
     /**
      * Set the scriptLines property: Data flow script lines.
-     * 
+     *
      * @param scriptLines the scriptLines value to set.
      * @return the MappingDataFlow object itself.
      */
@@ -155,27 +150,21 @@ public class MappingDataFlow extends DataFlow {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MappingDataFlow setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MappingDataFlow setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MappingDataFlow setFolder(DataFlowFolder folder) {
         super.setFolder(folder);

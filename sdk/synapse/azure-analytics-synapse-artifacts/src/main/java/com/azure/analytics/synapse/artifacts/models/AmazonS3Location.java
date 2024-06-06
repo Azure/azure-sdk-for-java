@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The location of amazon S3 dataset.
- */
+/** The location of amazon S3 dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonS3Location")
 @Fluent
@@ -28,16 +26,13 @@ public final class AmazonS3Location extends DatasetLocation {
     @JsonProperty(value = "version")
     private Object version;
 
-    /**
-     * Creates an instance of AmazonS3Location class.
-     */
-    public AmazonS3Location() {
-    }
+    /** Creates an instance of AmazonS3Location class. */
+    public AmazonS3Location() {}
 
     /**
      * Get the bucketName property: Specify the bucketName of amazon S3. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the bucketName value.
      */
     public Object getBucketName() {
@@ -47,7 +42,7 @@ public final class AmazonS3Location extends DatasetLocation {
     /**
      * Set the bucketName property: Specify the bucketName of amazon S3. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param bucketName the bucketName value to set.
      * @return the AmazonS3Location object itself.
      */
@@ -58,7 +53,7 @@ public final class AmazonS3Location extends DatasetLocation {
 
     /**
      * Get the version property: Specify the version of amazon S3. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the version value.
      */
     public Object getVersion() {
@@ -67,7 +62,7 @@ public final class AmazonS3Location extends DatasetLocation {
 
     /**
      * Set the version property: Specify the version of amazon S3. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param version the version value to set.
      * @return the AmazonS3Location object itself.
      */
@@ -76,18 +71,14 @@ public final class AmazonS3Location extends DatasetLocation {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonS3Location setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonS3Location setFileName(Object fileName) {
         super.setFileName(fileName);

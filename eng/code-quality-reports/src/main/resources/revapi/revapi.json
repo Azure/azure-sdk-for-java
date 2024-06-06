@@ -489,6 +489,48 @@
           "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "justification": "Removing Jackson annotations from Job Router in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
+          "old": ".*? com\\.azure\\.resourcemanager\\.network\\.models.*",
+          "justification": "Jackson annotation changed."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
+          "old": ".*? com\\.azure\\.resourcemanager\\.cosmos\\.models.*",
+          "justification": "Jackson annotation changed."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.Integer com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::instanceCount()",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.ServiceSize com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::instanceSize()",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.ServiceType com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::serviceType()",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withInstanceCount(java.lang.Integer)",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withInstanceSize(com.azure.resourcemanager.cosmos.models.ServiceSize)",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withServiceType(com.azure.resourcemanager.cosmos.models.ServiceType)",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
         }
       ]
     }

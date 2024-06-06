@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-/**
- * Pipeline resource type.
- */
+/** Pipeline resource type. */
 @JsonFlatten
 @Fluent
 public class PipelineResource extends SubResource {
@@ -74,18 +72,14 @@ public class PipelineResource extends SubResource {
     /*
      * Pipeline resource type.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of PipelineResource class.
-     */
-    public PipelineResource() {
-    }
+    /** Creates an instance of PipelineResource class. */
+    public PipelineResource() {}
 
     /**
      * Get the description property: The description of the pipeline.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -94,7 +88,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Set the description property: The description of the pipeline.
-     * 
+     *
      * @param description the description value to set.
      * @return the PipelineResource object itself.
      */
@@ -105,7 +99,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Get the activities property: List of activities in pipeline.
-     * 
+     *
      * @return the activities value.
      */
     public List<Activity> getActivities() {
@@ -114,7 +108,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Set the activities property: List of activities in pipeline.
-     * 
+     *
      * @param activities the activities value to set.
      * @return the PipelineResource object itself.
      */
@@ -125,7 +119,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Get the parameters property: List of parameters for pipeline.
-     * 
+     *
      * @return the parameters value.
      */
     public Map<String, ParameterSpecification> getParameters() {
@@ -134,7 +128,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Set the parameters property: List of parameters for pipeline.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the PipelineResource object itself.
      */
@@ -145,7 +139,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Get the variables property: List of variables for pipeline.
-     * 
+     *
      * @return the variables value.
      */
     public Map<String, VariableSpecification> getVariables() {
@@ -154,7 +148,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Set the variables property: List of variables for pipeline.
-     * 
+     *
      * @param variables the variables value to set.
      * @return the PipelineResource object itself.
      */
@@ -165,7 +159,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Get the concurrency property: The max number of concurrent runs for the pipeline.
-     * 
+     *
      * @return the concurrency value.
      */
     public Integer getConcurrency() {
@@ -174,7 +168,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Set the concurrency property: The max number of concurrent runs for the pipeline.
-     * 
+     *
      * @param concurrency the concurrency value to set.
      * @return the PipelineResource object itself.
      */
@@ -185,7 +179,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Get the annotations property: List of tags that can be used for describing the Pipeline.
-     * 
+     *
      * @return the annotations value.
      */
     public List<Object> getAnnotations() {
@@ -194,7 +188,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Set the annotations property: List of tags that can be used for describing the Pipeline.
-     * 
+     *
      * @param annotations the annotations value to set.
      * @return the PipelineResource object itself.
      */
@@ -205,7 +199,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Get the runDimensions property: Dimensions emitted by Pipeline.
-     * 
+     *
      * @return the runDimensions value.
      */
     public Map<String, Object> getRunDimensions() {
@@ -214,7 +208,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Set the runDimensions property: Dimensions emitted by Pipeline.
-     * 
+     *
      * @param runDimensions the runDimensions value to set.
      * @return the PipelineResource object itself.
      */
@@ -226,7 +220,7 @@ public class PipelineResource extends SubResource {
     /**
      * Get the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
      * level.
-     * 
+     *
      * @return the folder value.
      */
     public PipelineFolder getFolder() {
@@ -236,7 +230,7 @@ public class PipelineResource extends SubResource {
     /**
      * Set the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
      * level.
-     * 
+     *
      * @param folder the folder value to set.
      * @return the PipelineResource object itself.
      */
@@ -247,7 +241,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Get the additionalProperties property: Pipeline resource type.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -257,7 +251,7 @@ public class PipelineResource extends SubResource {
 
     /**
      * Set the additionalProperties property: Pipeline resource type.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the PipelineResource object itself.
      */

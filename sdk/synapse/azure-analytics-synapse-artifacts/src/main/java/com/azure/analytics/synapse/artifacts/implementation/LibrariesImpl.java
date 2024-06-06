@@ -36,28 +36,22 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in Libraries.
- */
+/** An instance of this class provides access to all the operations defined in Libraries. */
 public final class LibrariesImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final LibrariesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final ArtifactsClientImpl client;
 
     /**
      * Initializes an instance of LibrariesImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     LibrariesImpl(ArtifactsClientImpl client) {
-        this.service
-            = RestProxy.create(LibrariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(LibrariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,74 +63,105 @@ public final class LibrariesImpl {
     @ServiceInterface(name = "ArtifactsClientLibra")
     public interface LibrariesService {
         @Get("/libraries")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LibraryListResponse>> list(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<LibraryListResponse>> list(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/libraries/{libraryName}/flush")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LibraryResourceInfo>> flush(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("libraryName") String libraryName,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<LibraryResourceInfo>> flush(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("libraryName") String libraryName,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/libraryOperationResults/{operationId}")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LibraryResource>> getOperationResult(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<LibraryResource>> getOperationResult(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("operationId") String operationId,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Delete("/libraries/{libraryName}")
-        @ExpectedResponses({ 200, 202, 409 })
+        @ExpectedResponses({200, 202, 409})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LibraryResourceInfo>> delete(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("libraryName") String libraryName,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<LibraryResourceInfo>> delete(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("libraryName") String libraryName,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/libraries/{libraryName}")
-        @ExpectedResponses({ 200, 304 })
+        @ExpectedResponses({200, 304})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LibraryResource>> get(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("libraryName") String libraryName,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<LibraryResource>> get(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("libraryName") String libraryName,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/libraries/{libraryName}")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LibraryResourceInfo>> create(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("libraryName") String libraryName,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<LibraryResourceInfo>> create(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("libraryName") String libraryName,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/libraries/{libraryName}")
-        @ExpectedResponses({ 201 })
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> append(@HostParam("endpoint") String endpoint, @QueryParam("comp") String comp,
-            @QueryParam("api-version") String apiVersion, @PathParam("libraryName") String libraryName,
-            @HeaderParam("x-ms-blob-condition-appendpos") Long blobConditionAppendPosition,
-            @BodyParam("application/octet-stream") Flux<ByteBuffer> content,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> append(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("comp") String comp,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("libraryName") String libraryName,
+                @HeaderParam("x-ms-blob-condition-appendpos") Long blobConditionAppendPosition,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> content,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/libraries/{libraryName}")
-        @ExpectedResponses({ 201 })
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> append(@HostParam("endpoint") String endpoint, @QueryParam("comp") String comp,
-            @QueryParam("api-version") String apiVersion, @PathParam("libraryName") String libraryName,
-            @HeaderParam("x-ms-blob-condition-appendpos") Long blobConditionAppendPosition,
-            @BodyParam("application/octet-stream") BinaryData content,
-            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> append(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("comp") String comp,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("libraryName") String libraryName,
+                @HeaderParam("x-ms-blob-condition-appendpos") Long blobConditionAppendPosition,
+                @BodyParam("application/octet-stream") BinaryData content,
+                @HeaderParam("Content-Length") long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LibraryListResponse>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<LibraryListResponse>> listNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
      * Lists Library.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Library resources along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -146,13 +171,20 @@ public final class LibrariesImpl {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Lists Library.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -164,13 +196,20 @@ public final class LibrariesImpl {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.list(this.client.getEndpoint(), apiVersion, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Lists Library.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Library resources as paginated response with {@link PagedFlux}.
@@ -182,7 +221,7 @@ public final class LibrariesImpl {
 
     /**
      * Lists Library.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -191,13 +230,13 @@ public final class LibrariesImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LibraryResource> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(
+                () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists Library.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Library resources along with {@link PagedResponse}.
@@ -209,7 +248,7 @@ public final class LibrariesImpl {
 
     /**
      * Lists Library.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -223,7 +262,7 @@ public final class LibrariesImpl {
 
     /**
      * Lists Library.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Library resources as paginated response with {@link PagedIterable}.
@@ -235,7 +274,7 @@ public final class LibrariesImpl {
 
     /**
      * Lists Library.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -249,9 +288,9 @@ public final class LibrariesImpl {
 
     /**
      * Flush Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -261,15 +300,15 @@ public final class LibrariesImpl {
     public Mono<Response<LibraryResourceInfo>> flushWithResponseAsync(String libraryName) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.flush(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
+        return FluxUtil.withContext(
+                context -> service.flush(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
     }
 
     /**
      * Flush Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -285,9 +324,9 @@ public final class LibrariesImpl {
 
     /**
      * Flush Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -300,9 +339,9 @@ public final class LibrariesImpl {
 
     /**
      * Flush Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -316,9 +355,9 @@ public final class LibrariesImpl {
 
     /**
      * Flush Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -332,9 +371,9 @@ public final class LibrariesImpl {
 
     /**
      * Flush Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -347,7 +386,7 @@ public final class LibrariesImpl {
 
     /**
      * Get Operation result for Library.
-     * 
+     *
      * @param operationId operation id for which status is requested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -359,12 +398,14 @@ public final class LibrariesImpl {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.getOperationResult(this.client.getEndpoint(), apiVersion, operationId, accept, context));
+                context ->
+                        service.getOperationResult(
+                                this.client.getEndpoint(), apiVersion, operationId, accept, context));
     }
 
     /**
      * Get Operation result for Library.
-     * 
+     *
      * @param operationId operation id for which status is requested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -381,7 +422,7 @@ public final class LibrariesImpl {
 
     /**
      * Get Operation result for Library.
-     * 
+     *
      * @param operationId operation id for which status is requested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -395,7 +436,7 @@ public final class LibrariesImpl {
 
     /**
      * Get Operation result for Library.
-     * 
+     *
      * @param operationId operation id for which status is requested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -406,12 +447,12 @@ public final class LibrariesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LibraryResource> getOperationResultAsync(String operationId, Context context) {
         return getOperationResultWithResponseAsync(operationId, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Operation result for Library.
-     * 
+     *
      * @param operationId operation id for which status is requested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -426,7 +467,7 @@ public final class LibrariesImpl {
 
     /**
      * Get Operation result for Library.
-     * 
+     *
      * @param operationId operation id for which status is requested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -440,9 +481,9 @@ public final class LibrariesImpl {
 
     /**
      * Delete Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -453,14 +494,14 @@ public final class LibrariesImpl {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.delete(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
+                context -> service.delete(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
     }
 
     /**
      * Delete Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -476,9 +517,9 @@ public final class LibrariesImpl {
 
     /**
      * Delete Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -491,9 +532,9 @@ public final class LibrariesImpl {
 
     /**
      * Delete Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -507,9 +548,9 @@ public final class LibrariesImpl {
 
     /**
      * Delete Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -523,9 +564,9 @@ public final class LibrariesImpl {
 
     /**
      * Delete Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -538,9 +579,9 @@ public final class LibrariesImpl {
 
     /**
      * Get Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -550,15 +591,15 @@ public final class LibrariesImpl {
     public Mono<Response<LibraryResource>> getWithResponseAsync(String libraryName) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
+        return FluxUtil.withContext(
+                context -> service.get(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
     }
 
     /**
      * Get Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -574,9 +615,9 @@ public final class LibrariesImpl {
 
     /**
      * Get Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -589,9 +630,9 @@ public final class LibrariesImpl {
 
     /**
      * Get Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -605,9 +646,9 @@ public final class LibrariesImpl {
 
     /**
      * Get Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -621,9 +662,9 @@ public final class LibrariesImpl {
 
     /**
      * Get Library.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -636,9 +677,9 @@ public final class LibrariesImpl {
 
     /**
      * Creates a library with the library name.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -649,14 +690,14 @@ public final class LibrariesImpl {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.create(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
+                context -> service.create(this.client.getEndpoint(), apiVersion, libraryName, accept, context));
     }
 
     /**
      * Creates a library with the library name.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -672,9 +713,9 @@ public final class LibrariesImpl {
 
     /**
      * Creates a library with the library name.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -687,9 +728,9 @@ public final class LibrariesImpl {
 
     /**
      * Creates a library with the library name.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -703,9 +744,9 @@ public final class LibrariesImpl {
 
     /**
      * Creates a library with the library name.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -719,9 +760,9 @@ public final class LibrariesImpl {
 
     /**
      * Creates a library with the library name.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -735,40 +776,50 @@ public final class LibrariesImpl {
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> appendWithResponseAsync(String libraryName, Flux<ByteBuffer> content,
-        long contentLength, Long blobConditionAppendPosition) {
+    public Mono<Response<Void>> appendWithResponseAsync(
+            String libraryName, Flux<ByteBuffer> content, long contentLength, Long blobConditionAppendPosition) {
         final String comp = "appendblock";
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.append(this.client.getEndpoint(), comp, apiVersion, libraryName,
-            blobConditionAppendPosition, content, contentLength, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.append(
+                                this.client.getEndpoint(),
+                                comp,
+                                apiVersion,
+                                libraryName,
+                                blobConditionAppendPosition,
+                                content,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -776,44 +827,56 @@ public final class LibrariesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> appendWithResponseAsync(String libraryName, Flux<ByteBuffer> content,
-        long contentLength, Long blobConditionAppendPosition, Context context) {
+    public Mono<Response<Void>> appendWithResponseAsync(
+            String libraryName,
+            Flux<ByteBuffer> content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
         final String comp = "appendblock";
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.append(this.client.getEndpoint(), comp, apiVersion, libraryName, blobConditionAppendPosition,
-            content, contentLength, accept, context);
+        return service.append(
+                this.client.getEndpoint(),
+                comp,
+                apiVersion,
+                libraryName,
+                blobConditionAppendPosition,
+                content,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> appendAsync(String libraryName, Flux<ByteBuffer> content, long contentLength,
-        Long blobConditionAppendPosition) {
+    public Mono<Void> appendAsync(
+            String libraryName, Flux<ByteBuffer> content, long contentLength, Long blobConditionAppendPosition) {
         return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -825,20 +888,20 @@ public final class LibrariesImpl {
     public Mono<Void> appendAsync(String libraryName, Flux<ByteBuffer> content, long contentLength) {
         final Long blobConditionAppendPosition = null;
         return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -846,23 +909,27 @@ public final class LibrariesImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> appendAsync(String libraryName, Flux<ByteBuffer> content, long contentLength,
-        Long blobConditionAppendPosition, Context context) {
+    public Mono<Void> appendAsync(
+            String libraryName,
+            Flux<ByteBuffer> content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
         return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition, context)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -870,39 +937,43 @@ public final class LibrariesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> appendWithResponse(String libraryName, Flux<ByteBuffer> content, long contentLength,
-        Long blobConditionAppendPosition, Context context) {
+    public Response<Void> appendWithResponse(
+            String libraryName,
+            Flux<ByteBuffer> content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
         return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition, context)
-            .block();
+                .block();
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void append(String libraryName, Flux<ByteBuffer> content, long contentLength,
-        Long blobConditionAppendPosition) {
+    public void append(
+            String libraryName, Flux<ByteBuffer> content, long contentLength, Long blobConditionAppendPosition) {
         appendWithResponse(libraryName, content, contentLength, blobConditionAppendPosition, Context.NONE);
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -918,40 +989,50 @@ public final class LibrariesImpl {
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> appendWithResponseAsync(String libraryName, BinaryData content, long contentLength,
-        Long blobConditionAppendPosition) {
+    public Mono<Response<Void>> appendWithResponseAsync(
+            String libraryName, BinaryData content, long contentLength, Long blobConditionAppendPosition) {
         final String comp = "appendblock";
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.append(this.client.getEndpoint(), comp, apiVersion, libraryName,
-            blobConditionAppendPosition, content, contentLength, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.append(
+                                this.client.getEndpoint(),
+                                comp,
+                                apiVersion,
+                                libraryName,
+                                blobConditionAppendPosition,
+                                content,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -959,44 +1040,56 @@ public final class LibrariesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> appendWithResponseAsync(String libraryName, BinaryData content, long contentLength,
-        Long blobConditionAppendPosition, Context context) {
+    public Mono<Response<Void>> appendWithResponseAsync(
+            String libraryName,
+            BinaryData content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
         final String comp = "appendblock";
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.append(this.client.getEndpoint(), comp, apiVersion, libraryName, blobConditionAppendPosition,
-            content, contentLength, accept, context);
+        return service.append(
+                this.client.getEndpoint(),
+                comp,
+                apiVersion,
+                libraryName,
+                blobConditionAppendPosition,
+                content,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> appendAsync(String libraryName, BinaryData content, long contentLength,
-        Long blobConditionAppendPosition) {
+    public Mono<Void> appendAsync(
+            String libraryName, BinaryData content, long contentLength, Long blobConditionAppendPosition) {
         return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1008,20 +1101,20 @@ public final class LibrariesImpl {
     public Mono<Void> appendAsync(String libraryName, BinaryData content, long contentLength) {
         final Long blobConditionAppendPosition = null;
         return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1029,23 +1122,27 @@ public final class LibrariesImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> appendAsync(String libraryName, BinaryData content, long contentLength,
-        Long blobConditionAppendPosition, Context context) {
+    public Mono<Void> appendAsync(
+            String libraryName,
+            BinaryData content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
         return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition, context)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1053,23 +1150,27 @@ public final class LibrariesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> appendWithResponse(String libraryName, BinaryData content, long contentLength,
-        Long blobConditionAppendPosition, Context context) {
+    public Response<Void> appendWithResponse(
+            String libraryName,
+            BinaryData content,
+            long contentLength,
+            Long blobConditionAppendPosition,
+            Context context) {
         return appendWithResponseAsync(libraryName, content, contentLength, blobConditionAppendPosition, context)
-            .block();
+                .block();
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
-     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
+     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1082,9 +1183,9 @@ public final class LibrariesImpl {
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     * 
+     *
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     * length.
+     *     length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1099,10 +1200,9 @@ public final class LibrariesImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1112,16 +1212,22 @@ public final class LibrariesImpl {
     public Mono<PagedResponse<LibraryResource>> listNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1132,16 +1238,22 @@ public final class LibrariesImpl {
     public Mono<PagedResponse<LibraryResource>> listNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
         return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1154,10 +1266,9 @@ public final class LibrariesImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

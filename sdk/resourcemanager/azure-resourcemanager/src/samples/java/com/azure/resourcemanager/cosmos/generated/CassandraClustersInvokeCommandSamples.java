@@ -11,8 +11,7 @@ import com.azure.resourcemanager.cosmos.models.CommandPostBody;
  */
 public final class CassandraClustersInvokeCommandSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBManagedCassandraCommand.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBManagedCassandraCommand.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraCommand.
@@ -20,8 +19,12 @@ public final class CassandraClustersInvokeCommandSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBManagedCassandraCommand(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getCassandraClusters().invokeCommand("cassandra-prod-rg",
-            "cassandra-prod", new CommandPostBody().withCommand("nodetool status").withHost("10.0.1.12"),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraClusters()
+            .invokeCommand("cassandra-prod-rg", "cassandra-prod",
+                new CommandPostBody().withCommand("nodetool status").withHost("10.0.1.12"),
+                com.azure.core.util.Context.NONE);
     }
 }

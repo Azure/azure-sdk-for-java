@@ -61,9 +61,10 @@ import com.azure.resourcemanager.cosmos.models.SqlTriggerListResult;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionListResult;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in SqlResourcesClient.
@@ -81,7 +82,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Initializes an instance of SqlResourcesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     SqlResourcesClientImpl(CosmosDBManagementClientImpl client) {
@@ -520,7 +521,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -558,7 +559,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -597,7 +598,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -613,7 +614,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -631,7 +632,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -647,7 +648,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL databases under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -665,7 +666,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -705,7 +706,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -745,7 +746,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -764,7 +765,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -783,7 +784,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL database under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -800,7 +801,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -847,7 +848,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -895,7 +896,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -918,7 +919,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -942,7 +943,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -956,13 +957,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
         String resourceGroupName, String accountName, String databaseName,
         SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters) {
-        return this.beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
-            createUpdateSqlDatabaseParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
+                createUpdateSqlDatabaseParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -977,13 +980,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlDatabaseGetResultsInner>, SqlDatabaseGetResultsInner> beginCreateUpdateSqlDatabase(
         String resourceGroupName, String accountName, String databaseName,
         SqlDatabaseCreateUpdateParameters createUpdateSqlDatabaseParameters, Context context) {
-        return this.beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
-            createUpdateSqlDatabaseParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlDatabaseAsync(resourceGroupName, accountName, databaseName,
+                createUpdateSqlDatabaseParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1002,7 +1007,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1022,7 +1027,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1041,7 +1046,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1061,7 +1066,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1100,7 +1105,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1138,7 +1143,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1158,7 +1163,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1180,7 +1185,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1197,7 +1202,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1215,7 +1220,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1232,7 +1237,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1251,7 +1256,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1266,7 +1271,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1283,7 +1288,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
      * name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1325,7 +1330,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
      * name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1366,7 +1371,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
      * name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1386,7 +1391,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
      * name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1406,7 +1411,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Gets the RUs per second of the SQL database under an existing Azure Cosmos DB database account with the provided
      * name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1425,7 +1430,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1473,7 +1478,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1522,7 +1527,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1545,7 +1550,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1570,7 +1575,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1584,13 +1589,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1605,13 +1612,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateSqlDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1630,7 +1639,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1651,7 +1660,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1670,7 +1679,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1690,7 +1699,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1731,7 +1740,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1771,7 +1780,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1792,7 +1801,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1816,7 +1825,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1834,7 +1843,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1854,7 +1863,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1872,7 +1881,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1891,7 +1900,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1908,7 +1917,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1926,7 +1935,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1967,7 +1976,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2007,7 +2016,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2029,7 +2038,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2053,7 +2062,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2071,7 +2080,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2092,7 +2101,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2110,7 +2119,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2124,12 +2133,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     private Mono<ThroughputSettingsGetResultsInner> migrateSqlDatabaseToManualThroughputAsync(String resourceGroupName,
         String accountName, String databaseName, Context context) {
         return beginMigrateSqlDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2146,7 +2156,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL database from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2164,7 +2174,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2207,7 +2217,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2250,7 +2260,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2268,7 +2278,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2288,7 +2298,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2306,7 +2316,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2325,7 +2335,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2370,7 +2380,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2414,7 +2424,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2434,7 +2444,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2454,7 +2464,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2473,7 +2483,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2525,7 +2535,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2577,7 +2587,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2601,7 +2611,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2628,7 +2638,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2643,13 +2653,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlContainerGetResultsInner>, SqlContainerGetResultsInner>
         beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName,
             String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters) {
-        return this.beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
-            createUpdateSqlContainerParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
+                createUpdateSqlContainerParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2666,13 +2678,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateSqlContainer(String resourceGroupName, String accountName, String databaseName,
             String containerName, SqlContainerCreateUpdateParameters createUpdateSqlContainerParameters,
             Context context) {
-        return this.beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
-            createUpdateSqlContainerParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlContainerAsync(resourceGroupName, accountName, databaseName, containerName,
+                createUpdateSqlContainerParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2693,7 +2707,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2715,7 +2729,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2736,7 +2750,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2758,7 +2772,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2801,7 +2815,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2843,7 +2857,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2864,7 +2878,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2887,7 +2901,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2906,7 +2920,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2926,7 +2940,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2945,7 +2959,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2965,7 +2979,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2982,7 +2996,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3000,7 +3014,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3045,7 +3059,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3089,7 +3103,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3109,7 +3123,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3130,7 +3144,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the RUs per second of the SQL container under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3149,7 +3163,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3202,7 +3216,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3255,7 +3269,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3279,7 +3293,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3305,7 +3319,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3320,13 +3334,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName,
             String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3342,13 +3358,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateSqlContainerThroughput(String resourceGroupName, String accountName, String databaseName,
             String containerName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateSqlContainerThroughputAsync(resourceGroupName, accountName, databaseName, containerName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3369,7 +3387,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3391,7 +3409,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3411,7 +3429,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Update RUs per second of an Azure Cosmos DB SQL container.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3433,7 +3451,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3478,7 +3496,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3522,7 +3540,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3545,7 +3563,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3570,7 +3588,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3591,7 +3609,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3606,13 +3624,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToAutoscale(String resourceGroupName, String accountName, String databaseName,
             String containerName, Context context) {
-        return this.beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName,
-            containerName, context).getSyncPoller();
+        return this
+            .beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3626,12 +3646,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public Mono<ThroughputSettingsGetResultsInner> migrateSqlContainerToAutoscaleAsync(String resourceGroupName,
         String accountName, String databaseName, String containerName) {
         return beginMigrateSqlContainerToAutoscaleAsync(resourceGroupName, accountName, databaseName, containerName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3651,7 +3672,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3669,7 +3690,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3689,7 +3710,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3734,7 +3755,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3778,7 +3799,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3801,7 +3822,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3826,7 +3847,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3840,13 +3861,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName,
             String containerName) {
-        return this.beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
-            containerName).getSyncPoller();
+        return this
+            .beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
+                containerName)
+            .getSyncPoller();
     }
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3861,13 +3884,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateSqlContainerToManualThroughput(String resourceGroupName, String accountName, String databaseName,
             String containerName, Context context) {
-        return this.beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
-            containerName, context).getSyncPoller();
+        return this
+            .beginMigrateSqlContainerToManualThroughputAsync(resourceGroupName, accountName, databaseName,
+                containerName, context)
+            .getSyncPoller();
     }
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3886,7 +3911,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3906,7 +3931,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3925,7 +3950,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Migrate an Azure Cosmos DB SQL container from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3945,7 +3970,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3988,7 +4013,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4031,7 +4056,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4050,7 +4075,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4070,7 +4095,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4088,7 +4113,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the ClientEncryptionKeys under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4108,7 +4133,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4154,7 +4179,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4201,7 +4226,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4221,7 +4246,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4241,7 +4266,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the ClientEncryptionKey under an existing Azure Cosmos DB SQL database.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4261,7 +4286,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4315,7 +4340,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4369,7 +4394,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4395,7 +4420,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4423,7 +4448,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4439,14 +4464,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName,
             String clientEncryptionKeyName,
             ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
-        return this.beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
-            clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
+                clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4463,14 +4490,16 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateClientEncryptionKey(String resourceGroupName, String accountName, String databaseName,
             String clientEncryptionKeyName,
             ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context) {
-        return this.beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
-            clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
+                clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4487,13 +4516,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters) {
         return beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
             clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4511,13 +4540,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         ClientEncryptionKeyCreateUpdateParameters createUpdateClientEncryptionKeyParameters, Context context) {
         return beginCreateUpdateClientEncryptionKeyAsync(resourceGroupName, accountName, databaseName,
             clientEncryptionKeyName, createUpdateClientEncryptionKeyParameters, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4539,7 +4568,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     /**
      * Create or update a ClientEncryptionKey. This API is meant to be invoked via tools such as the Azure Powershell
      * (instead of directly).
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4561,7 +4590,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4608,7 +4637,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4655,7 +4684,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4675,7 +4704,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4696,7 +4725,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4716,7 +4745,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4737,7 +4766,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4788,7 +4817,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4839,7 +4868,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4860,7 +4889,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4881,7 +4910,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL storedProcedure under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4901,7 +4930,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -4959,7 +4988,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5016,7 +5045,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5042,7 +5071,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5071,7 +5100,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5088,13 +5117,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName,
             String containerName, String storedProcedureName,
             SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
-        return this.beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName,
-            containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName, createUpdateSqlStoredProcedureParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5112,13 +5143,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateSqlStoredProcedure(String resourceGroupName, String accountName, String databaseName,
             String containerName, String storedProcedureName,
             SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context) {
-        return this.beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName,
-            containerName, storedProcedureName, createUpdateSqlStoredProcedureParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName, createUpdateSqlStoredProcedureParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5136,12 +5169,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters) {
         return beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
             storedProcedureName, createUpdateSqlStoredProcedureParameters).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5160,12 +5193,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlStoredProcedureCreateUpdateParameters createUpdateSqlStoredProcedureParameters, Context context) {
         return beginCreateUpdateSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
             storedProcedureName, createUpdateSqlStoredProcedureParameters, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5187,7 +5220,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5210,7 +5243,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5258,7 +5291,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5306,7 +5339,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5328,7 +5361,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5352,7 +5385,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5366,13 +5399,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(String resourceGroupName,
         String accountName, String databaseName, String containerName, String storedProcedureName) {
-        return this.beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
-            storedProcedureName).getSyncPoller();
+        return this
+            .beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5387,13 +5422,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlStoredProcedure(String resourceGroupName,
         String accountName, String databaseName, String containerName, String storedProcedureName, Context context) {
-        return this.beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
-            storedProcedureName, context).getSyncPoller();
+        return this
+            .beginDeleteSqlStoredProcedureAsync(resourceGroupName, accountName, databaseName, containerName,
+                storedProcedureName, context)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5413,7 +5450,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5434,7 +5471,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5453,7 +5490,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL storedProcedure.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5473,7 +5510,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5520,7 +5557,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5567,7 +5604,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5587,7 +5624,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5608,7 +5645,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5628,7 +5665,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5649,7 +5686,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5700,7 +5737,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5751,7 +5788,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5772,7 +5809,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5795,7 +5832,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL userDefinedFunction under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5815,7 +5852,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5876,7 +5913,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5936,7 +5973,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5964,7 +6001,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -5995,7 +6032,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6013,13 +6050,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         beginCreateUpdateSqlUserDefinedFunction(String resourceGroupName, String accountName, String databaseName,
             String containerName, String userDefinedFunctionName,
             SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
-        return this.beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName,
-            containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6039,14 +6078,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
             String containerName, String userDefinedFunctionName,
             SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters,
             Context context) {
-        return this.beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName,
-            containerName, userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context)
+        return this
+            .beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6065,12 +6105,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters) {
         return beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
             userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6091,12 +6131,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlUserDefinedFunctionCreateUpdateParameters createUpdateSqlUserDefinedFunctionParameters, Context context) {
         return beginCreateUpdateSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
             userDefinedFunctionName, createUpdateSqlUserDefinedFunctionParameters, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6119,7 +6159,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6143,7 +6183,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6191,7 +6231,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6240,7 +6280,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6262,7 +6302,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6287,7 +6327,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6301,13 +6341,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(String resourceGroupName,
         String accountName, String databaseName, String containerName, String userDefinedFunctionName) {
-        return this.beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
-            userDefinedFunctionName).getSyncPoller();
+        return this
+            .beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6323,13 +6365,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlUserDefinedFunction(String resourceGroupName,
         String accountName, String databaseName, String containerName, String userDefinedFunctionName,
         Context context) {
-        return this.beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
-            userDefinedFunctionName, context).getSyncPoller();
+        return this
+            .beginDeleteSqlUserDefinedFunctionAsync(resourceGroupName, accountName, databaseName, containerName,
+                userDefinedFunctionName, context)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6349,7 +6393,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6370,7 +6414,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6389,7 +6433,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL userDefinedFunction.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6409,7 +6453,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6456,7 +6500,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6503,7 +6547,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6523,7 +6567,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6544,7 +6588,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6563,7 +6607,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Lists the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6584,7 +6628,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6633,7 +6677,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6681,7 +6725,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6702,7 +6746,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6723,7 +6767,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Gets the SQL trigger under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6743,7 +6787,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6799,7 +6843,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6855,7 +6899,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6881,7 +6925,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6908,7 +6952,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6924,13 +6968,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName,
         SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters) {
-        return this.beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName,
-            triggerName, createUpdateSqlTriggerParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
+                createUpdateSqlTriggerParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6947,13 +6993,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlTriggerGetResultsInner>, SqlTriggerGetResultsInner> beginCreateUpdateSqlTrigger(
         String resourceGroupName, String accountName, String databaseName, String containerName, String triggerName,
         SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context) {
-        return this.beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName,
-            triggerName, createUpdateSqlTriggerParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
+                createUpdateSqlTriggerParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6975,7 +7023,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -6994,12 +7042,12 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
         SqlTriggerCreateUpdateParameters createUpdateSqlTriggerParameters, Context context) {
         return beginCreateUpdateSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName,
             triggerName, createUpdateSqlTriggerParameters, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7021,7 +7069,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Create or update an Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7044,7 +7092,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7091,7 +7139,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7137,7 +7185,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7159,7 +7207,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7183,7 +7231,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7203,7 +7251,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7218,13 +7266,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSqlTrigger(String resourceGroupName, String accountName,
         String databaseName, String containerName, String triggerName, Context context) {
-        return this.beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
-            context).getSyncPoller();
+        return this
+            .beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7239,12 +7289,13 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public Mono<Void> deleteSqlTriggerAsync(String resourceGroupName, String accountName, String databaseName,
         String containerName, String triggerName) {
         return beginDeleteSqlTriggerAsync(resourceGroupName, accountName, databaseName, containerName, triggerName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7265,7 +7316,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7283,7 +7334,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL trigger.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -7303,7 +7354,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7345,7 +7396,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7387,7 +7438,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7405,7 +7456,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7423,7 +7474,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Definition with the given Id.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7441,7 +7492,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7491,7 +7542,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7541,7 +7592,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7564,7 +7615,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7589,7 +7640,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7603,13 +7654,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
         beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName,
             SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters) {
-        return this.beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
-            createUpdateSqlRoleDefinitionParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
+                createUpdateSqlRoleDefinitionParameters)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7624,13 +7677,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleDefinitionGetResultsInner>, SqlRoleDefinitionGetResultsInner>
         beginCreateUpdateSqlRoleDefinition(String roleDefinitionId, String resourceGroupName, String accountName,
             SqlRoleDefinitionCreateUpdateParameters createUpdateSqlRoleDefinitionParameters, Context context) {
-        return this.beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
-            createUpdateSqlRoleDefinitionParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleDefinitionAsync(roleDefinitionId, resourceGroupName, accountName,
+                createUpdateSqlRoleDefinitionParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7650,7 +7705,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7671,7 +7726,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7691,7 +7746,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7712,7 +7767,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7753,7 +7808,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7794,7 +7849,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7814,7 +7869,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7836,7 +7891,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7853,7 +7908,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7872,7 +7927,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7890,7 +7945,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7909,7 +7964,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7924,7 +7979,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Definition.
-     * 
+     *
      * @param roleDefinitionId The GUID for the Role Definition.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -7941,7 +7996,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7979,7 +8034,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8017,7 +8072,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8033,7 +8088,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8050,7 +8105,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8066,7 +8121,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8083,7 +8138,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8124,7 +8179,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8165,7 +8220,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8183,7 +8238,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8201,7 +8256,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB SQL Role Assignment with the given Id.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8219,7 +8274,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8268,7 +8323,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8317,7 +8372,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8340,7 +8395,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8365,7 +8420,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8379,13 +8434,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
         beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName,
             SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters) {
-        return this.beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
-            createUpdateSqlRoleAssignmentParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
+                createUpdateSqlRoleAssignmentParameters)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8400,13 +8457,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<SqlRoleAssignmentGetResultsInner>, SqlRoleAssignmentGetResultsInner>
         beginCreateUpdateSqlRoleAssignment(String roleAssignmentId, String resourceGroupName, String accountName,
             SqlRoleAssignmentCreateUpdateParameters createUpdateSqlRoleAssignmentParameters, Context context) {
-        return this.beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
-            createUpdateSqlRoleAssignmentParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateSqlRoleAssignmentAsync(roleAssignmentId, resourceGroupName, accountName,
+                createUpdateSqlRoleAssignmentParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8426,7 +8485,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8447,7 +8506,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8467,7 +8526,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Creates or updates an Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8488,7 +8547,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8529,7 +8588,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8570,7 +8629,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8590,7 +8649,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8612,7 +8671,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8629,7 +8688,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8648,7 +8707,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8666,7 +8725,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8685,7 +8744,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8700,7 +8759,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Deletes an existing Azure Cosmos DB SQL Role Assignment.
-     * 
+     *
      * @param roleAssignmentId The GUID for the Role Assignment.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
@@ -8717,7 +8776,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8755,7 +8814,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8793,7 +8852,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8809,7 +8868,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8826,7 +8885,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8842,7 +8901,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves the list of all Azure Cosmos DB SQL Role Assignments.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -8859,7 +8918,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -8910,7 +8969,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -8961,7 +9020,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -8985,7 +9044,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9010,7 +9069,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9025,13 +9084,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
             String containerName, ContinuousBackupRestoreLocation location) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName,
-            containerName, location).getSyncPoller();
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName,
+                location)
+            .getSyncPoller();
     }
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9047,13 +9108,15 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
             String containerName, ContinuousBackupRestoreLocation location, Context context) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName,
-            containerName, location, context).getSyncPoller();
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, containerName,
+                location, context)
+            .getSyncPoller();
     }
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9073,7 +9136,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9095,7 +9158,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -9115,7 +9178,7 @@ public final class SqlResourcesClientImpl implements SqlResourcesClient {
 
     /**
      * Retrieves continuous backup information for a container resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
