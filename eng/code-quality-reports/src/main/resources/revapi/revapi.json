@@ -484,6 +484,7 @@
           "justification": "Removing Jackson annotations from Tables in transition to stream-style."
         },
         {
+          "regex": true,
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
