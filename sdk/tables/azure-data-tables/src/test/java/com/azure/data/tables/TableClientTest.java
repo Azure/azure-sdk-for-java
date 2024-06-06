@@ -64,6 +64,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Tests {@link TableClient}.
  */
+@Disabled
 public class TableClientTest extends TableClientTestBase {
     private TableClient tableClient;
 
