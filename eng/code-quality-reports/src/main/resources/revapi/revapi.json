@@ -491,15 +491,9 @@
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.attributeRemoved",
+          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
           "old": ".*? com\\.azure\\.resourcemanager\\.network\\.models.*",
-          "justification": "Removing Jackson annotations from Network in transition to stream-style."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.attributeAdded",
-          "old": ".*? com\\.azure\\.resourcemanager\\.network\\.models.*",
-          "justification": "Adding Jackson annotations to Network in transition to stream-style."
+          "justification": "Jackson annotation changed."
         }
       ]
     }
