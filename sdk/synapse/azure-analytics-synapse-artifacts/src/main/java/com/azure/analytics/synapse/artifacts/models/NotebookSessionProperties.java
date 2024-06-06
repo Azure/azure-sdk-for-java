@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Session properties.
- */
+/** Session properties. */
 @Fluent
 public final class NotebookSessionProperties {
     /*
@@ -42,15 +40,12 @@ public final class NotebookSessionProperties {
     @JsonProperty(value = "numExecutors", required = true)
     private int numExecutors;
 
-    /**
-     * Creates an instance of NotebookSessionProperties class.
-     */
-    public NotebookSessionProperties() {
-    }
+    /** Creates an instance of NotebookSessionProperties class. */
+    public NotebookSessionProperties() {}
 
     /**
      * Get the driverMemory property: Amount of memory to use for the driver process.
-     * 
+     *
      * @return the driverMemory value.
      */
     public String getDriverMemory() {
@@ -59,7 +54,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Set the driverMemory property: Amount of memory to use for the driver process.
-     * 
+     *
      * @param driverMemory the driverMemory value to set.
      * @return the NotebookSessionProperties object itself.
      */
@@ -70,7 +65,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Get the driverCores property: Number of cores to use for the driver.
-     * 
+     *
      * @return the driverCores value.
      */
     public int getDriverCores() {
@@ -79,7 +74,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Set the driverCores property: Number of cores to use for the driver.
-     * 
+     *
      * @param driverCores the driverCores value to set.
      * @return the NotebookSessionProperties object itself.
      */
@@ -90,7 +85,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Get the executorMemory property: Amount of memory to use per executor process.
-     * 
+     *
      * @return the executorMemory value.
      */
     public String getExecutorMemory() {
@@ -99,7 +94,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Set the executorMemory property: Amount of memory to use per executor process.
-     * 
+     *
      * @param executorMemory the executorMemory value to set.
      * @return the NotebookSessionProperties object itself.
      */
@@ -110,7 +105,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Get the executorCores property: Number of cores to use for each executor.
-     * 
+     *
      * @return the executorCores value.
      */
     public int getExecutorCores() {
@@ -119,7 +114,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Set the executorCores property: Number of cores to use for each executor.
-     * 
+     *
      * @param executorCores the executorCores value to set.
      * @return the NotebookSessionProperties object itself.
      */
@@ -130,7 +125,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Get the numExecutors property: Number of executors to launch for this session.
-     * 
+     *
      * @return the numExecutors value.
      */
     public int getNumExecutors() {
@@ -139,7 +134,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Set the numExecutors property: Number of executors to launch for this session.
-     * 
+     *
      * @param numExecutors the numExecutors value to set.
      * @return the NotebookSessionProperties object itself.
      */

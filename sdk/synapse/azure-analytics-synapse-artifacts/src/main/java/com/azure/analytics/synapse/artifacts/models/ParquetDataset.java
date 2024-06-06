@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Parquet dataset.
- */
+/** Parquet dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Parquet")
 @JsonFlatten
@@ -32,15 +30,12 @@ public class ParquetDataset extends Dataset {
     @JsonProperty(value = "typeProperties.compressionCodec")
     private Object compressionCodec;
 
-    /**
-     * Creates an instance of ParquetDataset class.
-     */
-    public ParquetDataset() {
-    }
+    /** Creates an instance of ParquetDataset class. */
+    public ParquetDataset() {}
 
     /**
      * Get the location property: The location of the parquet storage.
-     * 
+     *
      * @return the location value.
      */
     public DatasetLocation getLocation() {
@@ -49,7 +44,7 @@ public class ParquetDataset extends Dataset {
 
     /**
      * Set the location property: The location of the parquet storage.
-     * 
+     *
      * @param location the location value to set.
      * @return the ParquetDataset object itself.
      */
@@ -60,7 +55,7 @@ public class ParquetDataset extends Dataset {
 
     /**
      * Get the compressionCodec property: A string from ParquetCompressionCodecEnum or an expression.
-     * 
+     *
      * @return the compressionCodec value.
      */
     public Object getCompressionCodec() {
@@ -69,7 +64,7 @@ public class ParquetDataset extends Dataset {
 
     /**
      * Set the compressionCodec property: A string from ParquetCompressionCodecEnum or an expression.
-     * 
+     *
      * @param compressionCodec the compressionCodec value to set.
      * @return the ParquetDataset object itself.
      */
@@ -78,63 +73,49 @@ public class ParquetDataset extends Dataset {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ParquetDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ParquetDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ParquetDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ParquetDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ParquetDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ParquetDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ParquetDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

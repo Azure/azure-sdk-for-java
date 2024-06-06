@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Request body structure for starting data flow debug session.
- */
+/** Request body structure for starting data flow debug session. */
 @Fluent
 public final class StartDataFlowDebugSessionRequest {
     /*
@@ -61,15 +59,12 @@ public final class StartDataFlowDebugSessionRequest {
     @JsonProperty(value = "incrementalDebug")
     private Boolean incrementalDebug;
 
-    /**
-     * Creates an instance of StartDataFlowDebugSessionRequest class.
-     */
-    public StartDataFlowDebugSessionRequest() {
-    }
+    /** Creates an instance of StartDataFlowDebugSessionRequest class. */
+    public StartDataFlowDebugSessionRequest() {}
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     * 
+     *
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -78,7 +73,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     * 
+     *
      * @param sessionId the sessionId value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -89,7 +84,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the dataFlow property: Data flow instance.
-     * 
+     *
      * @return the dataFlow value.
      */
     public DataFlowResource getDataFlow() {
@@ -98,7 +93,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the dataFlow property: Data flow instance.
-     * 
+     *
      * @param dataFlow the dataFlow value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -109,7 +104,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the dataFlows property: List of Data flows.
-     * 
+     *
      * @return the dataFlows value.
      */
     public List<DataFlowResource> getDataFlows() {
@@ -118,7 +113,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the dataFlows property: List of Data flows.
-     * 
+     *
      * @param dataFlows the dataFlows value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -129,7 +124,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the datasets property: List of datasets.
-     * 
+     *
      * @return the datasets value.
      */
     public List<DatasetResource> getDatasets() {
@@ -138,7 +133,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the datasets property: List of datasets.
-     * 
+     *
      * @param datasets the datasets value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -149,7 +144,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the linkedServices property: List of linked services.
-     * 
+     *
      * @return the linkedServices value.
      */
     public List<LinkedServiceResource> getLinkedServices() {
@@ -158,7 +153,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the linkedServices property: List of linked services.
-     * 
+     *
      * @param linkedServices the linkedServices value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -169,7 +164,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the staging property: Staging info for debug session.
-     * 
+     *
      * @return the staging value.
      */
     public Object getStaging() {
@@ -178,7 +173,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the staging property: Staging info for debug session.
-     * 
+     *
      * @param staging the staging value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -189,7 +184,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the debugSettings property: Data flow debug settings.
-     * 
+     *
      * @return the debugSettings value.
      */
     public Object getDebugSettings() {
@@ -198,7 +193,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the debugSettings property: Data flow debug settings.
-     * 
+     *
      * @param debugSettings the debugSettings value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -209,7 +204,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the incrementalDebug property: The type of new Databricks cluster.
-     * 
+     *
      * @return the incrementalDebug value.
      */
     public Boolean isIncrementalDebug() {
@@ -218,7 +213,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the incrementalDebug property: The type of new Databricks cluster.
-     * 
+     *
      * @param incrementalDebug the incrementalDebug value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */

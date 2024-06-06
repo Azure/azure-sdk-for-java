@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Trigger that runs every time a custom event is received.
- */
+/** Trigger that runs every time a custom event is received. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CustomEventsTrigger")
 @JsonFlatten
@@ -45,16 +43,13 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties.scope", required = true)
     private String scope;
 
-    /**
-     * Creates an instance of CustomEventsTrigger class.
-     */
-    public CustomEventsTrigger() {
-    }
+    /** Creates an instance of CustomEventsTrigger class. */
+    public CustomEventsTrigger() {}
 
     /**
      * Get the subjectBeginsWith property: The event subject must begin with the pattern provided for trigger to fire.
      * At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     * 
+     *
      * @return the subjectBeginsWith value.
      */
     public String getSubjectBeginsWith() {
@@ -64,7 +59,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * Set the subjectBeginsWith property: The event subject must begin with the pattern provided for trigger to fire.
      * At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     * 
+     *
      * @param subjectBeginsWith the subjectBeginsWith value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -76,7 +71,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * Get the subjectEndsWith property: The event subject must end with the pattern provided for trigger to fire. At
      * least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     * 
+     *
      * @return the subjectEndsWith value.
      */
     public String getSubjectEndsWith() {
@@ -86,7 +81,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * Set the subjectEndsWith property: The event subject must end with the pattern provided for trigger to fire. At
      * least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     * 
+     *
      * @param subjectEndsWith the subjectEndsWith value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -97,7 +92,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the events property: The list of event types that cause this trigger to fire.
-     * 
+     *
      * @return the events value.
      */
     public List<Object> getEvents() {
@@ -106,7 +101,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the events property: The list of event types that cause this trigger to fire.
-     * 
+     *
      * @param events the events value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -117,7 +112,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the scope property: The ARM resource ID of the Azure Event Grid Topic.
-     * 
+     *
      * @return the scope value.
      */
     public String getScope() {
@@ -126,7 +121,7 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the scope property: The ARM resource ID of the Azure Event Grid Topic.
-     * 
+     *
      * @param scope the scope value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -135,27 +130,21 @@ public class CustomEventsTrigger extends MultiplePipelineTrigger {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CustomEventsTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
         super.setPipelines(pipelines);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CustomEventsTrigger setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CustomEventsTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

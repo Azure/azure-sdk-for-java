@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Spark configuration reference.
- */
+/** Spark configuration reference. */
 @Fluent
 public final class SparkConfigurationReference {
     /*
@@ -24,15 +22,12 @@ public final class SparkConfigurationReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
-    /**
-     * Creates an instance of SparkConfigurationReference class.
-     */
-    public SparkConfigurationReference() {
-    }
+    /** Creates an instance of SparkConfigurationReference class. */
+    public SparkConfigurationReference() {}
 
     /**
      * Get the type property: Spark configuration reference type.
-     * 
+     *
      * @return the type value.
      */
     public SparkConfigurationReferenceType getType() {
@@ -41,7 +36,7 @@ public final class SparkConfigurationReference {
 
     /**
      * Set the type property: Spark configuration reference type.
-     * 
+     *
      * @param type the type value to set.
      * @return the SparkConfigurationReference object itself.
      */
@@ -52,7 +47,7 @@ public final class SparkConfigurationReference {
 
     /**
      * Get the referenceName property: Reference spark configuration name.
-     * 
+     *
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -61,7 +56,7 @@ public final class SparkConfigurationReference {
 
     /**
      * Set the referenceName property: Reference spark configuration name.
-     * 
+     *
      * @param referenceName the referenceName value to set.
      * @return the SparkConfigurationReference object itself.
      */

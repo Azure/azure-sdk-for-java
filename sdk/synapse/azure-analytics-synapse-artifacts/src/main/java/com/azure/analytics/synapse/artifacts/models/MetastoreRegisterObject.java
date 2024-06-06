@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MetastoreRegisterObject model.
- */
+/** The MetastoreRegisterObject model. */
 @Fluent
 public final class MetastoreRegisterObject {
     /*
@@ -18,15 +16,12 @@ public final class MetastoreRegisterObject {
     @JsonProperty(value = "inputFolder", required = true)
     private String inputFolder;
 
-    /**
-     * Creates an instance of MetastoreRegisterObject class.
-     */
-    public MetastoreRegisterObject() {
-    }
+    /** Creates an instance of MetastoreRegisterObject class. */
+    public MetastoreRegisterObject() {}
 
     /**
      * Get the inputFolder property: The input folder containing CDM files.
-     * 
+     *
      * @return the inputFolder value.
      */
     public String getInputFolder() {
@@ -35,7 +30,7 @@ public final class MetastoreRegisterObject {
 
     /**
      * Set the inputFolder property: The input folder containing CDM files.
-     * 
+     *
      * @param inputFolder the inputFolder value to set.
      * @return the MetastoreRegisterObject object itself.
      */

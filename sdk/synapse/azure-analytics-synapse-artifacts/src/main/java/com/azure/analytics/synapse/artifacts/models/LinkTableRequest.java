@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LinkTableRequest model.
- */
+/** The LinkTableRequest model. */
 @Fluent
 public final class LinkTableRequest {
     /*
@@ -36,15 +34,12 @@ public final class LinkTableRequest {
     @JsonProperty(value = "operationType")
     private String operationType;
 
-    /**
-     * Creates an instance of LinkTableRequest class.
-     */
-    public LinkTableRequest() {
-    }
+    /** Creates an instance of LinkTableRequest class. */
+    public LinkTableRequest() {}
 
     /**
      * Get the id property: Link table id.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -53,7 +48,7 @@ public final class LinkTableRequest {
 
     /**
      * Set the id property: Link table id.
-     * 
+     *
      * @param id the id value to set.
      * @return the LinkTableRequest object itself.
      */
@@ -64,7 +59,7 @@ public final class LinkTableRequest {
 
     /**
      * Get the source property: Source table properties for link table request.
-     * 
+     *
      * @return the source value.
      */
     public LinkTableRequestSource getSource() {
@@ -73,7 +68,7 @@ public final class LinkTableRequest {
 
     /**
      * Set the source property: Source table properties for link table request.
-     * 
+     *
      * @param source the source value to set.
      * @return the LinkTableRequest object itself.
      */
@@ -84,7 +79,7 @@ public final class LinkTableRequest {
 
     /**
      * Get the target property: Target table properties for link table request.
-     * 
+     *
      * @return the target value.
      */
     public LinkTableRequestTarget getTarget() {
@@ -93,7 +88,7 @@ public final class LinkTableRequest {
 
     /**
      * Set the target property: Target table properties for link table request.
-     * 
+     *
      * @param target the target value to set.
      * @return the LinkTableRequest object itself.
      */
@@ -104,7 +99,7 @@ public final class LinkTableRequest {
 
     /**
      * Get the operationType property: Link table operation type.
-     * 
+     *
      * @return the operationType value.
      */
     public String getOperationType() {
@@ -113,7 +108,7 @@ public final class LinkTableRequest {
 
     /**
      * Set the operationType property: Link table operation type.
-     * 
+     *
      * @param operationType the operationType value to set.
      * @return the LinkTableRequest object itself.
      */
