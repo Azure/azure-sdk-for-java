@@ -7,6 +7,7 @@ import com.azure.ai.translation.document.models.BatchRequest;
 import com.azure.ai.translation.document.models.SourceInput;
 import com.azure.ai.translation.document.models.TargetInput;
 import com.azure.ai.translation.document.models.TranslationStatus;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
@@ -17,6 +18,7 @@ import java.util.List;
 public class CancelTranslationTests extends DocumentTranslationClientTestBase {
 
     @RecordWithoutRequestBody
+    @LiveOnly
     @Test
     public void testCancelTranslation() {
 

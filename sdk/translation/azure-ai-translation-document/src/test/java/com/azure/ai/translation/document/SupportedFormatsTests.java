@@ -6,6 +6,7 @@ package com.azure.ai.translation.document;
 import com.azure.ai.translation.document.models.FileFormat;
 import com.azure.ai.translation.document.models.FileFormatType;
 import com.azure.ai.translation.document.models.SupportedFileFormats;
+import com.azure.core.test.annotation.LiveOnly;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class SupportedFormatsTests extends DocumentTranslationClientTestBase {
     @Test
+    @LiveOnly
     public void testGetDocumentsFormats() {        
         // method invocation
         SupportedFileFormats response = getDocumentTranslationClient().getSupportedFormats(FileFormatType.DOCUMENT);
@@ -32,6 +34,7 @@ public final class SupportedFormatsTests extends DocumentTranslationClientTestBa
     }
     
     @Test
+    @LiveOnly
     public void testGetGlossariesFormats() {        
         // method invocation
         SupportedFileFormats response = getDocumentTranslationClient().getSupportedFormats(FileFormatType.GLOSSARY);

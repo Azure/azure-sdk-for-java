@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
+    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByStatus() {
@@ -56,6 +58,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         }
     }
 
+    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByIds() {
@@ -90,6 +93,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         }
     }
 
+    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByCreatedAfter() {
@@ -153,6 +157,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         }
     }
 
+    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByCreatedBefore() {
@@ -216,6 +221,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         }
     }
 
+    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesOrderByCreatedOn() {
