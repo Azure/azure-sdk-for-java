@@ -1,15 +1,5 @@
 # Release History
 
-## 12.12.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.11.0 (2024-05-15)
 
 ### Features Added
