@@ -6,15 +6,21 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList;
+import com.azure.ai.openai.assistants.models.CreateToolResourcesOptions;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.implementation.AsyncUtils;
 import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -29,14 +35,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RetrievalAsyncTest extends AssistantsClientTestBase {
+public class AzureFileSearchAsyncTest extends AssistantsClientTestBase {
 
     AssistantsAsyncClient client;
 
+    @Disabled("file_search tools are not supported in Azure")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void basicRetrieval(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient);
+    public void basicFileSearch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
 
         createRetrievalRunner((fileDetails, assistantCreationOptions) -> {
             // Upload file
@@ -44,7 +51,12 @@ public class RetrievalAsyncTest extends AssistantsClientTestBase {
                 .flatMap(openAIFile -> {
                     // Create assistant
                     AsyncUtils cleanUp = new AsyncUtils();
-                    assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
+                    CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
+                    createToolResourcesOptions.setFileSearch(
+                        new CreateFileSearchToolResourceOptions(
+                            new CreateFileSearchToolResourceVectorStoreOptionsList(
+                                Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+                    assistantCreationOptions.setToolResources(createToolResourcesOptions);
                     cleanUp.setFile(openAIFile);
                     return client.createAssistant(assistantCreationOptions).zipWith(Mono.just(cleanUp));
                 }).flatMap(tuple -> {
@@ -61,13 +73,14 @@ public class RetrievalAsyncTest extends AssistantsClientTestBase {
 
                     return client.createMessage(
                         thread.getId(),
-                        MessageRole.USER,
-                        "Can you give me the documented codes for 'banana' and 'orange'?"
-                    ).flatMap(_message ->
+                        new ThreadMessageOptions(
+                            MessageRole.USER,
+                            "Can you give me the documented codes for 'banana' and 'orange'?"
+                    )).flatMap(_message ->
                         client.createRun(cleanUp.getThread(), cleanUp.getAssistant())
                             .flatMap(createdRun ->
                                 client.getRun(cleanUp.getThread().getId(), createdRun.getId()).zipWith(Mono.just(cleanUp))
-                                    .repeatWhen(completed -> completed.delayElements(Duration.ofMillis(500)))
+                                    .repeatWhen(completed -> completed.delayElements(Duration.ofMillis(1000)))
                                     .takeUntil(tuple2 -> {
                                         ThreadRun run = tuple2.getT1();
 

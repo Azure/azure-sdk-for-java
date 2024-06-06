@@ -7,8 +7,13 @@ import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList;
+import com.azure.ai.openai.assistants.models.CreateToolResourcesOptions;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
+import com.azure.ai.openai.assistants.models.FileSearchToolDefinition;
 import com.azure.ai.openai.assistants.models.MessageImageFileContent;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
@@ -16,9 +21,9 @@ import com.azure.ai.openai.assistants.models.MessageTextDetails;
 import com.azure.ai.openai.assistants.models.MessageTextFileCitationAnnotation;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
-import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
@@ -35,7 +40,7 @@ import java.util.Arrays;
  * the thread until we get a result. Running the sample should result on one of the ids return while the assistant requesting
  * for further information to be able to proceed.
  */
-public class RetrievalToolSample {
+public class FileSearchToolSample {
 
     public static void main(String[] args) throws InterruptedException {
         String apiKey = Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY");
@@ -53,14 +58,20 @@ public class RetrievalToolSample {
         // Upload file for assistant
         OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
 
+        // Create Tool Resources. This is how we pass files to the Assistant.
+        CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
+        createToolResourcesOptions.setFileSearch(
+            new CreateFileSearchToolResourceOptions(
+                new CreateFileSearchToolResourceVectorStoreOptionsList(
+                    Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
 
         // Create assistant passing the file ID
         Assistant assistant = client.createAssistant(
             new AssistantCreationOptions(deploymentOrModelId)
                 .setName("Java SDK Retrieval Sample")
                 .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
-                .setTools(Arrays.asList(new RetrievalToolDefinition()))
-                .setFileIds(Arrays.asList(openAIFile.getId()))
+                .setTools(Arrays.asList(new FileSearchToolDefinition()))
+                .setToolResources(createToolResourcesOptions)
         );
 
         // Create a thread with the assistant just created
@@ -69,15 +80,16 @@ public class RetrievalToolSample {
         // Assign message to thread
         client.createMessage(
             thread.getId(),
-            MessageRole.USER,
-            "Can you give me the documented codes for 'banana' and 'orange'?");
+            new ThreadMessageOptions(
+                MessageRole.USER,
+                "Can you give me the documented codes for 'banana' and 'orange'?"));
 
         // Pass the message to the assistant and start the run
         ThreadRun run = client.createRun(thread, assistant);
 
         // Wait for the run to complete
         do {
-            Thread.sleep(500);
+            Thread.sleep(1000);
             run = client.getRun(thread.getId(), run.getId());
         } while (run.getStatus() == RunStatus.IN_PROGRESS
             || run.getStatus() == RunStatus.QUEUED);

@@ -6,6 +6,10 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList;
+import com.azure.ai.openai.assistants.models.CreateToolResourcesOptions;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
@@ -13,6 +17,7 @@ import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,13 +31,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RetrievalSyncTest extends AssistantsClientTestBase {
+public class FileSearchSyncTest extends AssistantsClientTestBase {
 
     AssistantsClient client;
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void basicRetrieval(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+    public void basicFileSearch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
 
         createRetrievalRunner((fileDetails, assistantCreationOptions) -> {
@@ -40,7 +45,12 @@ public class RetrievalSyncTest extends AssistantsClientTestBase {
             OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
 
             // Create assistant
-            assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
+            CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
+            createToolResourcesOptions.setFileSearch(
+                new CreateFileSearchToolResourceOptions(
+                    new CreateFileSearchToolResourceVectorStoreOptionsList(
+                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+            assistantCreationOptions.setToolResources(createToolResourcesOptions);
             Assistant assistant = client.createAssistant(assistantCreationOptions);
 
             // Create thread
@@ -49,14 +59,15 @@ public class RetrievalSyncTest extends AssistantsClientTestBase {
             // Assign message to thread
             client.createMessage(
                 thread.getId(),
-                MessageRole.USER,
-                "Can you give me the documented codes for 'banana' and 'orange'?");
+                new ThreadMessageOptions(
+                    MessageRole.USER,
+                    "Can you give me the documented codes for 'banana' and 'orange'?"));
 
             // Pass the message to the assistant and start the run
             ThreadRun run = client.createRun(thread, assistant);
 
             do {
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
                 run = client.getRun(thread.getId(), run.getId());
             } while (run.getStatus() == RunStatus.IN_PROGRESS
                 || run.getStatus() == RunStatus.QUEUED);

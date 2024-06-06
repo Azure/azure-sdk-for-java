@@ -12,10 +12,10 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The status of an assistant file deletion operation.
+ * Response object for deleting a vector store file relationship.
  */
 @Immutable
-public final class AssistantFileDeletionStatus implements JsonSerializable<AssistantFileDeletionStatus> {
+public final class VectorStoreFileDeletionStatus implements JsonSerializable<VectorStoreFileDeletionStatus> {
 
     /*
      * The ID of the resource specified for deletion.
@@ -30,19 +30,19 @@ public final class AssistantFileDeletionStatus implements JsonSerializable<Assis
     private final boolean deleted;
 
     /*
-     * The object type, which is always 'assistant.file.deleted'.
+     * The object type, which is always 'vector_store.deleted'.
      */
     @Generated
-    private final String object = "assistant.file.deleted";
+    private final String object = "vector_store.file.deleted";
 
     /**
-     * Creates an instance of AssistantFileDeletionStatus class.
+     * Creates an instance of VectorStoreFileDeletionStatus class.
      *
      * @param id the id value to set.
      * @param deleted the deleted value to set.
      */
     @Generated
-    private AssistantFileDeletionStatus(String id, boolean deleted) {
+    private VectorStoreFileDeletionStatus(String id, boolean deleted) {
         this.id = id;
         this.deleted = deleted;
     }
@@ -68,7 +68,7 @@ public final class AssistantFileDeletionStatus implements JsonSerializable<Assis
     }
 
     /**
-     * Get the object property: The object type, which is always 'assistant.file.deleted'.
+     * Get the object property: The object type, which is always 'vector_store.deleted'.
      *
      * @return the object value.
      */
@@ -91,16 +91,16 @@ public final class AssistantFileDeletionStatus implements JsonSerializable<Assis
     }
 
     /**
-     * Reads an instance of AssistantFileDeletionStatus from the JsonReader.
+     * Reads an instance of VectorStoreFileDeletionStatus from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AssistantFileDeletionStatus if the JsonReader was pointing to an instance of it, or null
+     * @return An instance of VectorStoreFileDeletionStatus if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AssistantFileDeletionStatus.
+     * @throws IOException If an error occurs while reading the VectorStoreFileDeletionStatus.
      */
     @Generated
-    public static AssistantFileDeletionStatus fromJson(JsonReader jsonReader) throws IOException {
+    public static VectorStoreFileDeletionStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
             boolean deleted = false;
@@ -115,7 +115,7 @@ public final class AssistantFileDeletionStatus implements JsonSerializable<Assis
                     reader.skipChildren();
                 }
             }
-            return new AssistantFileDeletionStatus(id, deleted);
+            return new VectorStoreFileDeletionStatus(id, deleted);
         });
     }
 }

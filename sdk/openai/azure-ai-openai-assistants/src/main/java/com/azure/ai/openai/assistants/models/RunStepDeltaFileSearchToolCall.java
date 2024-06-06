@@ -12,25 +12,31 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Represents a retrieval tool call within a streaming run step's tool call details.
+ * Represents a file search tool call within a streaming run step's tool call details.
  */
 @Immutable
-public final class RunStepDeltaRetrievalToolCall extends RunStepDeltaToolCall {
+public final class RunStepDeltaFileSearchToolCall extends RunStepDeltaToolCall {
 
     /*
      * The type of the tool call detail item in a streaming run step's details.
      */
     @Generated
-    private String type = "retrieval";
+    private String type = "file_search";
+
+    /*
+     * Reserved for future use.
+     */
+    @Generated
+    private Map<String, String> fileSearch;
 
     /**
-     * Creates an instance of RunStepDeltaRetrievalToolCall class.
+     * Creates an instance of RunStepDeltaFileSearchToolCall class.
      *
      * @param index the index value to set.
      * @param id the id value to set.
      */
     @Generated
-    private RunStepDeltaRetrievalToolCall(int index, String id) {
+    private RunStepDeltaFileSearchToolCall(int index, String id) {
         super(index, id);
     }
 
@@ -43,6 +49,16 @@ public final class RunStepDeltaRetrievalToolCall extends RunStepDeltaToolCall {
     @Override
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * Get the fileSearch property: Reserved for future use.
+     *
+     * @return the fileSearch value.
+     */
+    @Generated
+    public Map<String, String> getFileSearch() {
+        return this.fileSearch;
     }
 
     /**
@@ -60,20 +76,20 @@ public final class RunStepDeltaRetrievalToolCall extends RunStepDeltaToolCall {
     }
 
     /**
-     * Reads an instance of RunStepDeltaRetrievalToolCall from the JsonReader.
+     * Reads an instance of RunStepDeltaFileSearchToolCall from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStepDeltaRetrievalToolCall if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     * @return An instance of RunStepDeltaFileSearchToolCall if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RunStepDeltaRetrievalToolCall.
+     * @throws IOException If an error occurs while reading the RunStepDeltaFileSearchToolCall.
      */
     @Generated
-    public static RunStepDeltaRetrievalToolCall fromJson(JsonReader jsonReader) throws IOException {
+    public static RunStepDeltaFileSearchToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             int index = 0;
             String id = null;
-            String type = "retrieval";
+            String type = "file_search";
             Map<String, String> fileSearch = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -90,27 +106,11 @@ public final class RunStepDeltaRetrievalToolCall extends RunStepDeltaToolCall {
                     reader.skipChildren();
                 }
             }
-            RunStepDeltaRetrievalToolCall deserializedRunStepDeltaRetrievalToolCall
-                = new RunStepDeltaRetrievalToolCall(index, id);
-            deserializedRunStepDeltaRetrievalToolCall.type = type;
-            deserializedRunStepDeltaRetrievalToolCall.fileSearch = fileSearch;
-            return deserializedRunStepDeltaRetrievalToolCall;
+            RunStepDeltaFileSearchToolCall deserializedRunStepDeltaFileSearchToolCall
+                = new RunStepDeltaFileSearchToolCall(index, id);
+            deserializedRunStepDeltaFileSearchToolCall.type = type;
+            deserializedRunStepDeltaFileSearchToolCall.fileSearch = fileSearch;
+            return deserializedRunStepDeltaFileSearchToolCall;
         });
-    }
-
-    /*
-     * Reserved for future use.
-     */
-    @Generated
-    private Map<String, String> fileSearch;
-
-    /**
-     * Get the fileSearch property: Reserved for future use.
-     *
-     * @return the fileSearch value.
-     */
-    @Generated
-    public Map<String, String> getFileSearch() {
-        return this.fileSearch;
     }
 }
