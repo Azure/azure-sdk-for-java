@@ -87,8 +87,8 @@ public final class HttpResponseBodyDecoder {
             }
 
             try {
-                return deserializeBody(response.getBody(), extractEntityTypeFromReturnType(decodeData),
-                    decodeData.getReturnValueWireType(), serializer);
+                return deserializeBody(body == null ? response.getBody() : body,
+                    extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(), serializer);
             } catch (MalformedValueException e) {
                 throw new HttpResponseException("HTTP response has a malformed body.", response, null, e);
             } catch (IOException e) {
