@@ -5,19 +5,15 @@ parameters:
       - name: azure-core
         groupId: com.azure
         safeName: azurecore
-  - name: oneESTemplateTag
-    type: string
-    default: release
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
-    oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
     stages:
       - stage: Linting
         jobs:
           - job: 'Linting'
-        
+
             timeoutInMinutes: 180
 
             variables:
