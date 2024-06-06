@@ -2495,7 +2495,7 @@ public final class AssistantsClient {
      * @return represents an assistant that can call the model and use tools.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIFile uploadFile(FileDetails file, FilePurpose purpose, String filename) {
+    OpenAIFile uploadFile(FileDetails file, FilePurpose purpose, String filename) {
         file.setFilename(filename);
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose).setFilename(filename);
@@ -2523,7 +2523,7 @@ public final class AssistantsClient {
      * @return represents an assistant that can call the model and use tools.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenAIFile uploadFile(FileDetails file, FilePurpose purpose) {
+    public OpenAIFile uploadFile(FileDetails file, FilePurpose purpose) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose);

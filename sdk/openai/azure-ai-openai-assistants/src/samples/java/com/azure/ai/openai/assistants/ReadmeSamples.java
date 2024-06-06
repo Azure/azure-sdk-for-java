@@ -172,7 +172,7 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-uploadFile
         Path filePath = Paths.get("src", "samples", "resources", fileName);
         BinaryData fileData = BinaryData.fromFile(filePath);
-        FileDetails fileDetails = new FileDetails(fileData).setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(fileData, fileName);
 
         OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
         // END: readme-sample-uploadFile
