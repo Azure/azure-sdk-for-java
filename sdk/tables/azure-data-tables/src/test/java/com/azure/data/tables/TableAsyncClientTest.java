@@ -310,7 +310,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
     @Test
     public void deleteNonExistingTable() {
         // Act & Assert
-        tableClient.deleteTable().block();
+        tableClient.deleteTable().block(DEFAULT_TIMEOUT);
 
         StepVerifier.create(tableClient.deleteTable())
             .expectComplete()
@@ -337,7 +337,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         final int expectedStatusCode = 404;
 
         // Act & Assert
-        tableClient.deleteTableWithResponse().block();
+        tableClient.deleteTableWithResponse().block(DEFAULT_TIMEOUT);
 
         StepVerifier.create(tableClient.deleteTableWithResponse())
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
@@ -1223,7 +1223,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         TableEntity entity = new TableEntity("", "");
         String entityName = testResourceNamer.randomName("name", 10);
         entity.addProperty("Name", entityName);
-        tableClient.createEntity(entity).block();
+        tableClient.createEntity(entity).block(DEFAULT_TIMEOUT);
         ListEntitiesOptions options = new ListEntitiesOptions();
         options.setFilter("PartitionKey eq '' and RowKey eq ''");
         StepVerifier.create(tableClient.listEntities(options))
@@ -1241,7 +1241,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         TableEntity entity = new TableEntity("", "");
         String entityName = testResourceNamer.randomName("name", 10);
         entity.addProperty("Name", entityName);
-        tableClient.createEntity(entity).block();
+        tableClient.createEntity(entity).block(DEFAULT_TIMEOUT);
         StepVerifier.create(tableClient.deleteEntityWithResponse("", "", "*", false, null))
             .assertNext(response -> assertEquals(204, response.getStatusCode()))
             .expectComplete()
@@ -1276,10 +1276,10 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .addProperty("stringField", s);
 
         // Act
-        tableClient.createEntity(tableEntity).block();
+        tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
 
         // Assert
-        final TableEntity retrievedEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block();
+        final TableEntity retrievedEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(DEFAULT_TIMEOUT);
 
         Assertions.assertArrayEquals(bytes, (byte[]) retrievedEntity.getProperties().get("byteField"));
         assertEquals(b, (boolean) retrievedEntity.getProperties().get("booleanField"));
@@ -1320,7 +1320,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .addProperty("longField", l)
             .addProperty("stringField", s);
 
-        tableClient.createEntity(tableEntity).block();
+        tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
 
         // Act
         StepVerifier.create(tableClient.listEntities())
@@ -1369,10 +1369,10 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .addProperty("longField", l)
             .addProperty("stringField", s);
 
-        tableClient.createEntity(tableEntity).block();
+        tableClient.createEntity(tableEntity).block(DEFAULT_TIMEOUT);
 
         // Act
-        final TableEntity retrievedEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block();
+        final TableEntity retrievedEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block(DEFAULT_TIMEOUT);
         final Iterator<TableEntity> iterator = tableClient.listEntities().toIterable().iterator();
         assertTrue(iterator.hasNext());
 

@@ -247,7 +247,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         // Arrange
         String tableName = testResourceNamer.randomName("test", 20);
         int expectedStatusCode = 204;
-        serviceClient.createTable(tableName).block();
+        serviceClient.createTable(tableName).block(DEFAULT_TIMEOUT);
 
         //Act & Assert
         StepVerifier.create(serviceClient.deleteTableWithResponse(tableName))
