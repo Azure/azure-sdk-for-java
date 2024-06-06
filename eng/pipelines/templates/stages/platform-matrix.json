@@ -42,7 +42,7 @@
       "TestFromSource": false,
       "RunAggregateReports": true,
       "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false -Dshade.skip=true"
     },
     {
       "Agent": {
