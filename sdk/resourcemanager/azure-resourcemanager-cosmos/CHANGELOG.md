@@ -2,6 +2,17 @@
 
 ## 2.40.0-beta.2 (Unreleased)
 
+### Breaking Changes
+
+#### `models.ServiceResourceCreateUpdateParameters` was modified.
+
+* `instanceCount()` was removed.
+* `instanceSize()` was removed.
+* `serviceType()` was removed.
+* `withInstanceCount(java.lang.Integer)` was removed.
+* `withInstanceSize(com.azure.resourcemanager.cosmos.models.ServiceSize)` was removed.
+* `withServiceType(com.azure.resourcemanager.cosmos.models.ServiceType)` was removed.
+
 ### Other Changes
 
 #### Dependency Updates
