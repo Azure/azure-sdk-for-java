@@ -100,13 +100,13 @@ def remove_generated_source_code(sdk_folder: str, namespace: str):
     test_folder = os.path.join(sdk_folder, "src/test/java", namespace.replace(".", "/"), "generated")
     sample_folder = os.path.join(sdk_folder, "src/samples/java", namespace.replace(".", "/"), "generated")
 
-    logging.info(f'Removing main source folder: {main_folder}')
+    logging.info(f"Removing main source folder: {main_folder}")
     shutil.rmtree(main_folder, ignore_errors=True)
 
-    logging.info(f'Removing generated test folder: {test_folder}')
+    logging.info(f"Removing generated test folder: {test_folder}")
     shutil.rmtree(test_folder, ignore_errors=True)
 
-    logging.info(f'Removing generated samples folder: {sample_folder}')
+    logging.info(f"Removing generated samples folder: {sample_folder}")
     shutil.rmtree(sample_folder, ignore_errors=True)
 
 
@@ -367,7 +367,7 @@ def generate_typespec_project(
             ]
 
         if tspconfig_valid:
-            check_call(tsp_cmd, sdk_root)
+            check_call(tsp_cmd, sdk_root, shell=True)
 
             sdk_folder = find_sdk_folder(sdk_root)
             logging.info("SDK folder: " + sdk_folder)
@@ -393,7 +393,7 @@ def generate_typespec_project(
                     drop_changes(sdk_root)
                     remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
                     # regenerate
-                    check_call(tsp_cmd, sdk_root)
+                    check_call(tsp_cmd, sdk_root, shell=True)
                 succeeded = True
     except subprocess.CalledProcessError as error:
         error_message = (
@@ -406,9 +406,9 @@ def generate_typespec_project(
     return succeeded, require_sdk_integration, sdk_folder, service, module
 
 
-def check_call(cmd: List[str], work_dir: str):
+def check_call(cmd: List[str], work_dir: str, shell: bool = False):
     logging.info("Command line: " + " ".join(cmd))
-    subprocess.check_call(cmd, cwd=work_dir)
+    subprocess.check_call(cmd, cwd=work_dir, shell=shell)
 
 
 def drop_changes(work_dir: str):

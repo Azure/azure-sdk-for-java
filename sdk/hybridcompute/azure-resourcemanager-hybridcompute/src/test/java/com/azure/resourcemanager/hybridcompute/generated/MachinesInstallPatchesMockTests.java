@@ -28,7 +28,7 @@ public final class MachinesInstallPatchesMockTests {
     @Test
     public void testInstallPatches() throws Exception {
         String responseStr
-            = "{\"status\":\"Succeeded\",\"installationActivityId\":\"vutpthjoxo\",\"rebootStatus\":\"Failed\",\"maintenanceWindowExceeded\":true,\"excludedPatchCount\":1976615224,\"notSelectedPatchCount\":791689891,\"pendingPatchCount\":1015646968,\"installedPatchCount\":2072188488,\"failedPatchCount\":1062811723,\"startDateTime\":\"2021-01-28T22:40:19Z\",\"lastModifiedDateTime\":\"2021-11-12T05:30:54Z\",\"startedBy\":\"User\",\"patchServiceUsed\":\"YUM\",\"osType\":\"Linux\"}";
+            = "{\"status\":\"CompletedWithWarnings\",\"installationActivityId\":\"vpdvjdhttzae\",\"rebootStatus\":\"Unknown\",\"maintenanceWindowExceeded\":true,\"excludedPatchCount\":439511971,\"notSelectedPatchCount\":1616798862,\"pendingPatchCount\":361772142,\"installedPatchCount\":120151065,\"failedPatchCount\":525308452,\"startDateTime\":\"2021-08-24T07:14:11Z\",\"lastModifiedDateTime\":\"2021-07-17T20:12:30Z\",\"startedBy\":\"Platform\",\"patchServiceUsed\":\"YUM\",\"osType\":\"Windows\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,21 +38,21 @@ public final class MachinesInstallPatchesMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         MachineInstallPatchesResult response = manager.machines()
-            .installPatches("rk", "alywjhhgdn",
-                new MachineInstallPatchesParameters().withMaximumDuration(Duration.parse("PT175H6M53S"))
-                    .withRebootSetting(VMGuestPatchRebootSetting.ALWAYS)
-                    .withWindowsParameters(new WindowsParameters()
-                        .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.SERVICE_PACK))
-                        .withKbNumbersToInclude(Arrays.asList("iloxggdufiq", "dieuzaofj", "hvcyyysfg", "otcubi"))
-                        .withKbNumbersToExclude(Arrays.asList("ipwoqonmacjek", "izsh", "vcimpev", "gmblrri"))
-                        .withExcludeKbsRequiringReboot(false)
-                        .withMaxPatchPublishDate(OffsetDateTime.parse("2021-02-03T11:24:04Z")))
-                    .withLinuxParameters(new LinuxParameters()
-                        .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationLinux.OTHER,
-                            VMGuestPatchClassificationLinux.CRITICAL, VMGuestPatchClassificationLinux.CRITICAL,
-                            VMGuestPatchClassificationLinux.CRITICAL))
-                        .withPackageNameMasksToInclude(Arrays.asList("fscjfnynszquji", "dvoqyt"))
-                        .withPackageNameMasksToExclude(Arrays.asList("owbb"))),
+            .installPatches("rjlnacgcck", "nhxk", new MachineInstallPatchesParameters()
+                .withMaximumDuration(Duration.parse("PT176H50M30S"))
+                .withRebootSetting(VMGuestPatchRebootSetting.ALWAYS)
+                .withWindowsParameters(new WindowsParameters()
+                    .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.UPDATE_ROLL_UP,
+                        VMGuestPatchClassificationWindows.UPDATE_ROLL_UP, VMGuestPatchClassificationWindows.UPDATES))
+                    .withKbNumbersToInclude(Arrays.asList("jraaeranokqguk"))
+                    .withKbNumbersToExclude(Arrays.asList("nvbroylaxx"))
+                    .withExcludeKbsRequiringReboot(false)
+                    .withMaxPatchPublishDate(OffsetDateTime.parse("2021-04-08T11:51:17Z")))
+                .withLinuxParameters(new LinuxParameters()
+                    .withClassificationsToInclude(
+                        Arrays.asList(VMGuestPatchClassificationLinux.OTHER, VMGuestPatchClassificationLinux.SECURITY))
+                    .withPackageNameMasksToInclude(Arrays.asList("jsvg"))
+                    .withPackageNameMasksToExclude(Arrays.asList("hryvy", "ytdc", "xgccknfnw"))),
                 com.azure.core.util.Context.NONE);
 
     }

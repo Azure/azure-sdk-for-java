@@ -96,7 +96,7 @@ public final class FaceAsyncClient {
      * ]
      * }</pre>
      *
-     * @param request The request parameter.
+     * @param findSimilarRequest The findSimilarRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -106,8 +106,9 @@ public final class FaceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> findSimilarWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.findSimilarWithResponseAsync(request, requestOptions);
+    public Mono<Response<BinaryData>> findSimilarWithResponse(BinaryData findSimilarRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.findSimilarWithResponseAsync(findSimilarRequest, requestOptions);
     }
 
     /**
@@ -138,7 +139,7 @@ public final class FaceAsyncClient {
      * }
      * }</pre>
      *
-     * @param request The request parameter.
+     * @param verifyFaceToFaceRequest The verifyFaceToFaceRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -148,8 +149,9 @@ public final class FaceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> verifyFaceToFaceWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.verifyFaceToFaceWithResponseAsync(request, requestOptions);
+    public Mono<Response<BinaryData>> verifyFaceToFaceWithResponse(BinaryData verifyFaceToFaceRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.verifyFaceToFaceWithResponseAsync(verifyFaceToFaceRequest, requestOptions);
     }
 
     /**
@@ -190,7 +192,7 @@ public final class FaceAsyncClient {
      * }
      * }</pre>
      *
-     * @param request The request parameter.
+     * @param groupRequest The groupRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -201,8 +203,8 @@ public final class FaceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> groupWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.groupWithResponseAsync(request, requestOptions);
+    public Mono<Response<BinaryData>> groupWithResponse(BinaryData groupRequest, RequestOptions requestOptions) {
+        return this.serviceClient.groupWithResponseAsync(groupRequest, requestOptions);
     }
 
     /**
@@ -241,11 +243,11 @@ public final class FaceAsyncClient {
         Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
         // Generated convenience method for findSimilarWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        FindSimilarRequest requestObj
+        FindSimilarRequest findSimilarRequestObj
             = new FindSimilarRequest(faceId, faceIds).setMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned)
                 .setMode(mode);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return findSimilarWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+        BinaryData findSimilarRequest = BinaryData.fromObject(findSimilarRequestObj);
+        return findSimilarWithResponse(findSimilarRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT));
     }
 
@@ -281,9 +283,9 @@ public final class FaceAsyncClient {
     public Mono<List<FaceFindSimilarResult>> findSimilar(String faceId, List<String> faceIds) {
         // Generated convenience method for findSimilarWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        FindSimilarRequest requestObj = new FindSimilarRequest(faceId, faceIds);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return findSimilarWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+        FindSimilarRequest findSimilarRequestObj = new FindSimilarRequest(faceId, faceIds);
+        BinaryData findSimilarRequest = BinaryData.fromObject(findSimilarRequestObj);
+        return findSimilarWithResponse(findSimilarRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT));
     }
 
@@ -313,9 +315,9 @@ public final class FaceAsyncClient {
     public Mono<FaceVerificationResult> verifyFaceToFace(String faceId1, String faceId2) {
         // Generated convenience method for verifyFaceToFaceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        VerifyFaceToFaceRequest requestObj = new VerifyFaceToFaceRequest(faceId1, faceId2);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return verifyFaceToFaceWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+        VerifyFaceToFaceRequest verifyFaceToFaceRequestObj = new VerifyFaceToFaceRequest(faceId1, faceId2);
+        BinaryData verifyFaceToFaceRequest = BinaryData.fromObject(verifyFaceToFaceRequestObj);
+        return verifyFaceToFaceWithResponse(verifyFaceToFaceRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(FaceVerificationResult.class));
     }
 
@@ -347,9 +349,9 @@ public final class FaceAsyncClient {
     public Mono<FaceGroupingResult> group(List<String> faceIds) {
         // Generated convenience method for groupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        GroupRequest requestObj = new GroupRequest(faceIds);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return groupWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+        GroupRequest groupRequestObj = new GroupRequest(faceIds);
+        BinaryData groupRequest = BinaryData.fromObject(groupRequestObj);
+        return groupWithResponse(groupRequest, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(FaceGroupingResult.class));
     }
 

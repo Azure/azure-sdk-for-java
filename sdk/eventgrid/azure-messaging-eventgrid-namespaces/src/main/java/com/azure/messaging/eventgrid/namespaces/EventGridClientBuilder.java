@@ -275,6 +275,7 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      */
     @Generated
     private EventGridClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         EventGridServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : EventGridServiceVersion.getLatest();
@@ -345,4 +346,11 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventGridClientBuilder.class);
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
 }
