@@ -499,7 +499,7 @@
         {
           "regex": true,
           "code": "java\\.method\\.removed",
-          "old": "method java\\.lang\\.Integer",
+          "old": "method java\\.lang\\.Integer com\\.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceResourceCreateUpdateParameters::instanceCount\\(\\)",
           "justification": "The property flatten disabled due to model changed to polymorphic."
         },
         {
