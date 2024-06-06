@@ -539,7 +539,8 @@ public final class QueueServiceAsyncClient {
 
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getServices().setPropertiesNoCustomHeadersWithResponseAsync(properties, null, null, context);
+        return client.getServices().setPropertiesWithResponseAsync(properties, null, null, context)
+            .map(response -> new SimpleResponse<>(response, null));
     }
 
     /**
