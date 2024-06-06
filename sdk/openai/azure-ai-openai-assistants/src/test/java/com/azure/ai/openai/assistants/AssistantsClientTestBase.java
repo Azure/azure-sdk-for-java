@@ -216,8 +216,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     void createRetrievalRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
         FileDetails fileDetails = new FileDetails(
-            BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))
-        , "java_sdk_tests_assistants.txt");
+            BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")), "java_sdk_tests_assistants.txt");
 
         AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
             .setName("Java SDK Retrieval Sample")
