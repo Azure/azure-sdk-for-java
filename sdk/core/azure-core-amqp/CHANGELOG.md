@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added feature to enable/disable SSL when initially creating connection to support amqp calls on port 5672.
+
 ### Breaking Changes
 
 ### Bugs Fixed
