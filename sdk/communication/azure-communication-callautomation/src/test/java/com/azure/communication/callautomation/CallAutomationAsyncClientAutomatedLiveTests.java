@@ -282,7 +282,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             startMediaStreamingOptions.setOperationCallbackUrl(DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
 
             callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().startMediaStreamingWithResponse(startMediaStreamingOptions, Context.NONE);
-            MediaStreamingStarted mediaStreamingStarted = waitForEvent("MediaStreamingStarted", callerConnectionId, Duration.ofSeconds(10));
+            MediaStreamingStarted mediaStreamingStarted = waitForEvent(MediaStreamingStarted.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(mediaStreamingStarted);
 
             // Stop Media Streaming
@@ -290,7 +290,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             stopMediaStreamingOptions.setOperationCallbackUrl(DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
 
             callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().stopMediaStreamingWithResponse(stopMediaStreamingOptions, Context.NONE);
-            MediaStreamingStopped mediaStreamingStopped = waitForEvent("MediaStreamingStopped", callerConnectionId, Duration.ofSeconds(10));
+            MediaStreamingStopped mediaStreamingStopped = waitForEvent(MediaStreamingStopped.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(mediaStreamingStopped);
 
             // hang up the call.
@@ -364,14 +364,14 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             startTranscriptionOptions.setLocale("en-US");    
 
             callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().startTranscriptionWithResponse(startTranscriptionOptions, Context.NONE);
-            TranscriptionStarted transcriptionStarted = waitForEvent("TranscriptionStarted", callerConnectionId, Duration.ofSeconds(10));
+            TranscriptionStarted transcriptionStarted = waitForEvent(TranscriptionStarted.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(transcriptionStarted);
             
             // Stop Transcription
             StopTranscriptionOptions stopTranscriptionOptions = new StopTranscriptionOptions();
             stopTranscriptionOptions.setLocale("en-US");    
             callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().stopTranscriptionWithResponse(stopTranscriptionOptions, Context.NONE);
-            TranscriptionStopped transcriptionStopped = waitForEvent("TranscriptionStopped", callerConnectionId, Duration.ofSeconds(10));
+            TranscriptionStopped transcriptionStopped = waitForEvent(TranscriptionStopped.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(transcriptionStopped);
 
             // hang up the call.
