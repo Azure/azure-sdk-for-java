@@ -425,11 +425,10 @@ public class IdentityClient extends IdentityClientBase {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
         List<CredentialUnavailableException> exceptions = new ArrayList<>(2);
 
-        PowershellManager defaultPowerShellManager = new PowershellManager(Platform.isWindows()
-            ? DEFAULT_WINDOWS_PS_EXECUTABLE : DEFAULT_LINUX_PS_EXECUTABLE);
+        PowershellManager defaultPowerShellManager = new PowershellManager(false);
 
         PowershellManager legacyPowerShellManager = Platform.isWindows()
-            ? new PowershellManager(LEGACY_WINDOWS_PS_EXECUTABLE) : null;
+            ? new PowershellManager(true) : null;
 
         List<PowershellManager> powershellManagers = new ArrayList<>(2);
         powershellManagers.add(defaultPowerShellManager);
@@ -486,9 +485,9 @@ public class IdentityClient extends IdentityClientBase {
         } catch (IllegalArgumentException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
-        return Mono.using(() -> powershellManager, manager -> manager.initSession().flatMap(m -> {
+        return Mono.defer(() -> {
             String azAccountsCommand = "Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru";
-            return m.runCommand(azAccountsCommand).flatMap(output -> {
+            return powershellManager.runCommand(azAccountsCommand).flatMap(output -> {
                 if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not loaded "
                                     + "because no valid module file")) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
@@ -504,7 +503,7 @@ public class IdentityClient extends IdentityClientBase {
                 LOGGER.verbose("Azure Powershell Authentication => Executing the command `{}` in Azure "
                                + "Powershell to retrieve the Access Token.", command);
 
-                return m.runCommand(command).flatMap(out -> {
+                return powershellManager.runCommand(command).flatMap(out -> {
                     if (out.contains("Run Connect-AzAccount to login")) {
                         return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                             new CredentialUnavailableException(
@@ -527,7 +526,7 @@ public class IdentityClient extends IdentityClientBase {
                     }
                 });
             });
-        }), PowershellManager::close);
+        });
     }
 
     /**
