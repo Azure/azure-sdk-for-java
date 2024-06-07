@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ByteBufferOutputStream extends OutputStream {
+public class ByteBufferOutputStream extends OutputStream {
 
     private final AppInsightsByteBufferPool byteBufferPool;
 

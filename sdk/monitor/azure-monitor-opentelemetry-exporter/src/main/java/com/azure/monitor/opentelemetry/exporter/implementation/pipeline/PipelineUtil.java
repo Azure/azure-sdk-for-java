@@ -41,7 +41,7 @@ public final class PipelineUtil {
     }
 
     // decode gzipped request raw bytes back to original request raw bytes
-    public static byte[] decode(byte[] rawBytes) throws Exception {
+    private static byte[] decode(byte[] rawBytes) throws Exception {
         try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(rawBytes))) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] data = new byte[1024];
