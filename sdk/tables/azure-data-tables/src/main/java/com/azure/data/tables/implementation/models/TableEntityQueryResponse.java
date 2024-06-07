@@ -17,7 +17,7 @@ import java.util.Map;
  * The properties for the table entity query response.
  */
 @Fluent
-public final class TableEntityQueryResponse extends TablesJacksonSerializer implements JsonSerializable<TableEntityQueryResponse> {
+public final class TableEntityQueryResponse  implements JsonSerializable<TableEntityQueryResponse> {
     /*
      * The metadata response of the table.
      */
@@ -95,6 +95,6 @@ public final class TableEntityQueryResponse extends TablesJacksonSerializer impl
      * @throws IOException If an error occurs while reading the TableEntityQueryResponse.
      */
     public static TableEntityQueryResponse fromJson(JsonReader jsonReader) throws IOException {
-        return deserializeTableEntityQueryResponse(jsonReader);
+        return TablesJacksonSerializer.deserializeTableEntityQueryResponse(jsonReader);
     }
 }
