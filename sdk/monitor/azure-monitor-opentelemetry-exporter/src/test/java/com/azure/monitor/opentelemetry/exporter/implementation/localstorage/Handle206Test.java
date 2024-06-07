@@ -102,7 +102,7 @@ public class Handle206Test {
         assertThat(file.connectionString).isEqualTo(CONNECTION_STRING);
         List<TelemetryItem> actualTelemetryItems = deserializeTelemetryItem(decode(file.rawBytes.array()));
         actualTelemetryItems.sort(Comparator.comparing( obj -> {
-            MetricsData metricsData = (MetricsData) ((TelemetryItem)obj).getData().getBaseData();
+            MetricsData metricsData = (MetricsData) obj.getData().getBaseData();
             return metricsData.getMetrics().get(0).getName();
         }));
         assertThat(actualTelemetryItems.size()).isEqualTo(expectedTelemetryItems.size());
