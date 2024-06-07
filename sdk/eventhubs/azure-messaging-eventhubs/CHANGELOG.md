@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Add support for local emulator.
+
 ### Breaking Changes
 
 ### Bugs Fixed
