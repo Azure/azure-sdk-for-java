@@ -92,7 +92,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Disable `$.key` snanitizer
             if (!interceptorManager.isLiveMode()) {
-                interceptorManager.removeSanitizers(Arrays.asList("AZSDK3447"));
+                interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
             }
             return builder.buildAsyncClient();
         });

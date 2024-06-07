@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Azure Data Lake Store dataset.
- */
+/** Azure Data Lake Store dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataLakeStoreFile")
 @JsonFlatten
@@ -44,16 +42,13 @@ public class AzureDataLakeStoreDataset extends Dataset {
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
-    /**
-     * Creates an instance of AzureDataLakeStoreDataset class.
-     */
-    public AzureDataLakeStoreDataset() {
-    }
+    /** Creates an instance of AzureDataLakeStoreDataset class. */
+    public AzureDataLakeStoreDataset() {}
 
     /**
      * Get the folderPath property: Path to the folder in the Azure Data Lake Store. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the folderPath value.
      */
     public Object getFolderPath() {
@@ -63,7 +58,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /**
      * Set the folderPath property: Path to the folder in the Azure Data Lake Store. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param folderPath the folderPath value to set.
      * @return the AzureDataLakeStoreDataset object itself.
      */
@@ -75,7 +70,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /**
      * Get the fileName property: The name of the file in the Azure Data Lake Store. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the fileName value.
      */
     public Object getFileName() {
@@ -85,7 +80,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
     /**
      * Set the fileName property: The name of the file in the Azure Data Lake Store. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param fileName the fileName value to set.
      * @return the AzureDataLakeStoreDataset object itself.
      */
@@ -96,7 +91,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
 
     /**
      * Get the format property: The format of the Data Lake Store.
-     * 
+     *
      * @return the format value.
      */
     public DatasetStorageFormat getFormat() {
@@ -105,7 +100,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
 
     /**
      * Set the format property: The format of the Data Lake Store.
-     * 
+     *
      * @param format the format value to set.
      * @return the AzureDataLakeStoreDataset object itself.
      */
@@ -116,7 +111,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
 
     /**
      * Get the compression property: The data compression method used for the item(s) in the Azure Data Lake Store.
-     * 
+     *
      * @return the compression value.
      */
     public DatasetCompression getCompression() {
@@ -125,7 +120,7 @@ public class AzureDataLakeStoreDataset extends Dataset {
 
     /**
      * Set the compression property: The data compression method used for the item(s) in the Azure Data Lake Store.
-     * 
+     *
      * @param compression the compression value to set.
      * @return the AzureDataLakeStoreDataset object itself.
      */
@@ -134,63 +129,49 @@ public class AzureDataLakeStoreDataset extends Dataset {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStoreDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStoreDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStoreDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStoreDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStoreDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStoreDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataLakeStoreDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

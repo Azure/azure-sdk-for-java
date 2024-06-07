@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A copy activity Avro sink.
- */
+/** A copy activity Avro sink. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AvroSink")
 @Fluent
@@ -28,15 +26,12 @@ public final class AvroSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private AvroWriteSettings formatSettings;
 
-    /**
-     * Creates an instance of AvroSink class.
-     */
-    public AvroSink() {
-    }
+    /** Creates an instance of AvroSink class. */
+    public AvroSink() {}
 
     /**
      * Get the storeSettings property: Avro store settings.
-     * 
+     *
      * @return the storeSettings value.
      */
     public StoreWriteSettings getStoreSettings() {
@@ -45,7 +40,7 @@ public final class AvroSink extends CopySink {
 
     /**
      * Set the storeSettings property: Avro store settings.
-     * 
+     *
      * @param storeSettings the storeSettings value to set.
      * @return the AvroSink object itself.
      */
@@ -56,7 +51,7 @@ public final class AvroSink extends CopySink {
 
     /**
      * Get the formatSettings property: Avro format settings.
-     * 
+     *
      * @return the formatSettings value.
      */
     public AvroWriteSettings getFormatSettings() {
@@ -65,7 +60,7 @@ public final class AvroSink extends CopySink {
 
     /**
      * Set the formatSettings property: Avro format settings.
-     * 
+     *
      * @param formatSettings the formatSettings value to set.
      * @return the AvroSink object itself.
      */
@@ -74,45 +69,35 @@ public final class AvroSink extends CopySink {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AvroSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AvroSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AvroSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AvroSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AvroSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

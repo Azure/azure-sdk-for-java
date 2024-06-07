@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ServiceEndpointPolicyDefinitionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * ServiceEndpointPolicyDefinitionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ServiceEndpointPolicyDefinitionGet.json
      */
     /**
      * Sample code: Get service endpoint definition in service endpoint policy.
@@ -19,7 +18,10 @@ public final class ServiceEndpointPolicyDefinitionsGetSamples {
      */
     public static void
         getServiceEndpointDefinitionInServiceEndpointPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getServiceEndpointPolicyDefinitions().getWithResponse("rg1",
-            "testPolicy", "testDefinition", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getServiceEndpointPolicyDefinitions()
+            .getWithResponse("rg1", "testPolicy", "testDefinition", com.azure.core.util.Context.NONE);
     }
 }

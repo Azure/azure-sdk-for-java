@@ -15,6 +15,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VolumePatchPropertiesDataProtection {
     /*
+     * Backup Properties
+     */
+    @JsonProperty(value = "backup")
+    private VolumeBackupProperties backup;
+
+    /*
      * Snapshot properties.
      */
     @JsonProperty(value = "snapshot")
@@ -24,6 +30,26 @@ public final class VolumePatchPropertiesDataProtection {
      * Creates an instance of VolumePatchPropertiesDataProtection class.
      */
     public VolumePatchPropertiesDataProtection() {
+    }
+
+    /**
+     * Get the backup property: Backup Properties.
+     * 
+     * @return the backup value.
+     */
+    public VolumeBackupProperties backup() {
+        return this.backup;
+    }
+
+    /**
+     * Set the backup property: Backup Properties.
+     * 
+     * @param backup the backup value to set.
+     * @return the VolumePatchPropertiesDataProtection object itself.
+     */
+    public VolumePatchPropertiesDataProtection withBackup(VolumeBackupProperties backup) {
+        this.backup = backup;
+        return this;
     }
 
     /**
@@ -52,6 +78,9 @@ public final class VolumePatchPropertiesDataProtection {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (backup() != null) {
+            backup().validate();
+        }
         if (snapshot() != null) {
             snapshot().validate();
         }

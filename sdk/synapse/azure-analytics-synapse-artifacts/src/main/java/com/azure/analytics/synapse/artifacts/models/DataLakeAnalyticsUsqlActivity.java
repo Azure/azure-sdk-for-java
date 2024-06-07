@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Data Lake Analytics U-SQL activity.
- */
+/** Data Lake Analytics U-SQL activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DataLakeAnalyticsU-SQL")
 @JsonFlatten
@@ -66,16 +64,13 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.compilationMode")
     private Object compilationMode;
 
-    /**
-     * Creates an instance of DataLakeAnalyticsUsqlActivity class.
-     */
-    public DataLakeAnalyticsUsqlActivity() {
-    }
+    /** Creates an instance of DataLakeAnalyticsUsqlActivity class. */
+    public DataLakeAnalyticsUsqlActivity() {}
 
     /**
      * Get the scriptPath property: Case-sensitive path to folder that contains the U-SQL script. Type: string (or
      * Expression with resultType string).
-     * 
+     *
      * @return the scriptPath value.
      */
     public Object getScriptPath() {
@@ -85,7 +80,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Set the scriptPath property: Case-sensitive path to folder that contains the U-SQL script. Type: string (or
      * Expression with resultType string).
-     * 
+     *
      * @param scriptPath the scriptPath value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -96,7 +91,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
 
     /**
      * Get the scriptLinkedService property: Script linked service reference.
-     * 
+     *
      * @return the scriptLinkedService value.
      */
     public LinkedServiceReference getScriptLinkedService() {
@@ -105,7 +100,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
 
     /**
      * Set the scriptLinkedService property: Script linked service reference.
-     * 
+     *
      * @param scriptLinkedService the scriptLinkedService value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -117,7 +112,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Get the degreeOfParallelism property: The maximum number of nodes simultaneously used to run the job. Default
      * value is 1. Type: integer (or Expression with resultType integer), minimum: 1.
-     * 
+     *
      * @return the degreeOfParallelism value.
      */
     public Object getDegreeOfParallelism() {
@@ -127,7 +122,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Set the degreeOfParallelism property: The maximum number of nodes simultaneously used to run the job. Default
      * value is 1. Type: integer (or Expression with resultType integer), minimum: 1.
-     * 
+     *
      * @param degreeOfParallelism the degreeOfParallelism value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -140,7 +135,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
      * Get the priority property: Determines which jobs out of all that are queued should be selected to run first. The
      * lower the number, the higher the priority. Default value is 1000. Type: integer (or Expression with resultType
      * integer), minimum: 1.
-     * 
+     *
      * @return the priority value.
      */
     public Object getPriority() {
@@ -151,7 +146,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
      * Set the priority property: Determines which jobs out of all that are queued should be selected to run first. The
      * lower the number, the higher the priority. Default value is 1000. Type: integer (or Expression with resultType
      * integer), minimum: 1.
-     * 
+     *
      * @param priority the priority value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -162,7 +157,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
 
     /**
      * Get the parameters property: Parameters for U-SQL job request.
-     * 
+     *
      * @return the parameters value.
      */
     public Map<String, Object> getParameters() {
@@ -171,7 +166,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
 
     /**
      * Set the parameters property: Parameters for U-SQL job request.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -183,7 +178,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Get the runtimeVersion property: Runtime version of the U-SQL engine to use. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the runtimeVersion value.
      */
     public Object getRuntimeVersion() {
@@ -193,7 +188,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Set the runtimeVersion property: Runtime version of the U-SQL engine to use. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param runtimeVersion the runtimeVersion value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -205,7 +200,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Get the compilationMode property: Compilation mode of U-SQL. Must be one of these values : Semantic, Full and
      * SingleBox. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the compilationMode value.
      */
     public Object getCompilationMode() {
@@ -215,7 +210,7 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     /**
      * Set the compilationMode property: Compilation mode of U-SQL. Must be one of these values : Semantic, Full and
      * SingleBox. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param compilationMode the compilationMode value to set.
      * @return the DataLakeAnalyticsUsqlActivity object itself.
      */
@@ -224,72 +219,56 @@ public class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DataLakeAnalyticsUsqlActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DataLakeAnalyticsUsqlActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DataLakeAnalyticsUsqlActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DataLakeAnalyticsUsqlActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DataLakeAnalyticsUsqlActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DataLakeAnalyticsUsqlActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DataLakeAnalyticsUsqlActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DataLakeAnalyticsUsqlActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

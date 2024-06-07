@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters used to check the availability of the storage account name. */
+/**
+ * The parameters used to check the availability of the storage account name.
+ */
 @Fluent
 public final class StorageAccountCheckNameAvailabilityParameters {
     /*
@@ -23,14 +25,15 @@ public final class StorageAccountCheckNameAvailabilityParameters {
     @JsonProperty(value = "type", required = true)
     private String type = "Microsoft.Storage/storageAccounts";
 
-    /** Creates an instance of StorageAccountCheckNameAvailabilityParameters class. */
+    /**
+     * Creates an instance of StorageAccountCheckNameAvailabilityParameters class.
+     */
     public StorageAccountCheckNameAvailabilityParameters() {
-        type = "Microsoft.Storage/storageAccounts";
     }
 
     /**
      * Get the name property: The storage account name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +42,7 @@ public final class StorageAccountCheckNameAvailabilityParameters {
 
     /**
      * Set the name property: The storage account name.
-     *
+     * 
      * @param name the name value to set.
      * @return the StorageAccountCheckNameAvailabilityParameters object itself.
      */
@@ -50,7 +53,7 @@ public final class StorageAccountCheckNameAvailabilityParameters {
 
     /**
      * Get the type property: The type of resource, Microsoft.Storage/storageAccounts.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -59,7 +62,7 @@ public final class StorageAccountCheckNameAvailabilityParameters {
 
     /**
      * Set the type property: The type of resource, Microsoft.Storage/storageAccounts.
-     *
+     * 
      * @param type the type value to set.
      * @return the StorageAccountCheckNameAvailabilityParameters object itself.
      */
@@ -70,15 +73,14 @@ public final class StorageAccountCheckNameAvailabilityParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model StorageAccountCheckNameAvailabilityParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model StorageAccountCheckNameAvailabilityParameters"));
         }
     }
 

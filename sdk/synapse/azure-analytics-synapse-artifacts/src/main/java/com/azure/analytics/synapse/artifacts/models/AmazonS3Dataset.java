@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A single Amazon Simple Storage Service (S3) object or a set of S3 objects.
- */
+/** A single Amazon Simple Storage Service (S3) object or a set of S3 objects. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonS3Object")
 @JsonFlatten
@@ -68,16 +66,13 @@ public class AmazonS3Dataset extends Dataset {
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
-    /**
-     * Creates an instance of AmazonS3Dataset class.
-     */
-    public AmazonS3Dataset() {
-    }
+    /** Creates an instance of AmazonS3Dataset class. */
+    public AmazonS3Dataset() {}
 
     /**
      * Get the bucketName property: The name of the Amazon S3 bucket. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the bucketName value.
      */
     public Object getBucketName() {
@@ -87,7 +82,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * Set the bucketName property: The name of the Amazon S3 bucket. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param bucketName the bucketName value to set.
      * @return the AmazonS3Dataset object itself.
      */
@@ -98,7 +93,7 @@ public class AmazonS3Dataset extends Dataset {
 
     /**
      * Get the key property: The key of the Amazon S3 object. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the key value.
      */
     public Object getKey() {
@@ -107,7 +102,7 @@ public class AmazonS3Dataset extends Dataset {
 
     /**
      * Set the key property: The key of the Amazon S3 object. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param key the key value to set.
      * @return the AmazonS3Dataset object itself.
      */
@@ -119,7 +114,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * Get the prefix property: The prefix filter for the S3 object name. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the prefix value.
      */
     public Object getPrefix() {
@@ -129,7 +124,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * Set the prefix property: The prefix filter for the S3 object name. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param prefix the prefix value to set.
      * @return the AmazonS3Dataset object itself.
      */
@@ -140,7 +135,7 @@ public class AmazonS3Dataset extends Dataset {
 
     /**
      * Get the version property: The version for the S3 object. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the version value.
      */
     public Object getVersion() {
@@ -149,7 +144,7 @@ public class AmazonS3Dataset extends Dataset {
 
     /**
      * Set the version property: The version for the S3 object. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param version the version value to set.
      * @return the AmazonS3Dataset object itself.
      */
@@ -161,7 +156,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * Get the modifiedDatetimeStart property: The start of S3 object's modified datetime. Type: string (or Expression
      * with resultType string).
-     * 
+     *
      * @return the modifiedDatetimeStart value.
      */
     public Object getModifiedDatetimeStart() {
@@ -171,7 +166,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * Set the modifiedDatetimeStart property: The start of S3 object's modified datetime. Type: string (or Expression
      * with resultType string).
-     * 
+     *
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the AmazonS3Dataset object itself.
      */
@@ -183,7 +178,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * Get the modifiedDatetimeEnd property: The end of S3 object's modified datetime. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the modifiedDatetimeEnd value.
      */
     public Object getModifiedDatetimeEnd() {
@@ -193,7 +188,7 @@ public class AmazonS3Dataset extends Dataset {
     /**
      * Set the modifiedDatetimeEnd property: The end of S3 object's modified datetime. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the AmazonS3Dataset object itself.
      */
@@ -204,7 +199,7 @@ public class AmazonS3Dataset extends Dataset {
 
     /**
      * Get the format property: The format of files.
-     * 
+     *
      * @return the format value.
      */
     public DatasetStorageFormat getFormat() {
@@ -213,7 +208,7 @@ public class AmazonS3Dataset extends Dataset {
 
     /**
      * Set the format property: The format of files.
-     * 
+     *
      * @param format the format value to set.
      * @return the AmazonS3Dataset object itself.
      */
@@ -224,7 +219,7 @@ public class AmazonS3Dataset extends Dataset {
 
     /**
      * Get the compression property: The data compression method used for the Amazon S3 object.
-     * 
+     *
      * @return the compression value.
      */
     public DatasetCompression getCompression() {
@@ -233,7 +228,7 @@ public class AmazonS3Dataset extends Dataset {
 
     /**
      * Set the compression property: The data compression method used for the Amazon S3 object.
-     * 
+     *
      * @param compression the compression value to set.
      * @return the AmazonS3Dataset object itself.
      */
@@ -242,63 +237,49 @@ public class AmazonS3Dataset extends Dataset {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonS3Dataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonS3Dataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonS3Dataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonS3Dataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonS3Dataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonS3Dataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonS3Dataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

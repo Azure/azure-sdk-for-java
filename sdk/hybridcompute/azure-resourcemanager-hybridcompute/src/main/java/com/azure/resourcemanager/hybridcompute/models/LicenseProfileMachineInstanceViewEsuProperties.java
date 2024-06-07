@@ -4,84 +4,67 @@
 
 package com.azure.resourcemanager.hybridcompute.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewEsuPropertiesInner;
+import java.util.List;
 
 /**
- * Properties for the Machine ESU profile.
+ * An immutable client-side representation of LicenseProfileMachineInstanceViewEsuProperties.
  */
-@Fluent
-public final class LicenseProfileMachineInstanceViewEsuProperties
-    extends LicenseProfileArmEsuPropertiesWithoutAssignedLicense {
-    /*
-     * The assigned license resource.
+public interface LicenseProfileMachineInstanceViewEsuProperties {
+    /**
+     * Gets the assignedLicenseImmutableId property: The guid id of the license.
+     * 
+     * @return the assignedLicenseImmutableId value.
      */
-    @JsonProperty(value = "assignedLicense")
-    private License assignedLicense;
-
-    /*
-     * Describes the license assignment state (Assigned or NotAssigned).
-     */
-    @JsonProperty(value = "licenseAssignmentState")
-    private LicenseAssignmentState licenseAssignmentState;
+    String assignedLicenseImmutableId();
 
     /**
-     * Creates an instance of LicenseProfileMachineInstanceViewEsuProperties class.
+     * Gets the esuKeys property: The list of ESU keys.
+     * 
+     * @return the esuKeys value.
      */
-    public LicenseProfileMachineInstanceViewEsuProperties() {
-    }
+    List<EsuKey> esuKeys();
 
     /**
-     * Get the assignedLicense property: The assigned license resource.
+     * Gets the serverType property: The type of the Esu servers.
+     * 
+     * @return the serverType value.
+     */
+    EsuServerType serverType();
+
+    /**
+     * Gets the esuEligibility property: Indicates the eligibility state of Esu.
+     * 
+     * @return the esuEligibility value.
+     */
+    EsuEligibility esuEligibility();
+
+    /**
+     * Gets the esuKeyState property: Indicates whether there is an ESU Key currently active for the machine.
+     * 
+     * @return the esuKeyState value.
+     */
+    EsuKeyState esuKeyState();
+
+    /**
+     * Gets the assignedLicense property: The assigned license resource.
      * 
      * @return the assignedLicense value.
      */
-    public License assignedLicense() {
-        return this.assignedLicense;
-    }
+    License assignedLicense();
 
     /**
-     * Set the assignedLicense property: The assigned license resource.
-     * 
-     * @param assignedLicense the assignedLicense value to set.
-     * @return the LicenseProfileMachineInstanceViewEsuProperties object itself.
-     */
-    public LicenseProfileMachineInstanceViewEsuProperties withAssignedLicense(License assignedLicense) {
-        this.assignedLicense = assignedLicense;
-        return this;
-    }
-
-    /**
-     * Get the licenseAssignmentState property: Describes the license assignment state (Assigned or NotAssigned).
+     * Gets the licenseAssignmentState property: Describes the license assignment state (Assigned or NotAssigned).
      * 
      * @return the licenseAssignmentState value.
      */
-    public LicenseAssignmentState licenseAssignmentState() {
-        return this.licenseAssignmentState;
-    }
+    LicenseAssignmentState licenseAssignmentState();
 
     /**
-     * Set the licenseAssignmentState property: Describes the license assignment state (Assigned or NotAssigned).
+     * Gets the inner
+     * com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewEsuPropertiesInner object.
      * 
-     * @param licenseAssignmentState the licenseAssignmentState value to set.
-     * @return the LicenseProfileMachineInstanceViewEsuProperties object itself.
+     * @return the inner object.
      */
-    public LicenseProfileMachineInstanceViewEsuProperties
-        withLicenseAssignmentState(LicenseAssignmentState licenseAssignmentState) {
-        this.licenseAssignmentState = licenseAssignmentState;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (assignedLicense() != null) {
-            assignedLicense().validate();
-        }
-    }
+    LicenseProfileMachineInstanceViewEsuPropertiesInner innerModel();
 }

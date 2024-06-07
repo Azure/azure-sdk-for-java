@@ -79,6 +79,10 @@ class BatchClientTestBase extends TestProxyTestBase {
             addTestSanitizersAndRules(interceptorManager);
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK3430", "AZSDK3493");
+        }
+
         authenticateClient(AuthMode.AAD);
 
         batchClient = batchClientBuilder.buildClient();

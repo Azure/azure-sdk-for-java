@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LinkTableRequestTargetStructureOptions model.
- */
+/** The LinkTableRequestTargetStructureOptions model. */
 @Fluent
 public final class LinkTableRequestTargetStructureOptions {
     /*
@@ -18,15 +16,12 @@ public final class LinkTableRequestTargetStructureOptions {
     @JsonProperty(value = "type")
     private String type;
 
-    /**
-     * Creates an instance of LinkTableRequestTargetStructureOptions class.
-     */
-    public LinkTableRequestTargetStructureOptions() {
-    }
+    /** Creates an instance of LinkTableRequestTargetStructureOptions class. */
+    public LinkTableRequestTargetStructureOptions() {}
 
     /**
      * Get the type property: Target table structure type.
-     * 
+     *
      * @return the type value.
      */
     public String getType() {
@@ -35,7 +30,7 @@ public final class LinkTableRequestTargetStructureOptions {
 
     /**
      * Set the type property: Target table structure type.
-     * 
+     *
      * @param type the type value to set.
      * @return the LinkTableRequestTargetStructureOptions object itself.
      */

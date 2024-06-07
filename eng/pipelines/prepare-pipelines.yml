@@ -6,5 +6,5 @@ extends:
     Repository: $(Build.Repository.Name)
     Prefix: java
     CIConventionOptions: ''
-    UPConventionOptions: '--variablegroups 1 58 76 56 93'
+    UPConventionOptions: '--variablegroups 1 58 76 93'
     TestsConventionOptions: '--variablegroups 64'

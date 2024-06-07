@@ -8,18 +8,20 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a storage account’s Queue service. */
+/**
+ * The properties of a storage account’s Queue service.
+ */
 @Fluent
 public final class QueueServicePropertiesProperties {
     /*
-     * Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the request. If no
-     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled
-     * for the Queue service.
+     * Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Queue service.
      */
     @JsonProperty(value = "cors")
     private CorsRules cors;
 
-    /** Creates an instance of QueueServicePropertiesProperties class. */
+    /**
+     * Creates an instance of QueueServicePropertiesProperties class.
+     */
     public QueueServicePropertiesProperties() {
     }
 
@@ -27,7 +29,7 @@ public final class QueueServicePropertiesProperties {
      * Get the cors property: Specifies CORS rules for the Queue service. You can include up to five CorsRule elements
      * in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and
      * CORS will be disabled for the Queue service.
-     *
+     * 
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -38,7 +40,7 @@ public final class QueueServicePropertiesProperties {
      * Set the cors property: Specifies CORS rules for the Queue service. You can include up to five CorsRule elements
      * in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and
      * CORS will be disabled for the Queue service.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the QueueServicePropertiesProperties object itself.
      */
@@ -49,7 +51,7 @@ public final class QueueServicePropertiesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

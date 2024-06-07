@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The Common Data Service for Apps entity dataset.
- */
+/** The Common Data Service for Apps entity dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CommonDataServiceForAppsEntity")
 @JsonFlatten
@@ -26,16 +24,12 @@ public class CommonDataServiceForAppsEntityDataset extends Dataset {
     @JsonProperty(value = "typeProperties.entityName")
     private Object entityName;
 
-    /**
-     * Creates an instance of CommonDataServiceForAppsEntityDataset class.
-     */
-    public CommonDataServiceForAppsEntityDataset() {
-    }
+    /** Creates an instance of CommonDataServiceForAppsEntityDataset class. */
+    public CommonDataServiceForAppsEntityDataset() {}
 
     /**
-     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType
-     * string).
-     * 
+     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
+     *
      * @return the entityName value.
      */
     public Object getEntityName() {
@@ -43,9 +37,8 @@ public class CommonDataServiceForAppsEntityDataset extends Dataset {
     }
 
     /**
-     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType
-     * string).
-     * 
+     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
+     *
      * @param entityName the entityName value to set.
      * @return the CommonDataServiceForAppsEntityDataset object itself.
      */
@@ -54,63 +47,49 @@ public class CommonDataServiceForAppsEntityDataset extends Dataset {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CommonDataServiceForAppsEntityDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CommonDataServiceForAppsEntityDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CommonDataServiceForAppsEntityDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CommonDataServiceForAppsEntityDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CommonDataServiceForAppsEntityDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CommonDataServiceForAppsEntityDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CommonDataServiceForAppsEntityDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

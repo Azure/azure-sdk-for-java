@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * SSIS access credential.
- */
+/** SSIS access credential. */
 @Fluent
 public final class SsisAccessCredential {
     /*
@@ -30,15 +28,12 @@ public final class SsisAccessCredential {
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
-    /**
-     * Creates an instance of SsisAccessCredential class.
-     */
-    public SsisAccessCredential() {
-    }
+    /** Creates an instance of SsisAccessCredential class. */
+    public SsisAccessCredential() {}
 
     /**
      * Get the domain property: Domain for windows authentication.
-     * 
+     *
      * @return the domain value.
      */
     public Object getDomain() {
@@ -47,7 +42,7 @@ public final class SsisAccessCredential {
 
     /**
      * Set the domain property: Domain for windows authentication.
-     * 
+     *
      * @param domain the domain value to set.
      * @return the SsisAccessCredential object itself.
      */
@@ -58,7 +53,7 @@ public final class SsisAccessCredential {
 
     /**
      * Get the userName property: UseName for windows authentication.
-     * 
+     *
      * @return the userName value.
      */
     public Object getUserName() {
@@ -67,7 +62,7 @@ public final class SsisAccessCredential {
 
     /**
      * Set the userName property: UseName for windows authentication.
-     * 
+     *
      * @param userName the userName value to set.
      * @return the SsisAccessCredential object itself.
      */
@@ -78,7 +73,7 @@ public final class SsisAccessCredential {
 
     /**
      * Get the password property: Password for windows authentication.
-     * 
+     *
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -87,7 +82,7 @@ public final class SsisAccessCredential {
 
     /**
      * Set the password property: Password for windows authentication.
-     * 
+     *
      * @param password the password value to set.
      * @return the SsisAccessCredential object itself.
      */

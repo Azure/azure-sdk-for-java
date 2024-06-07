@@ -100,7 +100,7 @@ class OkHttpHttpClient implements HttpClient {
      * @return The Mono emitting okhttp request
      */
     private RequestBody toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
-        if (bodyContent == null || bodyContent == BinaryData.EMPTY) {
+        if (bodyContent == null || bodyContent == BinaryData.empty()) {
             return EMPTY_REQUEST_BODY;
         }
 
@@ -210,7 +210,7 @@ class OkHttpHttpClient implements HttpClient {
                 break;
         }
 
-        return new OkHttpResponse(response, request, body == null ? BinaryData.EMPTY : body);
+        return new OkHttpResponse(response, request, body == null ? BinaryData.empty() : body);
     }
 
     private BinaryData createBodyFromServerSentResult(ServerSentResult serverSentResult) {

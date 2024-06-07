@@ -16,17 +16,14 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the asynchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class TriggerAsyncClient {
-    @Generated
-    private final TriggersImpl serviceClient;
+    @Generated private final TriggersImpl serviceClient;
 
     /**
      * Initializes an instance of TriggerAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -36,7 +33,7 @@ public final class TriggerAsyncClient {
 
     /**
      * Lists triggers.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trigger resources as paginated response with {@link PagedFlux}.
@@ -49,11 +46,11 @@ public final class TriggerAsyncClient {
 
     /**
      * Creates or updates a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -61,18 +58,18 @@ public final class TriggerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerResource>> createOrUpdateTriggerWithResponse(String triggerName,
-        TriggerResource trigger, String ifMatch) {
+    public Mono<Response<TriggerResource>> createOrUpdateTriggerWithResponse(
+            String triggerName, TriggerResource trigger, String ifMatch) {
         return this.serviceClient.createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch);
     }
 
     /**
      * Creates or updates a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -86,7 +83,7 @@ public final class TriggerAsyncClient {
 
     /**
      * Creates or updates a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,10 +99,10 @@ public final class TriggerAsyncClient {
 
     /**
      * Gets a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     * entity tag, or if * was provided, then no content will be returned.
+     *     entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -119,10 +116,10 @@ public final class TriggerAsyncClient {
 
     /**
      * Gets a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     * entity tag, or if * was provided, then no content will be returned.
+     *     entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -136,7 +133,7 @@ public final class TriggerAsyncClient {
 
     /**
      * Gets a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -151,7 +148,7 @@ public final class TriggerAsyncClient {
 
     /**
      * Deletes a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -166,7 +163,7 @@ public final class TriggerAsyncClient {
 
     /**
      * Deletes a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -181,13 +178,13 @@ public final class TriggerAsyncClient {
 
     /**
      * Subscribe event trigger to events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -197,7 +194,7 @@ public final class TriggerAsyncClient {
 
     /**
      * Subscribe event trigger to events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -212,24 +209,24 @@ public final class TriggerAsyncClient {
 
     /**
      * Get a trigger's event subscription status.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a trigger's event subscription status along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerSubscriptionOperationStatus>>
-        getEventSubscriptionStatusWithResponse(String triggerName) {
+    public Mono<Response<TriggerSubscriptionOperationStatus>> getEventSubscriptionStatusWithResponse(
+            String triggerName) {
         return this.serviceClient.getEventSubscriptionStatusWithResponseAsync(triggerName);
     }
 
     /**
      * Get a trigger's event subscription status.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -244,24 +241,24 @@ public final class TriggerAsyncClient {
 
     /**
      * Unsubscribe event trigger from events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerSubscriptionOperationStatus>>
-        unsubscribeTriggerFromEventsWithResponse(String triggerName) {
+    public Mono<Response<TriggerSubscriptionOperationStatus>> unsubscribeTriggerFromEventsWithResponse(
+            String triggerName) {
         return this.serviceClient.unsubscribeTriggerFromEventsWithResponseAsync(triggerName);
     }
 
     /**
      * Unsubscribe event trigger from events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -276,7 +273,7 @@ public final class TriggerAsyncClient {
 
     /**
      * Starts a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -291,7 +288,7 @@ public final class TriggerAsyncClient {
 
     /**
      * Starts a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -306,7 +303,7 @@ public final class TriggerAsyncClient {
 
     /**
      * Stops a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -321,7 +318,7 @@ public final class TriggerAsyncClient {
 
     /**
      * Stops a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The KqlScriptContentMetadata model.
- */
+/** The KqlScriptContentMetadata model. */
 @Fluent
 public final class KqlScriptContentMetadata {
     /*
@@ -18,15 +16,12 @@ public final class KqlScriptContentMetadata {
     @JsonProperty(value = "language")
     private String language;
 
-    /**
-     * Creates an instance of KqlScriptContentMetadata class.
-     */
-    public KqlScriptContentMetadata() {
-    }
+    /** Creates an instance of KqlScriptContentMetadata class. */
+    public KqlScriptContentMetadata() {}
 
     /**
      * Get the language property: The language property.
-     * 
+     *
      * @return the language value.
      */
     public String getLanguage() {
@@ -35,7 +30,7 @@ public final class KqlScriptContentMetadata {
 
     /**
      * Set the language property: The language property.
-     * 
+     *
      * @param language the language value to set.
      * @return the KqlScriptContentMetadata object itself.
      */

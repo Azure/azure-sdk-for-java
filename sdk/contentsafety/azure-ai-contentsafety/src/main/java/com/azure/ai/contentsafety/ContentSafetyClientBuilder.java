@@ -274,6 +274,7 @@ public final class ContentSafetyClientBuilder implements HttpTrait<ContentSafety
      */
     @Generated
     private ContentSafetyClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         ContentSafetyServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : ContentSafetyServiceVersion.getLatest();
@@ -344,4 +345,11 @@ public final class ContentSafetyClientBuilder implements HttpTrait<ContentSafety
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContentSafetyClientBuilder.class);
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
 }

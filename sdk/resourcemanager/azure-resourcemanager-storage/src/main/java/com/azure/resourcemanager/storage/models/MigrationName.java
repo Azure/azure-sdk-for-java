@@ -6,11 +6,16 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Defines values for MigrationName. */
+/**
+ * Defines values for MigrationName.
+ */
 public final class MigrationName extends ExpandableStringEnum<MigrationName> {
-    /** Static value default for MigrationName. */
+    /**
+     * Static value default for MigrationName.
+     */
     public static final MigrationName DEFAULT = fromString("default");
 
     /**

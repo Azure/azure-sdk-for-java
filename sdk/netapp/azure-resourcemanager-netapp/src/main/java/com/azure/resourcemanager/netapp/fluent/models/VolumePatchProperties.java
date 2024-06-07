@@ -29,9 +29,7 @@ public final class VolumePatchProperties {
     /*
      * usageThreshold
      * 
-     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
-     * Specified in bytes.
+     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis. Specified in bytes.
      */
     @JsonProperty(value = "usageThreshold")
     private Long usageThreshold;
@@ -45,8 +43,7 @@ public final class VolumePatchProperties {
     private VolumePatchPropertiesExportPolicy exportPolicy;
 
     /*
-     * Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for
-     * manual qosType volume
+     * Maximum throughput in MiB/s that can be achieved by this volume and this will be accepted as input only for manual qosType volume
      */
     @JsonProperty(value = "throughputMibps")
     private Float throughputMibps;
@@ -78,11 +75,7 @@ public final class VolumePatchProperties {
     private Long defaultGroupQuotaInKiBs;
 
     /*
-     * UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set
-     * group ID (2) and sticky (1) attributes. Second digit selects permission for the owner of the file: read (4),
-     * write (2) and execute (1). Third selects permissions for other users in the same group. the fourth for other
-     * users not in the group. 0755 - gives read/write/execute permissions to owner and read/execute to group and other
-     * users.
+     * UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and read/execute to group and other users.
      */
     @JsonProperty(value = "unixPermissions")
     private String unixPermissions;
@@ -100,19 +93,16 @@ public final class VolumePatchProperties {
     private Integer coolnessPeriod;
 
     /*
-     * coolAccessRetrievalPolicy determines the data retrieval behavior from the cool tier to standard storage based on
-     * the read pattern for cool access enabled volumes. The possible values for this field are:
-     * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
-     * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
-     * reads.
-     * Never - No client-driven data is pulled from cool tier to standard storage.
+     * coolAccessRetrievalPolicy determines the data retrieval behavior from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values for this field are: 
+     *  Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
+     *  OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random reads.
+     *  Never - No client-driven data is pulled from cool tier to standard storage.
      */
     @JsonProperty(value = "coolAccessRetrievalPolicy")
     private CoolAccessRetrievalPolicy coolAccessRetrievalPolicy;
 
     /*
-     * If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the
-     * volume's snapshots.
+     * If enabled (true) the volume will contain a read-only snapshot directory which provides access to each of the volume's snapshots.
      */
     @JsonProperty(value = "snapshotDirectoryVisible")
     private Boolean snapshotDirectoryVisible;
@@ -396,9 +386,9 @@ public final class VolumePatchProperties {
     }
 
     /**
-     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
-     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
-     * values for this field are:
+     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are:
      * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
      * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
      * reads.
@@ -411,9 +401,9 @@ public final class VolumePatchProperties {
     }
 
     /**
-     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
-     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
-     * values for this field are:
+     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are:
      * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
      * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
      * reads.

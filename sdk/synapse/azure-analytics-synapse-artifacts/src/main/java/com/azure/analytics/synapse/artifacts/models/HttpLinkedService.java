@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Linked service for an HTTP source.
- */
+/** Linked service for an HTTP source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HttpServer")
 @JsonFlatten
@@ -75,16 +73,13 @@ public class HttpLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
 
-    /**
-     * Creates an instance of HttpLinkedService class.
-     */
-    public HttpLinkedService() {
-    }
+    /** Creates an instance of HttpLinkedService class. */
+    public HttpLinkedService() {}
 
     /**
      * Get the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
      * Expression with resultType string).
-     * 
+     *
      * @return the url value.
      */
     public Object getUrl() {
@@ -94,7 +89,7 @@ public class HttpLinkedService extends LinkedService {
     /**
      * Set the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
      * Expression with resultType string).
-     * 
+     *
      * @param url the url value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -105,7 +100,7 @@ public class HttpLinkedService extends LinkedService {
 
     /**
      * Get the authenticationType property: The authentication type to be used to connect to the HTTP server.
-     * 
+     *
      * @return the authenticationType value.
      */
     public HttpAuthenticationType getAuthenticationType() {
@@ -114,7 +109,7 @@ public class HttpLinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: The authentication type to be used to connect to the HTTP server.
-     * 
+     *
      * @param authenticationType the authenticationType value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -126,7 +121,7 @@ public class HttpLinkedService extends LinkedService {
     /**
      * Get the userName property: User name for Basic, Digest, or Windows authentication. Type: string (or Expression
      * with resultType string).
-     * 
+     *
      * @return the userName value.
      */
     public Object getUserName() {
@@ -136,7 +131,7 @@ public class HttpLinkedService extends LinkedService {
     /**
      * Set the userName property: User name for Basic, Digest, or Windows authentication. Type: string (or Expression
      * with resultType string).
-     * 
+     *
      * @param userName the userName value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -148,7 +143,7 @@ public class HttpLinkedService extends LinkedService {
     /**
      * Get the password property: Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData
      * authentication.
-     * 
+     *
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -158,7 +153,7 @@ public class HttpLinkedService extends LinkedService {
     /**
      * Set the password property: Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData
      * authentication.
-     * 
+     *
      * @param password the password value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -169,9 +164,9 @@ public class HttpLinkedService extends LinkedService {
 
     /**
      * Get the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType string).
-     * 
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
+     *
      * @return the embeddedCertData value.
      */
     public Object getEmbeddedCertData() {
@@ -180,9 +175,9 @@ public class HttpLinkedService extends LinkedService {
 
     /**
      * Set the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType string).
-     * 
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
+     *
      * @param embeddedCertData the embeddedCertData value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -195,7 +190,7 @@ public class HttpLinkedService extends LinkedService {
      * Get the certThumbprint property: Thumbprint of certificate for ClientCertificate authentication. Only valid for
      * on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or
      * EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the certThumbprint value.
      */
     public Object getCertThumbprint() {
@@ -206,7 +201,7 @@ public class HttpLinkedService extends LinkedService {
      * Set the certThumbprint property: Thumbprint of certificate for ClientCertificate authentication. Only valid for
      * on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or
      * EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param certThumbprint the certThumbprint value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -216,9 +211,9 @@ public class HttpLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -226,9 +221,9 @@ public class HttpLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -240,7 +235,7 @@ public class HttpLinkedService extends LinkedService {
     /**
      * Get the enableServerCertificateValidation property: If true, validate the HTTPS server SSL certificate. Default
      * value is true. Type: boolean (or Expression with resultType boolean).
-     * 
+     *
      * @return the enableServerCertificateValidation value.
      */
     public Object getEnableServerCertificateValidation() {
@@ -250,7 +245,7 @@ public class HttpLinkedService extends LinkedService {
     /**
      * Set the enableServerCertificateValidation property: If true, validate the HTTPS server SSL certificate. Default
      * value is true. Type: boolean (or Expression with resultType boolean).
-     * 
+     *
      * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -259,36 +254,28 @@ public class HttpLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HttpLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HttpLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HttpLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HttpLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

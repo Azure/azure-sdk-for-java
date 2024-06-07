@@ -79,12 +79,14 @@ public final class TrafficSelectorPolicy {
      */
     public void validate() {
         if (localAddressRanges() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property localAddressRanges in model TrafficSelectorPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property localAddressRanges in model TrafficSelectorPolicy"));
         }
         if (remoteAddressRanges() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property remoteAddressRanges in model TrafficSelectorPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property remoteAddressRanges in model TrafficSelectorPolicy"));
         }
     }
 

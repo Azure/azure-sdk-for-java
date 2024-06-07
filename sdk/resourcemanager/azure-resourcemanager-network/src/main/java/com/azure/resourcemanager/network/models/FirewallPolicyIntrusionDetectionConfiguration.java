@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -26,9 +27,7 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
     private List<FirewallPolicyIntrusionDetectionBypassTrafficSpecifications> bypassTrafficSettings;
 
     /*
-     * IDPS Private IP address ranges are used to identify traffic direction (i.e. inbound, outbound, etc.). By
-     * default, only ranges defined by IANA RFC 1918 are considered private IP addresses. To modify default ranges,
-     * specify your Private IP address ranges with this property
+     * IDPS Private IP address ranges are used to identify traffic direction (i.e. inbound, outbound, etc.). By default, only ranges defined by IANA RFC 1918 are considered private IP addresses. To modify default ranges, specify your Private IP address ranges with this property
      */
     @JsonProperty(value = "privateRanges")
     private List<String> privateRanges;
@@ -41,7 +40,7 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
 
     /**
      * Get the signatureOverrides property: List of specific signatures states.
-     * 
+     *
      * @return the signatureOverrides value.
      */
     public List<FirewallPolicyIntrusionDetectionSignatureSpecification> signatureOverrides() {
@@ -50,7 +49,7 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
 
     /**
      * Set the signatureOverrides property: List of specific signatures states.
-     * 
+     *
      * @param signatureOverrides the signatureOverrides value to set.
      * @return the FirewallPolicyIntrusionDetectionConfiguration object itself.
      */
@@ -62,7 +61,7 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
 
     /**
      * Get the bypassTrafficSettings property: List of rules for traffic to bypass.
-     * 
+     *
      * @return the bypassTrafficSettings value.
      */
     public List<FirewallPolicyIntrusionDetectionBypassTrafficSpecifications> bypassTrafficSettings() {
@@ -71,7 +70,7 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
 
     /**
      * Set the bypassTrafficSettings property: List of rules for traffic to bypass.
-     * 
+     *
      * @param bypassTrafficSettings the bypassTrafficSettings value to set.
      * @return the FirewallPolicyIntrusionDetectionConfiguration object itself.
      */
@@ -85,7 +84,7 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
      * Get the privateRanges property: IDPS Private IP address ranges are used to identify traffic direction (i.e.
      * inbound, outbound, etc.). By default, only ranges defined by IANA RFC 1918 are considered private IP addresses.
      * To modify default ranges, specify your Private IP address ranges with this property.
-     * 
+     *
      * @return the privateRanges value.
      */
     public List<String> privateRanges() {
@@ -96,7 +95,7 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
      * Set the privateRanges property: IDPS Private IP address ranges are used to identify traffic direction (i.e.
      * inbound, outbound, etc.). By default, only ranges defined by IANA RFC 1918 are considered private IP addresses.
      * To modify default ranges, specify your Private IP address ranges with this property.
-     * 
+     *
      * @param privateRanges the privateRanges value to set.
      * @return the FirewallPolicyIntrusionDetectionConfiguration object itself.
      */
@@ -107,7 +106,7 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

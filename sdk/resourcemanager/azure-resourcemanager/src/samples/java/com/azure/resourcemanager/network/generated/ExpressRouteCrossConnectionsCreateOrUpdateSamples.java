@@ -12,8 +12,7 @@ import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState
  */
 public final class ExpressRouteCrossConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * ExpressRouteCrossConnectionUpdate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRouteCrossConnectionUpdate.json
      */
     /**
      * Sample code: UpdateExpressRouteCrossConnection.
@@ -21,9 +20,13 @@ public final class ExpressRouteCrossConnectionsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateExpressRouteCrossConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteCrossConnections().createOrUpdate(
-            "CrossConnection-SiliconValley", "<circuitServiceKey>", new ExpressRouteCrossConnectionInner()
-                .withServiceProviderProvisioningState(ServiceProviderProvisioningState.NOT_PROVISIONED),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteCrossConnections()
+            .createOrUpdate(
+                "CrossConnection-SiliconValley", "<circuitServiceKey>", new ExpressRouteCrossConnectionInner()
+                    .withServiceProviderProvisioningState(ServiceProviderProvisioningState.NOT_PROVISIONED),
+                com.azure.core.util.Context.NONE);
     }
 }

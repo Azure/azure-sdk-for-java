@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A copy activity Azure Data Explorer (Kusto) source.
- */
+/** A copy activity Azure Data Explorer (Kusto) source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataExplorerSource")
 @Fluent
@@ -44,16 +42,13 @@ public final class AzureDataExplorerSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /**
-     * Creates an instance of AzureDataExplorerSource class.
-     */
-    public AzureDataExplorerSource() {
-    }
+    /** Creates an instance of AzureDataExplorerSource class. */
+    public AzureDataExplorerSource() {}
 
     /**
-     * Get the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or
-     * Expression with resultType string).
-     * 
+     * Get the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression
+     * with resultType string).
+     *
      * @return the query value.
      */
     public Object getQuery() {
@@ -61,9 +56,9 @@ public final class AzureDataExplorerSource extends CopySource {
     }
 
     /**
-     * Set the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or
-     * Expression with resultType string).
-     * 
+     * Set the query property: Database query. Should be a Kusto Query Language (KQL) query. Type: string (or Expression
+     * with resultType string).
+     *
      * @param query the query value to set.
      * @return the AzureDataExplorerSource object itself.
      */
@@ -75,7 +70,7 @@ public final class AzureDataExplorerSource extends CopySource {
     /**
      * Get the noTruncation property: The name of the Boolean option that controls whether truncation is applied to
      * result-sets that go beyond a certain row-count limit.
-     * 
+     *
      * @return the noTruncation value.
      */
     public Object getNoTruncation() {
@@ -85,7 +80,7 @@ public final class AzureDataExplorerSource extends CopySource {
     /**
      * Set the noTruncation property: The name of the Boolean option that controls whether truncation is applied to
      * result-sets that go beyond a certain row-count limit.
-     * 
+     *
      * @param noTruncation the noTruncation value to set.
      * @return the AzureDataExplorerSource object itself.
      */
@@ -97,7 +92,7 @@ public final class AzureDataExplorerSource extends CopySource {
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..
-     * 
+     *
      * @return the queryTimeout value.
      */
     public Object getQueryTimeout() {
@@ -107,7 +102,7 @@ public final class AzureDataExplorerSource extends CopySource {
     /**
      * Set the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..
-     * 
+     *
      * @param queryTimeout the queryTimeout value to set.
      * @return the AzureDataExplorerSource object itself.
      */
@@ -119,7 +114,7 @@ public final class AzureDataExplorerSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -129,7 +124,7 @@ public final class AzureDataExplorerSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @param additionalColumns the additionalColumns value to set.
      * @return the AzureDataExplorerSource object itself.
      */
@@ -138,27 +133,21 @@ public final class AzureDataExplorerSource extends CopySource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDataExplorerSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

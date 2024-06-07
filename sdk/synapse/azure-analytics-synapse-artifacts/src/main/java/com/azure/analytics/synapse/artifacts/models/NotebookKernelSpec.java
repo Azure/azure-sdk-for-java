@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Kernel information.
- */
+/** Kernel information. */
 @Fluent
 public final class NotebookKernelSpec {
     /*
@@ -32,18 +30,14 @@ public final class NotebookKernelSpec {
     /*
      * Kernel information.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of NotebookKernelSpec class.
-     */
-    public NotebookKernelSpec() {
-    }
+    /** Creates an instance of NotebookKernelSpec class. */
+    public NotebookKernelSpec() {}
 
     /**
      * Get the name property: Name of the kernel specification.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -52,7 +46,7 @@ public final class NotebookKernelSpec {
 
     /**
      * Set the name property: Name of the kernel specification.
-     * 
+     *
      * @param name the name value to set.
      * @return the NotebookKernelSpec object itself.
      */
@@ -63,7 +57,7 @@ public final class NotebookKernelSpec {
 
     /**
      * Get the displayName property: Name to display in UI.
-     * 
+     *
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -72,7 +66,7 @@ public final class NotebookKernelSpec {
 
     /**
      * Set the displayName property: Name to display in UI.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the NotebookKernelSpec object itself.
      */
@@ -83,7 +77,7 @@ public final class NotebookKernelSpec {
 
     /**
      * Get the additionalProperties property: Kernel information.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -93,7 +87,7 @@ public final class NotebookKernelSpec {
 
     /**
      * Set the additionalProperties property: Kernel information.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the NotebookKernelSpec object itself.
      */

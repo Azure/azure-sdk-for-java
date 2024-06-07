@@ -41,9 +41,10 @@ import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceListResult;
 import com.azure.resourcemanager.cosmos.models.CassandraTableCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.CassandraTableListResult;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in CassandraResourcesClient.
@@ -61,7 +62,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Initializes an instance of CassandraResourcesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     CassandraResourcesClientImpl(CosmosDBManagementClientImpl client) {
@@ -245,7 +246,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,7 +285,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -323,7 +324,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,7 +341,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -358,7 +359,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -375,7 +376,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -393,7 +394,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -434,7 +435,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -474,7 +475,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -493,7 +494,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -512,7 +513,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -529,7 +530,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -578,7 +579,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -627,7 +628,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -650,7 +651,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -675,7 +676,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -689,13 +690,15 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
         beginCreateUpdateCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName,
             CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
-        return this.beginCreateUpdateCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceName,
-            createUpdateCassandraKeyspaceParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceName,
+                createUpdateCassandraKeyspaceParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -710,13 +713,15 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
         beginCreateUpdateCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName,
             CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters, Context context) {
-        return this.beginCreateUpdateCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceName,
-            createUpdateCassandraKeyspaceParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceName,
+                createUpdateCassandraKeyspaceParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -736,7 +741,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -757,7 +762,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -776,7 +781,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -797,7 +802,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -836,7 +841,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -874,7 +879,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -894,7 +899,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -916,7 +921,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -933,7 +938,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -952,7 +957,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -969,7 +974,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -988,7 +993,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1003,7 +1008,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1021,7 +1026,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1063,7 +1068,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1104,7 +1109,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1124,7 +1129,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1145,7 +1150,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1164,7 +1169,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1213,7 +1218,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1263,7 +1268,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1287,7 +1292,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1313,7 +1318,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1328,13 +1333,15 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateCassandraKeyspaceThroughputAsync(resourceGroupName, accountName, keyspaceName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateCassandraKeyspaceThroughputAsync(resourceGroupName, accountName, keyspaceName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1350,13 +1357,15 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraKeyspaceThroughput(String resourceGroupName, String accountName, String keyspaceName,
             ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateCassandraKeyspaceThroughputAsync(resourceGroupName, accountName, keyspaceName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateCassandraKeyspaceThroughputAsync(resourceGroupName, accountName, keyspaceName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1376,7 +1385,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1398,7 +1407,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1418,7 +1427,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1440,7 +1449,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1481,7 +1490,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1521,7 +1530,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1543,7 +1552,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1567,7 +1576,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1585,7 +1594,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1605,7 +1614,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1623,7 +1632,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1637,12 +1646,13 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     private Mono<ThroughputSettingsGetResultsInner> migrateCassandraKeyspaceToAutoscaleAsync(String resourceGroupName,
         String accountName, String keyspaceName, Context context) {
         return beginMigrateCassandraKeyspaceToAutoscaleAsync(resourceGroupName, accountName, keyspaceName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1659,7 +1669,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1677,7 +1687,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1718,7 +1728,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1759,7 +1769,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1781,7 +1791,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1805,7 +1815,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1824,7 +1834,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1845,7 +1855,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1863,7 +1873,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1882,7 +1892,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1899,7 +1909,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra Keyspace from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1918,7 +1928,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -1961,7 +1971,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2004,7 +2014,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2022,7 +2032,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2042,7 +2052,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2060,7 +2070,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2079,7 +2089,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2124,7 +2134,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2168,7 +2178,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2188,7 +2198,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2208,7 +2218,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2227,7 +2237,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2279,7 +2289,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2331,7 +2341,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2355,7 +2365,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2382,7 +2392,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2397,13 +2407,15 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner>
         beginCreateUpdateCassandraTable(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
-        return this.beginCreateUpdateCassandraTableAsync(resourceGroupName, accountName, keyspaceName, tableName,
-            createUpdateCassandraTableParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateCassandraTableAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                createUpdateCassandraTableParameters)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2420,13 +2432,15 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
         beginCreateUpdateCassandraTable(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters,
             Context context) {
-        return this.beginCreateUpdateCassandraTableAsync(resourceGroupName, accountName, keyspaceName, tableName,
-            createUpdateCassandraTableParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateCassandraTableAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                createUpdateCassandraTableParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2447,7 +2461,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2469,7 +2483,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2490,7 +2504,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2512,7 +2526,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2555,7 +2569,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2597,7 +2611,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2618,7 +2632,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2641,7 +2655,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2660,7 +2674,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2680,7 +2694,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2699,7 +2713,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2719,7 +2733,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2736,7 +2750,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2755,7 +2769,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2801,7 +2815,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2846,7 +2860,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2867,7 +2881,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2889,7 +2903,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
      * provided name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2909,7 +2923,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -2963,7 +2977,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3017,7 +3031,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3042,7 +3056,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3069,7 +3083,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3085,13 +3099,15 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraTableThroughput(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3108,13 +3124,15 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateCassandraTableThroughput(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3136,7 +3154,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3159,7 +3177,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3181,7 +3199,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3204,7 +3222,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3249,7 +3267,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3293,7 +3311,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3316,7 +3334,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3341,7 +3359,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3361,7 +3379,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3376,13 +3394,15 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraTableToAutoscale(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, Context context) {
-        return this.beginMigrateCassandraTableToAutoscaleAsync(resourceGroupName, accountName, keyspaceName, tableName,
-            context).getSyncPoller();
+        return this
+            .beginMigrateCassandraTableToAutoscaleAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3396,12 +3416,13 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public Mono<ThroughputSettingsGetResultsInner> migrateCassandraTableToAutoscaleAsync(String resourceGroupName,
         String accountName, String keyspaceName, String tableName) {
         return beginMigrateCassandraTableToAutoscaleAsync(resourceGroupName, accountName, keyspaceName, tableName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3421,7 +3442,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3439,7 +3460,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from manual throughput to autoscale.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3459,7 +3480,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3504,7 +3525,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3549,7 +3570,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3572,7 +3593,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3597,7 +3618,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3618,7 +3639,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3633,13 +3654,15 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateCassandraTableToManualThroughput(String resourceGroupName, String accountName, String keyspaceName,
             String tableName, Context context) {
-        return this.beginMigrateCassandraTableToManualThroughputAsync(resourceGroupName, accountName, keyspaceName,
-            tableName, context).getSyncPoller();
+        return this
+            .beginMigrateCassandraTableToManualThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3658,7 +3681,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3678,7 +3701,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
@@ -3697,7 +3720,7 @@ public final class CassandraResourcesClientImpl implements CassandraResourcesCli
 
     /**
      * Migrate an Azure Cosmos DB Cassandra table from autoscale to manual throughput.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.

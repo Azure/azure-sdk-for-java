@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The selector expression. */
+/**
+ * The selector expression.
+ */
 @Fluent
 public final class Selector {
     /*
@@ -29,13 +31,15 @@ public final class Selector {
     @JsonProperty(value = "notIn")
     private List<String> notIn;
 
-    /** Creates an instance of Selector class. */
+    /**
+     * Creates an instance of Selector class.
+     */
     public Selector() {
     }
 
     /**
      * Get the kind property: The selector kind.
-     *
+     * 
      * @return the kind value.
      */
     public SelectorKind kind() {
@@ -44,7 +48,7 @@ public final class Selector {
 
     /**
      * Set the kind property: The selector kind.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the Selector object itself.
      */
@@ -55,7 +59,7 @@ public final class Selector {
 
     /**
      * Get the in property: The list of values to filter in.
-     *
+     * 
      * @return the in value.
      */
     public List<String> in() {
@@ -64,7 +68,7 @@ public final class Selector {
 
     /**
      * Set the in property: The list of values to filter in.
-     *
+     * 
      * @param in the in value to set.
      * @return the Selector object itself.
      */
@@ -75,7 +79,7 @@ public final class Selector {
 
     /**
      * Get the notIn property: The list of values to filter out.
-     *
+     * 
      * @return the notIn value.
      */
     public List<String> notIn() {
@@ -84,7 +88,7 @@ public final class Selector {
 
     /**
      * Set the notIn property: The list of values to filter out.
-     *
+     * 
      * @param notIn the notIn value to set.
      * @return the Selector object itself.
      */
@@ -95,7 +99,7 @@ public final class Selector {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

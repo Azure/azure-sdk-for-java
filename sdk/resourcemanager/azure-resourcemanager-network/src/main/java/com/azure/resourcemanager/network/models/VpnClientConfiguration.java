@@ -68,22 +68,19 @@ public final class VpnClientConfiguration {
     private List<RadiusServer> radiusServers;
 
     /*
-     * The AADTenant property of the VirtualNetworkGateway resource for vpn client connection used for AAD
-     * authentication.
+     * The AADTenant property of the VirtualNetworkGateway resource for vpn client connection used for AAD authentication.
      */
     @JsonProperty(value = "aadTenant")
     private String aadTenant;
 
     /*
-     * The AADAudience property of the VirtualNetworkGateway resource for vpn client connection used for AAD
-     * authentication.
+     * The AADAudience property of the VirtualNetworkGateway resource for vpn client connection used for AAD authentication.
      */
     @JsonProperty(value = "aadAudience")
     private String aadAudience;
 
     /*
-     * The AADIssuer property of the VirtualNetworkGateway resource for vpn client connection used for AAD
-     * authentication.
+     * The AADIssuer property of the VirtualNetworkGateway resource for vpn client connection used for AAD authentication.
      */
     @JsonProperty(value = "aadIssuer")
     private String aadIssuer;
@@ -101,8 +98,8 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address
-     * space for P2S VpnClient.
+     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
      * 
      * @return the vpnClientAddressPool value.
      */
@@ -111,8 +108,8 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address
-     * space for P2S VpnClient.
+     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
      * 
      * @param vpnClientAddressPool the vpnClientAddressPool value to set.
      * @return the VpnClientConfiguration object itself.

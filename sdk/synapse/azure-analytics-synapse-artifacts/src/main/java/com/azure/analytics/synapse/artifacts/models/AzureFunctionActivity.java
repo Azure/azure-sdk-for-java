@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Azure Function activity.
- */
+/** Azure Function activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureFunctionActivity")
 @JsonFlatten
@@ -47,15 +45,12 @@ public class AzureFunctionActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.body")
     private Object body;
 
-    /**
-     * Creates an instance of AzureFunctionActivity class.
-     */
-    public AzureFunctionActivity() {
-    }
+    /** Creates an instance of AzureFunctionActivity class. */
+    public AzureFunctionActivity() {}
 
     /**
      * Get the method property: Rest API method for target endpoint.
-     * 
+     *
      * @return the method value.
      */
     public AzureFunctionActivityMethod getMethod() {
@@ -64,7 +59,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
 
     /**
      * Set the method property: Rest API method for target endpoint.
-     * 
+     *
      * @param method the method value to set.
      * @return the AzureFunctionActivity object itself.
      */
@@ -76,7 +71,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * Get the functionName property: Name of the Function that the Azure Function Activity will call. Type: string (or
      * Expression with resultType string).
-     * 
+     *
      * @return the functionName value.
      */
     public Object getFunctionName() {
@@ -86,7 +81,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * Set the functionName property: Name of the Function that the Azure Function Activity will call. Type: string (or
      * Expression with resultType string).
-     * 
+     *
      * @param functionName the functionName value to set.
      * @return the AzureFunctionActivity object itself.
      */
@@ -99,7 +94,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * Get the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the headers value.
      */
     public Object getHeaders() {
@@ -110,7 +105,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
      * Set the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     * 
+     *
      * @param headers the headers value to set.
      * @return the AzureFunctionActivity object itself.
      */
@@ -122,7 +117,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * Get the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the body value.
      */
     public Object getBody() {
@@ -132,7 +127,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     /**
      * Set the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     * 
+     *
      * @param body the body value to set.
      * @return the AzureFunctionActivity object itself.
      */
@@ -141,72 +136,56 @@ public class AzureFunctionActivity extends ExecutionActivity {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureFunctionActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureFunctionActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureFunctionActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureFunctionActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureFunctionActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureFunctionActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureFunctionActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureFunctionActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

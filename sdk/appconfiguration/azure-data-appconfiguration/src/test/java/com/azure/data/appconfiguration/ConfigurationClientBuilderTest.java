@@ -208,7 +208,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
         }
         // Disable `("$.key")` sanitizer
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Collections.singletonList("AZSDK3447"));
+            interceptorManager.removeSanitizers("AZSDK3447");
         }
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
@@ -248,7 +248,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
         // Disable `("$.key")` sanitizer
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Collections.singletonList("AZSDK3447"));
+            interceptorManager.removeSanitizers("AZSDK3447");
         }
 
         ConfigurationSetting addedSetting = clientBuilder

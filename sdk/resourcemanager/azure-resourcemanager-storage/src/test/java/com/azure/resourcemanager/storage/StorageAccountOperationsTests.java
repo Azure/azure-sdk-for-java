@@ -5,8 +5,8 @@ package com.azure.resourcemanager.storage;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.Kind;
@@ -198,7 +198,6 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .withRegion(Region.US_EAST2)
                 .withNewResourceGroup(rgName)
                 .withSku(StorageAccountSkuType.STANDARD_LRS)
-                .disallowCrossTenantReplication()
                 .create();
 
         Assertions.assertFalse(storageAccount.isAllowCrossTenantReplication());
@@ -219,6 +218,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .withRegion(Region.US_EAST2)
                 .withNewResourceGroup(rgName)
                 .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .allowCrossTenantReplication()
                 .create();
 
         Assertions.assertTrue(storageAccount.isAllowCrossTenantReplication());

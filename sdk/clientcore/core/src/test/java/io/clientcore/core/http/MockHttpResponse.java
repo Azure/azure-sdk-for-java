@@ -21,7 +21,7 @@ public class MockHttpResponse extends HttpResponse<BinaryData> {
      * @param statusCode Status code of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode) {
-        this(request, statusCode, BinaryData.EMPTY);
+        this(request, statusCode, BinaryData.empty());
     }
 
     /**
@@ -44,7 +44,7 @@ public class MockHttpResponse extends HttpResponse<BinaryData> {
      * @param headers Headers of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
-        this(request, statusCode, headers, BinaryData.EMPTY);
+        this(request, statusCode, headers, BinaryData.empty());
     }
 
     /**

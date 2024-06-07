@@ -90,24 +90,6 @@ public final class AssistantThread implements JsonSerializable<AssistantThread> 
     }
 
     /**
-     * Creates an instance of AssistantThread class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    private AssistantThread(String id, OffsetDateTime createdAt, Map<String, String> metadata) {
-        this.id = id;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.metadata = metadata;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -117,6 +99,7 @@ public final class AssistantThread implements JsonSerializable<AssistantThread> 
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("object", this.object);
         jsonWriter.writeLongField("created_at", this.createdAt);
+        jsonWriter.writeJsonField("tool_resources", this.toolResources);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -135,6 +118,7 @@ public final class AssistantThread implements JsonSerializable<AssistantThread> 
         return jsonReader.readObject(reader -> {
             String id = null;
             OffsetDateTime createdAt = null;
+            ToolResources toolResources = null;
             Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -143,13 +127,60 @@ public final class AssistantThread implements JsonSerializable<AssistantThread> 
                     id = reader.getString();
                 } else if ("created_at".equals(fieldName)) {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                } else if ("tool_resources".equals(fieldName)) {
+                    toolResources = ToolResources.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new AssistantThread(id, createdAt, metadata);
+            return new AssistantThread(id, createdAt, toolResources, metadata);
         });
+    }
+
+    /*
+     * A set of resources that are made available to the assistant's tools in this thread. The resources are specific to
+     * the type
+     * of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool
+     * requires a list
+     * of vector store IDs.
+     */
+    @Generated
+    private final ToolResources toolResources;
+
+    /**
+     * Creates an instance of AssistantThread class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param toolResources the toolResources value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    private AssistantThread(String id, OffsetDateTime createdAt, ToolResources toolResources,
+        Map<String, String> metadata) {
+        this.id = id;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.toolResources = toolResources;
+        this.metadata = metadata;
+    }
+
+    /**
+     * Get the toolResources property: A set of resources that are made available to the assistant's tools in this
+     * thread. The resources are specific to the type
+     * of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool
+     * requires a list
+     * of vector store IDs.
+     *
+     * @return the toolResources value.
+     */
+    @Generated
+    public ToolResources getToolResources() {
+        return this.toolResources;
     }
 }

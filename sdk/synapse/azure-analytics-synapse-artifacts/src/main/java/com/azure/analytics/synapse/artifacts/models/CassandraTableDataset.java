@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The Cassandra database dataset.
- */
+/** The Cassandra database dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CassandraTable")
 @JsonFlatten
@@ -32,16 +30,13 @@ public class CassandraTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.keyspace")
     private Object keyspace;
 
-    /**
-     * Creates an instance of CassandraTableDataset class.
-     */
-    public CassandraTableDataset() {
-    }
+    /** Creates an instance of CassandraTableDataset class. */
+    public CassandraTableDataset() {}
 
     /**
-     * Get the tableName property: The table name of the Cassandra database. Type: string (or Expression with
-     * resultType string).
-     * 
+     * Get the tableName property: The table name of the Cassandra database. Type: string (or Expression with resultType
+     * string).
+     *
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -49,9 +44,9 @@ public class CassandraTableDataset extends Dataset {
     }
 
     /**
-     * Set the tableName property: The table name of the Cassandra database. Type: string (or Expression with
-     * resultType string).
-     * 
+     * Set the tableName property: The table name of the Cassandra database. Type: string (or Expression with resultType
+     * string).
+     *
      * @param tableName the tableName value to set.
      * @return the CassandraTableDataset object itself.
      */
@@ -63,7 +58,7 @@ public class CassandraTableDataset extends Dataset {
     /**
      * Get the keyspace property: The keyspace of the Cassandra database. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the keyspace value.
      */
     public Object getKeyspace() {
@@ -73,7 +68,7 @@ public class CassandraTableDataset extends Dataset {
     /**
      * Set the keyspace property: The keyspace of the Cassandra database. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param keyspace the keyspace value to set.
      * @return the CassandraTableDataset object itself.
      */
@@ -82,63 +77,49 @@ public class CassandraTableDataset extends Dataset {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CassandraTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

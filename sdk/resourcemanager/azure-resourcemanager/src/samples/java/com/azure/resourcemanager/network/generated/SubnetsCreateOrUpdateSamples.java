@@ -13,8 +13,7 @@ import java.util.Arrays;
  */
 public final class SubnetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/SubnetCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/SubnetCreate.json
      */
     /**
      * Sample code: Create subnet.
@@ -22,14 +21,16 @@ public final class SubnetsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSubnet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSubnets().createOrUpdate("subnet-test", "vnetname", "subnet1",
-            new SubnetInner().withAddressPrefix("10.0.0.0/16"), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSubnets()
+            .createOrUpdate("subnet-test", "vnetname", "subnet1", new SubnetInner().withAddressPrefix("10.0.0.0/16"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/SubnetCreateServiceEndpoint.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/SubnetCreateServiceEndpoint.json
      */
     /**
      * Sample code: Create subnet with service endpoints.
@@ -37,16 +38,19 @@ public final class SubnetsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSubnetWithServiceEndpoints(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSubnets().createOrUpdate("subnet-test", "vnetname", "subnet1",
-            new SubnetInner().withAddressPrefix("10.0.0.0/16").withServiceEndpoints(
-                Arrays.asList(new ServiceEndpointPropertiesFormat().withService("Microsoft.Storage"))),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSubnets()
+            .createOrUpdate("subnet-test", "vnetname", "subnet1",
+                new SubnetInner().withAddressPrefix("10.0.0.0/16")
+                    .withServiceEndpoints(
+                        Arrays.asList(new ServiceEndpointPropertiesFormat().withService("Microsoft.Storage"))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/SubnetCreateWithDelegation.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/SubnetCreateWithDelegation.json
      */
     /**
      * Sample code: Create subnet with a delegation.
@@ -54,7 +58,28 @@ public final class SubnetsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSubnetWithADelegation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSubnets().createOrUpdate("subnet-test", "vnetname", "subnet1",
-            new SubnetInner().withAddressPrefix("10.0.0.0/16"), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSubnets()
+            .createOrUpdate("subnet-test", "vnetname", "subnet1", new SubnetInner().withAddressPrefix("10.0.0.0/16"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/SubnetCreateWithSharingScope.json
+     */
+    /**
+     * Sample code: Create subnet with sharing scope.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createSubnetWithSharingScope(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSubnets()
+            .createOrUpdate("subnet-test", "vnetname", "subnet1", new SubnetInner().withAddressPrefix("10.0.0.0/16"),
+                com.azure.core.util.Context.NONE);
     }
 }

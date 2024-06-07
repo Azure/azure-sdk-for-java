@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Notebook root-level metadata.
- */
+/** Notebook root-level metadata. */
 @Fluent
 public final class NotebookMetadata {
     /*
@@ -32,18 +30,14 @@ public final class NotebookMetadata {
     /*
      * Notebook root-level metadata.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of NotebookMetadata class.
-     */
-    public NotebookMetadata() {
-    }
+    /** Creates an instance of NotebookMetadata class. */
+    public NotebookMetadata() {}
 
     /**
      * Get the kernelspec property: Kernel information.
-     * 
+     *
      * @return the kernelspec value.
      */
     public NotebookKernelSpec getKernelspec() {
@@ -52,7 +46,7 @@ public final class NotebookMetadata {
 
     /**
      * Set the kernelspec property: Kernel information.
-     * 
+     *
      * @param kernelspec the kernelspec value to set.
      * @return the NotebookMetadata object itself.
      */
@@ -63,7 +57,7 @@ public final class NotebookMetadata {
 
     /**
      * Get the languageInfo property: Language info.
-     * 
+     *
      * @return the languageInfo value.
      */
     public NotebookLanguageInfo getLanguageInfo() {
@@ -72,7 +66,7 @@ public final class NotebookMetadata {
 
     /**
      * Set the languageInfo property: Language info.
-     * 
+     *
      * @param languageInfo the languageInfo value to set.
      * @return the NotebookMetadata object itself.
      */
@@ -83,7 +77,7 @@ public final class NotebookMetadata {
 
     /**
      * Get the additionalProperties property: Notebook root-level metadata.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -93,7 +87,7 @@ public final class NotebookMetadata {
 
     /**
      * Set the additionalProperties property: Notebook root-level metadata.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the NotebookMetadata object itself.
      */

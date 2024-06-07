@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Columns that define the physical type schema of the dataset.
- */
+/** Columns that define the physical type schema of the dataset. */
 @Fluent
 public final class DatasetSchemaDataElement {
     /*
@@ -32,18 +30,14 @@ public final class DatasetSchemaDataElement {
     /*
      * Columns that define the physical type schema of the dataset.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of DatasetSchemaDataElement class.
-     */
-    public DatasetSchemaDataElement() {
-    }
+    /** Creates an instance of DatasetSchemaDataElement class. */
+    public DatasetSchemaDataElement() {}
 
     /**
      * Get the name property: Name of the schema column. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the name value.
      */
     public Object getName() {
@@ -52,7 +46,7 @@ public final class DatasetSchemaDataElement {
 
     /**
      * Set the name property: Name of the schema column. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param name the name value to set.
      * @return the DatasetSchemaDataElement object itself.
      */
@@ -63,7 +57,7 @@ public final class DatasetSchemaDataElement {
 
     /**
      * Get the type property: Type of the schema column. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the type value.
      */
     public Object getType() {
@@ -72,7 +66,7 @@ public final class DatasetSchemaDataElement {
 
     /**
      * Set the type property: Type of the schema column. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param type the type value to set.
      * @return the DatasetSchemaDataElement object itself.
      */
@@ -83,7 +77,7 @@ public final class DatasetSchemaDataElement {
 
     /**
      * Get the additionalProperties property: Columns that define the physical type schema of the dataset.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -93,7 +87,7 @@ public final class DatasetSchemaDataElement {
 
     /**
      * Set the additionalProperties property: Columns that define the physical type schema of the dataset.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the DatasetSchemaDataElement object itself.
      */

@@ -16,6 +16,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 
+import java.util.Arrays;
+
 import static com.azure.ai.personalizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_API_KEY_MULTI_SLOT;
 import static com.azure.ai.personalizer.TestUtils.PERSONALIZER_API_KEY_SINGLE_SLOT;
@@ -39,6 +41,11 @@ public abstract class PersonalizerTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            // Removes `Location` and `id` sanitizer from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK3430");
         }
 
         return setCredential(builder, getTestMode(), isSingleSlot, isStatic);
