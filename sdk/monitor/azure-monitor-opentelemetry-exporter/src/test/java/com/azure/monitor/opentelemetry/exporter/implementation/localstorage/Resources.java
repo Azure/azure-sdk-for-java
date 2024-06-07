@@ -23,8 +23,6 @@ class Resources {
                 result.write(buffer, 0, length);
             }
             return result.toByteArray();
-        } catch (Exception ex) {
-            throw new IOException("Failed to read resource: " + resourceName, ex);
         }
     }
 
