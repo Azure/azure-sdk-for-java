@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageTelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
@@ -47,8 +48,7 @@ public class TelemetryPipeline {
         this.statsbeatShutdown = statsbeatShutdown;
     }
 
-    public CompletableResultCode send(
-        List<ByteBuffer> telemetry, String connectionString, TelemetryPipelineListener listener) {
+    public CompletableResultCode send(List<ByteBuffer> telemetry, String connectionString, TelemetryPipelineListener listener) {
 
         ConnectionString connectionStringObj = ConnectionString.parse(connectionString);
 
@@ -84,6 +84,7 @@ public class TelemetryPipeline {
         CompletableResultCode result,
         int remainingRedirects) {
 
+        System.out.println("##### request.body: " + request.getByteBuffers());
         // Add instrumentation key to context to use in StatsbeatHttpPipelinePolicy
         Map<Object, Object> contextKeyValues = new HashMap<>();
         contextKeyValues.put("instrumentationKey", request.getInstrumentationKey());
