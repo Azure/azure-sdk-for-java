@@ -5,12 +5,17 @@ package com.azure.tools.checkstyle.checks;
 
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -19,7 +24,7 @@ import java.util.Set;
  * nonFinalFields: keep an array of non private fields as tokens (to keep line number)
  * assignmentsFromConstructor: Save a set of string for each field name that gets its value assigned in constructor
  * assignmentsFromMethods: Save a set of strings for each field name that gets updated in any method
- *
+ * <p>
  * On finish tree, check what non-final fields get a value only in constructor and nowhere else by looking for
  * strings inside nonFinalFields AND assignmentsFromConstructor but NOT in assignmentsFromMethods
  */
@@ -36,6 +41,7 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
     private Set<String> assignmentsFromMethods;
     private DetailAST scopeParent = null;
     private Set<String> currentScopeParameterSet = null;
+    private Map<String, DetailAST> variablesInScope = null;
     private String currentClassName = null;
 
     @Override
@@ -108,6 +114,7 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
             case TokenTypes.METHOD_DEF:
             case TokenTypes.CTOR_DEF:
                 scopeParent = token;
+                variablesInScope = new HashMap<>();
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch
@@ -122,6 +129,7 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
             case TokenTypes.CTOR_DEF:
                 scopeParent = null;
                 currentScopeParameterSet = null;
+                variablesInScope = null;
                 break;
             default:
                 break;
@@ -160,6 +168,15 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
                 token -> token.getText().equals(this.currentClassName)).isPresent()) {
                 // Case when referencing same class for private static fields
                 return assignationWithDot.getLastChild();
+            } else if (assignationWithDot.getFirstChild().getType() == TokenTypes.IDENT) {
+                // Case where setting a field on a variable.
+                String variableNameToken = assignationWithDot.getFirstChild().getText();
+                DetailAST variableDeclaration = variablesInScope.get(variableNameToken);
+                DetailAST parentScope = getParentScope(assignationToken);
+                if (variableDeclaration != null && parentScope != null
+                    && CheckUtil.isBeforeInSource(variableDeclaration, parentScope)) {
+                    return assignationWithDot.getLastChild();
+                }
             }
         } else {
             final DetailAST variableNameToken = assignationToken.getFirstChild();
@@ -168,6 +185,17 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
                 return variableNameToken;
             }
         }
+
+        return null;
+    }
+
+    private static DetailAST getParentScope(DetailAST ast) {
+        DetailAST parent = ast.getParent();
+        do {
+            if (parent.getType() == TokenTypes.SLIST) {
+                return parent;
+            }
+        } while ((parent = parent.getParent()) != null);
 
         return null;
     }
@@ -197,7 +225,12 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
 
         final DetailAST assignationParent = assignationToken.getParent();
         if (assignationParent != null && TokenTypes.VARIABLE_DEF == assignationParent.getType()) {
-            // Assignation for a variable definition. No need to check this assignation
+            String variableType = FullIdent.createFullIdentBelow(assignationParent.findFirstToken(TokenTypes.TYPE)).getText();
+            if (Objects.equals(currentClassName, variableType)) {
+                // Track variable definitions of the class we're currently in.
+                variablesInScope.put(assignationParent.findFirstToken(TokenTypes.IDENT).getText(), assignationParent);
+            }
+
             return;
         }
 
