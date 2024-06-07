@@ -11,6 +11,3 @@ extends:
         safeName: azuredataappconfiguration
     TimeoutInMinutes: 90
     SupportedClouds: "Public,UsGov,China"
-    AdditionalModules:
-      - name: azure-identity
-        groupId: com.azure
