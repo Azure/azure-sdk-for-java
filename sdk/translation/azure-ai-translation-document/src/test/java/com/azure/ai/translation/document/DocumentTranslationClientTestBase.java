@@ -7,8 +7,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -30,8 +28,8 @@ import java.util.Map;
 
 class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
-    private static final String HOST_NAME_REGEX = "(?<=http://|https://)(?<host>[^/?\\\\.]+)";
-    private static final String REDACTED = "REDACTED";    
+    private static final String[] DISABLE_SANITIZER_LIST = {"AZSDK3430", "AZSDK2030"};
+    private boolean sanitizersRemoved = false;
 
     @Override
     public void beforeTest() {
@@ -44,38 +42,23 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
     DocumentTranslationClient getDTClient(String endpoint, String key) {
         DocumentTranslationClientBuilder documentTranslationClientbuilder = new DocumentTranslationClientBuilder()
-                .endpoint(endpoint)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+            .endpoint(endpoint)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (interceptorManager.isPlaybackMode()) {
             documentTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         } else if (interceptorManager.isRecordMode()) {
             documentTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
-        
 
-        if (!interceptorManager.isLiveMode()) {
-            addTestProxySanitizers();
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
+            sanitizersRemoved = true;
         }
 
         documentTranslationClientbuilder.credential(new AzureKeyCredential(key));
 
         return documentTranslationClientbuilder.buildClient();
-    }
-
-    private void addTestProxySanitizers() {
-        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-        customSanitizers.add(
-                new TestProxySanitizer("$..sourceUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(
-                new TestProxySanitizer("$..targetUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(
-                new TestProxySanitizer("$..glossaryUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(
-                new TestProxySanitizer("Operation-Location", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.HEADER));
-        interceptorManager.addSanitizers(customSanitizers);
     }
 
     SingleDocumentTranslationClient getSingleDocumentTranslationClient() {
@@ -84,19 +67,18 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
     private SingleDocumentTranslationClient getSDTClient(String endpoint, String key) {
         SingleDocumentTranslationClientBuilder singleDocumentTranslationClientbuilder = new SingleDocumentTranslationClientBuilder()
-                .endpoint(endpoint)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+            .endpoint(endpoint)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (interceptorManager.isPlaybackMode()) {
             singleDocumentTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         } else if (interceptorManager.isRecordMode()) {
             singleDocumentTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        if (!interceptorManager.isLiveMode()) {
-            addTestProxySanitizers();
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
+            sanitizersRemoved = true;
         }
 
         singleDocumentTranslationClientbuilder.credential(new AzureKeyCredential(key));
@@ -107,69 +89,47 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         // NOT REAL ACCOUNT DETAILS
         String playbackEndpoint = "https://fakeendpoint.cognitiveservices.azure.com";
         return interceptorManager.isPlaybackMode()
-                ? playbackEndpoint
-                : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_ENDPOINT");
+            ? playbackEndpoint
+            : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_ENDPOINT");
     }
 
     private String getKey() {
         String playbackApiKey = "Sanitized";
         return interceptorManager.isPlaybackMode()
-                ? playbackApiKey
-                : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_API_KEY");
+            ? playbackApiKey
+            : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_API_KEY");
     }
 
     String getStorageName() {
         String playbackStorageName = "Sanitized";
         return interceptorManager.isPlaybackMode()
-                ? playbackStorageName
-                : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_STORAGE_NAME");
+            ? playbackStorageName
+            : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_STORAGE_NAME");
     }
 
     private String getConnectionString() {
         return interceptorManager.isPlaybackMode()
-                ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
-                : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_CONNECTION_STRING");
+            ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
+            : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_CONNECTION_STRING");
     }
 
     BlobContainerClient getBlobContainerClient(String containerName) {
         BlobContainerClientBuilder blobContainerClientBuilder = new BlobContainerClientBuilder()
-                .containerName(containerName)
-                .connectionString(getConnectionString());
+            .containerName(containerName)
+            .connectionString(getConnectionString());
 
         if (interceptorManager.isPlaybackMode()) {
             blobContainerClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {
             blobContainerClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-        } else if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
-        }     
+        }
 
-        if (!interceptorManager.isLiveMode()) {
-            addTestProxySanitizers();
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
+            sanitizersRemoved = true;
         }
 
         return blobContainerClientBuilder.buildClient();
-    }
-
-    BlobClient getBlobClient(String containerName, String blobName) {
-        BlobClientBuilder blobClientBuilder = new BlobClientBuilder()
-                .containerName(containerName)
-                .connectionString(getConnectionString())
-                .blobName(blobName);
-
-        if (interceptorManager.isPlaybackMode()) {
-            blobClientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (interceptorManager.isRecordMode()) {
-            blobClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-        } else if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
-        }
-
-        if (!interceptorManager.isLiveMode()) {
-            addTestProxySanitizers();
-        }
-
-        return blobClientBuilder.buildClient();
     }
 
     protected static final List<TestDocument> ONE_TEST_DOCUMENTS = new ArrayList<TestDocument>() {
@@ -201,11 +161,11 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
 
         BlobContainerSasPermission containerSasPermission = new BlobContainerSasPermission()
-                .setReadPermission(true)
-                .setListPermission(true);
+            .setReadPermission(true)
+            .setListPermission(true);
 
-        BlobServiceSasSignatureValues serviceSasValues = new BlobServiceSasSignatureValues(expiresOn,
-                containerSasPermission);
+        BlobServiceSasSignatureValues serviceSasValues
+            = new BlobServiceSasSignatureValues(expiresOn, containerSasPermission);
 
         String sasToken = blobContainerClient.generateSas(serviceSasValues);
         String containerUrl = blobContainerClient.getBlobContainerUrl();
@@ -219,11 +179,11 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
 
         BlobContainerSasPermission containerSasPermission = new BlobContainerSasPermission()
-                .setWritePermission(true)
-                .setListPermission(true);
+            .setWritePermission(true)
+            .setListPermission(true);
 
-        BlobServiceSasSignatureValues serviceSasValues = new BlobServiceSasSignatureValues(expiresOn,
-                containerSasPermission);
+        BlobServiceSasSignatureValues serviceSasValues
+            = new BlobServiceSasSignatureValues(expiresOn, containerSasPermission);
 
         String sasToken = blobContainerClient.generateSas(serviceSasValues);
         String containerUrl = blobContainerClient.getBlobContainerUrl();
@@ -238,11 +198,11 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
 
         BlobContainerSasPermission containerSasPermission = new BlobContainerSasPermission()
-                .setWritePermission(true)
-                .setListPermission(true);
+            .setWritePermission(true)
+            .setListPermission(true);
 
-        BlobServiceSasSignatureValues serviceSasValues = new BlobServiceSasSignatureValues(expiresOn,
-                containerSasPermission);
+        BlobServiceSasSignatureValues serviceSasValues
+            = new BlobServiceSasSignatureValues(expiresOn, containerSasPermission);
 
         String sasToken = blobContainerClient.generateSas(serviceSasValues);
         String containerUrl = blobContainerClient.getBlobContainerUrl();
@@ -263,11 +223,11 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
 
         BlobContainerSasPermission containerSasPermission = new BlobContainerSasPermission()
-                .setReadPermission(true)
-                .setListPermission(true);
+            .setReadPermission(true)
+            .setListPermission(true);
 
-        BlobServiceSasSignatureValues serviceSasValues = new BlobServiceSasSignatureValues(expiresOn,
-                containerSasPermission);
+        BlobServiceSasSignatureValues serviceSasValues
+            = new BlobServiceSasSignatureValues(expiresOn, containerSasPermission);
 
         String sasToken = blobContainerClient.generateSas(serviceSasValues);
         String containerUrl = blobContainerClient.getBlobContainerUrl();
@@ -297,8 +257,23 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         }
     }
 
-    String downloadDocumentStream(String containerName, String blobName) {
-        BlobClient blobClient = getBlobClient(containerName, blobName);
+    String downloadDocumentStream(String targetContainerName, String blobName) {
+        BlobClientBuilder blobClientBuilder = new BlobClientBuilder()
+            .containerName(targetContainerName)
+            .connectionString(getConnectionString())
+            .blobName(blobName);
+
+        if (interceptorManager.isPlaybackMode()) {
+            blobClientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (interceptorManager.isRecordMode()) {
+            blobClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
+            sanitizersRemoved = true;
+        }
+
+        BlobClient blobClient = blobClientBuilder.buildClient();
 
         InputStream blobIS = blobClient.openInputStream();
         try {
