@@ -30,8 +30,7 @@ public class AadCredentialTest extends TestProxyTestBase {
 
     private void setup(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         if (interceptorManager.isPlaybackMode()) {
-            connectionString = FAKE_CONNECTION_STRING;
-            String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
+            String endpoint = new ConfigurationClientCredentials(FAKE_CONNECTION_STRING).getBaseUri();
             // In playback mode use connection string because CI environment doesn't set up to support AAD
             client = new ConfigurationClientBuilder()
                 .credential(new MockTokenCredential())
