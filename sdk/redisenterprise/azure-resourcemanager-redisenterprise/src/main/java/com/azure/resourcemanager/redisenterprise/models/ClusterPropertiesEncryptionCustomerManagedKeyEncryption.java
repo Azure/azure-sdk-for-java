@@ -8,21 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * All Customer-managed key encryption properties for the resource. Set this to an empty object to use
- * Microsoft-managed key encryption.
+ * All Customer-managed key encryption properties for the resource. Set this to an empty object to use Microsoft-managed
+ * key encryption.
  */
 @Fluent
 public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryption {
     /*
-     * All identity configuration for Customer-managed key settings defining which identity should be used to auth to
-     * Key Vault.
+     * All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
      */
     @JsonProperty(value = "keyEncryptionKeyIdentity")
     private ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity keyEncryptionKeyIdentity;
 
     /*
-     * Key encryption key Url, versioned only. Ex:
-     * https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
+     * Key encryption key Url, versioned only. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
      */
     @JsonProperty(value = "keyEncryptionKeyUrl")
     private String keyEncryptionKeyUrl;
