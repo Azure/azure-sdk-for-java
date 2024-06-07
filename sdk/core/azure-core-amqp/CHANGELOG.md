@@ -1,5 +1,17 @@
 # Release History
 
+## 2.10.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Added feature to enable/disable SSL when initially creating connection to support amqp calls on port 5672.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.9.5 (2024-06-06)
 
 ### Bugs Fixed
