@@ -37,6 +37,7 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
     private DetailAST scopeParent = null;
     private Set<String> currentScopeParameterSet = null;
     private String currentClassName = null;
+    private Set<String> variableDefinitionsInMethod;
 
     @Override
     public int[] getDefaultTokens() {
@@ -70,6 +71,7 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
             TokenTypes.POST_DEC,
             TokenTypes.METHOD_DEF,
             TokenTypes.CTOR_DEF,
+            TokenTypes.VARIABLE_DEF,
         };
     }
 
@@ -78,6 +80,7 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
         nonFinalFields = new ArrayList<>();
         assignmentsFromConstructor = new HashSet<>();
         assignmentsFromMethods = new HashSet<>();
+        variableDefinitionsInMethod = new HashSet<>();
     }
 
     @Override
@@ -108,6 +111,10 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
             case TokenTypes.METHOD_DEF:
             case TokenTypes.CTOR_DEF:
                 scopeParent = token;
+                variableDefinitionsInMethod.clear();
+                break;
+            case TokenTypes.VARIABLE_DEF:
+                saveVariableDefinition(token);
                 break;
             default:
                 // Checkstyle complains if there's no default block in switch
@@ -122,6 +129,7 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
             case TokenTypes.CTOR_DEF:
                 scopeParent = null;
                 currentScopeParameterSet = null;
+                variableDefinitionsInMethod.clear();
                 break;
             default:
                 break;
@@ -157,7 +165,8 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
             if (assignationWithDot.branchContains(TokenTypes.LITERAL_THIS)) {
                 return assignationWithDot.findFirstToken(TokenTypes.IDENT);
             } else if (TokenUtil.findFirstTokenByPredicate(assignationWithDot,
-                token -> token.getText().equals(this.currentClassName)).isPresent()) {
+                token -> token.getText().equals(this.currentClassName)
+                    || variableDefinitionsInMethod.contains(token.getText())).isPresent()) {
                 // Case when referencing same class for private static fields
                 return assignationWithDot.getLastChild();
             }
@@ -180,6 +189,23 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
             assignmentsFromMethods.add(fieldName);
         } else if (scopeParentType == TokenTypes.CTOR_DEF) {
             assignmentsFromConstructor.add(fieldName);
+        }
+    }
+
+    /*
+     * Saves the name of the variable that is defined of type "currentClassName"
+     */
+    private void saveVariableDefinition(final DetailAST variableDefToken) {
+        if (currentClassName != null) {
+            TokenUtil.findFirstTokenByPredicate(variableDefToken,
+                token -> token.getType() == TokenTypes.TYPE && token.getChildCount() == 1
+                    && token.getFirstChild().getText().equals(currentClassName))
+                .ifPresent(token -> {
+                    DetailAST identifierToken = token.getNextSibling();
+                    if (identifierToken != null && identifierToken.getType() == TokenTypes.IDENT) {
+                        variableDefinitionsInMethod.add(identifierToken.getText());
+                    }
+                });
         }
     }
 
