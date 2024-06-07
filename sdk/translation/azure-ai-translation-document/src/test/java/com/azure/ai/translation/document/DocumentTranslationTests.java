@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.annotation.LiveOnly;
 
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,7 +39,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class DocumentTranslationTests extends DocumentTranslationClientTestBase {
     static int retryCount = 10;
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testClientCannotAuthenticateWithFakeApiKey() {
@@ -56,7 +54,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         }
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testSingleSourceSingleTarget() {
@@ -79,7 +76,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         validateTranslationStatus(translationStatus, 1);
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testSingleSourceMultipleTargets() {
@@ -113,7 +109,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         validateTranslationStatus(translationStatus, 3);
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testMultipleSourcesSingleTarget() {
@@ -147,7 +142,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         validateTranslationStatus(translationStatus, 2);
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testSingleSourceSingleTargetWithPrefix() {
@@ -173,7 +167,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         validateTranslationStatus(translationStatus, 1);
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testSingleSourceSingleTargetWithSuffix() {
@@ -199,7 +192,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         validateTranslationStatus(translationStatus, 1);
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testSingleSourceSingleTargetListDocuments() {
@@ -230,7 +222,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals(translationStatus.getSummary().getTotalCharacterCharged(), (long) firstItem.getCharacterCharged());
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatus() {
@@ -260,7 +251,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         validateDocumentStatus(documentStatus, targetLanguageCode);
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testWrongSourceRightTarget() {
@@ -292,7 +282,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals(innerErrorCode, "InvalidDocumentAccessLevel");
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testRightSourceWrongTarget() {
@@ -324,7 +313,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals("InvalidTargetDocumentAccessLevel", innerErrorCode);
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testContainerWithSupportedAndUnsupportedFiles() {
@@ -352,7 +340,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         validateTranslationStatus(translationStatus, 1);
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testEmptyDocumentError() {
@@ -389,7 +376,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals("NoTranslatableText", innerErrorCode);
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testExistingFileInTargetContainer() {
@@ -421,7 +407,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals("TargetFileAlreadyExists", innerErrorCode);
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusWithInvalidGuid() {
@@ -452,7 +437,6 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         }, "Expected ResourceNotFoundException was not thrown");
     }
 
-    @LiveOnly
     @RecordWithoutRequestBody
     @Test
     public void testDocumentTranslationWithGlossary() {
