@@ -18,6 +18,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
 
     protected static ArtifactTagProperties tagWriteableProperties = new ArtifactTagProperties()
