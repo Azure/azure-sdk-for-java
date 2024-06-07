@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- As default, `StorageAccount` disallows cross-tenant replication. Supported `allowCrossTenantReplication` in `Create` mode.
+- Behavior changed on `StorageAccount`, as default, disallows cross-tenant replication. Supported `allowCrossTenantReplication` in `Create` mode.
 
 ### Other Changes
 
