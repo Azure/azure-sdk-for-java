@@ -31,9 +31,8 @@ public final class PipelineUtil {
     // deserialize raw bytes to a list of TelemetryItem
     public static List<TelemetryItem> deserializeTelemetryItem(byte[] data) {
         try {
-            byte[] decodedData = decode(data);
             ObjectMapper mapper = createObjectMapper();
-            MappingIterator<TelemetryItem> iterator = mapper.readerFor(TelemetryItem.class).readValues(decodedData);
+            MappingIterator<TelemetryItem> iterator = mapper.readerFor(TelemetryItem.class).readValues(data);
             return iterator.readAll();
         } catch (Exception e) {
             throw new IllegalStateException("Failed to deserialize byte[] to a list of TelemetryItems", e);
@@ -41,7 +40,7 @@ public final class PipelineUtil {
     }
 
     // decode gzipped request raw bytes back to original request raw bytes
-    private static byte[] decode(byte[] rawBytes) throws Exception {
+    public static byte[] decode(byte[] rawBytes) {
         try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(rawBytes))) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] data = new byte[1024];
@@ -50,6 +49,8 @@ public final class PipelineUtil {
                 baos.write(data, 0, read);
             }
             return baos.toByteArray();
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to decode byte[]", e);
         }
     }
 

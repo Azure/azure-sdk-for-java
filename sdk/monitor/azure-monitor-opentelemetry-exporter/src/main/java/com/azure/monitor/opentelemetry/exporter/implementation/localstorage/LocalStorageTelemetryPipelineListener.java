@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.PipelineUtil.decode;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.PipelineUtil.deserializeTelemetryItem;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.PipelineUtil.encode;
 
@@ -73,7 +74,7 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
         if (!errors.isEmpty()) {
             List<TelemetryItem> originalTelemetryItems = new ArrayList<>();
             for (ByteBuffer byteBuffer : request.getByteBuffers()) {
-                originalTelemetryItems.addAll(deserializeTelemetryItem(byteBuffer.array()));
+                originalTelemetryItems.addAll(deserializeTelemetryItem(decode(byteBuffer.array())));
             }
             List<TelemetryItem> toBePersisted = new ArrayList<>();
             for (ResponseError error : errors) {

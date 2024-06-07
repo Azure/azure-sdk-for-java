@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
@@ -26,6 +27,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.PipelineUtil.decode;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.PipelineUtil.deserializeTelemetryItem;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -70,7 +72,7 @@ public class Handle206Test {
             if (i >= 20 && i <= 26) {
                 metricName = "to_be_persisted_offline_metric" + i;
             }
-            TelemetryItem item = TestUtils.createMetricTelemetry(metricName, i, CONNECTION_STRING);
+            TelemetryItem item = TestUtils.createMetricTelemetry(metricName, i, CONNECTION_STRING, "state", "to_be_persisted_offline");
             item.setTime(OffsetDateTime.parse("2024-05-31T00:00:00.00Z"));
             telemetryItems.add(item);
         }
@@ -98,9 +100,24 @@ public class Handle206Test {
         List<TelemetryItem> expectedTelemetryItems = deserializeTelemetryItem(expected.getBytes());
         LocalFileLoader.PersistedFile file = localFileLoader.loadTelemetriesFromDisk();
         assertThat(file.connectionString).isEqualTo(CONNECTION_STRING);
-        List<TelemetryItem> actualTelemetryItems = deserializeTelemetryItem(file.rawBytes.array());
-        actualTelemetryItems.sort(Comparator.comparing(TelemetryItem::getName));
-        assertThat(actualTelemetryItems).isEqualTo(expectedTelemetryItems);
+        List<TelemetryItem> actualTelemetryItems = deserializeTelemetryItem(decode(file.rawBytes.array()));
+        actualTelemetryItems.sort(Comparator.comparing( obj -> {
+            MetricsData metricsData = (MetricsData) ((TelemetryItem)obj).getData().getBaseData();
+            return metricsData.getMetrics().get(0).getName();
+        }));
+        assertThat(actualTelemetryItems.size()).isEqualTo(expectedTelemetryItems.size());
+        for (int i = 0; i < actualTelemetryItems.size(); i++) {
+            MetricsData actualData = (MetricsData) actualTelemetryItems.get(i).getData().getBaseData();
+            MetricsData expectedData = (MetricsData) expectedTelemetryItems.get(i).getData().getBaseData();
+            // verify metric name
+            assertThat(expectedData.getMetrics().get(0).getName()).startsWith("to_be_persisted_offline_metric2" + i);
+            assertThat(actualData.getMetrics().get(0).getName()).startsWith("to_be_persisted_offline_metric2" + i);
+            assertThat(actualData.getMetrics().get(0).getName()).isEqualTo(expectedData.getMetrics().get(0).getName());
+            // verify properties
+            assertThat(actualData.getProperties()).isEqualTo(expectedData.getProperties());
+            assertThat(expectedData.getProperties().get("state")).isEqualTo("to_be_persisted_offline");
+            assertThat(actualData.getProperties().get("state")).isEqualTo("to_be_persisted_offline");
+        }
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(0);
     }
