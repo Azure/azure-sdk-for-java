@@ -61,13 +61,4 @@ public class TelemetryPipelineResponse {
             .filter(s -> !s.getMessage().equals("Telemetry sampled out."))
             .collect(Collectors.toSet());
     }
-
-    @SuppressWarnings("SystemOut")
-    public static void main(String[] args) {
-       String body = "{\"itemsReceived\":92,\"itemsAccepted\":85,\"appId\":null,\"errors\":[{\"index\":20,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":21,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":22,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":23,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":24,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":25,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":26,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"}]}";
-       Set<ResponseError> errors = parseErrors(body);
-       System.out.println("##############");
-       errors.forEach(System.out::println);
-       System.out.println("##############");
-    }
 }
