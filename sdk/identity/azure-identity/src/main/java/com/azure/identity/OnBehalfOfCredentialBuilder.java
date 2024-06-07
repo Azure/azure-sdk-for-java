@@ -162,7 +162,7 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
         ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId);
 
         if  ((clientSecret == null && clientCertificatePath == null && clientAssertionSupplier == null)
-            ||(clientSecret != null && clientCertificatePath != null)
+            || (clientSecret != null && clientCertificatePath != null)
             || (clientSecret != null && clientAssertionSupplier != null)
             || (clientCertificatePath != null && clientAssertionSupplier != null)) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Exactly one of client secret, "

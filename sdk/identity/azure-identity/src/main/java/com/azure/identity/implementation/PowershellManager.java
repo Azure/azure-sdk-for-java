@@ -31,14 +31,10 @@ public class PowershellManager {
     public Mono<String> runCommand(String input) {
         return Mono.fromCallable(() -> {
             try {
-                String[] command;
-                if (Platform.isWindows()) {
-                    // Windows PowerShell command
-                    command = new String[]{powershellPath, "-Command", input};
-                } else {
-                    // Unix-based (macOS/Linux) shell command
-                    command = new String[]{"/bin/bash", "-c", String.format("%s -Command '%s'", powershellPath, input)};
-                }
+                String[] command = Platform.isWindows()
+                    ? new String[]{powershellPath, "-Command", input}
+                    : new String[]{"/bin/bash", "-c", String.format("%s -Command '%s'", powershellPath, input)};
+
 
                 ProcessBuilder processBuilder = new ProcessBuilder(command);
                 processBuilder.redirectErrorStream(true);
