@@ -50,14 +50,14 @@ public class ListLabelsAsync {
         client.listLabels(null).subscribe(label -> System.out.println("\tLabel name = " + label));
         TimeUnit.MILLISECONDS.sleep(1000);
 
-//        System.out.println("List label by exact match:");
-//        client.listLabels(new LabelSelector().setLabelFilter("prod2")).subscribe(
-//                label -> System.out.println("\tLabel name = " + label));
-//        TimeUnit.MILLISECONDS.sleep(1000);
-//
-//        System.out.println("List labels by wildcard:");
-//        client.listLabels(new LabelSelector().setLabelFilter("prod*")).subscribe(
-//                label -> System.out.println("\tLabel name = " + label));
+        System.out.println("List label by exact match:");
+        client.listLabels(new LabelSelector().setLabelFilter("prod2")).subscribe(
+                label -> System.out.println("\tLabel name = " + label));
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+        System.out.println("List labels by wildcard:");
+        client.listLabels(new LabelSelector().setLabelFilter("prod*")).subscribe(
+                label -> System.out.println("\tLabel name = " + label));
         TimeUnit.MILLISECONDS.sleep(1000);
     }
 }

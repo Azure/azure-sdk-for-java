@@ -3,54 +3,26 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
 
-import javax.net.ssl.SSLException;
-import javax.net.ssl.X509TrustManager;
-import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * how to list settings by tag filter.
+ */
 public class ListSettingsByTagsFilterAsync {
-    public static void main(String[] args) throws SSLException, InterruptedException {
-
-        SslContext sslContext = SslContextBuilder.forClient()
-                .trustManager(
-                        new X509TrustManager(){
-                            public java.security.cert.X509Certificate[]getAcceptedIssuers(){
-                                return null;
-                            }
-                            public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType){
-
-                            }
-                            public void checkServerTrusted(java.security.cert.X509Certificate[]certs, String authType){
-
-                            }
-                        }).build();
-
-
-        reactor.netty.http.client.HttpClient reactorClient = reactor.netty.http.client.HttpClient.create()
-                .secure(sslContextSpec->sslContextSpec.sslContext(sslContext));
-
-        ProxyOptions proxyOptions=new ProxyOptions(ProxyOptions.Type.HTTP,
-                new InetSocketAddress("localhost",8888));
-
-        HttpClient httpClient= new NettyAsyncHttpClientBuilder(reactorClient)
-                .wiretap(true)
-                .proxy(proxyOptions)
-                .build();
-
+    /**
+     * Runs the sample algorithm and demonstrates how to list settings by tag filter.
+     *
+     * @param args Unused. Arguments to the program.
+     * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied,
+     * and the thread is interrupted, either before or during the activity.
+     */
+    public static void main(String[] args) throws InterruptedException {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to the "Access Keys" page under the "Settings" section.
         String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
@@ -58,8 +30,6 @@ public class ListSettingsByTagsFilterAsync {
         // Instantiate a client that will be used to call the service.
         ConfigurationAsyncClient client = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
-//                .httpClient(httpClient)
-//                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildAsyncClient();
         // First tags filter
         Map<String, String> tags = new HashMap<>();
@@ -93,6 +63,7 @@ public class ListSettingsByTagsFilterAsync {
                 tags1.forEach((key, value) -> System.out.printf("\tTag: %s, Value: %s%n", key, value));
             });
         TimeUnit.MILLISECONDS.sleep(2000);
+
         // List settings by tag filter
         client.listConfigurationSettings(new SettingSelector().setTagsFilter(tags)).subscribe(
             setting -> {
@@ -100,7 +71,6 @@ public class ListSettingsByTagsFilterAsync {
                 Map<String, String> tags1 = setting.getTags();
                 tags1.forEach((key, value) -> System.out.printf("\tTag: %s, Value: %s%n", key, value));
             });
-
         TimeUnit.MILLISECONDS.sleep(4000);
     }
 }

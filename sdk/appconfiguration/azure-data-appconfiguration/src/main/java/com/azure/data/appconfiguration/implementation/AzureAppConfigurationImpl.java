@@ -1352,8 +1352,8 @@ public final class AzureAppConfigurationImpl {
                         snapshot,
                         ifMatch,
                         ifNoneMatch,
-                        accept,
                         tags,
+                        accept,
                         context)
                 .map(
                         res ->

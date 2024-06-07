@@ -7,8 +7,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.LabelSelector;
 
-import static com.azure.data.appconfiguration.ConfigurationServiceVersion.V2023_10_01;
-
 /**
  * A sample demonstrate how to list labels.
  */
