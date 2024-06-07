@@ -2,6 +2,10 @@
 
 ## 2.40.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Supported enabling allow cross-tenant replication in `StorageAccount` via `allowCrossTenantReplication` in `Create` mode.
+
 ### Other Changes
 
 #### Dependency Updates
