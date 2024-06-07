@@ -26,14 +26,15 @@ public final class BackupsImpl implements Backups {
 
     public Response<Void> triggerWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, BackupRequestResource parameters, Context context) {
-        return this.serviceClient().triggerWithResponse(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, parameters, context);
+        return this.serviceClient()
+            .triggerWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters,
+                context);
     }
 
     public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, BackupRequestResource parameters) {
-        this.serviceClient().trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            parameters);
+        this.serviceClient()
+            .trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters);
     }
 
     private BackupsClient serviceClient() {

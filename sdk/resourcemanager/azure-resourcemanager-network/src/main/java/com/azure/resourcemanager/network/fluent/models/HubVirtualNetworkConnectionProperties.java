@@ -98,8 +98,7 @@ public final class HubVirtualNetworkConnectionProperties {
     }
 
     /**
-     * Get the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's
-     * gateways.
+     * Get the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's gateways.
      * 
      * @return the allowRemoteVnetToUseHubVnetGateways value.
      */
@@ -108,8 +107,7 @@ public final class HubVirtualNetworkConnectionProperties {
     }
 
     /**
-     * Set the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's
-     * gateways.
+     * Set the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's gateways.
      * 
      * @param allowRemoteVnetToUseHubVnetGateways the allowRemoteVnetToUseHubVnetGateways value to set.
      * @return the HubVirtualNetworkConnectionProperties object itself.

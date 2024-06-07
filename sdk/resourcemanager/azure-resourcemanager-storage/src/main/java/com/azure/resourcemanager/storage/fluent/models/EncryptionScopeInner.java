@@ -10,9 +10,12 @@ import com.azure.resourcemanager.storage.models.EncryptionScopeKeyVaultPropertie
 import com.azure.resourcemanager.storage.models.EncryptionScopeSource;
 import com.azure.resourcemanager.storage.models.EncryptionScopeState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** The Encryption Scope resource. */
+/**
+ * The Encryption Scope resource.
+ */
 @Fluent
 public final class EncryptionScopeInner extends ProxyResource {
     /*
@@ -21,7 +24,9 @@ public final class EncryptionScopeInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private EncryptionScopeProperties innerEncryptionScopeProperties;
 
-    /** Creates an instance of EncryptionScopeInner class. */
+    /**
+     * Creates an instance of EncryptionScopeInner class.
+     */
     public EncryptionScopeInner() {
     }
 

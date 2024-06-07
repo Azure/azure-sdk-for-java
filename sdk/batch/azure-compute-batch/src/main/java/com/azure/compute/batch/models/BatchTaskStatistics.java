@@ -34,13 +34,16 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     private final OffsetDateTime startTime;
 
     /*
-     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
+     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and
+     * lastUpdateTime.
      */
     @Generated
     private final OffsetDateTime lastUpdateTime;
 
     /*
-     * The total wall clock time of the Task. The wall clock time is the elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not finished by then). If the Task was retried, this includes the wall clock time of all the Task retries.
+     * The total wall clock time of the Task. The wall clock time is the elapsed time from when the Task started running
+     * on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not
+     * finished by then). If the Task was retried, this includes the wall clock time of all the Task retries.
      */
     @Generated
     private final Duration wallClockTime;
@@ -70,7 +73,9 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
     private final double writeIOGiB;
 
     /*
-     * The total wait time of the Task. The wait time for a Task is defined as the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to the most recent Task execution.).
+     * The total wait time of the Task. The wait time for a Task is defined as the elapsed time between the creation of
+     * the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to
+     * the most recent Task execution.).
      */
     @Generated
     private final Duration waitTime;
@@ -289,10 +294,11 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
                 if ("url".equals(fieldName)) {
                     url = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdateTime".equals(fieldName)) {
-                    lastUpdateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastUpdateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("userCPUTime".equals(fieldName)) {
                     userCpuTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("kernelCPUTime".equals(fieldName)) {

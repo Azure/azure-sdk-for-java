@@ -26,7 +26,7 @@ import java.util.List;
 public final class FhirR4ResearchStudy extends FhirR4DomainResource {
 
     /*
-     * resourceType
+     * The resourceType property.
      */
     @Generated
     @JsonTypeId
@@ -62,14 +62,17 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     private List<FhirR4Reference> partOf;
 
     /*
-     * active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | in-review | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | withdrawn
+     * active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention |
+     * completed | disapproved | in-review | temporarily-closed-to-accrual |
+     * temporarily-closed-to-accrual-and-intervention | withdrawn
      */
     @Generated
     @JsonProperty(value = "status")
     private final ResearchStudyStatusCodeType status;
 
     /*
-     * treatment | prevention | diagnostic | supportive-care | screening | health-services-research | basic-science | device-feasibility
+     * treatment | prevention | diagnostic | supportive-care | screening | health-services-research | basic-science |
+     * device-feasibility
      */
     @Generated
     @JsonProperty(value = "primaryPurposeType")
@@ -167,7 +170,8 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     private List<FhirR4Reference> site;
 
     /*
-     * accrual-goal-met | closed-due-to-toxicity | closed-due-to-lack-of-study-progress | temporarily-closed-per-study-design
+     * accrual-goal-met | closed-due-to-toxicity | closed-due-to-lack-of-study-progress |
+     * temporarily-closed-per-study-design
      */
     @Generated
     @JsonProperty(value = "reasonStopped")
@@ -209,7 +213,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     }
 
     /**
-     * Get the resourceType property: resourceType.
+     * Get the resourceType property: The resourceType property.
      *
      * @return the resourceType value.
      */

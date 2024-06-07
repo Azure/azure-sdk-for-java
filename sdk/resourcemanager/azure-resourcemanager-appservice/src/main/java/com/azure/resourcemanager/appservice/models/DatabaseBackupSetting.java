@@ -33,8 +33,7 @@ public final class DatabaseBackupSetting {
     private String connectionStringName;
 
     /*
-     * Contains a connection string to a database which is being backed up or restored. If the restore should happen to
-     * a new database, the database name inside is the new one.
+     * Contains a connection string to a database which is being backed up or restored. If the restore should happen to a new database, the database name inside is the new one.
      */
     @JsonProperty(value = "connectionString")
     private String connectionString;
@@ -138,8 +137,9 @@ public final class DatabaseBackupSetting {
      */
     public void validate() {
         if (databaseType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property databaseType in model DatabaseBackupSetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property databaseType in model DatabaseBackupSetting"));
         }
     }
 

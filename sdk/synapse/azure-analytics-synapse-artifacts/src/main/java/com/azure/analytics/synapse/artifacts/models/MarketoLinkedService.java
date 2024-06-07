@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Marketo server linked service.
- */
+/** Marketo server linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Marketo")
 @JsonFlatten
@@ -64,15 +62,12 @@ public class MarketoLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /**
-     * Creates an instance of MarketoLinkedService class.
-     */
-    public MarketoLinkedService() {
-    }
+    /** Creates an instance of MarketoLinkedService class. */
+    public MarketoLinkedService() {}
 
     /**
      * Get the endpoint property: The endpoint of the Marketo server. (i.e. 123-ABC-321.mktorest.com).
-     * 
+     *
      * @return the endpoint value.
      */
     public Object getEndpoint() {
@@ -81,7 +76,7 @@ public class MarketoLinkedService extends LinkedService {
 
     /**
      * Set the endpoint property: The endpoint of the Marketo server. (i.e. 123-ABC-321.mktorest.com).
-     * 
+     *
      * @param endpoint the endpoint value to set.
      * @return the MarketoLinkedService object itself.
      */
@@ -92,7 +87,7 @@ public class MarketoLinkedService extends LinkedService {
 
     /**
      * Get the clientId property: The client Id of your Marketo service.
-     * 
+     *
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -101,7 +96,7 @@ public class MarketoLinkedService extends LinkedService {
 
     /**
      * Set the clientId property: The client Id of your Marketo service.
-     * 
+     *
      * @param clientId the clientId value to set.
      * @return the MarketoLinkedService object itself.
      */
@@ -112,7 +107,7 @@ public class MarketoLinkedService extends LinkedService {
 
     /**
      * Get the clientSecret property: The client secret of your Marketo service.
-     * 
+     *
      * @return the clientSecret value.
      */
     public SecretBase getClientSecret() {
@@ -121,7 +116,7 @@ public class MarketoLinkedService extends LinkedService {
 
     /**
      * Set the clientSecret property: The client secret of your Marketo service.
-     * 
+     *
      * @param clientSecret the clientSecret value to set.
      * @return the MarketoLinkedService object itself.
      */
@@ -133,7 +128,7 @@ public class MarketoLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     * 
+     *
      * @return the useEncryptedEndpoints value.
      */
     public Object getUseEncryptedEndpoints() {
@@ -143,7 +138,7 @@ public class MarketoLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     * 
+     *
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the MarketoLinkedService object itself.
      */
@@ -155,7 +150,7 @@ public class MarketoLinkedService extends LinkedService {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     * 
+     *
      * @return the useHostVerification value.
      */
     public Object getUseHostVerification() {
@@ -165,7 +160,7 @@ public class MarketoLinkedService extends LinkedService {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     * 
+     *
      * @param useHostVerification the useHostVerification value to set.
      * @return the MarketoLinkedService object itself.
      */
@@ -175,9 +170,9 @@ public class MarketoLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
-     * 
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
      * @return the usePeerVerification value.
      */
     public Object getUsePeerVerification() {
@@ -185,9 +180,9 @@ public class MarketoLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
-     * 
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the MarketoLinkedService object itself.
      */
@@ -197,9 +192,9 @@ public class MarketoLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -207,9 +202,9 @@ public class MarketoLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MarketoLinkedService object itself.
      */
@@ -218,36 +213,28 @@ public class MarketoLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MarketoLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MarketoLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MarketoLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MarketoLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

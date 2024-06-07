@@ -17,17 +17,14 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the asynchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class RunNotebookAsyncClient {
-    @Generated
-    private final RunNotebooksImpl serviceClient;
+    @Generated private final RunNotebooksImpl serviceClient;
 
     /**
      * Initializes an instance of RunNotebookAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -37,7 +34,7 @@ public final class RunNotebookAsyncClient {
 
     /**
      * Run notebook.
-     * 
+     *
      * @param runId Notebook run id.
      * @param runNotebookRequest Run notebook request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,14 +44,14 @@ public final class RunNotebookAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RunNotebooksCreateRunResponse> createRunWithResponse(String runId,
-        RunNotebookRequest runNotebookRequest) {
+    public Mono<RunNotebooksCreateRunResponse> createRunWithResponse(
+            String runId, RunNotebookRequest runNotebookRequest) {
         return this.serviceClient.createRunWithResponseAsync(runId, runNotebookRequest);
     }
 
     /**
      * Run notebook.
-     * 
+     *
      * @param runId Notebook run id.
      * @param runNotebookRequest Run notebook request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -70,7 +67,7 @@ public final class RunNotebookAsyncClient {
 
     /**
      * Get RunNotebook Status for run id.
-     * 
+     *
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -85,7 +82,7 @@ public final class RunNotebookAsyncClient {
 
     /**
      * Get RunNotebook Status for run id.
-     * 
+     *
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -100,7 +97,7 @@ public final class RunNotebookAsyncClient {
 
     /**
      * Cancel notebook run.
-     * 
+     *
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -115,7 +112,7 @@ public final class RunNotebookAsyncClient {
 
     /**
      * Cancel notebook run.
-     * 
+     *
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -130,7 +127,7 @@ public final class RunNotebookAsyncClient {
 
     /**
      * Get RunNotebook Snapshot for run id.
-     * 
+     *
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -145,7 +142,7 @@ public final class RunNotebookAsyncClient {
 
     /**
      * Get RunNotebook Snapshot for run id.
-     * 
+     *
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

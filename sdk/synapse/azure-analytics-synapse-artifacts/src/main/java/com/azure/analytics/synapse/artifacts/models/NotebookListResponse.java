@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * A list of Notebook resources.
- */
+/** A list of Notebook resources. */
 @Fluent
 public final class NotebookListResponse {
     /*
@@ -25,15 +23,12 @@ public final class NotebookListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of NotebookListResponse class.
-     */
-    public NotebookListResponse() {
-    }
+    /** Creates an instance of NotebookListResponse class. */
+    public NotebookListResponse() {}
 
     /**
      * Get the value property: List of Notebooks.
-     * 
+     *
      * @return the value value.
      */
     public List<NotebookResource> getValue() {
@@ -42,7 +37,7 @@ public final class NotebookListResponse {
 
     /**
      * Set the value property: List of Notebooks.
-     * 
+     *
      * @param value the value value to set.
      * @return the NotebookListResponse object itself.
      */
@@ -53,7 +48,7 @@ public final class NotebookListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -62,7 +57,7 @@ public final class NotebookListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the NotebookListResponse object itself.
      */

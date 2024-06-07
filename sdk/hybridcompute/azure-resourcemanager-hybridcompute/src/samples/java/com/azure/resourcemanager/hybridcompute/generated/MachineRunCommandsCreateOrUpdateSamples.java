@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public final class MachineRunCommandsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/runCommand/RunCommands_CreateOrUpdate.json
+     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/runCommand/RunCommands_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update a Run Command.

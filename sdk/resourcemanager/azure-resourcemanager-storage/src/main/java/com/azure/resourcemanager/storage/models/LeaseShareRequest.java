@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Lease Share request schema. */
+/**
+ * Lease Share request schema.
+ */
 @Fluent
 public final class LeaseShareRequest {
     /*
@@ -24,15 +26,13 @@ public final class LeaseShareRequest {
     private String leaseId;
 
     /*
-     * Optional. For a break action, proposed duration the lease should continue before it is broken, in seconds,
-     * between 0 and 60.
+     * Optional. For a break action, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60.
      */
     @JsonProperty(value = "breakPeriod")
     private Integer breakPeriod;
 
     /*
-     * Required for acquire. Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that
-     * never expires.
+     * Required for acquire. Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
      */
     @JsonProperty(value = "leaseDuration")
     private Integer leaseDuration;
@@ -43,13 +43,15 @@ public final class LeaseShareRequest {
     @JsonProperty(value = "proposedLeaseId")
     private String proposedLeaseId;
 
-    /** Creates an instance of LeaseShareRequest class. */
+    /**
+     * Creates an instance of LeaseShareRequest class.
+     */
     public LeaseShareRequest() {
     }
 
     /**
      * Get the action property: Specifies the lease action. Can be one of the available actions.
-     *
+     * 
      * @return the action value.
      */
     public LeaseShareAction action() {
@@ -58,7 +60,7 @@ public final class LeaseShareRequest {
 
     /**
      * Set the action property: Specifies the lease action. Can be one of the available actions.
-     *
+     * 
      * @param action the action value to set.
      * @return the LeaseShareRequest object itself.
      */
@@ -69,7 +71,7 @@ public final class LeaseShareRequest {
 
     /**
      * Get the leaseId property: Identifies the lease. Can be specified in any valid GUID string format.
-     *
+     * 
      * @return the leaseId value.
      */
     public String leaseId() {
@@ -78,7 +80,7 @@ public final class LeaseShareRequest {
 
     /**
      * Set the leaseId property: Identifies the lease. Can be specified in any valid GUID string format.
-     *
+     * 
      * @param leaseId the leaseId value to set.
      * @return the LeaseShareRequest object itself.
      */
@@ -90,7 +92,7 @@ public final class LeaseShareRequest {
     /**
      * Get the breakPeriod property: Optional. For a break action, proposed duration the lease should continue before it
      * is broken, in seconds, between 0 and 60.
-     *
+     * 
      * @return the breakPeriod value.
      */
     public Integer breakPeriod() {
@@ -100,7 +102,7 @@ public final class LeaseShareRequest {
     /**
      * Set the breakPeriod property: Optional. For a break action, proposed duration the lease should continue before it
      * is broken, in seconds, between 0 and 60.
-     *
+     * 
      * @param breakPeriod the breakPeriod value to set.
      * @return the LeaseShareRequest object itself.
      */
@@ -112,7 +114,7 @@ public final class LeaseShareRequest {
     /**
      * Get the leaseDuration property: Required for acquire. Specifies the duration of the lease, in seconds, or
      * negative one (-1) for a lease that never expires.
-     *
+     * 
      * @return the leaseDuration value.
      */
     public Integer leaseDuration() {
@@ -122,7 +124,7 @@ public final class LeaseShareRequest {
     /**
      * Set the leaseDuration property: Required for acquire. Specifies the duration of the lease, in seconds, or
      * negative one (-1) for a lease that never expires.
-     *
+     * 
      * @param leaseDuration the leaseDuration value to set.
      * @return the LeaseShareRequest object itself.
      */
@@ -134,7 +136,7 @@ public final class LeaseShareRequest {
     /**
      * Get the proposedLeaseId property: Optional for acquire, required for change. Proposed lease ID, in a GUID string
      * format.
-     *
+     * 
      * @return the proposedLeaseId value.
      */
     public String proposedLeaseId() {
@@ -144,7 +146,7 @@ public final class LeaseShareRequest {
     /**
      * Set the proposedLeaseId property: Optional for acquire, required for change. Proposed lease ID, in a GUID string
      * format.
-     *
+     * 
      * @param proposedLeaseId the proposedLeaseId value to set.
      * @return the LeaseShareRequest object itself.
      */
@@ -155,14 +157,13 @@ public final class LeaseShareRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model LeaseShareRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model LeaseShareRequest"));
         }
     }
 

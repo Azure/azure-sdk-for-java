@@ -14,19 +14,19 @@ public final class AmlFilesystemCheckSubnetErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmlFilesystemCheckSubnetError model
-            = BinaryData.fromString("{\"filesystemSubnet\":{\"status\":\"Ok\",\"message\":\"xsabkyqdu\"}}")
+            = BinaryData.fromString("{\"filesystemSubnet\":{\"status\":\"Ok\",\"message\":\"gbmqjqabcypmiv\"}}")
                 .toObject(AmlFilesystemCheckSubnetError.class);
         Assertions.assertEquals(FilesystemSubnetStatusType.OK, model.filesystemSubnet().status());
-        Assertions.assertEquals("xsabkyqdu", model.filesystemSubnet().message());
+        Assertions.assertEquals("gbmqjqabcypmiv", model.filesystemSubnet().message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlFilesystemCheckSubnetError model = new AmlFilesystemCheckSubnetError()
-            .withFilesystemSubnet(new AmlFilesystemCheckSubnetErrorFilesystemSubnet()
-                .withStatus(FilesystemSubnetStatusType.OK).withMessage("xsabkyqdu"));
+        AmlFilesystemCheckSubnetError model = new AmlFilesystemCheckSubnetError().withFilesystemSubnet(
+            new AmlFilesystemCheckSubnetErrorFilesystemSubnet().withStatus(FilesystemSubnetStatusType.OK)
+                .withMessage("gbmqjqabcypmiv"));
         model = BinaryData.fromObject(model).toObject(AmlFilesystemCheckSubnetError.class);
         Assertions.assertEquals(FilesystemSubnetStatusType.OK, model.filesystemSubnet().status());
-        Assertions.assertEquals("xsabkyqdu", model.filesystemSubnet().message());
+        Assertions.assertEquals("gbmqjqabcypmiv", model.filesystemSubnet().message());
     }
 }

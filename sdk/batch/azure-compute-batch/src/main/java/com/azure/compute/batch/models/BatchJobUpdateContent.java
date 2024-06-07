@@ -19,19 +19,25 @@ import java.util.List;
 public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpdateContent> {
 
     /*
-     * The priority of the Job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. If omitted, the priority of the Job is left unchanged.
+     * The priority of the Job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and
+     * 1000 being the highest priority. If omitted, the priority of the Job is left unchanged.
      */
     @Generated
     private Integer priority;
 
     /*
-     * Whether Tasks in this job can be preempted by other high priority jobs. If the value is set to True, other high priority jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's allowTaskPreemption after it has been created using the update job API.
+     * Whether Tasks in this job can be preempted by other high priority jobs. If the value is set to True, other high
+     * priority jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can
+     * update a job's allowTaskPreemption after it has been created using the update job API.
      */
     @Generated
     private Boolean allowTaskPreemption;
 
     /*
-     * The maximum number of tasks that can be executed in parallel for the job. The value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
+     * The maximum number of tasks that can be executed in parallel for the job. The value of maxParallelTasks must be
+     * -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the
+     * number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using
+     * the update job API.
      */
     @Generated
     private Integer maxParallelTasks;
@@ -43,19 +49,28 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
     private BatchJobConstraints constraints;
 
     /*
-     * The Pool on which the Batch service runs the Job's Tasks. You may change the Pool for a Job only when the Job is disabled. The Patch Job call will fail if you include the poolInfo element and the Job is not disabled. If you specify an autoPoolSpecification in the poolInfo, only the keepAlive property of the autoPoolSpecification can be updated, and then only if the autoPoolSpecification has a poolLifetimeOption of Job (other job properties can be updated as normal). If omitted, the Job continues to run on its current Pool.
+     * The Pool on which the Batch service runs the Job's Tasks. You may change the Pool for a Job only when the Job is
+     * disabled. The Patch Job call will fail if you include the poolInfo element and the Job is not disabled. If you
+     * specify an autoPoolSpecification in the poolInfo, only the keepAlive property of the autoPoolSpecification can be
+     * updated, and then only if the autoPoolSpecification has a poolLifetimeOption of Job (other job properties can be
+     * updated as normal). If omitted, the Job continues to run on its current Pool.
      */
     @Generated
     private BatchPoolInfo poolInfo;
 
     /*
-     * The action the Batch service should take when all Tasks in the Job are in the completed state. If omitted, the completion behavior is left unchanged. You may not change the value from terminatejob to noaction - that is, once you have engaged automatic Job termination, you cannot turn it off again. If you try to do this, the request fails with an 'invalid property value' error response; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The action the Batch service should take when all Tasks in the Job are in the completed state. If omitted, the
+     * completion behavior is left unchanged. You may not change the value from terminatejob to noaction - that is, once
+     * you have engaged automatic Job termination, you cannot turn it off again. If you try to do this, the request
+     * fails with an 'invalid property value' error response; if you are calling the REST API directly, the HTTP status
+     * code is 400 (Bad Request).
      */
     @Generated
     private OnAllBatchTasksComplete onAllTasksComplete;
 
     /*
-     * A list of name-value pairs associated with the Job as metadata. If omitted, the existing Job metadata is left unchanged.
+     * A list of name-value pairs associated with the Job as metadata. If omitted, the existing Job metadata is left
+     * unchanged.
      */
     @Generated
     private List<MetadataItem> metadata;

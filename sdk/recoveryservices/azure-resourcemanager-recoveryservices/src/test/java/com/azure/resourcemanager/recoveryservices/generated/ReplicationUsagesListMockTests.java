@@ -6,75 +6,46 @@ package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.ReplicationUsage;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ReplicationUsagesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"monitoringSummary\":{\"unHealthyVmCount\":1369679233,\"unHealthyProviderCount\":657936288,\"eventsCount\":1295774959,\"deprecatedProviderCount\":568244971,\"supportedProviderCount\":301470768,\"unsupportedProviderCount\":2103564853},\"jobsSummary\":{\"failedJobs\":1422945070,\"suspendedJobs\":1252528512,\"inProgressJobs\":45872869},\"protectedItemCount\":1947792369,\"recoveryPlanCount\":2085364549,\"registeredServersCount\":1408217063,\"recoveryServicesProviderAuthType\":628545796}]}";
 
-        String responseStr =
-            "{\"value\":[{\"monitoringSummary\":{\"unHealthyVmCount\":1715507551,\"unHealthyProviderCount\":1436102139,\"eventsCount\":1600165537,\"deprecatedProviderCount\":141640204,\"supportedProviderCount\":1630309887,\"unsupportedProviderCount\":2048168714},\"jobsSummary\":{\"failedJobs\":1207917179,\"suspendedJobs\":1413734297,\"inProgressJobs\":391686670},\"protectedItemCount\":527373464,\"recoveryPlanCount\":1967682720,\"registeredServersCount\":1476273747,\"recoveryServicesProviderAuthType\":693329650}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        RecoveryServicesManager manager = RecoveryServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ReplicationUsage> response
+            = manager.replicationUsages().list("kzbbtd", "umveekgpwozuhkf", com.azure.core.util.Context.NONE);
 
-        RecoveryServicesManager manager =
-            RecoveryServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ReplicationUsage> response =
-            manager.replicationUsages().list("e", "qsgzvahapj", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals(1715507551, response.iterator().next().monitoringSummary().unHealthyVmCount());
-        Assertions.assertEquals(1436102139, response.iterator().next().monitoringSummary().unHealthyProviderCount());
-        Assertions.assertEquals(1600165537, response.iterator().next().monitoringSummary().eventsCount());
-        Assertions.assertEquals(141640204, response.iterator().next().monitoringSummary().deprecatedProviderCount());
-        Assertions.assertEquals(1630309887, response.iterator().next().monitoringSummary().supportedProviderCount());
-        Assertions.assertEquals(2048168714, response.iterator().next().monitoringSummary().unsupportedProviderCount());
-        Assertions.assertEquals(1207917179, response.iterator().next().jobsSummary().failedJobs());
-        Assertions.assertEquals(1413734297, response.iterator().next().jobsSummary().suspendedJobs());
-        Assertions.assertEquals(391686670, response.iterator().next().jobsSummary().inProgressJobs());
-        Assertions.assertEquals(527373464, response.iterator().next().protectedItemCount());
-        Assertions.assertEquals(1967682720, response.iterator().next().recoveryPlanCount());
-        Assertions.assertEquals(1476273747, response.iterator().next().registeredServersCount());
-        Assertions.assertEquals(693329650, response.iterator().next().recoveryServicesProviderAuthType());
+        Assertions.assertEquals(1369679233, response.iterator().next().monitoringSummary().unHealthyVmCount());
+        Assertions.assertEquals(657936288, response.iterator().next().monitoringSummary().unHealthyProviderCount());
+        Assertions.assertEquals(1295774959, response.iterator().next().monitoringSummary().eventsCount());
+        Assertions.assertEquals(568244971, response.iterator().next().monitoringSummary().deprecatedProviderCount());
+        Assertions.assertEquals(301470768, response.iterator().next().monitoringSummary().supportedProviderCount());
+        Assertions.assertEquals(2103564853, response.iterator().next().monitoringSummary().unsupportedProviderCount());
+        Assertions.assertEquals(1422945070, response.iterator().next().jobsSummary().failedJobs());
+        Assertions.assertEquals(1252528512, response.iterator().next().jobsSummary().suspendedJobs());
+        Assertions.assertEquals(45872869, response.iterator().next().jobsSummary().inProgressJobs());
+        Assertions.assertEquals(1947792369, response.iterator().next().protectedItemCount());
+        Assertions.assertEquals(2085364549, response.iterator().next().recoveryPlanCount());
+        Assertions.assertEquals(1408217063, response.iterator().next().registeredServersCount());
+        Assertions.assertEquals(628545796, response.iterator().next().recoveryServicesProviderAuthType());
     }
 }

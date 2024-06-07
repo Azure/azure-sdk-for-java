@@ -17,8 +17,7 @@ public final class VaultCertificateResponseImpl
 
     private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    VaultCertificateResponseImpl(
-        VaultCertificateResponseInner innerObject,
+    VaultCertificateResponseImpl(VaultCertificateResponseInner innerObject,
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -63,28 +62,23 @@ public final class VaultCertificateResponseImpl
     }
 
     public VaultCertificateResponse create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVaultCertificates()
-                .createWithResponse(
-                    resourceGroupName, vaultName, certificateName, createCertificateRequest, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVaultCertificates()
+            .createWithResponse(resourceGroupName, vaultName, certificateName, createCertificateRequest, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VaultCertificateResponse create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVaultCertificates()
-                .createWithResponse(resourceGroupName, vaultName, certificateName, createCertificateRequest, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVaultCertificates()
+            .createWithResponse(resourceGroupName, vaultName, certificateName, createCertificateRequest, context)
+            .getValue();
         return this;
     }
 
-    VaultCertificateResponseImpl(
-        String name, com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
+    VaultCertificateResponseImpl(String name,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = new VaultCertificateResponseInner();
         this.serviceManager = serviceManager;
         this.certificateName = name;

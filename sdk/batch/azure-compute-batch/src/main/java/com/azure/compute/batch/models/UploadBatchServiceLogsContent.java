@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,25 +21,35 @@ import java.time.format.DateTimeFormatter;
 public final class UploadBatchServiceLogsContent implements JsonSerializable<UploadBatchServiceLogsContent> {
 
     /*
-     * The URL of the container within Azure Blob Storage to which to upload the Batch Service log file(s). If a user assigned managed identity is not being used, the URL must include a Shared Access Signature (SAS) granting write permissions to the container. The SAS duration must allow enough time for the upload to finish. The start time for SAS is optional and recommended to not be specified.
+     * The URL of the container within Azure Blob Storage to which to upload the Batch Service log file(s). If a user
+     * assigned managed identity is not being used, the URL must include a Shared Access Signature (SAS) granting write
+     * permissions to the container. The SAS duration must allow enough time for the upload to finish. The start time
+     * for SAS is optional and recommended to not be specified.
      */
     @Generated
     private final String containerUrl;
 
     /*
-     * The start of the time range from which to upload Batch Service log file(s). Any log file containing a log message in the time range will be uploaded. This means that the operation might retrieve more logs than have been requested since the entire log file is always uploaded, but the operation should not retrieve fewer logs than have been requested.
+     * The start of the time range from which to upload Batch Service log file(s). Any log file containing a log message
+     * in the time range will be uploaded. This means that the operation might retrieve more logs than have been
+     * requested since the entire log file is always uploaded, but the operation should not retrieve fewer logs than
+     * have been requested.
      */
     @Generated
     private final OffsetDateTime startTime;
 
     /*
-     * The end of the time range from which to upload Batch Service log file(s). Any log file containing a log message in the time range will be uploaded. This means that the operation might retrieve more logs than have been requested since the entire log file is always uploaded, but the operation should not retrieve fewer logs than have been requested. If omitted, the default is to upload all logs available after the startTime.
+     * The end of the time range from which to upload Batch Service log file(s). Any log file containing a log message
+     * in the time range will be uploaded. This means that the operation might retrieve more logs than have been
+     * requested since the entire log file is always uploaded, but the operation should not retrieve fewer logs than
+     * have been requested. If omitted, the default is to upload all logs available after the startTime.
      */
     @Generated
     private OffsetDateTime endTime;
 
     /*
-     * The reference to the user assigned identity to use to access Azure Blob Storage specified by containerUrl. The identity must have write access to the Azure Blob Storage container.
+     * The reference to the user assigned identity to use to access Azure Blob Storage specified by containerUrl. The
+     * identity must have write access to the Azure Blob Storage container.
      */
     @Generated
     private BatchNodeIdentityReference identityReference;
@@ -171,9 +182,11 @@ public final class UploadBatchServiceLogsContent implements JsonSerializable<Upl
                 if ("containerUrl".equals(fieldName)) {
                     containerUrl = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    endTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("identityReference".equals(fieldName)) {
                     identityReference = BatchNodeIdentityReference.fromJson(reader);
                 } else {

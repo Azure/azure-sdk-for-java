@@ -13,6 +13,8 @@ import com.azure.identity.AzureDeveloperCliCredential;
 import com.azure.identity.AzureDeveloperCliCredentialBuilder;
 import com.azure.identity.AuthorizationCodeCredential;
 import com.azure.identity.AuthorizationCodeCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredential;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ClientAssertionCredential;
@@ -53,6 +55,9 @@ public final class JavaDocCodeSnippets {
 
     private String clientId = System.getenv("AZURE_CLIENT_ID");
     private String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
+    private String serviceConnectionId = System.getenv("SERVICE_CONNECTION_ID");
+
+
     private String fakeUsernamePlaceholder = "fakeUsernamePlaceholder";
     private String fakePasswordPlaceholder = "fakePasswordPlaceholder";
     /**
@@ -307,5 +312,22 @@ public final class JavaDocCodeSnippets {
         TokenCredential azureDevCliCredential = new AzureDeveloperCliCredentialBuilder()
             .build();
         // END: com.azure.identity.credential.azuredeveloperclicredential.construct
+    }
+
+    public void azurePipelinesCredentialCodeSnippets() {
+
+        // BEGIN: com.azure.identity.credential.azurepipelinescredential.construct
+        // serviceConnectionId is retrieved from the portal.
+        // systemAccessToken is retrieved from the pipeline environment as shown.
+        // You may choose another name for this variable.
+
+        String systemAccessToken = System.getenv("SYSTEM_ACCESSTOKEN");
+        AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder()
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId)
+            .systemAccessToken(systemAccessToken)
+            .build();
+        // END: com.azure.identity.credential.azurepipelinescredential.construct
     }
 }

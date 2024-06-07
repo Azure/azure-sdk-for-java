@@ -1566,10 +1566,20 @@ public final class ServiceBusClientBuilder implements
          * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
          * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
          * auto-renewal is disabled.
+         * <p>
+         * A Service Bus queue or subscription in a topic will have a lock duration set at the resource level.
+         * When the processor client connect to a session in the resource, the broker will apply an initial
+         * lock to the session. This initial lock lasts for the lock duration set at the resource level.
+         * If the client does not renew the initial lock before it expires then the session will be released and become
+         * available for other receivers. Each time the client renews the lock, the broker will extend the lock for the
+         * lock duration set at the resource level. To keep the session locked, the client will have to continuously
+         * renew the session lock before its expiration. {@code maxAutoLockRenewDuration} controls how long
+         * the background renewal task runs. So, it is possible that the previous renewed lock can be valid after
+         * the renewal task is disposed.
+         * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
          * or {@code null} indicates that auto-renewal is disabled.
-         *
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
          * @throws IllegalArgumentException If {code maxAutoLockRenewDuration} is negative.
          */
@@ -1835,6 +1845,17 @@ public final class ServiceBusClientBuilder implements
          * Sets the amount of time to continue auto-renewing the session lock. Setting {@link Duration#ZERO} or
          * {@code null} disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE}
          * mode, auto-renewal is disabled.
+         * <p>
+         * A Service Bus queue or subscription in a topic will have a lock duration set at the resource level.
+         * When the receiver client connect to a session in the resource, the broker will apply an initial
+         * lock to the session. This initial lock lasts for the lock duration set at the resource level.
+         * If the client does not renew the initial lock before it expires then the session will be released and become
+         * available for other receivers. Each time the client renews the lock, the broker will extend the lock for
+         * the lock duration set at the resource level. To keep the session locked, the client will have to continuously
+         * renew the session lock before its expiration. {@code maxAutoLockRenewDuration} controls how long
+         * the background renewal task runs. So, it is possible that the previous renewed lock can be valid after
+         * the renewal task is disposed
+         * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the session lock.
          * {@link Duration#ZERO} or {@code null} indicates that auto-renewal is disabled.
@@ -2387,6 +2408,16 @@ public final class ServiceBusClientBuilder implements
          * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
          * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
          * auto-renewal is disabled.
+         * <p>
+         * A Service Bus queue or subscription in a topic will have a lock duration set at the resource level.
+         * When the processor client pulls a message from the resource, the broker will apply an initial lock
+         * to the message. This initial lock lasts for the lock duration set at the resource level. If the client
+         * does not renew the initial lock before it expires then the message will be released and become available for
+         * other receivers. Each time the client renews the lock, the broker will extend the lock for the lock duration
+         * set at the resource level. To keep the message locked, the client will have to continuously renew the message
+         * lock before its expiration. {@code maxAutoLockRenewDuration} controls how long the background renewal task
+         * runs. So, it is possible that the previous renewed lock can be valid after the renewal task is disposed.
+         * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
          * or {@code null} indicates that auto-renewal is disabled.
@@ -2511,6 +2542,16 @@ public final class ServiceBusClientBuilder implements
          * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
          * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
          * auto-renewal is disabled.
+         * <p>
+         * A Service Bus queue or subscription in a topic will have a lock duration set at the resource level.
+         * When the receiver client pulls a message from the resource, the broker will apply an initial lock
+         * to the message. This initial lock lasts for the lock duration set at the resource level. If the client
+         * does not renew the initial lock before it expires then the message will be released and become available for
+         * other receivers. Each time the client renews the lock, the broker will extend the lock for the lock duration
+         * set at the resource level. To keep the message locked, the client will have to continuously renew the message
+         * lock before its expiration. {@code maxAutoLockRenewDuration} controls how long the background renewal task
+         * runs. So, it is possible that the previous renewed lock can be valid after the renewal task is disposed.
+         * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
          * or {@code null} indicates that auto-renewal is disabled.

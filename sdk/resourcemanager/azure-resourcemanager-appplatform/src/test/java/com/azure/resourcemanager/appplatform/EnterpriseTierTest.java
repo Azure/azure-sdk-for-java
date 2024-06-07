@@ -119,10 +119,13 @@ public class EnterpriseTierTest extends AppPlatformTest {
         Assertions.assertNotNull(app.url());
         Assertions.assertTrue(app.isHttpsOnly());
         Assertions.assertTrue(app.isPublic());
-        Assertions.assertTrue(app.hasConfigurationServiceBinding());
-        Assertions.assertTrue(app.hasServiceRegistryBinding());
-        Assertions.assertTrue(springService.getDefaultConfigurationService().getAppBindings().stream().anyMatch(SpringApp::hasConfigurationServiceBinding));
-        Assertions.assertTrue(springService.getDefaultServiceRegistry().getAppBindings().stream().anyMatch(SpringApp::hasServiceRegistryBinding));
+        if (!isPlaybackMode()) {
+            // skip in playback, as "hasConfigurationServiceBinding" involve resource ID check
+            Assertions.assertTrue(app.hasConfigurationServiceBinding());
+            Assertions.assertTrue(app.hasServiceRegistryBinding());
+            Assertions.assertTrue(springService.getDefaultConfigurationService().getAppBindings().stream().anyMatch(SpringApp::hasConfigurationServiceBinding));
+            Assertions.assertTrue(springService.getDefaultServiceRegistry().getAppBindings().stream().anyMatch(SpringApp::hasServiceRegistryBinding));
+        }
 
         app.update()
             .withoutHttpsOnly()
@@ -133,9 +136,11 @@ public class EnterpriseTierTest extends AppPlatformTest {
 
         Assertions.assertFalse(app.isHttpsOnly());
         Assertions.assertFalse(app.isPublic());
-        Assertions.assertFalse(app.hasConfigurationServiceBinding());
-        Assertions.assertFalse(app.hasServiceRegistryBinding());
-        Assertions.assertFalse(springService.getDefaultConfigurationService().getAppBindings().stream().anyMatch(SpringApp::hasConfigurationServiceBinding));
-        Assertions.assertFalse(springService.getDefaultServiceRegistry().getAppBindings().stream().anyMatch(SpringApp::hasServiceRegistryBinding));
+        if (!isPlaybackMode()) {
+            Assertions.assertFalse(app.hasConfigurationServiceBinding());
+            Assertions.assertFalse(app.hasServiceRegistryBinding());
+            Assertions.assertFalse(springService.getDefaultConfigurationService().getAppBindings().stream().anyMatch(SpringApp::hasConfigurationServiceBinding));
+            Assertions.assertFalse(springService.getDefaultServiceRegistry().getAppBindings().stream().anyMatch(SpringApp::hasServiceRegistryBinding));
+        }
     }
 }

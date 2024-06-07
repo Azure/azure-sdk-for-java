@@ -22,21 +22,26 @@ public final class CreateLivenessSessionContent {
     private final LivenessOperationMode livenessOperationMode;
 
     /*
-     * Whether or not to allow a '200 - Success' response body to be sent to the client, which may be undesirable for security reasons. Default is false, clients will receive a '204 - NoContent' empty body response. Regardless of selection, calling Session GetResult will always contain a response body enabling business logic to be implemented.
+     * Whether or not to allow a '200 - Success' response body to be sent to the client, which may be undesirable for
+     * security reasons. Default is false, clients will receive a '204 - NoContent' empty body response. Regardless of
+     * selection, calling Session GetResult will always contain a response body enabling business logic to be
+     * implemented.
      */
     @Generated
     @JsonProperty(value = "sendResultsToClient")
     private Boolean sendResultsToClient;
 
     /*
-     * Whether or not to allow client to set their own 'deviceCorrelationId' via the Vision SDK. Default is false, and 'deviceCorrelationId' must be set in this request body.
+     * Whether or not to allow client to set their own 'deviceCorrelationId' via the Vision SDK. Default is false, and
+     * 'deviceCorrelationId' must be set in this request body.
      */
     @Generated
     @JsonProperty(value = "deviceCorrelationIdSetInClient")
     private Boolean deviceCorrelationIdSetInClient;
 
     /*
-     * Unique Guid per each end-user device. This is to provide rate limiting and anti-hammering. If 'deviceCorrelationIdSetInClient' is true in this request, this 'deviceCorrelationId' must be null.
+     * Unique Guid per each end-user device. This is to provide rate limiting and anti-hammering. If
+     * 'deviceCorrelationIdSetInClient' is true in this request, this 'deviceCorrelationId' must be null.
      */
     @Generated
     @JsonProperty(value = "deviceCorrelationId")

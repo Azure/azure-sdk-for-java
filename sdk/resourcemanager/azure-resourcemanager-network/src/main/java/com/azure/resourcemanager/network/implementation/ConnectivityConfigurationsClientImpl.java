@@ -34,9 +34,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ConnectivityConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.models.ConnectivityConfigurationInner;
 import com.azure.resourcemanager.network.models.ConnectivityConfigurationListResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ConnectivityConfigurationsClient.
@@ -54,7 +55,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Initializes an instance of ConnectivityConfigurationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ConnectivityConfigurationsClientImpl(NetworkManagementClientImpl client) {
@@ -126,7 +127,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Gets a Network Connectivity Configuration, specified by the resource group, network manager name, and
      * connectivity Configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -159,7 +160,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -170,7 +171,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Gets a Network Connectivity Configuration, specified by the resource group, network manager name, and
      * connectivity Configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -204,7 +205,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -214,7 +215,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Gets a Network Connectivity Configuration, specified by the resource group, network manager name, and
      * connectivity Configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -234,7 +235,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Gets a Network Connectivity Configuration, specified by the resource group, network manager name, and
      * connectivity Configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -254,7 +255,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Gets a Network Connectivity Configuration, specified by the resource group, network manager name, and
      * connectivity Configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -272,7 +273,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Creates/Updates a new network manager connectivity configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -313,7 +314,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
         } else {
             connectivityConfiguration.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -324,7 +325,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Creates/Updates a new network manager connectivity configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -367,7 +368,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
         } else {
             connectivityConfiguration.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -376,7 +377,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Creates/Updates a new network manager connectivity configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -396,7 +397,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Creates/Updates a new network manager connectivity configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -418,7 +419,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Creates/Updates a new network manager connectivity configuration.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -439,7 +440,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -473,7 +474,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -485,7 +486,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -520,7 +521,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -530,7 +531,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -553,7 +554,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -575,7 +576,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -600,7 +601,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -619,7 +620,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -641,7 +642,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -662,7 +663,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -681,7 +682,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -703,7 +704,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -720,7 +721,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
     /**
      * Deletes a network manager connectivity configuration, specified by the resource group, network manager name, and
      * connectivity configuration name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager connectivity configuration.
@@ -739,7 +740,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Lists all the network manager connectivity configuration in a specified network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -772,7 +773,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -784,7 +785,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Lists all the network manager connectivity configuration in a specified network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -818,7 +819,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
             return Mono
                 .error(new IllegalArgumentException("Parameter networkManagerName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -830,7 +831,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Lists all the network manager connectivity configuration in a specified network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -853,7 +854,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Lists all the network manager connectivity configuration in a specified network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -872,7 +873,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Lists all the network manager connectivity configuration in a specified network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -897,7 +898,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Lists all the network manager connectivity configuration in a specified network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -915,7 +916,7 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Lists all the network manager connectivity configuration in a specified network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
@@ -938,9 +939,9 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -966,9 +967,9 @@ public final class ConnectivityConfigurationsClientImpl implements ConnectivityC
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

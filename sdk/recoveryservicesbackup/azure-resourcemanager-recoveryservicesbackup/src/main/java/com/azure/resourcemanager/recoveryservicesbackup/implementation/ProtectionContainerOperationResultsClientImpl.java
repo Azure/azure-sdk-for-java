@@ -26,8 +26,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.Protection
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * ProtectionContainerOperationResultsClient.
+ * An instance of this class provides access to all the operations defined in ProtectionContainerOperationResultsClient.
  */
 public final class ProtectionContainerOperationResultsClientImpl implements ProtectionContainerOperationResultsClient {
     /**
@@ -52,8 +51,8 @@ public final class ProtectionContainerOperationResultsClientImpl implements Prot
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesBackupClientProtectionContainerOperationResults to
-     * be used by the proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesBackupClientProtectionContainerOperationResults to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")

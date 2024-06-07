@@ -16,8 +16,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Locale;
-
 public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
 
     @Test
@@ -45,7 +43,7 @@ public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
             .create();
 
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, disk1.encryption().type());
-        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), disk1.encryption().diskEncryptionSetId().toLowerCase(Locale.ROOT));
+        assertResourceIdEquals(diskEncryptionSet.id(), disk1.encryption().diskEncryptionSetId());
 
         final String vmName = "javavm";
 
@@ -73,7 +71,7 @@ public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
         // verification
         Assertions.assertEquals(diskEncryptionSet.id(), vm.osDiskDiskEncryptionSetId());
         Assertions.assertNull(vm.dataDisks().get(0).diskEncryptionSetId());
-        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(1).diskEncryptionSetId().toLowerCase(Locale.ROOT));
+        assertResourceIdEquals(diskEncryptionSet.id(), vm.dataDisks().get(1).diskEncryptionSetId());
         Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(0).deleteOptions());
         Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(1).deleteOptions());
 
@@ -93,7 +91,7 @@ public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
             .apply();
 
         Assertions.assertEquals(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS, disk2.encryption().type());
-        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), disk2.encryption().diskEncryptionSetId().toLowerCase(Locale.ROOT));
+        assertResourceIdEquals(diskEncryptionSet.id(), disk2.encryption().diskEncryptionSetId());
 
         // update virtual machine
         vm.update()
@@ -106,7 +104,7 @@ public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
             .apply();
 
         // verification
-        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(2).diskEncryptionSetId().toLowerCase(Locale.ROOT));
+        assertResourceIdEquals(diskEncryptionSet.id(), vm.dataDisks().get(2).diskEncryptionSetId());
         Assertions.assertNull(vm.dataDisks().get(3).diskEncryptionSetId());
         Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(2).deleteOptions());
         Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(3).deleteOptions());
@@ -119,7 +117,7 @@ public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
             .apply();
         vm.start();
         vm.refresh();
-        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(3).diskEncryptionSetId().toLowerCase(Locale.ROOT));
+        assertResourceIdEquals(diskEncryptionSet.id(), vm.dataDisks().get(3).diskEncryptionSetId());
 
         // update virtual machine
         vm.update()
@@ -132,8 +130,8 @@ public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
             .withDataDiskDefaultDiskEncryptionSet(diskEncryptionSet2.id())
             .apply();
 
-        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(0).diskEncryptionSetId().toLowerCase(Locale.ROOT));
-        Assertions.assertEquals(diskEncryptionSet2.id().toLowerCase(Locale.ROOT), vm.dataDisks().get(1).diskEncryptionSetId().toLowerCase(Locale.ROOT));
+        assertResourceIdEquals(diskEncryptionSet.id(), vm.dataDisks().get(0).diskEncryptionSetId());
+        assertResourceIdEquals(diskEncryptionSet2.id(), vm.dataDisks().get(1).diskEncryptionSetId());
         Assertions.assertEquals(DeleteOptions.DELETE, vm.dataDisks().get(0).deleteOptions());
         Assertions.assertEquals(DeleteOptions.DETACH, vm.dataDisks().get(1).deleteOptions());
 

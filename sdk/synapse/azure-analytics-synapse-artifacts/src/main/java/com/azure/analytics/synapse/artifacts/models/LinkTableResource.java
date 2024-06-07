@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LinkTableResource model.
- */
+/** The LinkTableResource model. */
 @Fluent
 public final class LinkTableResource {
     /*
@@ -36,15 +34,12 @@ public final class LinkTableResource {
     @JsonProperty(value = "target")
     private LinkTableRequestTarget target;
 
-    /**
-     * Creates an instance of LinkTableResource class.
-     */
-    public LinkTableResource() {
-    }
+    /** Creates an instance of LinkTableResource class. */
+    public LinkTableResource() {}
 
     /**
      * Get the id property: Link table id.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -53,7 +48,7 @@ public final class LinkTableResource {
 
     /**
      * Set the id property: Link table id.
-     * 
+     *
      * @param id the id value to set.
      * @return the LinkTableResource object itself.
      */
@@ -64,7 +59,7 @@ public final class LinkTableResource {
 
     /**
      * Get the name property: Link table name.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -73,7 +68,7 @@ public final class LinkTableResource {
 
     /**
      * Set the name property: Link table name.
-     * 
+     *
      * @param name the name value to set.
      * @return the LinkTableResource object itself.
      */
@@ -84,7 +79,7 @@ public final class LinkTableResource {
 
     /**
      * Get the source property: Source table properties for link table request.
-     * 
+     *
      * @return the source value.
      */
     public LinkTableRequestSource getSource() {
@@ -93,7 +88,7 @@ public final class LinkTableResource {
 
     /**
      * Set the source property: Source table properties for link table request.
-     * 
+     *
      * @param source the source value to set.
      * @return the LinkTableResource object itself.
      */
@@ -104,7 +99,7 @@ public final class LinkTableResource {
 
     /**
      * Get the target property: Target table properties for link table request.
-     * 
+     *
      * @return the target value.
      */
     public LinkTableRequestTarget getTarget() {
@@ -113,7 +108,7 @@ public final class LinkTableResource {
 
     /**
      * Set the target property: Target table properties for link table request.
-     * 
+     *
      * @param target the target value to set.
      * @return the LinkTableResource object itself.
      */

@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Phoenix server linked service.
- */
+/** Phoenix server linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Phoenix")
 @JsonFlatten
@@ -98,15 +96,12 @@ public class PhoenixLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /**
-     * Creates an instance of PhoenixLinkedService class.
-     */
-    public PhoenixLinkedService() {
-    }
+    /** Creates an instance of PhoenixLinkedService class. */
+    public PhoenixLinkedService() {}
 
     /**
      * Get the host property: The IP address or host name of the Phoenix server. (i.e. 192.168.222.160).
-     * 
+     *
      * @return the host value.
      */
     public Object getHost() {
@@ -115,7 +110,7 @@ public class PhoenixLinkedService extends LinkedService {
 
     /**
      * Set the host property: The IP address or host name of the Phoenix server. (i.e. 192.168.222.160).
-     * 
+     *
      * @param host the host value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -127,7 +122,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Get the port property: The TCP port that the Phoenix server uses to listen for client connections. The default
      * value is 8765.
-     * 
+     *
      * @return the port value.
      */
     public Object getPort() {
@@ -137,7 +132,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Set the port property: The TCP port that the Phoenix server uses to listen for client connections. The default
      * value is 8765.
-     * 
+     *
      * @param port the port value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -149,7 +144,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Get the httpPath property: The partial URL corresponding to the Phoenix server. (i.e.
      * /gateway/sandbox/phoenix/version). The default value is hbasephoenix if using WindowsAzureHDInsightService.
-     * 
+     *
      * @return the httpPath value.
      */
     public Object getHttpPath() {
@@ -159,7 +154,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Set the httpPath property: The partial URL corresponding to the Phoenix server. (i.e.
      * /gateway/sandbox/phoenix/version). The default value is hbasephoenix if using WindowsAzureHDInsightService.
-     * 
+     *
      * @param httpPath the httpPath value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -170,7 +165,7 @@ public class PhoenixLinkedService extends LinkedService {
 
     /**
      * Get the authenticationType property: The authentication mechanism used to connect to the Phoenix server.
-     * 
+     *
      * @return the authenticationType value.
      */
     public PhoenixAuthenticationType getAuthenticationType() {
@@ -179,7 +174,7 @@ public class PhoenixLinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: The authentication mechanism used to connect to the Phoenix server.
-     * 
+     *
      * @param authenticationType the authenticationType value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -190,7 +185,7 @@ public class PhoenixLinkedService extends LinkedService {
 
     /**
      * Get the username property: The user name used to connect to the Phoenix server.
-     * 
+     *
      * @return the username value.
      */
     public Object getUsername() {
@@ -199,7 +194,7 @@ public class PhoenixLinkedService extends LinkedService {
 
     /**
      * Set the username property: The user name used to connect to the Phoenix server.
-     * 
+     *
      * @param username the username value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -210,7 +205,7 @@ public class PhoenixLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password corresponding to the user name.
-     * 
+     *
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -219,7 +214,7 @@ public class PhoenixLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password corresponding to the user name.
-     * 
+     *
      * @param password the password value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -231,7 +226,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Get the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
      * value is false.
-     * 
+     *
      * @return the enableSsl value.
      */
     public Object getEnableSsl() {
@@ -241,7 +236,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Set the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
      * value is false.
-     * 
+     *
      * @param enableSsl the enableSsl value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -251,10 +246,10 @@ public class PhoenixLinkedService extends LinkedService {
     }
 
     /**
-     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR.
-     * 
+     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
+     *
      * @return the trustedCertPath value.
      */
     public Object getTrustedCertPath() {
@@ -262,10 +257,10 @@ public class PhoenixLinkedService extends LinkedService {
     }
 
     /**
-     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
-     * The default value is the cacerts.pem file installed with the IR.
-     * 
+     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
+     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
+     * value is the cacerts.pem file installed with the IR.
+     *
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -277,7 +272,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Get the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
      * from a specified PEM file. The default value is false.
-     * 
+     *
      * @return the useSystemTrustStore value.
      */
     public Object getUseSystemTrustStore() {
@@ -287,7 +282,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Set the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
      * from a specified PEM file. The default value is false.
-     * 
+     *
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -299,7 +294,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Get the allowHostNameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
      * the host name of the server when connecting over SSL. The default value is false.
-     * 
+     *
      * @return the allowHostNameCNMismatch value.
      */
     public Object getAllowHostNameCNMismatch() {
@@ -309,7 +304,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Set the allowHostNameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
      * the host name of the server when connecting over SSL. The default value is false.
-     * 
+     *
      * @param allowHostNameCNMismatch the allowHostNameCNMismatch value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -321,7 +316,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Get the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
      * The default value is false.
-     * 
+     *
      * @return the allowSelfSignedServerCert value.
      */
     public Object getAllowSelfSignedServerCert() {
@@ -331,7 +326,7 @@ public class PhoenixLinkedService extends LinkedService {
     /**
      * Set the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
      * The default value is false.
-     * 
+     *
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -341,9 +336,9 @@ public class PhoenixLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -351,9 +346,9 @@ public class PhoenixLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PhoenixLinkedService object itself.
      */
@@ -362,36 +357,28 @@ public class PhoenixLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PhoenixLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PhoenixLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PhoenixLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PhoenixLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -49,20 +49,6 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = HelpRPBuilder.class)
 public final class HelpRPImpl implements HelpRP {
     /**
-     * The ID of the target subscription. The value must be an UUID.
-     */
-    private final String subscriptionId;
-
-    /**
-     * Gets The ID of the target subscription. The value must be an UUID.
-     * 
-     * @return the subscriptionId value.
-     */
-    public String getSubscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /**
      * server parameter.
      */
     private final String endpoint;
@@ -279,15 +265,13 @@ public final class HelpRPImpl implements HelpRP {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     HelpRPImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
-        AzureEnvironment environment, String subscriptionId, String endpoint) {
+        AzureEnvironment environment, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
-        this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
         this.apiVersion = "2024-03-01-preview";
         this.operations = new OperationsClientImpl(this);

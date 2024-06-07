@@ -130,6 +130,8 @@ public class DataLakeTestBase extends TestProxyTestBase {
                 new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL),
                 new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
                 new TestProxySanitizer("x-ms-rename-source", "sig=(.*)", "REDACTED", TestProxySanitizerType.HEADER)));
+            // Remove `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter

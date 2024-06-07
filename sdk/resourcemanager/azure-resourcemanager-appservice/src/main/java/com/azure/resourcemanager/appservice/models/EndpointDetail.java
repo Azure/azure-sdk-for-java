@@ -25,15 +25,13 @@ public final class EndpointDetail {
     private Integer port;
 
     /*
-     * The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this
-     * IpAddress at this Port.
+     * The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress at this Port.
      */
     @JsonProperty(value = "latency")
     private Double latency;
 
     /*
-     * Whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this
-     * Port.
+     * Whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this Port.
      */
     @JsonProperty(value = "isAccessible")
     private Boolean isAccessible;
@@ -107,8 +105,8 @@ public final class EndpointDetail {
     }
 
     /**
-     * Get the isAccessible property: Whether it is possible to create a TCP connection from the App Service
-     * Environment to this IpAddress at this Port.
+     * Get the isAccessible property: Whether it is possible to create a TCP connection from the App Service Environment
+     * to this IpAddress at this Port.
      * 
      * @return the isAccessible value.
      */
@@ -117,8 +115,8 @@ public final class EndpointDetail {
     }
 
     /**
-     * Set the isAccessible property: Whether it is possible to create a TCP connection from the App Service
-     * Environment to this IpAddress at this Port.
+     * Set the isAccessible property: Whether it is possible to create a TCP connection from the App Service Environment
+     * to this IpAddress at this Port.
      * 
      * @param isAccessible the isAccessible value to set.
      * @return the EndpointDetail object itself.

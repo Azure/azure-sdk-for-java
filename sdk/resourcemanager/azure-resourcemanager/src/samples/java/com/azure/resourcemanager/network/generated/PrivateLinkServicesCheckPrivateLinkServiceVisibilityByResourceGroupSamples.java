@@ -11,8 +11,7 @@ import com.azure.resourcemanager.network.models.CheckPrivateLinkServiceVisibilit
  */
 public final class PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * CheckPrivateLinkServiceVisibilityByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/CheckPrivateLinkServiceVisibilityByResourceGroup.json
      */
     /**
      * Sample code: Check private link service visibility.
@@ -20,7 +19,10 @@ public final class PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourc
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void checkPrivateLinkServiceVisibility(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateLinkServices()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkServices()
             .checkPrivateLinkServiceVisibilityByResourceGroup("westus", "rg1",
                 new CheckPrivateLinkServiceVisibilityRequest()
                     .withPrivateLinkServiceAlias("mypls.00000000-0000-0000-0000-000000000000.azure.privatelinkservice"),

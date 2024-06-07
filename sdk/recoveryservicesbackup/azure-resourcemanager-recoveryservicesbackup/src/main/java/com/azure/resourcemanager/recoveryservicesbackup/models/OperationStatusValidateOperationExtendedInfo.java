@@ -6,16 +6,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Operation status extended info for ValidateOperation action.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = OperationStatusValidateOperationExtendedInfo.class,
+    visible = true)
 @JsonTypeName("OperationStatusValidateOperationExtendedInfo")
 @Fluent
 public final class OperationStatusValidateOperationExtendedInfo extends OperationStatusExtendedInfo {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "OperationStatusValidateOperationExtendedInfo";
+
     /*
      * Gets the validation operation response
      */
@@ -26,6 +38,17 @@ public final class OperationStatusValidateOperationExtendedInfo extends Operatio
      * Creates an instance of OperationStatusValidateOperationExtendedInfo class.
      */
     public OperationStatusValidateOperationExtendedInfo() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

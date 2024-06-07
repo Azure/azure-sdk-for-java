@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Trigger that runs every time a Blob event occurs.
- */
+/** Trigger that runs every time a Blob event occurs. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("BlobEventsTrigger")
 @JsonFlatten
@@ -53,17 +51,14 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties.scope", required = true)
     private String scope;
 
-    /**
-     * Creates an instance of BlobEventsTrigger class.
-     */
-    public BlobEventsTrigger() {
-    }
+    /** Creates an instance of BlobEventsTrigger class. */
+    public BlobEventsTrigger() {}
 
     /**
      * Get the blobPathBeginsWith property: The blob path must begin with the pattern provided for trigger to fire. For
-     * example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the
-     * records container. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
-     * 
+     * example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the records
+     * container. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     *
      * @return the blobPathBeginsWith value.
      */
     public String getBlobPathBeginsWith() {
@@ -72,9 +67,9 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the blobPathBeginsWith property: The blob path must begin with the pattern provided for trigger to fire. For
-     * example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the
-     * records container. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
-     * 
+     * example, '/records/blobs/december/' will only fire the trigger for blobs in the december folder under the records
+     * container. At least one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     *
      * @param blobPathBeginsWith the blobPathBeginsWith value to set.
      * @return the BlobEventsTrigger object itself.
      */
@@ -85,9 +80,9 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the blobPathEndsWith property: The blob path must end with the pattern provided for trigger to fire. For
-     * example, 'december/boxes.csv' will only fire the trigger for blobs named boxes in a december folder. At least
-     * one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
-     * 
+     * example, 'december/boxes.csv' will only fire the trigger for blobs named boxes in a december folder. At least one
+     * of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     *
      * @return the blobPathEndsWith value.
      */
     public String getBlobPathEndsWith() {
@@ -96,9 +91,9 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the blobPathEndsWith property: The blob path must end with the pattern provided for trigger to fire. For
-     * example, 'december/boxes.csv' will only fire the trigger for blobs named boxes in a december folder. At least
-     * one of these must be provided: blobPathBeginsWith, blobPathEndsWith.
-     * 
+     * example, 'december/boxes.csv' will only fire the trigger for blobs named boxes in a december folder. At least one
+     * of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     *
      * @param blobPathEndsWith the blobPathEndsWith value to set.
      * @return the BlobEventsTrigger object itself.
      */
@@ -109,7 +104,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the ignoreEmptyBlobs property: If set to true, blobs with zero bytes will be ignored.
-     * 
+     *
      * @return the ignoreEmptyBlobs value.
      */
     public Boolean isIgnoreEmptyBlobs() {
@@ -118,7 +113,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the ignoreEmptyBlobs property: If set to true, blobs with zero bytes will be ignored.
-     * 
+     *
      * @param ignoreEmptyBlobs the ignoreEmptyBlobs value to set.
      * @return the BlobEventsTrigger object itself.
      */
@@ -129,7 +124,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the events property: The type of events that cause this trigger to fire.
-     * 
+     *
      * @return the events value.
      */
     public List<BlobEventType> getEvents() {
@@ -138,7 +133,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the events property: The type of events that cause this trigger to fire.
-     * 
+     *
      * @param events the events value to set.
      * @return the BlobEventsTrigger object itself.
      */
@@ -149,7 +144,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the scope property: The ARM resource ID of the Storage Account.
-     * 
+     *
      * @return the scope value.
      */
     public String getScope() {
@@ -158,7 +153,7 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the scope property: The ARM resource ID of the Storage Account.
-     * 
+     *
      * @param scope the scope value to set.
      * @return the BlobEventsTrigger object itself.
      */
@@ -167,27 +162,21 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public BlobEventsTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
         super.setPipelines(pipelines);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public BlobEventsTrigger setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public BlobEventsTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -1,6 +1,6 @@
 # Release History
 
-## 7.18.0-beta.1 (Unreleased)
+## 7.18.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,15 @@
 
 ### Bugs Fixed
 
+- Fixes the sender API that takes `Iterable` to not drop messages that cannot be fit in the batch. ([#40462](https://github.com/Azure/azure-sdk-for-java/pull/40462))
+
 ### Other Changes
+
+## 7.18.0-beta.1 (2024-05-15)
+
+### Features Added
+
+- Added the support for batch-delete APIs in Receiver client.
 
 ## 7.17.0 (2024-05-06)
 

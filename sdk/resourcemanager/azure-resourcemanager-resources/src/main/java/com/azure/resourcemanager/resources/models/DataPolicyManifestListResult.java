@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.fluent.models.DataPolicyManifestInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of data policy manifests. */
+/**
+ * List of data policy manifests.
+ */
 @Fluent
 public final class DataPolicyManifestListResult {
     /*
@@ -24,13 +26,15 @@ public final class DataPolicyManifestListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DataPolicyManifestListResult class. */
+    /**
+     * Creates an instance of DataPolicyManifestListResult class.
+     */
     public DataPolicyManifestListResult() {
     }
 
     /**
      * Get the value property: An array of data policy manifests.
-     *
+     * 
      * @return the value value.
      */
     public List<DataPolicyManifestInner> value() {
@@ -39,7 +43,7 @@ public final class DataPolicyManifestListResult {
 
     /**
      * Set the value property: An array of data policy manifests.
-     *
+     * 
      * @param value the value value to set.
      * @return the DataPolicyManifestListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class DataPolicyManifestListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class DataPolicyManifestListResult {
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DataPolicyManifestListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class DataPolicyManifestListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

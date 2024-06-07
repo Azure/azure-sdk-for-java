@@ -20,7 +20,9 @@ import java.io.IOException;
 public final class DataDisk implements JsonSerializable<DataDisk> {
 
     /*
-     * The type of caching to be enabled for the data disks. The default value for caching is readwrite. For information about the caching options see: https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
+     * The type of caching to be enabled for the data disks. The default value for caching is readwrite. For information
+     * about the caching options see:
+     * https://blogs.msdn.microsoft.com/windowsazurestorage/2012/06/27/exploring-windows-azure-drives-disks-and-images/.
      */
     @Generated
     private CachingType caching;
@@ -110,7 +112,8 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
     }
 
     /*
-     * The logical unit number. The logicalUnitNumber is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct logicalUnitNumber. The value must be between 0 and 63, inclusive.
+     * The logical unit number. The logicalUnitNumber is used to uniquely identify each data disk. If attaching multiple
+     * disks, each should have a distinct logicalUnitNumber. The value must be between 0 and 63, inclusive.
      */
     @Generated
     private final int logicalUnitNumber;

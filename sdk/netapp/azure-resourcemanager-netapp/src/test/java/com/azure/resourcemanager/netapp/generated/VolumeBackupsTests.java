@@ -11,21 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeBackupsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeBackups model
-            = BinaryData.fromString("{\"volumeName\":\"wae\",\"backupsCount\":809360205,\"policyEnabled\":true}")
-                .toObject(VolumeBackups.class);
-        Assertions.assertEquals("wae", model.volumeName());
-        Assertions.assertEquals(809360205, model.backupsCount());
+        VolumeBackups model = BinaryData.fromString(
+            "{\"volumeName\":\"vrwxkv\",\"volumeResourceId\":\"k\",\"backupsCount\":1409023771,\"policyEnabled\":true}")
+            .toObject(VolumeBackups.class);
+        Assertions.assertEquals("vrwxkv", model.volumeName());
+        Assertions.assertEquals("k", model.volumeResourceId());
+        Assertions.assertEquals(1409023771, model.backupsCount());
         Assertions.assertEquals(true, model.policyEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeBackups model
-            = new VolumeBackups().withVolumeName("wae").withBackupsCount(809360205).withPolicyEnabled(true);
+        VolumeBackups model = new VolumeBackups().withVolumeName("vrwxkv")
+            .withVolumeResourceId("k")
+            .withBackupsCount(1409023771)
+            .withPolicyEnabled(true);
         model = BinaryData.fromObject(model).toObject(VolumeBackups.class);
-        Assertions.assertEquals("wae", model.volumeName());
-        Assertions.assertEquals(809360205, model.backupsCount());
+        Assertions.assertEquals("vrwxkv", model.volumeName());
+        Assertions.assertEquals("k", model.volumeResourceId());
+        Assertions.assertEquals(1409023771, model.backupsCount());
         Assertions.assertEquals(true, model.policyEnabled());
     }
 }

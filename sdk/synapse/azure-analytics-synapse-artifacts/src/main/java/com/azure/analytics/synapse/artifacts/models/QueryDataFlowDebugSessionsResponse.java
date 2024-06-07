@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * A list of active debug sessions.
- */
+/** A list of active debug sessions. */
 @Fluent
 public final class QueryDataFlowDebugSessionsResponse {
     /*
@@ -25,15 +23,12 @@ public final class QueryDataFlowDebugSessionsResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of QueryDataFlowDebugSessionsResponse class.
-     */
-    public QueryDataFlowDebugSessionsResponse() {
-    }
+    /** Creates an instance of QueryDataFlowDebugSessionsResponse class. */
+    public QueryDataFlowDebugSessionsResponse() {}
 
     /**
      * Get the value property: Array with all active debug sessions.
-     * 
+     *
      * @return the value value.
      */
     public List<DataFlowDebugSessionInfo> getValue() {
@@ -42,7 +37,7 @@ public final class QueryDataFlowDebugSessionsResponse {
 
     /**
      * Set the value property: Array with all active debug sessions.
-     * 
+     *
      * @param value the value value to set.
      * @return the QueryDataFlowDebugSessionsResponse object itself.
      */
@@ -53,7 +48,7 @@ public final class QueryDataFlowDebugSessionsResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -62,7 +57,7 @@ public final class QueryDataFlowDebugSessionsResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the QueryDataFlowDebugSessionsResponse object itself.
      */

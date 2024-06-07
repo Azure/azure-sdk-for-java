@@ -19,13 +19,19 @@ import java.util.List;
 public final class BatchPoolIdentity implements JsonSerializable<BatchPoolIdentity> {
 
     /*
-     * The identity of the Batch pool, if configured. The list of user identities associated with the Batch pool. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * The identity of the Batch pool, if configured. The list of user identities associated with the Batch pool. The
+     * user identity dictionary key references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
     @Generated
     private final BatchPoolIdentityType type;
 
     /*
-     * The list of user identities associated with the Batch account. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * The list of user identities associated with the Batch account. The user identity dictionary key references will
+     * be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
     @Generated
     private List<UserAssignedIdentity> userAssignedIdentities;

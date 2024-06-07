@@ -26,7 +26,7 @@ import java.util.List;
 public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInference {
 
     /*
-     * Inference type.
+     * The kind property.
      */
     @Generated
     @JsonTypeId
@@ -66,7 +66,7 @@ public final class LimitedOrderDiscrepancyInference extends RadiologyInsightsInf
     }
 
     /**
-     * Get the kind property: Inference type.
+     * Get the kind property: The kind property.
      *
      * @return the kind value.
      */

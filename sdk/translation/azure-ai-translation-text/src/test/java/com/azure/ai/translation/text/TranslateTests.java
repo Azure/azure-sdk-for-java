@@ -3,6 +3,8 @@
 
 package com.azure.ai.translation.text;
 
+import com.azure.core.test.annotation.LiveOnly;
+
 import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TranslateTests extends TextTranslationClientBase {
 
     @Test
+    @LiveOnly
     public void translateBasic() {
         TranslatedTextItem response = getTranslationClient().translate("cs", "Hola mundo");
 
@@ -29,6 +32,7 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
+    @LiveOnly
     public void translateOneItemWithOptions() {
         TranslateOptions translateOptions = new TranslateOptions()
             .addTargetLanguage("cs");
@@ -41,6 +45,7 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
+    @LiveOnly
     public void translateMultipleItemsWithOptions() {
         ArrayList<String> content = new ArrayList<>();
         content.add("This is a test.");
@@ -58,6 +63,7 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
+    @LiveOnly
     public void translateWithAutoDetect() {
         TranslateOptions translateOptions = new TranslateOptions()
             .addTargetLanguage("cs");
@@ -71,6 +77,7 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
+    @LiveOnly
     public void translateWithNoTranslateTag() {
         TranslateOptions translateOptions = new TranslateOptions()
             .addTargetLanguage("en")
@@ -84,6 +91,7 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
+    @LiveOnly
     public void translateWithDictionaryTag() {
         TranslateOptions translateOptions = new TranslateOptions()
             .setSourceLanguage("en")
@@ -97,6 +105,7 @@ public class TranslateTests extends TextTranslationClientBase {
     }
 
     @Test
+    @LiveOnly
     public void translateWithTransliteration() {
         TranslateOptions translateOptions = new TranslateOptions()
             .addTargetLanguage("zh-Hans")

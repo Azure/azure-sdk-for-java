@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class RunCommandManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RunCommandManagedIdentity model = BinaryData.fromString("{\"clientId\":\"ywsuwsy\",\"objectId\":\"ndsytgadg\"}")
-            .toObject(RunCommandManagedIdentity.class);
-        Assertions.assertEquals("ywsuwsy", model.clientId());
-        Assertions.assertEquals("ndsytgadg", model.objectId());
+        RunCommandManagedIdentity model
+            = BinaryData.fromString("{\"clientId\":\"mslyzrpzbchckqqz\",\"objectId\":\"ox\"}")
+                .toObject(RunCommandManagedIdentity.class);
+        Assertions.assertEquals("mslyzrpzbchckqqz", model.clientId());
+        Assertions.assertEquals("ox", model.objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RunCommandManagedIdentity model
-            = new RunCommandManagedIdentity().withClientId("ywsuwsy").withObjectId("ndsytgadg");
+            = new RunCommandManagedIdentity().withClientId("mslyzrpzbchckqqz").withObjectId("ox");
         model = BinaryData.fromObject(model).toObject(RunCommandManagedIdentity.class);
-        Assertions.assertEquals("ywsuwsy", model.clientId());
-        Assertions.assertEquals("ndsytgadg", model.objectId());
+        Assertions.assertEquals("mslyzrpzbchckqqz", model.clientId());
+        Assertions.assertEquals("ox", model.objectId());
     }
 }

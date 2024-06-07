@@ -11,9 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * A workspace.
- */
+/** A workspace. */
 @JsonFlatten
 @Fluent
 public class Workspace extends TrackedResource {
@@ -122,15 +120,12 @@ public class Workspace extends TrackedResource {
     @JsonProperty(value = "properties.adlaResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String adlaResourceId;
 
-    /**
-     * Creates an instance of Workspace class.
-     */
-    public Workspace() {
-    }
+    /** Creates an instance of Workspace class. */
+    public Workspace() {}
 
     /**
      * Get the identity property: Identity of the workspace.
-     * 
+     *
      * @return the identity value.
      */
     public ManagedIdentity getIdentity() {
@@ -139,7 +134,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the identity property: Identity of the workspace.
-     * 
+     *
      * @param identity the identity value to set.
      * @return the Workspace object itself.
      */
@@ -150,7 +145,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the defaultDataLakeStorage property: Workspace default data lake storage account details.
-     * 
+     *
      * @return the defaultDataLakeStorage value.
      */
     public DataLakeStorageAccountDetails getDefaultDataLakeStorage() {
@@ -159,7 +154,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the defaultDataLakeStorage property: Workspace default data lake storage account details.
-     * 
+     *
      * @param defaultDataLakeStorage the defaultDataLakeStorage value to set.
      * @return the Workspace object itself.
      */
@@ -170,7 +165,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the sqlAdministratorLoginPassword property: SQL administrator login password.
-     * 
+     *
      * @return the sqlAdministratorLoginPassword value.
      */
     public String getSqlAdministratorLoginPassword() {
@@ -179,7 +174,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the sqlAdministratorLoginPassword property: SQL administrator login password.
-     * 
+     *
      * @param sqlAdministratorLoginPassword the sqlAdministratorLoginPassword value to set.
      * @return the Workspace object itself.
      */
@@ -191,9 +186,9 @@ public class Workspace extends TrackedResource {
     /**
      * Get the managedResourceGroupName property: Workspace managed resource group. The resource group name uniquely
      * identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90
-     * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'.
-     * Note that the name cannot end with '.'.
-     * 
+     * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note
+     * that the name cannot end with '.'.
+     *
      * @return the managedResourceGroupName value.
      */
     public String getManagedResourceGroupName() {
@@ -203,9 +198,9 @@ public class Workspace extends TrackedResource {
     /**
      * Set the managedResourceGroupName property: Workspace managed resource group. The resource group name uniquely
      * identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90
-     * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'.
-     * Note that the name cannot end with '.'.
-     * 
+     * characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note
+     * that the name cannot end with '.'.
+     *
      * @param managedResourceGroupName the managedResourceGroupName value to set.
      * @return the Workspace object itself.
      */
@@ -216,7 +211,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the provisioningState property: Resource provisioning state.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String getProvisioningState() {
@@ -225,7 +220,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the sqlAdministratorLogin property: Login for workspace SQL active directory administrator.
-     * 
+     *
      * @return the sqlAdministratorLogin value.
      */
     public String getSqlAdministratorLogin() {
@@ -234,7 +229,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the sqlAdministratorLogin property: Login for workspace SQL active directory administrator.
-     * 
+     *
      * @param sqlAdministratorLogin the sqlAdministratorLogin value to set.
      * @return the Workspace object itself.
      */
@@ -245,7 +240,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the virtualNetworkProfile property: Virtual Network profile.
-     * 
+     *
      * @return the virtualNetworkProfile value.
      */
     public VirtualNetworkProfile getVirtualNetworkProfile() {
@@ -254,7 +249,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the virtualNetworkProfile property: Virtual Network profile.
-     * 
+     *
      * @param virtualNetworkProfile the virtualNetworkProfile value to set.
      * @return the Workspace object itself.
      */
@@ -265,7 +260,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the connectivityEndpoints property: Connectivity endpoints.
-     * 
+     *
      * @return the connectivityEndpoints value.
      */
     public Map<String, String> getConnectivityEndpoints() {
@@ -274,7 +269,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the connectivityEndpoints property: Connectivity endpoints.
-     * 
+     *
      * @param connectivityEndpoints the connectivityEndpoints value to set.
      * @return the Workspace object itself.
      */
@@ -284,9 +279,9 @@ public class Workspace extends TrackedResource {
     }
 
     /**
-     * Get the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this
-     * workspace is in a virtual network managed on behalf of the user.
-     * 
+     * Get the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
+     * is in a virtual network managed on behalf of the user.
+     *
      * @return the managedVirtualNetwork value.
      */
     public String getManagedVirtualNetwork() {
@@ -294,9 +289,9 @@ public class Workspace extends TrackedResource {
     }
 
     /**
-     * Set the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this
-     * workspace is in a virtual network managed on behalf of the user.
-     * 
+     * Set the managedVirtualNetwork property: Setting this to 'default' will ensure that all compute for this workspace
+     * is in a virtual network managed on behalf of the user.
+     *
      * @param managedVirtualNetwork the managedVirtualNetwork value to set.
      * @return the Workspace object itself.
      */
@@ -307,7 +302,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the privateEndpointConnections property: Private endpoint connections to the workspace.
-     * 
+     *
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnection> getPrivateEndpointConnections() {
@@ -316,7 +311,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the privateEndpointConnections property: Private endpoint connections to the workspace.
-     * 
+     *
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the Workspace object itself.
      */
@@ -327,7 +322,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the encryption property: The encryption details of the workspace.
-     * 
+     *
      * @return the encryption value.
      */
     public EncryptionDetails getEncryption() {
@@ -336,7 +331,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the encryption property: The encryption details of the workspace.
-     * 
+     *
      * @param encryption the encryption value to set.
      * @return the Workspace object itself.
      */
@@ -347,7 +342,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the workspaceUID property: The workspace unique identifier.
-     * 
+     *
      * @return the workspaceUID value.
      */
     public UUID getWorkspaceUID() {
@@ -356,7 +351,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the extraProperties property: Workspace level configs and feature flags.
-     * 
+     *
      * @return the extraProperties value.
      */
     public Map<String, Object> getExtraProperties() {
@@ -365,7 +360,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     * 
+     *
      * @return the managedVirtualNetworkSettings value.
      */
     public ManagedVirtualNetworkSettings getManagedVirtualNetworkSettings() {
@@ -374,7 +369,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     * 
+     *
      * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
      * @return the Workspace object itself.
      */
@@ -385,7 +380,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the workspaceRepositoryConfiguration property: Git integration settings.
-     * 
+     *
      * @return the workspaceRepositoryConfiguration value.
      */
     public WorkspaceRepositoryConfiguration getWorkspaceRepositoryConfiguration() {
@@ -394,19 +389,19 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the workspaceRepositoryConfiguration property: Git integration settings.
-     * 
+     *
      * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
      * @return the Workspace object itself.
      */
-    public Workspace
-        setWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+    public Workspace setWorkspaceRepositoryConfiguration(
+            WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
         this.workspaceRepositoryConfiguration = workspaceRepositoryConfiguration;
         return this;
     }
 
     /**
      * Get the purviewConfiguration property: Purview Configuration.
-     * 
+     *
      * @return the purviewConfiguration value.
      */
     public PurviewConfiguration getPurviewConfiguration() {
@@ -415,7 +410,7 @@ public class Workspace extends TrackedResource {
 
     /**
      * Set the purviewConfiguration property: Purview Configuration.
-     * 
+     *
      * @param purviewConfiguration the purviewConfiguration value to set.
      * @return the Workspace object itself.
      */
@@ -426,25 +421,21 @@ public class Workspace extends TrackedResource {
 
     /**
      * Get the adlaResourceId property: The ADLA resource ID.
-     * 
+     *
      * @return the adlaResourceId value.
      */
     public String getAdlaResourceId() {
         return this.adlaResourceId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Workspace setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Workspace setLocation(String location) {
         super.setLocation(location);

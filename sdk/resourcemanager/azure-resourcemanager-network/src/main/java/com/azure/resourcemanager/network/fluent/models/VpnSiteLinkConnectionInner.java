@@ -469,6 +469,29 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
     }
 
     /**
+     * Get the dpdTimeoutSeconds property: Dead Peer Detection timeout in seconds for VpnLink connection.
+     * 
+     * @return the dpdTimeoutSeconds value.
+     */
+    public Integer dpdTimeoutSeconds() {
+        return this.innerProperties() == null ? null : this.innerProperties().dpdTimeoutSeconds();
+    }
+
+    /**
+     * Set the dpdTimeoutSeconds property: Dead Peer Detection timeout in seconds for VpnLink connection.
+     * 
+     * @param dpdTimeoutSeconds the dpdTimeoutSeconds value to set.
+     * @return the VpnSiteLinkConnectionInner object itself.
+     */
+    public VpnSiteLinkConnectionInner withDpdTimeoutSeconds(Integer dpdTimeoutSeconds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnSiteLinkConnectionProperties();
+        }
+        this.innerProperties().withDpdTimeoutSeconds(dpdTimeoutSeconds);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -26,7 +26,12 @@ import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.AsyncRntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestTimer;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -74,6 +79,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
@@ -1579,6 +1585,51 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         } finally {
             safeClose(testClient);
+        }
+    }
+
+    @Test(groups = { "fast" })
+    public void expireRecordWhenRecordAlreadyCompleteExceptionally() throws URISyntaxException, JsonProcessingException {
+        CosmosAsyncClient client = null;
+        try {
+            client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .userAgentSuffix("expireRecordWhenRecordAlreadyCompleteExceptionally")
+                .buildAsyncClient();
+
+            CosmosAsyncContainer container = getSharedSinglePartitionCosmosContainer(client);
+            CosmosException exception = null;
+            try {
+                container.readItem("randomId", new PartitionKey("randomId"), JsonNode.class).block();
+            } catch (CosmosException e) {
+                exception = e;
+                assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                CosmosDiagnostics cosmosDiagnostics = e.getDiagnostics();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getDiagnostics()).isNotEmpty();
+
+                // validate serialize the cosmos diagnostics will succeeded
+                Utils.getSimpleObjectMapper().writeValueAsString(cosmosDiagnostics);
+
+                // validate serialize the cosmos diagnostics will succeeded
+                Utils.getSimpleObjectMapper().writeValueAsString(cosmosDiagnostics.getDiagnosticsContext());
+            }
+
+            // complete a Rntbd request record
+            RntbdRequestArgs requestArgs = new RntbdRequestArgs(
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document),
+                new Uri(new URI("http://localhost/replica-path").toString())
+            );
+            RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
+            RntbdRequestRecord record = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
+            record.completeExceptionally(exception);
+            // validate record.toString() will work correctly
+            String recordString = record.toString();
+            assertThat(recordString.contains("NotFoundException")).isTrue();
+        } finally {
+            safeClose(client);
         }
     }
 

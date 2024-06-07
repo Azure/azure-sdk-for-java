@@ -12,19 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPointRehydrationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPointRehydrationInfo model
-            = BinaryData.fromString("{\"rehydrationRetentionDuration\":\"hhxhq\",\"rehydrationPriority\":\"High\"}")
-                .toObject(RecoveryPointRehydrationInfo.class);
-        Assertions.assertEquals("hhxhq", model.rehydrationRetentionDuration());
+        RecoveryPointRehydrationInfo model = BinaryData
+            .fromString("{\"rehydrationRetentionDuration\":\"eysfaqegplw\",\"rehydrationPriority\":\"High\"}")
+            .toObject(RecoveryPointRehydrationInfo.class);
+        Assertions.assertEquals("eysfaqegplw", model.rehydrationRetentionDuration());
         Assertions.assertEquals(RehydrationPriority.HIGH, model.rehydrationPriority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointRehydrationInfo model = new RecoveryPointRehydrationInfo()
-            .withRehydrationRetentionDuration("hhxhq").withRehydrationPriority(RehydrationPriority.HIGH);
+        RecoveryPointRehydrationInfo model
+            = new RecoveryPointRehydrationInfo().withRehydrationRetentionDuration("eysfaqegplw")
+                .withRehydrationPriority(RehydrationPriority.HIGH);
         model = BinaryData.fromObject(model).toObject(RecoveryPointRehydrationInfo.class);
-        Assertions.assertEquals("hhxhq", model.rehydrationRetentionDuration());
+        Assertions.assertEquals("eysfaqegplw", model.rehydrationRetentionDuration());
         Assertions.assertEquals(RehydrationPriority.HIGH, model.rehydrationPriority());
     }
 }

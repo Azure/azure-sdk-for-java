@@ -48,6 +48,12 @@ public final class AzureStorageInfoValue {
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private AzureStorageState state;
 
+    /*
+     * Mounting protocol to use for the storage account.
+     */
+    @JsonProperty(value = "protocol")
+    private AzureStorageProtocol protocol;
+
     /**
      * Creates an instance of AzureStorageInfoValue class.
      */
@@ -161,6 +167,26 @@ public final class AzureStorageInfoValue {
      */
     public AzureStorageState state() {
         return this.state;
+    }
+
+    /**
+     * Get the protocol property: Mounting protocol to use for the storage account.
+     * 
+     * @return the protocol value.
+     */
+    public AzureStorageProtocol protocol() {
+        return this.protocol;
+    }
+
+    /**
+     * Set the protocol property: Mounting protocol to use for the storage account.
+     * 
+     * @param protocol the protocol value to set.
+     * @return the AzureStorageInfoValue object itself.
+     */
+    public AzureStorageInfoValue withProtocol(AzureStorageProtocol protocol) {
+        this.protocol = protocol;
+        return this;
     }
 
     /**

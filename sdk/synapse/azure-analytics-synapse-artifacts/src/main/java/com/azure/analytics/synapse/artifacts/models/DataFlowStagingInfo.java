@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Staging info for execute data flow activity.
- */
+/** Staging info for execute data flow activity. */
 @Fluent
 public final class DataFlowStagingInfo {
     /*
@@ -24,15 +22,12 @@ public final class DataFlowStagingInfo {
     @JsonProperty(value = "folderPath")
     private Object folderPath;
 
-    /**
-     * Creates an instance of DataFlowStagingInfo class.
-     */
-    public DataFlowStagingInfo() {
-    }
+    /** Creates an instance of DataFlowStagingInfo class. */
+    public DataFlowStagingInfo() {}
 
     /**
      * Get the linkedService property: Staging linked service reference.
-     * 
+     *
      * @return the linkedService value.
      */
     public LinkedServiceReference getLinkedService() {
@@ -41,7 +36,7 @@ public final class DataFlowStagingInfo {
 
     /**
      * Set the linkedService property: Staging linked service reference.
-     * 
+     *
      * @param linkedService the linkedService value to set.
      * @return the DataFlowStagingInfo object itself.
      */
@@ -52,7 +47,7 @@ public final class DataFlowStagingInfo {
 
     /**
      * Get the folderPath property: Folder path for staging blob.
-     * 
+     *
      * @return the folderPath value.
      */
     public Object getFolderPath() {
@@ -61,7 +56,7 @@ public final class DataFlowStagingInfo {
 
     /**
      * Set the folderPath property: Folder path for staging blob.
-     * 
+     *
      * @param folderPath the folderPath value to set.
      * @return the DataFlowStagingInfo object itself.
      */

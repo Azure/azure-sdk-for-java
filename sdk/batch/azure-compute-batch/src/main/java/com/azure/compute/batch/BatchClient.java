@@ -2331,7 +2331,8 @@ public final class BatchClient {
             requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
                 options.getIfUnmodifiedSince().format(DateTimeFormatter.RFC_1123_DATE_TIME));
         }
-        // Retrieve response from getTaskFilePropertiesWithResponse and construct FileResponseHeaderProperties from its headers
+        // Retrieve response from getTaskFilePropertiesWithResponse and construct FileResponseHeaderProperties from its
+        // headers
         Response<Void> response = getTaskFilePropertiesWithResponse(jobId, taskId, filePath, requestOptions);
         return new FileResponseHeaderProperties(response.getHeaders());
     }

@@ -6,15 +6,22 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Specifies the Active Directory account type for Azure Storage. */
+/**
+ * Specifies the Active Directory account type for Azure Storage.
+ */
 public final class ActiveDirectoryPropertiesAccountType
     extends ExpandableStringEnum<ActiveDirectoryPropertiesAccountType> {
-    /** Static value User for ActiveDirectoryPropertiesAccountType. */
+    /**
+     * Static value User for ActiveDirectoryPropertiesAccountType.
+     */
     public static final ActiveDirectoryPropertiesAccountType USER = fromString("User");
 
-    /** Static value Computer for ActiveDirectoryPropertiesAccountType. */
+    /**
+     * Static value Computer for ActiveDirectoryPropertiesAccountType.
+     */
     public static final ActiveDirectoryPropertiesAccountType COMPUTER = fromString("Computer");
 
     /**
