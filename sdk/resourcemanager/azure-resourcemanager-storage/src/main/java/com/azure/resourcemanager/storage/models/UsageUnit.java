@@ -7,27 +7,43 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Gets the unit of measurement. */
+/**
+ * Gets the unit of measurement.
+ */
 public enum UsageUnit {
-    /** Enum value Count. */
+    /**
+     * Enum value Count.
+     */
     COUNT("Count"),
 
-    /** Enum value Bytes. */
+    /**
+     * Enum value Bytes.
+     */
     BYTES("Bytes"),
 
-    /** Enum value Seconds. */
+    /**
+     * Enum value Seconds.
+     */
     SECONDS("Seconds"),
 
-    /** Enum value Percent. */
+    /**
+     * Enum value Percent.
+     */
     PERCENT("Percent"),
 
-    /** Enum value CountsPerSecond. */
+    /**
+     * Enum value CountsPerSecond.
+     */
     COUNTS_PER_SECOND("CountsPerSecond"),
 
-    /** Enum value BytesPerSecond. */
+    /**
+     * Enum value BytesPerSecond.
+     */
     BYTES_PER_SECOND("BytesPerSecond");
 
-    /** The actual serialized value for a UsageUnit instance. */
+    /**
+     * The actual serialized value for a UsageUnit instance.
+     */
     private final String value;
 
     UsageUnit(String value) {
@@ -36,7 +52,7 @@ public enum UsageUnit {
 
     /**
      * Parses a serialized value to a UsageUnit instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed UsageUnit object, or null if unable to parse.
      */
@@ -54,7 +70,9 @@ public enum UsageUnit {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

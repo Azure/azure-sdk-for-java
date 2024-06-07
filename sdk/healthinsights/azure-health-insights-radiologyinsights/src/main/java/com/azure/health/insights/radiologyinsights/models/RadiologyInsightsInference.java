@@ -46,12 +46,13 @@ import java.util.List;
 public class RadiologyInsightsInference {
 
     /*
-     * Inference type.
+     * The kind property.
      */
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind;
+    private RadiologyInsightsInferenceType kind
+        = RadiologyInsightsInferenceType.fromString("RadiologyInsightsInference");
 
     /*
      * Additional Content defined by implementations
@@ -65,11 +66,10 @@ public class RadiologyInsightsInference {
      */
     @Generated
     protected RadiologyInsightsInference() {
-        this.kind = RadiologyInsightsInferenceType.fromString("RadiologyInsightsInference");
     }
 
     /**
-     * Get the kind property: Inference type.
+     * Get the kind property: The kind property.
      *
      * @return the kind value.
      */

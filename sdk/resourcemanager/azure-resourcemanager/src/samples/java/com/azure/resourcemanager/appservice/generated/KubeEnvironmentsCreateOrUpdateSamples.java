@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.KubeEnvironmentInner;
  */
 public final class KubeEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/KubeEnvironments_CreateOrUpdate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/KubeEnvironments_CreateOrUpdate.json
      */
     /**
      * Sample code: Create kube environments.
@@ -20,8 +19,12 @@ public final class KubeEnvironmentsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createKubeEnvironments(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getKubeEnvironments().createOrUpdate("examplerg", "testkubeenv",
-            new KubeEnvironmentInner().withLocation("East US").withStaticIp("1.2.3.4"),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getKubeEnvironments()
+            .createOrUpdate("examplerg", "testkubeenv",
+                new KubeEnvironmentInner().withLocation("East US").withStaticIp("1.2.3.4"),
+                com.azure.core.util.Context.NONE);
     }
 }

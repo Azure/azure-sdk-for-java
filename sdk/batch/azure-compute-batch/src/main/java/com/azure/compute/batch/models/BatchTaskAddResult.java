@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -32,7 +33,9 @@ public final class BatchTaskAddResult implements JsonSerializable<BatchTaskAddRe
     private final String taskId;
 
     /*
-     * The ETag of the Task, if the Task was successfully added. You can use this to detect whether the Task has changed between requests. In particular, you can be pass the ETag with an Update Task request to specify that your changes should take effect only if nobody else has modified the Job in the meantime.
+     * The ETag of the Task, if the Task was successfully added. You can use this to detect whether the Task has changed
+     * between requests. In particular, you can be pass the ETag with an Update Task request to specify that your
+     * changes should take effect only if nobody else has modified the Job in the meantime.
      */
     @Generated
     private String eTag;
@@ -174,7 +177,8 @@ public final class BatchTaskAddResult implements JsonSerializable<BatchTaskAddRe
                 } else if ("eTag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("lastModified".equals(fieldName)) {
-                    lastModified = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("location".equals(fieldName)) {
                     location = reader.getString();
                 } else if ("error".equals(fieldName)) {

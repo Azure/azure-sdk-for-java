@@ -22,7 +22,6 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
      */
     @Generated
     public ToolDefinition() {
-        this.type = "ToolDefinition";
     }
 
     /**
@@ -64,8 +63,8 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("code_interpreter".equals(discriminatorValue)) {
                     return CodeInterpreterToolDefinition.fromJson(readerToUse.reset());
-                } else if ("retrieval".equals(discriminatorValue)) {
-                    return RetrievalToolDefinition.fromJson(readerToUse.reset());
+                } else if ("file_search".equals(discriminatorValue)) {
+                    return FileSearchToolDefinition.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {
                     return FunctionToolDefinition.fromJson(readerToUse.reset());
                 } else {
@@ -91,7 +90,7 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
      * The object type.
      */
     @Generated
-    private String type;
+    private String type = "ToolDefinition";
 
     /**
      * Get the type property: The object type.

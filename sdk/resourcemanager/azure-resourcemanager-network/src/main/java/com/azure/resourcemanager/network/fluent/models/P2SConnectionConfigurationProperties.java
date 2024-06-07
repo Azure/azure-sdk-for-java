@@ -60,8 +60,8 @@ public final class P2SConnectionConfigurationProperties {
     }
 
     /**
-     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address
-     * space for P2S VpnClient.
+     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
      * 
      * @return the vpnClientAddressPool value.
      */
@@ -70,8 +70,8 @@ public final class P2SConnectionConfigurationProperties {
     }
 
     /**
-     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address
-     * space for P2S VpnClient.
+     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
      * 
      * @param vpnClientAddressPool the vpnClientAddressPool value to set.
      * @return the P2SConnectionConfigurationProperties object itself.

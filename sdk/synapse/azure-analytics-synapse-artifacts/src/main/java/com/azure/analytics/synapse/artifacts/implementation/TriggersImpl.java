@@ -33,23 +33,17 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in Triggers.
- */
+/** An instance of this class provides access to all the operations defined in Triggers. */
 public final class TriggersImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final TriggersService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final ArtifactsClientImpl client;
 
     /**
      * Initializes an instance of TriggersImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     TriggersImpl(ArtifactsClientImpl client) {
@@ -65,79 +59,110 @@ public final class TriggersImpl {
     @ServiceInterface(name = "ArtifactsClientTrigg")
     public interface TriggersService {
         @Get("/triggers")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<TriggerListResponse>> getTriggersByWorkspace(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<TriggerListResponse>> getTriggersByWorkspace(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Put("/triggers/{triggerName}")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<TriggerResource>> createOrUpdateTrigger(@HostParam("endpoint") String endpoint,
-            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch, @BodyParam("application/json") TriggerResource trigger,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<TriggerResource>> createOrUpdateTrigger(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("triggerName") String triggerName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("If-Match") String ifMatch,
+                @BodyParam("application/json") TriggerResource trigger,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/triggers/{triggerName}")
-        @ExpectedResponses({ 200, 304 })
+        @ExpectedResponses({200, 304})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<TriggerResource>> getTrigger(@HostParam("endpoint") String endpoint,
-            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<TriggerResource>> getTrigger(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("triggerName") String triggerName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Delete("/triggers/{triggerName}")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> deleteTrigger(@HostParam("endpoint") String endpoint,
-            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> deleteTrigger(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("triggerName") String triggerName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/triggers/{triggerName}/subscribeToEvents")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<TriggerSubscriptionOperationStatus>> subscribeTriggerToEvents(
-            @HostParam("endpoint") String endpoint, @PathParam("triggerName") String triggerName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("triggerName") String triggerName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/triggers/{triggerName}/getEventSubscriptionStatus")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<TriggerSubscriptionOperationStatus>> getEventSubscriptionStatus(
-            @HostParam("endpoint") String endpoint, @PathParam("triggerName") String triggerName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("triggerName") String triggerName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/triggers/{triggerName}/unsubscribeFromEvents")
-        @ExpectedResponses({ 200, 202 })
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<TriggerSubscriptionOperationStatus>> unsubscribeTriggerFromEvents(
-            @HostParam("endpoint") String endpoint, @PathParam("triggerName") String triggerName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("triggerName") String triggerName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/triggers/{triggerName}/start")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> startTrigger(@HostParam("endpoint") String endpoint,
-            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> startTrigger(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("triggerName") String triggerName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/triggers/{triggerName}/stop")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> stopTrigger(@HostParam("endpoint") String endpoint,
-            @PathParam("triggerName") String triggerName, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> stopTrigger(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("triggerName") String triggerName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<TriggerListResponse>> getTriggersByWorkspaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
      * Lists triggers.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trigger resources along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -146,16 +171,23 @@ public final class TriggersImpl {
     public Mono<PagedResponse<TriggerResource>> getTriggersByWorkspaceSinglePageAsync() {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.getTriggersByWorkspace(this.client.getEndpoint(), apiVersion, accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.getTriggersByWorkspace(this.client.getEndpoint(), apiVersion, accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Lists triggers.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -167,26 +199,34 @@ public final class TriggersImpl {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.getTriggersByWorkspace(this.client.getEndpoint(), apiVersion, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Lists triggers.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trigger resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TriggerResource> getTriggersByWorkspaceAsync() {
-        return new PagedFlux<>(() -> getTriggersByWorkspaceSinglePageAsync(),
-            nextLink -> getTriggersByWorkspaceNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+                () -> getTriggersByWorkspaceSinglePageAsync(),
+                nextLink -> getTriggersByWorkspaceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists triggers.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -195,13 +235,14 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TriggerResource> getTriggersByWorkspaceAsync(Context context) {
-        return new PagedFlux<>(() -> getTriggersByWorkspaceSinglePageAsync(context),
-            nextLink -> getTriggersByWorkspaceNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(
+                () -> getTriggersByWorkspaceSinglePageAsync(context),
+                nextLink -> getTriggersByWorkspaceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists triggers.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trigger resources along with {@link PagedResponse}.
@@ -213,7 +254,7 @@ public final class TriggersImpl {
 
     /**
      * Lists triggers.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -227,7 +268,7 @@ public final class TriggersImpl {
 
     /**
      * Lists triggers.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trigger resources as paginated response with {@link PagedIterable}.
@@ -239,7 +280,7 @@ public final class TriggersImpl {
 
     /**
      * Lists triggers.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -253,32 +294,34 @@ public final class TriggersImpl {
 
     /**
      * Creates or updates a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trigger resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerResource>> createOrUpdateTriggerWithResponseAsync(String triggerName,
-        TriggerResource trigger, String ifMatch) {
+    public Mono<Response<TriggerResource>> createOrUpdateTriggerWithResponseAsync(
+            String triggerName, TriggerResource trigger, String ifMatch) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdateTrigger(this.client.getEndpoint(), triggerName,
-            apiVersion, ifMatch, trigger, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.createOrUpdateTrigger(
+                                this.client.getEndpoint(), triggerName, apiVersion, ifMatch, trigger, accept, context));
     }
 
     /**
      * Creates or updates a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -286,36 +329,36 @@ public final class TriggersImpl {
      * @return trigger resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerResource>> createOrUpdateTriggerWithResponseAsync(String triggerName,
-        TriggerResource trigger, String ifMatch, Context context) {
+    public Mono<Response<TriggerResource>> createOrUpdateTriggerWithResponseAsync(
+            String triggerName, TriggerResource trigger, String ifMatch, Context context) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.createOrUpdateTrigger(this.client.getEndpoint(), triggerName, apiVersion, ifMatch, trigger,
-            accept, context);
+        return service.createOrUpdateTrigger(
+                this.client.getEndpoint(), triggerName, apiVersion, ifMatch, trigger, accept, context);
     }
 
     /**
      * Creates or updates a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return trigger resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TriggerResource> createOrUpdateTriggerAsync(String triggerName, TriggerResource trigger,
-        String ifMatch) {
+    public Mono<TriggerResource> createOrUpdateTriggerAsync(
+            String triggerName, TriggerResource trigger, String ifMatch) {
         return createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -327,16 +370,16 @@ public final class TriggersImpl {
     public Mono<TriggerResource> createOrUpdateTriggerAsync(String triggerName, TriggerResource trigger) {
         final String ifMatch = null;
         return createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -344,19 +387,19 @@ public final class TriggersImpl {
      * @return trigger resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TriggerResource> createOrUpdateTriggerAsync(String triggerName, TriggerResource trigger, String ifMatch,
-        Context context) {
+    public Mono<TriggerResource> createOrUpdateTriggerAsync(
+            String triggerName, TriggerResource trigger, String ifMatch, Context context) {
         return createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -364,18 +407,18 @@ public final class TriggersImpl {
      * @return trigger resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TriggerResource> createOrUpdateTriggerWithResponse(String triggerName, TriggerResource trigger,
-        String ifMatch, Context context) {
+    public Response<TriggerResource> createOrUpdateTriggerWithResponse(
+            String triggerName, TriggerResource trigger, String ifMatch, Context context) {
         return createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch, context).block();
     }
 
     /**
      * Creates or updates a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -388,7 +431,7 @@ public final class TriggersImpl {
 
     /**
      * Creates or updates a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -404,10 +447,10 @@ public final class TriggersImpl {
 
     /**
      * Gets a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     * entity tag, or if * was provided, then no content will be returned.
+     *     entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -417,16 +460,18 @@ public final class TriggersImpl {
     public Mono<Response<TriggerResource>> getTriggerWithResponseAsync(String triggerName, String ifNoneMatch) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTrigger(this.client.getEndpoint(), triggerName, apiVersion,
-            ifNoneMatch, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getTrigger(
+                                this.client.getEndpoint(), triggerName, apiVersion, ifNoneMatch, accept, context));
     }
 
     /**
      * Gets a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     * entity tag, or if * was provided, then no content will be returned.
+     *     entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -434,8 +479,8 @@ public final class TriggersImpl {
      * @return a trigger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerResource>> getTriggerWithResponseAsync(String triggerName, String ifNoneMatch,
-        Context context) {
+    public Mono<Response<TriggerResource>> getTriggerWithResponseAsync(
+            String triggerName, String ifNoneMatch, Context context) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.getTrigger(this.client.getEndpoint(), triggerName, apiVersion, ifNoneMatch, accept, context);
@@ -443,10 +488,10 @@ public final class TriggersImpl {
 
     /**
      * Gets a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     * entity tag, or if * was provided, then no content will be returned.
+     *     entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -459,7 +504,7 @@ public final class TriggersImpl {
 
     /**
      * Gets a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -474,10 +519,10 @@ public final class TriggersImpl {
 
     /**
      * Gets a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     * entity tag, or if * was provided, then no content will be returned.
+     *     entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -487,15 +532,15 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerResource> getTriggerAsync(String triggerName, String ifNoneMatch, Context context) {
         return getTriggerWithResponseAsync(triggerName, ifNoneMatch, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     * entity tag, or if * was provided, then no content will be returned.
+     *     entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -509,10 +554,10 @@ public final class TriggersImpl {
 
     /**
      * Gets a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     * entity tag, or if * was provided, then no content will be returned.
+     *     entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -525,7 +570,7 @@ public final class TriggersImpl {
 
     /**
      * Gets a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -540,7 +585,7 @@ public final class TriggersImpl {
 
     /**
      * Deletes a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -552,12 +597,12 @@ public final class TriggersImpl {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.deleteTrigger(this.client.getEndpoint(), triggerName, apiVersion, accept, context));
+                context -> service.deleteTrigger(this.client.getEndpoint(), triggerName, apiVersion, accept, context));
     }
 
     /**
      * Deletes a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -574,7 +619,7 @@ public final class TriggersImpl {
 
     /**
      * Deletes a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -588,7 +633,7 @@ public final class TriggersImpl {
 
     /**
      * Deletes a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -603,7 +648,7 @@ public final class TriggersImpl {
 
     /**
      * Deletes a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -618,7 +663,7 @@ public final class TriggersImpl {
 
     /**
      * Deletes a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -631,37 +676,39 @@ public final class TriggersImpl {
 
     /**
      * Subscribe event trigger to events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerSubscriptionOperationStatus>>
-        subscribeTriggerToEventsWithResponseAsync(String triggerName) {
+    public Mono<Response<TriggerSubscriptionOperationStatus>> subscribeTriggerToEventsWithResponseAsync(
+            String triggerName) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.subscribeTriggerToEvents(this.client.getEndpoint(), triggerName,
-            apiVersion, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.subscribeTriggerToEvents(
+                                this.client.getEndpoint(), triggerName, apiVersion, accept, context));
     }
 
     /**
      * Subscribe event trigger to events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerSubscriptionOperationStatus>>
-        subscribeTriggerToEventsWithResponseAsync(String triggerName, Context context) {
+    public Mono<Response<TriggerSubscriptionOperationStatus>> subscribeTriggerToEventsWithResponseAsync(
+            String triggerName, Context context) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.subscribeTriggerToEvents(this.client.getEndpoint(), triggerName, apiVersion, accept, context);
@@ -669,7 +716,7 @@ public final class TriggersImpl {
 
     /**
      * Subscribe event trigger to events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -683,7 +730,7 @@ public final class TriggersImpl {
 
     /**
      * Subscribe event trigger to events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -694,12 +741,12 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerSubscriptionOperationStatus> subscribeTriggerToEventsAsync(String triggerName, Context context) {
         return subscribeTriggerToEventsWithResponseAsync(triggerName, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Subscribe event trigger to events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -708,14 +755,14 @@ public final class TriggersImpl {
      * @return defines the response of a trigger subscription operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TriggerSubscriptionOperationStatus> subscribeTriggerToEventsWithResponse(String triggerName,
-        Context context) {
+    public Response<TriggerSubscriptionOperationStatus> subscribeTriggerToEventsWithResponse(
+            String triggerName, Context context) {
         return subscribeTriggerToEventsWithResponseAsync(triggerName, context).block();
     }
 
     /**
      * Subscribe event trigger to events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -729,37 +776,39 @@ public final class TriggersImpl {
 
     /**
      * Get a trigger's event subscription status.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a trigger's event subscription status along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerSubscriptionOperationStatus>>
-        getEventSubscriptionStatusWithResponseAsync(String triggerName) {
+    public Mono<Response<TriggerSubscriptionOperationStatus>> getEventSubscriptionStatusWithResponseAsync(
+            String triggerName) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getEventSubscriptionStatus(this.client.getEndpoint(),
-            triggerName, apiVersion, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getEventSubscriptionStatus(
+                                this.client.getEndpoint(), triggerName, apiVersion, accept, context));
     }
 
     /**
      * Get a trigger's event subscription status.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a trigger's event subscription status along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerSubscriptionOperationStatus>>
-        getEventSubscriptionStatusWithResponseAsync(String triggerName, Context context) {
+    public Mono<Response<TriggerSubscriptionOperationStatus>> getEventSubscriptionStatusWithResponseAsync(
+            String triggerName, Context context) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return service.getEventSubscriptionStatus(this.client.getEndpoint(), triggerName, apiVersion, accept, context);
@@ -767,7 +816,7 @@ public final class TriggersImpl {
 
     /**
      * Get a trigger's event subscription status.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -777,12 +826,12 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusAsync(String triggerName) {
         return getEventSubscriptionStatusWithResponseAsync(triggerName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a trigger's event subscription status.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -791,15 +840,15 @@ public final class TriggersImpl {
      * @return a trigger's event subscription status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusAsync(String triggerName,
-        Context context) {
+    public Mono<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusAsync(
+            String triggerName, Context context) {
         return getEventSubscriptionStatusWithResponseAsync(triggerName, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a trigger's event subscription status.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -808,14 +857,14 @@ public final class TriggersImpl {
      * @return a trigger's event subscription status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(String triggerName,
-        Context context) {
+    public Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(
+            String triggerName, Context context) {
         return getEventSubscriptionStatusWithResponseAsync(triggerName, context).block();
     }
 
     /**
      * Get a trigger's event subscription status.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -829,46 +878,48 @@ public final class TriggersImpl {
 
     /**
      * Unsubscribe event trigger from events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerSubscriptionOperationStatus>>
-        unsubscribeTriggerFromEventsWithResponseAsync(String triggerName) {
+    public Mono<Response<TriggerSubscriptionOperationStatus>> unsubscribeTriggerFromEventsWithResponseAsync(
+            String triggerName) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.unsubscribeTriggerFromEvents(this.client.getEndpoint(),
-            triggerName, apiVersion, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.unsubscribeTriggerFromEvents(
+                                this.client.getEndpoint(), triggerName, apiVersion, accept, context));
     }
 
     /**
      * Unsubscribe event trigger from events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TriggerSubscriptionOperationStatus>>
-        unsubscribeTriggerFromEventsWithResponseAsync(String triggerName, Context context) {
+    public Mono<Response<TriggerSubscriptionOperationStatus>> unsubscribeTriggerFromEventsWithResponseAsync(
+            String triggerName, Context context) {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
-        return service.unsubscribeTriggerFromEvents(this.client.getEndpoint(), triggerName, apiVersion, accept,
-            context);
+        return service.unsubscribeTriggerFromEvents(
+                this.client.getEndpoint(), triggerName, apiVersion, accept, context);
     }
 
     /**
      * Unsubscribe event trigger from events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -878,12 +929,12 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TriggerSubscriptionOperationStatus> unsubscribeTriggerFromEventsAsync(String triggerName) {
         return unsubscribeTriggerFromEventsWithResponseAsync(triggerName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Unsubscribe event trigger from events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -892,15 +943,15 @@ public final class TriggersImpl {
      * @return defines the response of a trigger subscription operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TriggerSubscriptionOperationStatus> unsubscribeTriggerFromEventsAsync(String triggerName,
-        Context context) {
+    public Mono<TriggerSubscriptionOperationStatus> unsubscribeTriggerFromEventsAsync(
+            String triggerName, Context context) {
         return unsubscribeTriggerFromEventsWithResponseAsync(triggerName, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Unsubscribe event trigger from events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -909,14 +960,14 @@ public final class TriggersImpl {
      * @return defines the response of a trigger subscription operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TriggerSubscriptionOperationStatus> unsubscribeTriggerFromEventsWithResponse(String triggerName,
-        Context context) {
+    public Response<TriggerSubscriptionOperationStatus> unsubscribeTriggerFromEventsWithResponse(
+            String triggerName, Context context) {
         return unsubscribeTriggerFromEventsWithResponseAsync(triggerName, context).block();
     }
 
     /**
      * Unsubscribe event trigger from events.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -930,7 +981,7 @@ public final class TriggersImpl {
 
     /**
      * Starts a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -942,12 +993,12 @@ public final class TriggersImpl {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.startTrigger(this.client.getEndpoint(), triggerName, apiVersion, accept, context));
+                context -> service.startTrigger(this.client.getEndpoint(), triggerName, apiVersion, accept, context));
     }
 
     /**
      * Starts a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -964,7 +1015,7 @@ public final class TriggersImpl {
 
     /**
      * Starts a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -978,7 +1029,7 @@ public final class TriggersImpl {
 
     /**
      * Starts a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -993,7 +1044,7 @@ public final class TriggersImpl {
 
     /**
      * Starts a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1008,7 +1059,7 @@ public final class TriggersImpl {
 
     /**
      * Starts a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1021,7 +1072,7 @@ public final class TriggersImpl {
 
     /**
      * Stops a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1033,12 +1084,12 @@ public final class TriggersImpl {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.stopTrigger(this.client.getEndpoint(), triggerName, apiVersion, accept, context));
+                context -> service.stopTrigger(this.client.getEndpoint(), triggerName, apiVersion, accept, context));
     }
 
     /**
      * Stops a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1055,7 +1106,7 @@ public final class TriggersImpl {
 
     /**
      * Stops a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1069,7 +1120,7 @@ public final class TriggersImpl {
 
     /**
      * Stops a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1084,7 +1135,7 @@ public final class TriggersImpl {
 
     /**
      * Stops a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1099,7 +1150,7 @@ public final class TriggersImpl {
 
     /**
      * Stops a trigger.
-     * 
+     *
      * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1112,10 +1163,9 @@ public final class TriggersImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1124,19 +1174,26 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TriggerResource>> getTriggersByWorkspaceNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.getTriggersByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.getTriggersByWorkspaceNext(
+                                        nextLink, this.client.getEndpoint(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1144,20 +1201,26 @@ public final class TriggersImpl {
      * @return a list of trigger resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TriggerResource>> getTriggersByWorkspaceNextSinglePageAsync(String nextLink,
-        Context context) {
+    public Mono<PagedResponse<TriggerResource>> getTriggersByWorkspaceNextSinglePageAsync(
+            String nextLink, Context context) {
         final String accept = "application/json";
         return service.getTriggersByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1170,10 +1233,9 @@ public final class TriggersImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

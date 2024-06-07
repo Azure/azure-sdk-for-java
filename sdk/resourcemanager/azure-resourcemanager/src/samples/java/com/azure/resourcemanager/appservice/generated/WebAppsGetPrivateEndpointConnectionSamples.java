@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSitePrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSitePrivateEndpointConnection.json
      */
     /**
      * Sample code: Get a private endpoint connection for a site.
@@ -18,7 +17,10 @@ public final class WebAppsGetPrivateEndpointConnectionSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAPrivateEndpointConnectionForASite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().getPrivateEndpointConnectionWithResponse("rg",
-            "testSite", "connection", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .getPrivateEndpointConnectionWithResponse("rg", "testSite", "connection", com.azure.core.util.Context.NONE);
     }
 }

@@ -38,7 +38,8 @@ public final class PrivateEndpointConnectionTests {
                     VaultSubResourceType.AZURE_BACKUP_SECONDARY))
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.PENDING)
-                        .withDescription("pqyegualhbxxh").withActionRequired("jzzvdud"));
+                        .withDescription("pqyegualhbxxh")
+                        .withActionRequired("jzzvdud"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnection.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.provisioningState());
         Assertions.assertEquals("dlwtgrhpdj", model.privateEndpoint().id());

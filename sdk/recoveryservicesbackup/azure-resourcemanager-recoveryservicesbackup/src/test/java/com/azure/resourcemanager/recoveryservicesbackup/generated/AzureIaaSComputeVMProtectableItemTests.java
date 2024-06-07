@@ -13,31 +13,33 @@ public final class AzureIaaSComputeVMProtectableItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureIaaSComputeVMProtectableItem model = BinaryData.fromString(
-            "{\"protectableItemType\":\"Microsoft.Compute/virtualMachines\",\"virtualMachineId\":\"zknmzlanrupd\",\"virtualMachineVersion\":\"nphcnzqtpjhmqrh\",\"resourceGroup\":\"hlaiwd\",\"backupManagementType\":\"smlzzhzdtxetlgy\",\"workloadType\":\"hqvlnnpxybafiqg\",\"friendlyName\":\"arbgjekgl\",\"protectionState\":\"NotProtected\"}")
+            "{\"protectableItemType\":\"Microsoft.Compute/virtualMachines\",\"virtualMachineId\":\"kcoeqswank\",\"virtualMachineVersion\":\"ytmhdroznnhdrlkt\",\"resourceGroup\":\"csgguxhemlw\",\"backupManagementType\":\"ae\",\"workloadType\":\"zgfbukklelssx\",\"friendlyName\":\"ycsxzu\",\"protectionState\":\"Protected\"}")
             .toObject(AzureIaaSComputeVMProtectableItem.class);
-        Assertions.assertEquals("smlzzhzdtxetlgy", model.backupManagementType());
-        Assertions.assertEquals("hqvlnnpxybafiqg", model.workloadType());
-        Assertions.assertEquals("arbgjekgl", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
-        Assertions.assertEquals("zknmzlanrupd", model.virtualMachineId());
-        Assertions.assertEquals("nphcnzqtpjhmqrh", model.virtualMachineVersion());
-        Assertions.assertEquals("hlaiwd", model.resourceGroup());
+        Assertions.assertEquals("ae", model.backupManagementType());
+        Assertions.assertEquals("zgfbukklelssx", model.workloadType());
+        Assertions.assertEquals("ycsxzu", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        Assertions.assertEquals("kcoeqswank", model.virtualMachineId());
+        Assertions.assertEquals("ytmhdroznnhdrlkt", model.virtualMachineVersion());
+        Assertions.assertEquals("csgguxhemlw", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureIaaSComputeVMProtectableItem model
-            = new AzureIaaSComputeVMProtectableItem().withBackupManagementType("smlzzhzdtxetlgy")
-                .withWorkloadType("hqvlnnpxybafiqg").withFriendlyName("arbgjekgl")
-                .withProtectionState(ProtectionStatus.NOT_PROTECTED).withVirtualMachineId("zknmzlanrupd")
-                .withVirtualMachineVersion("nphcnzqtpjhmqrh").withResourceGroup("hlaiwd");
+        AzureIaaSComputeVMProtectableItem model = new AzureIaaSComputeVMProtectableItem().withBackupManagementType("ae")
+            .withWorkloadType("zgfbukklelssx")
+            .withFriendlyName("ycsxzu")
+            .withProtectionState(ProtectionStatus.PROTECTED)
+            .withVirtualMachineId("kcoeqswank")
+            .withVirtualMachineVersion("ytmhdroznnhdrlkt")
+            .withResourceGroup("csgguxhemlw");
         model = BinaryData.fromObject(model).toObject(AzureIaaSComputeVMProtectableItem.class);
-        Assertions.assertEquals("smlzzhzdtxetlgy", model.backupManagementType());
-        Assertions.assertEquals("hqvlnnpxybafiqg", model.workloadType());
-        Assertions.assertEquals("arbgjekgl", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, model.protectionState());
-        Assertions.assertEquals("zknmzlanrupd", model.virtualMachineId());
-        Assertions.assertEquals("nphcnzqtpjhmqrh", model.virtualMachineVersion());
-        Assertions.assertEquals("hlaiwd", model.resourceGroup());
+        Assertions.assertEquals("ae", model.backupManagementType());
+        Assertions.assertEquals("zgfbukklelssx", model.workloadType());
+        Assertions.assertEquals("ycsxzu", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTED, model.protectionState());
+        Assertions.assertEquals("kcoeqswank", model.virtualMachineId());
+        Assertions.assertEquals("ytmhdroznnhdrlkt", model.virtualMachineVersion());
+        Assertions.assertEquals("csgguxhemlw", model.resourceGroup());
     }
 }

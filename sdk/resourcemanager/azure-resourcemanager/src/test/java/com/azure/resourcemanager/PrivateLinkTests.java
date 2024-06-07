@@ -216,7 +216,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         Assertions.assertEquals(network.subnets().get(subnetName).id(), privateEndpoint.subnet().id());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
         Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
-        Assertions.assertEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
+        assertResourceIdEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
         Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB), privateEndpoint.privateLinkServiceConnections().get(pecName).subResourceNames());
         Assertions.assertNotNull(privateEndpoint.customDnsConfigurations());
         Assertions.assertFalse(privateEndpoint.customDnsConfigurations().isEmpty());
@@ -277,7 +277,7 @@ public class PrivateLinkTests extends ResourceManagerTestProxyTestBase {
         Assertions.assertEquals(network.subnets().get(subnetName).id(), privateEndpoint.subnet().id());
         Assertions.assertEquals(1, privateEndpoint.networkInterfaces().size());
         Assertions.assertEquals(1, privateEndpoint.privateLinkServiceConnections().size());
-        Assertions.assertEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
+        assertResourceIdEquals(storageAccount.id(), privateEndpoint.privateLinkServiceConnections().get(pecName).privateLinkResourceId());
         Assertions.assertEquals(Collections.singletonList(PrivateLinkSubResourceName.STORAGE_BLOB), privateEndpoint.privateLinkServiceConnections().get(pecName).subResourceNames());
         Assertions.assertNotNull(privateEndpoint.customDnsConfigurations());
         Assertions.assertFalse(privateEndpoint.customDnsConfigurations().isEmpty());

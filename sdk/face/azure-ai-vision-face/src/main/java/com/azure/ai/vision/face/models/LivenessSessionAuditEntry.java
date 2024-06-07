@@ -16,14 +16,16 @@ import java.time.OffsetDateTime;
 public final class LivenessSessionAuditEntry {
 
     /*
-     * The unique id to refer to this audit request. Use this id with the 'start' query parameter to continue on to the next page of audit results.
+     * The unique id to refer to this audit request. Use this id with the 'start' query parameter to continue on to the
+     * next page of audit results.
      */
     @Generated
     @JsonProperty(value = "id")
     private final long id;
 
     /*
-     * The unique sessionId of the created session. It will expire 48 hours after it was created or may be deleted sooner using the corresponding session DELETE operation.
+     * The unique sessionId of the created session. It will expire 48 hours after it was created or may be deleted
+     * sooner using the corresponding session DELETE operation.
      */
     @Generated
     @JsonProperty(value = "sessionId")
@@ -65,7 +67,10 @@ public final class LivenessSessionAuditEntry {
     private final AuditLivenessResponseInfo response;
 
     /*
-     * The server calculated digest for this request. If the client reported digest differs from the server calculated digest, then the message integrity between the client and service has been compromised and the result should not be trusted. For more information, see how to guides on how to leverage this value to secure your end-to-end solution.
+     * The server calculated digest for this request. If the client reported digest differs from the server calculated
+     * digest, then the message integrity between the client and service has been compromised and the result should not
+     * be trusted. For more information, see how to guides on how to leverage this value to secure your end-to-end
+     * solution.
      */
     @Generated
     @JsonProperty(value = "digest")

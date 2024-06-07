@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysGetVpnclientConnectionHealthSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * VirtualNetworkGatewayGetVpnclientConnectionHealth.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkGatewayGetVpnclientConnectionHealth.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayVpnclientConnectionHealth.
@@ -19,7 +18,10 @@ public final class VirtualNetworkGatewaysGetVpnclientConnectionHealthSamples {
      */
     public static void
         getVirtualNetworkGatewayVpnclientConnectionHealth(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGateways()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
             .getVpnclientConnectionHealth("p2s-vnet-test", "vpnp2sgw", com.azure.core.util.Context.NONE);
     }
 }

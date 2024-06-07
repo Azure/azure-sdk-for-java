@@ -6,9 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** Properties of key vault. */
+/**
+ * Properties of key vault.
+ */
 @Fluent
 public final class KeyVaultProperties {
     /*
@@ -42,13 +45,14 @@ public final class KeyVaultProperties {
     private OffsetDateTime lastKeyRotationTimestamp;
 
     /*
-     * This is a read only property that represents the expiration time of the current version of the customer managed
-     * key used for encryption.
+     * This is a read only property that represents the expiration time of the current version of the customer managed key used for encryption.
      */
     @JsonProperty(value = "currentVersionedKeyExpirationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime currentVersionedKeyExpirationTimestamp;
 
-    /** Creates an instance of KeyVaultProperties class. */
+    /**
+     * Creates an instance of KeyVaultProperties class.
+     */
     public KeyVaultProperties() {
     }
 

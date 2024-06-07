@@ -34,13 +34,16 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
     private final OffsetDateTime startTime;
 
     /*
-     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
+     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and
+     * lastUpdateTime.
      */
     @Generated
     private final OffsetDateTime lastUpdateTime;
 
     /*
-     * The total wall clock time of all Tasks in the Job.  The wall clock time is the elapsed time from when the Task started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the Task had not finished by then). If a Task was retried, this includes the wall clock time of all the Task retries.
+     * The total wall clock time of all Tasks in the Job. The wall clock time is the elapsed time from when the Task
+     * started running on a Compute Node to when it finished (or to the last time the statistics were updated, if the
+     * Task had not finished by then). If a Task was retried, this includes the wall clock time of all the Task retries.
      */
     @Generated
     private final Duration wallClockTime;
@@ -70,13 +73,15 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
     private final double writeIOGiB;
 
     /*
-     * The total number of Tasks successfully completed in the Job during the given time range. A Task completes successfully if it returns exit code 0.
+     * The total number of Tasks successfully completed in the Job during the given time range. A Task completes
+     * successfully if it returns exit code 0.
      */
     @Generated
     private final long numSucceededTasks;
 
     /*
-     * The total number of Tasks in the Job that failed during the given time range. A Task fails if it exhausts its maximum retry count without returning exit code 0.
+     * The total number of Tasks in the Job that failed during the given time range. A Task fails if it exhausts its
+     * maximum retry count without returning exit code 0.
      */
     @Generated
     private final long numFailedTasks;
@@ -88,7 +93,10 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
     private final long numTaskRetries;
 
     /*
-     * The total wait time of all Tasks in the Job. The wait time for a Task is defined as the elapsed time between the creation of the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is the time to the most recent Task execution.) This value is only reported in the Account lifetime statistics; it is not included in the Job statistics.
+     * The total wait time of all Tasks in the Job. The wait time for a Task is defined as the elapsed time between the
+     * creation of the Task and the start of Task execution. (If the Task is retried due to failures, the wait time is
+     * the time to the most recent Task execution.) This value is only reported in the Account lifetime statistics; it
+     * is not included in the Job statistics.
      */
     @Generated
     private final Duration waitTime;
@@ -354,10 +362,11 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
                 if ("url".equals(fieldName)) {
                     url = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdateTime".equals(fieldName)) {
-                    lastUpdateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastUpdateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("userCPUTime".equals(fieldName)) {
                     userCpuTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("kernelCPUTime".equals(fieldName)) {

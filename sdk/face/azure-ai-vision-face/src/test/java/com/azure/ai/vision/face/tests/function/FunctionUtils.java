@@ -18,15 +18,6 @@ public final class FunctionUtils {
         };
     }
 
-    public static <TReturn> Supplier<TReturn> toSyncFunction(
-        Supplier<Mono<TReturn>> asyncFunction) {
-        return () -> {
-            Mono<TReturn> mono = asyncFunction.get();
-            mono.subscribe();
-            return mono.block();
-        };
-    }
-
     public static <TReturn> TReturn callAndAwait(
         Supplier<Mono<TReturn>> asyncFunction) {
         return asyncFunction.get().block();

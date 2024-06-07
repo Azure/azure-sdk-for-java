@@ -11,7 +11,7 @@ public final class AvailablePatchCountByClassificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailablePatchCountByClassification model = BinaryData.fromString(
-            "{\"security\":1857239406,\"critical\":1149857481,\"definition\":525052628,\"updateRollup\":1405653076,\"featurePack\":1012286032,\"servicePack\":858824887,\"tools\":751467546,\"updates\":2035107412,\"other\":1122692891}")
+            "{\"security\":915471474,\"critical\":1410401520,\"definition\":1631031599,\"updateRollup\":136140206,\"featurePack\":871941711,\"servicePack\":2081633134,\"tools\":2108720528,\"updates\":1644974889,\"other\":1711095303}")
             .toObject(AvailablePatchCountByClassification.class);
     }
 

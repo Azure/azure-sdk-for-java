@@ -38,7 +38,6 @@ import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_FILE_LOCATION;
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
-import static com.azure.core.test.utils.TestProxyUtils.DEFAULT_REMOVE_SANITIZER_LIST;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
@@ -102,7 +101,6 @@ public class TestProxyPlaybackClient implements HttpClient {
                 = new String(Base64.getUrlDecoder().decode(response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)),
                     StandardCharsets.UTF_8);
             addProxySanitization(this.sanitizers);
-            removeProxySanitization(DEFAULT_REMOVE_SANITIZER_LIST);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
             // The test proxy stores variables in a map with no guaranteed order.

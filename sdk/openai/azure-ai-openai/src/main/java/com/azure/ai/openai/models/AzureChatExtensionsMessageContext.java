@@ -28,10 +28,10 @@ public final class AzureChatExtensionsMessageContext implements JsonSerializable
     }
 
     /*
-     *   The contextual information associated with the Azure chat extensions used for a chat completions request.
-     *   These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in the
-     *   course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
-     *   extensions.
+     * The contextual information associated with the Azure chat extensions used for a chat completions request.
+     * These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in the
+     * course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
+     * extensions.
      */
     @Generated
     private List<AzureChatExtensionDataSourceResponseCitation> citations;
@@ -76,6 +76,8 @@ public final class AzureChatExtensionsMessageContext implements JsonSerializable
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("citations", this.citations, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("intent", this.intent);
+        jsonWriter.writeArrayField("all_retrieved_documents", this.allRetrievedDocuments,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -101,11 +103,31 @@ public final class AzureChatExtensionsMessageContext implements JsonSerializable
                     deserializedAzureChatExtensionsMessageContext.citations = citations;
                 } else if ("intent".equals(fieldName)) {
                     deserializedAzureChatExtensionsMessageContext.intent = reader.getString();
+                } else if ("all_retrieved_documents".equals(fieldName)) {
+                    List<AzureChatExtensionRetrievedDocument> allRetrievedDocuments
+                        = reader.readArray(reader1 -> AzureChatExtensionRetrievedDocument.fromJson(reader1));
+                    deserializedAzureChatExtensionsMessageContext.allRetrievedDocuments = allRetrievedDocuments;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedAzureChatExtensionsMessageContext;
         });
+    }
+
+    /*
+     * All the retrieved documents.
+     */
+    @Generated
+    private List<AzureChatExtensionRetrievedDocument> allRetrievedDocuments;
+
+    /**
+     * Get the allRetrievedDocuments property: All the retrieved documents.
+     *
+     * @return the allRetrievedDocuments value.
+     */
+    @Generated
+    public List<AzureChatExtensionRetrievedDocument> getAllRetrievedDocuments() {
+        return this.allRetrievedDocuments;
     }
 }

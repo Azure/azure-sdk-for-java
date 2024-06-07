@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesDeleteBuildDatabaseConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * DeleteStaticSiteBuildDatabaseConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteStaticSiteBuildDatabaseConnection.json
      */
     /**
      * Sample code: Delete a database connection from a static site build.
@@ -19,7 +18,11 @@ public final class StaticSitesDeleteBuildDatabaseConnectionSamples {
      */
     public static void
         deleteADatabaseConnectionFromAStaticSiteBuild(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().deleteBuildDatabaseConnectionWithResponse("rg",
-            "testStaticSite0", "default", "default", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .deleteBuildDatabaseConnectionWithResponse("rg", "testStaticSite0", "default", "default",
+                com.azure.core.util.Context.NONE);
     }
 }

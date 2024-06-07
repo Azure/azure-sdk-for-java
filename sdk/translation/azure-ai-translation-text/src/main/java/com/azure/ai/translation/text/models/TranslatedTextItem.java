@@ -23,7 +23,7 @@ public final class TranslatedTextItem {
     private DetectedLanguage detectedLanguage;
 
     /*
-     * An array of translation results. The size of the array matches the number of target 
+     * An array of translation results. The size of the array matches the number of target
      * languages specified through the to query parameter.
      */
     @Generated
@@ -31,9 +31,9 @@ public final class TranslatedTextItem {
     private final List<TranslationText> translations;
 
     /*
-     * Input text in the default script of the source language. sourceText property is present only when 
-     * the input is expressed in a script that's not the usual script for the language. For example, 
-     * if the input were Arabic written in Latin script, then sourceText.text would be the same Arabic text 
+     * Input text in the default script of the source language. sourceText property is present only when
+     * the input is expressed in a script that's not the usual script for the language. For example,
+     * if the input were Arabic written in Latin script, then sourceText.text would be the same Arabic text
      * converted into Arab script.
      */
     @Generated

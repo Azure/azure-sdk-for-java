@@ -28,7 +28,8 @@ public final class BatchPoolUsageStatistics implements JsonSerializable<BatchPoo
     private final OffsetDateTime startTime;
 
     /*
-     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
+     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and
+     * lastUpdateTime.
      */
     @Generated
     private final OffsetDateTime lastUpdateTime;
@@ -120,10 +121,11 @@ public final class BatchPoolUsageStatistics implements JsonSerializable<BatchPoo
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("startTime".equals(fieldName)) {
-                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdateTime".equals(fieldName)) {
-                    lastUpdateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastUpdateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("dedicatedCoreTime".equals(fieldName)) {
                     dedicatedCoreTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else {

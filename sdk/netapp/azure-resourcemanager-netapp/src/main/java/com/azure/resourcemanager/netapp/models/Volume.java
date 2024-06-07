@@ -139,7 +139,7 @@ public interface Volume {
     /**
      * Gets the snapshotId property: Snapshot ID
      * 
-     * UUID v4 or resource identifier used to identify the Snapshot.
+     * Resource identifier used to identify the Snapshot.
      * 
      * @return the snapshotId value.
      */
@@ -156,7 +156,7 @@ public interface Volume {
     /**
      * Gets the backupId property: Backup ID
      * 
-     * UUID v4 or resource identifier used to identify the Backup.
+     * Resource identifier used to identify the Backup.
      * 
      * @return the backupId value.
      */
@@ -787,11 +787,11 @@ public interface Volume {
             /**
              * Specifies the snapshotId property: Snapshot ID
              * 
-             * UUID v4 or resource identifier used to identify the Snapshot..
+             * Resource identifier used to identify the Snapshot..
              * 
              * @param snapshotId Snapshot ID
              * 
-             * UUID v4 or resource identifier used to identify the Snapshot.
+             * Resource identifier used to identify the Snapshot.
              * @return the next definition stage.
              */
             WithCreate withSnapshotId(String snapshotId);
@@ -819,11 +819,11 @@ public interface Volume {
             /**
              * Specifies the backupId property: Backup ID
              * 
-             * UUID v4 or resource identifier used to identify the Backup..
+             * Resource identifier used to identify the Backup..
              * 
              * @param backupId Backup ID
              * 
-             * UUID v4 or resource identifier used to identify the Backup.
+             * Resource identifier used to identify the Backup.
              * @return the next definition stage.
              */
             WithCreate withBackupId(String backupId);

@@ -13,8 +13,7 @@ import java.util.Map;
  */
 public final class ServiceEndpointPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * ServiceEndpointPolicyUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ServiceEndpointPolicyUpdateTags.json
      */
     /**
      * Sample code: Update service endpoint policy tags.
@@ -22,9 +21,12 @@ public final class ServiceEndpointPoliciesUpdateTagsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateServiceEndpointPolicyTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getServiceEndpointPolicies().updateTagsWithResponse("rg1",
-            "testServiceEndpointPolicy", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getServiceEndpointPolicies()
+            .updateTagsWithResponse("rg1", "testServiceEndpointPolicy",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

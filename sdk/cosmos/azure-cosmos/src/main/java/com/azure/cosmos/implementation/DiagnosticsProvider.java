@@ -24,6 +24,7 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
+import com.azure.cosmos.models.ShowQueryMode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -760,6 +761,7 @@ public final class DiagnosticsProvider {
             trackingId,
             clientAccessor.getConnectionMode(client),
             clientAccessor.getUserAgent(client),
+            null, 
             null);
 
         if (requestOptions != null) {
@@ -1163,6 +1165,14 @@ public final class DiagnosticsProvider {
         private boolean isTransportLevelTracingEnabled() {
             return clientTelemetryConfigAccessor.isTransportLevelTracingEnabled(this.config);
         }
+        
+        private boolean showQueryStatement() {
+            if(ShowQueryMode.ALL.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))
+                   || ShowQueryMode.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))) {
+                   return true;
+            }
+            return false;
+        }
 
         @Override
         public Context startSpan(String spanName, CosmosDiagnosticsContext cosmosCtx, Context context) {
@@ -1201,6 +1211,10 @@ public final class DiagnosticsProvider {
                 if (!cosmosCtx.getOperationId().isEmpty() &&
                     !cosmosCtx.getOperationId().equals(ctxAccessor.getSpanName(cosmosCtx))) {
                     spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
+                }
+                
+                if (showQueryStatement() && null != cosmosCtx.getQueryStatement() ) {
+                    spanOptions.setAttribute("db.statement", cosmosCtx.getQueryStatement());
                 }
 
                 String containerName = cosmosCtx.getContainerName();

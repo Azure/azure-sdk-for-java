@@ -27,9 +27,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.InboundSecurityRuleOperationsClient;
 import com.azure.resourcemanager.network.fluent.models.InboundSecurityRuleInner;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in InboundSecurityRuleOperationsClient.
@@ -47,7 +48,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
 
     /**
      * Initializes an instance of InboundSecurityRuleOperationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     InboundSecurityRuleOperationsClientImpl(NetworkManagementClientImpl client) {
@@ -78,7 +79,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
@@ -117,7 +118,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -128,7 +129,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
@@ -169,7 +170,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName,
@@ -178,7 +179,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
@@ -202,7 +203,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
@@ -227,7 +228,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
@@ -249,7 +250,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
@@ -265,13 +266,15 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
     public SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String networkVirtualApplianceName, String ruleCollectionName,
         InboundSecurityRuleInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName,
-            parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
@@ -286,12 +289,13 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
     public Mono<InboundSecurityRuleInner> createOrUpdateAsync(String resourceGroupName,
         String networkVirtualApplianceName, String ruleCollectionName, InboundSecurityRuleInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
@@ -313,7 +317,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.
@@ -333,7 +337,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
 
     /**
      * Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param ruleCollectionName The name of security rule collection.

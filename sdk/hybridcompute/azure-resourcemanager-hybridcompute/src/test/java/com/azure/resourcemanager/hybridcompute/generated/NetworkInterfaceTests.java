@@ -14,20 +14,19 @@ public final class NetworkInterfaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterface model = BinaryData.fromString(
-            "{\"ipAddresses\":[{\"address\":\"cciw\",\"ipAddressVersion\":\"juqk\",\"subnet\":{\"addressPrefix\":\"ajiwkuo\"}},{\"address\":\"skghsauuimj\",\"ipAddressVersion\":\"xieduugidyjrr\",\"subnet\":{\"addressPrefix\":\"aos\"}},{\"address\":\"xc\",\"ipAddressVersion\":\"npc\",\"subnet\":{\"addressPrefix\":\"cohslkev\"}}]}")
+            "{\"ipAddresses\":[{\"address\":\"xzko\",\"ipAddressVersion\":\"cukoklyaxuconu\",\"subnet\":{\"addressPrefix\":\"fkbey\"}},{\"address\":\"wrmjmwvvjektc\",\"ipAddressVersion\":\"enhwlrs\",\"subnet\":{\"addressPrefix\":\"zpwv\"}}]}")
             .toObject(NetworkInterface.class);
-        Assertions.assertEquals("cciw", model.ipAddresses().get(0).address());
-        Assertions.assertEquals("juqk", model.ipAddresses().get(0).ipAddressVersion());
+        Assertions.assertEquals("xzko", model.ipAddresses().get(0).address());
+        Assertions.assertEquals("cukoklyaxuconu", model.ipAddresses().get(0).ipAddressVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkInterface model = new NetworkInterface()
-            .withIpAddresses(Arrays.asList(new IpAddress().withAddress("cciw").withIpAddressVersion("juqk"),
-                new IpAddress().withAddress("skghsauuimj").withIpAddressVersion("xieduugidyjrr"),
-                new IpAddress().withAddress("xc").withIpAddressVersion("npc")));
+            .withIpAddresses(Arrays.asList(new IpAddress().withAddress("xzko").withIpAddressVersion("cukoklyaxuconu"),
+                new IpAddress().withAddress("wrmjmwvvjektc").withIpAddressVersion("enhwlrs")));
         model = BinaryData.fromObject(model).toObject(NetworkInterface.class);
-        Assertions.assertEquals("cciw", model.ipAddresses().get(0).address());
-        Assertions.assertEquals("juqk", model.ipAddresses().get(0).ipAddressVersion());
+        Assertions.assertEquals("xzko", model.ipAddresses().get(0).address());
+        Assertions.assertEquals("cukoklyaxuconu", model.ipAddresses().get(0).ipAddressVersion());
     }
 }

@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,13 +22,16 @@ import java.time.format.DateTimeFormatter;
 public final class BatchJobScheduleExecutionInfo implements JsonSerializable<BatchJobScheduleExecutionInfo> {
 
     /*
-     * The next time at which a Job will be created under this schedule. This property is meaningful only if the schedule is in the active state when the time comes around. For example, if the schedule is disabled, no Job will be created at nextRunTime unless the Job is enabled before then.
+     * The next time at which a Job will be created under this schedule. This property is meaningful only if the
+     * schedule is in the active state when the time comes around. For example, if the schedule is disabled, no Job will
+     * be created at nextRunTime unless the Job is enabled before then.
      */
     @Generated
     private OffsetDateTime nextRunTime;
 
     /*
-     * Information about the most recent Job under the Job Schedule. This property is present only if the at least one Job has run under the schedule.
+     * Information about the most recent Job under the Job Schedule. This property is present only if the at least one
+     * Job has run under the schedule.
      */
     @Generated
     private RecentBatchJob recentJob;
@@ -111,13 +115,13 @@ public final class BatchJobScheduleExecutionInfo implements JsonSerializable<Bat
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("nextRunTime".equals(fieldName)) {
-                    deserializedBatchJobScheduleExecutionInfo.nextRunTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchJobScheduleExecutionInfo.nextRunTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("recentJob".equals(fieldName)) {
                     deserializedBatchJobScheduleExecutionInfo.recentJob = RecentBatchJob.fromJson(reader);
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedBatchJobScheduleExecutionInfo.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchJobScheduleExecutionInfo.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

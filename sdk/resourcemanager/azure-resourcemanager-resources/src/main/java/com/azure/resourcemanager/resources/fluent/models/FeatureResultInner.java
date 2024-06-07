@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.models.FeatureProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Previewed feature information. */
+/**
+ * Previewed feature information.
+ */
 @Fluent
 public final class FeatureResultInner {
     /*
@@ -35,13 +37,15 @@ public final class FeatureResultInner {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of FeatureResultInner class. */
+    /**
+     * Creates an instance of FeatureResultInner class.
+     */
     public FeatureResultInner() {
     }
 
     /**
      * Get the name property: The name of the feature.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class FeatureResultInner {
 
     /**
      * Set the name property: The name of the feature.
-     *
+     * 
      * @param name the name value to set.
      * @return the FeatureResultInner object itself.
      */
@@ -61,7 +65,7 @@ public final class FeatureResultInner {
 
     /**
      * Get the properties property: Properties of the previewed feature.
-     *
+     * 
      * @return the properties value.
      */
     public FeatureProperties properties() {
@@ -70,7 +74,7 @@ public final class FeatureResultInner {
 
     /**
      * Set the properties property: Properties of the previewed feature.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the FeatureResultInner object itself.
      */
@@ -81,7 +85,7 @@ public final class FeatureResultInner {
 
     /**
      * Get the id property: The resource ID of the feature.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -90,7 +94,7 @@ public final class FeatureResultInner {
 
     /**
      * Set the id property: The resource ID of the feature.
-     *
+     * 
      * @param id the id value to set.
      * @return the FeatureResultInner object itself.
      */
@@ -101,7 +105,7 @@ public final class FeatureResultInner {
 
     /**
      * Get the type property: The resource type of the feature.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -110,7 +114,7 @@ public final class FeatureResultInner {
 
     /**
      * Set the type property: The resource type of the feature.
-     *
+     * 
      * @param type the type value to set.
      * @return the FeatureResultInner object itself.
      */
@@ -121,7 +125,7 @@ public final class FeatureResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

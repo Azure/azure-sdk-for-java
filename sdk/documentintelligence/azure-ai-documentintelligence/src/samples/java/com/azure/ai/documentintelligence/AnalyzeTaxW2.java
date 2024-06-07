@@ -38,7 +38,7 @@ public class AnalyzeTaxW2 {
 
         File invoice = new File("./documentintelligence/azure-ai-documentintelligence/src/samples/resources/Sample-W2.jpg");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeW2Poller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeW2Poller =
             client.beginAnalyzeDocument("prebuilt-tax.us.w2", null,
                 null,
                 null,
@@ -47,7 +47,7 @@ public class AnalyzeTaxW2 {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoice.toPath())));
 
-        AnalyzeResult analyzeTaxResult = analyzeW2Poller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeTaxResult = analyzeW2Poller.getFinalResult();
 
         for (int i = 0; i < analyzeTaxResult.getDocuments().size(); i++) {
             Document analyzedTaxDocument = analyzeTaxResult.getDocuments().get(i);

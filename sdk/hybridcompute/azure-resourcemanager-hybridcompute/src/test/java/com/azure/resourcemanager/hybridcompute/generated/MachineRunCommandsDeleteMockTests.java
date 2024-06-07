@@ -27,7 +27,8 @@ public final class MachineRunCommandsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.machineRunCommands().delete("slhhxudbxv", "d", "tnsi", com.azure.core.util.Context.NONE);
+        manager.machineRunCommands()
+            .delete("birdsvuwcobiegs", "mninwjizcilng", "gshejjtbxqmulux", com.azure.core.util.Context.NONE);
 
     }
 }

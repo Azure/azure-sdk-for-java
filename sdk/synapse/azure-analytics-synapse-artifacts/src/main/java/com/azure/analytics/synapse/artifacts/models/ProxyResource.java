@@ -8,14 +8,11 @@ import com.azure.core.annotation.Immutable;
 
 /**
  * Proxy Resource
- * 
- * The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location.
+ *
+ * <p>The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location.
  */
 @Immutable
 public class ProxyResource extends Resource {
-    /**
-     * Creates an instance of ProxyResource class.
-     */
-    public ProxyResource() {
-    }
+    /** Creates an instance of ProxyResource class. */
+    public ProxyResource() {}
 }

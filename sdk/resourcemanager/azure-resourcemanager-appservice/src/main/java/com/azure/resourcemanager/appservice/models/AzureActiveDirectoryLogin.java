@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -21,8 +22,7 @@ public final class AzureActiveDirectoryLogin {
     private List<String> loginParameters;
 
     /*
-     * <code>true</code> if the www-authenticate provider should be omitted from the request; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the www-authenticate provider should be omitted from the request; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "disableWWWAuthenticate")
     private Boolean disableWwwAuthenticate;
@@ -36,7 +36,7 @@ public final class AzureActiveDirectoryLogin {
     /**
      * Get the loginParameters property: Login parameters to send to the OpenID Connect authorization endpoint when
      * a user logs in. Each parameter must be in the form "key=value".
-     * 
+     *
      * @return the loginParameters value.
      */
     public List<String> loginParameters() {
@@ -46,7 +46,7 @@ public final class AzureActiveDirectoryLogin {
     /**
      * Set the loginParameters property: Login parameters to send to the OpenID Connect authorization endpoint when
      * a user logs in. Each parameter must be in the form "key=value".
-     * 
+     *
      * @param loginParameters the loginParameters value to set.
      * @return the AzureActiveDirectoryLogin object itself.
      */
@@ -56,9 +56,9 @@ public final class AzureActiveDirectoryLogin {
     }
 
     /**
-     * Get the disableWwwAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should
-     * be omitted from the request; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * 
+     * Get the disableWwwAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should be
+     * omitted from the request; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     *
      * @return the disableWwwAuthenticate value.
      */
     public Boolean disableWwwAuthenticate() {
@@ -66,9 +66,9 @@ public final class AzureActiveDirectoryLogin {
     }
 
     /**
-     * Set the disableWwwAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should
-     * be omitted from the request; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     * 
+     * Set the disableWwwAuthenticate property: &lt;code&gt;true&lt;/code&gt; if the www-authenticate provider should be
+     * omitted from the request; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     *
      * @param disableWwwAuthenticate the disableWwwAuthenticate value to set.
      * @return the AzureActiveDirectoryLogin object itself.
      */
@@ -79,7 +79,7 @@ public final class AzureActiveDirectoryLogin {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

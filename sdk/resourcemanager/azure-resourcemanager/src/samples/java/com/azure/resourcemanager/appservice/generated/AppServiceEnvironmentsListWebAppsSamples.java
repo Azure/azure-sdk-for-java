@@ -9,9 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsListWebAppsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/AppServiceEnvironments_ListWebApps.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ListWebApps.json
      */
     /**
      * Sample code: Get all apps in an App Service Environment.
@@ -19,7 +17,10 @@ public final class AppServiceEnvironmentsListWebAppsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAllAppsInAnAppServiceEnvironment(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().listWebApps("test-rg", "test-ase", null,
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .listWebApps("test-rg", "test-ase", null, com.azure.core.util.Context.NONE);
     }
 }

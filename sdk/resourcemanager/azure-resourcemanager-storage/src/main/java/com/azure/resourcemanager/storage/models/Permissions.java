@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -13,28 +14,44 @@ import java.util.Collection;
  * (a), Create (c), Update (u) and Process (p).
  */
 public final class Permissions extends ExpandableStringEnum<Permissions> {
-    /** Static value r for Permissions. */
+    /**
+     * Static value r for Permissions.
+     */
     public static final Permissions R = fromString("r");
 
-    /** Static value d for Permissions. */
+    /**
+     * Static value d for Permissions.
+     */
     public static final Permissions D = fromString("d");
 
-    /** Static value w for Permissions. */
+    /**
+     * Static value w for Permissions.
+     */
     public static final Permissions W = fromString("w");
 
-    /** Static value l for Permissions. */
+    /**
+     * Static value l for Permissions.
+     */
     public static final Permissions L = fromString("l");
 
-    /** Static value a for Permissions. */
+    /**
+     * Static value a for Permissions.
+     */
     public static final Permissions A = fromString("a");
 
-    /** Static value c for Permissions. */
+    /**
+     * Static value c for Permissions.
+     */
     public static final Permissions C = fromString("c");
 
-    /** Static value u for Permissions. */
+    /**
+     * Static value u for Permissions.
+     */
     public static final Permissions U = fromString("u");
 
-    /** Static value p for Permissions. */
+    /**
+     * Static value p for Permissions.
+     */
     public static final Permissions P = fromString("p");
 
     /**

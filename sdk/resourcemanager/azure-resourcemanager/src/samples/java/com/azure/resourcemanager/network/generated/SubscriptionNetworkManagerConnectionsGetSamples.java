@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SubscriptionNetworkManagerConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * NetworkManagerConnectionSubscriptionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerConnectionSubscriptionGet.json
      */
     /**
      * Sample code: Get Subscription Network Manager Connection.
@@ -18,7 +17,10 @@ public final class SubscriptionNetworkManagerConnectionsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSubscriptionNetworkManagerConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSubscriptionNetworkManagerConnections()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSubscriptionNetworkManagerConnections()
             .getWithResponse("TestNMConnection", com.azure.core.util.Context.NONE);
     }
 }

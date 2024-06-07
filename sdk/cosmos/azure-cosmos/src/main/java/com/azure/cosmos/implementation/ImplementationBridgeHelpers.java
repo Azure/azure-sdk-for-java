@@ -67,6 +67,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
+import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -841,7 +842,8 @@ public class ImplementationBridgeHelpers {
                 String trackingId,
                 String connectionMode,
                 String userAgent,
-                Integer sequenceNumber);
+                Integer sequenceNumber,
+                String queryStatement);
 
             CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
                 String cpu,
@@ -894,6 +896,9 @@ public class ImplementationBridgeHelpers {
             Integer getSequenceNumber(CosmosDiagnosticsContext ctx);
 
             boolean isEmptyCompletion(CosmosDiagnosticsContext ctx);
+
+            String getQueryStatement(CosmosDiagnosticsContext ctx);
+
         }
     }
 
@@ -1499,6 +1504,7 @@ public class ImplementationBridgeHelpers {
             void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing);
             void setTracer(CosmosClientTelemetryConfig config, Tracer tracer);
             double getSamplingRate(CosmosClientTelemetryConfig config);
+            ShowQueryMode showQueryMode(CosmosClientTelemetryConfig config);
             double[] getDefaultPercentiles(CosmosClientTelemetryConfig config);
             boolean shouldPublishHistograms(CosmosClientTelemetryConfig config);
             boolean shouldApplyDiagnosticThresholdsForTransportLevelMeters(CosmosClientTelemetryConfig config);

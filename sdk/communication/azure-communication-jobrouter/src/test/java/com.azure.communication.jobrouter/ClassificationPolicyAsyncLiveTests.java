@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.models.ConditionalQueueSelectorAttachment;
 import com.azure.communication.jobrouter.models.ConditionalWorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
@@ -32,6 +31,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,15 +41,13 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
-    private JobRouterAdministrationAsyncClient administrationAsyncClient;
-    private JobRouterAsyncClient routerAsyncClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createClassificationPolicy(HttpClient httpClient) throws InterruptedException {
+    public void createClassificationPolicy(HttpClient httpClient) {
         // Setup
-        routerAsyncClient = getRouterAsyncClient(httpClient);
-        administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
+        JobRouterAsyncClient routerAsyncClient = getRouterAsyncClient(httpClient);
+        JobRouterAdministrationAsyncClient administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
         String testName = "classification-policy-test-async";
         String distributionPolicyId = String.format("%s-%s-DistributionPolicy", JAVA_LIVE_TESTS, testName);
         String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
@@ -59,8 +57,7 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
             Duration.ofSeconds(10),
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
+                .setMaxConcurrentOffers(10))
             .setName(distributionPolicyName);
 
         DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
@@ -69,11 +66,8 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
         String fallbackQueueId = String.format("%s-%s-FallbackQueue", JAVA_LIVE_TESTS, testName);
         String queueName = String.format("%s-Name", queueId);
 
-        Map<String, RouterValue> queueLabels = new HashMap<String, RouterValue>() {
-            {
-                put("Label_1", new RouterValue("Value_1"));
-            }
-        };
+        Map<String, RouterValue> queueLabels = new HashMap<>();
+        queueLabels.put("Label_1", new RouterValue("Value_1"));
 
         CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
             .setLabels(queueLabels)
@@ -89,33 +83,20 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
         StaticQueueSelectorAttachment staticQueueSelector = new StaticQueueSelectorAttachment(
             new RouterQueueSelector("Id", LabelOperator.EQUAL, new RouterValue(queueId)));
 
-        List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {
-            {
-                add(staticQueueSelector);
-                add(new ConditionalQueueSelectorAttachment(new StaticRouterRule().setValue(new RouterValue(false)), new ArrayList<RouterQueueSelector>() {
-                    {
-                        add(new RouterQueueSelector("Name", LabelOperator.NOT_EQUAL, new RouterValue(true)));
-                    }
-                }));
-            }
-        };
+        List<QueueSelectorAttachment> queueSelectors = new ArrayList<>();
+        queueSelectors.add(staticQueueSelector);
+        queueSelectors.add(new StaticQueueSelectorAttachment(
+            new RouterQueueSelector("Name", LabelOperator.NOT_EQUAL, new RouterValue(true))));
 
         StaticWorkerSelectorAttachment staticWorkerSelector = new StaticWorkerSelectorAttachment(
             new RouterWorkerSelector("key", LabelOperator.EQUAL, new RouterValue("value"))
                 .setExpedite(true).setExpiresAfter(Duration.ofSeconds(10)));
 
-        List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {
-            {
-                add(staticWorkerSelector);
-                add(new ConditionalWorkerSelectorAttachment(new StaticRouterRule().setValue(new RouterValue(true)),
-                    new ArrayList<RouterWorkerSelector>() {
-                        {
-                            add(new RouterWorkerSelector("Name", LabelOperator.NOT_EQUAL, new RouterValue(true)));
-                        }
-                    }));
-                add(new PassThroughWorkerSelectorAttachment("Key", LabelOperator.NOT_EQUAL));
-            }
-        };
+        List<WorkerSelectorAttachment> workerSelectors = new ArrayList<>();
+        workerSelectors.add(staticWorkerSelector);
+        workerSelectors.add(new ConditionalWorkerSelectorAttachment(new StaticRouterRule().setValue(new RouterValue(true)),
+            Collections.singletonList(new RouterWorkerSelector("Name", LabelOperator.NOT_EQUAL, new RouterValue(true)))));
+        workerSelectors.add(new PassThroughWorkerSelectorAttachment("Key", LabelOperator.NOT_EQUAL));
 
         CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
             classificationPolicyId)
@@ -132,11 +113,8 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
         ClassificationPolicy policy = administrationAsyncClient.createClassificationPolicy(createClassificationPolicyOptions).block();
         RouterJob job = routerAsyncClient.createJobWithClassificationPolicy(
             new CreateJobWithClassificationPolicyOptions(jobId, channelId, classificationPolicyId)
-                .setLabels(new HashMap<String, RouterValue>() {
-                    {
-                        put("Key", new RouterValue("abc"));
-                    }
-                })).block();
+                .setLabels(Collections.singletonMap("Key", new RouterValue("abc"))))
+            .block();
 
         sleepIfRunningAgainstService(5000);
 

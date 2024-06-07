@@ -40,16 +40,12 @@ public class ChainingTrigger extends Trigger {
     @JsonProperty(value = "typeProperties.runDimension", required = true)
     private String runDimension;
 
-    /**
-     * Creates an instance of ChainingTrigger class.
-     */
-    public ChainingTrigger() {
-    }
+    /** Creates an instance of ChainingTrigger class. */
+    public ChainingTrigger() {}
 
     /**
-     * Get the pipeline property: Pipeline for which runs are created when all upstream pipelines complete
-     * successfully.
-     * 
+     * Get the pipeline property: Pipeline for which runs are created when all upstream pipelines complete successfully.
+     *
      * @return the pipeline value.
      */
     public TriggerPipelineReference getPipeline() {
@@ -57,9 +53,8 @@ public class ChainingTrigger extends Trigger {
     }
 
     /**
-     * Set the pipeline property: Pipeline for which runs are created when all upstream pipelines complete
-     * successfully.
-     * 
+     * Set the pipeline property: Pipeline for which runs are created when all upstream pipelines complete successfully.
+     *
      * @param pipeline the pipeline value to set.
      * @return the ChainingTrigger object itself.
      */
@@ -70,7 +65,7 @@ public class ChainingTrigger extends Trigger {
 
     /**
      * Get the dependsOn property: Upstream Pipelines.
-     * 
+     *
      * @return the dependsOn value.
      */
     public List<PipelineReference> getDependsOn() {
@@ -79,7 +74,7 @@ public class ChainingTrigger extends Trigger {
 
     /**
      * Set the dependsOn property: Upstream Pipelines.
-     * 
+     *
      * @param dependsOn the dependsOn value to set.
      * @return the ChainingTrigger object itself.
      */
@@ -90,7 +85,7 @@ public class ChainingTrigger extends Trigger {
 
     /**
      * Get the runDimension property: Run Dimension property that needs to be emitted by upstream pipelines.
-     * 
+     *
      * @return the runDimension value.
      */
     public String getRunDimension() {
@@ -99,7 +94,7 @@ public class ChainingTrigger extends Trigger {
 
     /**
      * Set the runDimension property: Run Dimension property that needs to be emitted by upstream pipelines.
-     * 
+     *
      * @param runDimension the runDimension value to set.
      * @return the ChainingTrigger object itself.
      */
@@ -108,18 +103,14 @@ public class ChainingTrigger extends Trigger {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ChainingTrigger setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ChainingTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

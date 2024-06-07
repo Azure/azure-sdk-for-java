@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Describes the properties of a License.
@@ -53,6 +54,12 @@ public final class LicenseDetails {
      */
     @JsonProperty(value = "immutableId", access = JsonProperty.Access.WRITE_ONLY)
     private String immutableId;
+
+    /*
+     * A list of volume license details.
+     */
+    @JsonProperty(value = "volumeLicenseDetails")
+    private List<VolumeLicenseDetails> volumeLicenseDetails;
 
     /**
      * Creates an instance of LicenseDetails class.
@@ -179,10 +186,33 @@ public final class LicenseDetails {
     }
 
     /**
+     * Get the volumeLicenseDetails property: A list of volume license details.
+     * 
+     * @return the volumeLicenseDetails value.
+     */
+    public List<VolumeLicenseDetails> volumeLicenseDetails() {
+        return this.volumeLicenseDetails;
+    }
+
+    /**
+     * Set the volumeLicenseDetails property: A list of volume license details.
+     * 
+     * @param volumeLicenseDetails the volumeLicenseDetails value to set.
+     * @return the LicenseDetails object itself.
+     */
+    public LicenseDetails withVolumeLicenseDetails(List<VolumeLicenseDetails> volumeLicenseDetails) {
+        this.volumeLicenseDetails = volumeLicenseDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (volumeLicenseDetails() != null) {
+            volumeLicenseDetails().forEach(e -> e.validate());
+        }
     }
 }

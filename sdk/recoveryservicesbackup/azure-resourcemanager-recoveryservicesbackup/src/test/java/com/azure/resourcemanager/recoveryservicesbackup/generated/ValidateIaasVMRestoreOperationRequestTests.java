@@ -7,19 +7,23 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateIaasVMRestoreOperationRequest;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class ValidateIaasVMRestoreOperationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidateIaasVMRestoreOperationRequest model = BinaryData.fromString(
-            "{\"objectType\":\"ValidateIaasVMRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\"}}")
+            "{\"objectType\":\"ValidateIaasVMRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\",\"resourceGuardOperationRequests\":[\"memhooclutnpq\"]}}")
             .toObject(ValidateIaasVMRestoreOperationRequest.class);
+        Assertions.assertEquals("memhooclutnpq", model.restoreRequest().resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidateIaasVMRestoreOperationRequest model
-            = new ValidateIaasVMRestoreOperationRequest().withRestoreRequest(new RestoreRequest());
+        ValidateIaasVMRestoreOperationRequest model = new ValidateIaasVMRestoreOperationRequest().withRestoreRequest(
+            new RestoreRequest().withResourceGuardOperationRequests(Arrays.asList("memhooclutnpq")));
         model = BinaryData.fromObject(model).toObject(ValidateIaasVMRestoreOperationRequest.class);
+        Assertions.assertEquals("memhooclutnpq", model.restoreRequest().resourceGuardOperationRequests().get(0));
     }
 }
