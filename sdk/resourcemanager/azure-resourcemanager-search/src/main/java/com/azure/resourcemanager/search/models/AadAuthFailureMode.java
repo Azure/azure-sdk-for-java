@@ -11,13 +11,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Describes what response the data plane API of a search service would send for requests that failed authentication.
  */
 public enum AadAuthFailureMode {
-    /** Enum value http403. */
+    /**
+     * Enum value http403.
+     */
     HTTP403("http403"),
 
-    /** Enum value http401WithBearerChallenge. */
+    /**
+     * Enum value http401WithBearerChallenge.
+     */
     HTTP401WITH_BEARER_CHALLENGE("http401WithBearerChallenge");
 
-    /** The actual serialized value for a AadAuthFailureMode instance. */
+    /**
+     * The actual serialized value for a AadAuthFailureMode instance.
+     */
     private final String value;
 
     AadAuthFailureMode(String value) {
@@ -26,7 +32,7 @@ public enum AadAuthFailureMode {
 
     /**
      * Parses a serialized value to a AadAuthFailureMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AadAuthFailureMode object, or null if unable to parse.
      */
@@ -44,7 +50,9 @@ public enum AadAuthFailureMode {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

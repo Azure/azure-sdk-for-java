@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.search.models.QuotaUsageResultName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the quota usage for a particular SKU. */
+/**
+ * Describes the quota usage for a particular SKU.
+ */
 @Fluent
 public final class QuotaUsageResultInner {
     /*
@@ -41,13 +43,15 @@ public final class QuotaUsageResultInner {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaUsageResultName name;
 
-    /** Creates an instance of QuotaUsageResultInner class. */
+    /**
+     * Creates an instance of QuotaUsageResultInner class.
+     */
     public QuotaUsageResultInner() {
     }
 
     /**
      * Get the id property: The resource ID of the quota usage SKU endpoint for Microsoft.Search provider.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +60,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Set the id property: The resource ID of the quota usage SKU endpoint for Microsoft.Search provider.
-     *
+     * 
      * @param id the id value to set.
      * @return the QuotaUsageResultInner object itself.
      */
@@ -67,7 +71,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Get the unit property: The unit of measurement for the search SKU.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -76,7 +80,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Set the unit property: The unit of measurement for the search SKU.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the QuotaUsageResultInner object itself.
      */
@@ -87,7 +91,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Get the currentValue property: The currently used up value for the particular search SKU.
-     *
+     * 
      * @return the currentValue value.
      */
     public Integer currentValue() {
@@ -96,7 +100,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Set the currentValue property: The currently used up value for the particular search SKU.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the QuotaUsageResultInner object itself.
      */
@@ -107,7 +111,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Get the limit property: The quota limit for the particular search SKU.
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -116,7 +120,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Set the limit property: The quota limit for the particular search SKU.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the QuotaUsageResultInner object itself.
      */
@@ -127,7 +131,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Get the name property: The name of the SKU supported by Azure AI Search.
-     *
+     * 
      * @return the name value.
      */
     public QuotaUsageResultName name() {
@@ -136,7 +140,7 @@ public final class QuotaUsageResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,20 +6,27 @@ package com.azure.resourcemanager.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
- * Sets options that control the availability of semantic ranking. This configuration is only possible for certain
- * search SKUs in certain locations.
+ * Sets options that control the availability of semantic search. This configuration is only possible for certain Azure
+ * AI Search SKUs in certain locations.
  */
 public final class SearchSemanticSearch extends ExpandableStringEnum<SearchSemanticSearch> {
-    /** Static value disabled for SearchSemanticSearch. */
+    /**
+     * Static value disabled for SearchSemanticSearch.
+     */
     public static final SearchSemanticSearch DISABLED = fromString("disabled");
 
-    /** Static value free for SearchSemanticSearch. */
+    /**
+     * Static value free for SearchSemanticSearch.
+     */
     public static final SearchSemanticSearch FREE = fromString("free");
 
-    /** Static value standard for SearchSemanticSearch. */
+    /**
+     * Static value standard for SearchSemanticSearch.
+     */
     public static final SearchSemanticSearch STANDARD = fromString("standard");
 
     /**

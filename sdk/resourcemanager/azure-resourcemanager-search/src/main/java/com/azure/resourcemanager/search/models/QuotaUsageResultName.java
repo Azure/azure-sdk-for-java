@@ -7,7 +7,9 @@ package com.azure.resourcemanager.search.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The name of the SKU supported by Azure AI Search. */
+/**
+ * The name of the SKU supported by Azure AI Search.
+ */
 @Fluent
 public final class QuotaUsageResultName {
     /*
@@ -22,13 +24,15 @@ public final class QuotaUsageResultName {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of QuotaUsageResultName class. */
+    /**
+     * Creates an instance of QuotaUsageResultName class.
+     */
     public QuotaUsageResultName() {
     }
 
     /**
      * Get the value property: The SKU name supported by Azure AI Search.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +41,7 @@ public final class QuotaUsageResultName {
 
     /**
      * Set the value property: The SKU name supported by Azure AI Search.
-     *
+     * 
      * @param value the value value to set.
      * @return the QuotaUsageResultName object itself.
      */
@@ -48,7 +52,7 @@ public final class QuotaUsageResultName {
 
     /**
      * Get the localizedValue property: The localized string value for the SKU name.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -57,7 +61,7 @@ public final class QuotaUsageResultName {
 
     /**
      * Set the localizedValue property: The localized string value for the SKU name.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the QuotaUsageResultName object itself.
      */
@@ -68,7 +72,7 @@ public final class QuotaUsageResultName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,9 +7,12 @@ package com.azure.resourcemanager.search.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.search.fluent.models.SearchServiceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Response containing a list of search services. */
+/**
+ * Response containing a list of Azure AI Search services.
+ */
 @Immutable
 public final class SearchServiceListResult {
     /*
@@ -19,13 +22,14 @@ public final class SearchServiceListResult {
     private List<SearchServiceInner> value;
 
     /*
-     * Request URL that can be used to query next page of search services. Returned when the total number of requested
-     * search services exceed maximum page size.
+     * Request URL that can be used to query next page of search services. Returned when the total number of requested search services exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SearchServiceListResult class. */
+    /**
+     * Creates an instance of SearchServiceListResult class.
+     */
     public SearchServiceListResult() {
     }
 

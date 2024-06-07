@@ -13,14 +13,18 @@ import com.azure.resourcemanager.search.models.Identity;
 import com.azure.resourcemanager.search.models.NetworkRuleSet;
 import com.azure.resourcemanager.search.models.ProvisioningState;
 import com.azure.resourcemanager.search.models.PublicNetworkAccess;
+import com.azure.resourcemanager.search.models.SearchDisabledDataExfiltrationOption;
 import com.azure.resourcemanager.search.models.SearchSemanticSearch;
 import com.azure.resourcemanager.search.models.SearchServiceStatus;
 import com.azure.resourcemanager.search.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Map;
 
-/** Describes a search service and its current state. */
+/**
+ * Describes an Azure AI Search service and its current state.
+ */
 @Fluent
 public final class SearchServiceInner extends Resource {
     /*
@@ -30,8 +34,7 @@ public final class SearchServiceInner extends Resource {
     private SearchServiceProperties innerProperties;
 
     /*
-     * The SKU of the search service, which determines billing rate and capacity limits. This property is required when
-     * creating a new search service.
+     * The SKU of the search service, which determines price tier and capacity limits. This property is required when creating a new search service.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -42,7 +45,9 @@ public final class SearchServiceInner extends Resource {
     @JsonProperty(value = "identity")
     private Identity identity;
 
-    /** Creates an instance of SearchServiceInner class. */
+    /**
+     * Creates an instance of SearchServiceInner class.
+     */
     public SearchServiceInner() {
     }
 
@@ -56,7 +61,7 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the sku property: The SKU of the search service, which determines billing rate and capacity limits. This
+     * Get the sku property: The SKU of the search service, which determines price tier and capacity limits. This
      * property is required when creating a new search service.
      *
      * @return the sku value.
@@ -66,7 +71,7 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Set the sku property: The SKU of the search service, which determines billing rate and capacity limits. This
+     * Set the sku property: The SKU of the search service, which determines price tier and capacity limits. This
      * property is required when creating a new search service.
      *
      * @param sku the sku value to set.
@@ -97,14 +102,18 @@ public final class SearchServiceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -226,9 +235,9 @@ public final class SearchServiceInner extends Resource {
      * degraded. This can occur when the underlying search units are not healthy. The search service is most likely
      * operational, but performance might be slow and some requests might be dropped. 'disabled': The search service is
      * disabled. In this state, the service will reject all API requests. 'error': The search service is in an error
-     * state. If your service is in the degraded, disabled, or error states, Microsoft is actively investigating the
-     * underlying issue. Dedicated services in these states are still chargeable based on the number of search units
-     * provisioned.
+     * state. 'stopped': The search service is in a subscription that's disabled. If your service is in the degraded,
+     * disabled, or error states, it means the Azure AI Search team is actively investigating the underlying issue.
+     * Dedicated services in these states are still chargeable based on the number of search units provisioned.
      *
      * @return the status value.
      */
@@ -248,10 +257,10 @@ public final class SearchServiceInner extends Resource {
     /**
      * Get the provisioningState property: The state of the last provisioning operation performed on the search service.
      * Provisioning is an intermediate state that occurs while service capacity is being established. After capacity is
-     * set up, provisioningState changes to either 'succeeded' or 'failed'. Client applications can poll provisioning
+     * set up, provisioningState changes to either 'Succeeded' or 'Failed'. Client applications can poll provisioning
      * status (the recommended polling interval is from 30 seconds to one minute) by using the Get Search Service
      * operation to see when an operation is completed. If you are using the free service, this value tends to come back
-     * as 'succeeded' directly in the call to Create search service. This is because the free service uses capacity that
+     * as 'Succeeded' directly in the call to Create search service. This is because the free service uses capacity that
      * is already set up.
      *
      * @return the provisioningState value.
@@ -261,7 +270,8 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
+     * Get the networkRuleSet property: Network specific rules that determine how the Azure AI Search service may be
+     * reached.
      *
      * @return the networkRuleSet value.
      */
@@ -270,7 +280,8 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Set the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
+     * Set the networkRuleSet property: Network specific rules that determine how the Azure AI Search service may be
+     * reached.
      *
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the SearchServiceInner object itself.
@@ -280,6 +291,34 @@ public final class SearchServiceInner extends Resource {
             this.innerProperties = new SearchServiceProperties();
         }
         this.innerProperties().withNetworkRuleSet(networkRuleSet);
+        return this;
+    }
+
+    /**
+     * Get the disabledDataExfiltrationOptions property: A list of data exfiltration scenarios that are explicitly
+     * disallowed for the search service. Currently, the only supported value is 'All' to disable all possible data
+     * export scenarios with more fine grained controls planned for the future.
+     *
+     * @return the disabledDataExfiltrationOptions value.
+     */
+    public List<SearchDisabledDataExfiltrationOption> disabledDataExfiltrationOptions() {
+        return this.innerProperties() == null ? null : this.innerProperties().disabledDataExfiltrationOptions();
+    }
+
+    /**
+     * Set the disabledDataExfiltrationOptions property: A list of data exfiltration scenarios that are explicitly
+     * disallowed for the search service. Currently, the only supported value is 'All' to disable all possible data
+     * export scenarios with more fine grained controls planned for the future.
+     *
+     * @param disabledDataExfiltrationOptions the disabledDataExfiltrationOptions value to set.
+     * @return the SearchServiceInner object itself.
+     */
+    public SearchServiceInner withDisabledDataExfiltrationOptions(
+        List<SearchDisabledDataExfiltrationOption> disabledDataExfiltrationOptions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SearchServiceProperties();
+        }
+        this.innerProperties().withDisabledDataExfiltrationOptions(disabledDataExfiltrationOptions);
         return this;
     }
 
@@ -359,17 +398,8 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: The list of private endpoint connections to the search service.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
-    }
-
-    /**
      * Get the semanticSearch property: Sets options that control the availability of semantic search. This
-     * configuration is only possible for certain search SKUs in certain locations.
+     * configuration is only possible for certain Azure AI Search SKUs in certain locations.
      *
      * @return the semanticSearch value.
      */
@@ -379,7 +409,7 @@ public final class SearchServiceInner extends Resource {
 
     /**
      * Set the semanticSearch property: Sets options that control the availability of semantic search. This
-     * configuration is only possible for certain search SKUs in certain locations.
+     * configuration is only possible for certain Azure AI Search SKUs in certain locations.
      *
      * @param semanticSearch the semanticSearch value to set.
      * @return the SearchServiceInner object itself.
@@ -393,13 +423,33 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the search
+     * Get the privateEndpointConnections property: The list of private endpoint connections to the Azure AI Search
      * service.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the Azure AI
+     * Search service.
      *
      * @return the sharedPrivateLinkResources value.
      */
     public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
         return this.innerProperties() == null ? null : this.innerProperties().sharedPrivateLinkResources();
+    }
+
+    /**
+     * Get the etag property: A system generated property representing the service's etag that can be for optimistic
+     * concurrency control during updates.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.innerProperties() == null ? null : this.innerProperties().etag();
     }
 
     /**

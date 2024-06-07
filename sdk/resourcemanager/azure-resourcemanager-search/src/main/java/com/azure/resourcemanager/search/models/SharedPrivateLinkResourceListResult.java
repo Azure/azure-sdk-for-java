@@ -7,13 +7,16 @@ package com.azure.resourcemanager.search.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.search.fluent.models.SharedPrivateLinkResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Response containing a list of Shared Private Link Resources. */
+/**
+ * Response containing a list of shared private link resources.
+ */
 @Fluent
 public final class SharedPrivateLinkResourceListResult {
     /*
-     * The list of Shared Private Link Resources.
+     * The list of shared private link resources.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SharedPrivateLinkResourceInner> value;
@@ -24,12 +27,14 @@ public final class SharedPrivateLinkResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SharedPrivateLinkResourceListResult class. */
+    /**
+     * Creates an instance of SharedPrivateLinkResourceListResult class.
+     */
     public SharedPrivateLinkResourceListResult() {
     }
 
     /**
-     * Get the value property: The list of Shared Private Link Resources.
+     * Get the value property: The list of shared private link resources.
      *
      * @return the value value.
      */

@@ -7,9 +7,12 @@ package com.azure.resourcemanager.search.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.search.fluent.models.QuotaUsageResultInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Response containing the quota usage information for all the supported SKUs of Azure AI Search. */
+/**
+ * Response containing the quota usage information for all the supported SKUs of Azure AI Search.
+ */
 @Immutable
 public final class QuotaUsagesListResult {
     /*
@@ -19,13 +22,14 @@ public final class QuotaUsagesListResult {
     private List<QuotaUsageResultInner> value;
 
     /*
-     * Request URL that can be used to query next page of quota usages. Returned when the total number of requested
-     * quota usages exceed maximum page size.
+     * Request URL that can be used to query next page of quota usages. Returned when the total number of requested quota usages exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of QuotaUsagesListResult class. */
+    /**
+     * Creates an instance of QuotaUsagesListResult class.
+     */
     public QuotaUsagesListResult() {
     }
 
