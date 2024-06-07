@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -22,8 +23,7 @@ public final class ManagementPolicyFilter {
     private List<String> prefixMatch;
 
     /*
-     * An array of predefined enum values. Currently blockBlob supports all tiering and delete actions. Only delete
-     * actions are supported for appendBlob.
+     * An array of predefined enum values. Currently blockBlob supports all tiering and delete actions. Only delete actions are supported for appendBlob.
      */
     @JsonProperty(value = "blobTypes", required = true)
     private List<String> blobTypes;
@@ -34,7 +34,9 @@ public final class ManagementPolicyFilter {
     @JsonProperty(value = "blobIndexMatch")
     private List<TagFilter> blobIndexMatch;
 
-    /** Creates an instance of ManagementPolicyFilter class. */
+    /**
+     * Creates an instance of ManagementPolicyFilter class.
+     */
     public ManagementPolicyFilter() {
     }
 
@@ -107,10 +109,9 @@ public final class ManagementPolicyFilter {
      */
     public void validate() {
         if (blobTypes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property blobTypes in model ManagementPolicyFilter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property blobTypes in model ManagementPolicyFilter"));
         }
         if (blobIndexMatch() != null) {
             blobIndexMatch().forEach(e -> e.validate());

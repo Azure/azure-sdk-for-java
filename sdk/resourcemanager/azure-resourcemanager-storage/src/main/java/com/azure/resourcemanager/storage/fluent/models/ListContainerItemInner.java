@@ -14,10 +14,13 @@ import com.azure.resourcemanager.storage.models.LeaseStatus;
 import com.azure.resourcemanager.storage.models.LegalHoldProperties;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The blob container properties be listed out. */
+/**
+ * The blob container properties be listed out.
+ */
 @Fluent
 public final class ListContainerItemInner extends AzureEntityResource {
     /*
@@ -26,7 +29,9 @@ public final class ListContainerItemInner extends AzureEntityResource {
     @JsonProperty(value = "properties")
     private ContainerProperties innerProperties;
 
-    /** Creates an instance of ListContainerItemInner class. */
+    /**
+     * Creates an instance of ListContainerItemInner class.
+     */
     public ListContainerItemInner() {
     }
 
@@ -265,8 +270,8 @@ public final class ListContainerItemInner extends AzureEntityResource {
      * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
      * @return the ListContainerItemInner object itself.
      */
-    public ListContainerItemInner withImmutableStorageWithVersioning(
-        ImmutableStorageWithVersioning immutableStorageWithVersioning) {
+    public ListContainerItemInner
+        withImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ContainerProperties();
         }

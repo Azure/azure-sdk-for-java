@@ -6,9 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** An access key for the storage account. */
+/**
+ * An access key for the storage account.
+ */
 @Immutable
 public final class StorageAccountKey {
     /*
@@ -35,7 +38,9 @@ public final class StorageAccountKey {
     @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
-    /** Creates an instance of StorageAccountKey class. */
+    /**
+     * Creates an instance of StorageAccountKey class.
+     */
     public StorageAccountKey() {
     }
 

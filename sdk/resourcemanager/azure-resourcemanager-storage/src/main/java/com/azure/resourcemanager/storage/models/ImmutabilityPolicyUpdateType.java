@@ -6,17 +6,26 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** The ImmutabilityPolicy update type of a blob container, possible values include: put, lock and extend. */
+/**
+ * The ImmutabilityPolicy update type of a blob container, possible values include: put, lock and extend.
+ */
 public final class ImmutabilityPolicyUpdateType extends ExpandableStringEnum<ImmutabilityPolicyUpdateType> {
-    /** Static value put for ImmutabilityPolicyUpdateType. */
+    /**
+     * Static value put for ImmutabilityPolicyUpdateType.
+     */
     public static final ImmutabilityPolicyUpdateType PUT = fromString("put");
 
-    /** Static value lock for ImmutabilityPolicyUpdateType. */
+    /**
+     * Static value lock for ImmutabilityPolicyUpdateType.
+     */
     public static final ImmutabilityPolicyUpdateType LOCK = fromString("lock");
 
-    /** Static value extend for ImmutabilityPolicyUpdateType. */
+    /**
+     * Static value extend for ImmutabilityPolicyUpdateType.
+     */
     public static final ImmutabilityPolicyUpdateType EXTEND = fromString("extend");
 
     /**
