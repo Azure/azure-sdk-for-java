@@ -19,7 +19,7 @@ function getVariable {
 
 $azIdentityRoot = "$PSScriptRoot/../identity/azure-identity/pom.xml" | Resolve-Path
 
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f $azIdentityRootPom | Write-Host
+mvn clean install "-DskipTests" "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f $azIdentityRootPom | Write-Host
 
 
 

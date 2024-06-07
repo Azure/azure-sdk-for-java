@@ -9,6 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
@@ -77,14 +78,9 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     }
 
     <T> T clientSetup(BiFunction<TokenCredential, String, T> clientBuilder) {
-//        if (CoreUtils.isNullOrEmpty(connectionString)) {
-//            connectionString = interceptorManager.isPlaybackMode() ? FAKE_CONNECTION_STRING
-//                                   : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-//        }
-
         if (tokenCredential == null) {
             tokenCredential = interceptorManager.isPlaybackMode()
-                ? (trc) -> Mono.just(new AccessToken("Dummy", OffsetDateTime.now().plusHours(2)))
+                ? new MockTokenCredential()
                 : new AzurePowerShellCredentialBuilder().build();
         }
 

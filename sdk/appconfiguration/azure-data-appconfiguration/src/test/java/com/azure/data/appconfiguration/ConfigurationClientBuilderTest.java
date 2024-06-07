@@ -17,11 +17,13 @@ import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
 import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -179,14 +181,18 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void nullServiceVersion(HttpClient httpClient) {
-        String connectionString = interceptorManager.isPlaybackMode()
-            ? FAKE_CONNECTION_STRING
-            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+        TokenCredential tokenCredential = interceptorManager.isPlaybackMode()
+            ? new MockTokenCredential()
+            : new AzurePowerShellCredentialBuilder().build();
 
-        Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
+
+        Objects.requireNonNull(tokenCredential, "tokenCredential expected to be set.");
+        Objects.requireNonNull(endpoint, "endpoint expected to be set.");
 
         final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
+            .credential(tokenCredential)
+            .endpoint(endpoint)
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(null);
@@ -211,14 +217,18 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
     @Test
     public void defaultPipeline() {
-        String connectionString = interceptorManager.isPlaybackMode()
-            ? FAKE_CONNECTION_STRING
-            : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+        TokenCredential tokenCredential = interceptorManager.isPlaybackMode()
+            ? new MockTokenCredential()
+            : new AzurePowerShellCredentialBuilder().build();
 
-        Objects.requireNonNull(connectionString, "`AZURE_APPCONFIG_CONNECTION_STRING` expected to be set.");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
+
+        Objects.requireNonNull(tokenCredential, "tokenCredential expected to be set.");
+        Objects.requireNonNull(endpoint, "endpoint expected to be set.");
 
         final ConfigurationClientBuilder clientBuilder = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
+            .credential(tokenCredential)
+            .endpoint(endpoint)
             .retryPolicy(new RetryPolicy())
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
