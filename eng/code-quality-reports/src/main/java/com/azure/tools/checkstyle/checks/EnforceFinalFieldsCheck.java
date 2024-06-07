@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -225,7 +226,7 @@ public class EnforceFinalFieldsCheck extends AbstractCheck {
         final DetailAST assignationParent = assignationToken.getParent();
         if (assignationParent != null && TokenTypes.VARIABLE_DEF == assignationParent.getType()) {
             String variableType = FullIdent.createFullIdentBelow(assignationParent.findFirstToken(TokenTypes.TYPE)).getText();
-            if (currentClassName.equals(variableType)) {
+            if (Objects.equals(currentClassName, variableType)) {
                 // Track variable definitions of the class we're currently in.
                 variablesInScope.put(assignationParent.findFirstToken(TokenTypes.IDENT).getText(), assignationParent);
             }
