@@ -3,9 +3,17 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
+import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnectionCache;
+import com.azure.core.amqp.implementation.ReactorHandlerProvider;
+import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.RetryUtil;
+import com.azure.core.amqp.implementation.StringUtil;
+import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationProperty;
 import com.azure.core.util.ConfigurationPropertyBuilder;
@@ -14,7 +22,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
+
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 
 // Temporary type for Builders to work with the V2-Stack. Type will be removed once migration to new v2 stack is completed.
 final class V2StackSupport {
@@ -179,7 +192,23 @@ final class V2StackSupport {
     }
 
     private static ReactorConnectionCache<EventHubReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
-        MessageSerializer serializer, Meter meter, ClientLogger logger) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Not implemented"));
+        Supplier<String> eventHubNameSupplier, MessageSerializer serializer, Meter meter) {
+        final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
+            final String connectionId = StringUtil.getRandomString("MF");
+            final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getAuthorizationScope());
+            final ReactorProvider provider = new ReactorProvider();
+            final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
+            final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
+            return new EventHubReactorAmqpConnection(connectionId,
+                connectionOptions, eventHubNameSupplier.get(), provider, handlerProvider, linkProvider, tokenManagerProvider,
+                serializer, true);
+        };
+        final String fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
+        final String entityPath = eventHubNameSupplier.get();
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
+        final Map<String, Object> loggingContext = Collections.singletonMap(ENTITY_PATH_KEY, entityPath);
+        return new ReactorConnectionCache<>(connectionSupplier, fullyQualifiedNamespace, entityPath, retryPolicy, loggingContext);
     }
 }
