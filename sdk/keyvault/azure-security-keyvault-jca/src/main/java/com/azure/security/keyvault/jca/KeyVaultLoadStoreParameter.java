@@ -11,7 +11,6 @@ import java.security.KeyStore;
  * @see KeyStore.LoadStoreParameter
  */
 public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
-
     /**
      * Stores the URI.
      */
@@ -38,9 +37,14 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     private final String managedIdentity;
 
     /**
+     * Stored a flag indicating id challenge resource verification should be disabled.
+     */
+    private boolean disableChallengeResourceVerification;
+
+    /**
      * Constructor.
      *
-     * @param uri the Azure Key Vault URI.
+     * @param uri The Azure Key Vault URI.
      */
     public KeyVaultLoadStoreParameter(String uri) {
         this(uri, null, null, null, null);
@@ -49,8 +53,8 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     /**
      * Constructor.
      *
-     * @param uri the Azure Key Vault URI.
-     * @param managedIdentity the managed identity.
+     * @param uri The Azure Key Vault URI.
+     * @param managedIdentity The managed identity.
      */
     public KeyVaultLoadStoreParameter(String uri, String managedIdentity) {
         this(uri, null, null, null, managedIdentity);
@@ -59,10 +63,10 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     /**
      * Constructor.
      *
-     * @param uri the Azure Key Vault URI.
-     * @param tenantId the tenant ID.
-     * @param clientId the client ID.
-     * @param clientSecret the client secret.
+     * @param uri The Azure Key Vault URI.
+     * @param tenantId The tenant ID.
+     * @param clientId The client ID.
+     * @param clientSecret The client secret.
      */
     public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret) {
         this(uri, tenantId, clientId, clientSecret, null);
@@ -71,18 +75,37 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     /**
      * Constructor.
      *
-     * @param uri the Azure Key Vault URI.
-     * @param tenantId the tenant ID.
-     * @param clientId the client ID.
-     * @param clientSecret the client secret.
-     * @param managedIdentity the managedIdentity.
+     * @param uri The Azure Key Vault URI.
+     * @param tenantId The tenant ID.
+     * @param clientId The client ID.
+     * @param clientSecret The client secret.
+     * @param managedIdentity The managed identity.
      */
-    public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret, String managedIdentity) {
+    public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret,
+        String managedIdentity) {
+
+        this(uri, tenantId, clientId, clientSecret, managedIdentity, false);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param uri The Azure Key Vault URI.
+     * @param tenantId The tenant ID.
+     * @param clientId The client ID.
+     * @param clientSecret The client secret.
+     * @param managedIdentity The managed identity.
+     * @param disableChallengeResourceVerification Indicates if challenge resource verification should be disabled.
+     */
+    public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret,
+        String managedIdentity, boolean disableChallengeResourceVerification) {
+
         this.uri = uri;
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.managedIdentity = managedIdentity;
+        this.disableChallengeResourceVerification = disableChallengeResourceVerification;
     }
 
     /**
@@ -138,5 +161,14 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      */
     public String getUri() {
         return uri;
+    }
+
+    /**
+     * Get a value indicating if challenge resource verification is disabled.
+     *
+     * @return A value indicating if challenge resource verification is disabled.
+     */
+    public boolean isChallengeResourceVerificationDisabled() {
+        return disableChallengeResourceVerification;
     }
 }

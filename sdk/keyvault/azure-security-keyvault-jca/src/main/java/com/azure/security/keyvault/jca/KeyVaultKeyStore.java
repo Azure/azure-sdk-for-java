@@ -127,6 +127,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
+        boolean disableChallengeResourceVerification =
+            Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
         long refreshInterval = getRefreshInterval();
         refreshCertificatesWhenHaveUnTrustCertificate =
             Optional.of("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate")
@@ -140,7 +142,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
         LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
         keyVaultCertificates = new KeyVaultCertificates(
-            refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
+            refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, disableChallengeResourceVerification);
         LOGGER.log(FINE, String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
         classpathCertificates = new ClasspathCertificates();
         LOGGER.log(FINE, String.format("Loaded classpath certificates: %s.", classpathCertificates.getAliases()));
@@ -174,7 +176,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"),
-            System.getProperty("azure.keyvault.managed-identity"));
+            System.getProperty("azure.keyvault.managed-identity"),
+            Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification")));
         keyStore.load(parameter);
         return keyStore;
     }
@@ -371,9 +374,12 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public void engineLoad(KeyStore.LoadStoreParameter param) {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
+
             keyVaultCertificates.updateKeyVaultClient(parameter.getUri(), parameter.getTenantId(),
-                parameter.getClientId(), parameter.getClientSecret(), parameter.getManagedIdentity());
+                parameter.getClientId(), parameter.getClientSecret(), parameter.getManagedIdentity(),
+                parameter.isChallengeResourceVerificationDisabled());
         }
+
         classpathCertificates.loadCertificatesFromClasspath();
     }
 

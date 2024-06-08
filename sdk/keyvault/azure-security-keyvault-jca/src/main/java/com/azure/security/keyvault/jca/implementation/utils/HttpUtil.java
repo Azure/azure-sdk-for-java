@@ -99,6 +99,28 @@ public final class HttpUtil {
         return result;
     }
 
+    public static HttpResponse postWithResponse(String url, Map<String, String> headers, String body,
+        String contentType) {
+
+        HttpResponse result = null;
+
+        try (CloseableHttpClient client = buildClient()) {
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+
+            if (headers != null) {
+                headers.forEach(httpPost::addHeader);
+                httpPost.addHeader("Content-Type", contentType);
+            }
+
+            httpPost.setEntity(new StringEntity(body, ContentType.create(contentType)));
+            result = client.execute(httpPost, createResponseHandlerForAuthChallenge());
+        } catch (IOException ioe) {
+            LOGGER.log(WARNING, "Unable to finish the http post request.", ioe);
+        }
+
+        return result;
+    }
 
     private static ResponseHandler<String> createResponseHandler() {
         return (HttpResponse response) -> {
@@ -109,6 +131,14 @@ public final class HttpUtil {
                 result = entity != null ? EntityUtils.toString(entity) : null;
             }
             return result;
+        };
+    }
+
+    private static ResponseHandler<HttpResponse> createResponseHandlerForAuthChallenge() {
+        return (HttpResponse response) -> {
+            int status = response.getStatusLine().getStatusCode();
+
+            return status == 401 ? response : null;
         };
     }
 

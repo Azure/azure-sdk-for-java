@@ -2,12 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import com.azure.security.keyvault.jca.implementation.model.AccessToken;
+import org.apache.http.HttpResponse;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import static java.util.logging.Level.FINER;
 import static java.util.logging.Level.INFO;
-
-import com.azure.security.keyvault.jca.implementation.model.AccessToken;
-import java.util.HashMap;
-import java.util.logging.Logger;
 
 /**
  * The REST client specific to getting an access token for Azure REST APIs.
@@ -51,6 +58,16 @@ public final class AccessTokenUtil {
         = "http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01";
 
     /**
+     * A prefix to use on the bearer token header.
+     */
+    private static final String BEARER_TOKEN_PREFIX = "Bearer ";
+
+    /**
+     * The WWW-Authenticate header name.
+     */
+    private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
+
+    /**
      * Stores our logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AccessTokenUtil.class.getName());
@@ -58,122 +75,249 @@ public final class AccessTokenUtil {
     /**
      * Get an access token for a managed identity.
      *
-     * @param resource the resource.
-     * @param identity the user-assigned identity (null if system-assigned)
-     * @return the authorization token.
+     * @param resource The resource.
+     * @param identity The user-assigned identity (null if system-assigned).
+     *
+     * @return The authorization token.
      */
     public static AccessToken getAccessToken(String resource, String identity) {
         AccessToken result;
 
-        if (System.getenv("WEBSITE_SITE_NAME") != null
-            && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
+        if (System.getenv("WEBSITE_SITE_NAME") != null && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
             result = getAccessTokenOnAppService(resource, identity);
         } else {
             result = getAccessTokenOnOthers(resource, identity);
         }
+
         return result;
     }
 
     /**
      * Get an access token.
      *
-     * @param resource             the resource.
-     * @param tenantId             the tenant ID.
-     * @param aadAuthenticationUrl the AAD authentication url
-     * @param clientId             the client ID.
-     * @param clientSecret         the client secret.
-     * @return the authorization token.
+     * @param resource The resource.
+     * @param tenantId The tenant ID.
+     * @param aadAuthenticationUrl The AAD authentication url.
+     * @param clientId The client ID.
+     * @param clientSecret The client secret.
+     *
+     * @return The authorization token.
      */
-    public static AccessToken getAccessToken(String resource, String aadAuthenticationUrl,
-               String tenantId, String clientId, String clientSecret) {
+    public static AccessToken getAccessToken(String resource, String aadAuthenticationUrl, String tenantId,
+        String clientId, String clientSecret) {
 
         LOGGER.entering("AccessTokenUtil", "getAccessToken", new Object[]{
             resource, tenantId, clientId, clientSecret});
         LOGGER.info("Getting access token using client ID / client secret");
+
         AccessToken result = null;
 
         StringBuilder oauth2Url = new StringBuilder();
+
         oauth2Url.append(aadAuthenticationUrl == null ? OAUTH2_TOKEN_BASE_URL : aadAuthenticationUrl)
-                 .append(tenantId)
-                 .append(OAUTH2_TOKEN_POSTFIX);
+            .append(tenantId)
+            .append(OAUTH2_TOKEN_POSTFIX);
 
         StringBuilder requestBody = new StringBuilder();
+
         requestBody.append(GRANT_TYPE_FRAGMENT)
-                   .append(CLIENT_ID_FRAGMENT).append(clientId)
-                   .append(CLIENT_SECRET_FRAGMENT).append(clientSecret)
-                   .append(RESOURCE_FRAGMENT).append(resource);
+            .append(CLIENT_ID_FRAGMENT).append(clientId)
+            .append(CLIENT_SECRET_FRAGMENT).append(clientSecret)
+            .append(RESOURCE_FRAGMENT).append(resource);
 
         String body = HttpUtil
             .post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
+
         if (body != null) {
             result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
         }
+
         LOGGER.log(FINER, "Access token: {0}", result);
+
         return result;
     }
 
     /**
      * Get the access token on Azure App Service.
      *
-     * @param resource the resource.
-     * @param clientId the user-assigned managed identity (null if system-assigned).
-     * @return the authorization token.
+     * @param resource The resource.
+     * @param clientId The user-assigned managed identity (null if system-assigned).
+     * @return The authorization token.
      */
     private static AccessToken getAccessTokenOnAppService(String resource, String clientId) {
         LOGGER.entering("AccessTokenUtil", "getAccessTokenOnAppService", resource);
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
+
         AccessToken result = null;
         StringBuilder url = new StringBuilder();
+
         url.append(System.getenv("MSI_ENDPOINT"))
            .append("?api-version=2017-09-01")
            .append(RESOURCE_FRAGMENT).append(resource);
+
         if (clientId != null) {
             url.append("&clientid=").append(clientId);
             LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
         }
 
         HashMap<String, String> headers = new HashMap<>();
+
         headers.put("Metadata", "true");
         headers.put("Secret", System.getenv("MSI_SECRET"));
+
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
             result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
         }
+
         LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnAppService", result);
+
         return result;
     }
 
     /**
      * Get the authorization token on everything else but Azure App Service.
      *
-     * @param resource the resource.
-     * @param identity the user-assigned identity (null if system-assigned).
-     * @return the authorization token.
+     * @param resource The resource.
+     * @param identity The user-assigned identity (null if system-assigned).
+     * @return The authorization token.
      */
     private static AccessToken getAccessTokenOnOthers(String resource, String identity) {
         LOGGER.entering("AccessTokenUtil", "getAccessTokenOnOthers", resource);
         LOGGER.info("Getting access token using managed identity");
+
         if (identity != null) {
             LOGGER.log(INFO, "Using managed identity with object ID: {0}", identity);
         }
+
         AccessToken result = null;
 
         StringBuilder url = new StringBuilder();
+
         url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL)
            .append(RESOURCE_FRAGMENT).append(resource);
+
         if (identity != null) {
             url.append("&object_id=").append(identity);
         }
 
         HashMap<String, String> headers = new HashMap<>();
+
         headers.put("Metadata", "true");
+
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
             result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
         }
+
         LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnOthers", result);
+
         return result;
+    }
+
+    public static String getLoginUri(URI resourceUri, boolean disableChallengeResourceVerification) {
+        HttpResponse response = HttpUtil
+            .postWithResponse(resourceUri.toString(), null, "", "application/x-www-form-urlencoded");
+        Map<String, String> challengeAttributes =
+            extractChallengeAttributes(response.getFirstHeader(WWW_AUTHENTICATE).getValue());
+        String scope = challengeAttributes.get("resource");
+
+        if (scope != null) {
+            scope = scope + "/.default";
+        } else {
+            scope = challengeAttributes.get("scope");
+        }
+
+        if (scope == null) {
+            return null;
+        } else {
+            if (!disableChallengeResourceVerification) {
+                if (!isChallengeResourceValid(resourceUri, scope)) {
+                    throw new IllegalStateException(String.format(
+                        "The challenge resource '%s' does not match the requested domain. If you wish to disable "
+                            + "this check, set the environment property "
+                            + "'azure.keyvault.disable-challenge-resource-verification' to 'true'. See "
+                            + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope));
+                }
+            }
+
+            String authorization = challengeAttributes.get("authorization");
+
+            if (authorization == null) {
+                authorization = challengeAttributes.get("authorization_uri");
+            }
+
+            try {
+                new URI(authorization);
+
+                return authorization;
+            } catch (URISyntaxException e) {
+                throw new IllegalStateException(
+                    String.format("The challenge authorization URI '%s' is invalid.", authorization), e);
+            }
+        }
+    }
+
+    /**
+     * Extracts attributes off the bearer challenge in the authentication header.
+     *
+     * @param authenticateHeader The authentication header containing the challenge.
+     *
+     * @return A challenge attributes map.
+     */
+    private static Map<String, String> extractChallengeAttributes(String authenticateHeader) {
+        if (!isBearerChallenge(authenticateHeader)) {
+            return Collections.emptyMap();
+        }
+
+        authenticateHeader =
+            authenticateHeader.toLowerCase(Locale.ROOT).replace(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT), "");
+
+        String[] attributes = authenticateHeader.split(", ");
+        Map<String, String> attributeMap = new HashMap<>();
+
+        for (String pair : attributes) {
+            String[] keyValue = pair.split("=");
+
+            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+        }
+
+        return attributeMap;
+    }
+
+    /**
+     * Verifies whether a challenge is bearer or not.
+     *
+     * @param authenticateHeader The authentication header containing all the challenges.
+     *
+     * @return A boolean indicating if the challenge is a bearer challenge or not.
+     */
+    private static boolean isBearerChallenge(String authenticateHeader) {
+        return authenticateHeader != null && !authenticateHeader.isEmpty()
+            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT));
+    }
+
+    /**
+     * Verifies whether a challenge resource is valid or not.
+     *
+     * @param resourceUri The resource URI.
+     * @param scope The scope of the challenge.
+     *
+     * @return A boolean indicating if the challenge resource is valid or not.
+     */
+    private static boolean isChallengeResourceValid(URI resourceUri, String scope) {
+        final URI scopeUri;
+
+        try {
+            scopeUri = new URI(scope);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException(String.format("The challenge resource '%s' is not a valid URI.", scope), e);
+        }
+
+        // Returns false if the host specified in the scope does not match the requested domain.
+        return resourceUri.getHost().toLowerCase(Locale.ROOT)
+            .endsWith("." + scopeUri.getHost().toLowerCase(Locale.ROOT));
     }
 }
