@@ -8,11 +8,16 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.concurrent.TimeoutException;
 
 public class FileTests extends BatchClientTestBase {
@@ -135,6 +140,30 @@ public class FileTests extends BatchClientTestBase {
             } catch (Exception e) {
                 // Ignore here
             }
+        }
+    }
+
+    @Test
+    public void testDeserializationOfFileProperties() throws IOException {
+        String jsonResponse = "{"
+            + "\"lastModified\":\"2022-01-01T00:00:00Z\","
+            + "\"contentLength\":\"1024\","
+            + "\"creationTime\":\"2022-01-01T01:00:00Z\","
+            + "\"contentType\":\"application/json\","
+            + "\"fileMode\":\"rw-r--r--\""
+            + "}";
+
+        try (JsonReader jsonReader = JsonProviders.createReader(new StringReader(jsonResponse))) {
+            FileProperties fileProperties = FileProperties.fromJson(jsonReader);
+
+            Assertions.assertNotNull(fileProperties);
+            Assertions.assertEquals(OffsetDateTime.parse("2022-01-01T00:00:00Z"), fileProperties.getLastModified());
+            Assertions.assertEquals(1024, fileProperties.getContentLength());
+            Assertions.assertEquals(OffsetDateTime.parse("2022-01-01T01:00:00Z"), fileProperties.getCreationTime());
+            Assertions.assertEquals("application/json", fileProperties.getContentType());
+            Assertions.assertEquals("rw-r--r--", fileProperties.getFileMode());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

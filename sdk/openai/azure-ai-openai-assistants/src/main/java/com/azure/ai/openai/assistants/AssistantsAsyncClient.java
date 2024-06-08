@@ -2488,7 +2488,7 @@ public final class AssistantsAsyncClient {
      * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
+    Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
         file.setFilename(filename);
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose).setFilename(filename);
@@ -2517,7 +2517,7 @@ public final class AssistantsAsyncClient {
      * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose) {
+    public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose);

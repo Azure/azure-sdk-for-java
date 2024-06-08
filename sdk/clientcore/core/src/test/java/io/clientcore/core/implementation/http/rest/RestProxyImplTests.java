@@ -51,7 +51,7 @@ public class RestProxyImplTests {
             .build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
-        testInterface.testVoidMethod(Context.EMPTY);
+        testInterface.testVoidMethod(Context.none());
 
         assertTrue(client.lastResponseClosed);
     }
@@ -65,7 +65,7 @@ public class RestProxyImplTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         byte[] bytes = "hello".getBytes();
         Response<Void> response = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes),
-            (long) bytes.length), "application/json", (long) bytes.length, Context.EMPTY);
+            (long) bytes.length), "application/json", (long) bytes.length, Context.none());
 
         assertEquals(200, response.getStatusCode());
     }

@@ -6,9 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** One property of operation, include metric specifications. */
+/**
+ * One property of operation, include metric specifications.
+ */
 @Fluent
 public final class ServiceSpecification {
     /*
@@ -17,7 +20,9 @@ public final class ServiceSpecification {
     @JsonProperty(value = "metricSpecifications")
     private List<MetricSpecification> metricSpecifications;
 
-    /** Creates an instance of ServiceSpecification class. */
+    /**
+     * Creates an instance of ServiceSpecification class.
+     */
     public ServiceSpecification() {
     }
 

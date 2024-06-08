@@ -20,13 +20,9 @@ import static io.clientcore.core.annotation.TypeConditions.IMMUTABLE;
  */
 @Metadata(conditions = IMMUTABLE)
 public final class Context {
+    // Context is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(Context.class);
-
-    // All fields must be immutable.
-    /**
-     * Signifies that no data needs to be passed to the pipeline.
-     */
-    public static final Context EMPTY = new Context(InternalContext.empty());
+    private static final Context NONE = new Context(InternalContext.empty());
 
     private final InternalContext internal;
 
@@ -62,12 +58,13 @@ public final class Context {
     }
 
     /**
-     * Gets the singleton instance of an empty context.
+     * An empty {@link Context} that is immutable, used in situations where there is no context-specific content to pass
+     * into the request.
      *
-     * @return The singleton instance of an empty context.
+     * @return The singleton instance of an empty {@link Context}.
      */
-    public static Context empty() {
-        return EMPTY;
+    public static Context none() {
+        return NONE;
     }
 
     /**

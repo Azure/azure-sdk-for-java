@@ -40,6 +40,7 @@ import com.azure.resourcemanager.redisenterprise.models.DatabaseList;
 import com.azure.resourcemanager.redisenterprise.models.DatabaseUpdate;
 import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.FlushParameters;
+import com.azure.resourcemanager.redisenterprise.models.ForceLinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ForceUnlinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ImportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.RegenerateKeyParameters;
@@ -181,6 +182,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/forceLinkToReplicationGroup")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> forceLinkToReplicationGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ForceLinkParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/flush")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -190,6 +202,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") FlushParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/upgradeDBRedisVersion")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> upgradeDBRedisVersion(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -203,7 +224,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Gets all databases in the specified RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -241,7 +262,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Gets all databases in the specified RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -280,7 +301,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Gets all databases in the specified RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -296,7 +317,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Gets all databases in the specified RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -313,7 +334,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Gets all databases in the specified RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -328,7 +349,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Gets all databases in the specified RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -344,8 +365,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Creates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -391,8 +412,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Creates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -437,8 +458,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Creates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -458,8 +479,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Creates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -481,8 +502,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Creates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -499,8 +520,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Creates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -518,8 +539,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Creates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -537,8 +558,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Creates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -557,8 +578,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Creates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -575,8 +596,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Creates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -594,8 +615,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Updates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -641,8 +662,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Updates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -687,8 +708,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Updates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -708,8 +729,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Updates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -731,8 +752,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Updates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -749,8 +770,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Updates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -768,8 +789,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Updates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -787,8 +808,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Updates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -807,8 +828,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Updates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -825,8 +846,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Updates a database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -844,8 +865,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Gets information about a database in a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -884,8 +905,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Gets information about a database in a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -924,8 +945,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Gets information about a database in a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -941,8 +962,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Gets information about a database in a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -959,8 +980,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Gets information about a database in a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -975,8 +996,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1014,8 +1035,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1053,8 +1074,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1072,8 +1093,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1094,8 +1115,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1111,8 +1132,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1129,8 +1150,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1146,8 +1167,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1164,8 +1185,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1179,8 +1200,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Deletes a single database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1195,8 +1216,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Retrieves the access keys for the RedisEnterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1234,8 +1255,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Retrieves the access keys for the RedisEnterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1273,8 +1294,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Retrieves the access keys for the RedisEnterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1290,8 +1311,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Retrieves the access keys for the RedisEnterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1308,8 +1329,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Retrieves the access keys for the RedisEnterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1324,8 +1345,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Regenerates the RedisEnterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1370,8 +1391,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Regenerates the RedisEnterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1415,8 +1436,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Regenerates the RedisEnterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1436,8 +1457,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Regenerates the RedisEnterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1459,8 +1480,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Regenerates the RedisEnterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1477,8 +1498,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Regenerates the RedisEnterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1497,8 +1518,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Regenerates the RedisEnterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1516,8 +1537,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Regenerates the RedisEnterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1536,8 +1557,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Regenerates the RedisEnterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1554,8 +1575,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Regenerates the RedisEnterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1573,8 +1594,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1619,8 +1640,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1664,8 +1685,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1685,8 +1706,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1708,8 +1729,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1726,8 +1747,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1746,8 +1767,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1765,8 +1786,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1785,8 +1806,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1802,8 +1823,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Imports database files to target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1820,8 +1841,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1866,8 +1887,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1911,8 +1932,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1932,8 +1953,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1955,8 +1976,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1973,8 +1994,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1992,8 +2013,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2011,8 +2032,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2031,8 +2052,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2048,8 +2069,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Exports a database file from target database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2066,8 +2087,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2112,8 +2133,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2157,8 +2178,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2178,8 +2199,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2201,8 +2222,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2219,8 +2240,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2239,8 +2260,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2258,8 +2279,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2278,8 +2299,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2295,8 +2316,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Forcibly removes the link to the specified database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2310,11 +2331,281 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> forceLinkToReplicationGroupWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.forceLinkToReplicationGroup(this.client.getEndpoint(), resourceGroupName,
+                clusterName, databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> forceLinkToReplicationGroupWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.forceLinkToReplicationGroup(this.client.getEndpoint(), resourceGroupName, clusterName,
+            databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginForceLinkToReplicationGroupAsync(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = forceLinkToReplicationGroupWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginForceLinkToReplicationGroupAsync(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = forceLinkToReplicationGroupWithResponseAsync(resourceGroupName,
+            clusterName, databaseName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginForceLinkToReplicationGroup(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters) {
+        return this.beginForceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginForceLinkToReplicationGroup(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters, Context context) {
+        return this
+            .beginForceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> forceLinkToReplicationGroupAsync(String resourceGroupName, String clusterName,
+        String databaseName, ForceLinkParameters parameters) {
+        return beginForceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> forceLinkToReplicationGroupAsync(String resourceGroupName, String clusterName,
+        String databaseName, ForceLinkParameters parameters, Context context) {
+        return beginForceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void forceLinkToReplicationGroup(String resourceGroupName, String clusterName, String databaseName,
+        ForceLinkParameters parameters) {
+        forceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters).block();
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void forceLinkToReplicationGroup(String resourceGroupName, String clusterName, String databaseName,
+        ForceLinkParameters parameters, Context context) {
+        forceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters, context).block();
+    }
+
+    /**
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the databases to be flushed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2359,8 +2650,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the databases to be flushed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2404,8 +2695,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the databases to be flushed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2425,8 +2716,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the databases to be flushed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2448,8 +2739,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the databases to be flushed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2466,8 +2757,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the databases to be flushed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2485,8 +2776,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the databases to be flushed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2504,8 +2795,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the databases to be flushed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2524,8 +2815,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the databases to be flushed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2540,8 +2831,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * Flushes all the keys in this database and also from its linked databases.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the databases to be flushed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2552,6 +2843,231 @@ public final class DatabasesClientImpl implements DatabasesClient {
     public void flush(String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters,
         Context context) {
         flushAsync(resourceGroupName, clusterName, databaseName, parameters, context).block();
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeDBRedisVersionWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.upgradeDBRedisVersion(this.client.getEndpoint(), resourceGroupName, clusterName,
+                    databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeDBRedisVersionWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.upgradeDBRedisVersion(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeDBRedisVersionAsync(String resourceGroupName,
+        String clusterName, String databaseName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = upgradeDBRedisVersionWithResponseAsync(resourceGroupName, clusterName, databaseName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeDBRedisVersionAsync(String resourceGroupName,
+        String clusterName, String databaseName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = upgradeDBRedisVersionWithResponseAsync(resourceGroupName, clusterName, databaseName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpgradeDBRedisVersion(String resourceGroupName, String clusterName,
+        String databaseName) {
+        return this.beginUpgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName).getSyncPoller();
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpgradeDBRedisVersion(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
+        return this.beginUpgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> upgradeDBRedisVersionAsync(String resourceGroupName, String clusterName, String databaseName) {
+        return beginUpgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> upgradeDBRedisVersionAsync(String resourceGroupName, String clusterName, String databaseName,
+        Context context) {
+        return beginUpgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upgradeDBRedisVersion(String resourceGroupName, String clusterName, String databaseName) {
+        upgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName).block();
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upgradeDBRedisVersion(String resourceGroupName, String clusterName, String databaseName,
+        Context context) {
+        upgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName, context).block();
     }
 
     /**

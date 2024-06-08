@@ -6,14 +6,21 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** The redundancy type of the account after an account failover is performed. */
+/**
+ * The redundancy type of the account after an account failover is performed.
+ */
 public final class PostFailoverRedundancy extends ExpandableStringEnum<PostFailoverRedundancy> {
-    /** Static value Standard_LRS for PostFailoverRedundancy. */
+    /**
+     * Static value Standard_LRS for PostFailoverRedundancy.
+     */
     public static final PostFailoverRedundancy STANDARD_LRS = fromString("Standard_LRS");
 
-    /** Static value Standard_ZRS for PostFailoverRedundancy. */
+    /**
+     * Static value Standard_ZRS for PostFailoverRedundancy.
+     */
     public static final PostFailoverRedundancy STANDARD_ZRS = fromString("Standard_ZRS");
 
     /**

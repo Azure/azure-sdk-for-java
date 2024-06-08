@@ -216,8 +216,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     void createRetrievalRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
         FileDetails fileDetails = new FileDetails(
-            BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))
-        ).setFilename("java_sdk_tests_assistants.txt");
+            BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")), "java_sdk_tests_assistants.txt");
 
         AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
             .setName("Java SDK Retrieval Sample")
@@ -246,22 +245,19 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     void uploadAssistantTextFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
         String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-            .setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
         testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
     }
 
     void uploadAssistantImageFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
         String fileName = MS_LOGO_PNG;
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-            .setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
         testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
     }
 
     void uploadFineTuningJsonFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
         String fileName = JAVA_SDK_TESTS_FINE_TUNING_JSON;
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-            .setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
         testRunner.accept(fileDetails, FilePurpose.FINE_TUNE);
     }
 
@@ -388,8 +384,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     String uploadFile(AssistantsClient client, String fileName, FilePurpose filePurpose) {
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-            .setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
 
         OpenAIFile openAIFile = client.uploadFile(
             fileDetails,
@@ -400,8 +395,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     String uploadFileAsync(AssistantsAsyncClient client, String fileName, FilePurpose filePurpose) {
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-                .setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
 
         OpenAIFile openAIFile = client.uploadFile(
                 fileDetails,
