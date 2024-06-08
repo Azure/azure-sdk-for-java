@@ -253,7 +253,7 @@ public class ServiceBusProcessorClientIntegrationTest extends IntegrationTestBas
             .retryOptions(RETRY_OPTIONS)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler)
-            .configuration(v1OrV2(false)); // Disabling v2 to begin with.
+            .configuration(v1OrV2(true));
     }
 
     private ServiceBusSenderAsyncClient createSender(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
