@@ -295,6 +295,10 @@ public class EventHubConsumerAsyncClient implements Closeable {
         return consumerGroup;
     }
 
+    boolean isV2() {
+        return connectionProcessor.isV2();
+    }
+
     /**
      * Retrieves information about an Event Hub, including the number of partitions present and their identifiers.
      *
