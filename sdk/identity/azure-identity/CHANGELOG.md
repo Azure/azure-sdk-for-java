@@ -1,6 +1,9 @@
 # Release History
 
-## 1.12.2 (2024-06-09)
+## 1.12.2 (2024-06-10)
+
+### Bugs Fixed
+- Managed identity bug fixes
 
 ### Other Changes
 
