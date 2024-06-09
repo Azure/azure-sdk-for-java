@@ -5,6 +5,8 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.CreditFlowMode;
+import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.amqp.implementation.RetryUtil;
@@ -579,8 +581,15 @@ public class EventHubConsumerAsyncClient implements Closeable {
             // See the PR description (https://github.com/Azure/azure-sdk-for-java/pull/33204) for more details.
             .filter(link -> !link.isDisposed());
 
-        final AmqpReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
-            new AmqpReceiveLinkProcessor(entityPath, prefetchCount, partitionId, connectionProcessor, instrumentation));
+        final MessageFluxWrapper linkMessageProcessor;
+        if (connectionProcessor.isV2()) {
+            final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, prefetchCount, CreditFlowMode.EmissionDriven, MessageFlux.NULL_RETRY_POLICY);
+            linkMessageProcessor = new MessageFluxWrapper(messageFlux);
+        } else {
+            final AmqpReceiveLinkProcessor receiveLinkProcessor = receiveLinkFlux.subscribeWith(
+                new AmqpReceiveLinkProcessor(entityPath, prefetchCount, partitionId, connectionProcessor, instrumentation));
+            linkMessageProcessor = new MessageFluxWrapper(receiveLinkProcessor);
+        }
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,
