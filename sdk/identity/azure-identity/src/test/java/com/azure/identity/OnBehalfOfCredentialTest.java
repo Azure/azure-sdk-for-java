@@ -10,7 +10,6 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalClientException;
-import com.microsoft.aad.msal4j.MsalServiceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
@@ -131,7 +130,7 @@ public class OnBehalfOfCredentialTest {
 
             try {
                 new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
-                    .pemCertificate(    "testPath").clientAssertion(() -> "testAssertion")
+                    .pemCertificate("testPath").clientAssertion(() -> "testAssertion")
                     .additionallyAllowedTenants("*").build();
                 fail();
             } catch (IllegalArgumentException e) {
@@ -140,7 +139,7 @@ public class OnBehalfOfCredentialTest {
 
             try {
                 new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
-                    .clientSecret(    "testSecret").pemCertificate("testPath")
+                    .clientSecret("testSecret").pemCertificate("testPath")
                     .additionallyAllowedTenants("*").build();
                 fail();
             } catch (IllegalArgumentException e) {
