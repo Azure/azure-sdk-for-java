@@ -405,20 +405,20 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[product_documentation]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/overview
-[docs]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/rest-api-guide
+[product_documentation]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/overview
+[docs]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/rest-api-guide
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
-[documentFormats_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/get-supported-document-formats
-[glossaryFormats]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/get-supported-glossary-formats
-[batchTranslation_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/start-batch-translation
-[singleDocumentTranslation_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/translate-document
-[cancelTranslation_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/cancel-translation
-[getTranslationsStatus_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/get-translations-status
-[getTranslationStatus_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/get-translation-status
-[getDocumentsStatus_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/get-documents-status
-[getDocumentStatus_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/get-document-status
+[documentFormats_doc]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/get-supported-document-formats
+[glossaryFormats]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/get-supported-glossary-formats
+[batchTranslation_doc]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/start-batch-translation
+[singleDocumentTranslation_doc]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/translate-document
+[cancelTranslation_doc]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/cancel-translation
+[getTranslationsStatus_doc]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/get-translations-status
+[getTranslationStatus_doc]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/get-translation-status
+[getDocumentsStatus_doc]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/get-documents-status
+[getDocumentStatus_doc]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/reference/get-document-status
 [document_translator_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-document/src/main/java/com/azure/ai/translation/document/DocumentTranslationClient.java
 [single_document_translator_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-document/src/main/java/com/azure/ai/translation/document/SingleDocumentTranslationClient.java
 [sample_batchDocumentTranslation]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/StartDocumentTranslation.java
