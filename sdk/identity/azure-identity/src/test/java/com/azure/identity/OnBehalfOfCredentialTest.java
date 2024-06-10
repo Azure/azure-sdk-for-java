@@ -189,7 +189,7 @@ public class OnBehalfOfCredentialTest {
 
         OnBehalfOfCredential credential =
             new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret)
-                .additionallyAllowedTenants("*").build();
+                .userAssertion("assertion").additionallyAllowedTenants("*").build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(e -> e instanceof MsalServiceException)
             .verify();
