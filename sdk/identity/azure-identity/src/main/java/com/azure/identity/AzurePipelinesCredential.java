@@ -21,6 +21,7 @@ import com.azure.identity.implementation.IdentityClientBase;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.models.OidcTokenResponse;
 import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -81,8 +82,9 @@ public class AzurePipelinesCredential implements TokenCredential {
                             + System.lineSeparator()
                             + "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.", response));
                     }
-                    OidcTokenResponse tokenResponse = OidcTokenResponse.fromJson(JsonProviders.createReader(responseBody));
-                    return tokenResponse.getOidcToken();
+                    try (JsonReader reader = JsonProviders.createReader(responseBody)) {
+                        return OidcTokenResponse.fromJson(reader).getOidcToken();
+                    }
                 }
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token", null, e));
