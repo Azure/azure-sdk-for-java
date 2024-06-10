@@ -807,6 +807,23 @@ public class QueueAsyncApiTests extends QueueTestBase {
     }
 
     @Test
+    public void updateMessageWithBase64Client() {
+        String updateMsg = "Updated test message";
+        QueueAsyncClient encodingQueueClient = getBase64Client();
+        encodingQueueClient.create().block();
+        encodingQueueClient.sendMessage("test message before update").block();
+
+        QueueMessageItem dequeueMsg = encodingQueueClient.receiveMessage().block();
+
+        assertAsyncResponseStatusCode(encodingQueueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
+            dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1)), 204);
+
+        StepVerifier.create(encodingQueueClient.peekMessage().delaySubscription(getMessageUpdateDelay(2000)))
+            .assertNext(peekedMessageItem -> assertEquals(updateMsg, peekedMessageItem.getMessageText()))
+            .verifyComplete();
+    }
+
+    @Test
     public void getQueueName() {
         assertEquals(queueName, queueAsyncClient.getQueueName());
     }
@@ -890,5 +907,10 @@ public class QueueAsyncApiTests extends QueueTestBase {
         StepVerifier.create(aadQueue.getProperties())
             .assertNext(r -> assertNotNull(r))
             .verifyComplete();
+    }
+
+    private QueueAsyncClient getBase64Client() {
+        return queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64)
+            .buildAsyncClient().getQueueAsyncClient(queueName);
     }
 }
