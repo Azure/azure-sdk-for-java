@@ -31,105 +31,28 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 
 // Temporary type for Builders to work with the V2-Stack. Type will be removed once migration to new v2 stack is completed.
 final class V2StackSupport {
-    private static final String ASYNC_CONSUMER_KEY = "com.azure.messaging.eventhubs.asyncConsumer.v2";
-    private static final ConfigurationProperty<Boolean> ASYNC_CONSUMER_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(ASYNC_CONSUMER_KEY)
-        .environmentVariableName(ASYNC_CONSUMER_KEY)
+    private static final String V2_STACK_KEY = "com.azure.messaging.eventhubs.v2";
+    private static final ConfigurationProperty<Boolean> V2_STACK_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(V2_STACK_KEY)
+        .environmentVariableName(V2_STACK_KEY)
         .defaultValue(false)
         .shared(true)
         .build();
-    private final AtomicReference<Boolean> asyncConsumerFlag = new AtomicReference<>();
-
-    private static final String SYNC_CONSUMER_KEY = "com.azure.messaging.eventhubs.syncConsumer.v2";
-    private static final ConfigurationProperty<Boolean> SYNC_CONSUMER_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SYNC_CONSUMER_KEY)
-        .environmentVariableName(SYNC_CONSUMER_KEY)
-        .defaultValue(false)
-        .shared(true)
-        .build();
-    private final AtomicReference<Boolean> syncConsumerFlag = new AtomicReference<>();
-
-    private static final String ASYNC_PROCESSOR_KEY = "com.azure.messaging.eventhubs.processor.v2";
-    private static final ConfigurationProperty<Boolean> ASYNC_PROCESSOR_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(ASYNC_PROCESSOR_KEY)
-        .environmentVariableName(ASYNC_PROCESSOR_KEY)
-        .defaultValue(false)
-        .shared(true)
-        .build();
-    private final AtomicReference<Boolean> asyncProcessorFlag = new AtomicReference<>();
-
-    private static final String ASYNC_PRODUCER_KEY = "com.azure.messaging.eventhubs.asyncProducer.v2";
-    private static final ConfigurationProperty<Boolean> ASYNC_PRODUCER_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(ASYNC_PRODUCER_KEY)
-        .environmentVariableName(ASYNC_PRODUCER_KEY)
-        .defaultValue(false)
-        .shared(true)
-        .build();
-    private final AtomicReference<Boolean> asyncProducerFlag = new AtomicReference<>();
-
-    private static final String SYNC_PRODUCER_KEY = "com.azure.messaging.eventhubs.syncProducer.v2";
-    private static final ConfigurationProperty<Boolean> SYNC_PRODUCER_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SYNC_PRODUCER_KEY)
-        .environmentVariableName(SYNC_PRODUCER_KEY)
-        .defaultValue(false)
-        .shared(true)
-        .build();
-    private final AtomicReference<Boolean> syncProducerFlag = new AtomicReference<>();
+    private final AtomicReference<Boolean> v2StackFlag = new AtomicReference<>();
 
     private final ClientLogger logger;
 
     V2StackSupport(ClientLogger logger) {
         this.logger = logger;
     }
-    /**
-     * Check if Reactor Async Consumer should use the v2 stack.
-     *
-     * @param configuration the client configuration.
-     * @return true if the Reactor Async consumer should use the v2 stack.
-     */
-    boolean isAsyncConsumerEnabled(Configuration configuration) {
-        return isOptedIn(configuration, ASYNC_CONSUMER_PROPERTY, asyncConsumerFlag);
-    }
 
     /**
-     * Check if Sync Consumer should use the v2 stack.
+     * Check if clients should use the v2 stack.
      *
      * @param configuration the client configuration.
-     * @return true if the Sync consumer should use the v2 stack.
+     * @return true if the clients should use the v2 stack.
      */
-    boolean isSyncConsumerEnabled(Configuration configuration) {
-        return isOptedIn(configuration, SYNC_CONSUMER_PROPERTY, syncConsumerFlag);
-    }
-
-    /**
-     * Check if Processor Async Consumer should use the v2 stack.
-     *
-     * @param configuration the client configuration.
-     * @return true if the Processor Async consumer should use the v2 stack.
-     */
-    boolean isAsyncProcessorEnabled(Configuration configuration) {
-        return isOptedIn(configuration, ASYNC_PROCESSOR_PROPERTY, asyncProcessorFlag);
-    }
-
-    /**
-     * Check if Reactor Async Producer should use the v2 stack.
-     *
-     * @param configuration the client configuration.
-     * @return true if the Reactor Async Producer should use the v2 stack.
-     */
-    boolean isAsyncProducerEnabled(Configuration configuration) {
-        return isOptedIn(configuration, ASYNC_PRODUCER_PROPERTY, asyncProducerFlag);
-    }
-
-    /**
-     * Check if Sync Producer should use the v2 stack.
-     *
-     * @param configuration the client configuration.
-     * @return true if the Sync Producer should use the v2 stack.
-     */
-    boolean isSyncProducerEnabled(Configuration configuration) {
-        return isOptedIn(configuration, SYNC_PRODUCER_PROPERTY, syncProducerFlag);
-    }
-
-    // Obtain the shared connection-cache based on the V2-Stack.
-    ReactorConnectionCache<EventHubReactorAmqpConnection> getOrCreateConnectionCache(ConnectionOptions connectionOptions,
-        MessageSerializer serializer, Meter meter, ClientLogger logger) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Not implemented"));
+    boolean isV2StackEnabled(Configuration configuration) {
+        return isOptedIn(configuration, V2_STACK_PROPERTY, v2StackFlag);
     }
 
     private boolean isOptedOut(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
@@ -191,7 +114,7 @@ final class V2StackSupport {
         return choiceFlag.get();
     }
 
-    private static ReactorConnectionCache<EventHubReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
+    ReactorConnectionCache<EventHubReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
         Supplier<String> eventHubNameSupplier, MessageSerializer serializer, Meter meter) {
         final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
             final String connectionId = StringUtil.getRandomString("MF");

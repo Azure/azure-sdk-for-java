@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -994,7 +995,11 @@ public class EventHubClientBuilder implements
         if (isSharedConnection.get()) {
             synchronized (connectionLock) {
                 if (eventHubConnectionProcessor == null) {
-                    eventHubConnectionProcessor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
+                    if (v2StackSupport.isV2StackEnabled(configuration)) {
+                        eventHubConnectionProcessor = new ConnectionCacheWrapper(buildConnectionCache(messageSerializer, meter));
+                    } else {
+                        eventHubConnectionProcessor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
+                    }
                 }
             }
 
@@ -1003,7 +1008,11 @@ public class EventHubClientBuilder implements
             final int numberOfOpenClients = openClients.incrementAndGet();
             LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
         } else {
-            processor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
+            if (v2StackSupport.isV2StackEnabled(configuration)) {
+                processor = new ConnectionCacheWrapper(buildConnectionCache(messageSerializer, meter));
+            } else {
+                processor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
+            }
         }
 
         String identifier;
@@ -1122,6 +1131,17 @@ public class EventHubClientBuilder implements
 
         return connectionFlux.subscribeWith(new EventHubConnectionProcessor(
             connectionOptions.getFullyQualifiedNamespace(), getEventHubName.get(), connectionOptions.getRetry()));
+    }
+
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> buildConnectionCache(MessageSerializer messageSerializer, Meter meter) {
+        final ConnectionOptions connectionOptions = getConnectionOptions();
+        final Supplier<String> getEventHubName = () -> {
+            if (CoreUtils.isNullOrEmpty(eventHubName)) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+            }
+            return eventHubName;
+        };
+        return v2StackSupport.createConnectionCache(connectionOptions, getEventHubName, messageSerializer, meter);
     }
 
     ConnectionOptions getConnectionOptions() {
