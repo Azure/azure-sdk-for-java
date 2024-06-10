@@ -24,13 +24,13 @@ public class AzurePipelinesCredentialBuilderTest {
 
         // test
 
-        assertThrows(CredentialUnavailableException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder()
                 .build();
         });
 
         // This assert validates the one required parameter from the environment, SYSTEM_OIDCREQUESTURI, exists.
-        assertThrows(CredentialUnavailableException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder()
                 .clientId(clientId)
                 .tenantId(tenantId)
