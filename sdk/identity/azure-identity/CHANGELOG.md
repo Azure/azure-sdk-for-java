@@ -1,14 +1,12 @@
 # Release History
 
-## 1.13.0-beta.2 (Unreleased)
+## 1.13.0-beta.2 (2024-06-10)
 
 ### Features Added
-
-### Breaking Changes
+- Added support for a client assertion in `OnBehalfOfCredential` [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files)
 
 ### Bugs Fixed
-
-### Other Changes
+- Fixed an issue which may block `AzurePowershellCredential` from functioning correctly. [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files) 
 
 ## 1.12.2 (2024-06-10)
 
