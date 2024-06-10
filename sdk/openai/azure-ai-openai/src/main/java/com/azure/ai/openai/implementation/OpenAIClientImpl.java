@@ -1090,6 +1090,22 @@ public final class OpenAIClientImpl {
      *                         }
      *                     ]
      *                     intent: String (Optional)
+     *                     all_retrieved_documents (Optional): [
+     *                          (Optional){
+     *                             content: String (Required)
+     *                             title: String (Optional)
+     *                             url: String (Optional)
+     *                             filepath: String (Optional)
+     *                             chunk_id: String (Optional)
+     *                             search_queries (Required): [
+     *                                 String (Required)
+     *                             ]
+     *                             data_source_index: int (Required)
+     *                             original_search_score: Double (Optional)
+     *                             rerank_score: Double (Optional)
+     *                             filter_reason: String(score/rerank) (Optional)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             logprobs (Required): {
@@ -1328,6 +1344,22 @@ public final class OpenAIClientImpl {
      *                         }
      *                     ]
      *                     intent: String (Optional)
+     *                     all_retrieved_documents (Optional): [
+     *                          (Optional){
+     *                             content: String (Required)
+     *                             title: String (Optional)
+     *                             url: String (Optional)
+     *                             filepath: String (Optional)
+     *                             chunk_id: String (Optional)
+     *                             search_queries (Required): [
+     *                                 String (Required)
+     *                             ]
+     *                             data_source_index: int (Required)
+     *                             original_search_score: Double (Optional)
+     *                             rerank_score: Double (Optional)
+     *                             filter_reason: String(score/rerank) (Optional)
+     *                         }
+     *                     ]
      *                 }
      *             }
      *             logprobs (Required): {
@@ -1515,6 +1547,15 @@ public final class OpenAIClientImpl {
      *                     detected: boolean (Required)
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *             }
      *         }
      *     ]
@@ -1587,6 +1628,15 @@ public final class OpenAIClientImpl {
      *                     detected: boolean (Required)
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *             }
      *         }
      *     ]

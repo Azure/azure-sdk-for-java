@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The RunNotebookSparkSessionOptions model.
- */
+/** The RunNotebookSparkSessionOptions model. */
 @Fluent
 public final class RunNotebookSparkSessionOptions {
     /*
@@ -117,15 +115,12 @@ public final class RunNotebookSparkSessionOptions {
     @JsonProperty(value = "heartbeatTimeoutInSecond")
     private Integer heartbeatTimeoutInSecond;
 
-    /**
-     * Creates an instance of RunNotebookSparkSessionOptions class.
-     */
-    public RunNotebookSparkSessionOptions() {
-    }
+    /** Creates an instance of RunNotebookSparkSessionOptions class. */
+    public RunNotebookSparkSessionOptions() {}
 
     /**
      * Get the tags property: Dictionary of &lt;string&gt;.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -134,7 +129,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the tags property: Dictionary of &lt;string&gt;.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -145,7 +140,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the kind property: The session kind.
-     * 
+     *
      * @return the kind value.
      */
     public String getKind() {
@@ -154,7 +149,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the kind property: The session kind.
-     * 
+     *
      * @param kind the kind value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -165,7 +160,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the proxyUser property: User to impersonate when starting the session.
-     * 
+     *
      * @return the proxyUser value.
      */
     public String getProxyUser() {
@@ -174,7 +169,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the proxyUser property: User to impersonate when starting the session.
-     * 
+     *
      * @param proxyUser the proxyUser value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -185,7 +180,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the name property: The name of this session.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -194,7 +189,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the name property: The name of this session.
-     * 
+     *
      * @param name the name value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -205,7 +200,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the jars property: jars to be used in this session.
-     * 
+     *
      * @return the jars value.
      */
     public List<String> getJars() {
@@ -214,7 +209,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the jars property: jars to be used in this session.
-     * 
+     *
      * @param jars the jars value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -225,7 +220,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the pythonFiles property: Python files to be used in this session.
-     * 
+     *
      * @return the pythonFiles value.
      */
     public List<String> getPythonFiles() {
@@ -234,7 +229,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the pythonFiles property: Python files to be used in this session.
-     * 
+     *
      * @param pythonFiles the pythonFiles value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -245,7 +240,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the files property: files to be used in this session.
-     * 
+     *
      * @return the files value.
      */
     public List<String> getFiles() {
@@ -254,7 +249,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the files property: files to be used in this session.
-     * 
+     *
      * @param files the files value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -265,7 +260,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the archives property: Archives to be used in this session.
-     * 
+     *
      * @return the archives value.
      */
     public List<String> getArchives() {
@@ -274,7 +269,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the archives property: Archives to be used in this session.
-     * 
+     *
      * @param archives the archives value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -285,7 +280,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the queue property: The name of the YARN queue to which submitted.
-     * 
+     *
      * @return the queue value.
      */
     public Object getQueue() {
@@ -294,7 +289,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the queue property: The name of the YARN queue to which submitted.
-     * 
+     *
      * @param queue the queue value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -305,7 +300,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the configuration property: Spark configuration properties.
-     * 
+     *
      * @return the configuration value.
      */
     public Map<String, String> getConfiguration() {
@@ -314,7 +309,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the configuration property: Spark configuration properties.
-     * 
+     *
      * @param configuration the configuration value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -325,7 +320,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the driverMemory property: Amount of memory to use for the driver process.
-     * 
+     *
      * @return the driverMemory value.
      */
     public String getDriverMemory() {
@@ -334,7 +329,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the driverMemory property: Amount of memory to use for the driver process.
-     * 
+     *
      * @param driverMemory the driverMemory value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -345,7 +340,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the driverCores property: Number of cores to use for the driver process.
-     * 
+     *
      * @return the driverCores value.
      */
     public Integer getDriverCores() {
@@ -354,7 +349,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the driverCores property: Number of cores to use for the driver process.
-     * 
+     *
      * @param driverCores the driverCores value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -365,7 +360,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the executorMemory property: Amount of memory to use per executor process.
-     * 
+     *
      * @return the executorMemory value.
      */
     public String getExecutorMemory() {
@@ -374,7 +369,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the executorMemory property: Amount of memory to use per executor process.
-     * 
+     *
      * @param executorMemory the executorMemory value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -385,7 +380,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the executorCores property: Number of cores to use for each executor.
-     * 
+     *
      * @return the executorCores value.
      */
     public Integer getExecutorCores() {
@@ -394,7 +389,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the executorCores property: Number of cores to use for each executor.
-     * 
+     *
      * @param executorCores the executorCores value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -405,7 +400,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the executorCount property: Number of executors to launch for this session.
-     * 
+     *
      * @return the executorCount value.
      */
     public Integer getExecutorCount() {
@@ -414,7 +409,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the executorCount property: Number of executors to launch for this session.
-     * 
+     *
      * @param executorCount the executorCount value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -426,7 +421,7 @@ public final class RunNotebookSparkSessionOptions {
     /**
      * Get the isQueueable property: Whether to queue session creation if Spark pool doesn't have enough capacity.
      * Default value is true in notebook runs API.
-     * 
+     *
      * @return the isQueueable value.
      */
     public Boolean isQueueable() {
@@ -436,7 +431,7 @@ public final class RunNotebookSparkSessionOptions {
     /**
      * Set the isQueueable property: Whether to queue session creation if Spark pool doesn't have enough capacity.
      * Default value is true in notebook runs API.
-     * 
+     *
      * @param isQueueable the isQueueable value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */
@@ -447,7 +442,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Get the heartbeatTimeoutInSecond property: Timeout in second to which session be orphaned.
-     * 
+     *
      * @return the heartbeatTimeoutInSecond value.
      */
     public Integer getHeartbeatTimeoutInSecond() {
@@ -456,7 +451,7 @@ public final class RunNotebookSparkSessionOptions {
 
     /**
      * Set the heartbeatTimeoutInSecond property: Timeout in second to which session be orphaned.
-     * 
+     *
      * @param heartbeatTimeoutInSecond the heartbeatTimeoutInSecond value to set.
      * @return the RunNotebookSparkSessionOptions object itself.
      */

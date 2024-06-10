@@ -4,9 +4,14 @@
 
 ### Features Added
 
+- Add support for local emulator.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+
+- Use endpoint address's port when specified in connection string. (#40415)[https://github.com/Azure/azure-sdk-for-java/pull/40415]
+- Fix parsing of `customEndpointAddress` to match one used in connection string. (#40415)[https://github.com/Azure/azure-sdk-for-java/pull/40415]
 
 ### Other Changes
 

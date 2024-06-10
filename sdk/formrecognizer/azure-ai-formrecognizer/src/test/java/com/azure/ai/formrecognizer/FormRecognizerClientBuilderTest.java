@@ -32,6 +32,7 @@ import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_
 import static com.azure.ai.formrecognizer.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
+import static com.azure.ai.formrecognizer.TestUtils.REMOVE_SANITIZER_ID;
 import static com.azure.ai.formrecognizer.TestUtils.URL_TEST_FILE_FORMAT;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTP_LOCALHOST;
 import static com.azure.ai.formrecognizer.TestUtils.setSyncPollerPollInterval;
@@ -249,6 +250,9 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+        }
         return clientBuilder;
     }
 

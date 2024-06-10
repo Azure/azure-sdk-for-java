@@ -66,4 +66,22 @@ public final class FilePurpose extends ExpandableStringEnum<FilePurpose> {
     public static Collection<FilePurpose> values() {
         return values(FilePurpose.class);
     }
+
+    /**
+     * Indicates a file is used as input to .
+     */
+    @Generated
+    public static final FilePurpose BATCH = fromString("batch");
+
+    /**
+     * Indicates a file is used as output by a vector store batch operation.
+     */
+    @Generated
+    public static final FilePurpose BATCH_OUTPUT = fromString("batch_output");
+
+    /**
+     * Indicates a file is used as input to a vision operation.
+     */
+    @Generated
+    public static final FilePurpose VISION = fromString("vision");
 }

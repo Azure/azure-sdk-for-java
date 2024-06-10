@@ -10,6 +10,25 @@
 
 ### Other Changes
 
+## 2.9.6 (2024-06-11)
+
+### Features Added
+
+- Added feature to enable/disable SSL when initially creating connection to support amqp calls on port 5672.
+
+## 2.9.5 (2024-06-06)
+
+### Bugs Fixed
+
+- Expose and use port when parsing `ConnectionStringProperties`. (#40415)[https://github.com/Azure/azure-sdk-for-java/pull/40415]
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+- Upgraded Reactor Core from `3.4.36` to `3.4.38`.
+
 ## 2.9.4 (2024-05-01)
 
 ### Features Added

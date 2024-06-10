@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -16,13 +17,19 @@ import java.util.Collection;
  * transition to a Locked state which cannot be reverted.
  */
 public final class AccountImmutabilityPolicyState extends ExpandableStringEnum<AccountImmutabilityPolicyState> {
-    /** Static value Unlocked for AccountImmutabilityPolicyState. */
+    /**
+     * Static value Unlocked for AccountImmutabilityPolicyState.
+     */
     public static final AccountImmutabilityPolicyState UNLOCKED = fromString("Unlocked");
 
-    /** Static value Locked for AccountImmutabilityPolicyState. */
+    /**
+     * Static value Locked for AccountImmutabilityPolicyState.
+     */
     public static final AccountImmutabilityPolicyState LOCKED = fromString("Locked");
 
-    /** Static value Disabled for AccountImmutabilityPolicyState. */
+    /**
+     * Static value Disabled for AccountImmutabilityPolicyState.
+     */
     public static final AccountImmutabilityPolicyState DISABLED = fromString("Disabled");
 
     /**

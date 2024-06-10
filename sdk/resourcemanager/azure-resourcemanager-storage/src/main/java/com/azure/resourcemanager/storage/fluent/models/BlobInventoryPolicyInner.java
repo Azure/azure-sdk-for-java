@@ -9,9 +9,12 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicySchema;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** The storage account blob inventory policy. */
+/**
+ * The storage account blob inventory policy.
+ */
 @Fluent
 public final class BlobInventoryPolicyInner extends ProxyResource {
     /*
@@ -26,7 +29,9 @@ public final class BlobInventoryPolicyInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of BlobInventoryPolicyInner class. */
+    /**
+     * Creates an instance of BlobInventoryPolicyInner class.
+     */
     public BlobInventoryPolicyInner() {
     }
 

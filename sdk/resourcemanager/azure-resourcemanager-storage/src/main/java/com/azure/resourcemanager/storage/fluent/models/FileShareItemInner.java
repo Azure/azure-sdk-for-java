@@ -14,11 +14,14 @@ import com.azure.resourcemanager.storage.models.RootSquashType;
 import com.azure.resourcemanager.storage.models.ShareAccessTier;
 import com.azure.resourcemanager.storage.models.SignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The file share properties be listed out. */
+/**
+ * The file share properties be listed out.
+ */
 @Fluent
 public final class FileShareItemInner extends AzureEntityResource {
     /*
@@ -27,7 +30,9 @@ public final class FileShareItemInner extends AzureEntityResource {
     @JsonProperty(value = "properties")
     private FileShareProperties innerProperties;
 
-    /** Creates an instance of FileShareItemInner class. */
+    /**
+     * Creates an instance of FileShareItemInner class.
+     */
     public FileShareItemInner() {
     }
 

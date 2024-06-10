@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * SSIS package location.
- */
+/** SSIS package location. */
 @JsonFlatten
 @Fluent
 public class SsisPackageLocation {
@@ -75,15 +73,12 @@ public class SsisPackageLocation {
     @JsonProperty(value = "typeProperties.childPackages")
     private List<SsisChildPackage> childPackages;
 
-    /**
-     * Creates an instance of SsisPackageLocation class.
-     */
-    public SsisPackageLocation() {
-    }
+    /** Creates an instance of SsisPackageLocation class. */
+    public SsisPackageLocation() {}
 
     /**
      * Get the packagePath property: The SSIS package path. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the packagePath value.
      */
     public Object getPackagePath() {
@@ -92,7 +87,7 @@ public class SsisPackageLocation {
 
     /**
      * Set the packagePath property: The SSIS package path. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param packagePath the packagePath value to set.
      * @return the SsisPackageLocation object itself.
      */
@@ -103,7 +98,7 @@ public class SsisPackageLocation {
 
     /**
      * Get the type property: The type of SSIS package location.
-     * 
+     *
      * @return the type value.
      */
     public SsisPackageLocationType getType() {
@@ -112,7 +107,7 @@ public class SsisPackageLocation {
 
     /**
      * Set the type property: The type of SSIS package location.
-     * 
+     *
      * @param type the type value to set.
      * @return the SsisPackageLocation object itself.
      */
@@ -123,7 +118,7 @@ public class SsisPackageLocation {
 
     /**
      * Get the packagePassword property: Password of the package.
-     * 
+     *
      * @return the packagePassword value.
      */
     public SecretBase getPackagePassword() {
@@ -132,7 +127,7 @@ public class SsisPackageLocation {
 
     /**
      * Set the packagePassword property: Password of the package.
-     * 
+     *
      * @param packagePassword the packagePassword value to set.
      * @return the SsisPackageLocation object itself.
      */
@@ -143,7 +138,7 @@ public class SsisPackageLocation {
 
     /**
      * Get the accessCredential property: The package access credential.
-     * 
+     *
      * @return the accessCredential value.
      */
     public SsisAccessCredential getAccessCredential() {
@@ -152,7 +147,7 @@ public class SsisPackageLocation {
 
     /**
      * Set the accessCredential property: The package access credential.
-     * 
+     *
      * @param accessCredential the accessCredential value to set.
      * @return the SsisPackageLocation object itself.
      */
@@ -164,7 +159,7 @@ public class SsisPackageLocation {
     /**
      * Get the configurationPath property: The configuration file of the package execution. Type: string (or Expression
      * with resultType string).
-     * 
+     *
      * @return the configurationPath value.
      */
     public Object getConfigurationPath() {
@@ -174,7 +169,7 @@ public class SsisPackageLocation {
     /**
      * Set the configurationPath property: The configuration file of the package execution. Type: string (or Expression
      * with resultType string).
-     * 
+     *
      * @param configurationPath the configurationPath value to set.
      * @return the SsisPackageLocation object itself.
      */
@@ -185,7 +180,7 @@ public class SsisPackageLocation {
 
     /**
      * Get the configurationAccessCredential property: The configuration file access credential.
-     * 
+     *
      * @return the configurationAccessCredential value.
      */
     public SsisAccessCredential getConfigurationAccessCredential() {
@@ -194,7 +189,7 @@ public class SsisPackageLocation {
 
     /**
      * Set the configurationAccessCredential property: The configuration file access credential.
-     * 
+     *
      * @param configurationAccessCredential the configurationAccessCredential value to set.
      * @return the SsisPackageLocation object itself.
      */
@@ -205,7 +200,7 @@ public class SsisPackageLocation {
 
     /**
      * Get the packageName property: The package name.
-     * 
+     *
      * @return the packageName value.
      */
     public String getPackageName() {
@@ -214,7 +209,7 @@ public class SsisPackageLocation {
 
     /**
      * Set the packageName property: The package name.
-     * 
+     *
      * @param packageName the packageName value to set.
      * @return the SsisPackageLocation object itself.
      */
@@ -226,7 +221,7 @@ public class SsisPackageLocation {
     /**
      * Get the packageContent property: The embedded package content. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the packageContent value.
      */
     public Object getPackageContent() {
@@ -236,7 +231,7 @@ public class SsisPackageLocation {
     /**
      * Set the packageContent property: The embedded package content. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param packageContent the packageContent value to set.
      * @return the SsisPackageLocation object itself.
      */
@@ -247,7 +242,7 @@ public class SsisPackageLocation {
 
     /**
      * Get the packageLastModifiedDate property: The embedded package last modified date.
-     * 
+     *
      * @return the packageLastModifiedDate value.
      */
     public String getPackageLastModifiedDate() {
@@ -256,7 +251,7 @@ public class SsisPackageLocation {
 
     /**
      * Set the packageLastModifiedDate property: The embedded package last modified date.
-     * 
+     *
      * @param packageLastModifiedDate the packageLastModifiedDate value to set.
      * @return the SsisPackageLocation object itself.
      */
@@ -267,7 +262,7 @@ public class SsisPackageLocation {
 
     /**
      * Get the childPackages property: The embedded child package list.
-     * 
+     *
      * @return the childPackages value.
      */
     public List<SsisChildPackage> getChildPackages() {
@@ -276,7 +271,7 @@ public class SsisPackageLocation {
 
     /**
      * Set the childPackages property: The embedded child package list.
-     * 
+     *
      * @param childPackages the childPackages value to set.
      * @return the SsisPackageLocation object itself.
      */

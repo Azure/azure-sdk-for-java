@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LinkConnectionSourceDatabase model.
- */
+/** The LinkConnectionSourceDatabase model. */
 @Fluent
 public final class LinkConnectionSourceDatabase {
     /*
@@ -24,15 +22,12 @@ public final class LinkConnectionSourceDatabase {
     @JsonProperty(value = "typeProperties")
     private LinkConnectionSourceDatabaseTypeProperties typeProperties;
 
-    /**
-     * Creates an instance of LinkConnectionSourceDatabase class.
-     */
-    public LinkConnectionSourceDatabase() {
-    }
+    /** Creates an instance of LinkConnectionSourceDatabase class. */
+    public LinkConnectionSourceDatabase() {}
 
     /**
      * Get the linkedService property: Linked service reference.
-     * 
+     *
      * @return the linkedService value.
      */
     public LinkedServiceReference getLinkedService() {
@@ -41,7 +36,7 @@ public final class LinkConnectionSourceDatabase {
 
     /**
      * Set the linkedService property: Linked service reference.
-     * 
+     *
      * @param linkedService the linkedService value to set.
      * @return the LinkConnectionSourceDatabase object itself.
      */
@@ -52,7 +47,7 @@ public final class LinkConnectionSourceDatabase {
 
     /**
      * Get the typeProperties property: Source database type properties.
-     * 
+     *
      * @return the typeProperties value.
      */
     public LinkConnectionSourceDatabaseTypeProperties getTypeProperties() {
@@ -61,7 +56,7 @@ public final class LinkConnectionSourceDatabase {
 
     /**
      * Set the typeProperties property: Source database type properties.
-     * 
+     *
      * @param typeProperties the typeProperties value to set.
      * @return the LinkConnectionSourceDatabase object itself.
      */

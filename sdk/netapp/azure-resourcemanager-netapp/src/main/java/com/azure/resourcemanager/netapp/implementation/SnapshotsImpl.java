@@ -44,8 +44,8 @@ public final class SnapshotsImpl implements Snapshots {
 
     public Response<Snapshot> getWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName, Context context) {
-        Response<SnapshotInner> inner = this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName,
-            volumeName, snapshotName, context);
+        Response<SnapshotInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SnapshotImpl(inner.getValue(), this.manager()));
@@ -78,8 +78,8 @@ public final class SnapshotsImpl implements Snapshots {
 
     public Snapshot update(String resourceGroupName, String accountName, String poolName, String volumeName,
         String snapshotName, Object body, Context context) {
-        SnapshotInner inner = this.serviceClient().update(resourceGroupName, accountName, poolName, volumeName,
-            snapshotName, body, context);
+        SnapshotInner inner = this.serviceClient()
+            .update(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context);
         if (inner != null) {
             return new SnapshotImpl(inner, this.manager());
         } else {
@@ -104,8 +104,8 @@ public final class SnapshotsImpl implements Snapshots {
 
     public void restoreFiles(String resourceGroupName, String accountName, String poolName, String volumeName,
         String snapshotName, SnapshotRestoreFiles body, Context context) {
-        this.serviceClient().restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body,
-            context);
+        this.serviceClient()
+            .restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context);
     }
 
     public Snapshot getById(String id) {

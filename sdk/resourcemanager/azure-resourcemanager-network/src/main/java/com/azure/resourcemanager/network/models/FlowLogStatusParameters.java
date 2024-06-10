@@ -54,8 +54,9 @@ public final class FlowLogStatusParameters {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetResourceId in model FlowLogStatusParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceId in model FlowLogStatusParameters"));
         }
     }
 

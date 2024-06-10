@@ -13,9 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * VNet properties for managed integration runtime.
- */
+/** VNet properties for managed integration runtime. */
 @Fluent
 public final class IntegrationRuntimeVNetProperties {
     /*
@@ -39,18 +37,14 @@ public final class IntegrationRuntimeVNetProperties {
     /*
      * VNet properties for managed integration runtime.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of IntegrationRuntimeVNetProperties class.
-     */
-    public IntegrationRuntimeVNetProperties() {
-    }
+    /** Creates an instance of IntegrationRuntimeVNetProperties class. */
+    public IntegrationRuntimeVNetProperties() {}
 
     /**
      * Get the vNetId property: The ID of the VNet that this integration runtime will join.
-     * 
+     *
      * @return the vNetId value.
      */
     public String getVNetId() {
@@ -59,7 +53,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Set the vNetId property: The ID of the VNet that this integration runtime will join.
-     * 
+     *
      * @param vNetId the vNetId value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */
@@ -70,7 +64,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Get the subnet property: The name of the subnet this integration runtime will join.
-     * 
+     *
      * @return the subnet value.
      */
     public String getSubnet() {
@@ -79,7 +73,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Set the subnet property: The name of the subnet this integration runtime will join.
-     * 
+     *
      * @param subnet the subnet value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */
@@ -90,7 +84,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Get the publicIPs property: Resource IDs of the public IP addresses that this integration runtime will use.
-     * 
+     *
      * @return the publicIPs value.
      */
     public List<String> getPublicIPs() {
@@ -99,7 +93,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Set the publicIPs property: Resource IDs of the public IP addresses that this integration runtime will use.
-     * 
+     *
      * @param publicIPs the publicIPs value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */
@@ -110,7 +104,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Get the additionalProperties property: VNet properties for managed integration runtime.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -120,7 +114,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Set the additionalProperties property: VNet properties for managed integration runtime.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */

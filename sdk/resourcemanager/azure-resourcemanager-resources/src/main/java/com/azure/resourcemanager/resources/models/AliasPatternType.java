@@ -7,15 +7,23 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The type of alias pattern. */
+/**
+ * The type of alias pattern.
+ */
 public enum AliasPatternType {
-    /** Enum value NotSpecified. */
+    /**
+     * Enum value NotSpecified.
+     */
     NOT_SPECIFIED("NotSpecified"),
 
-    /** Enum value Extract. */
+    /**
+     * Enum value Extract.
+     */
     EXTRACT("Extract");
 
-    /** The actual serialized value for a AliasPatternType instance. */
+    /**
+     * The actual serialized value for a AliasPatternType instance.
+     */
     private final String value;
 
     AliasPatternType(String value) {
@@ -24,7 +32,7 @@ public enum AliasPatternType {
 
     /**
      * Parses a serialized value to a AliasPatternType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AliasPatternType object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum AliasPatternType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

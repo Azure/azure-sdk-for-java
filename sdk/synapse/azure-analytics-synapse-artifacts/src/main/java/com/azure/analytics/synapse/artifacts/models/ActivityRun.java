@@ -13,9 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Information about an activity run in a pipeline.
- */
+/** Information about an activity run in a pipeline. */
 @Fluent
 public final class ActivityRun {
     /*
@@ -99,18 +97,14 @@ public final class ActivityRun {
     /*
      * Information about an activity run in a pipeline.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of ActivityRun class.
-     */
-    public ActivityRun() {
-    }
+    /** Creates an instance of ActivityRun class. */
+    public ActivityRun() {}
 
     /**
      * Get the pipelineName property: The name of the pipeline.
-     * 
+     *
      * @return the pipelineName value.
      */
     public String getPipelineName() {
@@ -119,7 +113,7 @@ public final class ActivityRun {
 
     /**
      * Get the pipelineRunId property: The id of the pipeline run.
-     * 
+     *
      * @return the pipelineRunId value.
      */
     public String getPipelineRunId() {
@@ -128,7 +122,7 @@ public final class ActivityRun {
 
     /**
      * Get the activityName property: The name of the activity.
-     * 
+     *
      * @return the activityName value.
      */
     public String getActivityName() {
@@ -137,7 +131,7 @@ public final class ActivityRun {
 
     /**
      * Get the activityType property: The type of the activity.
-     * 
+     *
      * @return the activityType value.
      */
     public String getActivityType() {
@@ -146,7 +140,7 @@ public final class ActivityRun {
 
     /**
      * Get the activityRunId property: The id of the activity run.
-     * 
+     *
      * @return the activityRunId value.
      */
     public String getActivityRunId() {
@@ -155,7 +149,7 @@ public final class ActivityRun {
 
     /**
      * Get the linkedServiceName property: The name of the compute linked service.
-     * 
+     *
      * @return the linkedServiceName value.
      */
     public String getLinkedServiceName() {
@@ -164,7 +158,7 @@ public final class ActivityRun {
 
     /**
      * Get the status property: The status of the activity run.
-     * 
+     *
      * @return the status value.
      */
     public String getStatus() {
@@ -173,7 +167,7 @@ public final class ActivityRun {
 
     /**
      * Get the activityRunStart property: The start time of the activity run in 'ISO 8601' format.
-     * 
+     *
      * @return the activityRunStart value.
      */
     public OffsetDateTime getActivityRunStart() {
@@ -182,7 +176,7 @@ public final class ActivityRun {
 
     /**
      * Get the activityRunEnd property: The end time of the activity run in 'ISO 8601' format.
-     * 
+     *
      * @return the activityRunEnd value.
      */
     public OffsetDateTime getActivityRunEnd() {
@@ -191,7 +185,7 @@ public final class ActivityRun {
 
     /**
      * Get the durationInMs property: The duration of the activity run.
-     * 
+     *
      * @return the durationInMs value.
      */
     public Integer getDurationInMs() {
@@ -200,7 +194,7 @@ public final class ActivityRun {
 
     /**
      * Get the input property: The input for the activity.
-     * 
+     *
      * @return the input value.
      */
     public Object getInput() {
@@ -209,7 +203,7 @@ public final class ActivityRun {
 
     /**
      * Get the output property: The output for the activity.
-     * 
+     *
      * @return the output value.
      */
     public Object getOutput() {
@@ -218,7 +212,7 @@ public final class ActivityRun {
 
     /**
      * Get the error property: The error if any from the activity run.
-     * 
+     *
      * @return the error value.
      */
     public Object getError() {
@@ -227,7 +221,7 @@ public final class ActivityRun {
 
     /**
      * Get the additionalProperties property: Information about an activity run in a pipeline.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -237,7 +231,7 @@ public final class ActivityRun {
 
     /**
      * Set the additionalProperties property: Information about an activity run in a pipeline.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the ActivityRun object itself.
      */

@@ -28,8 +28,9 @@ import com.azure.resourcemanager.appservice.fluent.CertificateOrdersDiagnosticsC
 import com.azure.resourcemanager.appservice.fluent.models.DetectorResponseInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.DetectorResponseCollection;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 /**
  * An instance of this class provides access to all the operations defined in CertificateOrdersDiagnosticsClient.
@@ -47,7 +48,7 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Initializes an instance of CertificateOrdersDiagnosticsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     CertificateOrdersDiagnosticsClientImpl(WebSiteManagementClientImpl client) {
@@ -57,8 +58,8 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     }
 
     /**
-     * The interface defining all the services for WebSiteManagementClientCertificateOrdersDiagnostics to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for WebSiteManagementClientCertificateOrdersDiagnostics to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
@@ -96,9 +97,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,9 +139,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @param context The context to associate with this operation.
@@ -180,9 +181,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,9 +202,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @param context The context to associate with this operation.
@@ -223,9 +224,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,9 +243,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @param context The context to associate with this operation.
@@ -262,9 +263,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @param detectorName The detector name which needs to be run.
@@ -310,9 +311,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @param detectorName The detector name which needs to be run.
@@ -358,9 +359,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @param detectorName The detector name which needs to be run.
@@ -381,9 +382,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @param detectorName The detector name which needs to be run.
@@ -406,9 +407,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
+     *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @param detectorName The detector name which needs to be run.
@@ -429,9 +430,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -460,9 +461,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

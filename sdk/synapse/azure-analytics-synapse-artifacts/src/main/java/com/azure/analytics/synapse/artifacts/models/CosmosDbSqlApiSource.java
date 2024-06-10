@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A copy activity Azure CosmosDB (SQL API) Collection source.
- */
+/** A copy activity Azure CosmosDB (SQL API) Collection source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CosmosDbSqlApiSource")
 @Fluent
@@ -47,15 +45,12 @@ public final class CosmosDbSqlApiSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /**
-     * Creates an instance of CosmosDbSqlApiSource class.
-     */
-    public CosmosDbSqlApiSource() {
-    }
+    /** Creates an instance of CosmosDbSqlApiSource class. */
+    public CosmosDbSqlApiSource() {}
 
     /**
      * Get the query property: SQL API query. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the query value.
      */
     public Object getQuery() {
@@ -64,7 +59,7 @@ public final class CosmosDbSqlApiSource extends CopySource {
 
     /**
      * Set the query property: SQL API query. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param query the query value to set.
      * @return the CosmosDbSqlApiSource object itself.
      */
@@ -75,7 +70,7 @@ public final class CosmosDbSqlApiSource extends CopySource {
 
     /**
      * Get the pageSize property: Page size of the result. Type: integer (or Expression with resultType integer).
-     * 
+     *
      * @return the pageSize value.
      */
     public Object getPageSize() {
@@ -84,7 +79,7 @@ public final class CosmosDbSqlApiSource extends CopySource {
 
     /**
      * Set the pageSize property: Page size of the result. Type: integer (or Expression with resultType integer).
-     * 
+     *
      * @param pageSize the pageSize value to set.
      * @return the CosmosDbSqlApiSource object itself.
      */
@@ -94,9 +89,9 @@ public final class CosmosDbSqlApiSource extends CopySource {
     }
 
     /**
-     * Get the preferredRegions property: Preferred regions. Type: array of strings (or Expression with resultType
-     * array of strings).
-     * 
+     * Get the preferredRegions property: Preferred regions. Type: array of strings (or Expression with resultType array
+     * of strings).
+     *
      * @return the preferredRegions value.
      */
     public Object getPreferredRegions() {
@@ -104,9 +99,9 @@ public final class CosmosDbSqlApiSource extends CopySource {
     }
 
     /**
-     * Set the preferredRegions property: Preferred regions. Type: array of strings (or Expression with resultType
-     * array of strings).
-     * 
+     * Set the preferredRegions property: Preferred regions. Type: array of strings (or Expression with resultType array
+     * of strings).
+     *
      * @param preferredRegions the preferredRegions value to set.
      * @return the CosmosDbSqlApiSource object itself.
      */
@@ -116,9 +111,9 @@ public final class CosmosDbSqlApiSource extends CopySource {
     }
 
     /**
-     * Get the detectDatetime property: Whether detect primitive values as datetime values. Type: boolean (or
-     * Expression with resultType boolean).
-     * 
+     * Get the detectDatetime property: Whether detect primitive values as datetime values. Type: boolean (or Expression
+     * with resultType boolean).
+     *
      * @return the detectDatetime value.
      */
     public Object getDetectDatetime() {
@@ -126,9 +121,9 @@ public final class CosmosDbSqlApiSource extends CopySource {
     }
 
     /**
-     * Set the detectDatetime property: Whether detect primitive values as datetime values. Type: boolean (or
-     * Expression with resultType boolean).
-     * 
+     * Set the detectDatetime property: Whether detect primitive values as datetime values. Type: boolean (or Expression
+     * with resultType boolean).
+     *
      * @param detectDatetime the detectDatetime value to set.
      * @return the CosmosDbSqlApiSource object itself.
      */
@@ -140,7 +135,7 @@ public final class CosmosDbSqlApiSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -150,7 +145,7 @@ public final class CosmosDbSqlApiSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @param additionalColumns the additionalColumns value to set.
      * @return the CosmosDbSqlApiSource object itself.
      */
@@ -159,27 +154,21 @@ public final class CosmosDbSqlApiSource extends CopySource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbSqlApiSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbSqlApiSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbSqlApiSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

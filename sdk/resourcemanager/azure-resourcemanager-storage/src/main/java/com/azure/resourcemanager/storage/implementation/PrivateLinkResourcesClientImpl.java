@@ -25,23 +25,28 @@ import com.azure.resourcemanager.storage.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.storage.fluent.models.PrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StorageManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(StorageManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,42 +57,35 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     public interface PrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResultInner>> listByStorageAccount(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PrivateLinkResourceListResultInner>> listByStorageAccount(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the private link resources that need to be created for a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources that need to be created for a storage account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PrivateLinkResourceListResultInner>> listByStorageAccountWithResponseAsync(
-        String resourceGroupName, String accountName) {
+    public Mono<Response<PrivateLinkResourceListResultInner>>
+        listByStorageAccountWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -97,49 +95,36 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByStorageAccount(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByStorageAccount(this.client.getEndpoint(), resourceGroupName,
+                accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the private link resources that need to be created for a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources that need to be created for a storage account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceListResultInner>> listByStorageAccountWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<PrivateLinkResourceListResultInner>>
+        listByStorageAccountWithResponseAsync(String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -149,51 +134,42 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByStorageAccount(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listByStorageAccount(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the private link resources that need to be created for a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources that need to be created for a storage account on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateLinkResourceListResultInner> listByStorageAccountAsync(
-        String resourceGroupName, String accountName) {
+    public Mono<PrivateLinkResourceListResultInner> listByStorageAccountAsync(String resourceGroupName,
+        String accountName) {
         return listByStorageAccountWithResponseAsync(resourceGroupName, accountName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the private link resources that need to be created for a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -201,18 +177,18 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return the private link resources that need to be created for a storage account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceListResultInner> listByStorageAccountWithResponse(
-        String resourceGroupName, String accountName, Context context) {
+    public Response<PrivateLinkResourceListResultInner> listByStorageAccountWithResponse(String resourceGroupName,
+        String accountName, Context context) {
         return listByStorageAccountWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
     /**
      * Gets the private link resources that need to be created for a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

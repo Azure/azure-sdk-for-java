@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource Access Rule. */
+/**
+ * Resource Access Rule.
+ */
 @Fluent
 public final class ResourceAccessRule {
     /*
@@ -22,13 +24,15 @@ public final class ResourceAccessRule {
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
-    /** Creates an instance of ResourceAccessRule class. */
+    /**
+     * Creates an instance of ResourceAccessRule class.
+     */
     public ResourceAccessRule() {
     }
 
     /**
      * Get the tenantId property: Tenant Id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -37,7 +41,7 @@ public final class ResourceAccessRule {
 
     /**
      * Set the tenantId property: Tenant Id.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ResourceAccessRule object itself.
      */
@@ -48,7 +52,7 @@ public final class ResourceAccessRule {
 
     /**
      * Get the resourceId property: Resource Id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -57,7 +61,7 @@ public final class ResourceAccessRule {
 
     /**
      * Set the resourceId property: Resource Id.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ResourceAccessRule object itself.
      */
@@ -68,7 +72,7 @@ public final class ResourceAccessRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

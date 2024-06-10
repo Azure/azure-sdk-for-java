@@ -8,6 +8,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.storage.blob.BlobContainerClient;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -18,6 +20,8 @@ import com.azure.core.test.TestMode;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -596,4 +600,42 @@ public class TaskTests extends BatchClientTestBase {
         }
     }
 
+    @Test
+    public void testDeserializationOfBatchTaskStatistics() throws IOException {
+        // Simulated JSON response with numbers as strings
+        String jsonResponse = "{"
+            + "\"url\":\"http://example.com/statistics\","
+            + "\"startTime\":\"2022-01-01T00:00:00Z\","
+            + "\"lastUpdateTime\":\"2022-01-01T01:00:00Z\","
+            + "\"userCPUTime\":\"PT1H\","
+            + "\"kernelCPUTime\":\"PT2H\","
+            + "\"wallClockTime\":\"PT3H\","
+            + "\"readIOps\":\"1000\","
+            + "\"writeIOps\":\"500\","
+            + "\"readIOGiB\":0.5,"
+            + "\"writeIOGiB\":0.25,"
+            + "\"waitTime\":\"PT30M\""
+            + "}";
+
+        // Deserialize JSON response using JsonReader from JsonProviders
+        try (JsonReader jsonReader = JsonProviders.createReader(new StringReader(jsonResponse))) {
+            BatchTaskStatistics stats = BatchTaskStatistics.fromJson(jsonReader);
+
+            // Assertions
+            Assertions.assertNotNull(stats);
+            Assertions.assertEquals("http://example.com/statistics", stats.getUrl());
+            Assertions.assertEquals(OffsetDateTime.parse("2022-01-01T00:00:00Z"), stats.getStartTime());
+            Assertions.assertEquals(OffsetDateTime.parse("2022-01-01T01:00:00Z"), stats.getLastUpdateTime());
+            Assertions.assertEquals(Duration.parse("PT1H"), stats.getUserCpuTime());
+            Assertions.assertEquals(Duration.parse("PT2H"), stats.getKernelCpuTime());
+            Assertions.assertEquals(Duration.parse("PT3H"), stats.getWallClockTime());
+            Assertions.assertEquals(1000, stats.getReadIOps());
+            Assertions.assertEquals(500, stats.getWriteIOps());
+            Assertions.assertEquals(0.5, stats.getReadIOGiB());
+            Assertions.assertEquals(0.25, stats.getWriteIOGiB());
+            Assertions.assertEquals(Duration.parse("PT30M"), stats.getWaitTime());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

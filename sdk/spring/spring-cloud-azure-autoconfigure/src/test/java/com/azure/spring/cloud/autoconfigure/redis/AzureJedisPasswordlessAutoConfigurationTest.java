@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
  */
 class AzureJedisPasswordlessAutoConfigurationTest {
 
-    private static final String REDIS_SCOPE_GLOBAL = "https://*.cacheinfra.windows.net:10225/appid/.default";
+    private static final String REDIS_SCOPE_GLOBAL = "https://redis.azure.com/.default";
     private static final String REDIS_SCOPE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
     private static final String REDIS_SCOPE_GERMANY = "https://*.cacheinfra.windows.net.germany:10225/appid/.default";
     private static final String REDIS_SCOPE_US_GOVERNMENT = "https://*.cacheinfra.windows.us.government.net:10225/appid/.default";

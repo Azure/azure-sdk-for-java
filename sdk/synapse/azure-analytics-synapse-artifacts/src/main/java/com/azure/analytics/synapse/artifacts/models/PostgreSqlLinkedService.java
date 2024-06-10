@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Linked service for PostgreSQL data source.
- */
+/** Linked service for PostgreSQL data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("PostgreSql")
 @JsonFlatten
@@ -39,15 +37,12 @@ public class PostgreSqlLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /**
-     * Creates an instance of PostgreSqlLinkedService class.
-     */
-    public PostgreSqlLinkedService() {
-    }
+    /** Creates an instance of PostgreSqlLinkedService class. */
+    public PostgreSqlLinkedService() {}
 
     /**
      * Get the connectionString property: The connection string.
-     * 
+     *
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -56,7 +51,7 @@ public class PostgreSqlLinkedService extends LinkedService {
 
     /**
      * Set the connectionString property: The connection string.
-     * 
+     *
      * @param connectionString the connectionString value to set.
      * @return the PostgreSqlLinkedService object itself.
      */
@@ -67,7 +62,7 @@ public class PostgreSqlLinkedService extends LinkedService {
 
     /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
-     * 
+     *
      * @return the password value.
      */
     public AzureKeyVaultSecretReference getPassword() {
@@ -76,7 +71,7 @@ public class PostgreSqlLinkedService extends LinkedService {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string.
-     * 
+     *
      * @param password the password value to set.
      * @return the PostgreSqlLinkedService object itself.
      */
@@ -86,9 +81,9 @@ public class PostgreSqlLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -96,9 +91,9 @@ public class PostgreSqlLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PostgreSqlLinkedService object itself.
      */
@@ -107,36 +102,28 @@ public class PostgreSqlLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PostgreSqlLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PostgreSqlLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PostgreSqlLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PostgreSqlLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -29,7 +29,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -46,9 +45,6 @@ public class TestProxyUtils {
     private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
     private static final String REDACTED_VALUE = "REDACTED";
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
-    // Removing `Location`, `Operation-Location`, `$..id` and `$..name` from the default list of sanitizers as they are used in the SDK.
-    public static final List<String> DEFAULT_REMOVE_SANITIZER_LIST
-        = Collections.unmodifiableList(Arrays.asList("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493"));
 
     // These are prepended with "$.." creating a Jsonpath expression.
     private static final List<String> JSON_BODY_KEYS_TO_REDACT = Arrays.asList("authHeader", "accountKey",
@@ -62,13 +58,17 @@ public class TestProxyUtils {
         "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken", "azureBlobSource.containerUrl",
         "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
 
+    public static final String HOST_NAME_REGEX = "(?<=http://|https://)(?<host>[^/?\\\\.]+)";
     private static final List<TestProxySanitizer> HEADER_KEY_REGEX_TO_REDACT = Arrays.asList(
-
         new TestProxySanitizer("ServiceBusDlqSupplementaryAuthorization",
             "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)", REDACTED_VALUE, TestProxySanitizerType.HEADER)
                 .setGroupForReplace("secret"),
         new TestProxySanitizer("ServiceBusSupplementaryAuthorization", "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)",
-            REDACTED_VALUE, TestProxySanitizerType.HEADER).setGroupForReplace("secret"));
+            REDACTED_VALUE, TestProxySanitizerType.HEADER).setGroupForReplace("secret"),
+        new TestProxySanitizer("operation-location", HOST_NAME_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER)
+            .setGroupForReplace("host"),
+        new TestProxySanitizer("Location", HOST_NAME_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER)
+            .setGroupForReplace("host"));
 
     // Values in this list must have a capture group named "secret" for the redaction to work.
     private static final List<String> BODY_REGEXES_TO_REDACT

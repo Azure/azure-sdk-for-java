@@ -78,8 +78,8 @@ public final class WorkflowHealth {
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property state in model WorkflowHealth"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property state in model WorkflowHealth"));
         }
         if (error() != null) {
             error().validate();

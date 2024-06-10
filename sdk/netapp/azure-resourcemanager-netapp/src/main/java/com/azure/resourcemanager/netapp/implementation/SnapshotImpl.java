@@ -90,14 +90,17 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     }
 
     public Snapshot create() {
-        this.innerObject = serviceManager.serviceClient().getSnapshots().create(resourceGroupName, accountName,
-            poolName, volumeName, snapshotName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSnapshots()
+            .create(resourceGroupName, accountName, poolName, volumeName, snapshotName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public Snapshot create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSnapshots().create(resourceGroupName, accountName,
-            poolName, volumeName, snapshotName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSnapshots()
+            .create(resourceGroupName, accountName, poolName, volumeName, snapshotName, this.innerModel(), context);
         return this;
     }
 
@@ -108,26 +111,29 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     }
 
     public Snapshot refresh() {
-        this.innerObject = serviceManager.serviceClient().getSnapshots()
+        this.innerObject = serviceManager.serviceClient()
+            .getSnapshots()
             .getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, Context.NONE)
             .getValue();
         return this;
     }
 
     public Snapshot refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSnapshots()
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSnapshots()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, context)
+            .getValue();
         return this;
     }
 
     public void restoreFiles(SnapshotRestoreFiles body) {
-        serviceManager.snapshots().restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName,
-            body);
+        serviceManager.snapshots()
+            .restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body);
     }
 
     public void restoreFiles(SnapshotRestoreFiles body, Context context) {
-        serviceManager.snapshots().restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName,
-            body, context);
+        serviceManager.snapshots()
+            .restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context);
     }
 
     public SnapshotImpl withRegion(Region location) {

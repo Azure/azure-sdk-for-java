@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Attributes of a deleted storage account. */
+/**
+ * Attributes of a deleted storage account.
+ */
 @Immutable
 public final class DeletedAccountProperties {
     /*
@@ -40,13 +42,15 @@ public final class DeletedAccountProperties {
     @JsonProperty(value = "deletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private String deletionTime;
 
-    /** Creates an instance of DeletedAccountProperties class. */
+    /**
+     * Creates an instance of DeletedAccountProperties class.
+     */
     public DeletedAccountProperties() {
     }
 
     /**
      * Get the storageAccountResourceId property: Full resource id of the original storage account.
-     *
+     * 
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -55,7 +59,7 @@ public final class DeletedAccountProperties {
 
     /**
      * Get the location property: Location of the deleted account.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -65,7 +69,7 @@ public final class DeletedAccountProperties {
     /**
      * Get the restoreReference property: Can be used to attempt recovering this deleted account via PutStorageAccount
      * API.
-     *
+     * 
      * @return the restoreReference value.
      */
     public String restoreReference() {
@@ -74,7 +78,7 @@ public final class DeletedAccountProperties {
 
     /**
      * Get the creationTime property: Creation time of the deleted account.
-     *
+     * 
      * @return the creationTime value.
      */
     public String creationTime() {
@@ -83,7 +87,7 @@ public final class DeletedAccountProperties {
 
     /**
      * Get the deletionTime property: Deletion time of the deleted account.
-     *
+     * 
      * @return the deletionTime value.
      */
     public String deletionTime() {
@@ -92,7 +96,7 @@ public final class DeletedAccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

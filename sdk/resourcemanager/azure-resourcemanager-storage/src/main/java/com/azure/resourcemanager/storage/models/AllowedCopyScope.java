@@ -6,14 +6,21 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet. */
+/**
+ * Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
+ */
 public final class AllowedCopyScope extends ExpandableStringEnum<AllowedCopyScope> {
-    /** Static value PrivateLink for AllowedCopyScope. */
+    /**
+     * Static value PrivateLink for AllowedCopyScope.
+     */
     public static final AllowedCopyScope PRIVATE_LINK = fromString("PrivateLink");
 
-    /** Static value AAD for AllowedCopyScope. */
+    /**
+     * Static value AAD for AllowedCopyScope.
+     */
     public static final AllowedCopyScope AAD = fromString("AAD");
 
     /**
