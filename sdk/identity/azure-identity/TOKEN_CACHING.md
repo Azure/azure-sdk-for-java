@@ -102,21 +102,22 @@ The following table indicates the state of in-memory and persistent caching in e
 
 **Note:** In-memory caching is activated by default. Persistent token caching needs to be enabled as shown in this [code sample](#code-sample).
 
-| Credential                     | In-memory token caching                                                | Persistent disk token caching |
-|--------------------------------|------------------------------------------------------------------------|-------------------------------|
-| `AuthorizationCodeCredential`  | Supported                                                              | Supported                     |
-| `AzureCliCredential`           | Not Supported                                                          | Not Supported                 |
-| `AzureDeveloperCliCredential`  | Not Supported                                                          | Not Supported                 |
-| `AzurePowershellCredential`    | Not Supported                                                          | Not Supported                 |
-| `ClientAssertionCredential`    | Supported                                                              | Supported                     |
-| `ClientCertificateCredential`  | Supported                                                              | Supported                     |
-| `ClientSecretCredential`       | Supported                                                              | Supported                     |
-| `DefaultAzureCredential`       | Supported if the target credential in the credential chain supports it | Not Supported                 |
-| `DeviceCodeCredential`         | Supported                                                              | Supported                     |
-| `EnvironmentCredential`        | Supported                                                              | Supported                     |
-| `IntelliJCredential`           | Supported                                                              | Not Supported                 |
-| `InteractiveBrowserCredential` | Supported                                                              | Supported                     |
-| `ManagedIdentityCredential`    | Supported                                                              | Not Supported                 |
-| `OnBehalfOfCredential`         | Supported                                                              | Supported                     |
-| `UsernamePasswordCredential`   | Supported                                                              | Supported                     |
-| `WorkloadIdentityCredential`   | Supported                                                              | Supported                     |
+| Credential                     | In-memory token caching                                                 | Persistent disk token caching |
+|--------------------------------|-------------------------------------------------------------------------|-------------------------------|
+| `AuthorizationCodeCredential`  | Supported                                                               | Supported                     |
+| `AzureCliCredential`           | Not Supported                                                           | Not Supported                 |
+| `AzureDeveloperCliCredential`  | Not Supported                                                           | Not Supported                 |
+| `AzurePipelinesCredential`     | Supported                                                               | Supported                     | 
+| `AzurePowershellCredential`    | Not Supported                                                           | Not Supported                 |
+| `ClientAssertionCredential`    | Supported                                                               | Supported                     |
+| `ClientCertificateCredential`  | Supported                                                               | Supported                     |
+| `ClientSecretCredential`       | Supported                                                               | Supported                     |
+| `DefaultAzureCredential`       | Supported if the target credential in the credential chain supports it  | Not Supported                 |
+| `DeviceCodeCredential`         | Supported                                                               | Supported                     |
+| `EnvironmentCredential`        | Supported                                                               | Supported                     |
+| `IntelliJCredential`           | Supported                                                               | Not Supported                 |
+| `InteractiveBrowserCredential` | Supported                                                               | Supported                     |
+| `ManagedIdentityCredential`    | Supported                                                               | Not Supported                 |
+| `OnBehalfOfCredential`         | Supported                                                               | Supported                     |
+| `UsernamePasswordCredential`   | Supported                                                               | Supported                     |
+| `WorkloadIdentityCredential`   | Supported                                                               | Supported                     |
