@@ -483,7 +483,7 @@ public class SearchIndexerClient {
             dataSource.setConnectionString("<unchanged>");
         }
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-            .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null, ignoreResetRequirements,
+            .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null,
                 null, context), LOGGER);
     }
 
@@ -928,8 +928,7 @@ public class SearchIndexerClient {
         }
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .createOrUpdateWithResponse(indexer.getName(), indexer, ifMatch, null,
-                disableCacheReprocessingChangeDetection, ignoreResetRequirements, null,
+            .createOrUpdateWithResponse(indexer.getName(), indexer, ifMatch, null, null,
                 context), LOGGER);
 
     }
@@ -1326,73 +1325,6 @@ public class SearchIndexerClient {
     }
 
     /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-List-List -->
-     * <pre>
-     * &#47;&#47; Reset the documents with keys 1234 and 4321.
-     * SEARCH_INDEXER_CLIENT.resetDocuments&#40;&quot;searchIndexer&quot;, false, Arrays.asList&#40;&quot;1234&quot;, &quot;4321&quot;&#41;, null&#41;;
-     *
-     * &#47;&#47; Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-     * SEARCH_INDEXER_CLIENT.resetDocuments&#40;&quot;searchIndexer&quot;, true, Arrays.asList&#40;&quot;1235&quot;, &quot;5321&quot;&#41;, null&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-List-List -->
-     *
-     * @param indexerName The name of the indexer to reset documents for.
-     * @param overwrite If false, keys or IDs will be appended to existing ones. If true, only the keys or IDs in this
-     * payload will be queued to be re-ingested.
-     * @param documentKeys Document keys to be reset.
-     * @param datasourceDocumentIds Datasource document identifiers to be reset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetDocuments(String indexerName, Boolean overwrite, List<String> documentKeys,
-        List<String> datasourceDocumentIds) {
-        resetDocumentsWithResponse(new SearchIndexer(indexerName), overwrite, documentKeys, datasourceDocumentIds,
-            Context.NONE);
-    }
-
-    /**
-     * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List-Context -->
-     * <pre>
-     * SearchIndexer searchIndexer = SEARCH_INDEXER_CLIENT.getIndexer&#40;&quot;searchIndexer&quot;&#41;;
-     *
-     * &#47;&#47; Reset the documents with keys 1234 and 4321.
-     * Response&lt;Void&gt; resetDocsResult = SEARCH_INDEXER_CLIENT.resetDocumentsWithResponse&#40;searchIndexer, false,
-     *     Arrays.asList&#40;&quot;1234&quot;, &quot;4321&quot;&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;Requesting documents to be reset completed with status code %d.%n&quot;,
-     *     resetDocsResult.getStatusCode&#40;&#41;&#41;;
-     *
-     * &#47;&#47; Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-     * resetDocsResult = SEARCH_INDEXER_CLIENT.resetDocumentsWithResponse&#40;searchIndexer, true,
-     *     Arrays.asList&#40;&quot;1235&quot;, &quot;5321&quot;&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;Overwriting the documents to be reset completed with status code %d.%n&quot;,
-     *     resetDocsResult.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List-Context -->
-     *
-     * @param indexer The indexer to reset documents for.
-     * @param overwrite If false, keys or IDs will be appended to existing ones. If true, only the keys or IDs in this
-     * payload will be queued to be re-ingested.
-     * @param documentKeys Document keys to be reset.
-     * @param datasourceDocumentIds Datasource document identifiers to be reset.
-     * @param context additional context that is passed through the HTTP pipeline during the service call
-     * @return A response signalling completion.
-     * @throws NullPointerException If {@code indexer} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resetDocumentsWithResponse(SearchIndexer indexer, Boolean overwrite,
-        List<String> documentKeys, List<String> datasourceDocumentIds, Context context) {
-        DocumentKeysOrIds documentKeysOrIds = new DocumentKeysOrIds()
-            .setDocumentKeys(documentKeys)
-            .setDatasourceDocumentIds(datasourceDocumentIds);
-
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers().resetDocsWithResponse(
-            indexer.getName(), overwrite, documentKeysOrIds, null, context), LOGGER);
-    }
-
-    /**
      * Creates a new skillset in an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
@@ -1712,8 +1644,7 @@ public class SearchIndexerClient {
         }
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null,
-                disableCacheReprocessingChangeDetection, ignoreResetRequirements, null,
+            .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null, null,
                 context), LOGGER);
     }
 
@@ -1802,51 +1733,5 @@ public class SearchIndexerClient {
         String eTag = onlyIfUnchanged ? skillset.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
             .deleteWithResponse(skillset.getName(), eTag, null, null, context), LOGGER);
-    }
-
-    /**
-     * Resets skills in an existing skillset in an Azure AI Search service.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-List -->
-     * <pre>
-     * &#47;&#47; Reset the &quot;myOcr&quot; and &quot;myText&quot; skills.
-     * SEARCH_INDEXER_CLIENT.resetSkills&#40;&quot;searchIndexerSkillset&quot;, Arrays.asList&#40;&quot;myOcr&quot;, &quot;myText&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-List -->
-     *
-     * @param skillsetName The name of the skillset to reset.
-     * @param skillNames The skills to reset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetSkills(String skillsetName, List<String> skillNames) {
-        resetSkillsWithResponse(new SearchIndexerSkillset(skillsetName), skillNames, Context.NONE);
-    }
-
-    /**
-     * Resets skills in an existing skillset in an Azure AI Search service.
-     *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#SearchIndexerSkillset-List-Context -->
-     * <pre>
-     * SearchIndexerSkillset searchIndexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;;
-     *
-     * &#47;&#47; Reset the &quot;myOcr&quot; and &quot;myText&quot; skills.
-     * Response&lt;Void&gt; resetSkillsResponse = SEARCH_INDEXER_CLIENT.resetSkillsWithResponse&#40;searchIndexerSkillset,
-     *     Arrays.asList&#40;&quot;myOcr&quot;, &quot;myText&quot;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
-     * System.out.printf&#40;&quot;Resetting skills completed with status code %d.%n&quot;, resetSkillsResponse.getStatusCode&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#SearchIndexerSkillset-List-Context -->
-     *
-     * @param skillset The skillset to reset.
-     * @param skillNames The skills to reset.
-     * @param context Additional context that is passed through the HTTP pipeline during the service call.
-     * @return A response signalling completion.
-     * @throws NullPointerException If {@code skillset} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resetSkillsWithResponse(SearchIndexerSkillset skillset, List<String> skillNames,
-        Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .resetSkillsWithResponse(skillset.getName(), new SkillNames().setSkillNames(skillNames), null,
-                context), LOGGER);
     }
 }

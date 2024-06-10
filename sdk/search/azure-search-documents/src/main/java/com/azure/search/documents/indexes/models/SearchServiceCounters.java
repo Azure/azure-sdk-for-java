@@ -21,11 +21,6 @@ import java.util.List;
 @Fluent
 public final class SearchServiceCounters implements JsonSerializable<SearchServiceCounters> {
     /*
-     * Total number of aliases.
-     */
-    private ResourceCounter aliasCounter;
-
-    /*
      * Total number of documents across all indexes in the service.
      */
     private final ResourceCounter documentCounter;
@@ -84,26 +79,6 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
         this.dataSourceCounter = dataSourceCounter;
         this.storageSizeCounter = storageSizeCounter;
         this.synonymMapCounter = synonymMapCounter;
-    }
-
-    /**
-     * Get the aliasCounter property: Total number of aliases.
-     * 
-     * @return the aliasCounter value.
-     */
-    public ResourceCounter getAliasCounter() {
-        return this.aliasCounter;
-    }
-
-    /**
-     * Set the aliasCounter property: Total number of aliases.
-     * 
-     * @param aliasCounter the aliasCounter value to set.
-     * @return the SearchServiceCounters object itself.
-     */
-    public SearchServiceCounters setAliasCounter(ResourceCounter aliasCounter) {
-        this.aliasCounter = aliasCounter;
-        return this;
     }
 
     /**
@@ -211,7 +186,6 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
         jsonWriter.writeJsonField("dataSourcesCount", this.dataSourceCounter);
         jsonWriter.writeJsonField("storageSize", this.storageSizeCounter);
         jsonWriter.writeJsonField("synonymMaps", this.synonymMapCounter);
-        jsonWriter.writeJsonField("aliasesCount", this.aliasCounter);
         jsonWriter.writeJsonField("skillsetCount", this.skillsetCounter);
         jsonWriter.writeJsonField("vectorIndexSize", this.vectorIndexSizeCounter);
         return jsonWriter.writeEndObject();
@@ -240,7 +214,6 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
             ResourceCounter storageSizeCounter = null;
             boolean synonymMapCounterFound = false;
             ResourceCounter synonymMapCounter = null;
-            ResourceCounter aliasCounter = null;
             ResourceCounter skillsetCounter = null;
             ResourceCounter vectorIndexSizeCounter = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -265,8 +238,6 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
                 } else if ("synonymMaps".equals(fieldName)) {
                     synonymMapCounter = ResourceCounter.fromJson(reader);
                     synonymMapCounterFound = true;
-                } else if ("aliasesCount".equals(fieldName)) {
-                    aliasCounter = ResourceCounter.fromJson(reader);
                 } else if ("skillsetCount".equals(fieldName)) {
                     skillsetCounter = ResourceCounter.fromJson(reader);
                 } else if ("vectorIndexSize".equals(fieldName)) {
@@ -279,7 +250,6 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
                 && storageSizeCounterFound && synonymMapCounterFound) {
                 SearchServiceCounters deserializedSearchServiceCounters = new SearchServiceCounters(documentCounter,
                     indexCounter, indexerCounter, dataSourceCounter, storageSizeCounter, synonymMapCounter);
-                deserializedSearchServiceCounters.aliasCounter = aliasCounter;
                 deserializedSearchServiceCounters.skillsetCounter = skillsetCounter;
                 deserializedSearchServiceCounters.vectorIndexSizeCounter = vectorIndexSizeCounter;
 

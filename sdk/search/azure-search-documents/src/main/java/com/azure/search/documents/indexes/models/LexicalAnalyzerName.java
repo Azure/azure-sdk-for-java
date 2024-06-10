@@ -450,7 +450,7 @@ public final class LexicalAnalyzerName extends ExpandableStringEnum<LexicalAnaly
 
     /**
      * Standard ASCII Folding Lucene analyzer. See
-     * https://docs.microsoft.com/rest/api/searchservice/Custom-analyzers-in-Azure-Search#Analyzers.
+     * https://learn.microsoft.com/rest/api/searchservice/Custom-analyzers-in-Azure-Search#Analyzers.
      */
     public static final LexicalAnalyzerName STANDARD_ASCII_FOLDING_LUCENE = fromString("standardasciifolding.lucene");
 

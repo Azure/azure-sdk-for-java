@@ -23,26 +23,6 @@ import java.util.Map;
 @Fluent
 public final class WebApiSkill extends SearchIndexerSkill {
     /*
-     * The url for the Web API.
-     */
-    private final String uri;
-
-    /*
-     * The headers required to make the http request.
-     */
-    private Map<String, String> httpHeaders;
-
-    /*
-     * The method for the http request.
-     */
-    private String httpMethod;
-
-    /*
-     * The desired timeout for the request. Default is 30 seconds.
-     */
-    private Duration timeout;
-
-    /*
      * The desired batch size which indicates number of documents.
      */
     private Integer batchSize;
@@ -53,9 +33,29 @@ public final class WebApiSkill extends SearchIndexerSkill {
     private Integer degreeOfParallelism;
 
     /*
-     * Applies to custom skills that connect to external code in an Azure function or some other application that
+     * The URI of the Web API providing the vectorizer.
+     */
+    private String uri;
+
+    /*
+     * The headers required to make the HTTP request.
+     */
+    private Map<String, String> httpHeaders;
+
+    /*
+     * The method for the HTTP request.
+     */
+    private String httpMethod;
+
+    /*
+     * The desired timeout for the request. Default is 30 seconds.
+     */
+    private Duration timeout;
+
+    /*
+     * Applies to custom endpoints that connect to external code in an Azure function or some other application that
      * provides the transformations. This value should be the application ID created for the function or app when it
-     * was registered with Azure Active Directory. When specified, the custom skill connects to the function or app
+     * was registered with Azure Active Directory. When specified, the vectorization connects to the function or app
      * using a managed ID (either system or user-assigned) of the search service and the access token of the function
      * or app, using this value as the resource id for creating the scope of the access token.
      */
@@ -73,80 +73,9 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * 
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
-     * @param uri the uri value to set.
      */
-    public WebApiSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, String uri) {
+    public WebApiSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
-        this.uri = uri;
-    }
-
-    /**
-     * Get the uri property: The url for the Web API.
-     * 
-     * @return the uri value.
-     */
-    public String getUri() {
-        return this.uri;
-    }
-
-    /**
-     * Get the httpHeaders property: The headers required to make the http request.
-     * 
-     * @return the httpHeaders value.
-     */
-    public Map<String, String> getHttpHeaders() {
-        return this.httpHeaders;
-    }
-
-    /**
-     * Set the httpHeaders property: The headers required to make the http request.
-     * 
-     * @param httpHeaders the httpHeaders value to set.
-     * @return the WebApiSkill object itself.
-     */
-    public WebApiSkill setHttpHeaders(Map<String, String> httpHeaders) {
-        this.httpHeaders = httpHeaders;
-        return this;
-    }
-
-    /**
-     * Get the httpMethod property: The method for the http request.
-     * 
-     * @return the httpMethod value.
-     */
-    public String getHttpMethod() {
-        return this.httpMethod;
-    }
-
-    /**
-     * Set the httpMethod property: The method for the http request.
-     * 
-     * @param httpMethod the httpMethod value to set.
-     * @return the WebApiSkill object itself.
-     */
-    public WebApiSkill setHttpMethod(String httpMethod) {
-        this.httpMethod = httpMethod;
-        return this;
-    }
-
-    /**
-     * Get the timeout property: The desired timeout for the request. Default is 30 seconds.
-     * 
-     * @return the timeout value.
-     */
-    public Duration getTimeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Set the timeout property: The desired timeout for the request. Default is 30 seconds.
-     * 
-     * @param timeout the timeout value to set.
-     * @return the WebApiSkill object itself.
-     */
-    public WebApiSkill setTimeout(Duration timeout) {
-        this.timeout = timeout;
-        return this;
     }
 
     /**
@@ -190,9 +119,89 @@ public final class WebApiSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
-     * some other application that provides the transformations. This value should be the application ID created for
-     * the function or app when it was registered with Azure Active Directory. When specified, the custom skill
+     * Get the uri property: The URI of the Web API providing the vectorizer.
+     * 
+     * @return the uri value.
+     */
+    public String getUri() {
+        return this.uri;
+    }
+
+    /**
+     * Set the uri property: The URI of the Web API providing the vectorizer.
+     * 
+     * @param uri the uri value to set.
+     * @return the WebApiSkill object itself.
+     */
+    public WebApiSkill setUri(String uri) {
+        this.uri = uri;
+        return this;
+    }
+
+    /**
+     * Get the httpHeaders property: The headers required to make the HTTP request.
+     * 
+     * @return the httpHeaders value.
+     */
+    public Map<String, String> getHttpHeaders() {
+        return this.httpHeaders;
+    }
+
+    /**
+     * Set the httpHeaders property: The headers required to make the HTTP request.
+     * 
+     * @param httpHeaders the httpHeaders value to set.
+     * @return the WebApiSkill object itself.
+     */
+    public WebApiSkill setHttpHeaders(Map<String, String> httpHeaders) {
+        this.httpHeaders = httpHeaders;
+        return this;
+    }
+
+    /**
+     * Get the httpMethod property: The method for the HTTP request.
+     * 
+     * @return the httpMethod value.
+     */
+    public String getHttpMethod() {
+        return this.httpMethod;
+    }
+
+    /**
+     * Set the httpMethod property: The method for the HTTP request.
+     * 
+     * @param httpMethod the httpMethod value to set.
+     * @return the WebApiSkill object itself.
+     */
+    public WebApiSkill setHttpMethod(String httpMethod) {
+        this.httpMethod = httpMethod;
+        return this;
+    }
+
+    /**
+     * Get the timeout property: The desired timeout for the request. Default is 30 seconds.
+     * 
+     * @return the timeout value.
+     */
+    public Duration getTimeout() {
+        return this.timeout;
+    }
+
+    /**
+     * Set the timeout property: The desired timeout for the request. Default is 30 seconds.
+     * 
+     * @param timeout the timeout value to set.
+     * @return the WebApiSkill object itself.
+     */
+    public WebApiSkill setTimeout(Duration timeout) {
+        this.timeout = timeout;
+        return this;
+    }
+
+    /**
+     * Get the authResourceId property: Applies to custom endpoints that connect to external code in an Azure function
+     * or some other application that provides the transformations. This value should be the application ID created for
+     * the function or app when it was registered with Azure Active Directory. When specified, the vectorization
      * connects to the function or app using a managed ID (either system or user-assigned) of the search service and
      * the access token of the function or app, using this value as the resource id for creating the scope of the
      * access token.
@@ -204,9 +213,9 @@ public final class WebApiSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the authResourceId property: Applies to custom skills that connect to external code in an Azure function or
-     * some other application that provides the transformations. This value should be the application ID created for
-     * the function or app when it was registered with Azure Active Directory. When specified, the custom skill
+     * Set the authResourceId property: Applies to custom endpoints that connect to external code in an Azure function
+     * or some other application that provides the transformations. This value should be the application ID created for
+     * the function or app when it was registered with Azure Active Directory. When specified, the vectorization
      * connects to the function or app using a managed ID (either system or user-assigned) of the search service and
      * the access token of the function or app, using this value as the resource id for creating the scope of the
      * access token.
@@ -281,12 +290,12 @@ public final class WebApiSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
+        jsonWriter.writeNumberField("batchSize", this.batchSize);
+        jsonWriter.writeNumberField("degreeOfParallelism", this.degreeOfParallelism);
         jsonWriter.writeStringField("uri", this.uri);
         jsonWriter.writeMapField("httpHeaders", this.httpHeaders, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("httpMethod", this.httpMethod);
         jsonWriter.writeStringField("timeout", CoreToCodegenBridgeUtils.durationToStringWithDays(this.timeout));
-        jsonWriter.writeNumberField("batchSize", this.batchSize);
-        jsonWriter.writeNumberField("degreeOfParallelism", this.degreeOfParallelism);
         jsonWriter.writeStringField("authResourceId", this.authResourceId);
         jsonWriter.writeJsonField("authIdentity", this.authIdentity);
         return jsonWriter.writeEndObject();
@@ -311,13 +320,12 @@ public final class WebApiSkill extends SearchIndexerSkill {
             String name = null;
             String description = null;
             String context = null;
-            boolean uriFound = false;
+            Integer batchSize = null;
+            Integer degreeOfParallelism = null;
             String uri = null;
             Map<String, String> httpHeaders = null;
             String httpMethod = null;
             Duration timeout = null;
-            Integer batchSize = null;
-            Integer degreeOfParallelism = null;
             String authResourceId = null;
             SearchIndexerDataIdentity authIdentity = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -343,19 +351,18 @@ public final class WebApiSkill extends SearchIndexerSkill {
                     description = reader.getString();
                 } else if ("context".equals(fieldName)) {
                     context = reader.getString();
+                } else if ("batchSize".equals(fieldName)) {
+                    batchSize = reader.getNullable(JsonReader::getInt);
+                } else if ("degreeOfParallelism".equals(fieldName)) {
+                    degreeOfParallelism = reader.getNullable(JsonReader::getInt);
                 } else if ("uri".equals(fieldName)) {
                     uri = reader.getString();
-                    uriFound = true;
                 } else if ("httpHeaders".equals(fieldName)) {
                     httpHeaders = reader.readMap(reader1 -> reader1.getString());
                 } else if ("httpMethod".equals(fieldName)) {
                     httpMethod = reader.getString();
                 } else if ("timeout".equals(fieldName)) {
                     timeout = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
-                } else if ("batchSize".equals(fieldName)) {
-                    batchSize = reader.getNullable(JsonReader::getInt);
-                } else if ("degreeOfParallelism".equals(fieldName)) {
-                    degreeOfParallelism = reader.getNullable(JsonReader::getInt);
                 } else if ("authResourceId".equals(fieldName)) {
                     authResourceId = reader.getString();
                 } else if ("authIdentity".equals(fieldName)) {
@@ -364,16 +371,17 @@ public final class WebApiSkill extends SearchIndexerSkill {
                     reader.skipChildren();
                 }
             }
-            if (inputsFound && outputsFound && uriFound) {
-                WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs, uri);
+            if (inputsFound && outputsFound) {
+                WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs);
                 deserializedWebApiSkill.setName(name);
                 deserializedWebApiSkill.setDescription(description);
                 deserializedWebApiSkill.setContext(context);
+                deserializedWebApiSkill.batchSize = batchSize;
+                deserializedWebApiSkill.degreeOfParallelism = degreeOfParallelism;
+                deserializedWebApiSkill.uri = uri;
                 deserializedWebApiSkill.httpHeaders = httpHeaders;
                 deserializedWebApiSkill.httpMethod = httpMethod;
                 deserializedWebApiSkill.timeout = timeout;
-                deserializedWebApiSkill.batchSize = batchSize;
-                deserializedWebApiSkill.degreeOfParallelism = degreeOfParallelism;
                 deserializedWebApiSkill.authResourceId = authResourceId;
                 deserializedWebApiSkill.authIdentity = authIdentity;
 
@@ -385,9 +393,6 @@ public final class WebApiSkill extends SearchIndexerSkill {
             }
             if (!outputsFound) {
                 missingProperties.add("outputs");
-            }
-            if (!uriFound) {
-                missingProperties.add("uri");
             }
 
             throw new IllegalStateException(

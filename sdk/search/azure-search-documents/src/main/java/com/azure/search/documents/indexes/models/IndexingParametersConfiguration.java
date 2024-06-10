@@ -53,7 +53,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
     /*
      * For Azure blobs, set this property to true to still index storage metadata for blob content that is too large to
      * process. Oversized blobs are treated as errors by default. For limits on blob size, see
-     * https://docs.microsoft.com/azure/search/search-limits-quotas-capacity.
+     * https://learn.microsoft.com/azure/search/search-limits-quotas-capacity.
      */
     private Boolean indexStorageMetadataOnlyForOversizedDocuments;
 
@@ -246,7 +246,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * Get the indexStorageMetadataOnlyForOversizedDocuments property: For Azure blobs, set this property to true to
      * still index storage metadata for blob content that is too large to process. Oversized blobs are treated as
      * errors by default. For limits on blob size, see
-     * https://docs.microsoft.com/azure/search/search-limits-quotas-capacity.
+     * https://learn.microsoft.com/azure/search/search-limits-quotas-capacity.
      * 
      * @return the indexStorageMetadataOnlyForOversizedDocuments value.
      */
@@ -258,7 +258,7 @@ public final class IndexingParametersConfiguration implements JsonSerializable<I
      * Set the indexStorageMetadataOnlyForOversizedDocuments property: For Azure blobs, set this property to true to
      * still index storage metadata for blob content that is too large to process. Oversized blobs are treated as
      * errors by default. For limits on blob size, see
-     * https://docs.microsoft.com/azure/search/search-limits-quotas-capacity.
+     * https://learn.microsoft.com/azure/search/search-limits-quotas-capacity.
      * 
      * @param indexStorageMetadataOnlyForOversizedDocuments the indexStorageMetadataOnlyForOversizedDocuments value to
      * set.

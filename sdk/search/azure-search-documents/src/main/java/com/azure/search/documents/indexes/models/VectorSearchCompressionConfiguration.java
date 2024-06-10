@@ -147,6 +147,8 @@ public class VectorSearchCompressionConfiguration implements JsonSerializable<Ve
             // Use the discriminator value to determine which subtype should be deserialized.
             if ("scalarQuantization".equals(discriminatorValue)) {
                 return ScalarQuantizationCompressionConfiguration.fromJson(readerToUse.reset());
+            } else if ("binaryQuantization".equals(discriminatorValue)) {
+                return BinaryQuantizationCompressionConfiguration.fromJson(readerToUse.reset());
             } else {
                 return fromJsonKnownDiscriminator(readerToUse.reset());
             }

@@ -17,38 +17,38 @@ import java.io.IOException;
  * external vectorizer is achieved using the custom Web API interface of a skillset.
  */
 @Fluent
-public final class CustomVectorizer extends VectorSearchVectorizer {
+public final class WebApiVectorizer extends VectorSearchVectorizer {
     /*
      * Specifies the properties of the user-defined vectorizer.
      */
-    private CustomWebApiParameters customWebApiParameters;
+    private WebApiParameters webApiParameters;
 
     /**
-     * Creates an instance of CustomVectorizer class.
+     * Creates an instance of WebApiVectorizer class.
      * 
      * @param name the name value to set.
      */
-    public CustomVectorizer(String name) {
+    public WebApiVectorizer(String name) {
         super(name);
     }
 
     /**
-     * Get the customWebApiParameters property: Specifies the properties of the user-defined vectorizer.
+     * Get the webApiParameters property: Specifies the properties of the user-defined vectorizer.
      * 
-     * @return the customWebApiParameters value.
+     * @return the webApiParameters value.
      */
-    public CustomWebApiParameters getCustomWebApiParameters() {
-        return this.customWebApiParameters;
+    public WebApiParameters getWebApiParameters() {
+        return this.webApiParameters;
     }
 
     /**
-     * Set the customWebApiParameters property: Specifies the properties of the user-defined vectorizer.
+     * Set the webApiParameters property: Specifies the properties of the user-defined vectorizer.
      * 
-     * @param customWebApiParameters the customWebApiParameters value to set.
-     * @return the CustomVectorizer object itself.
+     * @param webApiParameters the webApiParameters value to set.
+     * @return the WebApiVectorizer object itself.
      */
-    public CustomVectorizer setCustomWebApiParameters(CustomWebApiParameters customWebApiParameters) {
-        this.customWebApiParameters = customWebApiParameters;
+    public WebApiVectorizer setWebApiParameters(WebApiParameters webApiParameters) {
+        this.webApiParameters = webApiParameters;
         return this;
     }
 
@@ -58,25 +58,25 @@ public final class CustomVectorizer extends VectorSearchVectorizer {
         jsonWriter.writeStringField("kind", VectorSearchVectorizerKind.CUSTOM_WEB_API == null ? null
             : VectorSearchVectorizerKind.CUSTOM_WEB_API.toString());
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeJsonField("customWebApiParameters", this.customWebApiParameters);
+        jsonWriter.writeJsonField("customWebApiParameters", this.webApiParameters);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of CustomVectorizer from the JsonReader.
+     * Reads an instance of WebApiVectorizer from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CustomVectorizer if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of WebApiVectorizer if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the CustomVectorizer.
+     * @throws IOException If an error occurs while reading the WebApiVectorizer.
      */
-    public static CustomVectorizer fromJson(JsonReader jsonReader) throws IOException {
+    public static WebApiVectorizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
             String name = null;
-            CustomWebApiParameters customWebApiParameters = null;
+            WebApiParameters webApiParameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -92,16 +92,16 @@ public final class CustomVectorizer extends VectorSearchVectorizer {
                     name = reader.getString();
                     nameFound = true;
                 } else if ("customWebApiParameters".equals(fieldName)) {
-                    customWebApiParameters = CustomWebApiParameters.fromJson(reader);
+                    webApiParameters = WebApiParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             if (nameFound) {
-                CustomVectorizer deserializedCustomVectorizer = new CustomVectorizer(name);
-                deserializedCustomVectorizer.customWebApiParameters = customWebApiParameters;
+                WebApiVectorizer deserializedWebApiVectorizer = new WebApiVectorizer(name);
+                deserializedWebApiVectorizer.webApiParameters = webApiParameters;
 
-                return deserializedCustomVectorizer;
+                return deserializedWebApiVectorizer;
             }
             throw new IllegalStateException("Missing required property: name");
         });

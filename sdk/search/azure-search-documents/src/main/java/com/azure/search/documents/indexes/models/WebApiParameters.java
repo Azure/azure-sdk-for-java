@@ -20,7 +20,7 @@ import java.util.Map;
  * Specifies the properties for connecting to a user-defined vectorizer.
  */
 @Fluent
-public final class CustomWebApiParameters implements JsonSerializable<CustomWebApiParameters> {
+public class WebApiParameters implements JsonSerializable<WebApiParameters> {
     /*
      * The URI of the Web API providing the vectorizer.
      */
@@ -58,9 +58,9 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
     private SearchIndexerDataIdentity authIdentity;
 
     /**
-     * Creates an instance of CustomWebApiParameters class.
+     * Creates an instance of WebApiParameters class.
      */
-    public CustomWebApiParameters() {
+    public WebApiParameters() {
     }
 
     /**
@@ -76,9 +76,9 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
      * Set the uri property: The URI of the Web API providing the vectorizer.
      * 
      * @param uri the uri value to set.
-     * @return the CustomWebApiParameters object itself.
+     * @return the WebApiParameters object itself.
      */
-    public CustomWebApiParameters setUri(String uri) {
+    public WebApiParameters setUri(String uri) {
         this.uri = uri;
         return this;
     }
@@ -96,9 +96,9 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
      * Set the httpHeaders property: The headers required to make the HTTP request.
      * 
      * @param httpHeaders the httpHeaders value to set.
-     * @return the CustomWebApiParameters object itself.
+     * @return the WebApiParameters object itself.
      */
-    public CustomWebApiParameters setHttpHeaders(Map<String, String> httpHeaders) {
+    public WebApiParameters setHttpHeaders(Map<String, String> httpHeaders) {
         this.httpHeaders = httpHeaders;
         return this;
     }
@@ -116,9 +116,9 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
      * Set the httpMethod property: The method for the HTTP request.
      * 
      * @param httpMethod the httpMethod value to set.
-     * @return the CustomWebApiParameters object itself.
+     * @return the WebApiParameters object itself.
      */
-    public CustomWebApiParameters setHttpMethod(String httpMethod) {
+    public WebApiParameters setHttpMethod(String httpMethod) {
         this.httpMethod = httpMethod;
         return this;
     }
@@ -136,9 +136,9 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
      * Set the timeout property: The desired timeout for the request. Default is 30 seconds.
      * 
      * @param timeout the timeout value to set.
-     * @return the CustomWebApiParameters object itself.
+     * @return the WebApiParameters object itself.
      */
-    public CustomWebApiParameters setTimeout(Duration timeout) {
+    public WebApiParameters setTimeout(Duration timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -166,9 +166,9 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
      * access token.
      * 
      * @param authResourceId the authResourceId value to set.
-     * @return the CustomWebApiParameters object itself.
+     * @return the WebApiParameters object itself.
      */
-    public CustomWebApiParameters setAuthResourceId(String authResourceId) {
+    public WebApiParameters setAuthResourceId(String authResourceId) {
         this.authResourceId = authResourceId;
         return this;
     }
@@ -192,9 +192,9 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
      * property is cleared.
      * 
      * @param authIdentity the authIdentity value to set.
-     * @return the CustomWebApiParameters object itself.
+     * @return the WebApiParameters object itself.
      */
-    public CustomWebApiParameters setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
+    public WebApiParameters setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
         this.authIdentity = authIdentity;
         return this;
     }
@@ -212,40 +212,40 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
     }
 
     /**
-     * Reads an instance of CustomWebApiParameters from the JsonReader.
+     * Reads an instance of WebApiParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CustomWebApiParameters if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CustomWebApiParameters.
+     * @return An instance of WebApiParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebApiParameters.
      */
-    public static CustomWebApiParameters fromJson(JsonReader jsonReader) throws IOException {
+    public static WebApiParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CustomWebApiParameters deserializedCustomWebApiParameters = new CustomWebApiParameters();
+            WebApiParameters deserializedWebApiParameters = new WebApiParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("uri".equals(fieldName)) {
-                    deserializedCustomWebApiParameters.uri = reader.getString();
+                    deserializedWebApiParameters.uri = reader.getString();
                 } else if ("httpHeaders".equals(fieldName)) {
                     Map<String, String> httpHeaders = reader.readMap(reader1 -> reader1.getString());
-                    deserializedCustomWebApiParameters.httpHeaders = httpHeaders;
+                    deserializedWebApiParameters.httpHeaders = httpHeaders;
                 } else if ("httpMethod".equals(fieldName)) {
-                    deserializedCustomWebApiParameters.httpMethod = reader.getString();
+                    deserializedWebApiParameters.httpMethod = reader.getString();
                 } else if ("timeout".equals(fieldName)) {
-                    deserializedCustomWebApiParameters.timeout
+                    deserializedWebApiParameters.timeout
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("authResourceId".equals(fieldName)) {
-                    deserializedCustomWebApiParameters.authResourceId = reader.getString();
+                    deserializedWebApiParameters.authResourceId = reader.getString();
                 } else if ("authIdentity".equals(fieldName)) {
-                    deserializedCustomWebApiParameters.authIdentity = SearchIndexerDataIdentity.fromJson(reader);
+                    deserializedWebApiParameters.authIdentity = SearchIndexerDataIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedCustomWebApiParameters;
+            return deserializedWebApiParameters;
         });
     }
 }

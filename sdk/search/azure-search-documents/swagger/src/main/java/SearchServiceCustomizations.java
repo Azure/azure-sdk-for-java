@@ -66,7 +66,6 @@ public class SearchServiceCustomizations extends Customization {
         customizeOcrSkill(publicCustomization.getClass("OcrSkill"));
         customizeImageAnalysisSkill(publicCustomization.getClass("ImageAnalysisSkill"));
         customizeCustomEntityLookupSkill(publicCustomization.getClass("CustomEntityLookupSkill"));
-        customizeCustomNormalizer(publicCustomization.getClass("CustomNormalizer"));
         customizeSearchField(publicCustomization.getClass("SearchField"));
         customizeSynonymMap(publicCustomization.getClass("SynonymMap"));
         customizeSearchResourceEncryptionKey(publicCustomization.getClass("SearchResourceEncryptionKey"),
@@ -130,7 +129,6 @@ public class SearchServiceCustomizations extends Customization {
             addVarArgsOverload(clazz, "tokenizers", "LexicalTokenizer");
             addVarArgsOverload(clazz, "tokenFilters", "TokenFilter");
             addVarArgsOverload(clazz, "charFilters", "CharFilter");
-            addVarArgsOverload(clazz, "normalizers", "LexicalNormalizer");
         });
     }
 
@@ -277,13 +275,6 @@ public class SearchServiceCustomizations extends Customization {
 
     private void customizeCustomEntityLookupSkill(ClassCustomization classCustomization) {
         customizeAst(classCustomization, clazz -> addVarArgsOverload(clazz, "inlineEntitiesDefinition", "CustomEntity"));
-    }
-
-    private void customizeCustomNormalizer(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> {
-            addVarArgsOverload(clazz, "tokenFilters", "TokenFilterName");
-            addVarArgsOverload(clazz, "charFilters", "CharFilterName");
-        });
     }
 
     private void customizeSearchField(ClassCustomization classCustomization) {

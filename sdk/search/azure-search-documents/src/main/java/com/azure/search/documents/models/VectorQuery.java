@@ -50,11 +50,6 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      */
     private Float weight;
 
-    /*
-     * The threshold used for vector queries. Note this can only be set if all 'fields' use the same similarity metric.
-     */
-    private VectorThreshold threshold;
-
     /**
      * Creates an instance of VectorQuery class.
      */
@@ -177,28 +172,6 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
         return this;
     }
 
-    /**
-     * Get the threshold property: The threshold used for vector queries. Note this can only be set if all 'fields' use
-     * the same similarity metric.
-     *
-     * @return the threshold value.
-     */
-    public VectorThreshold getThreshold() {
-        return this.threshold;
-    }
-
-    /**
-     * Set the threshold property: The threshold used for vector queries. Note this can only be set if all 'fields' use
-     * the same similarity metric.
-     *
-     * @param threshold the threshold value to set.
-     * @return the VectorQuery object itself.
-     */
-    public VectorQuery setThreshold(VectorThreshold threshold) {
-        this.threshold = threshold;
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -207,7 +180,6 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
         jsonWriter.writeBooleanField("exhaustive", this.exhaustive);
         jsonWriter.writeNumberField("oversampling", this.oversampling);
         jsonWriter.writeNumberField("weight", this.weight);
-        jsonWriter.writeJsonField("threshold", this.threshold);
         return jsonWriter.writeEndObject();
     }
 
@@ -239,10 +211,6 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
             // Use the discriminator value to determine which subtype should be deserialized.
             if ("text".equals(discriminatorValue)) {
                 return VectorizableTextQuery.fromJson(readerToUse.reset());
-            } else if ("imageUrl".equals(discriminatorValue)) {
-                return VectorizableImageUrlQuery.fromJson(readerToUse.reset());
-            } else if ("imageBinary".equals(discriminatorValue)) {
-                return VectorizableImageBinaryQuery.fromJson(readerToUse.reset());
             } else if ("vector".equals(discriminatorValue)) {
                 return VectorizedQuery.fromJson(readerToUse.reset());
             } else {
@@ -267,8 +235,6 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
                     deserializedVectorQuery.oversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("weight".equals(fieldName)) {
                     deserializedVectorQuery.weight = reader.getNullable(JsonReader::getFloat);
-                } else if ("threshold".equals(fieldName)) {
-                    deserializedVectorQuery.threshold = VectorThreshold.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

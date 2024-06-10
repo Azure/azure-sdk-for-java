@@ -87,7 +87,7 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5a1fe448805429403c38a2637ee32c82ba755530/specification/search/data-plane/Azure.Search/preview/2024-05-01-preview/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dc27f9b32787533cd4d07fe0de5245f2f8354dbe/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,VectorQueryKind,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,ScalarQuantizationParameters,ScalarQuantizationCompressionConfiguration
@@ -105,7 +105,7 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5a1fe448805429403c38a2637ee32c82ba755530/specification/search/data-plane/Azure.Search/preview/2024-05-01-preview/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dc27f9b32787533cd4d07fe0de5245f2f8354dbe/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,VectorSearchAlgorithmKind,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,ScalarQuantizationParameters,ScalarQuantizationCompressionConfiguration
@@ -285,7 +285,6 @@ directive:
       $.analyzer["x-ms-client-name"] = "analyzerName";
       $.searchAnalyzer["x-ms-client-name"] = "searchAnalyzerName";
       $.indexAnalyzer["x-ms-client-name"] = "indexAnalyzerName";
-      $.normalizer["x-ms-client-name"] = "normalizerName";
       $.synonymMaps["x-ms-client-name"] = "synonymMapNames";
 ```
 
@@ -446,3 +445,119 @@ directive:
   where: $.definitions.AMLParameters
   transform: $["x-ms-client-name"] = "AzureMachineLearningParameters";
 ```
+## Remove Non-GA APIs
+
+### Search Service Swagger
+
+Remove paths for aliases, reset documents, and reset skills.
+
+```yaml
+directive:
+- from: swagger-document
+  where: $.paths
+  transform: >
+    delete $["/aliases"];
+    delete $["/aliases('{aliasName}')"];
+    delete $["/indexers('{indexerName}')/search.resetdocs"];
+    delete $["/skillsets('{skillsetName}')/search.resetskills"];
+```
+Filter out cache reprocessing from data source, indexers, and skillsets.
+
+```yaml
+directive:
+- from: swagger-document
+  where: $.paths
+  transform: >
+    $["/datasources('{dataSourceName}')"].put.parameters = $["/datasources('{dataSourceName}')"].put.parameters
+      .filter(p => p["$ref"] !== "#/parameters/IgnoreResetRequirementsParameter");
+      
+    $["/indexers('{indexerName}')"].put.parameters = $["/indexers('{indexerName}')"].put.parameters
+      .filter(p => p["$ref"] !== "#/parameters/IgnoreResetRequirementsParameter"
+        && p["$ref"] !== "#/parameters/DisableCacheReprocessingChangeDetectionParameter");
+
+    $["/skillsets('{skillsetName}')"].put.parameters = $["/skillsets('{skillsetName}')"].put.parameters
+      .filter(p => p["$ref"] !== "#/parameters/IgnoreResetRequirementsParameter"
+        && p["$ref"] !== "#/parameters/DisableCacheReprocessingChangeDetectionParameter");
+```
+Clean up definitions.
+
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    delete $.AnalyzeRequest.properties.normalizer;
+    delete $.LexicalNormalizerName;
+    delete $.LexicalNormalizer;
+    delete $.CustomNormalizer;
+    delete $.SearchField.properties.normalizer;
+    delete $.SearchIndex.properties.normalizers;
+    
+    delete $.IndexerExecutionResult.properties.currentState;
+    delete $.IndexerExecutionResult.properties.statusDetail;
+    delete $.IndexerCurrentState;
+    delete $.IndexingMode;
+
+    delete $.OcrSkillLineEnding;
+    delete $.OcrSkill.properties.lineEnding;
+
+    delete $.SearchIndexer.properties.cache;
+    delete $.SearchIndexerCache;
+
+    delete $.ServiceCounters.properties.aliasesCount;
+
+    delete $.SearchIndexerKnowledgeStore.properties.parameters;
+    delete $.SearchIndexerKnowledgeStoreParameters;
+    
+    delete $.AmlSkill;
+    delete $.NativeBlobSoftDeleteDeletionDetectionPolicy;
+```
+Clean up properties.
+
+```yaml
+directive:
+- from: swagger-document
+  where: $.properties
+  transform: >
+    delete $.DisableCacheReprocessingChangeDetectionParameter;
+    delete $.IgnoreResetRequirementsParameter;
+```
+### Search Index Swagger
+
+Clean up paths.
+
+```yaml
+directive:
+- from: swagger-document
+  where: $.paths
+  transform: >
+    $["/docs"].get.parameters = $["/docs"].get.parameters
+      .filter(p => p.name !== "speller" && p.name !== "queryLanguage" && p.name !== "debug" && p.name !== "semanticFields");
+```
+Clean up definitions.
+
+```yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    delete $.DocumentDebugInfo;
+    delete $.SemanticDebugInfo;
+    delete $.SearchResult.properties["@search.documentDebugInfo"];
+
+    delete $.Speller;
+    delete $.SearchRequest.properties.speller;
+
+    delete $.QueryResultDocumentSemanticField;
+    delete $.QueryResultDocumentSemanticFieldState;
+    delete $.QueryResultDocumentRerankerInput;
+
+    delete $.QueryLanguage;
+    delete $.SearchRequest.properties.queryLanguage;
+
+    delete $.QueryDebugMode;
+    delete $.SearchRequest.properties.debug;
+    
+    delete $.SearchRequest.properties.semanticFields;
+```
+The Swagger transforms will only prevent the code from generating, depending on the generator it won't remove already existing code. Additionally, this doesn't fix manually written code, but should cause compilation or runtime errors.

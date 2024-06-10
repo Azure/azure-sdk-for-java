@@ -180,7 +180,7 @@ public final class TokenFilterName extends ExpandableStringEnum<TokenFilterName>
 
     /**
      * Language specific stemming filter. See
-     * https://docs.microsoft.com/rest/api/searchservice/Custom-analyzers-in-Azure-Search#TokenFilters.
+     * https://learn.microsoft.com/rest/api/searchservice/Custom-analyzers-in-Azure-Search#TokenFilters.
      */
     public static final TokenFilterName STEMMER = fromString("stemmer");
 

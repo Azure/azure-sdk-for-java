@@ -10,9 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.models.QueryDebugMode;
-import com.azure.search.documents.models.QueryLanguage;
-import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -181,26 +178,6 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
      * retrieval and ranking phase, and the L2 semantic phase.
      */
     private String semanticQuery;
-
-    /*
-     * Enables a debugging tool that can be used to further explore your search results.
-     */
-    private QueryDebugMode debug;
-
-    /*
-     * The language of the query.
-     */
-    private QueryLanguage queryLanguage;
-
-    /*
-     * Improve search recall by spell-correcting individual search query terms.
-     */
-    private QuerySpellerType speller;
-
-    /*
-     * The list of field names used for semantic ranking.
-     */
-    private List<String> semanticFields;
 
     /**
      * Creates an instance of SearchOptions class.
@@ -774,86 +751,6 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
         return this;
     }
 
-    /**
-     * Get the debug property: Enables a debugging tool that can be used to further explore your search results.
-     *
-     * @return the debug value.
-     */
-    public QueryDebugMode getDebug() {
-        return this.debug;
-    }
-
-    /**
-     * Set the debug property: Enables a debugging tool that can be used to further explore your search results.
-     *
-     * @param debug the debug value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setDebug(QueryDebugMode debug) {
-        this.debug = debug;
-        return this;
-    }
-
-    /**
-     * Get the queryLanguage property: The language of the query.
-     *
-     * @return the queryLanguage value.
-     */
-    public QueryLanguage getQueryLanguage() {
-        return this.queryLanguage;
-    }
-
-    /**
-     * Set the queryLanguage property: The language of the query.
-     *
-     * @param queryLanguage the queryLanguage value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setQueryLanguage(QueryLanguage queryLanguage) {
-        this.queryLanguage = queryLanguage;
-        return this;
-    }
-
-    /**
-     * Get the speller property: Improve search recall by spell-correcting individual search query terms.
-     *
-     * @return the speller value.
-     */
-    public QuerySpellerType getSpeller() {
-        return this.speller;
-    }
-
-    /**
-     * Set the speller property: Improve search recall by spell-correcting individual search query terms.
-     *
-     * @param speller the speller value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSpeller(QuerySpellerType speller) {
-        this.speller = speller;
-        return this;
-    }
-
-    /**
-     * Get the semanticFields property: The list of field names used for semantic ranking.
-     *
-     * @return the semanticFields value.
-     */
-    public List<String> getSemanticFields() {
-        return this.semanticFields;
-    }
-
-    /**
-     * Set the semanticFields property: The list of field names used for semantic ranking.
-     *
-     * @param semanticFields the semanticFields value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSemanticFields(List<String> semanticFields) {
-        this.semanticFields = semanticFields;
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -885,11 +782,6 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
         jsonWriter.writeStringField("answers", this.answers);
         jsonWriter.writeStringField("captions", this.captions);
         jsonWriter.writeStringField("semanticQuery", this.semanticQuery);
-        jsonWriter.writeStringField("debug", this.debug == null ? null : this.debug.toString());
-        jsonWriter.writeStringField("queryLanguage", this.queryLanguage == null ? null : this.queryLanguage.toString());
-        jsonWriter.writeStringField("speller", this.speller == null ? null : this.speller.toString());
-        jsonWriter.writeArrayField("semanticFields", this.semanticFields,
-            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -961,15 +853,6 @@ public final class SearchOptions implements JsonSerializable<SearchOptions> {
                     deserializedSearchOptions.captions = reader.getString();
                 } else if ("semanticQuery".equals(fieldName)) {
                     deserializedSearchOptions.semanticQuery = reader.getString();
-                } else if ("debug".equals(fieldName)) {
-                    deserializedSearchOptions.debug = QueryDebugMode.fromString(reader.getString());
-                } else if ("queryLanguage".equals(fieldName)) {
-                    deserializedSearchOptions.queryLanguage = QueryLanguage.fromString(reader.getString());
-                } else if ("speller".equals(fieldName)) {
-                    deserializedSearchOptions.speller = QuerySpellerType.fromString(reader.getString());
-                } else if ("semanticFields".equals(fieldName)) {
-                    List<String> semanticFields = reader.readArray(reader1 -> reader1.getString());
-                    deserializedSearchOptions.semanticFields = semanticFields;
                 } else {
                     reader.skipChildren();
                 }
