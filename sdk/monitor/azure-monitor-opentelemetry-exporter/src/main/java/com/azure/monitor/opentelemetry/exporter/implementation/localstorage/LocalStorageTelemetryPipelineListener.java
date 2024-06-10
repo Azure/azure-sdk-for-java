@@ -21,9 +21,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.PipelineUtil.decode;
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.PipelineUtil.deserializeTelemetryItem;
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.PipelineUtil.encode;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.serialize;
 
 public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineListener {
 
@@ -74,7 +73,7 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
         if (!errors.isEmpty()) {
             List<TelemetryItem> originalTelemetryItems = new ArrayList<>();
             for (ByteBuffer byteBuffer : request.getByteBuffers()) {
-                originalTelemetryItems.addAll(deserializeTelemetryItem(decode(byteBuffer.array())));
+                originalTelemetryItems.addAll(deserialize(byteBuffer.array()));
             }
             List<TelemetryItem> toBePersisted = new ArrayList<>();
             for (ResponseError error : errors) {
@@ -84,7 +83,7 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
             }
             if (!toBePersisted.isEmpty()) {
                 localFileWriter.writeToDisk(
-                    request.getConnectionString(), encode(toBePersisted), "Received partial response code 206");
+                    request.getConnectionString(), serialize(toBePersisted), "Received partial response code 206");
             }
         }
     }

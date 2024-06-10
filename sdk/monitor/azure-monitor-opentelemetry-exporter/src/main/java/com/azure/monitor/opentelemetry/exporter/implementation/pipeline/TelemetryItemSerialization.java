@@ -22,14 +22,19 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-public final class PipelineUtil {
+public final class TelemetryItemSerialization {
 
     private static final ObjectMapper mapper = createObjectMapper();
     private static final AppInsightsByteBufferPool byteBufferPool = new AppInsightsByteBufferPool();
-    private static final ClientLogger logger = new ClientLogger(PipelineUtil.class);
+    private static final ClientLogger logger = new ClientLogger(TelemetryItemSerialization.class);
 
-    // deserialize raw bytes to a list of TelemetryItem
-    public static List<TelemetryItem> deserializeTelemetryItem(byte[] data) {
+    public static List<TelemetryItem> deserialize(byte[] data) {
+        return deserializeWithoutEncode(decode(data));
+    }
+
+    // visible for testing
+    // deserialize raw bytes to a list of TelemetryItem without decoding
+    public static List<TelemetryItem> deserializeWithoutEncode(byte[] data) {
         try {
             ObjectMapper mapper = createObjectMapper();
             MappingIterator<TelemetryItem> iterator = mapper.readerFor(TelemetryItem.class).readValues(data);
@@ -40,7 +45,7 @@ public final class PipelineUtil {
     }
 
     // decode gzipped request raw bytes back to original request raw bytes
-    public static byte[] decode(byte[] rawBytes) {
+    private static byte[] decode(byte[] rawBytes) {
         try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(rawBytes))) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             byte[] data = new byte[1024];
@@ -54,7 +59,7 @@ public final class PipelineUtil {
         }
     }
 
-    public static List<ByteBuffer> encode(List<TelemetryItem> telemetryItems) {
+    public static List<ByteBuffer> serialize(List<TelemetryItem> telemetryItems) {
         try {
             if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
                 StringWriter debug = new StringWriter();
@@ -103,6 +108,6 @@ public final class PipelineUtil {
             mapper.writeValue(jg, telemetryItem);
         }
     }
-    private PipelineUtil() {
+    private TelemetryItemSerialization() {
     }
 }

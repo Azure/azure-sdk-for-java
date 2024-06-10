@@ -27,8 +27,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.PipelineUtil.decode;
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.PipelineUtil.deserializeTelemetryItem;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserializeWithoutEncode;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Handle206Test {
@@ -97,10 +97,10 @@ public class Handle206Test {
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
 
         String expected = Resources.readString("request_body_result_to_206_status_code.txt");
-        List<TelemetryItem> expectedTelemetryItems = deserializeTelemetryItem(expected.getBytes());
+        List<TelemetryItem> expectedTelemetryItems = deserializeWithoutEncode(expected.getBytes());
         LocalFileLoader.PersistedFile file = localFileLoader.loadTelemetriesFromDisk();
         assertThat(file.connectionString).isEqualTo(CONNECTION_STRING);
-        List<TelemetryItem> actualTelemetryItems = deserializeTelemetryItem(decode(file.rawBytes.array()));
+        List<TelemetryItem> actualTelemetryItems = deserialize(file.rawBytes.array());
         actualTelemetryItems.sort(Comparator.comparing( obj -> {
             MetricsData metricsData = (MetricsData) obj.getData().getBaseData();
             return metricsData.getMetrics().get(0).getName();

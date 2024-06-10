@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.PipelineUtil.encode;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.serialize;
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.TELEMETRY_ITEM_EXPORTER_ERROR;
 
 public class TelemetryItemExporter {
@@ -119,7 +119,7 @@ public class TelemetryItemExporter {
             telemetryItems.add(0, createOtelResourceMetric(telemetryItemBatchKey));
         }
         try {
-            byteBuffers = encode(telemetryItems);
+            byteBuffers = serialize(telemetryItems);
             encodeBatchOperationLogger.recordSuccess();
         } catch (Throwable t) {
             encodeBatchOperationLogger.recordFailure(t.getMessage(), t);
