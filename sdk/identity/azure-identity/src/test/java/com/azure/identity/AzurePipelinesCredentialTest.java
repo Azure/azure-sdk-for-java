@@ -6,15 +6,9 @@ package com.azure.identity;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
-import com.azure.identity.util.TestUtils;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
-
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
