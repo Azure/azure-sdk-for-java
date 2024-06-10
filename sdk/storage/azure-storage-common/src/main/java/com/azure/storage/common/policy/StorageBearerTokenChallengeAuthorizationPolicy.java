@@ -64,7 +64,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
 
-        String scope = challenges.get("resource_id=");
+        String scope = challenges.get("resource_id");
         if (scope != null) {
             scope += DEFAULT_SCOPE;
             scopes = new String[] { scope };
