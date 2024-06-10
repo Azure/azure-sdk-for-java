@@ -20,6 +20,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.LabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -39,7 +40,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1898,7 +1901,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         PagedResponse<ConfigurationSetting> pagedResponse = client.listConfigurationSettings(null).byPage().blockLast();
         matchConditionsList.add(new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
 
-
         // Step 2: Test list settings with page ETag
         // Validation 1: Validate all pages are not modified and return empty list of settings in each page response.
         // List settings with page ETag
@@ -1927,6 +1929,81 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                             .get();
                     assertConfigurationEquals(updatedSetting, updatedSettingFromResponse);
                 }).verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Clean all existing settings before this test purpose
+        StepVerifier.create(client.listConfigurationSettings(null)
+                        .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+                        .then())
+                .verifyComplete();
+        // Prepare two settings with different labels
+        String key = getKey();
+        String label = getLabel();
+        String label2 = getLabel();
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label);
+        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label2);
+        StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+        StepVerifier.create(client.addConfigurationSettingWithResponse(setting2))
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .verifyComplete();
+        // Listing settings with label filter
+        StepVerifier.create(client.listLabels(new LabelSelector().setLabelFilter(label)))
+                .assertNext(l -> assertEquals(label, l))
+                .verifyComplete();
+        // Listing all labels
+        List<String> selected = new ArrayList<>();
+        StepVerifier.create(client.listLabels(null))
+                .consumeNextWith(selected::add)
+                .consumeNextWith(selected::add)
+                .verifyComplete();
+        assertTrue(selected.size() == 2);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSettingByTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Clean all existing settings before this test purpose
+        StepVerifier.create(client.listConfigurationSettings(null)
+                        .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+                        .then())
+                .verifyComplete();
+        // Prepare two settings with different tags
+        String key = getKey();
+        String key2 = getKey();
+        Map<String, String> tags = new HashMap<>();
+        tags.put(key, "tagValue");
+        Map<String, String> tags2 = new HashMap<>();
+        tags2.put(key, "tagValue");
+        tags2.put(key2, "tagValue");
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setTags(tags);
+        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key2).setValue("value").setTags(tags2);
+        StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .verifyComplete();
+        StepVerifier.create(client.addConfigurationSettingWithResponse(setting2))
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .verifyComplete();
+
+        // Test list setting by first tags filter
+        List<ConfigurationSetting> selected = new ArrayList<>();
+        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setTagsFilter(tags)))
+                .consumeNextWith(selected::add)
+                .consumeNextWith(selected::add)
+                .verifyComplete();
+        assertEquals(2, selected.size());
+        assertConfigurationEquals(setting, selected.get(0));
+        assertConfigurationEquals(setting2, selected.get(1));
+        // Test list setting by second tags filter
+        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setTagsFilter(tags2)))
+                        .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .verifyComplete();
     }
 
     /**

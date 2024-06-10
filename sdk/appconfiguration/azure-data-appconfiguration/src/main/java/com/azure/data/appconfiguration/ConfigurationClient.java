@@ -29,12 +29,12 @@ import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.Label;
-import com.azure.data.appconfiguration.implementation.models.LabelFields;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.LabelFields;
 import com.azure.data.appconfiguration.models.LabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -43,7 +43,6 @@ import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1511,14 +1510,11 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listLabels -->
      * <pre>
-     * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
-     * Context ctx = new Context&#40;key2, value2&#41;;
-     *
-     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setNameFilter&#40;snapshotNameFilter&#41;, ctx&#41;
-     *     .forEach&#40;snapshotResult -&gt; &#123;
-     *         System.out.printf&#40;&quot;Listed Snapshot name = %s is created at %s, snapshot status is %s.%n&quot;,
-     *             snapshotResult.getName&#40;&#41;, snapshotResult.getCreatedAt&#40;&#41;, snapshotResult.getStatus&#40;&#41;&#41;;
-     *     &#125;&#41;;
+     * String labelFilter = &quot;&#123;labelNamePrefix&#125;*&quot;;
+     * client.listLabels&#40;new LabelSelector&#40;&#41;.setLabelFilter&#40;labelFilter&#41;&#41;
+     *         .forEach&#40;label -&gt; &#123;
+     *             System.out.println&#40;&quot;label name = &quot; + label&#41;;
+     *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.listLabels -->
      *
@@ -1530,7 +1526,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listLabels(LabelSelector selector) {
-       return listLabels(selector, Context.NONE);
+        return listLabels(selector, Context.NONE);
     }
 
     /**
@@ -1540,14 +1536,13 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload -->
      * <pre>
-     * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
+     * String labelFilter = &quot;&#123;labelNamePrefix&#125;*&quot;;
      * Context ctx = new Context&#40;key2, value2&#41;;
      *
-     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setNameFilter&#40;snapshotNameFilter&#41;, ctx&#41;
-     *     .forEach&#40;snapshotResult -&gt; &#123;
-     *         System.out.printf&#40;&quot;Listed Snapshot name = %s is created at %s, snapshot status is %s.%n&quot;,
-     *             snapshotResult.getName&#40;&#41;, snapshotResult.getCreatedAt&#40;&#41;, snapshotResult.getStatus&#40;&#41;&#41;;
-     *     &#125;&#41;;
+     * client.listLabels&#40;new LabelSelector&#40;&#41;.setLabelFilter&#40;labelFilter&#41;, ctx&#41;
+     *         .forEach&#40;label -&gt; &#123;
+     *             System.out.println&#40;&quot;label name = &quot; + label&#41;;
+     *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload -->
      *

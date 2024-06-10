@@ -64,7 +64,6 @@ import com.azure.data.appconfiguration.implementation.models.KeyListResult;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.KeyValueListResult;
 import com.azure.data.appconfiguration.implementation.models.Label;
-import com.azure.data.appconfiguration.implementation.models.LabelFields;
 import com.azure.data.appconfiguration.implementation.models.LabelListResult;
 import com.azure.data.appconfiguration.implementation.models.OperationDetails;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
@@ -74,6 +73,7 @@ import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParam
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
+import com.azure.data.appconfiguration.models.LabelFields;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import java.util.List;
@@ -273,7 +273,7 @@ public final class AzureAppConfigurationImpl {
                 @QueryParam("snapshot") String snapshot,
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("tags") String tags,
+                @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -292,7 +292,7 @@ public final class AzureAppConfigurationImpl {
                 @QueryParam("snapshot") String snapshot,
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("tags") String tags,
+                @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -1269,7 +1269,7 @@ public final class AzureAppConfigurationImpl {
             String snapshot,
             String ifMatch,
             String ifNoneMatch,
-            String tags) {
+            List<String> tags) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -1289,8 +1289,8 @@ public final class AzureAppConfigurationImpl {
                                         snapshot,
                                         ifMatch,
                                         ifNoneMatch,
-                                        accept,
                                         tags,
+                                        accept,
                                         context))
                 .map(
                         res ->
@@ -1333,7 +1333,7 @@ public final class AzureAppConfigurationImpl {
             String snapshot,
             String ifMatch,
             String ifNoneMatch,
-            String tags,
+            List<String> tags,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
@@ -1395,7 +1395,7 @@ public final class AzureAppConfigurationImpl {
             String snapshot,
             String ifMatch,
             String ifNoneMatch,
-            String tags) {
+            List<String> tags) {
         return new PagedFlux<>(
                 () ->
                         getKeyValuesSinglePageAsync(
@@ -1433,7 +1433,7 @@ public final class AzureAppConfigurationImpl {
             String snapshot,
             String ifMatch,
             String ifNoneMatch,
-            String tags,
+            List<String> tags,
             Context context) {
         return new PagedFlux<>(
                 () ->
@@ -1471,7 +1471,7 @@ public final class AzureAppConfigurationImpl {
             String snapshot,
             String ifMatch,
             String ifNoneMatch,
-            String tags) {
+            List<String> tags) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -1532,7 +1532,7 @@ public final class AzureAppConfigurationImpl {
             String snapshot,
             String ifMatch,
             String ifNoneMatch,
-            String tags,
+            List<String> tags,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =

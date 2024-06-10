@@ -425,6 +425,10 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         assertTrue(expectedSelection.isEmpty());
     }
 
+//    @Test
+//    public abstract void listLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+//
+
     @Test
     public abstract void listConfigurationSettingsSelectFields(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion);
@@ -622,6 +626,13 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void listSettingsWithPageETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void listLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    @Test
+    public abstract void listSettingByTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
 
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.

@@ -27,12 +27,11 @@ import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.Utility;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.Label;
-import com.azure.data.appconfiguration.implementation.models.LabelFields;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.LabelFields;
 import com.azure.data.appconfiguration.models.LabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -1416,12 +1415,11 @@ public final class ConfigurationAsyncClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listLabels -->
      * <pre>
-     * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
-     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setNameFilter&#40;snapshotNameFilter&#41;&#41;
-     *     .subscribe&#40;recoveredSnapshot -&gt; &#123;
-     *         System.out.printf&#40;&quot;Recovered snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
-     *             recoveredSnapshot.getName&#40;&#41;, recoveredSnapshot.getCreatedAt&#40;&#41;, recoveredSnapshot.getStatus&#40;&#41;&#41;;
-     *     &#125;&#41;;
+     * String labelFilter = &quot;&#123;labelNamePrefix&#125;*&quot;;
+     * client.listLabels&#40;new LabelSelector&#40;&#41;.setLabelFilter&#40;labelFilter&#41;&#41;
+     *         .subscribe&#40;label -&gt; &#123;
+     *             System.out.println&#40;&quot;label name = &quot; + label&#41;;
+     *         &#125;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listLabels -->
      *

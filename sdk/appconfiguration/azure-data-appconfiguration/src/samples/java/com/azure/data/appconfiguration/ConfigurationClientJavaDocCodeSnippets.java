@@ -583,7 +583,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
                 .forEach(label -> {
                     System.out.println("label name = " + label);
                 });
-        // END: com.azure.data.appconfiguration.configurationclient.ListLabels
+        // END: com.azure.data.appconfiguration.configurationclient.listLabels
     }
 
     /**
@@ -598,7 +598,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
                 .forEach(label -> {
                     System.out.println("label name = " + label);
                 });
-        // END: com.azure.data.appconfiguration.configurationclient.ListLabelsMaxOverload
+        // END: com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload
     }
 
     /**

@@ -8,6 +8,7 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
+import javax.net.ssl.SSLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,8 +21,7 @@ public class ListSettingsByTagsFilter {
      *
      * @param args Unused. Arguments to the program.
      */
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws SSLException {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to the "Access Keys" page under the "Settings" section.
         String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
@@ -50,7 +50,7 @@ public class ListSettingsByTagsFilter {
         });
 
         // List settings by tag filter
-        PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(new SettingSelector().setTagsFilter(tags));
+        PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(new SettingSelector().setTagsFilter(tags2));
 
         configurationSettings.forEach(setting -> {
             System.out.printf("Key: %s, Labels: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue());

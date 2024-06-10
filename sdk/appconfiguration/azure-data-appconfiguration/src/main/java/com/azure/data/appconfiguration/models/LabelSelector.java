@@ -4,19 +4,27 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.data.appconfiguration.implementation.models.LabelFields;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A class that contains the label selector options for a GET request to the service.
+ */
 @Fluent
 public final class LabelSelector {
     private String labelFilter;
     private String acceptDatetime;
 
     private List<LabelFields> fields;
+
+    /**
+     * Creates a label selector that will populate responses with all of the {@link ConfigurationSetting#getLabel() labels}.
+     */
+    public LabelSelector() {
+    }
 
     /**
      * Gets the labels used to filter settings based on their {@link ConfigurationSetting#getLabel() label} in the
@@ -50,8 +58,7 @@ public final class LabelSelector {
 
     /**
      * Gets the date time for the request query. When the query is performed, if {@code acceptDateTime} is set, the
-     * {@link ConfigurationSetting#getValue() configuration setting value} at that point in time is returned. Otherwise,
-     * the current value is returned.
+     * labels at that point in time is returned.
      *
      * @return Gets the currently set datetime in {@link DateTimeFormatter#RFC_1123_DATE_TIME} format.
      */
@@ -60,8 +67,7 @@ public final class LabelSelector {
     }
 
     /**
-     * If set, then configuration setting values will be retrieved as they existed at the provided datetime. Otherwise,
-     * the current values are returned.
+     * If set, then labels will be retrieved as they existed at the provided datetime.
      *
      * @param datetime The value of the configuration setting at that given {@link OffsetDateTime}.
      * @return The updated LabelSelector object.
@@ -71,7 +77,6 @@ public final class LabelSelector {
                 : DateTimeFormatter.RFC_1123_DATE_TIME.toFormat().format(datetime);
         return this;
     }
-
 
     /**
      * Gets the fields on {@link ConfigurationSnapshot} to return from the GET request. If none are set, the
@@ -112,7 +117,4 @@ public final class LabelSelector {
         this.fields = fields;
         return this;
     }
-
-
-
 }

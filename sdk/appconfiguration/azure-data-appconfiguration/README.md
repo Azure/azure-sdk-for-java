@@ -400,6 +400,7 @@ configurationClient.setConfigurationSetting(key2, "new_label", "new_value");
 SettingSelector selector = new SettingSelector().setKeyFilter(key + "," + key2);
 PagedIterable<ConfigurationSetting> settings = configurationClient.listConfigurationSettings(selector);
 ```
+For more filters see class `SettingSelector`, such as `tagsFilter` see [samples][samples].
 
 ### List revisions of multiple Configuration Settings
 
@@ -539,8 +540,11 @@ for (ConfigurationSetting setting : configurationSettings) {
 List multiple labels in the App Configuration store by calling `listLabels`.
 
 ```java readme-sample-listLabels
-
-
+String labelFilter = "{labelNamePrefix}*";
+configurationClient.listLabels(new LabelSelector().setLabelFilter(labelFilter))
+        .forEach(label -> {
+            System.out.println("label name = " + label);
+        });
 ```
 
 
