@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class AppInsightsByteBufferPool {
+class AppInsightsByteBufferPool {
 
     private static final int BYTE_BUFFER_SIZE = 65536;
     private static final int MAX_RETAINED = 10;
