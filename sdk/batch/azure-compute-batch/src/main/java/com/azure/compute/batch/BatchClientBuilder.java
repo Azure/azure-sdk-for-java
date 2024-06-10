@@ -272,6 +272,7 @@ public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, 
      */
     @Generated
     private BatchClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         BatchServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : BatchServiceVersion.getLatest();
@@ -342,4 +343,11 @@ public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, 
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BatchClientBuilder.class);
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
 }

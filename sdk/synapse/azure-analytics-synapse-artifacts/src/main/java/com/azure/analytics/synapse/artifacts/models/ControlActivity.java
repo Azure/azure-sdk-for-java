@@ -10,14 +10,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Base class for all control activities like IfCondition, ForEach , Until.
- */
+/** Base class for all control activities like IfCondition, ForEach , Until. */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ControlActivity.class)
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        defaultImpl = ControlActivity.class)
 @JsonTypeName("Container")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ExecutePipeline", value = ExecutePipelineActivity.class),
@@ -31,63 +29,49 @@ import java.util.List;
     @JsonSubTypes.Type(name = "Filter", value = FilterActivity.class),
     @JsonSubTypes.Type(name = "SetVariable", value = SetVariableActivity.class),
     @JsonSubTypes.Type(name = "AppendVariable", value = AppendVariableActivity.class),
-    @JsonSubTypes.Type(name = "WebHook", value = WebHookActivity.class) })
+    @JsonSubTypes.Type(name = "WebHook", value = WebHookActivity.class)
+})
 @Fluent
 public class ControlActivity extends Activity {
-    /**
-     * Creates an instance of ControlActivity class.
-     */
-    public ControlActivity() {
-    }
+    /** Creates an instance of ControlActivity class. */
+    public ControlActivity() {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ControlActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ControlActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ControlActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ControlActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ControlActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ControlActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

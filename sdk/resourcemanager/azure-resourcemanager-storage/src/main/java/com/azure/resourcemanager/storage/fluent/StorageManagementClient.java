@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.storage.fluent;
 
 import com.azure.core.http.HttpPipeline;
+
 import java.time.Duration;
 
-/** The interface for StorageManagementClient class. */
+/**
+ * The interface for StorageManagementClient class.
+ */
 public interface StorageManagementClient {
     /**
      * Gets The ID of the target subscription.
@@ -43,6 +46,48 @@ public interface StorageManagementClient {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
+
+    /**
+     * Gets the BlobServicesClient object to access its operations.
+     *
+     * @return the BlobServicesClient object.
+     */
+    BlobServicesClient getBlobServices();
+
+    /**
+     * Gets the BlobContainersClient object to access its operations.
+     *
+     * @return the BlobContainersClient object.
+     */
+    BlobContainersClient getBlobContainers();
+
+    /**
+     * Gets the FileServicesClient object to access its operations.
+     *
+     * @return the FileServicesClient object.
+     */
+    FileServicesClient getFileServices();
+
+    /**
+     * Gets the FileSharesClient object to access its operations.
+     *
+     * @return the FileSharesClient object.
+     */
+    FileSharesClient getFileShares();
+
+    /**
+     * Gets the QueueServicesClient object to access its operations.
+     *
+     * @return the QueueServicesClient object.
+     */
+    QueueServicesClient getQueueServices();
+
+    /**
+     * Gets the QueuesClient object to access its operations.
+     *
+     * @return the QueuesClient object.
+     */
+    QueuesClient getQueues();
 
     /**
      * Gets the OperationsClient object to access its operations.
@@ -129,48 +174,6 @@ public interface StorageManagementClient {
     EncryptionScopesClient getEncryptionScopes();
 
     /**
-     * Gets the BlobServicesClient object to access its operations.
-     *
-     * @return the BlobServicesClient object.
-     */
-    BlobServicesClient getBlobServices();
-
-    /**
-     * Gets the BlobContainersClient object to access its operations.
-     *
-     * @return the BlobContainersClient object.
-     */
-    BlobContainersClient getBlobContainers();
-
-    /**
-     * Gets the FileServicesClient object to access its operations.
-     *
-     * @return the FileServicesClient object.
-     */
-    FileServicesClient getFileServices();
-
-    /**
-     * Gets the FileSharesClient object to access its operations.
-     *
-     * @return the FileSharesClient object.
-     */
-    FileSharesClient getFileShares();
-
-    /**
-     * Gets the QueueServicesClient object to access its operations.
-     *
-     * @return the QueueServicesClient object.
-     */
-    QueueServicesClient getQueueServices();
-
-    /**
-     * Gets the QueuesClient object to access its operations.
-     *
-     * @return the QueuesClient object.
-     */
-    QueuesClient getQueues();
-
-    /**
      * Gets the TableServicesClient object to access its operations.
      *
      * @return the TableServicesClient object.
@@ -183,4 +186,32 @@ public interface StorageManagementClient {
      * @return the TablesClient object.
      */
     TablesClient getTables();
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     *
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
+
+    /**
+     * Gets the StorageTaskAssignmentsClient object to access its operations.
+     *
+     * @return the StorageTaskAssignmentsClient object.
+     */
+    StorageTaskAssignmentsClient getStorageTaskAssignments();
+
+    /**
+     * Gets the StorageTaskAssignmentsInstancesReportsClient object to access its operations.
+     *
+     * @return the StorageTaskAssignmentsInstancesReportsClient object.
+     */
+    StorageTaskAssignmentsInstancesReportsClient getStorageTaskAssignmentsInstancesReports();
+
+    /**
+     * Gets the StorageTaskAssignmentInstancesReportsClient object to access its operations.
+     *
+     * @return the StorageTaskAssignmentInstancesReportsClient object.
+     */
+    StorageTaskAssignmentInstancesReportsClient getStorageTaskAssignmentInstancesReports();
 }

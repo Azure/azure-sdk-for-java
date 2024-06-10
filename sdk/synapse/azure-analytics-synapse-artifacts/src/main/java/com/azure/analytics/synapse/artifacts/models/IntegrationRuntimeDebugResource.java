@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Integration runtime debug resource.
- */
+/** Integration runtime debug resource. */
 @Fluent
 public final class IntegrationRuntimeDebugResource extends SubResourceDebugResource {
     /*
@@ -18,15 +16,12 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntime properties;
 
-    /**
-     * Creates an instance of IntegrationRuntimeDebugResource class.
-     */
-    public IntegrationRuntimeDebugResource() {
-    }
+    /** Creates an instance of IntegrationRuntimeDebugResource class. */
+    public IntegrationRuntimeDebugResource() {}
 
     /**
      * Get the properties property: Integration runtime properties.
-     * 
+     *
      * @return the properties value.
      */
     public IntegrationRuntime getProperties() {
@@ -35,7 +30,7 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
 
     /**
      * Set the properties property: Integration runtime properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the IntegrationRuntimeDebugResource object itself.
      */
@@ -44,9 +39,7 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public IntegrationRuntimeDebugResource setName(String name) {
         super.setName(name);

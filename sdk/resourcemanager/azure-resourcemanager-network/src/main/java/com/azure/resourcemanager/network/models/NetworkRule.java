@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,17 @@ import java.util.List;
 /**
  * Rule of type network.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "ruleType", defaultImpl = NetworkRule.class, visible = true)
 @JsonTypeName("NetworkRule")
 @Fluent
 public final class NetworkRule extends FirewallPolicyRule {
+    /*
+     * Rule Type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private FirewallPolicyRuleType ruleType = FirewallPolicyRuleType.NETWORK_RULE;
+
     /*
      * Array of FirewallPolicyRuleNetworkProtocols.
      */
@@ -63,6 +71,16 @@ public final class NetworkRule extends FirewallPolicyRule {
      * Creates an instance of NetworkRule class.
      */
     public NetworkRule() {
+    }
+
+    /**
+     * Get the ruleType property: Rule Type.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public FirewallPolicyRuleType ruleType() {
+        return this.ruleType;
     }
 
     /**

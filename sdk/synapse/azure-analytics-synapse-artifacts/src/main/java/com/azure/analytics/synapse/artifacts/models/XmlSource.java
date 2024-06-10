@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A copy activity Xml source.
- */
+/** A copy activity Xml source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("XmlSource")
 @Fluent
@@ -35,15 +33,12 @@ public final class XmlSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /**
-     * Creates an instance of XmlSource class.
-     */
-    public XmlSource() {
-    }
+    /** Creates an instance of XmlSource class. */
+    public XmlSource() {}
 
     /**
      * Get the storeSettings property: Xml store settings.
-     * 
+     *
      * @return the storeSettings value.
      */
     public StoreReadSettings getStoreSettings() {
@@ -52,7 +47,7 @@ public final class XmlSource extends CopySource {
 
     /**
      * Set the storeSettings property: Xml store settings.
-     * 
+     *
      * @param storeSettings the storeSettings value to set.
      * @return the XmlSource object itself.
      */
@@ -63,7 +58,7 @@ public final class XmlSource extends CopySource {
 
     /**
      * Get the formatSettings property: Xml format settings.
-     * 
+     *
      * @return the formatSettings value.
      */
     public XmlReadSettings getFormatSettings() {
@@ -72,7 +67,7 @@ public final class XmlSource extends CopySource {
 
     /**
      * Set the formatSettings property: Xml format settings.
-     * 
+     *
      * @param formatSettings the formatSettings value to set.
      * @return the XmlSource object itself.
      */
@@ -84,7 +79,7 @@ public final class XmlSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -94,7 +89,7 @@ public final class XmlSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @param additionalColumns the additionalColumns value to set.
      * @return the XmlSource object itself.
      */
@@ -103,27 +98,21 @@ public final class XmlSource extends CopySource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public XmlSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public XmlSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public XmlSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

@@ -22,8 +22,7 @@ public final class SqlContainerCreateUpdateProperties {
     private SqlContainerResource resource;
 
     /*
-     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the
-     * request.
+     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
      */
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
@@ -83,8 +82,9 @@ public final class SqlContainerCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resource in model SqlContainerCreateUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resource in model SqlContainerCreateUpdateProperties"));
         } else {
             resource().validate();
         }

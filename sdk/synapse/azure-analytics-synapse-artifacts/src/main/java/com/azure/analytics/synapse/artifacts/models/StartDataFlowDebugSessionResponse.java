@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Response body structure for starting data flow debug session.
- */
+/** Response body structure for starting data flow debug session. */
 @Fluent
 public final class StartDataFlowDebugSessionResponse {
     /*
@@ -18,15 +16,12 @@ public final class StartDataFlowDebugSessionResponse {
     @JsonProperty(value = "jobVersion")
     private String jobVersion;
 
-    /**
-     * Creates an instance of StartDataFlowDebugSessionResponse class.
-     */
-    public StartDataFlowDebugSessionResponse() {
-    }
+    /** Creates an instance of StartDataFlowDebugSessionResponse class. */
+    public StartDataFlowDebugSessionResponse() {}
 
     /**
      * Get the jobVersion property: The ID of data flow debug job version.
-     * 
+     *
      * @return the jobVersion value.
      */
     public String getJobVersion() {
@@ -35,7 +30,7 @@ public final class StartDataFlowDebugSessionResponse {
 
     /**
      * Set the jobVersion property: The ID of data flow debug job version.
-     * 
+     *
      * @param jobVersion the jobVersion value to set.
      * @return the StartDataFlowDebugSessionResponse object itself.
      */

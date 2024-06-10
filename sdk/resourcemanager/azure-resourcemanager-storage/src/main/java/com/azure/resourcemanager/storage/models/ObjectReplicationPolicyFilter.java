@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -21,13 +22,14 @@ public final class ObjectReplicationPolicyFilter {
     private List<String> prefixMatch;
 
     /*
-     * Blobs created after the time will be replicated to the destination. It must be in datetime format
-     * 'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z
+     * Blobs created after the time will be replicated to the destination. It must be in datetime format 'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z
      */
     @JsonProperty(value = "minCreationTime")
     private String minCreationTime;
 
-    /** Creates an instance of ObjectReplicationPolicyFilter class. */
+    /**
+     * Creates an instance of ObjectReplicationPolicyFilter class.
+     */
     public ObjectReplicationPolicyFilter() {
     }
 

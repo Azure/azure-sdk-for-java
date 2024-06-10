@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesGetDatabaseConnectionWithDetailsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * GetStaticSiteDatabaseConnectionWithDetails.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetStaticSiteDatabaseConnectionWithDetails.json
      */
     /**
      * Sample code: Get details of database connections for the static site.
@@ -19,7 +18,11 @@ public final class StaticSitesGetDatabaseConnectionWithDetailsSamples {
      */
     public static void
         getDetailsOfDatabaseConnectionsForTheStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().getDatabaseConnectionWithDetailsWithResponse("rg",
-            "testStaticSite0", "default", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .getDatabaseConnectionWithDetailsWithResponse("rg", "testStaticSite0", "default",
+                com.azure.core.util.Context.NONE);
     }
 }

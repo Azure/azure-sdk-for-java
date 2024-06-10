@@ -127,8 +127,9 @@ public final class VpnClientRootCertificate extends SubResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model VpnClientRootCertificate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model VpnClientRootCertificate"));
         } else {
             innerProperties().validate();
         }

@@ -6,14 +6,21 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** This is a required field, it specifies the format for the inventory files. */
+/**
+ * This is a required field, it specifies the format for the inventory files.
+ */
 public final class Format extends ExpandableStringEnum<Format> {
-    /** Static value Csv for Format. */
+    /**
+     * Static value Csv for Format.
+     */
     public static final Format CSV = fromString("Csv");
 
-    /** Static value Parquet for Format. */
+    /**
+     * Static value Parquet for Format.
+     */
     public static final Format PARQUET = fromString("Parquet");
 
     /**

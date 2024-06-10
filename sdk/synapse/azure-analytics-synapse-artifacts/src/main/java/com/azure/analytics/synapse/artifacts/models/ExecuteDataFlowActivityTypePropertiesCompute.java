@@ -7,68 +7,66 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Compute properties for data flow activity.
- */
+/** Compute properties for data flow activity. */
 @Fluent
 public final class ExecuteDataFlowActivityTypePropertiesCompute {
     /*
-     * Compute type of the cluster which will execute data flow job.
+     * Compute type of the cluster which will execute data flow job. Possible values include: 'General',
+     * 'MemoryOptimized', 'ComputeOptimized'. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "computeType")
-    private DataFlowComputeType computeType;
+    private Object computeType;
 
     /*
      * Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and
-     * 272.
+     * 272. Type: integer (or Expression with resultType integer)
      */
     @JsonProperty(value = "coreCount")
-    private Integer coreCount;
+    private Object coreCount;
+
+    /** Creates an instance of ExecuteDataFlowActivityTypePropertiesCompute class. */
+    public ExecuteDataFlowActivityTypePropertiesCompute() {}
 
     /**
-     * Creates an instance of ExecuteDataFlowActivityTypePropertiesCompute class.
-     */
-    public ExecuteDataFlowActivityTypePropertiesCompute() {
-    }
-
-    /**
-     * Get the computeType property: Compute type of the cluster which will execute data flow job.
-     * 
+     * Get the computeType property: Compute type of the cluster which will execute data flow job. Possible values
+     * include: 'General', 'MemoryOptimized', 'ComputeOptimized'. Type: string (or Expression with resultType string).
+     *
      * @return the computeType value.
      */
-    public DataFlowComputeType getComputeType() {
+    public Object getComputeType() {
         return this.computeType;
     }
 
     /**
-     * Set the computeType property: Compute type of the cluster which will execute data flow job.
-     * 
+     * Set the computeType property: Compute type of the cluster which will execute data flow job. Possible values
+     * include: 'General', 'MemoryOptimized', 'ComputeOptimized'. Type: string (or Expression with resultType string).
+     *
      * @param computeType the computeType value to set.
      * @return the ExecuteDataFlowActivityTypePropertiesCompute object itself.
      */
-    public ExecuteDataFlowActivityTypePropertiesCompute setComputeType(DataFlowComputeType computeType) {
+    public ExecuteDataFlowActivityTypePropertiesCompute setComputeType(Object computeType) {
         this.computeType = computeType;
         return this;
     }
 
     /**
      * Get the coreCount property: Core count of the cluster which will execute data flow job. Supported values are: 8,
-     * 16, 32, 48, 80, 144 and 272.
-     * 
+     * 16, 32, 48, 80, 144 and 272. Type: integer (or Expression with resultType integer).
+     *
      * @return the coreCount value.
      */
-    public Integer getCoreCount() {
+    public Object getCoreCount() {
         return this.coreCount;
     }
 
     /**
      * Set the coreCount property: Core count of the cluster which will execute data flow job. Supported values are: 8,
-     * 16, 32, 48, 80, 144 and 272.
-     * 
+     * 16, 32, 48, 80, 144 and 272. Type: integer (or Expression with resultType integer).
+     *
      * @param coreCount the coreCount value to set.
      * @return the ExecuteDataFlowActivityTypePropertiesCompute object itself.
      */
-    public ExecuteDataFlowActivityTypePropertiesCompute setCoreCount(Integer coreCount) {
+    public ExecuteDataFlowActivityTypePropertiesCompute setCoreCount(Object coreCount) {
         this.coreCount = coreCount;
         return this;
     }

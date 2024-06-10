@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LocalNetworkGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/LocalNetworkGatewayGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LocalNetworkGatewayGet.json
      */
     /**
      * Sample code: GetLocalNetworkGateway.
@@ -18,7 +17,10 @@ public final class LocalNetworkGatewaysGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getLocalNetworkGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLocalNetworkGateways().getByResourceGroupWithResponse("rg1",
-            "localgw", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLocalNetworkGateways()
+            .getByResourceGroupWithResponse("rg1", "localgw", com.azure.core.util.Context.NONE);
     }
 }

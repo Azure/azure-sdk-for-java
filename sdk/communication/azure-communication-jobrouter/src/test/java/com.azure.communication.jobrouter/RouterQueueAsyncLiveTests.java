@@ -17,22 +17,19 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
-    private JobRouterAsyncClient routerAsyncClient;
-
     private JobRouterAdministrationAsyncClient administrationAsyncClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createQueue(HttpClient httpClient) {
         // Setup
-        routerAsyncClient = getRouterAsyncClient(httpClient);
         administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
         String distributionPolicyId = String.format("%s-CreateQueueAsync-DistributionPolicy", JAVA_LIVE_TESTS);
         String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
@@ -42,8 +39,7 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
             Duration.ofSeconds(10),
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
+                .setMaxConcurrentOffers(10))
             .setName(distributionPolicyName);
         DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
@@ -51,11 +47,7 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
 
         // Action
         String queueName = String.format("%s-Name", queueId);
-        Map<String, RouterValue> queueLabels = new HashMap<String, RouterValue>() {
-            {
-                put("Label_1", new RouterValue("Value_1"));
-            }
-        };
+        Map<String, RouterValue> queueLabels = Collections.singletonMap("Label_1", new RouterValue("Value_1"));
 
         CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
             .setLabels(queueLabels)
@@ -87,7 +79,6 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updateQueue(HttpClient httpClient) {
         // Setup
-        routerAsyncClient = getRouterAsyncClient(httpClient);
         administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
         String distributionPolicyId = String.format("%s-UpdateQueueAsync-DistributionPolicy", JAVA_LIVE_TESTS);
         String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
@@ -99,17 +90,12 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
             Duration.ofSeconds(10),
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
+                .setMaxConcurrentOffers(10))
             .setName(distributionPolicyName);
         DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueName = String.format("%s-Name", queueId);
-        Map<String, RouterValue> queueLabels = new HashMap<String, RouterValue>() {
-            {
-                put("Label_1", new RouterValue("Value_1"));
-            }
-        };
+        Map<String, RouterValue> queueLabels = Collections.singletonMap("Label_1", new RouterValue("Value_1"));
 
         CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
             .setLabels(queueLabels)

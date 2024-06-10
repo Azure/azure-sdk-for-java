@@ -26,7 +26,7 @@ public final class DeletedAppRestoreRequestProperties {
     private Boolean recoverConfiguration;
 
     /*
-     * Point in time to restore the deleted app from, formatted as a DateTime string.
+     * Point in time to restore the deleted app from, formatted as a DateTime string. 
      * If unspecified, default value is the time that the app was deleted.
      */
     @JsonProperty(value = "snapshotTime")

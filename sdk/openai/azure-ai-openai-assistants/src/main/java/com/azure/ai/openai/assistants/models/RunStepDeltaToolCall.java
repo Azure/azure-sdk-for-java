@@ -119,8 +119,8 @@ public class RunStepDeltaToolCall implements JsonSerializable<RunStepDeltaToolCa
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("function".equals(discriminatorValue)) {
                     return RunStepDeltaFunctionToolCall.fromJson(readerToUse.reset());
-                } else if ("retrieval".equals(discriminatorValue)) {
-                    return RunStepDeltaRetrievalToolCall.fromJson(readerToUse.reset());
+                } else if ("file_search".equals(discriminatorValue)) {
+                    return RunStepDeltaFileSearchToolCall.fromJson(readerToUse.reset());
                 } else if ("code_interpreter".equals(discriminatorValue)) {
                     return RunStepDeltaCodeInterpreterToolCall.fromJson(readerToUse.reset());
                 } else {

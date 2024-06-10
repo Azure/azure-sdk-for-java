@@ -7,9 +7,12 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.models.TableSignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The TableProperties model. */
+/**
+ * The TableProperties model.
+ */
 @Fluent
 public final class TableProperties {
     /*
@@ -24,7 +27,9 @@ public final class TableProperties {
     @JsonProperty(value = "signedIdentifiers")
     private List<TableSignedIdentifier> signedIdentifiers;
 
-    /** Creates an instance of TableProperties class. */
+    /**
+     * Creates an instance of TableProperties class.
+     */
     public TableProperties() {
     }
 

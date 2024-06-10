@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * A list of data flow resources.
- */
+/** A list of data flow resources. */
 @Fluent
 public final class DataFlowListResponse {
     /*
@@ -25,15 +23,12 @@ public final class DataFlowListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of DataFlowListResponse class.
-     */
-    public DataFlowListResponse() {
-    }
+    /** Creates an instance of DataFlowListResponse class. */
+    public DataFlowListResponse() {}
 
     /**
      * Get the value property: List of data flows.
-     * 
+     *
      * @return the value value.
      */
     public List<DataFlowResource> getValue() {
@@ -42,7 +37,7 @@ public final class DataFlowListResponse {
 
     /**
      * Set the value property: List of data flows.
-     * 
+     *
      * @param value the value value to set.
      * @return the DataFlowListResponse object itself.
      */
@@ -53,7 +48,7 @@ public final class DataFlowListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -62,7 +57,7 @@ public final class DataFlowListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the DataFlowListResponse object itself.
      */

@@ -16,20 +16,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Azure Synapse nested object which contains information about creating pipeline run.
- */
+/** Azure Synapse nested object which contains information about creating pipeline run. */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = Trigger.class)
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        defaultImpl = Trigger.class)
 @JsonTypeName("Trigger")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "RerunTumblingWindowTrigger", value = RerunTumblingWindowTrigger.class),
     @JsonSubTypes.Type(name = "MultiplePipelineTrigger", value = MultiplePipelineTrigger.class),
     @JsonSubTypes.Type(name = "TumblingWindowTrigger", value = TumblingWindowTrigger.class),
-    @JsonSubTypes.Type(name = "ChainingTrigger", value = ChainingTrigger.class) })
+    @JsonSubTypes.Type(name = "ChainingTrigger", value = ChainingTrigger.class)
+})
 @Fluent
 public class Trigger {
     /*
@@ -53,18 +52,14 @@ public class Trigger {
     /*
      * Azure Synapse nested object which contains information about creating pipeline run
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of Trigger class.
-     */
-    public Trigger() {
-    }
+    /** Creates an instance of Trigger class. */
+    public Trigger() {}
 
     /**
      * Get the description property: Trigger description.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -73,7 +68,7 @@ public class Trigger {
 
     /**
      * Set the description property: Trigger description.
-     * 
+     *
      * @param description the description value to set.
      * @return the Trigger object itself.
      */
@@ -83,9 +78,9 @@ public class Trigger {
     }
 
     /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called
-     * on the Trigger.
-     * 
+     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
+     * the Trigger.
+     *
      * @return the runtimeState value.
      */
     public TriggerRuntimeState getRuntimeState() {
@@ -94,7 +89,7 @@ public class Trigger {
 
     /**
      * Get the annotations property: List of tags that can be used for describing the trigger.
-     * 
+     *
      * @return the annotations value.
      */
     public List<Object> getAnnotations() {
@@ -103,7 +98,7 @@ public class Trigger {
 
     /**
      * Set the annotations property: List of tags that can be used for describing the trigger.
-     * 
+     *
      * @param annotations the annotations value to set.
      * @return the Trigger object itself.
      */
@@ -115,7 +110,7 @@ public class Trigger {
     /**
      * Get the additionalProperties property: Azure Synapse nested object which contains information about creating
      * pipeline run.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -126,7 +121,7 @@ public class Trigger {
     /**
      * Set the additionalProperties property: Azure Synapse nested object which contains information about creating
      * pipeline run.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the Trigger object itself.
      */

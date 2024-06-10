@@ -6,14 +6,16 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** Protected append writes history setting for the blob container with Legal holds. */
+/**
+ * Protected append writes history setting for the blob container with Legal holds.
+ */
 @Fluent
 public final class ProtectedAppendWritesHistory {
     /*
-     * When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining legal hold protection
-     * and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted.
+     * When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining legal hold protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted.
      */
     @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;
@@ -24,7 +26,9 @@ public final class ProtectedAppendWritesHistory {
     @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
-    /** Creates an instance of ProtectedAppendWritesHistory class. */
+    /**
+     * Creates an instance of ProtectedAppendWritesHistory class.
+     */
     public ProtectedAppendWritesHistory() {
     }
 

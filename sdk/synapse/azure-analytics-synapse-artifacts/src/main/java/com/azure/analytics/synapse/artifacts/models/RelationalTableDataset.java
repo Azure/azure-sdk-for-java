@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The relational table dataset.
- */
+/** The relational table dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("RelationalTable")
 @JsonFlatten
@@ -26,15 +24,12 @@ public class RelationalTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
-    /**
-     * Creates an instance of RelationalTableDataset class.
-     */
-    public RelationalTableDataset() {
-    }
+    /** Creates an instance of RelationalTableDataset class. */
+    public RelationalTableDataset() {}
 
     /**
      * Get the tableName property: The relational table name. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -43,7 +38,7 @@ public class RelationalTableDataset extends Dataset {
 
     /**
      * Set the tableName property: The relational table name. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param tableName the tableName value to set.
      * @return the RelationalTableDataset object itself.
      */
@@ -52,63 +47,49 @@ public class RelationalTableDataset extends Dataset {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RelationalTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RelationalTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RelationalTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RelationalTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RelationalTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RelationalTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RelationalTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.EndpointDependency;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -15,8 +16,7 @@ import java.util.List;
 @Fluent
 public final class OutboundEnvironmentEndpointInner {
     /*
-     * The type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure
-     * Active Directory.
+     * The type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active Directory.
      */
     @JsonProperty(value = "category")
     private String category;
@@ -36,7 +36,7 @@ public final class OutboundEnvironmentEndpointInner {
     /**
      * Get the category property: The type of service accessed by the App Service Environment, e.g., Azure Storage,
      * Azure SQL Database, and Azure Active Directory.
-     * 
+     *
      * @return the category value.
      */
     public String category() {
@@ -46,7 +46,7 @@ public final class OutboundEnvironmentEndpointInner {
     /**
      * Set the category property: The type of service accessed by the App Service Environment, e.g., Azure Storage,
      * Azure SQL Database, and Azure Active Directory.
-     * 
+     *
      * @param category the category value to set.
      * @return the OutboundEnvironmentEndpointInner object itself.
      */
@@ -57,7 +57,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Get the endpoints property: The endpoints that the App Service Environment reaches the service at.
-     * 
+     *
      * @return the endpoints value.
      */
     public List<EndpointDependency> endpoints() {
@@ -66,7 +66,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Set the endpoints property: The endpoints that the App Service Environment reaches the service at.
-     * 
+     *
      * @param endpoints the endpoints value to set.
      * @return the OutboundEnvironmentEndpointInner object itself.
      */
@@ -77,7 +77,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

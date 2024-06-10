@@ -8,18 +8,20 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a storage account’s Table service. */
+/**
+ * The properties of a storage account’s Table service.
+ */
 @Fluent
 public final class TableServicePropertiesProperties {
     /*
-     * Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the request. If no
-     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled
-     * for the Table service.
+     * Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the Table service.
      */
     @JsonProperty(value = "cors")
     private CorsRules cors;
 
-    /** Creates an instance of TableServicePropertiesProperties class. */
+    /**
+     * Creates an instance of TableServicePropertiesProperties class.
+     */
     public TableServicePropertiesProperties() {
     }
 
@@ -27,7 +29,7 @@ public final class TableServicePropertiesProperties {
      * Get the cors property: Specifies CORS rules for the Table service. You can include up to five CorsRule elements
      * in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and
      * CORS will be disabled for the Table service.
-     *
+     * 
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -38,7 +40,7 @@ public final class TableServicePropertiesProperties {
      * Set the cors property: Specifies CORS rules for the Table service. You can include up to five CorsRule elements
      * in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and
      * CORS will be disabled for the Table service.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the TableServicePropertiesProperties object itself.
      */
@@ -49,7 +51,7 @@ public final class TableServicePropertiesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

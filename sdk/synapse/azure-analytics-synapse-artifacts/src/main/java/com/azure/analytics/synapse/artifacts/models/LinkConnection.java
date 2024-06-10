@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LinkConnection model.
- */
+/** The LinkConnection model. */
 @Fluent
 public final class LinkConnection {
     /*
@@ -36,15 +34,12 @@ public final class LinkConnection {
     @JsonProperty(value = "compute")
     private LinkConnectionCompute compute;
 
-    /**
-     * Creates an instance of LinkConnection class.
-     */
-    public LinkConnection() {
-    }
+    /** Creates an instance of LinkConnection class. */
+    public LinkConnection() {}
 
     /**
      * Get the sourceDatabase property: Properties of link connection's source database.
-     * 
+     *
      * @return the sourceDatabase value.
      */
     public LinkConnectionSourceDatabase getSourceDatabase() {
@@ -53,7 +48,7 @@ public final class LinkConnection {
 
     /**
      * Set the sourceDatabase property: Properties of link connection's source database.
-     * 
+     *
      * @param sourceDatabase the sourceDatabase value to set.
      * @return the LinkConnection object itself.
      */
@@ -64,7 +59,7 @@ public final class LinkConnection {
 
     /**
      * Get the targetDatabase property: Properties of link connection's target database.
-     * 
+     *
      * @return the targetDatabase value.
      */
     public LinkConnectionTargetDatabase getTargetDatabase() {
@@ -73,7 +68,7 @@ public final class LinkConnection {
 
     /**
      * Set the targetDatabase property: Properties of link connection's target database.
-     * 
+     *
      * @param targetDatabase the targetDatabase value to set.
      * @return the LinkConnection object itself.
      */
@@ -84,7 +79,7 @@ public final class LinkConnection {
 
     /**
      * Get the landingZone property: Properties of link connection's landing zone.
-     * 
+     *
      * @return the landingZone value.
      */
     public LinkConnectionLandingZone getLandingZone() {
@@ -93,7 +88,7 @@ public final class LinkConnection {
 
     /**
      * Set the landingZone property: Properties of link connection's landing zone.
-     * 
+     *
      * @param landingZone the landingZone value to set.
      * @return the LinkConnection object itself.
      */
@@ -104,7 +99,7 @@ public final class LinkConnection {
 
     /**
      * Get the compute property: Properties of link connection's compute.
-     * 
+     *
      * @return the compute value.
      */
     public LinkConnectionCompute getCompute() {
@@ -113,7 +108,7 @@ public final class LinkConnection {
 
     /**
      * Set the compute property: Properties of link connection's compute.
-     * 
+     *
      * @param compute the compute value to set.
      * @return the LinkConnection object itself.
      */

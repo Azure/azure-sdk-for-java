@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The KqlScriptsResourceCollectionResponse model.
- */
+/** The KqlScriptsResourceCollectionResponse model. */
 @Fluent
 public final class KqlScriptsResourceCollectionResponse {
     /*
@@ -25,15 +23,12 @@ public final class KqlScriptsResourceCollectionResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of KqlScriptsResourceCollectionResponse class.
-     */
-    public KqlScriptsResourceCollectionResponse() {
-    }
+    /** Creates an instance of KqlScriptsResourceCollectionResponse class. */
+    public KqlScriptsResourceCollectionResponse() {}
 
     /**
      * Get the value property: The value property.
-     * 
+     *
      * @return the value value.
      */
     public List<KqlScriptResource> getValue() {
@@ -42,7 +37,7 @@ public final class KqlScriptsResourceCollectionResponse {
 
     /**
      * Set the value property: The value property.
-     * 
+     *
      * @param value the value value to set.
      * @return the KqlScriptsResourceCollectionResponse object itself.
      */
@@ -53,7 +48,7 @@ public final class KqlScriptsResourceCollectionResponse {
 
     /**
      * Get the nextLink property: The nextLink property.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -62,7 +57,7 @@ public final class KqlScriptsResourceCollectionResponse {
 
     /**
      * Set the nextLink property: The nextLink property.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the KqlScriptsResourceCollectionResponse object itself.
      */

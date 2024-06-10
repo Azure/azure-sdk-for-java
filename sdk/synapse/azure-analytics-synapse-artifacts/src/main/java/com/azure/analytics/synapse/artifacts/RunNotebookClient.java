@@ -17,17 +17,14 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/**
- * Initializes a new instance of the synchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class RunNotebookClient {
-    @Generated
-    private final RunNotebooksImpl serviceClient;
+    @Generated private final RunNotebooksImpl serviceClient;
 
     /**
      * Initializes an instance of RunNotebookClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -37,7 +34,7 @@ public final class RunNotebookClient {
 
     /**
      * Run notebook.
-     * 
+     *
      * @param runId Notebook run id.
      * @param runNotebookRequest Run notebook request payload.
      * @param context The context to associate with this operation.
@@ -48,14 +45,14 @@ public final class RunNotebookClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunNotebooksCreateRunResponse createRunWithResponse(String runId, RunNotebookRequest runNotebookRequest,
-        Context context) {
+    public RunNotebooksCreateRunResponse createRunWithResponse(
+            String runId, RunNotebookRequest runNotebookRequest, Context context) {
         return this.serviceClient.createRunWithResponse(runId, runNotebookRequest, context);
     }
 
     /**
      * Run notebook.
-     * 
+     *
      * @param runId Notebook run id.
      * @param runNotebookRequest Run notebook request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +68,7 @@ public final class RunNotebookClient {
 
     /**
      * Get RunNotebook Status for run id.
-     * 
+     *
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,7 +84,7 @@ public final class RunNotebookClient {
 
     /**
      * Get RunNotebook Status for run id.
-     * 
+     *
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -102,7 +99,7 @@ public final class RunNotebookClient {
 
     /**
      * Cancel notebook run.
-     * 
+     *
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,7 +115,7 @@ public final class RunNotebookClient {
 
     /**
      * Cancel notebook run.
-     * 
+     *
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -133,7 +130,7 @@ public final class RunNotebookClient {
 
     /**
      * Get RunNotebook Snapshot for run id.
-     * 
+     *
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,7 +146,7 @@ public final class RunNotebookClient {
 
     /**
      * Get RunNotebook Snapshot for run id.
-     * 
+     *
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

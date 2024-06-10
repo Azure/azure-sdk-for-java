@@ -7,7 +7,5 @@ module com.azure.security.attestation {
     exports com.azure.security.attestation;
     exports com.azure.security.attestation.models;
 
-    opens com.azure.security.attestation.implementation.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.security.attestation.implementation.models to com.azure.core;
 }

@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Azure Key Vault linked service.
- */
+/** Azure Key Vault linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureKeyVault")
 @JsonFlatten
@@ -33,16 +31,13 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.credential")
     private CredentialReference credential;
 
-    /**
-     * Creates an instance of AzureKeyVaultLinkedService class.
-     */
-    public AzureKeyVaultLinkedService() {
-    }
+    /** Creates an instance of AzureKeyVaultLinkedService class. */
+    public AzureKeyVaultLinkedService() {}
 
     /**
      * Get the baseUrl property: The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string
      * (or Expression with resultType string).
-     * 
+     *
      * @return the baseUrl value.
      */
     public Object getBaseUrl() {
@@ -52,7 +47,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     /**
      * Set the baseUrl property: The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string
      * (or Expression with resultType string).
-     * 
+     *
      * @param baseUrl the baseUrl value to set.
      * @return the AzureKeyVaultLinkedService object itself.
      */
@@ -63,7 +58,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     * 
+     *
      * @return the credential value.
      */
     public CredentialReference getCredential() {
@@ -72,7 +67,7 @@ public class AzureKeyVaultLinkedService extends LinkedService {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     * 
+     *
      * @param credential the credential value to set.
      * @return the AzureKeyVaultLinkedService object itself.
      */
@@ -81,36 +76,28 @@ public class AzureKeyVaultLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureKeyVaultLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureKeyVaultLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureKeyVaultLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureKeyVaultLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

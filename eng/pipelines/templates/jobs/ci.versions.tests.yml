@@ -119,4 +119,4 @@ jobs:
             Write-Host "##vso[task.setvariable variable=FirstTestOverrideRan]true"
           displayName: "Reset version override changes"
 
-      - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
+      - template: /eng/pipelines/templates/steps/post-job-cleanup.yml

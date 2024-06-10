@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * The recurrence schedule occurrence.
- */
+/** The recurrence schedule occurrence. */
 @Fluent
 public final class RecurrenceScheduleOccurrence {
     /*
@@ -32,18 +30,14 @@ public final class RecurrenceScheduleOccurrence {
     /*
      * The recurrence schedule occurrence.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of RecurrenceScheduleOccurrence class.
-     */
-    public RecurrenceScheduleOccurrence() {
-    }
+    /** Creates an instance of RecurrenceScheduleOccurrence class. */
+    public RecurrenceScheduleOccurrence() {}
 
     /**
      * Get the day property: The day of the week.
-     * 
+     *
      * @return the day value.
      */
     public DayOfWeek getDay() {
@@ -52,7 +46,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Set the day property: The day of the week.
-     * 
+     *
      * @param day the day value to set.
      * @return the RecurrenceScheduleOccurrence object itself.
      */
@@ -63,7 +57,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Get the occurrence property: The occurrence.
-     * 
+     *
      * @return the occurrence value.
      */
     public Integer getOccurrence() {
@@ -72,7 +66,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Set the occurrence property: The occurrence.
-     * 
+     *
      * @param occurrence the occurrence value to set.
      * @return the RecurrenceScheduleOccurrence object itself.
      */
@@ -83,7 +77,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Get the additionalProperties property: The recurrence schedule occurrence.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -93,7 +87,7 @@ public final class RecurrenceScheduleOccurrence {
 
     /**
      * Set the additionalProperties property: The recurrence schedule occurrence.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the RecurrenceScheduleOccurrence object itself.
      */

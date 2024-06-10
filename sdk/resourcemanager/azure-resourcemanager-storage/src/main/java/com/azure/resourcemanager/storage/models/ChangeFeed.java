@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The blob service properties for change feed events. */
+/**
+ * The blob service properties for change feed events.
+ */
 @Fluent
 public final class ChangeFeed {
     /*
@@ -17,19 +19,20 @@ public final class ChangeFeed {
     private Boolean enabled;
 
     /*
-     * Indicates the duration of changeFeed retention in days. Minimum value is 1 day and maximum value is 146000 days
-     * (400 years). A null value indicates an infinite retention of the change feed.
+     * Indicates the duration of changeFeed retention in days. Minimum value is 1 day and maximum value is 146000 days (400 years). A null value indicates an infinite retention of the change feed.
      */
     @JsonProperty(value = "retentionInDays")
     private Integer retentionInDays;
 
-    /** Creates an instance of ChangeFeed class. */
+    /**
+     * Creates an instance of ChangeFeed class.
+     */
     public ChangeFeed() {
     }
 
     /**
      * Get the enabled property: Indicates whether change feed event logging is enabled for the Blob service.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -38,7 +41,7 @@ public final class ChangeFeed {
 
     /**
      * Set the enabled property: Indicates whether change feed event logging is enabled for the Blob service.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ChangeFeed object itself.
      */
@@ -50,7 +53,7 @@ public final class ChangeFeed {
     /**
      * Get the retentionInDays property: Indicates the duration of changeFeed retention in days. Minimum value is 1 day
      * and maximum value is 146000 days (400 years). A null value indicates an infinite retention of the change feed.
-     *
+     * 
      * @return the retentionInDays value.
      */
     public Integer retentionInDays() {
@@ -60,7 +63,7 @@ public final class ChangeFeed {
     /**
      * Set the retentionInDays property: Indicates the duration of changeFeed retention in days. Minimum value is 1 day
      * and maximum value is 146000 days (400 years). A null value indicates an infinite retention of the change feed.
-     *
+     * 
      * @param retentionInDays the retentionInDays value to set.
      * @return the ChangeFeed object itself.
      */
@@ -71,7 +74,7 @@ public final class ChangeFeed {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

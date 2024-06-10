@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Spark pool auto-scaling properties
- * 
- * Auto-scaling properties of a Big Data pool powered by Apache Spark.
+ *
+ * <p>Auto-scaling properties of a Big Data pool powered by Apache Spark.
  */
 @Fluent
 public final class AutoScaleProperties {
@@ -32,15 +32,12 @@ public final class AutoScaleProperties {
     @JsonProperty(value = "maxNodeCount")
     private Integer maxNodeCount;
 
-    /**
-     * Creates an instance of AutoScaleProperties class.
-     */
-    public AutoScaleProperties() {
-    }
+    /** Creates an instance of AutoScaleProperties class. */
+    public AutoScaleProperties() {}
 
     /**
      * Get the minNodeCount property: The minimum number of nodes the Big Data pool can support.
-     * 
+     *
      * @return the minNodeCount value.
      */
     public Integer getMinNodeCount() {
@@ -49,7 +46,7 @@ public final class AutoScaleProperties {
 
     /**
      * Set the minNodeCount property: The minimum number of nodes the Big Data pool can support.
-     * 
+     *
      * @param minNodeCount the minNodeCount value to set.
      * @return the AutoScaleProperties object itself.
      */
@@ -60,7 +57,7 @@ public final class AutoScaleProperties {
 
     /**
      * Get the enabled property: Whether automatic scaling is enabled for the Big Data pool.
-     * 
+     *
      * @return the enabled value.
      */
     public Boolean isEnabled() {
@@ -69,7 +66,7 @@ public final class AutoScaleProperties {
 
     /**
      * Set the enabled property: Whether automatic scaling is enabled for the Big Data pool.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the AutoScaleProperties object itself.
      */
@@ -80,7 +77,7 @@ public final class AutoScaleProperties {
 
     /**
      * Get the maxNodeCount property: The maximum number of nodes the Big Data pool can support.
-     * 
+     *
      * @return the maxNodeCount value.
      */
     public Integer getMaxNodeCount() {
@@ -89,7 +86,7 @@ public final class AutoScaleProperties {
 
     /**
      * Set the maxNodeCount property: The maximum number of nodes the Big Data pool can support.
-     * 
+     *
      * @param maxNodeCount the maxNodeCount value to set.
      * @return the AutoScaleProperties object itself.
      */

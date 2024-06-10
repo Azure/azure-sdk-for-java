@@ -20,15 +20,13 @@ public final class WebApplicationFirewallScrubbingRules {
     private ScrubbingRuleEntryMatchVariable matchVariable;
 
     /*
-     * When matchVariable is a collection, operate on the selector to specify which elements in the collection this
-     * rule applies to.
+     * When matchVariable is a collection, operate on the selector to specify which elements in the collection this rule applies to.
      */
     @JsonProperty(value = "selectorMatchOperator", required = true)
     private ScrubbingRuleEntryMatchOperator selectorMatchOperator;
 
     /*
-     * When matchVariable is a collection, operator used to specify which elements in the collection this rule applies
-     * to.
+     * When matchVariable is a collection, operator used to specify which elements in the collection this rule applies to.
      */
     @JsonProperty(value = "selector")
     private String selector;
@@ -137,12 +135,14 @@ public final class WebApplicationFirewallScrubbingRules {
      */
     public void validate() {
         if (matchVariable() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property matchVariable in model WebApplicationFirewallScrubbingRules"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property matchVariable in model WebApplicationFirewallScrubbingRules"));
         }
         if (selectorMatchOperator() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property selectorMatchOperator in model WebApplicationFirewallScrubbingRules"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectorMatchOperator in model WebApplicationFirewallScrubbingRules"));
         }
     }
 

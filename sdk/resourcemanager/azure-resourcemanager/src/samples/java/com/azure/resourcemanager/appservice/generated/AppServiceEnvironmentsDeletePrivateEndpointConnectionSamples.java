@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsDeletePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * AppServiceEnvironments_DeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_DeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: Deletes a private endpoint connection.
@@ -18,7 +17,11 @@ public final class AppServiceEnvironmentsDeletePrivateEndpointConnectionSamples 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deletesAPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().deletePrivateEndpointConnection("test-rg",
-            "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .deletePrivateEndpointConnection("test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98",
+                com.azure.core.util.Context.NONE);
     }
 }
