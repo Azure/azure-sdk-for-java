@@ -74,13 +74,14 @@ public class AzurePipelinesCredential implements TokenCredential {
                 request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + systemAccessToken);
                 request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
                 try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+                    String responseBody = response.getBodyAsBinaryData().toString();
                     if (response.getStatusCode() != 200) {
                         throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token "
-                            + response.getBodyAsString().block()
+                            + responseBody
                             + System.lineSeparator()
                             + "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.", response));
                     }
-                    OidcTokenResponse tokenResponse = OidcTokenResponse.fromJson(JsonProviders.createReader(response.getBodyAsString().block()));
+                    OidcTokenResponse tokenResponse = OidcTokenResponse.fromJson(JsonProviders.createReader(responseBody));
                     return tokenResponse.getOidcToken();
                 }
             } catch (IOException e) {

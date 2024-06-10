@@ -62,11 +62,12 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
     /**
      * Builds an instance of the {@link AzurePipelinesCredential} with the current configurations. Requires setting
      * the following parameters:
-     * <ul>Client ID via {@link #clientId(String)}</ul>
-     * <ul>Tenant ID via {@link #tenantId(String)}</ul>
-     * <ul>Service Connection ID via {@link #serviceConnectionId(String)}</ul>
-     * <ul>System Access Token via {@link #systemAccessToken(String)}</ul>
-     *
+     * <ul>
+     * <li>Client ID via {@link #clientId(String)}</li>
+     * <li>Tenant ID via {@link #tenantId(String)}</li>
+     * <li>Service Connection ID via {@link #serviceConnectionId(String)}</li>
+     * <li>System Access Token via {@link #systemAccessToken(String)}</li>
+     * </ul>
      * Requires the {@code SYSTEM_OIDCREQUESTURI} environment variable to be set.
      *
      * @throws IllegalArgumentException Thrown when required parameters are set or the environment is not correctly
