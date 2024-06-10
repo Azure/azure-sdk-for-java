@@ -55,8 +55,8 @@ public final class ForceUnlinkParameters {
      */
     public void validate() {
         if (ids() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ids in model ForceUnlinkParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ids in model ForceUnlinkParameters"));
         }
     }
 

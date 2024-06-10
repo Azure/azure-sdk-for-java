@@ -12,15 +12,15 @@ import java.util.Map;
 
 /**
  * SQL pool
- * 
- * A SQL Analytics pool.
+ *
+ * <p>A SQL Analytics pool.
  */
 @JsonFlatten
 @Fluent
 public class SqlPool extends TrackedResource {
     /*
      * Sku
-     * 
+     *
      * SQL pool SKU
      */
     @JsonProperty(value = "sku")
@@ -70,17 +70,17 @@ public class SqlPool extends TrackedResource {
 
     /*
      * Specifies the mode of sql pool creation.
-     * 
+     *
      * Default: regular sql pool creation.
-     * 
+     *
      * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
      * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
      * specified.
-     * 
-     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     *
+     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId  must be specified as the
      * recoverableDatabaseId to restore.
-     * 
-     * Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     *
+     * Restore: Creates a sql pool by restoring a backup of a deleted sql  pool. SourceDatabaseId should be the sql
      * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      */
     @JsonProperty(value = "properties.createMode")
@@ -92,17 +92,14 @@ public class SqlPool extends TrackedResource {
     @JsonProperty(value = "properties.creationDate")
     private OffsetDateTime creationDate;
 
-    /**
-     * Creates an instance of SqlPool class.
-     */
-    public SqlPool() {
-    }
+    /** Creates an instance of SqlPool class. */
+    public SqlPool() {}
 
     /**
      * Get the sku property: Sku
-     * 
-     * SQL pool SKU.
-     * 
+     *
+     * <p>SQL pool SKU.
+     *
      * @return the sku value.
      */
     public Sku getSku() {
@@ -111,9 +108,9 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Set the sku property: Sku
-     * 
-     * SQL pool SKU.
-     * 
+     *
+     * <p>SQL pool SKU.
+     *
      * @param sku the sku value to set.
      * @return the SqlPool object itself.
      */
@@ -124,7 +121,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Get the maxSizeBytes property: Maximum size in bytes.
-     * 
+     *
      * @return the maxSizeBytes value.
      */
     public Long getMaxSizeBytes() {
@@ -133,7 +130,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Set the maxSizeBytes property: Maximum size in bytes.
-     * 
+     *
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the SqlPool object itself.
      */
@@ -144,7 +141,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Get the collation property: Collation mode.
-     * 
+     *
      * @return the collation value.
      */
     public String getCollation() {
@@ -153,7 +150,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Set the collation property: Collation mode.
-     * 
+     *
      * @param collation the collation value to set.
      * @return the SqlPool object itself.
      */
@@ -164,7 +161,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Get the sourceDatabaseId property: Source database to create from.
-     * 
+     *
      * @return the sourceDatabaseId value.
      */
     public String getSourceDatabaseId() {
@@ -173,7 +170,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Set the sourceDatabaseId property: Source database to create from.
-     * 
+     *
      * @param sourceDatabaseId the sourceDatabaseId value to set.
      * @return the SqlPool object itself.
      */
@@ -184,7 +181,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Get the recoverableDatabaseId property: Backup database to restore from.
-     * 
+     *
      * @return the recoverableDatabaseId value.
      */
     public String getRecoverableDatabaseId() {
@@ -193,7 +190,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Set the recoverableDatabaseId property: Backup database to restore from.
-     * 
+     *
      * @param recoverableDatabaseId the recoverableDatabaseId value to set.
      * @return the SqlPool object itself.
      */
@@ -204,7 +201,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Get the provisioningState property: Resource state.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String getProvisioningState() {
@@ -213,7 +210,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Set the provisioningState property: Resource state.
-     * 
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the SqlPool object itself.
      */
@@ -224,7 +221,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Get the status property: Resource status.
-     * 
+     *
      * @return the status value.
      */
     public String getStatus() {
@@ -233,7 +230,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Set the status property: Resource status.
-     * 
+     *
      * @param status the status value to set.
      * @return the SqlPool object itself.
      */
@@ -244,7 +241,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Get the restorePointInTime property: Snapshot time to restore.
-     * 
+     *
      * @return the restorePointInTime value.
      */
     public String getRestorePointInTime() {
@@ -253,7 +250,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Set the restorePointInTime property: Snapshot time to restore.
-     * 
+     *
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the SqlPool object itself.
      */
@@ -264,19 +261,19 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Get the createMode property: Specifies the mode of sql pool creation.
-     * 
-     * Default: regular sql pool creation.
-     * 
-     * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     *
+     * <p>Default: regular sql pool creation.
+     *
+     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
      * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
      * specified.
-     * 
-     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     *
+     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
      * recoverableDatabaseId to restore.
-     * 
-     * Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     *
+     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
      * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
-     * 
+     *
      * @return the createMode value.
      */
     public CreateMode getCreateMode() {
@@ -285,19 +282,19 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Set the createMode property: Specifies the mode of sql pool creation.
-     * 
-     * Default: regular sql pool creation.
-     * 
-     * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     *
+     * <p>Default: regular sql pool creation.
+     *
+     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
      * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
      * specified.
-     * 
-     * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     *
+     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
      * recoverableDatabaseId to restore.
-     * 
-     * Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     *
+     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
      * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
-     * 
+     *
      * @param createMode the createMode value to set.
      * @return the SqlPool object itself.
      */
@@ -308,7 +305,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Get the creationDate property: Date the SQL pool was created.
-     * 
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime getCreationDate() {
@@ -317,7 +314,7 @@ public class SqlPool extends TrackedResource {
 
     /**
      * Set the creationDate property: Date the SQL pool was created.
-     * 
+     *
      * @param creationDate the creationDate value to set.
      * @return the SqlPool object itself.
      */
@@ -326,18 +323,14 @@ public class SqlPool extends TrackedResource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlPool setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SqlPool setLocation(String location) {
         super.setLocation(location);

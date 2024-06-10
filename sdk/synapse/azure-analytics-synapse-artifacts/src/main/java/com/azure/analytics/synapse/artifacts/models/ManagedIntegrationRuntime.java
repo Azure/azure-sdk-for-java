@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Managed integration runtime, including managed elastic and managed dedicated integration runtimes.
- */
+/** Managed integration runtime, including managed elastic and managed dedicated integration runtimes. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Managed")
 @JsonFlatten
@@ -42,15 +40,12 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
     @JsonProperty(value = "typeProperties.ssisProperties")
     private IntegrationRuntimeSsisProperties ssisProperties;
 
-    /**
-     * Creates an instance of ManagedIntegrationRuntime class.
-     */
-    public ManagedIntegrationRuntime() {
-    }
+    /** Creates an instance of ManagedIntegrationRuntime class. */
+    public ManagedIntegrationRuntime() {}
 
     /**
      * Get the state property: Integration runtime state, only valid for managed dedicated integration runtime.
-     * 
+     *
      * @return the state value.
      */
     public IntegrationRuntimeState getState() {
@@ -59,7 +54,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Get the managedVirtualNetwork property: Managed Virtual Network reference.
-     * 
+     *
      * @return the managedVirtualNetwork value.
      */
     public ManagedVirtualNetworkReference getManagedVirtualNetwork() {
@@ -68,7 +63,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Set the managedVirtualNetwork property: Managed Virtual Network reference.
-     * 
+     *
      * @param managedVirtualNetwork the managedVirtualNetwork value to set.
      * @return the ManagedIntegrationRuntime object itself.
      */
@@ -79,7 +74,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Get the computeProperties property: The compute resource for managed integration runtime.
-     * 
+     *
      * @return the computeProperties value.
      */
     public IntegrationRuntimeComputeProperties getComputeProperties() {
@@ -88,7 +83,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Set the computeProperties property: The compute resource for managed integration runtime.
-     * 
+     *
      * @param computeProperties the computeProperties value to set.
      * @return the ManagedIntegrationRuntime object itself.
      */
@@ -99,7 +94,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Get the ssisProperties property: SSIS properties for managed integration runtime.
-     * 
+     *
      * @return the ssisProperties value.
      */
     public IntegrationRuntimeSsisProperties getSsisProperties() {
@@ -108,7 +103,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Set the ssisProperties property: SSIS properties for managed integration runtime.
-     * 
+     *
      * @param ssisProperties the ssisProperties value to set.
      * @return the ManagedIntegrationRuntime object itself.
      */
@@ -117,9 +112,7 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ManagedIntegrationRuntime setDescription(String description) {
         super.setDescription(description);

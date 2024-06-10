@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Data flow reference type.
- */
+/** Data flow reference type. */
 @Fluent
 public final class DataFlowReference {
     /*
@@ -44,18 +42,14 @@ public final class DataFlowReference {
     /*
      * Data flow reference type.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of DataFlowReference class.
-     */
-    public DataFlowReference() {
-    }
+    /** Creates an instance of DataFlowReference class. */
+    public DataFlowReference() {}
 
     /**
      * Get the type property: Data flow reference type.
-     * 
+     *
      * @return the type value.
      */
     public DataFlowReferenceType getType() {
@@ -64,7 +58,7 @@ public final class DataFlowReference {
 
     /**
      * Set the type property: Data flow reference type.
-     * 
+     *
      * @param type the type value to set.
      * @return the DataFlowReference object itself.
      */
@@ -75,7 +69,7 @@ public final class DataFlowReference {
 
     /**
      * Get the referenceName property: Reference data flow name.
-     * 
+     *
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -84,7 +78,7 @@ public final class DataFlowReference {
 
     /**
      * Set the referenceName property: Reference data flow name.
-     * 
+     *
      * @param referenceName the referenceName value to set.
      * @return the DataFlowReference object itself.
      */
@@ -95,7 +89,7 @@ public final class DataFlowReference {
 
     /**
      * Get the datasetParameters property: Reference data flow parameters from dataset.
-     * 
+     *
      * @return the datasetParameters value.
      */
     public Object getDatasetParameters() {
@@ -104,7 +98,7 @@ public final class DataFlowReference {
 
     /**
      * Set the datasetParameters property: Reference data flow parameters from dataset.
-     * 
+     *
      * @param datasetParameters the datasetParameters value to set.
      * @return the DataFlowReference object itself.
      */
@@ -115,7 +109,7 @@ public final class DataFlowReference {
 
     /**
      * Get the parameters property: Data flow parameters.
-     * 
+     *
      * @return the parameters value.
      */
     public Map<String, Object> getParameters() {
@@ -124,7 +118,7 @@ public final class DataFlowReference {
 
     /**
      * Set the parameters property: Data flow parameters.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the DataFlowReference object itself.
      */
@@ -135,7 +129,7 @@ public final class DataFlowReference {
 
     /**
      * Get the additionalProperties property: Data flow reference type.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -145,7 +139,7 @@ public final class DataFlowReference {
 
     /**
      * Set the additionalProperties property: Data flow reference type.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the DataFlowReference object itself.
      */

@@ -10,8 +10,8 @@ import java.util.List;
 
 /**
  * SQL pool collection
- * 
- * List of SQL pools.
+ *
+ * <p>List of SQL pools.
  */
 @Fluent
 public final class SqlPoolInfoListResult {
@@ -27,15 +27,12 @@ public final class SqlPoolInfoListResult {
     @JsonProperty(value = "value")
     private List<SqlPool> value;
 
-    /**
-     * Creates an instance of SqlPoolInfoListResult class.
-     */
-    public SqlPoolInfoListResult() {
-    }
+    /** Creates an instance of SqlPoolInfoListResult class. */
+    public SqlPoolInfoListResult() {}
 
     /**
      * Get the nextLink property: Link to the next page of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -44,7 +41,7 @@ public final class SqlPoolInfoListResult {
 
     /**
      * Set the nextLink property: Link to the next page of results.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the SqlPoolInfoListResult object itself.
      */
@@ -55,7 +52,7 @@ public final class SqlPoolInfoListResult {
 
     /**
      * Get the value property: List of SQL pools.
-     * 
+     *
      * @return the value value.
      */
     public List<SqlPool> getValue() {
@@ -64,7 +61,7 @@ public final class SqlPoolInfoListResult {
 
     /**
      * Set the value property: List of SQL pools.
-     * 
+     *
      * @param value the value value to set.
      * @return the SqlPoolInfoListResult object itself.
      */

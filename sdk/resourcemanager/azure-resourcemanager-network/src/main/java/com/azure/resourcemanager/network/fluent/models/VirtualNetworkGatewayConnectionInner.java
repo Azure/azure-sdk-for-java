@@ -662,8 +662,9 @@ public final class VirtualNetworkGatewayConnectionInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model VirtualNetworkGatewayConnectionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model VirtualNetworkGatewayConnectionInner"));
         } else {
             innerProperties().validate();
         }

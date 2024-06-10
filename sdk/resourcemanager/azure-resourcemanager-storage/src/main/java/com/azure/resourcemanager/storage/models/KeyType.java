@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -13,10 +14,14 @@ import java.util.Collection;
  * encryption key will be used. 'Service' key type implies that a default service key is used.
  */
 public final class KeyType extends ExpandableStringEnum<KeyType> {
-    /** Static value Service for KeyType. */
+    /**
+     * Static value Service for KeyType.
+     */
     public static final KeyType SERVICE = fromString("Service");
 
-    /** Static value Account for KeyType. */
+    /**
+     * Static value Account for KeyType.
+     */
     public static final KeyType ACCOUNT = fromString("Account");
 
     /**

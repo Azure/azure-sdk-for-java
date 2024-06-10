@@ -7,23 +7,34 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.fluent.models.LocalUserInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** List storage account local users. */
+/**
+ * List of local users requested, and if paging is required, a URL to the next page of local users.
+ */
 @Fluent
 public final class LocalUsers {
     /*
-     * The local users associated with the storage account.
+     * The list of local users associated with the storage account.
      */
     @JsonProperty(value = "value")
     private List<LocalUserInner> value;
 
-    /** Creates an instance of LocalUsers class. */
+    /*
+     * Request URL that can be used to query next page of local users. Returned when total number of requested local users exceeds the maximum page size.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
+    /**
+     * Creates an instance of LocalUsers class.
+     */
     public LocalUsers() {
     }
 
     /**
-     * Get the value property: The local users associated with the storage account.
+     * Get the value property: The list of local users associated with the storage account.
      *
      * @return the value value.
      */
@@ -32,7 +43,7 @@ public final class LocalUsers {
     }
 
     /**
-     * Set the value property: The local users associated with the storage account.
+     * Set the value property: The list of local users associated with the storage account.
      *
      * @param value the value value to set.
      * @return the LocalUsers object itself.
@@ -40,6 +51,16 @@ public final class LocalUsers {
     public LocalUsers withValue(List<LocalUserInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Get the nextLink property: Request URL that can be used to query next page of local users. Returned when total
+     * number of requested local users exceeds the maximum page size.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**

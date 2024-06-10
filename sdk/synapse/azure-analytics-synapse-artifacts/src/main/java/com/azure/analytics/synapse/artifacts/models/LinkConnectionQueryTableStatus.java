@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The LinkConnectionQueryTableStatus model.
- */
+/** The LinkConnectionQueryTableStatus model. */
 @Fluent
 public final class LinkConnectionQueryTableStatus {
     /*
@@ -25,15 +23,12 @@ public final class LinkConnectionQueryTableStatus {
     @JsonProperty(value = "continuationToken")
     private Object continuationToken;
 
-    /**
-     * Creates an instance of LinkConnectionQueryTableStatus class.
-     */
-    public LinkConnectionQueryTableStatus() {
-    }
+    /** Creates an instance of LinkConnectionQueryTableStatus class. */
+    public LinkConnectionQueryTableStatus() {}
 
     /**
      * Get the value property: Link tables' status.
-     * 
+     *
      * @return the value value.
      */
     public List<LinkTableStatus> getValue() {
@@ -42,7 +37,7 @@ public final class LinkConnectionQueryTableStatus {
 
     /**
      * Set the value property: Link tables' status.
-     * 
+     *
      * @param value the value value to set.
      * @return the LinkConnectionQueryTableStatus object itself.
      */
@@ -53,7 +48,7 @@ public final class LinkConnectionQueryTableStatus {
 
     /**
      * Get the continuationToken property: Continuation token to query table status.
-     * 
+     *
      * @return the continuationToken value.
      */
     public Object getContinuationToken() {
@@ -62,7 +57,7 @@ public final class LinkConnectionQueryTableStatus {
 
     /**
      * Set the continuationToken property: Continuation token to query table status.
-     * 
+     *
      * @param continuationToken the continuationToken value to set.
      * @return the LinkConnectionQueryTableStatus object itself.
      */

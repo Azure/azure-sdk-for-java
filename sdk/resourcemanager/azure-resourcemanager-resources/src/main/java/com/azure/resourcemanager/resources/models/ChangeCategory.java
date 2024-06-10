@@ -7,15 +7,23 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The entity that made the change. */
+/**
+ * The entity that made the change.
+ */
 public enum ChangeCategory {
-    /** Enum value User. */
+    /**
+     * Enum value User.
+     */
     USER("User"),
 
-    /** Enum value System. */
+    /**
+     * Enum value System.
+     */
     SYSTEM("System");
 
-    /** The actual serialized value for a ChangeCategory instance. */
+    /**
+     * The actual serialized value for a ChangeCategory instance.
+     */
     private final String value;
 
     ChangeCategory(String value) {
@@ -24,7 +32,7 @@ public enum ChangeCategory {
 
     /**
      * Parses a serialized value to a ChangeCategory instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ChangeCategory object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum ChangeCategory {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

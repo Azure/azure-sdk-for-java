@@ -13,16 +13,15 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-/**
- * Connector write settings.
- */
+/** Connector write settings. */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = StoreWriteSettings.class)
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        defaultImpl = StoreWriteSettings.class)
 @JsonTypeName("StoreWriteSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SftpWriteSettings", value = SftpWriteSettings.class),
@@ -30,7 +29,9 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureBlobFSWriteSettings", value = AzureBlobFSWriteSettings.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreWriteSettings", value = AzureDataLakeStoreWriteSettings.class),
     @JsonSubTypes.Type(name = "FileServerWriteSettings", value = FileServerWriteSettings.class),
-    @JsonSubTypes.Type(name = "AzureFileStorageWriteSettings", value = AzureFileStorageWriteSettings.class) })
+    @JsonSubTypes.Type(name = "AzureFileStorageWriteSettings", value = AzureFileStorageWriteSettings.class),
+    @JsonSubTypes.Type(name = "LakeHouseWriteSettings", value = LakeHouseWriteSettings.class)
+})
 @Fluent
 public class StoreWriteSettings {
     /*
@@ -47,21 +48,24 @@ public class StoreWriteSettings {
     private Object copyBehavior;
 
     /*
+     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType
+     * array of objects).
+     */
+    @JsonProperty(value = "metadata")
+    private List<MetadataItem> metadata;
+
+    /*
      * Connector write settings.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of StoreWriteSettings class.
-     */
-    public StoreWriteSettings() {
-    }
+    /** Creates an instance of StoreWriteSettings class. */
+    public StoreWriteSettings() {}
 
     /**
      * Get the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.
      * Type: integer (or Expression with resultType integer).
-     * 
+     *
      * @return the maxConcurrentConnections value.
      */
     public Object getMaxConcurrentConnections() {
@@ -71,7 +75,7 @@ public class StoreWriteSettings {
     /**
      * Set the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.
      * Type: integer (or Expression with resultType integer).
-     * 
+     *
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the StoreWriteSettings object itself.
      */
@@ -82,7 +86,7 @@ public class StoreWriteSettings {
 
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink.
-     * 
+     *
      * @return the copyBehavior value.
      */
     public Object getCopyBehavior() {
@@ -91,7 +95,7 @@ public class StoreWriteSettings {
 
     /**
      * Set the copyBehavior property: The type of copy behavior for copy sink.
-     * 
+     *
      * @param copyBehavior the copyBehavior value to set.
      * @return the StoreWriteSettings object itself.
      */
@@ -101,8 +105,30 @@ public class StoreWriteSettings {
     }
 
     /**
+     * Get the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
+     * Expression with resultType array of objects).
+     *
+     * @return the metadata value.
+     */
+    public List<MetadataItem> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
+     * Expression with resultType array of objects).
+     *
+     * @param metadata the metadata value to set.
+     * @return the StoreWriteSettings object itself.
+     */
+    public StoreWriteSettings setMetadata(List<MetadataItem> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: Connector write settings.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -112,7 +138,7 @@ public class StoreWriteSettings {
 
     /**
      * Set the additionalProperties property: Connector write settings.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the StoreWriteSettings object itself.
      */

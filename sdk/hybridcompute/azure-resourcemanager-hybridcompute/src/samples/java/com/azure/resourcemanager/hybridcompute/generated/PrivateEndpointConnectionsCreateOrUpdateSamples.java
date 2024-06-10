@@ -12,7 +12,7 @@ import com.azure.resourcemanager.hybridcompute.models.PrivateLinkServiceConnecti
  */
 public final class PrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-10-03-preview/examples/privateEndpoint/PrivateEndpointConnection_Update.json
+     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/privateEndpoint/PrivateEndpointConnection_Update.json
      */
     /**
      * Sample code: Approve or reject a private endpoint connection with a given name.

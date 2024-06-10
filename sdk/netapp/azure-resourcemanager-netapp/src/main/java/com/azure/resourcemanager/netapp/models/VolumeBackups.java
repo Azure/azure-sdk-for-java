@@ -19,6 +19,12 @@ public final class VolumeBackups {
     private String volumeName;
 
     /*
+     * ResourceId used to identify the Volume
+     */
+    @JsonProperty(value = "volumeResourceId")
+    private String volumeResourceId;
+
+    /*
      * Total count of backups for volume
      */
     @JsonProperty(value = "backupsCount")
@@ -53,6 +59,26 @@ public final class VolumeBackups {
      */
     public VolumeBackups withVolumeName(String volumeName) {
         this.volumeName = volumeName;
+        return this;
+    }
+
+    /**
+     * Get the volumeResourceId property: ResourceId used to identify the Volume.
+     * 
+     * @return the volumeResourceId value.
+     */
+    public String volumeResourceId() {
+        return this.volumeResourceId;
+    }
+
+    /**
+     * Set the volumeResourceId property: ResourceId used to identify the Volume.
+     * 
+     * @param volumeResourceId the volumeResourceId value to set.
+     * @return the VolumeBackups object itself.
+     */
+    public VolumeBackups withVolumeResourceId(String volumeResourceId) {
+        this.volumeResourceId = volumeResourceId;
         return this;
     }
 

@@ -7,15 +7,23 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The protocol permitted for a request made with the account SAS. */
+/**
+ * The protocol permitted for a request made with the account SAS.
+ */
 public enum HttpProtocol {
-    /** Enum value https,http. */
+    /**
+     * Enum value https,http.
+     */
     HTTPS_HTTP("https,http"),
 
-    /** Enum value https. */
+    /**
+     * Enum value https.
+     */
     HTTPS("https");
 
-    /** The actual serialized value for a HttpProtocol instance. */
+    /**
+     * The actual serialized value for a HttpProtocol instance.
+     */
     private final String value;
 
     HttpProtocol(String value) {
@@ -24,7 +32,7 @@ public enum HttpProtocol {
 
     /**
      * Parses a serialized value to a HttpProtocol instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed HttpProtocol object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum HttpProtocol {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

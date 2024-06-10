@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A copy activity source for SAP HANA source.
- */
+/** A copy activity source for SAP HANA source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapHanaSource")
 @Fluent
@@ -41,15 +39,12 @@ public final class SapHanaSource extends TabularSource {
     @JsonProperty(value = "partitionSettings")
     private SapHanaPartitionSettings partitionSettings;
 
-    /**
-     * Creates an instance of SapHanaSource class.
-     */
-    public SapHanaSource() {
-    }
+    /** Creates an instance of SapHanaSource class. */
+    public SapHanaSource() {}
 
     /**
      * Get the query property: SAP HANA Sql query. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the query value.
      */
     public Object getQuery() {
@@ -58,7 +53,7 @@ public final class SapHanaSource extends TabularSource {
 
     /**
      * Set the query property: SAP HANA Sql query. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param query the query value to set.
      * @return the SapHanaSource object itself.
      */
@@ -70,7 +65,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * Get the packetSize property: The packet size of data read from SAP HANA. Type: integer(or Expression with
      * resultType integer).
-     * 
+     *
      * @return the packetSize value.
      */
     public Object getPacketSize() {
@@ -80,7 +75,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * Set the packetSize property: The packet size of data read from SAP HANA. Type: integer(or Expression with
      * resultType integer).
-     * 
+     *
      * @param packetSize the packetSize value to set.
      * @return the SapHanaSource object itself.
      */
@@ -92,7 +87,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * Get the partitionOption property: The partition mechanism that will be used for SAP HANA read in parallel.
      * Possible values include: "None", "PhysicalPartitionsOfTable", "SapHanaDynamicRange".
-     * 
+     *
      * @return the partitionOption value.
      */
     public Object getPartitionOption() {
@@ -102,7 +97,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * Set the partitionOption property: The partition mechanism that will be used for SAP HANA read in parallel.
      * Possible values include: "None", "PhysicalPartitionsOfTable", "SapHanaDynamicRange".
-     * 
+     *
      * @param partitionOption the partitionOption value to set.
      * @return the SapHanaSource object itself.
      */
@@ -113,7 +108,7 @@ public final class SapHanaSource extends TabularSource {
 
     /**
      * Get the partitionSettings property: The settings that will be leveraged for SAP HANA source partitioning.
-     * 
+     *
      * @return the partitionSettings value.
      */
     public SapHanaPartitionSettings getPartitionSettings() {
@@ -122,7 +117,7 @@ public final class SapHanaSource extends TabularSource {
 
     /**
      * Set the partitionSettings property: The settings that will be leveraged for SAP HANA source partitioning.
-     * 
+     *
      * @param partitionSettings the partitionSettings value to set.
      * @return the SapHanaSource object itself.
      */
@@ -131,45 +126,35 @@ public final class SapHanaSource extends TabularSource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapHanaSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapHanaSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapHanaSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapHanaSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapHanaSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

@@ -16,17 +16,14 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the asynchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class DataFlowAsyncClient {
-    @Generated
-    private final DataFlowsImpl serviceClient;
+    @Generated private final DataFlowsImpl serviceClient;
 
     /**
      * Initializes an instance of DataFlowAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -36,11 +33,11 @@ public final class DataFlowAsyncClient {
 
     /**
      * Creates or updates a data flow.
-     * 
+     *
      * @param dataFlowName The data flow name.
      * @param dataFlow Data flow resource definition.
      * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -48,18 +45,18 @@ public final class DataFlowAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataFlowResource>> createOrUpdateDataFlowWithResponse(String dataFlowName,
-        DataFlowResource dataFlow, String ifMatch) {
+    public Mono<Response<DataFlowResource>> createOrUpdateDataFlowWithResponse(
+            String dataFlowName, DataFlowResource dataFlow, String ifMatch) {
         return this.serviceClient.createOrUpdateDataFlowWithResponseAsync(dataFlowName, dataFlow, ifMatch);
     }
 
     /**
      * Creates or updates a data flow.
-     * 
+     *
      * @param dataFlowName The data flow name.
      * @param dataFlow Data flow resource definition.
      * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -67,14 +64,14 @@ public final class DataFlowAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataFlowResource> createOrUpdateDataFlow(String dataFlowName, DataFlowResource dataFlow,
-        String ifMatch) {
+    public Mono<DataFlowResource> createOrUpdateDataFlow(
+            String dataFlowName, DataFlowResource dataFlow, String ifMatch) {
         return this.serviceClient.createOrUpdateDataFlowAsync(dataFlowName, dataFlow, ifMatch);
     }
 
     /**
      * Creates or updates a data flow.
-     * 
+     *
      * @param dataFlowName The data flow name.
      * @param dataFlow Data flow resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,10 +87,10 @@ public final class DataFlowAsyncClient {
 
     /**
      * Gets a data flow.
-     * 
+     *
      * @param dataFlowName The data flow name.
      * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
-     * existing entity tag, or if * was provided, then no content will be returned.
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -107,10 +104,10 @@ public final class DataFlowAsyncClient {
 
     /**
      * Gets a data flow.
-     * 
+     *
      * @param dataFlowName The data flow name.
      * @param ifNoneMatch ETag of the data flow entity. Should only be specified for get. If the ETag matches the
-     * existing entity tag, or if * was provided, then no content will be returned.
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -124,7 +121,7 @@ public final class DataFlowAsyncClient {
 
     /**
      * Gets a data flow.
-     * 
+     *
      * @param dataFlowName The data flow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -139,7 +136,7 @@ public final class DataFlowAsyncClient {
 
     /**
      * Deletes a data flow.
-     * 
+     *
      * @param dataFlowName The data flow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -154,7 +151,7 @@ public final class DataFlowAsyncClient {
 
     /**
      * Deletes a data flow.
-     * 
+     *
      * @param dataFlowName The data flow name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -169,7 +166,7 @@ public final class DataFlowAsyncClient {
 
     /**
      * Renames a dataflow.
-     * 
+     *
      * @param dataFlowName The data flow name.
      * @param request proposed new name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,7 +182,7 @@ public final class DataFlowAsyncClient {
 
     /**
      * Renames a dataflow.
-     * 
+     *
      * @param dataFlowName The data flow name.
      * @param request proposed new name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,7 +198,7 @@ public final class DataFlowAsyncClient {
 
     /**
      * Lists data flows.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of data flow resources as paginated response with {@link PagedFlux}.

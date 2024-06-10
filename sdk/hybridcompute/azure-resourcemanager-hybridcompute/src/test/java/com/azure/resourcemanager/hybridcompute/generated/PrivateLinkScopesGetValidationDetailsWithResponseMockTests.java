@@ -22,7 +22,7 @@ public final class PrivateLinkScopesGetValidationDetailsWithResponseMockTests {
     @Test
     public void testGetValidationDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"inkfkbgbz\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"o\",\"privateIpAddress\":\"jmygvk\",\"linkIdentifier\":\"kjjeokbz\",\"groupId\":\"ezrxcczurtleipqx\",\"memberName\":\"wvz\"},{\"id\":\"zvd\",\"privateIpAddress\":\"zdix\",\"linkIdentifier\":\"q\",\"groupId\":\"odawopqhewjptmcg\",\"memberName\":\"ostzelndlatu\"},{\"id\":\"zlbiojlvfhrbbpn\",\"privateIpAddress\":\"vcwwyyurmochppr\",\"linkIdentifier\":\"snmokayzej\",\"groupId\":\"lbkpb\",\"memberName\":\"cpilj\"}]}";
+            = "{\"id\":\"jirwgdnqzbrfk\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"tk\",\"privateIpAddress\":\"cit\",\"linkIdentifier\":\"gsxcdgljplkeua\",\"groupId\":\"tomflrytswfpf\",\"memberName\":\"gycxnmskwhqjjys\"},{\"id\":\"rlpshhkv\",\"privateIpAddress\":\"dwqslsrhmpqvw\",\"linkIdentifier\":\"kondcb\",\"groupId\":\"imuvqejosovyrrl\",\"memberName\":\"esi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class PrivateLinkScopesGetValidationDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkScopeValidationDetails response = manager.privateLinkScopes()
-            .getValidationDetailsWithResponse("v", "qqxeyskon", com.azure.core.util.Context.NONE)
+            .getValidationDetailsWithResponse("gjekglklby", "lidwcwvmzegjon", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.publicNetworkAccess());

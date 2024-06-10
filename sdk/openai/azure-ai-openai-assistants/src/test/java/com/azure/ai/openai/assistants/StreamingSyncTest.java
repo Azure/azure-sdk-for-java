@@ -12,6 +12,7 @@ import com.azure.ai.openai.assistants.models.StreamRequiredAction;
 import com.azure.ai.openai.assistants.models.StreamRunCreation;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.IterableStream;
@@ -92,7 +93,7 @@ public class StreamingSyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
 
-        client.createMessage(threadId, MessageRole.USER, "What is the value of x in the equation x^2 + 2x + 1 = 0?");
+        client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, "What is the value of x in the equation x^2 + 2x + 1 = 0?"));
 
         IterableStream<StreamUpdate> run = client.createRunStream(threadId, mathTutorAssistantId);
         for (StreamUpdate streamUpdate : run) {
@@ -108,7 +109,7 @@ public class StreamingSyncTest extends AssistantsClientTestBase {
         createRunRunner(createThreadOption -> {
             String threadId = createThread(client);
 
-            client.createMessage(threadId, MessageRole.USER, "Please make a graph for my boilerplate equation");
+            client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, "Please make a graph for my boilerplate equation"));
 
             IterableStream<StreamUpdate> streamEvents = client.createRunStream(threadId, createThreadOption);
 

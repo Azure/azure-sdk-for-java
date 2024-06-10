@@ -509,6 +509,38 @@ class FileApiTests extends FileShareTestBase {
         assertArrayEquals(DATA.getDefaultBytes(), stream.toByteArray());
     }
 
+    @LiveOnly
+    @Test
+    public void uploadAndDownloadAndUploadAgain() {
+        byte[] randomData = getRandomByteArray(20 * Constants.MB);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+
+        String pathName = generatePathName();
+        ShareFileClient fileClient = shareClient.getFileClient(pathName);
+        fileClient.create(20 * Constants.MB);
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong((long) Constants.MB)
+            .setMaxSingleUploadSizeLong(2L * Constants.MB)
+            .setMaxConcurrency(5);
+        ShareFileUploadOptions parallelUploadOptions = new ShareFileUploadOptions(input)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        fileClient.uploadWithResponse(parallelUploadOptions, null, null);
+
+        StorageFileInputStream inputStreamResult = fileClient.openInputStream();
+
+        // Upload the downloaded content to a different location
+        String pathName2 = generatePathName();
+
+        parallelUploadOptions = new ShareFileUploadOptions(inputStreamResult)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        ShareFileClient fileClient2 = shareClient.getFileClient(pathName2);
+        fileClient2.create(20 * Constants.MB);
+        fileClient2.uploadWithResponse(parallelUploadOptions, null, null);
+    }
+
     @Test
     public void downloadAllNull() {
         primaryFileClient.create(DATA.getDefaultDataSizeLong());

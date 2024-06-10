@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Microsoft Azure Cosmos Database (CosmosDB) linked service.
- */
+/** Microsoft Azure Cosmos Database (CosmosDB) linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CosmosDb")
 @JsonFlatten
@@ -57,16 +55,13 @@ public class CosmosDbLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.credential")
     private CredentialReference credential;
 
-    /**
-     * Creates an instance of CosmosDbLinkedService class.
-     */
-    public CosmosDbLinkedService() {
-    }
+    /** Creates an instance of CosmosDbLinkedService class. */
+    public CosmosDbLinkedService() {}
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     * 
+     *
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -76,7 +71,7 @@ public class CosmosDbLinkedService extends LinkedService {
     /**
      * Set the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     * 
+     *
      * @param connectionString the connectionString value to set.
      * @return the CosmosDbLinkedService object itself.
      */
@@ -88,7 +83,7 @@ public class CosmosDbLinkedService extends LinkedService {
     /**
      * Get the accountEndpoint property: The endpoint of the Azure CosmosDB account. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the accountEndpoint value.
      */
     public Object getAccountEndpoint() {
@@ -98,7 +93,7 @@ public class CosmosDbLinkedService extends LinkedService {
     /**
      * Set the accountEndpoint property: The endpoint of the Azure CosmosDB account. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param accountEndpoint the accountEndpoint value to set.
      * @return the CosmosDbLinkedService object itself.
      */
@@ -109,7 +104,7 @@ public class CosmosDbLinkedService extends LinkedService {
 
     /**
      * Get the database property: The name of the database. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the database value.
      */
     public Object getDatabase() {
@@ -118,7 +113,7 @@ public class CosmosDbLinkedService extends LinkedService {
 
     /**
      * Set the database property: The name of the database. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param database the database value to set.
      * @return the CosmosDbLinkedService object itself.
      */
@@ -130,7 +125,7 @@ public class CosmosDbLinkedService extends LinkedService {
     /**
      * Get the accountKey property: The account key of the Azure CosmosDB account. Type: SecureString or
      * AzureKeyVaultSecretReference.
-     * 
+     *
      * @return the accountKey value.
      */
     public SecretBase getAccountKey() {
@@ -140,7 +135,7 @@ public class CosmosDbLinkedService extends LinkedService {
     /**
      * Set the accountKey property: The account key of the Azure CosmosDB account. Type: SecureString or
      * AzureKeyVaultSecretReference.
-     * 
+     *
      * @param accountKey the accountKey value to set.
      * @return the CosmosDbLinkedService object itself.
      */
@@ -150,9 +145,9 @@ public class CosmosDbLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -160,9 +155,9 @@ public class CosmosDbLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CosmosDbLinkedService object itself.
      */
@@ -173,7 +168,7 @@ public class CosmosDbLinkedService extends LinkedService {
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     * 
+     *
      * @return the credential value.
      */
     public CredentialReference getCredential() {
@@ -182,7 +177,7 @@ public class CosmosDbLinkedService extends LinkedService {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     * 
+     *
      * @param credential the credential value to set.
      * @return the CosmosDbLinkedService object itself.
      */
@@ -191,36 +186,28 @@ public class CosmosDbLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

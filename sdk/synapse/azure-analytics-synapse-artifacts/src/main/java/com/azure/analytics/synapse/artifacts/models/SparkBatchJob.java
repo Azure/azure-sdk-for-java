@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The SparkBatchJob model.
- */
+/** The SparkBatchJob model. */
 @Fluent
 public final class SparkBatchJob {
     /*
@@ -122,15 +120,12 @@ public final class SparkBatchJob {
     @JsonProperty(value = "log")
     private List<String> logLines;
 
-    /**
-     * Creates an instance of SparkBatchJob class.
-     */
-    public SparkBatchJob() {
-    }
+    /** Creates an instance of SparkBatchJob class. */
+    public SparkBatchJob() {}
 
     /**
      * Get the livyInfo property: The livyInfo property.
-     * 
+     *
      * @return the livyInfo value.
      */
     public SparkBatchJobState getLivyInfo() {
@@ -139,7 +134,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the livyInfo property: The livyInfo property.
-     * 
+     *
      * @param livyInfo the livyInfo value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -150,7 +145,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the name property: The batch name.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -159,7 +154,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the name property: The batch name.
-     * 
+     *
      * @param name the name value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -170,7 +165,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the workspaceName property: The workspace name.
-     * 
+     *
      * @return the workspaceName value.
      */
     public String getWorkspaceName() {
@@ -179,7 +174,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the workspaceName property: The workspace name.
-     * 
+     *
      * @param workspaceName the workspaceName value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -190,7 +185,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the sparkPoolName property: The Spark pool name.
-     * 
+     *
      * @return the sparkPoolName value.
      */
     public String getSparkPoolName() {
@@ -199,7 +194,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the sparkPoolName property: The Spark pool name.
-     * 
+     *
      * @param sparkPoolName the sparkPoolName value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -210,7 +205,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the submitterName property: The submitter name.
-     * 
+     *
      * @return the submitterName value.
      */
     public String getSubmitterName() {
@@ -219,7 +214,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the submitterName property: The submitter name.
-     * 
+     *
      * @param submitterName the submitterName value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -230,7 +225,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the submitterId property: The submitter identifier.
-     * 
+     *
      * @return the submitterId value.
      */
     public String getSubmitterId() {
@@ -239,7 +234,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the submitterId property: The submitter identifier.
-     * 
+     *
      * @param submitterId the submitterId value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -250,7 +245,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the artifactId property: The artifact identifier.
-     * 
+     *
      * @return the artifactId value.
      */
     public String getArtifactId() {
@@ -259,7 +254,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the artifactId property: The artifact identifier.
-     * 
+     *
      * @param artifactId the artifactId value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -270,7 +265,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the jobType property: The job type.
-     * 
+     *
      * @return the jobType value.
      */
     public SparkJobType getJobType() {
@@ -279,7 +274,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the jobType property: The job type.
-     * 
+     *
      * @param jobType the jobType value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -290,7 +285,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the result property: The Spark batch job result.
-     * 
+     *
      * @return the result value.
      */
     public SparkBatchJobResultType getResult() {
@@ -299,7 +294,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the result property: The Spark batch job result.
-     * 
+     *
      * @param result the result value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -310,7 +305,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the scheduler property: The scheduler information.
-     * 
+     *
      * @return the scheduler value.
      */
     public SparkScheduler getScheduler() {
@@ -319,7 +314,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the scheduler property: The scheduler information.
-     * 
+     *
      * @param scheduler the scheduler value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -330,7 +325,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the plugin property: The plugin information.
-     * 
+     *
      * @return the plugin value.
      */
     public SparkServicePlugin getPlugin() {
@@ -339,7 +334,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the plugin property: The plugin information.
-     * 
+     *
      * @param plugin the plugin value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -350,7 +345,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the errors property: The error information.
-     * 
+     *
      * @return the errors value.
      */
     public List<SparkServiceError> getErrors() {
@@ -359,7 +354,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the errors property: The error information.
-     * 
+     *
      * @param errors the errors value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -370,7 +365,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the tags property: The tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -379,7 +374,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the tags property: The tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -390,7 +385,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the id property: The session Id.
-     * 
+     *
      * @return the id value.
      */
     public int getId() {
@@ -399,7 +394,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the id property: The session Id.
-     * 
+     *
      * @param id the id value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -410,7 +405,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the appId property: The application id of this session.
-     * 
+     *
      * @return the appId value.
      */
     public String getAppId() {
@@ -419,7 +414,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the appId property: The application id of this session.
-     * 
+     *
      * @param appId the appId value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -430,7 +425,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the appInfo property: The detailed application info.
-     * 
+     *
      * @return the appInfo value.
      */
     public Map<String, String> getAppInfo() {
@@ -439,7 +434,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the appInfo property: The detailed application info.
-     * 
+     *
      * @param appInfo the appInfo value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -450,7 +445,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the state property: The batch state.
-     * 
+     *
      * @return the state value.
      */
     public LivyStates getState() {
@@ -459,7 +454,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the state property: The batch state.
-     * 
+     *
      * @param state the state value to set.
      * @return the SparkBatchJob object itself.
      */
@@ -470,7 +465,7 @@ public final class SparkBatchJob {
 
     /**
      * Get the logLines property: The log lines.
-     * 
+     *
      * @return the logLines value.
      */
     public List<String> getLogLines() {
@@ -479,7 +474,7 @@ public final class SparkBatchJob {
 
     /**
      * Set the logLines property: The log lines.
-     * 
+     *
      * @param logLines the logLines value to set.
      * @return the SparkBatchJob object itself.
      */

@@ -131,7 +131,8 @@ public final class VirtualNetworkTapInner extends Resource {
      * @return the destinationNetworkInterfaceIpConfiguration value.
      */
     public NetworkInterfaceIpConfigurationInner destinationNetworkInterfaceIpConfiguration() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().destinationNetworkInterfaceIpConfiguration();
     }
 
@@ -159,7 +160,8 @@ public final class VirtualNetworkTapInner extends Resource {
      * @return the destinationLoadBalancerFrontEndIpConfiguration value.
      */
     public FrontendIpConfigurationInner destinationLoadBalancerFrontEndIpConfiguration() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().destinationLoadBalancerFrontEndIpConfiguration();
     }
 
@@ -167,8 +169,8 @@ public final class VirtualNetworkTapInner extends Resource {
      * Set the destinationLoadBalancerFrontEndIpConfiguration property: The reference to the private IP address on the
      * internal Load Balancer that will receive the tap.
      * 
-     * @param destinationLoadBalancerFrontEndIpConfiguration the destinationLoadBalancerFrontEndIpConfiguration value
-     * to set.
+     * @param destinationLoadBalancerFrontEndIpConfiguration the destinationLoadBalancerFrontEndIpConfiguration value to
+     * set.
      * @return the VirtualNetworkTapInner object itself.
      */
     public VirtualNetworkTapInner withDestinationLoadBalancerFrontEndIpConfiguration(

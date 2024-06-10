@@ -12,8 +12,7 @@ import com.azure.resourcemanager.redisenterprise.models.RegenerateKeyParameters;
  */
 public final class DatabasesRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/
-     * RedisEnterpriseDatabasesRegenerateKey.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-03-01-preview/examples/RedisEnterpriseDatabasesRegenerateKey.json
      */
     /**
      * Sample code: RedisEnterpriseDatabasesRegenerateKey.
@@ -22,7 +21,8 @@ public final class DatabasesRegenerateKeySamples {
      */
     public static void redisEnterpriseDatabasesRegenerateKey(
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.databases().regenerateKey("rg1", "cache1", "default",
-            new RegenerateKeyParameters().withKeyType(AccessKeyType.PRIMARY), com.azure.core.util.Context.NONE);
+        manager.databases()
+            .regenerateKey("rg1", "cache1", "default", new RegenerateKeyParameters().withKeyType(AccessKeyType.PRIMARY),
+                com.azure.core.util.Context.NONE);
     }
 }

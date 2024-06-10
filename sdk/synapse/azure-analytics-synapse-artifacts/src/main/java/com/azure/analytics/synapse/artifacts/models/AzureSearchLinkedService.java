@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Linked service for Windows Azure Search Service.
- */
+/** Linked service for Windows Azure Search Service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureSearch")
 @JsonFlatten
@@ -39,15 +37,12 @@ public class AzureSearchLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /**
-     * Creates an instance of AzureSearchLinkedService class.
-     */
-    public AzureSearchLinkedService() {
-    }
+    /** Creates an instance of AzureSearchLinkedService class. */
+    public AzureSearchLinkedService() {}
 
     /**
      * Get the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the url value.
      */
     public Object getUrl() {
@@ -56,7 +51,7 @@ public class AzureSearchLinkedService extends LinkedService {
 
     /**
      * Set the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param url the url value to set.
      * @return the AzureSearchLinkedService object itself.
      */
@@ -67,7 +62,7 @@ public class AzureSearchLinkedService extends LinkedService {
 
     /**
      * Get the key property: Admin Key for Azure Search service.
-     * 
+     *
      * @return the key value.
      */
     public SecretBase getKey() {
@@ -76,7 +71,7 @@ public class AzureSearchLinkedService extends LinkedService {
 
     /**
      * Set the key property: Admin Key for Azure Search service.
-     * 
+     *
      * @param key the key value to set.
      * @return the AzureSearchLinkedService object itself.
      */
@@ -86,9 +81,9 @@ public class AzureSearchLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -96,9 +91,9 @@ public class AzureSearchLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureSearchLinkedService object itself.
      */
@@ -107,36 +102,28 @@ public class AzureSearchLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureSearchLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureSearchLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureSearchLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureSearchLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -15,7 +15,7 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static io.clientcore.core.implementation.util.CoreUtils.isNullOrEmpty;
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 /**

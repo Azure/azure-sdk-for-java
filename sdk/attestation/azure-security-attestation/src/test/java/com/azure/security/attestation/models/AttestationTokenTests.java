@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -97,7 +98,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertNull(newToken.getKeyId());
 
         Object jsonValue = newToken.getBody(Object.class);
-        assertTrue(jsonValue instanceof LinkedHashMap);
+        assertInstanceOf(LinkedHashMap.class, jsonValue);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> jsonMap = (LinkedHashMap<String, Object>) jsonValue;
         assertNotNull(jsonMap);
@@ -155,7 +156,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
 
         Object jsonValue = newToken.getBody(Object.class);
-        assertTrue(jsonValue instanceof  LinkedHashMap);
+        assertInstanceOf(LinkedHashMap.class, jsonValue);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> jsonMap = assertDoesNotThrow(() -> (LinkedHashMap<String, Object>) jsonValue);
         assertNotNull(jsonMap);

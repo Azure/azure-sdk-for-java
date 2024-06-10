@@ -11,31 +11,29 @@ import com.azure.resourcemanager.resources.models.TemplateLink;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Deployments WhatIfAtSubscriptionScope. */
+/**
+ * Samples for Deployments WhatIfAtSubscriptionScope.
+ */
 public final class DeploymentsWhatIfAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PostDeploymentWhatIfOnSubscription.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PostDeploymentWhatIfOnSubscription.json
      */
     /**
      * Sample code: Predict template changes at subscription scope.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void predictTemplateChangesAtSubscriptionScope(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getDeployments()
-            .whatIfAtSubscriptionScope(
-                "my-deployment",
-                new DeploymentWhatIf()
-                    .withLocation("westus")
-                    .withProperties(
-                        new DeploymentWhatIfProperties()
-                            .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                            .withParameters(mapOf())
-                            .withMode(DeploymentMode.INCREMENTAL)),
+            .whatIfAtSubscriptionScope("my-deployment",
+                new DeploymentWhatIf().withLocation("westus")
+                    .withProperties(new DeploymentWhatIfProperties()
+                        .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                        .withParameters(mapOf())
+                        .withMode(DeploymentMode.INCREMENTAL)),
                 com.azure.core.util.Context.NONE);
     }
 

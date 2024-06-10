@@ -859,8 +859,8 @@ public final class BlobServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getServices().setPropertiesWithResponseAsync(finalProperties, null, null, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return this.azureBlobStorage.getServices()
+            .setPropertiesNoCustomHeadersWithResponseAsync(finalProperties, null, null, context);
     }
 
     /**

@@ -15,8 +15,7 @@ import java.util.List;
 @Fluent
 public final class NetworkConfigurationDiagnosticParameters {
     /*
-     * The ID of the target resource to perform network configuration diagnostic. Valid options are VM,
-     * NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
      */
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
@@ -108,12 +107,14 @@ public final class NetworkConfigurationDiagnosticParameters {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetResourceId in model NetworkConfigurationDiagnosticParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceId in model NetworkConfigurationDiagnosticParameters"));
         }
         if (profiles() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property profiles in model NetworkConfigurationDiagnosticParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property profiles in model NetworkConfigurationDiagnosticParameters"));
         } else {
             profiles().forEach(e -> e.validate());
         }

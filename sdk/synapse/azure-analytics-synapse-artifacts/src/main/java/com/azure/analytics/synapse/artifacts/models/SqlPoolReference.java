@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * SQL pool reference type.
- */
+/** SQL pool reference type. */
 @Fluent
 public final class SqlPoolReference {
     /*
@@ -24,15 +22,12 @@ public final class SqlPoolReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
-    /**
-     * Creates an instance of SqlPoolReference class.
-     */
-    public SqlPoolReference() {
-    }
+    /** Creates an instance of SqlPoolReference class. */
+    public SqlPoolReference() {}
 
     /**
      * Get the type property: SQL pool reference type.
-     * 
+     *
      * @return the type value.
      */
     public SqlPoolReferenceType getType() {
@@ -41,7 +36,7 @@ public final class SqlPoolReference {
 
     /**
      * Set the type property: SQL pool reference type.
-     * 
+     *
      * @param type the type value to set.
      * @return the SqlPoolReference object itself.
      */
@@ -52,7 +47,7 @@ public final class SqlPoolReference {
 
     /**
      * Get the referenceName property: Reference SQL pool name.
-     * 
+     *
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -61,7 +56,7 @@ public final class SqlPoolReference {
 
     /**
      * Set the referenceName property: Reference SQL pool name.
-     * 
+     *
      * @param referenceName the referenceName value to set.
      * @return the SqlPoolReference object itself.
      */

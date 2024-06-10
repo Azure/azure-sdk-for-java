@@ -96,6 +96,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -359,6 +360,66 @@ public class BlobApiTests extends BlobTestBase {
         bc.uploadWithResponse(blobUploadOptions, null, null);
         BlobProperties properties = bc.getProperties();
         assertEquals(AccessTier.COLD, properties.getAccessTier());
+    }
+
+    @LiveOnly
+    @Test
+    public void uploadAndDownloadAndUploadAgain() {
+        byte[] randomData = getRandomByteArray(20 * Constants.MB);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+
+        String blobName = generateBlobName();
+        BlobClient blobClient = cc.getBlobClient(blobName);
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong((long) Constants.MB)
+            .setMaxSingleUploadSizeLong(2L * Constants.MB)
+            .setMaxConcurrency(5);
+        BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(input)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        blobClient.uploadWithResponse(parallelUploadOptions, null, null);
+
+        InputStream inputStream = blobClient.openInputStream();
+
+        // Upload the downloaded content to a different location
+        String blobName2 = generateBlobName();
+
+        parallelUploadOptions = new BlobParallelUploadOptions(inputStream)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        BlobClient blobClient2 = cc.getBlobClient(blobName2);
+        blobClient2.uploadWithResponse(parallelUploadOptions, null, null);
+    }
+
+    @LiveOnly
+    @Test
+    public void uploadAndDownloadAndUploadAgainWithSize() {
+        byte[] randomData = getRandomByteArray(20 * Constants.MB);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+
+        String blobName = generateBlobName();
+        BlobClient blobClient = cc.getBlobClient(blobName);
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong((long) Constants.MB)
+            .setMaxSingleUploadSizeLong(2L * Constants.MB)
+            .setMaxConcurrency(5);
+        BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(input)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        blobClient.uploadWithResponse(parallelUploadOptions, null, null);
+
+        InputStream inputStream = blobClient.openInputStream();
+
+        // Upload the downloaded content to a different location
+        String blobName2 = generateBlobName();
+
+        parallelUploadOptions = new BlobParallelUploadOptions(inputStream, 20 * Constants.MB)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        BlobClient blobClient2 = cc.getBlobClient(blobName2);
+        blobClient2.uploadWithResponse(parallelUploadOptions, null, null);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")

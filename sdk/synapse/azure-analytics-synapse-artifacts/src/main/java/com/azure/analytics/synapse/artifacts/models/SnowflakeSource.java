@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A copy activity snowflake source.
- */
+/** A copy activity snowflake source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SnowflakeSource")
 @Fluent
@@ -28,15 +26,12 @@ public final class SnowflakeSource extends CopySource {
     @JsonProperty(value = "exportSettings", required = true)
     private SnowflakeExportCopyCommand exportSettings;
 
-    /**
-     * Creates an instance of SnowflakeSource class.
-     */
-    public SnowflakeSource() {
-    }
+    /** Creates an instance of SnowflakeSource class. */
+    public SnowflakeSource() {}
 
     /**
      * Get the query property: Snowflake Sql query. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the query value.
      */
     public Object getQuery() {
@@ -45,7 +40,7 @@ public final class SnowflakeSource extends CopySource {
 
     /**
      * Set the query property: Snowflake Sql query. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param query the query value to set.
      * @return the SnowflakeSource object itself.
      */
@@ -56,7 +51,7 @@ public final class SnowflakeSource extends CopySource {
 
     /**
      * Get the exportSettings property: Snowflake export settings.
-     * 
+     *
      * @return the exportSettings value.
      */
     public SnowflakeExportCopyCommand getExportSettings() {
@@ -65,7 +60,7 @@ public final class SnowflakeSource extends CopySource {
 
     /**
      * Set the exportSettings property: Snowflake export settings.
-     * 
+     *
      * @param exportSettings the exportSettings value to set.
      * @return the SnowflakeSource object itself.
      */
@@ -74,27 +69,21 @@ public final class SnowflakeSource extends CopySource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SnowflakeSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SnowflakeSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SnowflakeSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Linked service for AppFigures.
- */
+/** Linked service for AppFigures. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AppFigures")
 @JsonFlatten
@@ -38,15 +36,12 @@ public class AppFiguresLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.clientKey", required = true)
     private SecretBase clientKey;
 
-    /**
-     * Creates an instance of AppFiguresLinkedService class.
-     */
-    public AppFiguresLinkedService() {
-    }
+    /** Creates an instance of AppFiguresLinkedService class. */
+    public AppFiguresLinkedService() {}
 
     /**
      * Get the userName property: The username of the Appfigures source.
-     * 
+     *
      * @return the userName value.
      */
     public Object getUserName() {
@@ -55,7 +50,7 @@ public class AppFiguresLinkedService extends LinkedService {
 
     /**
      * Set the userName property: The username of the Appfigures source.
-     * 
+     *
      * @param userName the userName value to set.
      * @return the AppFiguresLinkedService object itself.
      */
@@ -66,7 +61,7 @@ public class AppFiguresLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password of the AppFigures source.
-     * 
+     *
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -75,7 +70,7 @@ public class AppFiguresLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password of the AppFigures source.
-     * 
+     *
      * @param password the password value to set.
      * @return the AppFiguresLinkedService object itself.
      */
@@ -86,7 +81,7 @@ public class AppFiguresLinkedService extends LinkedService {
 
     /**
      * Get the clientKey property: The client key for the AppFigures source.
-     * 
+     *
      * @return the clientKey value.
      */
     public SecretBase getClientKey() {
@@ -95,7 +90,7 @@ public class AppFiguresLinkedService extends LinkedService {
 
     /**
      * Set the clientKey property: The client key for the AppFigures source.
-     * 
+     *
      * @param clientKey the clientKey value to set.
      * @return the AppFiguresLinkedService object itself.
      */
@@ -104,36 +99,28 @@ public class AppFiguresLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AppFiguresLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AppFiguresLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AppFiguresLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AppFiguresLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -18,6 +18,7 @@ import com.azure.resourcemanager.storage.fluent.FileServicesClient;
 import com.azure.resourcemanager.storage.fluent.FileSharesClient;
 import com.azure.resourcemanager.storage.fluent.LocalUsersOperationsClient;
 import com.azure.resourcemanager.storage.fluent.ManagementPoliciesClient;
+import com.azure.resourcemanager.storage.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.storage.fluent.ObjectReplicationPoliciesOperationsClient;
 import com.azure.resourcemanager.storage.fluent.OperationsClient;
 import com.azure.resourcemanager.storage.fluent.PrivateEndpointConnectionsClient;
@@ -27,15 +28,23 @@ import com.azure.resourcemanager.storage.fluent.QueuesClient;
 import com.azure.resourcemanager.storage.fluent.SkusClient;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.storage.fluent.StorageManagementClient;
+import com.azure.resourcemanager.storage.fluent.StorageTaskAssignmentInstancesReportsClient;
+import com.azure.resourcemanager.storage.fluent.StorageTaskAssignmentsClient;
+import com.azure.resourcemanager.storage.fluent.StorageTaskAssignmentsInstancesReportsClient;
 import com.azure.resourcemanager.storage.fluent.TableServicesClient;
 import com.azure.resourcemanager.storage.fluent.TablesClient;
 import com.azure.resourcemanager.storage.fluent.UsagesClient;
+
 import java.time.Duration;
 
-/** Initializes a new instance of the StorageManagementClientImpl type. */
+/**
+ * Initializes a new instance of the StorageManagementClientImpl type.
+ */
 @ServiceClient(builder = StorageManagementClientBuilder.class)
 public final class StorageManagementClientImpl extends AzureServiceClient implements StorageManagementClient {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
@@ -47,7 +56,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
@@ -59,7 +70,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
@@ -71,7 +84,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
@@ -83,7 +98,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
@@ -95,7 +112,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
@@ -107,151 +126,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
     /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
+     * The BlobServicesClient object to access its operations.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
-    /** The SkusClient object to access its operations. */
-    private final SkusClient skus;
-
-    /**
-     * Gets the SkusClient object to access its operations.
-     *
-     * @return the SkusClient object.
-     */
-    public SkusClient getSkus() {
-        return this.skus;
-    }
-
-    /** The StorageAccountsClient object to access its operations. */
-    private final StorageAccountsClient storageAccounts;
-
-    /**
-     * Gets the StorageAccountsClient object to access its operations.
-     *
-     * @return the StorageAccountsClient object.
-     */
-    public StorageAccountsClient getStorageAccounts() {
-        return this.storageAccounts;
-    }
-
-    /** The DeletedAccountsClient object to access its operations. */
-    private final DeletedAccountsClient deletedAccounts;
-
-    /**
-     * Gets the DeletedAccountsClient object to access its operations.
-     *
-     * @return the DeletedAccountsClient object.
-     */
-    public DeletedAccountsClient getDeletedAccounts() {
-        return this.deletedAccounts;
-    }
-
-    /** The UsagesClient object to access its operations. */
-    private final UsagesClient usages;
-
-    /**
-     * Gets the UsagesClient object to access its operations.
-     *
-     * @return the UsagesClient object.
-     */
-    public UsagesClient getUsages() {
-        return this.usages;
-    }
-
-    /** The ManagementPoliciesClient object to access its operations. */
-    private final ManagementPoliciesClient managementPolicies;
-
-    /**
-     * Gets the ManagementPoliciesClient object to access its operations.
-     *
-     * @return the ManagementPoliciesClient object.
-     */
-    public ManagementPoliciesClient getManagementPolicies() {
-        return this.managementPolicies;
-    }
-
-    /** The BlobInventoryPoliciesClient object to access its operations. */
-    private final BlobInventoryPoliciesClient blobInventoryPolicies;
-
-    /**
-     * Gets the BlobInventoryPoliciesClient object to access its operations.
-     *
-     * @return the BlobInventoryPoliciesClient object.
-     */
-    public BlobInventoryPoliciesClient getBlobInventoryPolicies() {
-        return this.blobInventoryPolicies;
-    }
-
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
-    private final PrivateEndpointConnectionsClient privateEndpointConnections;
-
-    /**
-     * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
-     * @return the PrivateEndpointConnectionsClient object.
-     */
-    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /** The PrivateLinkResourcesClient object to access its operations. */
-    private final PrivateLinkResourcesClient privateLinkResources;
-
-    /**
-     * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
-     * @return the PrivateLinkResourcesClient object.
-     */
-    public PrivateLinkResourcesClient getPrivateLinkResources() {
-        return this.privateLinkResources;
-    }
-
-    /** The ObjectReplicationPoliciesOperationsClient object to access its operations. */
-    private final ObjectReplicationPoliciesOperationsClient objectReplicationPoliciesOperations;
-
-    /**
-     * Gets the ObjectReplicationPoliciesOperationsClient object to access its operations.
-     *
-     * @return the ObjectReplicationPoliciesOperationsClient object.
-     */
-    public ObjectReplicationPoliciesOperationsClient getObjectReplicationPoliciesOperations() {
-        return this.objectReplicationPoliciesOperations;
-    }
-
-    /** The LocalUsersOperationsClient object to access its operations. */
-    private final LocalUsersOperationsClient localUsersOperations;
-
-    /**
-     * Gets the LocalUsersOperationsClient object to access its operations.
-     *
-     * @return the LocalUsersOperationsClient object.
-     */
-    public LocalUsersOperationsClient getLocalUsersOperations() {
-        return this.localUsersOperations;
-    }
-
-    /** The EncryptionScopesClient object to access its operations. */
-    private final EncryptionScopesClient encryptionScopes;
-
-    /**
-     * Gets the EncryptionScopesClient object to access its operations.
-     *
-     * @return the EncryptionScopesClient object.
-     */
-    public EncryptionScopesClient getEncryptionScopes() {
-        return this.encryptionScopes;
-    }
-
-    /** The BlobServicesClient object to access its operations. */
     private final BlobServicesClient blobServices;
 
     /**
@@ -263,7 +140,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.blobServices;
     }
 
-    /** The BlobContainersClient object to access its operations. */
+    /**
+     * The BlobContainersClient object to access its operations.
+     */
     private final BlobContainersClient blobContainers;
 
     /**
@@ -275,7 +154,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.blobContainers;
     }
 
-    /** The FileServicesClient object to access its operations. */
+    /**
+     * The FileServicesClient object to access its operations.
+     */
     private final FileServicesClient fileServices;
 
     /**
@@ -287,7 +168,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.fileServices;
     }
 
-    /** The FileSharesClient object to access its operations. */
+    /**
+     * The FileSharesClient object to access its operations.
+     */
     private final FileSharesClient fileShares;
 
     /**
@@ -299,7 +182,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.fileShares;
     }
 
-    /** The QueueServicesClient object to access its operations. */
+    /**
+     * The QueueServicesClient object to access its operations.
+     */
     private final QueueServicesClient queueServices;
 
     /**
@@ -311,7 +196,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.queueServices;
     }
 
-    /** The QueuesClient object to access its operations. */
+    /**
+     * The QueuesClient object to access its operations.
+     */
     private final QueuesClient queues;
 
     /**
@@ -323,7 +210,177 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.queues;
     }
 
-    /** The TableServicesClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /**
+     * The SkusClient object to access its operations.
+     */
+    private final SkusClient skus;
+
+    /**
+     * Gets the SkusClient object to access its operations.
+     *
+     * @return the SkusClient object.
+     */
+    public SkusClient getSkus() {
+        return this.skus;
+    }
+
+    /**
+     * The StorageAccountsClient object to access its operations.
+     */
+    private final StorageAccountsClient storageAccounts;
+
+    /**
+     * Gets the StorageAccountsClient object to access its operations.
+     *
+     * @return the StorageAccountsClient object.
+     */
+    public StorageAccountsClient getStorageAccounts() {
+        return this.storageAccounts;
+    }
+
+    /**
+     * The DeletedAccountsClient object to access its operations.
+     */
+    private final DeletedAccountsClient deletedAccounts;
+
+    /**
+     * Gets the DeletedAccountsClient object to access its operations.
+     *
+     * @return the DeletedAccountsClient object.
+     */
+    public DeletedAccountsClient getDeletedAccounts() {
+        return this.deletedAccounts;
+    }
+
+    /**
+     * The UsagesClient object to access its operations.
+     */
+    private final UsagesClient usages;
+
+    /**
+     * Gets the UsagesClient object to access its operations.
+     *
+     * @return the UsagesClient object.
+     */
+    public UsagesClient getUsages() {
+        return this.usages;
+    }
+
+    /**
+     * The ManagementPoliciesClient object to access its operations.
+     */
+    private final ManagementPoliciesClient managementPolicies;
+
+    /**
+     * Gets the ManagementPoliciesClient object to access its operations.
+     *
+     * @return the ManagementPoliciesClient object.
+     */
+    public ManagementPoliciesClient getManagementPolicies() {
+        return this.managementPolicies;
+    }
+
+    /**
+     * The BlobInventoryPoliciesClient object to access its operations.
+     */
+    private final BlobInventoryPoliciesClient blobInventoryPolicies;
+
+    /**
+     * Gets the BlobInventoryPoliciesClient object to access its operations.
+     *
+     * @return the BlobInventoryPoliciesClient object.
+     */
+    public BlobInventoryPoliciesClient getBlobInventoryPolicies() {
+        return this.blobInventoryPolicies;
+    }
+
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /**
+     * The ObjectReplicationPoliciesOperationsClient object to access its operations.
+     */
+    private final ObjectReplicationPoliciesOperationsClient objectReplicationPoliciesOperations;
+
+    /**
+     * Gets the ObjectReplicationPoliciesOperationsClient object to access its operations.
+     *
+     * @return the ObjectReplicationPoliciesOperationsClient object.
+     */
+    public ObjectReplicationPoliciesOperationsClient getObjectReplicationPoliciesOperations() {
+        return this.objectReplicationPoliciesOperations;
+    }
+
+    /**
+     * The LocalUsersOperationsClient object to access its operations.
+     */
+    private final LocalUsersOperationsClient localUsersOperations;
+
+    /**
+     * Gets the LocalUsersOperationsClient object to access its operations.
+     *
+     * @return the LocalUsersOperationsClient object.
+     */
+    public LocalUsersOperationsClient getLocalUsersOperations() {
+        return this.localUsersOperations;
+    }
+
+    /**
+     * The EncryptionScopesClient object to access its operations.
+     */
+    private final EncryptionScopesClient encryptionScopes;
+
+    /**
+     * Gets the EncryptionScopesClient object to access its operations.
+     *
+     * @return the EncryptionScopesClient object.
+     */
+    public EncryptionScopesClient getEncryptionScopes() {
+        return this.encryptionScopes;
+    }
+
+    /**
+     * The TableServicesClient object to access its operations.
+     */
     private final TableServicesClient tableServices;
 
     /**
@@ -335,7 +392,9 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         return this.tableServices;
     }
 
-    /** The TablesClient object to access its operations. */
+    /**
+     * The TablesClient object to access its operations.
+     */
     private final TablesClient tables;
 
     /**
@@ -348,6 +407,62 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
+     * The NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     */
+    private final NetworkSecurityPerimeterConfigurationsClient networkSecurityPerimeterConfigurations;
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     *
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
+        return this.networkSecurityPerimeterConfigurations;
+    }
+
+    /**
+     * The StorageTaskAssignmentsClient object to access its operations.
+     */
+    private final StorageTaskAssignmentsClient storageTaskAssignments;
+
+    /**
+     * Gets the StorageTaskAssignmentsClient object to access its operations.
+     *
+     * @return the StorageTaskAssignmentsClient object.
+     */
+    public StorageTaskAssignmentsClient getStorageTaskAssignments() {
+        return this.storageTaskAssignments;
+    }
+
+    /**
+     * The StorageTaskAssignmentsInstancesReportsClient object to access its operations.
+     */
+    private final StorageTaskAssignmentsInstancesReportsClient storageTaskAssignmentsInstancesReports;
+
+    /**
+     * Gets the StorageTaskAssignmentsInstancesReportsClient object to access its operations.
+     *
+     * @return the StorageTaskAssignmentsInstancesReportsClient object.
+     */
+    public StorageTaskAssignmentsInstancesReportsClient getStorageTaskAssignmentsInstancesReports() {
+        return this.storageTaskAssignmentsInstancesReports;
+    }
+
+    /**
+     * The StorageTaskAssignmentInstancesReportsClient object to access its operations.
+     */
+    private final StorageTaskAssignmentInstancesReportsClient storageTaskAssignmentInstancesReports;
+
+    /**
+     * Gets the StorageTaskAssignmentInstancesReportsClient object to access its operations.
+     *
+     * @return the StorageTaskAssignmentInstancesReportsClient object.
+     */
+    public StorageTaskAssignmentInstancesReportsClient getStorageTaskAssignmentInstancesReports() {
+        return this.storageTaskAssignmentInstancesReports;
+    }
+
+    /**
      * Initializes an instance of StorageManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -357,20 +472,21 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    StorageManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    StorageManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-01-01";
+        this.apiVersion = "2023-05-01";
+        this.blobServices = new BlobServicesClientImpl(this);
+        this.blobContainers = new BlobContainersClientImpl(this);
+        this.fileServices = new FileServicesClientImpl(this);
+        this.fileShares = new FileSharesClientImpl(this);
+        this.queueServices = new QueueServicesClientImpl(this);
+        this.queues = new QueuesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.storageAccounts = new StorageAccountsClientImpl(this);
@@ -383,13 +499,11 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.objectReplicationPoliciesOperations = new ObjectReplicationPoliciesOperationsClientImpl(this);
         this.localUsersOperations = new LocalUsersOperationsClientImpl(this);
         this.encryptionScopes = new EncryptionScopesClientImpl(this);
-        this.blobServices = new BlobServicesClientImpl(this);
-        this.blobContainers = new BlobContainersClientImpl(this);
-        this.fileServices = new FileServicesClientImpl(this);
-        this.fileShares = new FileSharesClientImpl(this);
-        this.queueServices = new QueueServicesClientImpl(this);
-        this.queues = new QueuesClientImpl(this);
         this.tableServices = new TableServicesClientImpl(this);
         this.tables = new TablesClientImpl(this);
+        this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
+        this.storageTaskAssignments = new StorageTaskAssignmentsClientImpl(this);
+        this.storageTaskAssignmentsInstancesReports = new StorageTaskAssignmentsInstancesReportsClientImpl(this);
+        this.storageTaskAssignmentInstancesReports = new StorageTaskAssignmentInstancesReportsClientImpl(this);
     }
 }

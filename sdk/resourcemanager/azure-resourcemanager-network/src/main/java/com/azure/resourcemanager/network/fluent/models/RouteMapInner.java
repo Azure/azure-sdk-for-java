@@ -93,8 +93,8 @@ public final class RouteMapInner extends SubResource {
     }
 
     /**
-     * Get the associatedInboundConnections property: List of connections which have this RoutMap associated for
-     * inbound traffic.
+     * Get the associatedInboundConnections property: List of connections which have this RoutMap associated for inbound
+     * traffic.
      * 
      * @return the associatedInboundConnections value.
      */
@@ -103,8 +103,8 @@ public final class RouteMapInner extends SubResource {
     }
 
     /**
-     * Set the associatedInboundConnections property: List of connections which have this RoutMap associated for
-     * inbound traffic.
+     * Set the associatedInboundConnections property: List of connections which have this RoutMap associated for inbound
+     * traffic.
      * 
      * @param associatedInboundConnections the associatedInboundConnections value to set.
      * @return the RouteMapInner object itself.

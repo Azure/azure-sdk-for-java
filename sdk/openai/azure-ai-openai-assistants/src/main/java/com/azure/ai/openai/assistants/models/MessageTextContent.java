@@ -28,7 +28,7 @@ public final class MessageTextContent extends MessageContent {
      * @param text the text value to set.
      */
     @Generated
-    private MessageTextContent(MessageTextDetails text) {
+    public MessageTextContent(MessageTextDetails text) {
         this.text = text;
     }
 
