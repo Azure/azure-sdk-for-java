@@ -1,10 +1,10 @@
-import math
 import os
 import sys
 import yaml
 import logging
 import re
 import subprocess
+import platform
 from typing import Tuple
 
 from parameters import CI_HEADER
