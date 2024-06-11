@@ -99,6 +99,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
+import static com.azure.identity.implementation.util.IdentityUtil.isWindowsPlatform;
+
 public abstract class IdentityClientBase {
     static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     static final String WINDOWS_STARTER = "cmd.exe";
@@ -835,10 +837,6 @@ public abstract class IdentityClientBase {
         } else {
             return DEFAULT_MAC_LINUX_PATH;
         }
-    }
-
-    boolean isWindowsPlatform() {
-        return System.getProperty("os.name").contains("Windows");
     }
 
     String redactInfo(String input) {

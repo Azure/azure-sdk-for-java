@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies whether template expressions are evaluated within the scope of the parent template or nested template. */
+/**
+ * Specifies whether template expressions are evaluated within the scope of the parent template or nested template.
+ */
 @Fluent
 public final class ExpressionEvaluationOptions {
     /*
@@ -16,14 +18,16 @@ public final class ExpressionEvaluationOptions {
     @JsonProperty(value = "scope")
     private ExpressionEvaluationOptionsScopeType scope;
 
-    /** Creates an instance of ExpressionEvaluationOptions class. */
+    /**
+     * Creates an instance of ExpressionEvaluationOptions class.
+     */
     public ExpressionEvaluationOptions() {
     }
 
     /**
      * Get the scope property: The scope to be used for evaluation of parameters, variables and functions in a nested
      * template.
-     *
+     * 
      * @return the scope value.
      */
     public ExpressionEvaluationOptionsScopeType scope() {
@@ -33,7 +37,7 @@ public final class ExpressionEvaluationOptions {
     /**
      * Set the scope property: The scope to be used for evaluation of parameters, variables and functions in a nested
      * template.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the ExpressionEvaluationOptions object itself.
      */
@@ -44,7 +48,7 @@ public final class ExpressionEvaluationOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraResourcesListCassandraTablesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBCassandraTableList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBCassandraTableList.json
      */
     /**
      * Sample code: CosmosDBCassandraTableList.
@@ -18,7 +17,10 @@ public final class CassandraResourcesListCassandraTablesSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBCassandraTableList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getCassandraResources().listCassandraTables("rgName", "ddb1",
-            "keyspaceName", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraResources()
+            .listCassandraTables("rgName", "ddb1", "keyspaceName", com.azure.core.util.Context.NONE);
     }
 }

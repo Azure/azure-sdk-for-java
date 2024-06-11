@@ -20,8 +20,7 @@ public final class Sku {
     private SkuName name;
 
     /*
-     * The size of the RedisEnterprise cluster. Defaults to 2 or 3 depending on SKU. Valid values are (2, 4, 6, ...)
-     * for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs.
+     * The size of the RedisEnterprise cluster. Defaults to 2 or 3 depending on SKU. Valid values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
@@ -83,8 +82,7 @@ public final class Sku {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model Sku"));
         }
     }
 

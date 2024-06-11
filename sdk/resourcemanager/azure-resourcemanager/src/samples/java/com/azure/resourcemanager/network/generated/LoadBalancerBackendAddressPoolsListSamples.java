@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LoadBalancerBackendAddressPoolsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * LBBackendAddressPoolListWithBackendAddressesPoolType.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LBBackendAddressPoolListWithBackendAddressesPoolType.json
      */
     /**
      * Sample code: Load balancer with BackendAddressPool containing BackendAddresses.
@@ -19,13 +18,15 @@ public final class LoadBalancerBackendAddressPoolsListSamples {
      */
     public static void loadBalancerWithBackendAddressPoolContainingBackendAddresses(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancerBackendAddressPools().list("testrg", "lb",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancerBackendAddressPools()
+            .list("testrg", "lb", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * LoadBalancerBackendAddressPoolList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerBackendAddressPoolList.json
      */
     /**
      * Sample code: LoadBalancerBackendAddressPoolList.
@@ -33,7 +34,10 @@ public final class LoadBalancerBackendAddressPoolsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void loadBalancerBackendAddressPoolList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancerBackendAddressPools().list("testrg", "lb",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancerBackendAddressPools()
+            .list("testrg", "lb", com.azure.core.util.Context.NONE);
     }
 }

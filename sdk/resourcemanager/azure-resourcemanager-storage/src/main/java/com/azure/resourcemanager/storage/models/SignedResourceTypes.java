@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -14,13 +15,19 @@ import java.util.Collection;
  * table entities, and files.
  */
 public final class SignedResourceTypes extends ExpandableStringEnum<SignedResourceTypes> {
-    /** Static value s for SignedResourceTypes. */
+    /**
+     * Static value s for SignedResourceTypes.
+     */
     public static final SignedResourceTypes S = fromString("s");
 
-    /** Static value c for SignedResourceTypes. */
+    /**
+     * Static value c for SignedResourceTypes.
+     */
     public static final SignedResourceTypes C = fromString("c");
 
-    /** Static value o for SignedResourceTypes. */
+    /**
+     * Static value o for SignedResourceTypes.
+     */
     public static final SignedResourceTypes O = fromString("o");
 
     /**

@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LinkConnectionTargetDatabaseTypeProperties model.
- */
+/** The LinkConnectionTargetDatabaseTypeProperties model. */
 @Fluent
 public final class LinkConnectionTargetDatabaseTypeProperties {
     /*
@@ -30,15 +28,12 @@ public final class LinkConnectionTargetDatabaseTypeProperties {
     @JsonProperty(value = "actionOnExistingTargetTable")
     private ActionOnExistingTargetTable actionOnExistingTargetTable;
 
-    /**
-     * Creates an instance of LinkConnectionTargetDatabaseTypeProperties class.
-     */
-    public LinkConnectionTargetDatabaseTypeProperties() {
-    }
+    /** Creates an instance of LinkConnectionTargetDatabaseTypeProperties class. */
+    public LinkConnectionTargetDatabaseTypeProperties() {}
 
     /**
      * Get the crossTableTransaction property: Enable cross table transaction consistency on target database.
-     * 
+     *
      * @return the crossTableTransaction value.
      */
     public Boolean isCrossTableTransaction() {
@@ -47,7 +42,7 @@ public final class LinkConnectionTargetDatabaseTypeProperties {
 
     /**
      * Set the crossTableTransaction property: Enable cross table transaction consistency on target database.
-     * 
+     *
      * @param crossTableTransaction the crossTableTransaction value to set.
      * @return the LinkConnectionTargetDatabaseTypeProperties object itself.
      */
@@ -59,7 +54,7 @@ public final class LinkConnectionTargetDatabaseTypeProperties {
     /**
      * Get the dropExistingTargetTableOnStart property: Drop and recreate same existing target table on link connection
      * target database.
-     * 
+     *
      * @return the dropExistingTargetTableOnStart value.
      */
     public Boolean isDropExistingTargetTableOnStart() {
@@ -69,12 +64,12 @@ public final class LinkConnectionTargetDatabaseTypeProperties {
     /**
      * Set the dropExistingTargetTableOnStart property: Drop and recreate same existing target table on link connection
      * target database.
-     * 
+     *
      * @param dropExistingTargetTableOnStart the dropExistingTargetTableOnStart value to set.
      * @return the LinkConnectionTargetDatabaseTypeProperties object itself.
      */
-    public LinkConnectionTargetDatabaseTypeProperties
-        setDropExistingTargetTableOnStart(Boolean dropExistingTargetTableOnStart) {
+    public LinkConnectionTargetDatabaseTypeProperties setDropExistingTargetTableOnStart(
+            Boolean dropExistingTargetTableOnStart) {
         this.dropExistingTargetTableOnStart = dropExistingTargetTableOnStart;
         return this;
     }
@@ -82,7 +77,7 @@ public final class LinkConnectionTargetDatabaseTypeProperties {
     /**
      * Get the actionOnExistingTargetTable property: Action on existing target table. If not specified,
      * 'FailOnNonEmptyTable' action is used.
-     * 
+     *
      * @return the actionOnExistingTargetTable value.
      */
     public ActionOnExistingTargetTable getActionOnExistingTargetTable() {
@@ -92,12 +87,12 @@ public final class LinkConnectionTargetDatabaseTypeProperties {
     /**
      * Set the actionOnExistingTargetTable property: Action on existing target table. If not specified,
      * 'FailOnNonEmptyTable' action is used.
-     * 
+     *
      * @param actionOnExistingTargetTable the actionOnExistingTargetTable value to set.
      * @return the LinkConnectionTargetDatabaseTypeProperties object itself.
      */
-    public LinkConnectionTargetDatabaseTypeProperties
-        setActionOnExistingTargetTable(ActionOnExistingTargetTable actionOnExistingTargetTable) {
+    public LinkConnectionTargetDatabaseTypeProperties setActionOnExistingTargetTable(
+            ActionOnExistingTargetTable actionOnExistingTargetTable) {
         this.actionOnExistingTargetTable = actionOnExistingTargetTable;
         return this;
     }

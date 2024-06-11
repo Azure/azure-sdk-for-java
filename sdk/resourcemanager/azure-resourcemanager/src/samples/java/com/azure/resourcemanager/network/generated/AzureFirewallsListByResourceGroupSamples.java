@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AzureFirewallsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * AzureFirewallListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallListByResourceGroup.json
      */
     /**
      * Sample code: List all Azure Firewalls for a given resource group.
@@ -19,7 +18,10 @@ public final class AzureFirewallsListByResourceGroupSamples {
      */
     public static void
         listAllAzureFirewallsForAGivenResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAzureFirewalls().listByResourceGroup("rg1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getAzureFirewalls()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

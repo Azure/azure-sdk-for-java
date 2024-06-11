@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRoutePortsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ExpressRoutePortGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRoutePortGet.json
      */
     /**
      * Sample code: ExpressRoutePortGet.
@@ -18,7 +17,10 @@ public final class ExpressRoutePortsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRoutePortGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRoutePorts().getByResourceGroupWithResponse("rg1",
-            "portName", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRoutePorts()
+            .getByResourceGroupWithResponse("rg1", "portName", com.azure.core.util.Context.NONE);
     }
 }

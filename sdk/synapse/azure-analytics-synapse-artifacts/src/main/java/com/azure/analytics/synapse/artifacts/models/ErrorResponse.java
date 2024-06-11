@@ -10,9 +10,9 @@ import java.util.List;
 
 /**
  * Error Response
- * 
- * Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also
- * follows the OData error response format.).
+ *
+ * <p>Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This
+ * also follows the OData error response format.).
  */
 @Immutable
 public final class ErrorResponse {
@@ -46,15 +46,12 @@ public final class ErrorResponse {
     @JsonProperty(value = "additionalInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<ErrorAdditionalInfo> additionalInfo;
 
-    /**
-     * Creates an instance of ErrorResponse class.
-     */
-    public ErrorResponse() {
-    }
+    /** Creates an instance of ErrorResponse class. */
+    public ErrorResponse() {}
 
     /**
      * Get the code property: The error code.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -63,7 +60,7 @@ public final class ErrorResponse {
 
     /**
      * Get the message property: The error message.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -72,7 +69,7 @@ public final class ErrorResponse {
 
     /**
      * Get the target property: The error target.
-     * 
+     *
      * @return the target value.
      */
     public String getTarget() {
@@ -81,7 +78,7 @@ public final class ErrorResponse {
 
     /**
      * Get the details property: The error details.
-     * 
+     *
      * @return the details value.
      */
     public List<ErrorResponse> getDetails() {
@@ -90,7 +87,7 @@ public final class ErrorResponse {
 
     /**
      * Get the additionalInfo property: The error additional info.
-     * 
+     *
      * @return the additionalInfo value.
      */
     public List<ErrorAdditionalInfo> getAdditionalInfo() {

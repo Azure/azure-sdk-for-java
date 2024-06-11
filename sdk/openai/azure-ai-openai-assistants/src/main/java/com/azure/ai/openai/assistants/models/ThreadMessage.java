@@ -62,20 +62,13 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
      * If applicable, the ID of the assistant that authored this message.
      */
     @Generated
-    private String assistantId;
+    private final String assistantId;
 
     /*
      * If applicable, the ID of the run associated with the authoring of this message.
      */
     @Generated
-    private String runId;
-
-    /*
-     * A list of file IDs that the assistant should use. Useful for tools like retrieval and code_interpreter that can
-     * access files.
-     */
-    @Generated
-    private final List<String> fileIds;
+    private final String runId;
 
     /*
      * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
@@ -166,18 +159,6 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
     }
 
     /**
-     * Get the fileIds property: A list of file IDs that the assistant should use. Useful for tools like retrieval and
-     * code_interpreter that can
-     * access files.
-     *
-     * @return the fileIds value.
-     */
-    @Generated
-    public List<String> getFileIds() {
-        return this.fileIds;
-    }
-
-    /**
      * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
      * additional information about that object in a structured format. Keys may be up to 64 characters in length and
      * values may be up to 512 characters in length.
@@ -201,16 +182,15 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeStringField("thread_id", this.threadId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeStringField("incomplete_details",
-            this.incompleteDetails == null ? null : this.incompleteDetails.toString());
+        jsonWriter.writeJsonField("incomplete_details", this.incompleteDetails);
         jsonWriter.writeNumberField("completed_at", this.completedAt);
         jsonWriter.writeNumberField("incomplete_at", this.incompleteAt);
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeArrayField("content", this.content, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("assistant_id", this.assistantId);
         jsonWriter.writeStringField("run_id", this.runId);
+        jsonWriter.writeArrayField("attachments", this.attachments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -230,15 +210,15 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
             OffsetDateTime createdAt = null;
             String threadId = null;
             MessageStatus status = null;
-            MessageIncompleteDetailsReason incompleteDetails = null;
+            MessageIncompleteDetails incompleteDetails = null;
             OffsetDateTime completedAt = null;
             OffsetDateTime incompleteAt = null;
             MessageRole role = null;
             List<MessageContent> content = null;
-            List<String> fileIds = null;
-            Map<String, String> metadata = null;
             String assistantId = null;
             String runId = null;
+            List<MessageAttachment> attachments = null;
+            Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -251,7 +231,7 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
                 } else if ("status".equals(fieldName)) {
                     status = MessageStatus.fromString(reader.getString());
                 } else if ("incomplete_details".equals(fieldName)) {
-                    incompleteDetails = MessageIncompleteDetailsReason.fromString(reader.getString());
+                    incompleteDetails = MessageIncompleteDetails.fromJson(reader);
                 } else if ("completed_at".equals(fieldName)) {
                     Long completedAtHolder = reader.getNullable(JsonReader::getLong);
                     if (completedAtHolder != null) {
@@ -268,23 +248,20 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
                     role = MessageRole.fromString(reader.getString());
                 } else if ("content".equals(fieldName)) {
                     content = reader.readArray(reader1 -> MessageContent.fromJson(reader1));
-                } else if ("file_ids".equals(fieldName)) {
-                    fileIds = reader.readArray(reader1 -> reader1.getString());
-                } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else if ("assistant_id".equals(fieldName)) {
                     assistantId = reader.getString();
                 } else if ("run_id".equals(fieldName)) {
                     runId = reader.getString();
+                } else if ("attachments".equals(fieldName)) {
+                    attachments = reader.readArray(reader1 -> MessageAttachment.fromJson(reader1));
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            ThreadMessage deserializedThreadMessage = new ThreadMessage(id, createdAt, threadId, status,
-                incompleteDetails, completedAt, incompleteAt, role, content, fileIds, metadata);
-            deserializedThreadMessage.assistantId = assistantId;
-            deserializedThreadMessage.runId = runId;
-            return deserializedThreadMessage;
+            return new ThreadMessage(id, createdAt, threadId, status, incompleteDetails, completedAt, incompleteAt,
+                role, content, assistantId, runId, attachments, metadata);
         });
     }
 
@@ -298,7 +275,7 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
      * On an incomplete message, details about why the message is incomplete.
      */
     @Generated
-    private final MessageIncompleteDetailsReason incompleteDetails;
+    private final MessageIncompleteDetails incompleteDetails;
 
     /*
      * The Unix timestamp (in seconds) for when the message was completed.
@@ -311,50 +288,6 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
      */
     @Generated
     private final Long incompleteAt;
-
-    /**
-     * Creates an instance of ThreadMessage class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param threadId the threadId value to set.
-     * @param status the status value to set.
-     * @param incompleteDetails the incompleteDetails value to set.
-     * @param completedAt the completedAt value to set.
-     * @param incompleteAt the incompleteAt value to set.
-     * @param role the role value to set.
-     * @param content the content value to set.
-     * @param fileIds the fileIds value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    private ThreadMessage(String id, OffsetDateTime createdAt, String threadId, MessageStatus status,
-        MessageIncompleteDetailsReason incompleteDetails, OffsetDateTime completedAt, OffsetDateTime incompleteAt,
-        MessageRole role, List<MessageContent> content, List<String> fileIds, Map<String, String> metadata) {
-        this.id = id;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.threadId = threadId;
-        this.status = status;
-        this.incompleteDetails = incompleteDetails;
-        if (completedAt == null) {
-            this.completedAt = null;
-        } else {
-            this.completedAt = completedAt.toEpochSecond();
-        }
-        if (incompleteAt == null) {
-            this.incompleteAt = null;
-        } else {
-            this.incompleteAt = incompleteAt.toEpochSecond();
-        }
-        this.role = role;
-        this.content = content;
-        this.fileIds = fileIds;
-        this.metadata = metadata;
-    }
 
     /**
      * Get the status property: The status of the message.
@@ -372,7 +305,7 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
      * @return the incompleteDetails value.
      */
     @Generated
-    public MessageIncompleteDetailsReason getIncompleteDetails() {
+    public MessageIncompleteDetails getIncompleteDetails() {
         return this.incompleteDetails;
     }
 
@@ -400,5 +333,70 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
             return null;
         }
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.incompleteAt), ZoneOffset.UTC);
+    }
+
+    /*
+     * A list of files attached to the message, and the tools they were added to.
+     */
+    @Generated
+    private final List<MessageAttachment> attachments;
+
+    /**
+     * Creates an instance of ThreadMessage class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param threadId the threadId value to set.
+     * @param status the status value to set.
+     * @param incompleteDetails the incompleteDetails value to set.
+     * @param completedAt the completedAt value to set.
+     * @param incompleteAt the incompleteAt value to set.
+     * @param role the role value to set.
+     * @param content the content value to set.
+     * @param assistantId the assistantId value to set.
+     * @param runId the runId value to set.
+     * @param attachments the attachments value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    public ThreadMessage(String id, OffsetDateTime createdAt, String threadId, MessageStatus status,
+        MessageIncompleteDetails incompleteDetails, OffsetDateTime completedAt, OffsetDateTime incompleteAt,
+        MessageRole role, List<MessageContent> content, String assistantId, String runId,
+        List<MessageAttachment> attachments, Map<String, String> metadata) {
+        this.id = id;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.threadId = threadId;
+        this.status = status;
+        this.incompleteDetails = incompleteDetails;
+        if (completedAt == null) {
+            this.completedAt = null;
+        } else {
+            this.completedAt = completedAt.toEpochSecond();
+        }
+        if (incompleteAt == null) {
+            this.incompleteAt = null;
+        } else {
+            this.incompleteAt = incompleteAt.toEpochSecond();
+        }
+        this.role = role;
+        this.content = content;
+        this.assistantId = assistantId;
+        this.runId = runId;
+        this.attachments = attachments;
+        this.metadata = metadata;
+    }
+
+    /**
+     * Get the attachments property: A list of files attached to the message, and the tools they were added to.
+     *
+     * @return the attachments value.
+     */
+    @Generated
+    public List<MessageAttachment> getAttachments() {
+        return this.attachments;
     }
 }

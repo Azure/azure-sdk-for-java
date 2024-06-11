@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetSlotSiteDeploymentStatusSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetSiteDeploymentStatusSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSiteDeploymentStatusSlot.json
      */
     /**
      * Sample code: Get Deployment Status Slot.
@@ -18,7 +17,11 @@ public final class WebAppsGetSlotSiteDeploymentStatusSlotSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDeploymentStatusSlot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().getSlotSiteDeploymentStatusSlot("rg", "testSite",
-            "stage", "eacfd68b-3bbd-4ad9-99c5-98614d89c8e5", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .getSlotSiteDeploymentStatusSlot("rg", "testSite", "stage", "eacfd68b-3bbd-4ad9-99c5-98614d89c8e5",
+                com.azure.core.util.Context.NONE);
     }
 }

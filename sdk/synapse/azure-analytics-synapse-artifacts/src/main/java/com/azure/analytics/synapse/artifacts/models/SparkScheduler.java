@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The SparkScheduler model.
- */
+/** The SparkScheduler model. */
 @Fluent
 public final class SparkScheduler {
     /*
@@ -43,15 +41,12 @@ public final class SparkScheduler {
     @JsonProperty(value = "currentState")
     private SchedulerCurrentState currentState;
 
-    /**
-     * Creates an instance of SparkScheduler class.
-     */
-    public SparkScheduler() {
-    }
+    /** Creates an instance of SparkScheduler class. */
+    public SparkScheduler() {}
 
     /**
      * Get the submittedAt property: The submittedAt property.
-     * 
+     *
      * @return the submittedAt value.
      */
     public OffsetDateTime getSubmittedAt() {
@@ -60,7 +55,7 @@ public final class SparkScheduler {
 
     /**
      * Set the submittedAt property: The submittedAt property.
-     * 
+     *
      * @param submittedAt the submittedAt value to set.
      * @return the SparkScheduler object itself.
      */
@@ -71,7 +66,7 @@ public final class SparkScheduler {
 
     /**
      * Get the scheduledAt property: The scheduledAt property.
-     * 
+     *
      * @return the scheduledAt value.
      */
     public OffsetDateTime getScheduledAt() {
@@ -80,7 +75,7 @@ public final class SparkScheduler {
 
     /**
      * Set the scheduledAt property: The scheduledAt property.
-     * 
+     *
      * @param scheduledAt the scheduledAt value to set.
      * @return the SparkScheduler object itself.
      */
@@ -91,7 +86,7 @@ public final class SparkScheduler {
 
     /**
      * Get the endedAt property: The endedAt property.
-     * 
+     *
      * @return the endedAt value.
      */
     public OffsetDateTime getEndedAt() {
@@ -100,7 +95,7 @@ public final class SparkScheduler {
 
     /**
      * Set the endedAt property: The endedAt property.
-     * 
+     *
      * @param endedAt the endedAt value to set.
      * @return the SparkScheduler object itself.
      */
@@ -111,7 +106,7 @@ public final class SparkScheduler {
 
     /**
      * Get the cancellationRequestedAt property: The cancellationRequestedAt property.
-     * 
+     *
      * @return the cancellationRequestedAt value.
      */
     public OffsetDateTime getCancellationRequestedAt() {
@@ -120,7 +115,7 @@ public final class SparkScheduler {
 
     /**
      * Set the cancellationRequestedAt property: The cancellationRequestedAt property.
-     * 
+     *
      * @param cancellationRequestedAt the cancellationRequestedAt value to set.
      * @return the SparkScheduler object itself.
      */
@@ -131,7 +126,7 @@ public final class SparkScheduler {
 
     /**
      * Get the currentState property: The currentState property.
-     * 
+     *
      * @return the currentState value.
      */
     public SchedulerCurrentState getCurrentState() {
@@ -140,7 +135,7 @@ public final class SparkScheduler {
 
     /**
      * Set the currentState property: The currentState property.
-     * 
+     *
      * @param currentState the currentState value to set.
      * @return the SparkScheduler object itself.
      */

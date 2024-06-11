@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MetastoreUpdateObject model.
- */
+/** The MetastoreUpdateObject model. */
 @Fluent
 public final class MetastoreUpdateObject {
     /*
@@ -18,15 +16,12 @@ public final class MetastoreUpdateObject {
     @JsonProperty(value = "inputFolder", required = true)
     private String inputFolder;
 
-    /**
-     * Creates an instance of MetastoreUpdateObject class.
-     */
-    public MetastoreUpdateObject() {
-    }
+    /** Creates an instance of MetastoreUpdateObject class. */
+    public MetastoreUpdateObject() {}
 
     /**
      * Get the inputFolder property: The input folder containing CDM files.
-     * 
+     *
      * @return the inputFolder value.
      */
     public String getInputFolder() {
@@ -35,7 +30,7 @@ public final class MetastoreUpdateObject {
 
     /**
      * Set the inputFolder property: The input folder containing CDM files.
-     * 
+     *
      * @param inputFolder the inputFolder value to set.
      * @return the MetastoreUpdateObject object itself.
      */

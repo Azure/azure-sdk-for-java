@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Specify the column name and value of additional columns.
- */
+/** Specify the column name and value of additional columns. */
 @Fluent
 public final class AdditionalColumns {
     /*
@@ -24,15 +22,12 @@ public final class AdditionalColumns {
     @JsonProperty(value = "value")
     private Object value;
 
-    /**
-     * Creates an instance of AdditionalColumns class.
-     */
-    public AdditionalColumns() {
-    }
+    /** Creates an instance of AdditionalColumns class. */
+    public AdditionalColumns() {}
 
     /**
      * Get the name property: Additional column name. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the name value.
      */
     public Object getName() {
@@ -41,7 +36,7 @@ public final class AdditionalColumns {
 
     /**
      * Set the name property: Additional column name. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param name the name value to set.
      * @return the AdditionalColumns object itself.
      */
@@ -52,7 +47,7 @@ public final class AdditionalColumns {
 
     /**
      * Get the value property: Additional column value. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the value value.
      */
     public Object getValue() {
@@ -61,7 +56,7 @@ public final class AdditionalColumns {
 
     /**
      * Set the value property: Additional column value. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param value the value value to set.
      * @return the AdditionalColumns object itself.
      */

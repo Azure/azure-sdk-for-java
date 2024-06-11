@@ -13,9 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Information about a pipeline run.
- */
+/** Information about a pipeline run. */
 @Fluent
 public final class PipelineRun {
     /*
@@ -93,18 +91,14 @@ public final class PipelineRun {
     /*
      * Information about a pipeline run.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of PipelineRun class.
-     */
-    public PipelineRun() {
-    }
+    /** Creates an instance of PipelineRun class. */
+    public PipelineRun() {}
 
     /**
      * Get the runId property: Identifier of a run.
-     * 
+     *
      * @return the runId value.
      */
     public String getRunId() {
@@ -113,7 +107,7 @@ public final class PipelineRun {
 
     /**
      * Get the runGroupId property: Identifier that correlates all the recovery runs of a pipeline run.
-     * 
+     *
      * @return the runGroupId value.
      */
     public String getRunGroupId() {
@@ -122,7 +116,7 @@ public final class PipelineRun {
 
     /**
      * Get the isLatest property: Indicates if the recovered pipeline run is the latest in its group.
-     * 
+     *
      * @return the isLatest value.
      */
     public Boolean isLatest() {
@@ -131,7 +125,7 @@ public final class PipelineRun {
 
     /**
      * Get the pipelineName property: The pipeline name.
-     * 
+     *
      * @return the pipelineName value.
      */
     public String getPipelineName() {
@@ -140,7 +134,7 @@ public final class PipelineRun {
 
     /**
      * Get the parameters property: The full or partial list of parameter name, value pair used in the pipeline run.
-     * 
+     *
      * @return the parameters value.
      */
     public Map<String, String> getParameters() {
@@ -149,7 +143,7 @@ public final class PipelineRun {
 
     /**
      * Get the invokedBy property: Entity that started the pipeline run.
-     * 
+     *
      * @return the invokedBy value.
      */
     public PipelineRunInvokedBy getInvokedBy() {
@@ -158,7 +152,7 @@ public final class PipelineRun {
 
     /**
      * Get the lastUpdated property: The last updated timestamp for the pipeline run event in ISO8601 format.
-     * 
+     *
      * @return the lastUpdated value.
      */
     public OffsetDateTime getLastUpdated() {
@@ -167,7 +161,7 @@ public final class PipelineRun {
 
     /**
      * Get the runStart property: The start time of a pipeline run in ISO8601 format.
-     * 
+     *
      * @return the runStart value.
      */
     public OffsetDateTime getRunStart() {
@@ -176,7 +170,7 @@ public final class PipelineRun {
 
     /**
      * Get the runEnd property: The end time of a pipeline run in ISO8601 format.
-     * 
+     *
      * @return the runEnd value.
      */
     public OffsetDateTime getRunEnd() {
@@ -185,7 +179,7 @@ public final class PipelineRun {
 
     /**
      * Get the durationInMs property: The duration of a pipeline run.
-     * 
+     *
      * @return the durationInMs value.
      */
     public Integer getDurationInMs() {
@@ -194,7 +188,7 @@ public final class PipelineRun {
 
     /**
      * Get the status property: The status of a pipeline run.
-     * 
+     *
      * @return the status value.
      */
     public String getStatus() {
@@ -203,7 +197,7 @@ public final class PipelineRun {
 
     /**
      * Get the message property: The message from a pipeline run.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -212,7 +206,7 @@ public final class PipelineRun {
 
     /**
      * Get the additionalProperties property: Information about a pipeline run.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -222,7 +216,7 @@ public final class PipelineRun {
 
     /**
      * Set the additionalProperties property: Information about a pipeline run.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the PipelineRun object itself.
      */

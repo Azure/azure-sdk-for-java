@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class CassandraClustersDeleteSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBManagedCassandraClusterDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBManagedCassandraClusterDelete.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterDelete.
@@ -18,7 +17,10 @@ public final class CassandraClustersDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBManagedCassandraClusterDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getCassandraClusters().delete("cassandra-prod-rg",
-            "cassandra-prod", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraClusters()
+            .delete("cassandra-prod-rg", "cassandra-prod", com.azure.core.util.Context.NONE);
     }
 }

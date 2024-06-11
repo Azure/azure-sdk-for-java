@@ -8,9 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicySchema;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** The storage account blob inventory policy properties. */
+/**
+ * The storage account blob inventory policy properties.
+ */
 @Fluent
 public final class BlobInventoryPolicyProperties {
     /*
@@ -25,7 +28,9 @@ public final class BlobInventoryPolicyProperties {
     @JsonProperty(value = "policy", required = true)
     private BlobInventoryPolicySchema policy;
 
-    /** Creates an instance of BlobInventoryPolicyProperties class. */
+    /**
+     * Creates an instance of BlobInventoryPolicyProperties class.
+     */
     public BlobInventoryPolicyProperties() {
     }
 
@@ -65,10 +70,9 @@ public final class BlobInventoryPolicyProperties {
      */
     public void validate() {
         if (policy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property policy in model BlobInventoryPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property policy in model BlobInventoryPolicyProperties"));
         } else {
             policy().validate();
         }

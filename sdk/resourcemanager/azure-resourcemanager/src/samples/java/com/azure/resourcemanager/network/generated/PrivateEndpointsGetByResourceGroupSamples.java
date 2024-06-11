@@ -9,9 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PrivateEndpointsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PrivateEndpointGetWithASG.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PrivateEndpointGetWithASG.json
      */
     /**
      * Sample code: Get private endpoint with application security groups.
@@ -20,13 +18,15 @@ public final class PrivateEndpointsGetByResourceGroupSamples {
      */
     public static void
         getPrivateEndpointWithApplicationSecurityGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateEndpoints().getByResourceGroupWithResponse("rg1", "testPe",
-            null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpoints()
+            .getByResourceGroupWithResponse("rg1", "testPe", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * PrivateEndpointGetForManualApproval.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PrivateEndpointGetForManualApproval.json
      */
     /**
      * Sample code: Get private endpoint with manual approval connection.
@@ -35,13 +35,15 @@ public final class PrivateEndpointsGetByResourceGroupSamples {
      */
     public static void
         getPrivateEndpointWithManualApprovalConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateEndpoints().getByResourceGroupWithResponse("rg1", "testPe",
-            null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpoints()
+            .getByResourceGroupWithResponse("rg1", "testPe", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PrivateEndpointGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PrivateEndpointGet.json
      */
     /**
      * Sample code: Get private endpoint.
@@ -49,7 +51,10 @@ public final class PrivateEndpointsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPrivateEndpoint(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateEndpoints().getByResourceGroupWithResponse("rg1", "testPe",
-            null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpoints()
+            .getByResourceGroupWithResponse("rg1", "testPe", null, com.azure.core.util.Context.NONE);
     }
 }

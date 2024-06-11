@@ -5,6 +5,7 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -48,12 +49,6 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
      */
     @Generated
     private List<ToolDefinition> tools;
-
-    /*
-     * The modified list of previously uploaded fileIDs to attach to the assistant.
-     */
-    @Generated
-    private List<String> fileIds;
 
     /*
      * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
@@ -181,28 +176,6 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
     }
 
     /**
-     * Get the fileIds property: The modified list of previously uploaded fileIDs to attach to the assistant.
-     *
-     * @return the fileIds value.
-     */
-    @Generated
-    public List<String> getFileIds() {
-        return this.fileIds;
-    }
-
-    /**
-     * Set the fileIds property: The modified list of previously uploaded fileIDs to attach to the assistant.
-     *
-     * @param fileIds the fileIds value to set.
-     * @return the UpdateAssistantOptions object itself.
-     */
-    @Generated
-    public UpdateAssistantOptions setFileIds(List<String> fileIds) {
-        this.fileIds = fileIds;
-        return this;
-    }
-
-    /**
      * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
      * additional information about that object in a structured format. Keys may be up to 64 characters in length and
      * values may be up to 512 characters in length.
@@ -240,7 +213,12 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("tool_resources", this.toolResources);
+        jsonWriter.writeNumberField("temperature", this.temperature);
+        jsonWriter.writeNumberField("top_p", this.topP);
+        if (this.responseFormat != null) {
+            jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
+        }
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -271,9 +249,15 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
                 } else if ("tools".equals(fieldName)) {
                     List<ToolDefinition> tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
                     deserializedUpdateAssistantOptions.tools = tools;
-                } else if ("file_ids".equals(fieldName)) {
-                    List<String> fileIds = reader.readArray(reader1 -> reader1.getString());
-                    deserializedUpdateAssistantOptions.fileIds = fileIds;
+                } else if ("tool_resources".equals(fieldName)) {
+                    deserializedUpdateAssistantOptions.toolResources = UpdateToolResourcesOptions.fromJson(reader);
+                } else if ("temperature".equals(fieldName)) {
+                    deserializedUpdateAssistantOptions.temperature = reader.getNullable(JsonReader::getDouble);
+                } else if ("top_p".equals(fieldName)) {
+                    deserializedUpdateAssistantOptions.topP = reader.getNullable(JsonReader::getDouble);
+                } else if ("response_format".equals(fieldName)) {
+                    deserializedUpdateAssistantOptions.responseFormat
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("metadata".equals(fieldName)) {
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
                     deserializedUpdateAssistantOptions.metadata = metadata;
@@ -283,5 +267,147 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
             }
             return deserializedUpdateAssistantOptions;
         });
+    }
+
+    /*
+     * A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For
+     * example,
+     * the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector
+     * store IDs.
+     */
+    @Generated
+    private UpdateToolResourcesOptions toolResources;
+
+    /*
+     * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random,
+     * while lower values like 0.2 will make it more focused and deterministic.
+     */
+    @Generated
+    private Double temperature;
+
+    /*
+     * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of
+     * the tokens with top_p probability mass.
+     * So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+     * 
+     * We generally recommend altering this or temperature but not both.
+     */
+    @Generated
+    private Double topP;
+
+    /*
+     * The response format of the tool calls used by this assistant.
+     */
+    @Generated
+    private BinaryData responseFormat;
+
+    /**
+     * Get the toolResources property: A set of resources that are used by the assistant's tools. The resources are
+     * specific to the type of tool. For example,
+     * the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector
+     * store IDs.
+     *
+     * @return the toolResources value.
+     */
+    @Generated
+    public UpdateToolResourcesOptions getToolResources() {
+        return this.toolResources;
+    }
+
+    /**
+     * Set the toolResources property: A set of resources that are used by the assistant's tools. The resources are
+     * specific to the type of tool. For example,
+     * the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool requires a list of vector
+     * store IDs.
+     *
+     * @param toolResources the toolResources value to set.
+     * @return the UpdateAssistantOptions object itself.
+     */
+    @Generated
+    public UpdateAssistantOptions setToolResources(UpdateToolResourcesOptions toolResources) {
+        this.toolResources = toolResources;
+        return this;
+    }
+
+    /**
+     * Get the temperature property: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make
+     * the output more random,
+     * while lower values like 0.2 will make it more focused and deterministic.
+     *
+     * @return the temperature value.
+     */
+    @Generated
+    public Double getTemperature() {
+        return this.temperature;
+    }
+
+    /**
+     * Set the temperature property: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make
+     * the output more random,
+     * while lower values like 0.2 will make it more focused and deterministic.
+     *
+     * @param temperature the temperature value to set.
+     * @return the UpdateAssistantOptions object itself.
+     */
+    @Generated
+    public UpdateAssistantOptions setTemperature(Double temperature) {
+        this.temperature = temperature;
+        return this;
+    }
+
+    /**
+     * Get the topP property: An alternative to sampling with temperature, called nucleus sampling, where the model
+     * considers the results of the tokens with top_p probability mass.
+     * So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+     *
+     * We generally recommend altering this or temperature but not both.
+     *
+     * @return the topP value.
+     */
+    @Generated
+    public Double getTopP() {
+        return this.topP;
+    }
+
+    /**
+     * Set the topP property: An alternative to sampling with temperature, called nucleus sampling, where the model
+     * considers the results of the tokens with top_p probability mass.
+     * So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+     *
+     * We generally recommend altering this or temperature but not both.
+     *
+     * @param topP the topP value to set.
+     * @return the UpdateAssistantOptions object itself.
+     */
+    @Generated
+    public UpdateAssistantOptions setTopP(Double topP) {
+        this.topP = topP;
+        return this;
+    }
+
+    /**
+     * Get the responseFormat property: The response format of the tool calls used by this assistant.
+     *
+     * @return the responseFormat value.
+     */
+    public AssistantsApiResponseFormatOption getResponseFormat() {
+        return AssistantsApiResponseFormatOption.fromBinaryData(this.responseFormat);
+    }
+
+    /**
+     * Set the responseFormat property: The response format of the tool calls used by this assistant.
+     *
+     * @param responseFormat the responseFormat value to set.
+     * @return the UpdateAssistantOptions object itself.
+     */
+    public UpdateAssistantOptions setResponseFormat(AssistantsApiResponseFormatOption responseFormat) {
+        if (responseFormat.getFormat() != null) {
+            this.responseFormat = BinaryData.fromObject(responseFormat.getFormat());
+        } else if (responseFormat.getMode() != null) {
+            this.responseFormat = BinaryData.fromObject(responseFormat.getMode());
+        } else {
+            this.responseFormat = null;
+        }
+        return this;
     }
 }

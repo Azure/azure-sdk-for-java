@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.SkuInfoInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public final class SkuInfoCollection {
 
     /**
      * Get the value property: Collection of resources.
-     * 
+     *
      * @return the value value.
      */
     public List<SkuInfoInner> value() {
@@ -44,7 +45,7 @@ public final class SkuInfoCollection {
 
     /**
      * Set the value property: Collection of resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the SkuInfoCollection object itself.
      */
@@ -55,7 +56,7 @@ public final class SkuInfoCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,13 +65,13 @@ public final class SkuInfoCollection {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model SkuInfoCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model SkuInfoCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

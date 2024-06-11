@@ -1178,8 +1178,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         return this.dataLakeStorage.getPaths().appendDataNoCustomHeadersWithResponseAsync(
             data, fileOffset, null, length, null, appendOptions.getLeaseAction(), leaseDuration,
                 appendOptions.getProposedLeaseId(), null, appendOptions.isFlush(), headers, leaseAccessConditions,
-                getCpkInfo(), context)
-            .map(response -> new SimpleResponse<>(response, null));
+                getCpkInfo(), context);
     }
 
     /**
@@ -1847,10 +1846,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         } else {
             pathExpiryOptions = PathExpiryOptions.NEVER_EXPIRE;
         }
-        return this.blobDataLakeStorage.getPaths().setExpiryWithResponseAsync(
-            pathExpiryOptions, null,
-            null, expiresOn, context)
-            .map(rb -> new SimpleResponse<>(rb, null));
+        return this.blobDataLakeStorage.getPaths()
+            .setExpiryNoCustomHeadersWithResponseAsync(pathExpiryOptions, null, null, expiresOn, context);
     }
 
 }

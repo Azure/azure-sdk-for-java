@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Binary read settings.
- */
+/** Binary read settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("BinaryReadSettings")
 @Fluent
@@ -22,15 +20,12 @@ public final class BinaryReadSettings extends FormatReadSettings {
     @JsonProperty(value = "compressionProperties")
     private CompressionReadSettings compressionProperties;
 
-    /**
-     * Creates an instance of BinaryReadSettings class.
-     */
-    public BinaryReadSettings() {
-    }
+    /** Creates an instance of BinaryReadSettings class. */
+    public BinaryReadSettings() {}
 
     /**
      * Get the compressionProperties property: Compression settings.
-     * 
+     *
      * @return the compressionProperties value.
      */
     public CompressionReadSettings getCompressionProperties() {
@@ -39,7 +34,7 @@ public final class BinaryReadSettings extends FormatReadSettings {
 
     /**
      * Set the compressionProperties property: Compression settings.
-     * 
+     *
      * @param compressionProperties the compressionProperties value to set.
      * @return the BinaryReadSettings object itself.
      */

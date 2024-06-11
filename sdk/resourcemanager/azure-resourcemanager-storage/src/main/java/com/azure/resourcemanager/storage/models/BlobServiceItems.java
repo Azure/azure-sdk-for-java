@@ -7,9 +7,12 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The BlobServiceItems model. */
+/**
+ * The BlobServiceItems model.
+ */
 @Immutable
 public final class BlobServiceItems {
     /*
@@ -18,7 +21,9 @@ public final class BlobServiceItems {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<BlobServicePropertiesInner> value;
 
-    /** Creates an instance of BlobServiceItems class. */
+    /**
+     * Creates an instance of BlobServiceItems class.
+     */
     public BlobServiceItems() {
     }
 

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PeerExpressRouteCircuitConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * PeerExpressRouteCircuitConnectionList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PeerExpressRouteCircuitConnectionList.json
      */
     /**
      * Sample code: List Peer ExpressRouteCircuit Connection.
@@ -18,7 +17,10 @@ public final class PeerExpressRouteCircuitConnectionsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listPeerExpressRouteCircuitConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPeerExpressRouteCircuitConnections().list("rg1",
-            "ExpressRouteARMCircuitA", "AzurePrivatePeering", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPeerExpressRouteCircuitConnections()
+            .list("rg1", "ExpressRouteARMCircuitA", "AzurePrivatePeering", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Request body structure for deleting data flow debug session.
- */
+/** Request body structure for deleting data flow debug session. */
 @Fluent
 public final class DeleteDataFlowDebugSessionRequest {
     /*
@@ -24,15 +22,12 @@ public final class DeleteDataFlowDebugSessionRequest {
     @JsonProperty(value = "dataFlowName")
     private String dataFlowName;
 
-    /**
-     * Creates an instance of DeleteDataFlowDebugSessionRequest class.
-     */
-    public DeleteDataFlowDebugSessionRequest() {
-    }
+    /** Creates an instance of DeleteDataFlowDebugSessionRequest class. */
+    public DeleteDataFlowDebugSessionRequest() {}
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     * 
+     *
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -41,7 +36,7 @@ public final class DeleteDataFlowDebugSessionRequest {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     * 
+     *
      * @param sessionId the sessionId value to set.
      * @return the DeleteDataFlowDebugSessionRequest object itself.
      */
@@ -52,7 +47,7 @@ public final class DeleteDataFlowDebugSessionRequest {
 
     /**
      * Get the dataFlowName property: The data flow which contains the debug session.
-     * 
+     *
      * @return the dataFlowName value.
      */
     public String getDataFlowName() {
@@ -61,7 +56,7 @@ public final class DeleteDataFlowDebugSessionRequest {
 
     /**
      * Set the dataFlowName property: The data flow which contains the debug session.
-     * 
+     *
      * @param dataFlowName the dataFlowName value to set.
      * @return the DeleteDataFlowDebugSessionRequest object itself.
      */

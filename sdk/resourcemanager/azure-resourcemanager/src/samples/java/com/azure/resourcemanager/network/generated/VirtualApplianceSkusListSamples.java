@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualApplianceSkusListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * NetworkVirtualApplianceSkuList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkVirtualApplianceSkuList.json
      */
     /**
      * Sample code: NetworkVirtualApplianceSkuListResult.

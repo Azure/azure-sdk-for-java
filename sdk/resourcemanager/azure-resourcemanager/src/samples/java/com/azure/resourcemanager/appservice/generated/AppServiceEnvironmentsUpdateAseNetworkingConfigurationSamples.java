@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.AseV3NetworkingConfigu
  */
 public final class AppServiceEnvironmentsUpdateAseNetworkingConfigurationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * AppServiceEnvironments_UpdateAseNetworkingConfiguration.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_UpdateAseNetworkingConfiguration.json
      */
     /**
      * Sample code: Update networking configuration of an App Service Environment.
@@ -21,7 +20,10 @@ public final class AppServiceEnvironmentsUpdateAseNetworkingConfigurationSamples
      */
     public static void
         updateNetworkingConfigurationOfAnAppServiceEnvironment(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
             .updateAseNetworkingConfigurationWithResponse("test-rg", "test-ase",
                 new AseV3NetworkingConfigurationInner().withFtpEnabled(true).withRemoteDebugEnabled(true),
                 com.azure.core.util.Context.NONE);

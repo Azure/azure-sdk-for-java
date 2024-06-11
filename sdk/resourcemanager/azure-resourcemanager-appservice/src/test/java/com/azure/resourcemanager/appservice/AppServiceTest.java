@@ -19,22 +19,16 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.msi.MsiManager;
+import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.ResourceManager;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeoutException;
-
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
@@ -44,6 +38,11 @@ import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /** The base for app service tests. */
 public class AppServiceTest extends ResourceManagerTestProxyTestBase {
@@ -92,7 +91,7 @@ public class AppServiceTest extends ResourceManagerTestProxyTestBase {
 
         if (!interceptorManager.isLiveMode()) {
             // Disable `$..appkey` sanitizer for these tests
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3466"));
+            interceptorManager.removeSanitizers("AZSDK3466");
         }
         // useExistingDomainAndCertificate();
         // createNewDomainAndCertificate();

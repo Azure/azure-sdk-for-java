@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RoutingIntentDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RoutingIntentDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/RoutingIntentDelete.json
      */
     /**
      * Sample code: RouteTableDelete.
@@ -18,7 +17,10 @@ public final class RoutingIntentDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeTableDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRoutingIntents().delete("rg1", "virtualHub1", "Intent1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getRoutingIntents()
+            .delete("rg1", "virtualHub1", "Intent1", com.azure.core.util.Context.NONE);
     }
 }
