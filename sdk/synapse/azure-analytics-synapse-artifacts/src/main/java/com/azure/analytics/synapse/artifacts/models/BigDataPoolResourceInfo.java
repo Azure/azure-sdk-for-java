@@ -13,8 +13,8 @@ import java.util.Map;
 
 /**
  * Big Data pool
- * 
- * A Big Data pool.
+ *
+ * <p>A Big Data pool.
  */
 @JsonFlatten
 @Fluent
@@ -27,7 +27,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /*
      * Spark pool auto-scaling properties
-     * 
+     *
      * Auto-scaling properties
      */
     @JsonProperty(value = "properties.autoScale")
@@ -41,7 +41,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /*
      * Spark pool auto-pausing properties
-     * 
+     *
      * Auto-pausing properties
      */
     @JsonProperty(value = "properties.autoPause")
@@ -85,7 +85,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /*
      * Spark pool library version requirements
-     * 
+     *
      * Library version requirements
      */
     @JsonProperty(value = "properties.libraryRequirements")
@@ -99,7 +99,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /*
      * Spark pool library version requirements
-     * 
+     *
      * Spark configuration file to specify additional properties
      */
     @JsonProperty(value = "properties.sparkConfigProperties")
@@ -135,15 +135,12 @@ public class BigDataPoolResourceInfo extends TrackedResource {
     @JsonProperty(value = "properties.lastSucceededTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSucceededTimestamp;
 
-    /**
-     * Creates an instance of BigDataPoolResourceInfo class.
-     */
-    public BigDataPoolResourceInfo() {
-    }
+    /** Creates an instance of BigDataPoolResourceInfo class. */
+    public BigDataPoolResourceInfo() {}
 
     /**
      * Get the provisioningState property: The state of the Big Data pool.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String getProvisioningState() {
@@ -152,7 +149,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the provisioningState property: The state of the Big Data pool.
-     * 
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -163,9 +160,9 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the autoScale property: Spark pool auto-scaling properties
-     * 
-     * Auto-scaling properties.
-     * 
+     *
+     * <p>Auto-scaling properties.
+     *
      * @return the autoScale value.
      */
     public AutoScaleProperties getAutoScale() {
@@ -174,9 +171,9 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the autoScale property: Spark pool auto-scaling properties
-     * 
-     * Auto-scaling properties.
-     * 
+     *
+     * <p>Auto-scaling properties.
+     *
      * @param autoScale the autoScale value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -187,7 +184,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the creationDate property: The time when the Big Data pool was created.
-     * 
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime getCreationDate() {
@@ -196,7 +193,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the creationDate property: The time when the Big Data pool was created.
-     * 
+     *
      * @param creationDate the creationDate value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -207,9 +204,9 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the autoPause property: Spark pool auto-pausing properties
-     * 
-     * Auto-pausing properties.
-     * 
+     *
+     * <p>Auto-pausing properties.
+     *
      * @return the autoPause value.
      */
     public AutoPauseProperties getAutoPause() {
@@ -218,9 +215,9 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the autoPause property: Spark pool auto-pausing properties
-     * 
-     * Auto-pausing properties.
-     * 
+     *
+     * <p>Auto-pausing properties.
+     *
      * @param autoPause the autoPause value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -231,7 +228,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the isComputeIsolationEnabled property: Whether compute isolation is required or not.
-     * 
+     *
      * @return the isComputeIsolationEnabled value.
      */
     public Boolean isComputeIsolationEnabled() {
@@ -240,7 +237,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the isComputeIsolationEnabled property: Whether compute isolation is required or not.
-     * 
+     *
      * @param isComputeIsolationEnabled the isComputeIsolationEnabled value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -251,7 +248,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the sessionLevelPackagesEnabled property: Whether session level packages enabled.
-     * 
+     *
      * @return the sessionLevelPackagesEnabled value.
      */
     public Boolean isSessionLevelPackagesEnabled() {
@@ -260,7 +257,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the sessionLevelPackagesEnabled property: Whether session level packages enabled.
-     * 
+     *
      * @param sessionLevelPackagesEnabled the sessionLevelPackagesEnabled value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -271,7 +268,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the cacheSize property: The cache size.
-     * 
+     *
      * @return the cacheSize value.
      */
     public Integer getCacheSize() {
@@ -280,7 +277,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the cacheSize property: The cache size.
-     * 
+     *
      * @param cacheSize the cacheSize value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -291,7 +288,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the dynamicExecutorAllocation property: Dynamic Executor Allocation.
-     * 
+     *
      * @return the dynamicExecutorAllocation value.
      */
     public DynamicExecutorAllocation getDynamicExecutorAllocation() {
@@ -300,7 +297,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the dynamicExecutorAllocation property: Dynamic Executor Allocation.
-     * 
+     *
      * @param dynamicExecutorAllocation the dynamicExecutorAllocation value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -311,7 +308,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the sparkEventsFolder property: The Spark events folder.
-     * 
+     *
      * @return the sparkEventsFolder value.
      */
     public String getSparkEventsFolder() {
@@ -320,7 +317,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the sparkEventsFolder property: The Spark events folder.
-     * 
+     *
      * @param sparkEventsFolder the sparkEventsFolder value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -331,7 +328,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the nodeCount property: The number of nodes in the Big Data pool.
-     * 
+     *
      * @return the nodeCount value.
      */
     public Integer getNodeCount() {
@@ -340,7 +337,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the nodeCount property: The number of nodes in the Big Data pool.
-     * 
+     *
      * @param nodeCount the nodeCount value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -351,9 +348,9 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the libraryRequirements property: Spark pool library version requirements
-     * 
-     * Library version requirements.
-     * 
+     *
+     * <p>Library version requirements.
+     *
      * @return the libraryRequirements value.
      */
     public LibraryRequirements getLibraryRequirements() {
@@ -362,9 +359,9 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the libraryRequirements property: Spark pool library version requirements
-     * 
-     * Library version requirements.
-     * 
+     *
+     * <p>Library version requirements.
+     *
      * @param libraryRequirements the libraryRequirements value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -375,7 +372,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the customLibraries property: List of custom libraries/packages associated with the spark pool.
-     * 
+     *
      * @return the customLibraries value.
      */
     public List<LibraryInfo> getCustomLibraries() {
@@ -384,7 +381,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the customLibraries property: List of custom libraries/packages associated with the spark pool.
-     * 
+     *
      * @param customLibraries the customLibraries value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -395,9 +392,9 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the sparkConfigProperties property: Spark pool library version requirements
-     * 
-     * Spark configuration file to specify additional properties.
-     * 
+     *
+     * <p>Spark configuration file to specify additional properties.
+     *
      * @return the sparkConfigProperties value.
      */
     public LibraryRequirements getSparkConfigProperties() {
@@ -406,9 +403,9 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the sparkConfigProperties property: Spark pool library version requirements
-     * 
-     * Spark configuration file to specify additional properties.
-     * 
+     *
+     * <p>Spark configuration file to specify additional properties.
+     *
      * @param sparkConfigProperties the sparkConfigProperties value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -419,7 +416,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the sparkVersion property: The Apache Spark version.
-     * 
+     *
      * @return the sparkVersion value.
      */
     public String getSparkVersion() {
@@ -428,7 +425,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the sparkVersion property: The Apache Spark version.
-     * 
+     *
      * @param sparkVersion the sparkVersion value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -439,7 +436,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the defaultSparkLogFolder property: The default folder where Spark logs will be written.
-     * 
+     *
      * @return the defaultSparkLogFolder value.
      */
     public String getDefaultSparkLogFolder() {
@@ -448,7 +445,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the defaultSparkLogFolder property: The default folder where Spark logs will be written.
-     * 
+     *
      * @param defaultSparkLogFolder the defaultSparkLogFolder value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -459,7 +456,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the nodeSize property: The level of compute power that each node in the Big Data pool has.
-     * 
+     *
      * @return the nodeSize value.
      */
     public NodeSize getNodeSize() {
@@ -468,7 +465,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the nodeSize property: The level of compute power that each node in the Big Data pool has.
-     * 
+     *
      * @param nodeSize the nodeSize value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -479,7 +476,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the nodeSizeFamily property: The kind of nodes that the Big Data pool provides.
-     * 
+     *
      * @return the nodeSizeFamily value.
      */
     public NodeSizeFamily getNodeSizeFamily() {
@@ -488,7 +485,7 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Set the nodeSizeFamily property: The kind of nodes that the Big Data pool provides.
-     * 
+     *
      * @param nodeSizeFamily the nodeSizeFamily value to set.
      * @return the BigDataPoolResourceInfo object itself.
      */
@@ -499,25 +496,21 @@ public class BigDataPoolResourceInfo extends TrackedResource {
 
     /**
      * Get the lastSucceededTimestamp property: The time when the Big Data pool was updated successfully.
-     * 
+     *
      * @return the lastSucceededTimestamp value.
      */
     public OffsetDateTime getLastSucceededTimestamp() {
         return this.lastSucceededTimestamp;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public BigDataPoolResourceInfo setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public BigDataPoolResourceInfo setLocation(String location) {
         super.setLocation(location);

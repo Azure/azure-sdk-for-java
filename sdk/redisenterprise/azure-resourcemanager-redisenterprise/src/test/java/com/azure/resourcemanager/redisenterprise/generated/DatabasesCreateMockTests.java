@@ -6,85 +6,73 @@ package com.azure.resourcemanager.redisenterprise.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager;
 import com.azure.resourcemanager.redisenterprise.models.AofFrequency;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.Database;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
+import com.azure.resourcemanager.redisenterprise.models.DeferUpgradeSetting;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
 import com.azure.resourcemanager.redisenterprise.models.LinkedDatabase;
 import com.azure.resourcemanager.redisenterprise.models.Module;
 import com.azure.resourcemanager.redisenterprise.models.Persistence;
 import com.azure.resourcemanager.redisenterprise.models.Protocol;
 import com.azure.resourcemanager.redisenterprise.models.RdbFrequency;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DatabasesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"clientProtocol\":\"Plaintext\",\"port\":2046724372,\"provisioningState\":\"Succeeded\",\"resourceState\":\"UpdateFailed\",\"clusteringPolicy\":\"OSSCluster\",\"evictionPolicy\":\"VolatileTTL\",\"persistence\":{\"aofEnabled\":true,\"rdbEnabled\":true,\"aofFrequency\":\"1s\",\"rdbFrequency\":\"6h\"},\"modules\":[{\"name\":\"pvjymjhxxjyng\",\"args\":\"ivkrtsw\",\"version\":\"qzvszjf\"},{\"name\":\"uvjfdxxive\",\"args\":\"t\",\"version\":\"aqtdoqmcbx\"},{\"name\":\"wvxysl\",\"args\":\"hsfxoblytkb\",\"version\":\"pe\"}],\"geoReplication\":{\"groupNickname\":\"fbkrvrnsvs\",\"linkedDatabases\":[{\"id\":\"hxcr\",\"state\":\"UnlinkFailed\"},{\"id\":\"vasrruvwb\",\"state\":\"Linking\"}]}},\"id\":\"fsubcgjbirxbpy\",\"name\":\"srfbjfdtwss\",\"type\":\"t\"}";
+            = "{\"properties\":{\"clientProtocol\":\"Plaintext\",\"port\":1700948230,\"provisioningState\":\"Succeeded\",\"resourceState\":\"ScalingFailed\",\"clusteringPolicy\":\"EnterpriseCluster\",\"evictionPolicy\":\"AllKeysRandom\",\"persistence\":{\"aofEnabled\":false,\"rdbEnabled\":true,\"aofFrequency\":\"always\",\"rdbFrequency\":\"12h\"},\"modules\":[{\"name\":\"jzuaejxdultskzbb\",\"args\":\"zumveekgpwo\",\"version\":\"hkfpbs\"}],\"geoReplication\":{\"groupNickname\":\"f\",\"linkedDatabases\":[{\"id\":\"us\",\"state\":\"LinkFailed\"}]},\"redisVersion\":\"uwaboekqvke\",\"deferUpgrade\":\"Deferred\"},\"id\":\"mvb\",\"name\":\"wyjsflhhcaalnjix\",\"type\":\"sxyawjoyaqcs\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        RedisEnterpriseManager manager = RedisEnterpriseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RedisEnterpriseManager manager = RedisEnterpriseManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Database response
-            = manager.databases().define("vawjvzunlu").withExistingRedisEnterprise("vgqzcjrvxd", "zlmwlxkvugfhz")
-                .withClientProtocol(Protocol.ENCRYPTED).withPort(1845273018)
-                .withClusteringPolicy(ClusteringPolicy.OSSCLUSTER).withEvictionPolicy(EvictionPolicy.ALL_KEYS_LRU)
-                .withPersistence(new Persistence().withAofEnabled(true).withRdbEnabled(false)
-                    .withAofFrequency(AofFrequency.ONES).withRdbFrequency(RdbFrequency.SIXH))
-                .withModules(Arrays.asList(new Module().withName("skzbb").withArgs("zumveekgpwo"),
-                    new Module().withName("yofd").withArgs("uusdttouwa"),
-                    new Module().withName("mvb").withArgs("yjsflhhcaalnji"),
-                    new Module().withName("yjpkiidzyexz").withArgs("lixhnrztfol")))
-                .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("dtpnapnyiropuhp")
-                    .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("gylgqgitxmedjvcs"),
-                        new LinkedDatabase().withId("wwncwzzhxgk"), new LinkedDatabase().withId("ucnapkteoellwp"),
-                        new LinkedDatabase().withId("gpfqbuace"))))
-                .create();
+        Database response = manager.databases()
+            .define("nrjawgqwg")
+            .withExistingRedisEnterprise("euojgjrwju", "iotwmcdytdxwit")
+            .withClientProtocol(Protocol.ENCRYPTED)
+            .withPort(1840512089)
+            .withClusteringPolicy(ClusteringPolicy.ENTERPRISE_CLUSTER)
+            .withEvictionPolicy(EvictionPolicy.ALL_KEYS_RANDOM)
+            .withPersistence(new Persistence().withAofEnabled(false)
+                .withRdbEnabled(true)
+                .withAofFrequency(AofFrequency.ALWAYS)
+                .withRdbFrequency(RdbFrequency.ONE_TWOH))
+            .withModules(Arrays.asList(new Module().withName("whvylw").withArgs("tdhxujznbmpowuwp"),
+                new Module().withName("xobbcswsrt").withArgs("iplrbpbewtghfgb"),
+                new Module().withName("zvlvqhjkbegib").withArgs("mxiebw"),
+                new Module().withName("tzjuzgwyzmhtxo").withArgs("mtsavjcbpwxqp")))
+            .withGeoReplication(new DatabasePropertiesGeoReplication().withGroupNickname("mdyvxqtayriw")
+                .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("qbex"))))
+            .withDeferUpgrade(DeferUpgradeSetting.DEFERRED)
+            .create();
 
         Assertions.assertEquals(Protocol.PLAINTEXT, response.clientProtocol());
-        Assertions.assertEquals(2046724372, response.port());
-        Assertions.assertEquals(ClusteringPolicy.OSSCLUSTER, response.clusteringPolicy());
-        Assertions.assertEquals(EvictionPolicy.VOLATILE_TTL, response.evictionPolicy());
-        Assertions.assertEquals(true, response.persistence().aofEnabled());
+        Assertions.assertEquals(1700948230, response.port());
+        Assertions.assertEquals(ClusteringPolicy.ENTERPRISE_CLUSTER, response.clusteringPolicy());
+        Assertions.assertEquals(EvictionPolicy.ALL_KEYS_RANDOM, response.evictionPolicy());
+        Assertions.assertEquals(false, response.persistence().aofEnabled());
         Assertions.assertEquals(true, response.persistence().rdbEnabled());
-        Assertions.assertEquals(AofFrequency.ONES, response.persistence().aofFrequency());
-        Assertions.assertEquals(RdbFrequency.SIXH, response.persistence().rdbFrequency());
-        Assertions.assertEquals("pvjymjhxxjyng", response.modules().get(0).name());
-        Assertions.assertEquals("ivkrtsw", response.modules().get(0).args());
-        Assertions.assertEquals("fbkrvrnsvs", response.geoReplication().groupNickname());
-        Assertions.assertEquals("hxcr", response.geoReplication().linkedDatabases().get(0).id());
+        Assertions.assertEquals(AofFrequency.ALWAYS, response.persistence().aofFrequency());
+        Assertions.assertEquals(RdbFrequency.ONE_TWOH, response.persistence().rdbFrequency());
+        Assertions.assertEquals("jzuaejxdultskzbb", response.modules().get(0).name());
+        Assertions.assertEquals("zumveekgpwo", response.modules().get(0).args());
+        Assertions.assertEquals("f", response.geoReplication().groupNickname());
+        Assertions.assertEquals("us", response.geoReplication().linkedDatabases().get(0).id());
+        Assertions.assertEquals(DeferUpgradeSetting.DEFERRED, response.deferUpgrade());
     }
 }

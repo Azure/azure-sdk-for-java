@@ -11,6 +11,7 @@ import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.StreamRequiredAction;
 import com.azure.ai.openai.assistants.models.StreamRunCreation;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -90,7 +91,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
 
-        StepVerifier.create(client.createMessage(threadId, MessageRole.USER, "What is the value of x in the equation x^2 + 2x + 1 = 0?"))
+        StepVerifier.create(client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, "What is the value of x in the equation x^2 + 2x + 1 = 0?")))
             .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
             .verifyComplete();
 
@@ -106,7 +107,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
         createRunRunner(createThreadOption -> {
             String threadId = createThread(client);
 
-            StepVerifier.create(client.createMessage(threadId, MessageRole.USER, "Please make a graph for my boilerplate equation"))
+            StepVerifier.create(client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, "Please make a graph for my boilerplate equation")))
                 .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
                 .verifyComplete();
 

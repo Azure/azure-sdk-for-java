@@ -5,9 +5,11 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.network.models.InboundSecurityRuleType;
 import com.azure.resourcemanager.network.models.InboundSecurityRules;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -15,6 +17,12 @@ import java.util.List;
  */
 @Fluent
 public final class InboundSecurityRuleProperties {
+    /*
+     * Rule Type. This should be either AutoExpire or Permanent. Auto Expire Rule only creates NSG rules. Permanent Rule creates NSG rule and SLB LB Rule.
+     */
+    @JsonProperty(value = "ruleType")
+    private InboundSecurityRuleType ruleType;
+
     /*
      * List of allowed rules.
      */
@@ -34,8 +42,30 @@ public final class InboundSecurityRuleProperties {
     }
 
     /**
+     * Get the ruleType property: Rule Type. This should be either AutoExpire or Permanent. Auto Expire Rule only
+     * creates NSG rules. Permanent Rule creates NSG rule and SLB LB Rule.
+     *
+     * @return the ruleType value.
+     */
+    public InboundSecurityRuleType ruleType() {
+        return this.ruleType;
+    }
+
+    /**
+     * Set the ruleType property: Rule Type. This should be either AutoExpire or Permanent. Auto Expire Rule only
+     * creates NSG rules. Permanent Rule creates NSG rule and SLB LB Rule.
+     *
+     * @param ruleType the ruleType value to set.
+     * @return the InboundSecurityRuleProperties object itself.
+     */
+    public InboundSecurityRuleProperties withRuleType(InboundSecurityRuleType ruleType) {
+        this.ruleType = ruleType;
+        return this;
+    }
+
+    /**
      * Get the rules property: List of allowed rules.
-     * 
+     *
      * @return the rules value.
      */
     public List<InboundSecurityRules> rules() {
@@ -44,7 +74,7 @@ public final class InboundSecurityRuleProperties {
 
     /**
      * Set the rules property: List of allowed rules.
-     * 
+     *
      * @param rules the rules value to set.
      * @return the InboundSecurityRuleProperties object itself.
      */
@@ -55,7 +85,7 @@ public final class InboundSecurityRuleProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -64,7 +94,7 @@ public final class InboundSecurityRuleProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

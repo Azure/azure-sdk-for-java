@@ -23,6 +23,8 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
 
     private Object data;
 
+    private Map<String, List<String>> queryParams;
+
     /**
      * Gets the URL associated with this request.
      *
@@ -39,6 +41,7 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
      */
     public HttpBinJSON url(String url) {
         this.url = url;
+
         return this;
     }
 
@@ -58,6 +61,7 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
      */
     public HttpBinJSON headers(Map<String, List<String>> headers) {
         this.headers = headers;
+
         return this;
     }
 
@@ -77,6 +81,27 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
      */
     public HttpBinJSON data(Object data) {
         this.data = data;
+
+        return this;
+    }
+
+    /**
+     * Gets the response headers.
+     *
+     * @return The response headers.
+     */
+    public Map<String, List<String>> queryParams() {
+        return queryParams;
+    }
+
+    /**
+     * Sets the response headers.
+     *
+     * @param queryParams The response headers.
+     */
+    public HttpBinJSON queryParams(Map<String, List<String>> queryParams) {
+        this.queryParams = queryParams;
+
         return this;
     }
 
@@ -107,6 +132,8 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
         jsonWriter.writeMapField("headers", headers, (headerWriter, headerList) ->
             headerWriter.writeArray(headerList, JsonWriter::writeString));
         jsonWriter.writeUntypedField("data", data);
+        jsonWriter.writeMapField("queryParams", queryParams, (paramWriter, paramList) ->
+            paramWriter.writeArray(paramList, JsonWriter::writeString));
 
         return jsonWriter.writeEndObject();
     }
@@ -140,6 +167,10 @@ public class HttpBinJSON implements JsonSerializable<HttpBinJSON> {
                             reader.readMap(headerReader -> headerReader.readArray(JsonReader::getString));
                     } else if ("data".equalsIgnoreCase(fieldName)) {
                         httpBinJSON.data = reader.readUntyped();
+                    } else if ("queryParams".equalsIgnoreCase(fieldName)) {
+                        // Pass the JsonReader to another JsonSerializable to read the inner object.
+                        httpBinJSON.queryParams =
+                            reader.readMap(paramReader -> paramReader.readArray(JsonReader::getString));
                     } else {
                         reader.skipChildren();
                     }

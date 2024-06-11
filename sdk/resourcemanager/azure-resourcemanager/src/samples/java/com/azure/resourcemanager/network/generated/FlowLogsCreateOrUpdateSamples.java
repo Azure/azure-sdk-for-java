@@ -13,9 +13,7 @@ import com.azure.resourcemanager.network.models.FlowLogFormatType;
  */
 public final class FlowLogsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkWatcherFlowLogCreate.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkWatcherFlowLogCreate.json
      */
     /**
      * Sample code: Create or update flow log.
@@ -23,14 +21,17 @@ public final class FlowLogsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateFlowLog(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getFlowLogs().createOrUpdate("rg1", "nw1", "fl", new FlowLogInner()
-            .withLocation("centraluseuap")
-            .withTargetResourceId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/desmondcentral-nsg")
-            .withStorageId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/nwtest1mgvbfmqsigdxe")
-            .withEnabled(true)
-            .withFormat(new FlowLogFormatParameters().withType(FlowLogFormatType.JSON).withVersion(1)),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getFlowLogs()
+            .createOrUpdate("rg1", "nw1", "fl", new FlowLogInner().withLocation("centraluseuap")
+                .withTargetResourceId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/desmondcentral-nsg")
+                .withStorageId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/nwtest1mgvbfmqsigdxe")
+                .withEnabled(true)
+                .withFormat(new FlowLogFormatParameters().withType(FlowLogFormatType.JSON).withVersion(1)),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -20,8 +21,7 @@ public final class ContainerPartitionKey {
     private List<String> paths;
 
     /*
-     * Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (upto three
-     * maximum) are supported for container create
+     * Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (upto three maximum) are supported for container create
      */
     @JsonProperty(value = "kind")
     private PartitionKind kind;
@@ -46,7 +46,7 @@ public final class ContainerPartitionKey {
 
     /**
      * Get the paths property: List of paths using which data within the container can be partitioned.
-     * 
+     *
      * @return the paths value.
      */
     public List<String> paths() {
@@ -55,7 +55,7 @@ public final class ContainerPartitionKey {
 
     /**
      * Set the paths property: List of paths using which data within the container can be partitioned.
-     * 
+     *
      * @param paths the paths value to set.
      * @return the ContainerPartitionKey object itself.
      */
@@ -67,7 +67,7 @@ public final class ContainerPartitionKey {
     /**
      * Get the kind property: Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition
      * keys (upto three maximum) are supported for container create.
-     * 
+     *
      * @return the kind value.
      */
     public PartitionKind kind() {
@@ -77,7 +77,7 @@ public final class ContainerPartitionKey {
     /**
      * Set the kind property: Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition
      * keys (upto three maximum) are supported for container create.
-     * 
+     *
      * @param kind the kind value to set.
      * @return the ContainerPartitionKey object itself.
      */
@@ -88,7 +88,7 @@ public final class ContainerPartitionKey {
 
     /**
      * Get the version property: Indicates the version of the partition key definition.
-     * 
+     *
      * @return the version value.
      */
     public Integer version() {
@@ -97,7 +97,7 @@ public final class ContainerPartitionKey {
 
     /**
      * Set the version property: Indicates the version of the partition key definition.
-     * 
+     *
      * @param version the version value to set.
      * @return the ContainerPartitionKey object itself.
      */
@@ -108,7 +108,7 @@ public final class ContainerPartitionKey {
 
     /**
      * Get the systemKey property: Indicates if the container is using a system generated partition key.
-     * 
+     *
      * @return the systemKey value.
      */
     public Boolean systemKey() {
@@ -117,7 +117,7 @@ public final class ContainerPartitionKey {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A copy activity Dynamics source.
- */
+/** A copy activity Dynamics source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DynamicsSource")
 @Fluent
@@ -30,16 +28,13 @@ public final class DynamicsSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /**
-     * Creates an instance of DynamicsSource class.
-     */
-    public DynamicsSource() {
-    }
+    /** Creates an instance of DynamicsSource class. */
+    public DynamicsSource() {}
 
     /**
-     * Get the query property: FetchXML is a proprietary query language that is used in Microsoft Dynamics (online
-     * &amp; on-premises). Type: string (or Expression with resultType string).
-     * 
+     * Get the query property: FetchXML is a proprietary query language that is used in Microsoft Dynamics (online &amp;
+     * on-premises). Type: string (or Expression with resultType string).
+     *
      * @return the query value.
      */
     public Object getQuery() {
@@ -47,9 +42,9 @@ public final class DynamicsSource extends CopySource {
     }
 
     /**
-     * Set the query property: FetchXML is a proprietary query language that is used in Microsoft Dynamics (online
-     * &amp; on-premises). Type: string (or Expression with resultType string).
-     * 
+     * Set the query property: FetchXML is a proprietary query language that is used in Microsoft Dynamics (online &amp;
+     * on-premises). Type: string (or Expression with resultType string).
+     *
      * @param query the query value to set.
      * @return the DynamicsSource object itself.
      */
@@ -61,7 +56,7 @@ public final class DynamicsSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -71,7 +66,7 @@ public final class DynamicsSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @param additionalColumns the additionalColumns value to set.
      * @return the DynamicsSource object itself.
      */
@@ -80,27 +75,21 @@ public final class DynamicsSource extends CopySource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

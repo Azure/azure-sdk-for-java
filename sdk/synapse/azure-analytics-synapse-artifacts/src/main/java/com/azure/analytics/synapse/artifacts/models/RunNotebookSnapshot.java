@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Run notebook snapshot.
- */
+/** Run notebook snapshot. */
 @Fluent
 public final class RunNotebookSnapshot {
     /*
@@ -67,15 +65,12 @@ public final class RunNotebookSnapshot {
     @JsonProperty(value = "notebookContent")
     private NotebookResource notebookContent;
 
-    /**
-     * Creates an instance of RunNotebookSnapshot class.
-     */
-    public RunNotebookSnapshot() {
-    }
+    /** Creates an instance of RunNotebookSnapshot class. */
+    public RunNotebookSnapshot() {}
 
     /**
      * Get the exitValue property: Output of exit command.
-     * 
+     *
      * @return the exitValue value.
      */
     public String getExitValue() {
@@ -84,7 +79,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the exitValue property: Output of exit command.
-     * 
+     *
      * @param exitValue the exitValue value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -95,7 +90,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the id property: Run notebook runId.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -104,7 +99,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the id property: Run notebook runId.
-     * 
+     *
      * @param id the id value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -115,7 +110,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the notebook property: Notebook name.
-     * 
+     *
      * @return the notebook value.
      */
     public String getNotebook() {
@@ -124,7 +119,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the notebook property: Notebook name.
-     * 
+     *
      * @param notebook the notebook value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -135,7 +130,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the sessionOptions property: Session properties.
-     * 
+     *
      * @return the sessionOptions value.
      */
     public RunNotebookSparkSessionOptions getSessionOptions() {
@@ -144,7 +139,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the sessionOptions property: Session properties.
-     * 
+     *
      * @param sessionOptions the sessionOptions value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -155,7 +150,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the honorSessionTimeToLive property: Whether session should run till time to live after run completes.
-     * 
+     *
      * @return the honorSessionTimeToLive value.
      */
     public Boolean isHonorSessionTimeToLive() {
@@ -164,7 +159,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the honorSessionTimeToLive property: Whether session should run till time to live after run completes.
-     * 
+     *
      * @param honorSessionTimeToLive the honorSessionTimeToLive value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -175,7 +170,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the sessionId property: Livy session id.
-     * 
+     *
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -184,7 +179,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the sessionId property: Livy session id.
-     * 
+     *
      * @param sessionId the sessionId value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -195,7 +190,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the sparkPool property: SparkPool name.
-     * 
+     *
      * @return the sparkPool value.
      */
     public String getSparkPool() {
@@ -204,7 +199,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the sparkPool property: SparkPool name.
-     * 
+     *
      * @param sparkPool the sparkPool value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -215,7 +210,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the parameters property: Run notebook parameters.
-     * 
+     *
      * @return the parameters value.
      */
     public Map<String, RunNotebookParameter> getParameters() {
@@ -224,7 +219,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the parameters property: Run notebook parameters.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -235,7 +230,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the notebookContent property: Notebook resource type.
-     * 
+     *
      * @return the notebookContent value.
      */
     public NotebookResource getNotebookContent() {
@@ -244,7 +239,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the notebookContent property: Notebook resource type.
-     * 
+     *
      * @param notebookContent the notebookContent value to set.
      * @return the RunNotebookSnapshot object itself.
      */

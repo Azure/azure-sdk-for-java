@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Request body structure for data flow statistics.
- */
+/** Request body structure for data flow statistics. */
 @Fluent
 public final class DataFlowDebugStatisticsRequest {
     /*
@@ -37,15 +35,12 @@ public final class DataFlowDebugStatisticsRequest {
     @JsonProperty(value = "columns")
     private List<String> columns;
 
-    /**
-     * Creates an instance of DataFlowDebugStatisticsRequest class.
-     */
-    public DataFlowDebugStatisticsRequest() {
-    }
+    /** Creates an instance of DataFlowDebugStatisticsRequest class. */
+    public DataFlowDebugStatisticsRequest() {}
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     * 
+     *
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -54,7 +49,7 @@ public final class DataFlowDebugStatisticsRequest {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     * 
+     *
      * @param sessionId the sessionId value to set.
      * @return the DataFlowDebugStatisticsRequest object itself.
      */
@@ -65,7 +60,7 @@ public final class DataFlowDebugStatisticsRequest {
 
     /**
      * Get the dataFlowName property: The data flow which contains the debug session.
-     * 
+     *
      * @return the dataFlowName value.
      */
     public String getDataFlowName() {
@@ -74,7 +69,7 @@ public final class DataFlowDebugStatisticsRequest {
 
     /**
      * Set the dataFlowName property: The data flow which contains the debug session.
-     * 
+     *
      * @param dataFlowName the dataFlowName value to set.
      * @return the DataFlowDebugStatisticsRequest object itself.
      */
@@ -85,7 +80,7 @@ public final class DataFlowDebugStatisticsRequest {
 
     /**
      * Get the streamName property: The output stream name.
-     * 
+     *
      * @return the streamName value.
      */
     public String getStreamName() {
@@ -94,7 +89,7 @@ public final class DataFlowDebugStatisticsRequest {
 
     /**
      * Set the streamName property: The output stream name.
-     * 
+     *
      * @param streamName the streamName value to set.
      * @return the DataFlowDebugStatisticsRequest object itself.
      */
@@ -105,7 +100,7 @@ public final class DataFlowDebugStatisticsRequest {
 
     /**
      * Get the columns property: List of column names.
-     * 
+     *
      * @return the columns value.
      */
     public List<String> getColumns() {
@@ -114,7 +109,7 @@ public final class DataFlowDebugStatisticsRequest {
 
     /**
      * Set the columns property: List of column names.
-     * 
+     *
      * @param columns the columns value to set.
      * @return the DataFlowDebugStatisticsRequest object itself.
      */

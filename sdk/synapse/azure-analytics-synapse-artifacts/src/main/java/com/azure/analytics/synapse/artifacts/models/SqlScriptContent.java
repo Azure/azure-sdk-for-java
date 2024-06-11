@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * The content of the SQL script.
- */
+/** The content of the SQL script. */
 @Fluent
 public final class SqlScriptContent {
     /*
@@ -44,18 +42,14 @@ public final class SqlScriptContent {
     /*
      * The content of the SQL script.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of SqlScriptContent class.
-     */
-    public SqlScriptContent() {
-    }
+    /** Creates an instance of SqlScriptContent class. */
+    public SqlScriptContent() {}
 
     /**
      * Get the query property: SQL query to execute.
-     * 
+     *
      * @return the query value.
      */
     public String getQuery() {
@@ -64,7 +58,7 @@ public final class SqlScriptContent {
 
     /**
      * Set the query property: SQL query to execute.
-     * 
+     *
      * @param query the query value to set.
      * @return the SqlScriptContent object itself.
      */
@@ -75,7 +69,7 @@ public final class SqlScriptContent {
 
     /**
      * Get the currentConnection property: The connection used to execute the SQL script.
-     * 
+     *
      * @return the currentConnection value.
      */
     public SqlConnection getCurrentConnection() {
@@ -84,7 +78,7 @@ public final class SqlScriptContent {
 
     /**
      * Set the currentConnection property: The connection used to execute the SQL script.
-     * 
+     *
      * @param currentConnection the currentConnection value to set.
      * @return the SqlScriptContent object itself.
      */
@@ -95,7 +89,7 @@ public final class SqlScriptContent {
 
     /**
      * Get the resultLimit property: Limit of results, '-1' for no limit.
-     * 
+     *
      * @return the resultLimit value.
      */
     public Integer getResultLimit() {
@@ -104,7 +98,7 @@ public final class SqlScriptContent {
 
     /**
      * Set the resultLimit property: Limit of results, '-1' for no limit.
-     * 
+     *
      * @param resultLimit the resultLimit value to set.
      * @return the SqlScriptContent object itself.
      */
@@ -115,7 +109,7 @@ public final class SqlScriptContent {
 
     /**
      * Get the metadata property: The metadata of the SQL script.
-     * 
+     *
      * @return the metadata value.
      */
     public SqlScriptMetadata getMetadata() {
@@ -124,7 +118,7 @@ public final class SqlScriptContent {
 
     /**
      * Set the metadata property: The metadata of the SQL script.
-     * 
+     *
      * @param metadata the metadata value to set.
      * @return the SqlScriptContent object itself.
      */
@@ -135,7 +129,7 @@ public final class SqlScriptContent {
 
     /**
      * Get the additionalProperties property: The content of the SQL script.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -145,7 +139,7 @@ public final class SqlScriptContent {
 
     /**
      * Set the additionalProperties property: The content of the SQL script.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the SqlScriptContent object itself.
      */

@@ -3,19 +3,27 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import reactor.core.scheduler.Scheduler;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -43,10 +51,31 @@ public class EventHubClientBuilderTest {
     private static final String PROXY_HOST = "127.0.0.1";
     private static final String PROXY_PORT = "3128";
 
-    private static final String CORRECT_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
+    private static final String CONNECTION_STRING_NAMESPACE_FORMAT = "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s";
+    private static final String CONNECTION_STRING_WITH_ENTITY_FORMAT = "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s";
+    private static final String CORRECT_CONNECTION_STRING = String.format(CONNECTION_STRING_WITH_ENTITY_FORMAT,
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, EVENT_HUB_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
     public static final String JAVA_NET_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
+
+    @Mock
+    private Scheduler scheduler;
+
+    @Mock
+    private TokenCredential tokenCredential;
+    private AutoCloseable closeable;
+
+    @BeforeEach
+    public void beforeEach() {
+        closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void afterEach() throws Exception {
+        if (closeable != null) {
+            closeable.close();
+        }
+    }
 
     @Test
     public void missingConnectionString() {
@@ -250,7 +279,7 @@ public class EventHubClientBuilderTest {
     @Test
     public void namespaceConnectionStringAndName() {
         // Arrange
-        final String namespaceConnectionString = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s",
+        final String namespaceConnectionString = String.format(CONNECTION_STRING_NAMESPACE_FORMAT,
             ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY);
         final String fullyQualifiedDomainName = NAMESPACE_NAME + ENDPOINT_SUFFIX;
 
@@ -286,6 +315,91 @@ public class EventHubClientBuilderTest {
             .buildAsyncConsumerClient());
     }
 
+    @Test
+    public void getsCorrectEndpoint() {
+        // Arrange
+        final String fqdn = "test.foo.com";
+        final String eventHubName = "my-event-hub";
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .retryOptions(new AmqpRetryOptions())
+            .scheduler(scheduler);
+
+        // Act
+        builder.credential(fqdn, eventHubName, tokenCredential);
+
+        final ConnectionOptions actual = builder.getConnectionOptions();
+
+        // Assert
+        assertEquals(fqdn, actual.getFullyQualifiedNamespace());
+        assertEquals(fqdn, actual.getHostname());
+        assertEquals(ConnectionHandler.AMQPS_PORT, actual.getPort());
+        assertEquals(AmqpTransportType.AMQP, actual.getTransportType());
+    }
+
+    @Test
+    public void getsCorrectEndpointCustomEndpoint() {
+        // Arrange
+        final String fqdn = "test.foo.com";
+        final String eventHubName = "my-event-hub";
+
+        final String customHostname = "my.local.endpoint";
+        final int customPort = 4542;
+        final String customEndpoint = "sb://" + customHostname + ":" + customPort;
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .retryOptions(new AmqpRetryOptions())
+            .scheduler(scheduler);
+        // Act
+        builder.credential(fqdn, eventHubName, tokenCredential)
+            .customEndpointAddress(customEndpoint);
+
+        final ConnectionOptions actual = builder.getConnectionOptions();
+
+        // Assert
+        assertEquals(fqdn, actual.getFullyQualifiedNamespace());
+        assertEquals(customHostname, actual.getHostname());
+        assertEquals(customPort, actual.getPort());
+        assertEquals(AmqpTransportType.AMQP, actual.getTransportType());
+    }
+
+
+    public static Stream<Arguments> getsCorrectEndpointConnectionString() {
+        final String fqdn = "test.foo.com";
+        final String fqdnEndpoint = "sb://" + fqdn;
+        final String eventHubName = "my-event-hub";
+        final String connectionString = String.format(CONNECTION_STRING_WITH_ENTITY_FORMAT, fqdnEndpoint,
+            "shared-value-name-key", "shared-value-name", eventHubName);
+
+        final String hostname = "test.local";
+        final int port = 13454;
+        final String customEndpoint = "sb://" + hostname + ":" + port;
+        final String entityConnectionString = String.format(CONNECTION_STRING_WITH_ENTITY_FORMAT,
+             customEndpoint, "shared-value-name-key", "shared-value-name", eventHubName);
+
+        return Stream.of(
+            Arguments.of(connectionString, fqdn, ConnectionHandler.AMQPS_PORT),
+            Arguments.of(entityConnectionString, hostname, port)
+        );
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    public void getsCorrectEndpointConnectionString(String connectionString, String expectedHostname,
+        int expectedPort) {
+        // Arrange
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .retryOptions(new AmqpRetryOptions())
+            .scheduler(scheduler);
+
+        // Act
+        builder.connectionString(connectionString);
+
+        final ConnectionOptions actual = builder.getConnectionOptions();
+
+        // Assert
+        assertEquals(expectedHostname, actual.getHostname());
+        assertEquals(expectedPort, actual.getPort());
+    }
+
     private static Stream<Arguments> getProxyConfigurations() {
         return Stream.of(
             Arguments.of("http://localhost:8080"),
@@ -309,6 +423,4 @@ public class EventHubClientBuilderTest {
                 "Invalid namespace name: %s", namespace), exception);
         }
     }
-
-    // TODO: add test for retry(), scheduler(), timeout(), transportType()
 }

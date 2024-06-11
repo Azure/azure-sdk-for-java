@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Linked service for Asana.
- */
+/** Linked service for Asana. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Asana")
 @JsonFlatten
@@ -33,15 +31,12 @@ public class AsanaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /**
-     * Creates an instance of AsanaLinkedService class.
-     */
-    public AsanaLinkedService() {
-    }
+    /** Creates an instance of AsanaLinkedService class. */
+    public AsanaLinkedService() {}
 
     /**
      * Get the apiToken property: The api token for the Asana source.
-     * 
+     *
      * @return the apiToken value.
      */
     public SecretBase getApiToken() {
@@ -50,7 +45,7 @@ public class AsanaLinkedService extends LinkedService {
 
     /**
      * Set the apiToken property: The api token for the Asana source.
-     * 
+     *
      * @param apiToken the apiToken value to set.
      * @return the AsanaLinkedService object itself.
      */
@@ -60,9 +55,9 @@ public class AsanaLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -70,9 +65,9 @@ public class AsanaLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AsanaLinkedService object itself.
      */
@@ -81,36 +76,28 @@ public class AsanaLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AsanaLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AsanaLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AsanaLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AsanaLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

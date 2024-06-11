@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * HDInsight Spark activity.
- */
+/** HDInsight Spark activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HDInsightSpark")
 @JsonFlatten
@@ -70,16 +68,13 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.sparkConfig")
     private Map<String, Object> sparkConfig;
 
-    /**
-     * Creates an instance of HDInsightSparkActivity class.
-     */
-    public HDInsightSparkActivity() {
-    }
+    /** Creates an instance of HDInsightSparkActivity class. */
+    public HDInsightSparkActivity() {}
 
     /**
      * Get the rootPath property: The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or
      * Expression with resultType string).
-     * 
+     *
      * @return the rootPath value.
      */
     public Object getRootPath() {
@@ -89,7 +84,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * Set the rootPath property: The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or
      * Expression with resultType string).
-     * 
+     *
      * @param rootPath the rootPath value to set.
      * @return the HDInsightSparkActivity object itself.
      */
@@ -101,7 +96,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * Get the entryFilePath property: The relative path to the root folder of the code/package to be executed. Type:
      * string (or Expression with resultType string).
-     * 
+     *
      * @return the entryFilePath value.
      */
     public Object getEntryFilePath() {
@@ -111,7 +106,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * Set the entryFilePath property: The relative path to the root folder of the code/package to be executed. Type:
      * string (or Expression with resultType string).
-     * 
+     *
      * @param entryFilePath the entryFilePath value to set.
      * @return the HDInsightSparkActivity object itself.
      */
@@ -122,7 +117,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
 
     /**
      * Get the arguments property: The user-specified arguments to HDInsightSparkActivity.
-     * 
+     *
      * @return the arguments value.
      */
     public List<Object> getArguments() {
@@ -131,7 +126,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
 
     /**
      * Set the arguments property: The user-specified arguments to HDInsightSparkActivity.
-     * 
+     *
      * @param arguments the arguments value to set.
      * @return the HDInsightSparkActivity object itself.
      */
@@ -142,7 +137,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
 
     /**
      * Get the getDebugInfo property: Debug info option.
-     * 
+     *
      * @return the getDebugInfo value.
      */
     public HDInsightActivityDebugInfoOption getGetDebugInfo() {
@@ -151,7 +146,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
 
     /**
      * Set the getDebugInfo property: Debug info option.
-     * 
+     *
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightSparkActivity object itself.
      */
@@ -161,9 +156,9 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the sparkJobLinkedService property: The storage linked service for uploading the entry file and
-     * dependencies, and for receiving logs.
-     * 
+     * Get the sparkJobLinkedService property: The storage linked service for uploading the entry file and dependencies,
+     * and for receiving logs.
+     *
      * @return the sparkJobLinkedService value.
      */
     public LinkedServiceReference getSparkJobLinkedService() {
@@ -171,9 +166,9 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the sparkJobLinkedService property: The storage linked service for uploading the entry file and
-     * dependencies, and for receiving logs.
-     * 
+     * Set the sparkJobLinkedService property: The storage linked service for uploading the entry file and dependencies,
+     * and for receiving logs.
+     *
      * @param sparkJobLinkedService the sparkJobLinkedService value to set.
      * @return the HDInsightSparkActivity object itself.
      */
@@ -184,7 +179,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
 
     /**
      * Get the className property: The application's Java/Spark main class.
-     * 
+     *
      * @return the className value.
      */
     public String getClassName() {
@@ -193,7 +188,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
 
     /**
      * Set the className property: The application's Java/Spark main class.
-     * 
+     *
      * @param className the className value to set.
      * @return the HDInsightSparkActivity object itself.
      */
@@ -205,7 +200,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * Get the proxyUser property: The user to impersonate that will execute the job. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the proxyUser value.
      */
     public Object getProxyUser() {
@@ -215,7 +210,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
     /**
      * Set the proxyUser property: The user to impersonate that will execute the job. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param proxyUser the proxyUser value to set.
      * @return the HDInsightSparkActivity object itself.
      */
@@ -226,7 +221,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
 
     /**
      * Get the sparkConfig property: Spark configuration property.
-     * 
+     *
      * @return the sparkConfig value.
      */
     public Map<String, Object> getSparkConfig() {
@@ -235,7 +230,7 @@ public class HDInsightSparkActivity extends ExecutionActivity {
 
     /**
      * Set the sparkConfig property: Spark configuration property.
-     * 
+     *
      * @param sparkConfig the sparkConfig value to set.
      * @return the HDInsightSparkActivity object itself.
      */
@@ -244,72 +239,56 @@ public class HDInsightSparkActivity extends ExecutionActivity {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HDInsightSparkActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HDInsightSparkActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HDInsightSparkActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HDInsightSparkActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HDInsightSparkActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HDInsightSparkActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HDInsightSparkActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public HDInsightSparkActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
+import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
 
 /**
@@ -12,8 +12,7 @@ import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
  */
 public final class StaticSitesApproveOrRejectPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * ApproveRejectSitePrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ApproveRejectSitePrivateEndpointConnection.json
      */
     /**
      * Sample code: Approves or rejects a private endpoint connection for a site.
@@ -22,11 +21,15 @@ public final class StaticSitesApproveOrRejectPrivateEndpointConnectionSamples {
      */
     public static void
         approvesOrRejectsAPrivateEndpointConnectionForASite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().approveOrRejectPrivateEndpointConnection("rg",
-            "testSite", "connection",
-            new PrivateLinkConnectionApprovalRequestResource()
-                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("Approved")
-                    .withDescription("Approved by admin.").withActionsRequired("")),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .approveOrRejectPrivateEndpointConnection("rg", "testSite", "connection",
+                new RemotePrivateEndpointConnectionArmResourceInner()
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("Approved")
+                        .withDescription("Approved by admin.")
+                        .withActionsRequired("")),
+                com.azure.core.util.Context.NONE);
     }
 }

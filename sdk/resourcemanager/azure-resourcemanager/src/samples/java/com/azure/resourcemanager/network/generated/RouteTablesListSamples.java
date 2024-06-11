@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RouteTablesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RouteTableListAll.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/RouteTableListAll.json
      */
     /**
      * Sample code: List all route tables.

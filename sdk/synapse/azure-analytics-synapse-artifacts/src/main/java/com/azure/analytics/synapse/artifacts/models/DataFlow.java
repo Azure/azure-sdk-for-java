@@ -11,18 +11,17 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Azure Synapse nested object which contains a flow with data movements and transformations.
- */
+/** Azure Synapse nested object which contains a flow with data movements and transformations. */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = DataFlow.class)
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        defaultImpl = DataFlow.class)
 @JsonTypeName("DataFlow")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "MappingDataFlow", value = MappingDataFlow.class),
-    @JsonSubTypes.Type(name = "Flowlet", value = Flowlet.class) })
+    @JsonSubTypes.Type(name = "Flowlet", value = Flowlet.class)
+})
 @Fluent
 public class DataFlow {
     /*
@@ -43,15 +42,12 @@ public class DataFlow {
     @JsonProperty(value = "folder")
     private DataFlowFolder folder;
 
-    /**
-     * Creates an instance of DataFlow class.
-     */
-    public DataFlow() {
-    }
+    /** Creates an instance of DataFlow class. */
+    public DataFlow() {}
 
     /**
      * Get the description property: The description of the data flow.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -60,7 +56,7 @@ public class DataFlow {
 
     /**
      * Set the description property: The description of the data flow.
-     * 
+     *
      * @param description the description value to set.
      * @return the DataFlow object itself.
      */
@@ -71,7 +67,7 @@ public class DataFlow {
 
     /**
      * Get the annotations property: List of tags that can be used for describing the data flow.
-     * 
+     *
      * @return the annotations value.
      */
     public List<Object> getAnnotations() {
@@ -80,7 +76,7 @@ public class DataFlow {
 
     /**
      * Set the annotations property: List of tags that can be used for describing the data flow.
-     * 
+     *
      * @param annotations the annotations value to set.
      * @return the DataFlow object itself.
      */
@@ -92,7 +88,7 @@ public class DataFlow {
     /**
      * Get the folder property: The folder that this data flow is in. If not specified, Data flow will appear at the
      * root level.
-     * 
+     *
      * @return the folder value.
      */
     public DataFlowFolder getFolder() {
@@ -102,7 +98,7 @@ public class DataFlow {
     /**
      * Set the folder property: The folder that this data flow is in. If not specified, Data flow will appear at the
      * root level.
-     * 
+     *
      * @param folder the folder value to set.
      * @return the DataFlow object itself.
      */

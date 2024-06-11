@@ -12,9 +12,7 @@ import com.azure.resourcemanager.appservice.models.BasicAuthName;
  */
 public final class StaticSitesCreateOrUpdateBasicAuthSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/CreateOrUpdateStaticSiteBasicAuth.
-     * json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateStaticSiteBasicAuth.json
      */
     /**
      * Sample code: Creates or updates basic auth properties for a static site.
@@ -23,9 +21,13 @@ public final class StaticSitesCreateOrUpdateBasicAuthSamples {
      */
     public static void
         createsOrUpdatesBasicAuthPropertiesForAStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().createOrUpdateBasicAuthWithResponse("rg",
-            "testStaticSite0", BasicAuthName.DEFAULT, new StaticSiteBasicAuthPropertiesArmResourceInner()
-                .withPassword("fakeTokenPlaceholder").withApplicableEnvironmentsMode("AllEnvironments"),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .createOrUpdateBasicAuthWithResponse("rg", "testStaticSite0", BasicAuthName.DEFAULT,
+                new StaticSiteBasicAuthPropertiesArmResourceInner().withPassword("fakeTokenPlaceholder")
+                    .withApplicableEnvironmentsMode("AllEnvironments"),
+                com.azure.core.util.Context.NONE);
     }
 }

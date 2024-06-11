@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Dynamic Executor Allocation Properties.
- */
+/** Dynamic Executor Allocation Properties. */
 @Fluent
 public final class DynamicExecutorAllocation {
     /*
@@ -18,15 +16,12 @@ public final class DynamicExecutorAllocation {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /**
-     * Creates an instance of DynamicExecutorAllocation class.
-     */
-    public DynamicExecutorAllocation() {
-    }
+    /** Creates an instance of DynamicExecutorAllocation class. */
+    public DynamicExecutorAllocation() {}
 
     /**
      * Get the enabled property: Indicates whether Dynamic Executor Allocation is enabled or not.
-     * 
+     *
      * @return the enabled value.
      */
     public Boolean isEnabled() {
@@ -35,7 +30,7 @@ public final class DynamicExecutorAllocation {
 
     /**
      * Set the enabled property: Indicates whether Dynamic Executor Allocation is enabled or not.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the DynamicExecutorAllocation object itself.
      */

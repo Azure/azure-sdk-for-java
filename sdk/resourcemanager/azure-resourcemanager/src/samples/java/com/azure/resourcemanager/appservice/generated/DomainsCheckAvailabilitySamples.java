@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
  */
 public final class DomainsCheckAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-01-01/examples/
-     * CheckDomainAvailability.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/CheckDomainAvailability.json
      */
     /**
      * Sample code: Check domain availability.
@@ -20,7 +19,11 @@ public final class DomainsCheckAvailabilitySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void checkDomainAvailability(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDomains().checkAvailabilityWithResponse(
-            new NameIdentifierInner().withName("abcd.com"), com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDomains()
+            .checkAvailabilityWithResponse(new NameIdentifierInner().withName("abcd.com"),
+                com.azure.core.util.Context.NONE);
     }
 }

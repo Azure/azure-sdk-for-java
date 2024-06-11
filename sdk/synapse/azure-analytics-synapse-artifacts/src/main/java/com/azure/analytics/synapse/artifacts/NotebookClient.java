@@ -16,17 +16,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/**
- * Initializes a new instance of the synchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class NotebookClient {
-    @Generated
-    private final NotebooksImpl serviceClient;
+    @Generated private final NotebooksImpl serviceClient;
 
     /**
      * Initializes an instance of NotebookClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -36,7 +33,7 @@ public final class NotebookClient {
 
     /**
      * Lists Notebooks.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Notebook resources as paginated response with {@link PagedIterable}.
@@ -49,7 +46,7 @@ public final class NotebookClient {
 
     /**
      * Lists Notebooks.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -64,7 +61,7 @@ public final class NotebookClient {
 
     /**
      * Lists a summary of Notebooks.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Notebook resources as paginated response with {@link PagedIterable}.
@@ -77,7 +74,7 @@ public final class NotebookClient {
 
     /**
      * Lists a summary of Notebooks.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -92,11 +89,11 @@ public final class NotebookClient {
 
     /**
      * Creates or updates a Note Book.
-     * 
+     *
      * @param notebookName The notebook name.
      * @param notebook Note book resource definition.
      * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -105,18 +102,18 @@ public final class NotebookClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NotebookResource> createOrUpdateNotebookWithResponse(String notebookName, NotebookResource notebook,
-        String ifMatch, Context context) {
+    public Response<NotebookResource> createOrUpdateNotebookWithResponse(
+            String notebookName, NotebookResource notebook, String ifMatch, Context context) {
         return this.serviceClient.createOrUpdateNotebookWithResponse(notebookName, notebook, ifMatch, context);
     }
 
     /**
      * Creates or updates a Note Book.
-     * 
+     *
      * @param notebookName The notebook name.
      * @param notebook Note book resource definition.
      * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
-     * existing entity or can be * for unconditional update.
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -130,7 +127,7 @@ public final class NotebookClient {
 
     /**
      * Creates or updates a Note Book.
-     * 
+     *
      * @param notebookName The notebook name.
      * @param notebook Note book resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,10 +143,10 @@ public final class NotebookClient {
 
     /**
      * Gets a Note Book.
-     * 
+     *
      * @param notebookName The notebook name.
      * @param ifNoneMatch ETag of the Notebook entity. Should only be specified for get. If the ETag matches the
-     * existing entity tag, or if * was provided, then no content will be returned.
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -158,17 +155,17 @@ public final class NotebookClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NotebookResource> getNotebookWithResponse(String notebookName, String ifNoneMatch,
-        Context context) {
+    public Response<NotebookResource> getNotebookWithResponse(
+            String notebookName, String ifNoneMatch, Context context) {
         return this.serviceClient.getNotebookWithResponse(notebookName, ifNoneMatch, context);
     }
 
     /**
      * Gets a Note Book.
-     * 
+     *
      * @param notebookName The notebook name.
      * @param ifNoneMatch ETag of the Notebook entity. Should only be specified for get. If the ETag matches the
-     * existing entity tag, or if * was provided, then no content will be returned.
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -182,7 +179,7 @@ public final class NotebookClient {
 
     /**
      * Gets a Note Book.
-     * 
+     *
      * @param notebookName The notebook name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -197,7 +194,7 @@ public final class NotebookClient {
 
     /**
      * Deletes a Note book.
-     * 
+     *
      * @param notebookName The notebook name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,7 +210,7 @@ public final class NotebookClient {
 
     /**
      * Deletes a Note book.
-     * 
+     *
      * @param notebookName The notebook name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -227,7 +224,7 @@ public final class NotebookClient {
 
     /**
      * Renames a notebook.
-     * 
+     *
      * @param notebookName The notebook name.
      * @param request proposed new name.
      * @param context The context to associate with this operation.
@@ -238,14 +235,14 @@ public final class NotebookClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameNotebookWithResponse(String notebookName, ArtifactRenameRequest request,
-        Context context) {
+    public Response<Void> renameNotebookWithResponse(
+            String notebookName, ArtifactRenameRequest request, Context context) {
         return this.serviceClient.renameNotebookWithResponse(notebookName, request, context);
     }
 
     /**
      * Renames a notebook.
-     * 
+     *
      * @param notebookName The notebook name.
      * @param request proposed new name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -10,8 +10,8 @@ import java.time.OffsetDateTime;
 
 /**
  * Information about a library/package created at the workspace level.
- * 
- * Library/package information of a Big Data pool powered by Apache Spark.
+ *
+ * <p>Library/package information of a Big Data pool powered by Apache Spark.
  */
 @Fluent
 public final class LibraryInfo {
@@ -57,15 +57,12 @@ public final class LibraryInfo {
     @JsonProperty(value = "creatorId", access = JsonProperty.Access.WRITE_ONLY)
     private String creatorId;
 
-    /**
-     * Creates an instance of LibraryInfo class.
-     */
-    public LibraryInfo() {
-    }
+    /** Creates an instance of LibraryInfo class. */
+    public LibraryInfo() {}
 
     /**
      * Get the name property: Name of the library.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -74,7 +71,7 @@ public final class LibraryInfo {
 
     /**
      * Set the name property: Name of the library.
-     * 
+     *
      * @param name the name value to set.
      * @return the LibraryInfo object itself.
      */
@@ -85,7 +82,7 @@ public final class LibraryInfo {
 
     /**
      * Get the path property: Storage blob path of library.
-     * 
+     *
      * @return the path value.
      */
     public String getPath() {
@@ -94,7 +91,7 @@ public final class LibraryInfo {
 
     /**
      * Set the path property: Storage blob path of library.
-     * 
+     *
      * @param path the path value to set.
      * @return the LibraryInfo object itself.
      */
@@ -105,7 +102,7 @@ public final class LibraryInfo {
 
     /**
      * Get the containerName property: Storage blob container name.
-     * 
+     *
      * @return the containerName value.
      */
     public String getContainerName() {
@@ -114,7 +111,7 @@ public final class LibraryInfo {
 
     /**
      * Set the containerName property: Storage blob container name.
-     * 
+     *
      * @param containerName the containerName value to set.
      * @return the LibraryInfo object itself.
      */
@@ -125,7 +122,7 @@ public final class LibraryInfo {
 
     /**
      * Get the uploadedTimestamp property: The last update time of the library.
-     * 
+     *
      * @return the uploadedTimestamp value.
      */
     public OffsetDateTime getUploadedTimestamp() {
@@ -134,7 +131,7 @@ public final class LibraryInfo {
 
     /**
      * Set the uploadedTimestamp property: The last update time of the library.
-     * 
+     *
      * @param uploadedTimestamp the uploadedTimestamp value to set.
      * @return the LibraryInfo object itself.
      */
@@ -145,7 +142,7 @@ public final class LibraryInfo {
 
     /**
      * Get the type property: Type of the library.
-     * 
+     *
      * @return the type value.
      */
     public String getType() {
@@ -154,7 +151,7 @@ public final class LibraryInfo {
 
     /**
      * Set the type property: Type of the library.
-     * 
+     *
      * @param type the type value to set.
      * @return the LibraryInfo object itself.
      */
@@ -165,7 +162,7 @@ public final class LibraryInfo {
 
     /**
      * Get the provisioningStatus property: Provisioning status of the library/package.
-     * 
+     *
      * @return the provisioningStatus value.
      */
     public String getProvisioningStatus() {
@@ -174,7 +171,7 @@ public final class LibraryInfo {
 
     /**
      * Get the creatorId property: Creator Id of the library/package.
-     * 
+     *
      * @return the creatorId value.
      */
     public String getCreatorId() {

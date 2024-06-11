@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Linked service for Sybase data source.
- */
+/** Linked service for Sybase data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Sybase")
 @JsonFlatten
@@ -63,15 +61,12 @@ public class SybaseLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /**
-     * Creates an instance of SybaseLinkedService class.
-     */
-    public SybaseLinkedService() {
-    }
+    /** Creates an instance of SybaseLinkedService class. */
+    public SybaseLinkedService() {}
 
     /**
      * Get the server property: Server name for connection. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the server value.
      */
     public Object getServer() {
@@ -80,7 +75,7 @@ public class SybaseLinkedService extends LinkedService {
 
     /**
      * Set the server property: Server name for connection. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param server the server value to set.
      * @return the SybaseLinkedService object itself.
      */
@@ -91,7 +86,7 @@ public class SybaseLinkedService extends LinkedService {
 
     /**
      * Get the database property: Database name for connection. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the database value.
      */
     public Object getDatabase() {
@@ -100,7 +95,7 @@ public class SybaseLinkedService extends LinkedService {
 
     /**
      * Set the database property: Database name for connection. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param database the database value to set.
      * @return the SybaseLinkedService object itself.
      */
@@ -111,7 +106,7 @@ public class SybaseLinkedService extends LinkedService {
 
     /**
      * Get the schema property: Schema name for connection. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the schema value.
      */
     public Object getSchema() {
@@ -120,7 +115,7 @@ public class SybaseLinkedService extends LinkedService {
 
     /**
      * Set the schema property: Schema name for connection. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param schema the schema value to set.
      * @return the SybaseLinkedService object itself.
      */
@@ -131,7 +126,7 @@ public class SybaseLinkedService extends LinkedService {
 
     /**
      * Get the authenticationType property: AuthenticationType to be used for connection.
-     * 
+     *
      * @return the authenticationType value.
      */
     public SybaseAuthenticationType getAuthenticationType() {
@@ -140,7 +135,7 @@ public class SybaseLinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: AuthenticationType to be used for connection.
-     * 
+     *
      * @param authenticationType the authenticationType value to set.
      * @return the SybaseLinkedService object itself.
      */
@@ -151,7 +146,7 @@ public class SybaseLinkedService extends LinkedService {
 
     /**
      * Get the username property: Username for authentication. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the username value.
      */
     public Object getUsername() {
@@ -160,7 +155,7 @@ public class SybaseLinkedService extends LinkedService {
 
     /**
      * Set the username property: Username for authentication. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param username the username value to set.
      * @return the SybaseLinkedService object itself.
      */
@@ -171,7 +166,7 @@ public class SybaseLinkedService extends LinkedService {
 
     /**
      * Get the password property: Password for authentication.
-     * 
+     *
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -180,7 +175,7 @@ public class SybaseLinkedService extends LinkedService {
 
     /**
      * Set the password property: Password for authentication.
-     * 
+     *
      * @param password the password value to set.
      * @return the SybaseLinkedService object itself.
      */
@@ -190,9 +185,9 @@ public class SybaseLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -200,9 +195,9 @@ public class SybaseLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SybaseLinkedService object itself.
      */
@@ -211,36 +206,28 @@ public class SybaseLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SybaseLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SybaseLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SybaseLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SybaseLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

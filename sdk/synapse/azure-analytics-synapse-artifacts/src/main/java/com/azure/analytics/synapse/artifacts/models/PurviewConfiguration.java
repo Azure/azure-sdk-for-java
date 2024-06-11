@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Purview Configuration.
- */
+/** Purview Configuration. */
 @Fluent
 public final class PurviewConfiguration {
     /*
@@ -18,15 +16,12 @@ public final class PurviewConfiguration {
     @JsonProperty(value = "purviewResourceId")
     private String purviewResourceId;
 
-    /**
-     * Creates an instance of PurviewConfiguration class.
-     */
-    public PurviewConfiguration() {
-    }
+    /** Creates an instance of PurviewConfiguration class. */
+    public PurviewConfiguration() {}
 
     /**
      * Get the purviewResourceId property: Purview Resource ID.
-     * 
+     *
      * @return the purviewResourceId value.
      */
     public String getPurviewResourceId() {
@@ -35,7 +30,7 @@ public final class PurviewConfiguration {
 
     /**
      * Set the purviewResourceId property: Purview Resource ID.
-     * 
+     *
      * @param purviewResourceId the purviewResourceId value to set.
      * @return the PurviewConfiguration object itself.
      */

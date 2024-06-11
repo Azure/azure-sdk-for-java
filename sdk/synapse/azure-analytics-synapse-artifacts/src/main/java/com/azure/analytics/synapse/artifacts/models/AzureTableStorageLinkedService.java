@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The azure table storage linked service.
- */
+/** The azure table storage linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureTableStorage")
 @JsonFlatten
@@ -53,16 +51,13 @@ public class AzureTableStorageLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
 
-    /**
-     * Creates an instance of AzureTableStorageLinkedService class.
-     */
-    public AzureTableStorageLinkedService() {
-    }
+    /** Creates an instance of AzureTableStorageLinkedService class. */
+    public AzureTableStorageLinkedService() {}
 
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
      * string, SecureString or AzureKeyVaultSecretReference.
-     * 
+     *
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -72,7 +67,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
     /**
      * Set the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
      * string, SecureString or AzureKeyVaultSecretReference.
-     * 
+     *
      * @param connectionString the connectionString value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
@@ -83,7 +78,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
 
     /**
      * Get the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     * 
+     *
      * @return the accountKey value.
      */
     public AzureKeyVaultSecretReference getAccountKey() {
@@ -92,7 +87,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
 
     /**
      * Set the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     * 
+     *
      * @param accountKey the accountKey value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
@@ -104,7 +99,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
     /**
      * Get the sasUri property: SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     * 
+     *
      * @return the sasUri value.
      */
     public Object getSasUri() {
@@ -114,7 +109,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
     /**
      * Set the sasUri property: SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     * 
+     *
      * @param sasUri the sasUri value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
@@ -125,7 +120,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
 
     /**
      * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     * 
+     *
      * @return the sasToken value.
      */
     public AzureKeyVaultSecretReference getSasToken() {
@@ -134,7 +129,7 @@ public class AzureTableStorageLinkedService extends LinkedService {
 
     /**
      * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     * 
+     *
      * @param sasToken the sasToken value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
@@ -144,9 +139,9 @@ public class AzureTableStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public String getEncryptedCredential() {
@@ -154,9 +149,9 @@ public class AzureTableStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
@@ -165,36 +160,28 @@ public class AzureTableStorageLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureTableStorageLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureTableStorageLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureTableStorageLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureTableStorageLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

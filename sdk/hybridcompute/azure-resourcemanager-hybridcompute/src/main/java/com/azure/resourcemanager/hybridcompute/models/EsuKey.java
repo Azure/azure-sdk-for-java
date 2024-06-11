@@ -19,10 +19,10 @@ public final class EsuKey {
     private String sku;
 
     /*
-     * The current status of the license profile key.
+     * The current status of the license profile key. Represented by the same integer value that is presented on the machine itself when querying the license key status.
      */
     @JsonProperty(value = "licenseStatus")
-    private String licenseStatus;
+    private Integer licenseStatus;
 
     /**
      * Creates an instance of EsuKey class.
@@ -51,21 +51,23 @@ public final class EsuKey {
     }
 
     /**
-     * Get the licenseStatus property: The current status of the license profile key.
+     * Get the licenseStatus property: The current status of the license profile key. Represented by the same integer
+     * value that is presented on the machine itself when querying the license key status.
      * 
      * @return the licenseStatus value.
      */
-    public String licenseStatus() {
+    public Integer licenseStatus() {
         return this.licenseStatus;
     }
 
     /**
-     * Set the licenseStatus property: The current status of the license profile key.
+     * Set the licenseStatus property: The current status of the license profile key. Represented by the same integer
+     * value that is presented on the machine itself when querying the license key status.
      * 
      * @param licenseStatus the licenseStatus value to set.
      * @return the EsuKey object itself.
      */
-    public EsuKey withLicenseStatus(String licenseStatus) {
+    public EsuKey withLicenseStatus(Integer licenseStatus) {
         this.licenseStatus = licenseStatus;
         return this;
     }

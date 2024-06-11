@@ -11,8 +11,8 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import reactor.core.publisher.Flux
-import reactor.util.concurrent.Queues
 
+import java.time.Duration
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
@@ -24,6 +24,7 @@ import scala.collection.JavaConverters._
 //scalastyle:off multiple.string.literals
 class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTrait {
 
+  private val injectedDelays = new AtomicLong(0)
   private val rnd = scala.util.Random
   private val pageSize = 2
   private val cosmosSerializationConfig = CosmosSerializationConfig(
@@ -40,7 +41,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     val transientErrorCount = new AtomicLong(0)
     val iterator = new TransientIOErrorsRetryingIterator(
       continuationToken =>generateMockedCosmosPagedFlux(
-        continuationToken, pageCount, transientErrorCount, injectEmptyPages = false),
+        continuationToken, pageCount, transientErrorCount, injectEmptyPages = false, injectedDelayOfFirstPage = None),
       pageSize,
       1,
       None
@@ -59,7 +60,7 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     val transientErrorCount = new AtomicLong(0)
     val iterator = new TransientIOErrorsRetryingIterator(
       continuationToken =>generateMockedCosmosPagedFlux(
-        continuationToken, pageCount, transientErrorCount, injectEmptyPages = true),
+        continuationToken, pageCount, transientErrorCount, injectEmptyPages = true, injectedDelayOfFirstPage = None),
       pageSize,
       1,
       None
@@ -67,6 +68,25 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     iterator.maxRetryIntervalInMs = 5
 
     iterator.count(_ => true) shouldEqual ((pageCount - 10) * pageSize * producerCount)
+
+    transientErrorCount.get > 0 shouldEqual true
+  }
+
+  "Timeouts retrieving pages" should "be retried" in {
+
+    val pageCount = 100
+    val producerCount = 2
+    val transientErrorCount = new AtomicLong(0)
+    val iterator = new TransientIOErrorsRetryingIterator(
+      continuationToken => generateMockedCosmosPagedFlux(
+        continuationToken, pageCount, transientErrorCount, injectEmptyPages = false, injectedDelayOfFirstPage = Some(Duration.ofSeconds(70))),
+      pageSize,
+      1,
+      None
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    iterator.count(_ => true) shouldEqual (pageCount * pageSize * producerCount)
 
     transientErrorCount.get > 0 shouldEqual true
   }
@@ -91,7 +111,8 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     continuationToken: String,
     initialPageCount: Int,
     transientErrorCounter: AtomicLong,
-    injectEmptyPages: Boolean
+    injectEmptyPages: Boolean,
+    injectedDelayOfFirstPage: Option[Duration]
   ) = {
 
     require(initialPageCount > 20)
@@ -102,14 +123,16 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       0.2,
       Option.apply(continuationToken),
       transientErrorCounter,
-      injectEmptyPages)
+      injectEmptyPages,
+      injectedDelayOfFirstPage)
     val rightProducer = generateFeedResponseFlux(
       "Right",
       initialPageCount,
       0.1,
       Option.apply(continuationToken),
       transientErrorCounter,
-      injectEmptyPages)
+      injectEmptyPages,
+      injectedDelayOfFirstPage)
     val toBeMerged = Array(leftProducer, rightProducer).toIterable.asJava
     val mergedFlux = Flux.mergeSequential(toBeMerged , 1, 2)
     UtilBridgeInternal.createCosmosPagedFlux(_ => mergedFlux)
@@ -122,7 +145,8 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     errorThreshold: Double,
     requestContinuationToken: Option[String],
     transientErrorCounter: AtomicLong,
-    injectEmptyPages: Boolean
+    injectEmptyPages: Boolean,
+    injectedDelayOfFirstPage: Option[Duration]
   ): Flux[FeedResponse[SparkRowItem]] = {
 
     val responses = Array.range(1, pageCount + 1)
@@ -139,8 +163,14 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
       .filter(response => requestContinuationToken.isEmpty ||
         requestContinuationToken.get < response.getContinuationToken)
 
-    Flux
+    var flux = Flux
       .fromArray(responses)
+
+    if (injectedDelayOfFirstPage.isDefined && injectedDelays.incrementAndGet() < 3) {
+      flux = flux.delaySequence(injectedDelayOfFirstPage.get)
+    }
+
+    flux
       .map(response => if (rnd.nextDouble() < errorThreshold) {
         transientErrorCounter.incrementAndGet()
         throw new DummyTransientCosmosException

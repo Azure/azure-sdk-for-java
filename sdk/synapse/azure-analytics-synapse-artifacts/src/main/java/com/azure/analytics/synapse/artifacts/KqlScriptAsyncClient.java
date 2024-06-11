@@ -15,17 +15,14 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the asynchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class KqlScriptAsyncClient {
-    @Generated
-    private final KqlScriptsOperationsImpl serviceClient;
+    @Generated private final KqlScriptsOperationsImpl serviceClient;
 
     /**
      * Initializes an instance of KqlScriptAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -35,7 +32,7 @@ public final class KqlScriptAsyncClient {
 
     /**
      * Creates or updates a KQL Script.
-     * 
+     *
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,14 +42,14 @@ public final class KqlScriptAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KqlScriptResource>> createOrUpdateWithResponse(String kqlScriptName,
-        KqlScriptResource kqlScript) {
+    public Mono<Response<KqlScriptResource>> createOrUpdateWithResponse(
+            String kqlScriptName, KqlScriptResource kqlScript) {
         return this.serviceClient.createOrUpdateWithResponseAsync(kqlScriptName, kqlScript);
     }
 
     /**
      * Creates or updates a KQL Script.
-     * 
+     *
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,7 +65,7 @@ public final class KqlScriptAsyncClient {
 
     /**
      * Get KQL script by name.
-     * 
+     *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -83,7 +80,7 @@ public final class KqlScriptAsyncClient {
 
     /**
      * Get KQL script by name.
-     * 
+     *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -98,7 +95,7 @@ public final class KqlScriptAsyncClient {
 
     /**
      * Delete KQL script by name.
-     * 
+     *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -113,7 +110,7 @@ public final class KqlScriptAsyncClient {
 
     /**
      * Delete KQL script by name.
-     * 
+     *
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -128,7 +125,7 @@ public final class KqlScriptAsyncClient {
 
     /**
      * Rename KQL script.
-     * 
+     *
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,7 +141,7 @@ public final class KqlScriptAsyncClient {
 
     /**
      * Rename KQL script.
-     * 
+     *
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

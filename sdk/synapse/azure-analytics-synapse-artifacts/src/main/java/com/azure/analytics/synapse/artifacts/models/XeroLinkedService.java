@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Xero Service linked service.
- */
+/** Xero Service linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Xero")
 @JsonFlatten
@@ -73,16 +71,13 @@ public class XeroLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /**
-     * Creates an instance of XeroLinkedService class.
-     */
-    public XeroLinkedService() {
-    }
+    /** Creates an instance of XeroLinkedService class. */
+    public XeroLinkedService() {}
 
     /**
      * Get the connectionProperties property: Properties used to connect to Xero. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     * 
+     *
      * @return the connectionProperties value.
      */
     public Object getConnectionProperties() {
@@ -92,7 +87,7 @@ public class XeroLinkedService extends LinkedService {
     /**
      * Set the connectionProperties property: Properties used to connect to Xero. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     * 
+     *
      * @param connectionProperties the connectionProperties value to set.
      * @return the XeroLinkedService object itself.
      */
@@ -103,7 +98,7 @@ public class XeroLinkedService extends LinkedService {
 
     /**
      * Get the host property: The endpoint of the Xero server. (i.e. api.xero.com).
-     * 
+     *
      * @return the host value.
      */
     public Object getHost() {
@@ -112,7 +107,7 @@ public class XeroLinkedService extends LinkedService {
 
     /**
      * Set the host property: The endpoint of the Xero server. (i.e. api.xero.com).
-     * 
+     *
      * @param host the host value to set.
      * @return the XeroLinkedService object itself.
      */
@@ -123,7 +118,7 @@ public class XeroLinkedService extends LinkedService {
 
     /**
      * Get the consumerKey property: The consumer key associated with the Xero application.
-     * 
+     *
      * @return the consumerKey value.
      */
     public SecretBase getConsumerKey() {
@@ -132,7 +127,7 @@ public class XeroLinkedService extends LinkedService {
 
     /**
      * Set the consumerKey property: The consumer key associated with the Xero application.
-     * 
+     *
      * @param consumerKey the consumerKey value to set.
      * @return the XeroLinkedService object itself.
      */
@@ -143,9 +138,8 @@ public class XeroLinkedService extends LinkedService {
 
     /**
      * Get the privateKey property: The private key from the .pem file that was generated for your Xero private
-     * application. You must include all the text from the .pem file, including the Unix line endings(
-     * ).
-     * 
+     * application. You must include all the text from the .pem file, including the Unix line endings( ).
+     *
      * @return the privateKey value.
      */
     public SecretBase getPrivateKey() {
@@ -154,9 +148,8 @@ public class XeroLinkedService extends LinkedService {
 
     /**
      * Set the privateKey property: The private key from the .pem file that was generated for your Xero private
-     * application. You must include all the text from the .pem file, including the Unix line endings(
-     * ).
-     * 
+     * application. You must include all the text from the .pem file, including the Unix line endings( ).
+     *
      * @param privateKey the privateKey value to set.
      * @return the XeroLinkedService object itself.
      */
@@ -168,7 +161,7 @@ public class XeroLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     * 
+     *
      * @return the useEncryptedEndpoints value.
      */
     public Object getUseEncryptedEndpoints() {
@@ -178,7 +171,7 @@ public class XeroLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     * 
+     *
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the XeroLinkedService object itself.
      */
@@ -190,7 +183,7 @@ public class XeroLinkedService extends LinkedService {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     * 
+     *
      * @return the useHostVerification value.
      */
     public Object getUseHostVerification() {
@@ -200,7 +193,7 @@ public class XeroLinkedService extends LinkedService {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     * 
+     *
      * @param useHostVerification the useHostVerification value to set.
      * @return the XeroLinkedService object itself.
      */
@@ -210,9 +203,9 @@ public class XeroLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
-     * 
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
      * @return the usePeerVerification value.
      */
     public Object getUsePeerVerification() {
@@ -220,9 +213,9 @@ public class XeroLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
-     * 
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
+     *
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the XeroLinkedService object itself.
      */
@@ -232,9 +225,9 @@ public class XeroLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -242,9 +235,9 @@ public class XeroLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the XeroLinkedService object itself.
      */
@@ -253,36 +246,28 @@ public class XeroLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public XeroLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public XeroLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public XeroLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public XeroLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A copy activity sink for a CosmosDB (MongoDB API) database.
- */
+/** A copy activity sink for a CosmosDB (MongoDB API) database. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CosmosDbMongoDbApiSink")
 @Fluent
@@ -24,17 +22,14 @@ public final class CosmosDbMongoDbApiSink extends CopySink {
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
 
-    /**
-     * Creates an instance of CosmosDbMongoDbApiSink class.
-     */
-    public CosmosDbMongoDbApiSink() {
-    }
+    /** Creates an instance of CosmosDbMongoDbApiSink class. */
+    public CosmosDbMongoDbApiSink() {}
 
     /**
      * Get the writeBehavior property: Specifies whether the document with same key to be overwritten (upsert) rather
      * than throw exception (insert). The default value is "insert". Type: string (or Expression with resultType
      * string). Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the writeBehavior value.
      */
     public Object getWriteBehavior() {
@@ -45,7 +40,7 @@ public final class CosmosDbMongoDbApiSink extends CopySink {
      * Set the writeBehavior property: Specifies whether the document with same key to be overwritten (upsert) rather
      * than throw exception (insert). The default value is "insert". Type: string (or Expression with resultType
      * string). Type: string (or Expression with resultType string).
-     * 
+     *
      * @param writeBehavior the writeBehavior value to set.
      * @return the CosmosDbMongoDbApiSink object itself.
      */
@@ -54,45 +49,35 @@ public final class CosmosDbMongoDbApiSink extends CopySink {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbMongoDbApiSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbMongoDbApiSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbMongoDbApiSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbMongoDbApiSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public CosmosDbMongoDbApiSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

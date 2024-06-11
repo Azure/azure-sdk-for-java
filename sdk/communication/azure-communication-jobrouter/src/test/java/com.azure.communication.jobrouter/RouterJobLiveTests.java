@@ -32,7 +32,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void unassignJob(HttpClient httpClient) throws InterruptedException {
+    public void unassignJob(HttpClient httpClient) {
         // Setup
         jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
@@ -77,16 +78,8 @@ public class RouterJobLiveTests extends JobRouterTestBase {
                 }
             })
             .setAvailableForOffers(true)
-            .setChannels(new ArrayList<RouterChannel>() {
-                {
-                    add(new RouterChannel(channelId, 1));
-                }
-            })
-            .setQueues(new ArrayList<String>() {
-                {
-                    add(jobQueue.getId());
-                }
-            }));
+            .setChannels(Collections.singletonList(new RouterChannel(channelId, 1)))
+            .setQueues(Collections.singletonList(jobQueue.getId())));
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
         CreateJobOptions createJobOptions = new CreateJobOptions(jobId, channelId, queueId)
@@ -105,18 +98,11 @@ public class RouterJobLiveTests extends JobRouterTestBase {
                     put("StringTag", new RouterValue("test2"));
                 }
             })
-            .setRequestedWorkerSelectors(new ArrayList<RouterWorkerSelector>() {
-                {
-                    add(new RouterWorkerSelector("IntKey", LabelOperator.GREATER_THAN, new RouterValue(2))
-                        .setExpedite(true).setExpiresAfter(Duration.ofSeconds(100)));
-                    add(new RouterWorkerSelector("BoolKey", LabelOperator.EQUAL, new RouterValue(true)));
-                }
-            })
-            .setNotes(new ArrayList<RouterJobNote>() {
-                {
-                    add(new RouterJobNote("Note1"));
-                }
-            })
+            .setRequestedWorkerSelectors(Arrays.asList(
+                new RouterWorkerSelector("IntKey", LabelOperator.GREATER_THAN, new RouterValue(2))
+                    .setExpedite(true).setExpiresAfter(Duration.ofSeconds(100)),
+                new RouterWorkerSelector("BoolKey", LabelOperator.EQUAL, new RouterValue(true))))
+            .setNotes(Collections.singletonList(new RouterJobNote("Note1")))
             .setDispositionCode("code1")
             .setChannelReference("ref")
             .setPriority(5);
@@ -180,12 +166,12 @@ public class RouterJobLiveTests extends JobRouterTestBase {
             assertEquals(Duration.ofSeconds(100), listJob.getRequestedWorkerSelectors().get(0).getExpiresAfter());
         }
 
-        List<RouterJobOffer> jobOffers = new ArrayList<RouterJobOffer>();
+        List<RouterJobOffer> jobOffers;
         long startTimeMillis = System.currentTimeMillis();
         while (true) {
             RouterWorker worker = jobRouterClient.getWorker(workerId);
             jobOffers = worker.getOffers();
-            if (jobOffers.size() > 0 || System.currentTimeMillis() - startTimeMillis > 10000) {
+            if (!jobOffers.isEmpty() || System.currentTimeMillis() - startTimeMillis > 10000) {
                 break;
             }
         }
@@ -237,7 +223,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void jobScheduling(HttpClient httpClient) throws InterruptedException {
+    public void jobScheduling(HttpClient httpClient) {
         // Setup
         jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);

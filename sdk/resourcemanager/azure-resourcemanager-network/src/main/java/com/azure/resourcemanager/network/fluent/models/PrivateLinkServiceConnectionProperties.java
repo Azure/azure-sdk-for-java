@@ -81,8 +81,8 @@ public final class PrivateLinkServiceConnectionProperties {
     }
 
     /**
-     * Get the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private
-     * endpoint should connect to.
+     * Get the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private endpoint
+     * should connect to.
      * 
      * @return the groupIds value.
      */
@@ -91,8 +91,8 @@ public final class PrivateLinkServiceConnectionProperties {
     }
 
     /**
-     * Set the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private
-     * endpoint should connect to.
+     * Set the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private endpoint
+     * should connect to.
      * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateLinkServiceConnectionProperties object itself.

@@ -7,7 +7,6 @@ import io.clientcore.core.util.configuration.Configuration;
 import io.clientcore.core.util.configuration.ConfigurationProperty;
 import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
 import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.implementation.util.CoreUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -18,6 +17,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
  * This represents proxy configuration to be used in http clients.
@@ -275,7 +276,7 @@ public class ProxyOptions {
         String proxyConfiguration = configuration.get(proxyProperty);
 
         // No proxy configuration setup.
-        if (CoreUtils.isNullOrEmpty(proxyConfiguration)) {
+        if (isNullOrEmpty(proxyConfiguration)) {
             return null;
         }
 
@@ -293,7 +294,7 @@ public class ProxyOptions {
             ProxyOptions proxyOptions = new ProxyOptions(Type.HTTP, socketAddress);
 
             String nonProxyHostsString = configuration.get(Configuration.PROPERTY_NO_PROXY);
-            if (!CoreUtils.isNullOrEmpty(nonProxyHostsString)) {
+            if (!isNullOrEmpty(nonProxyHostsString)) {
                 proxyOptions.nonProxyHosts = sanitizeNoProxy(nonProxyHostsString);
 
                 LOGGER.atVerbose()
@@ -337,7 +338,7 @@ public class ProxyOptions {
         String host = configuration.get(type + "." + JAVA_PROXY_HOST);
 
         // No proxy configuration setup.
-        if (CoreUtils.isNullOrEmpty(host)) {
+        if (isNullOrEmpty(host)) {
             return null;
         }
 
@@ -359,7 +360,7 @@ public class ProxyOptions {
         String host = configuration.get(HOST_PROPERTY);
 
         // No proxy configuration setup.
-        if (CoreUtils.isNullOrEmpty(host)) {
+        if (isNullOrEmpty(host)) {
             return null;
         }
 
@@ -378,7 +379,7 @@ public class ProxyOptions {
 
         ProxyOptions proxyOptions = new ProxyOptions(Type.HTTP, socketAddress);
 
-        if (!CoreUtils.isNullOrEmpty(nonProxyHostsString)) {
+        if (!isNullOrEmpty(nonProxyHostsString)) {
             proxyOptions.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHostsString);
 
             LOGGER.atVerbose()

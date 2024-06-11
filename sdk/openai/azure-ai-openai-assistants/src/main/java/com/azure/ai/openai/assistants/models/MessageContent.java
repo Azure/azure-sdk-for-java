@@ -21,7 +21,7 @@ public class MessageContent implements JsonSerializable<MessageContent> {
      * Creates an instance of MessageContent class.
      */
     @Generated
-    protected MessageContent() {
+    public MessageContent() {
     }
 
     /**

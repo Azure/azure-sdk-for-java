@@ -220,7 +220,7 @@ public abstract class RestProxyBase {
      * @return The {@link HttpResponseException} created from the provided details.
      */
     public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
-                                                                       Response<?> response, byte[] responseBody,
+                                                                       Response<?> response, BinaryData responseBody,
                                                                        Object responseDecodedBody) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
             .append(response.getStatusCode())
@@ -231,11 +231,15 @@ public abstract class RestProxyBase {
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
             String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
 
-            exceptionMessage.append("(").append(contentLength).append("-byte body)");
-        } else if (responseBody == null || responseBody.length == 0) {
+            exceptionMessage.append("(")
+                .append(contentLength)
+                .append("-byte body)");
+        } else if (responseBody == null || responseBody.toBytes().length == 0) {
             exceptionMessage.append("(empty body)");
         } else {
-            exceptionMessage.append('\"').append(new String(responseBody, StandardCharsets.UTF_8)).append('\"');
+            exceptionMessage.append('\"')
+                .append(new String(responseBody.toBytes(), StandardCharsets.UTF_8))
+                .append('\"');
         }
 
         // If the decoded response body is on of these exception types there was a failure in creating the actual
