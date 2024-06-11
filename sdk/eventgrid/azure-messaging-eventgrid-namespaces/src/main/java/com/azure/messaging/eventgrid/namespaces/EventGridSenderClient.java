@@ -15,9 +15,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridSenderClientImpl;
-import com.azure.messaging.eventgrid.namespaces.implementation.models.CloudEvent;
-import com.azure.messaging.eventgrid.namespaces.implementation.models.PublishResult;
 import java.util.List;
+import com.azure.core.models.CloudEvent;
 
 /**
  * Initializes a new instance of the synchronous EventGridSenderClient type.
