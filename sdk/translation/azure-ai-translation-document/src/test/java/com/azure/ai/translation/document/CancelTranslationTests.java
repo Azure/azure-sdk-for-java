@@ -19,7 +19,7 @@ public class CancelTranslationTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testCancelTranslation() {
-
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
         SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
@@ -29,15 +29,15 @@ public class CancelTranslationTests extends DocumentTranslationClientTestBase {
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
         BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
-        SyncPoller<TranslationStatus, Void> poller = getDocumentTranslationClient()
+        SyncPoller<TranslationStatus, Void> poller = documentTranslationClient
                 .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
         // Cancel Translation
         String translationId = poller.poll().getValue().getId();
-        getDocumentTranslationClient().cancelTranslation(translationId);
+        documentTranslationClient.cancelTranslation(translationId);
 
         // GetTranslation Status
-        TranslationStatus translationStatus = getDocumentTranslationClient().getTranslationStatus(translationId);
+        TranslationStatus translationStatus = documentTranslationClient.getTranslationStatus(translationId);
         Assertions.assertEquals(translationId, translationStatus.getId());
         String status = translationStatus.getStatus().toString();
         Assertions.assertTrue("Cancelled".equals(status) || "Cancelling".equals(status) || "NotStarted".equals(status));

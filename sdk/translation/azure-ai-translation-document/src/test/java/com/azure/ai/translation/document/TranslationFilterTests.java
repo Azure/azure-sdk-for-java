@@ -34,6 +34,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesFilterByStatus() {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         createTranslationJobs(1, 1, Status.SUCCEEDED);
         List<String> cancelledIds = createTranslationJobs(1, 1, Status.CANCELLED);
 
@@ -51,7 +52,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
                 false);
 
         try {
-            PagedIterable<BinaryData> translationStatusResult = getDocumentTranslationClient()
+            PagedIterable<BinaryData> translationStatusResult = documentTranslationClient
                     .getTranslationsStatus(requestOptions);
             for (BinaryData d : translationStatusResult) {
                 String status = new ObjectMapper().readTree(d.toBytes()).get("status").asText();
@@ -68,6 +69,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesFilterByIds() {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         List<String> allIds = createTranslationJobs(2, 1, Status.SUCCEEDED);
         List<String> targetIds = new ArrayList<>();
         targetIds.add(allIds.get(0));
@@ -80,7 +82,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
                 false);
 
         try {
-            PagedIterable<BinaryData> translationStatusResult = getDocumentTranslationClient()
+            PagedIterable<BinaryData> translationStatusResult = documentTranslationClient
                     .getTranslationsStatus(requestOptions);
             for (BinaryData d : translationStatusResult) {
                 String status = new ObjectMapper().readTree(d.toBytes()).get("status").asText();
@@ -97,6 +99,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesFilterByCreatedAfter() {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // timestamp before creating a translation job
         LocalDateTime testStartTime = LocalDateTime.now(ZoneOffset.UTC);
 
@@ -108,7 +111,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         requestOptions.addQueryParam("createdDateTimeUtcStart", String.valueOf(testStartTime), false);
 
         try {
-            PagedIterable<BinaryData> translationStatusResult = getDocumentTranslationClient()
+            PagedIterable<BinaryData> translationStatusResult = documentTranslationClient
                     .getTranslationsStatus(requestOptions);
             for (BinaryData d : translationStatusResult) {
                 String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
@@ -128,6 +131,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesFilterByCreatedBefore() {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // create some translations
         List<String> targetIds = createTranslationJobs(1, 1, Status.SUCCEEDED);
         LocalDateTime timeStamp = LocalDateTime.now(ZoneOffset.UTC);
@@ -141,7 +145,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         requestOptions.addQueryParam("createdDateTimeUtcStart", String.valueOf(recentTimestamp), false);
         requestOptions.addQueryParam("createdDateTimeUtcEnd", String.valueOf(timeStamp), false);
         try {
-            PagedIterable<BinaryData> translationStatusResult = getDocumentTranslationClient()
+            PagedIterable<BinaryData> translationStatusResult = documentTranslationClient
                     .getTranslationsStatus(requestOptions);
             boolean idExists = false;
             for (BinaryData d : translationStatusResult) {
@@ -165,6 +169,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesOrderByCreatedOn() {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // create some translations
         createTranslationJobs(3, 1, Status.SUCCEEDED);
         // getting only translations from the last few hours
@@ -181,7 +186,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         requestOptions.addQueryParam("createdDateTimeUtcStart", String.valueOf(recentTimestamp), false);
 
         try {
-            PagedIterable<BinaryData> translationStatusResult = getDocumentTranslationClient()
+            PagedIterable<BinaryData> translationStatusResult = documentTranslationClient
                     .getTranslationsStatus(requestOptions);
             LocalDateTime timestamp = LocalDateTime.MIN;
             for (BinaryData d : translationStatusResult) {
@@ -200,7 +205,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
 
     public List<String> createTranslationJobs(int jobsCount, int docsPerJob,
             Status jobTerminalStatus) {
-
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // create source container
         if (jobTerminalStatus.equals(Status.CANCELLED)) {
             docsPerJob = 20; // in order to avoid job completing before canceling
@@ -220,7 +225,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
             targetInputs.add(targetInput);
             BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
 
-            SyncPoller<TranslationStatus, Void> poller = getDocumentTranslationClient()
+            SyncPoller<TranslationStatus, Void> poller = documentTranslationClient
                     .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
             String translationId = poller.poll().getValue().getId();
@@ -229,7 +234,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
             if (jobTerminalStatus.equals(Status.SUCCEEDED)) {
                 poller.waitForCompletion();
             } else if (jobTerminalStatus.equals(Status.CANCELLED)) {
-                getDocumentTranslationClient().cancelTranslation(translationId);
+                documentTranslationClient.cancelTranslation(translationId);
             }
         }
         // ensure that cancel status has propagated before returning
@@ -240,13 +245,14 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     }
 
     public void waitForJobCancellation(List<String> translationIds) {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         for (String translationId : translationIds) {
             TranslationStatus translationStatus = null;
             do {
                 try {
                     Thread.sleep(10000);
                     retryCount--;
-                    translationStatus = getDocumentTranslationClient().getTranslationStatus(translationId);
+                    translationStatus = documentTranslationClient.getTranslationStatus(translationId);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(DocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -60,11 +60,13 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByIds() {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
+        
         // create translation job and get all the document IDs
         TranslationStatus translationStatus = createSingleTranslationJob(2);
         List<String> testIds = new ArrayList<>();
         try {
-            PagedIterable<DocumentStatus> response = getDocumentTranslationClient()
+            PagedIterable<DocumentStatus> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId());
             for (DocumentStatus d : response) {
                 testIds.add(d.getId());
@@ -79,7 +81,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         requestOptions.addQueryParam("ids", testIds.get(0), false);
 
         try {
-            PagedIterable<BinaryData> response = getDocumentTranslationClient()
+            PagedIterable<BinaryData> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId(), requestOptions);
             for (BinaryData d : response) {
                 String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
@@ -94,6 +96,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByCreatedAfter() {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // create translation job and get all the document IDs
         TranslationStatus translationStatus = createSingleTranslationJob(5);
         // add orderBy filter
@@ -107,7 +110,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         List<String> testCreatedOnDateTimes = new ArrayList<>();
         try {
-            PagedIterable<BinaryData> response = getDocumentTranslationClient()
+            PagedIterable<BinaryData> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId(), requestOptions);
             for (BinaryData d : response) {
                 String createdDateTimeString = new ObjectMapper().readTree(d.toBytes()).get("createdDateTimeUtc")
@@ -125,7 +128,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         requestOptions = new RequestOptions();
         requestOptions.addQueryParam("createdDateTimeUtcStart", testCreatedOnDateTimes.get(4), false);
         try {
-            PagedIterable<BinaryData> response = getDocumentTranslationClient()
+            PagedIterable<BinaryData> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId(), requestOptions);
             int itemCount = 0;
             for (BinaryData d : response) {
@@ -141,7 +144,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         requestOptions = new RequestOptions();
         requestOptions.addQueryParam("createdDateTimeUtcStart", testCreatedOnDateTimes.get(2), false);
         try {
-            PagedIterable<BinaryData> response = getDocumentTranslationClient()
+            PagedIterable<BinaryData> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId(), requestOptions);
             int itemCount = 0;
             for (BinaryData d : response) {
@@ -157,6 +160,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByCreatedBefore() {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // create translation job
         TranslationStatus translationStatus = createSingleTranslationJob(5);
         // add orderBy filter
@@ -170,7 +174,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         List<String> testCreatedOnDateTimes = new ArrayList<>();
         try {
-            PagedIterable<BinaryData> response = getDocumentTranslationClient()
+            PagedIterable<BinaryData> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId(), requestOptions);
             for (BinaryData d : response) {
                 String createdDateTimeString = new ObjectMapper().readTree(d.toBytes()).get("createdDateTimeUtc")
@@ -188,7 +192,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         requestOptions = new RequestOptions();
         requestOptions.addQueryParam("createdDateTimeUtcEnd", testCreatedOnDateTimes.get(0), false);
         try {
-            PagedIterable<BinaryData> response = getDocumentTranslationClient()
+            PagedIterable<BinaryData> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId(), requestOptions);
             int itemCount = 0;
             for (BinaryData d : response) {
@@ -204,7 +208,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         requestOptions = new RequestOptions();
         requestOptions.addQueryParam("createdDateTimeUtcEnd", testCreatedOnDateTimes.get(3), false);
         try {
-            PagedIterable<BinaryData> response = getDocumentTranslationClient()
+            PagedIterable<BinaryData> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId(), requestOptions);
             int itemCount = 0;
             for (BinaryData d : response) {
@@ -220,6 +224,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesOrderByCreatedOn() {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // create translation job
         TranslationStatus translationStatus = createSingleTranslationJob(3);
         // add orderBy filter
@@ -232,7 +237,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
                 false);
 
         try {
-            PagedIterable<BinaryData> response = getDocumentTranslationClient()
+            PagedIterable<BinaryData> response = documentTranslationClient
                     .getDocumentsStatus(translationStatus.getId(), requestOptions);
             LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
             for (BinaryData d : response) {
@@ -250,6 +255,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
     }
 
     public TranslationStatus createSingleTranslationJob(int count) {
+        DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         List<TestDocument> testDocs = createDummyTestDocuments(count);
         String sourceUrl = createSourceContainer(testDocs);
         SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
@@ -261,7 +267,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         targetInputs.add(targetInput);
         BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, Void> poller = getDocumentTranslationClient()
+        SyncPoller<TranslationStatus, Void> poller = documentTranslationClient
                 .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest));
 
         // Wait until the operation completes
