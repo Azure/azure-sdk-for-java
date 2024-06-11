@@ -225,7 +225,7 @@ public final class CallConnectionProperties {
         transcriptionSubscription.setId(callConnectionPropertiesInternal.getTranscriptionSubscription().getId());
         transcriptionSubscription.setState(TranscriptionSubscriptionState.fromString(callConnectionPropertiesInternal.getTranscriptionSubscription().getState().toString()));
         transcriptionSubscription.setSubscribedResultTypes(callConnectionPropertiesInternal.getTranscriptionSubscription().getSubscribedResultTypes().stream()
-                .map(resultType -> TranscriptionResultType.fromString(resultType.toString()))
+                .map(resultType -> TranscriptionResultState.fromString(resultType.toString()))
                 .collect(Collectors.toList()));
         return transcriptionSubscription;
     }

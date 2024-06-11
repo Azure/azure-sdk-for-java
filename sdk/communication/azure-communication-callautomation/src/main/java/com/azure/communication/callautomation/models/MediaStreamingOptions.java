@@ -37,7 +37,7 @@ public final class MediaStreamingOptions {
      * The type of transport to be used for media streaming, eg. Websocket
      */
     @JsonProperty(value = "startMediaStreaming")
-    private final Boolean startMediaStreaming;
+    private Boolean startMediaStreaming;
 
     /**
      * Creates a new instance of MediaStreamingConfiguration
@@ -47,12 +47,11 @@ public final class MediaStreamingOptions {
      * @param audioChannelType - Audio Channel Type
      * @param startMediaStreaming - Start media streaming
      */
-    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType, MediaStreamingContentType contentType, MediaStreamingAudioChannel audioChannelType, Boolean startMediaStreaming) {
+    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType, MediaStreamingContentType contentType, MediaStreamingAudioChannel audioChannelType) {
         this.transportUrl = transportUrl;
         this.transportType = transportType;
         this.contentType = contentType;
         this.audioChannelType = audioChannelType;
-        this.startMediaStreaming = startMediaStreaming;
     }
 
     /**
@@ -98,5 +97,17 @@ public final class MediaStreamingOptions {
      */
     public boolean getStartMediaStreaming() {
         return this.startMediaStreaming;
+    }
+
+    /**
+     * Set the startMediaStreaming property: Determines if the media streaming should be started immediately after call
+     * is answered or not.
+     * 
+     * @param startMediaStreaming the startMediaStreaming value to set.
+     * @return the MediaStreamingOptionsInternal object itself.
+     */
+    public MediaStreamingOptions setStartMediaStreaming(Boolean startMediaStreaming) {
+        this.startMediaStreaming = startMediaStreaming;
+        return this;
     }
 }

@@ -53,7 +53,7 @@ public final class TranscriptionData extends StreamingData {
     /**
      * Status of the result of transcription
      */
-    private final ResultStatus resultStatus;
+    private final TranscriptionResultState resultState;
 
     /**
      * The TranscriptionData constructor
@@ -79,14 +79,14 @@ public final class TranscriptionData extends StreamingData {
         } else {
             participant = null;
         }
-        this.resultStatus = convertToResultStatusEnum(resultStatus);
+        this.resultState = convertToResultStatusEnum(resultStatus);
     }
 
-    private ResultStatus convertToResultStatusEnum(String resultStatus) {
+    private TranscriptionResultState convertToResultStatusEnum(String resultStatus) {
         if ("Intermediate".equalsIgnoreCase(resultStatus)) {
-            return ResultStatus.INTERMEDIATE;
+            return TranscriptionResultState.INTERMEDIATE;
         } else if ("Final".equalsIgnoreCase(resultStatus)) {
-            return ResultStatus.FINAL;
+            return TranscriptionResultState.FINAL;
         } else {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(resultStatus));
 
@@ -149,7 +149,7 @@ public final class TranscriptionData extends StreamingData {
      *
      * @return the words value.
      */
-    public List<WordData> getWords() {
+    public List<WordData> getTranscripeWords() {
         return words;
     }
 
@@ -167,7 +167,7 @@ public final class TranscriptionData extends StreamingData {
      *
      * @return the resultStatus value.
      */
-    public ResultStatus getResultStatus() {
-        return resultStatus;
+    public TranscriptionResultState getResultStatus() {
+        return resultState;
     }
 }

@@ -12,7 +12,6 @@ import com.azure.communication.callautomation.models.AudioMetadata;
 import com.azure.communication.callautomation.models.StreamingData;
 import com.azure.communication.callautomation.models.TranscriptionData;
 import com.azure.communication.callautomation.models.TranscriptionMetadata;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
