@@ -42,7 +42,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -52,7 +51,6 @@ import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
-import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotAsync;
@@ -1035,11 +1033,11 @@ public final class ConfigurationAsyncClient {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
-        final Map<String, String> tagsFilter = selector == null ? null : selector.getTagsFilter();
+        final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
         AtomicInteger pageETagIndex = new AtomicInteger(0);
         return new PagedFlux<>(() -> withContext(context -> serviceClient.getKeyValuesSinglePageAsync(keyFilter,
                 labelFilter, null, acceptDateTime, settingFields, null, null,
-                getPageETag(matchConditionsList, pageETagIndex), getTagsFilterInString(tagsFilter), context)
+                getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context)
             .onErrorResume(HttpResponseException.class,
                 (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>)
                     Utility::handleNotModifiedErrorToValidResponse)
@@ -1148,8 +1146,9 @@ public final class ConfigurationAsyncClient {
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
+        List<String> tags = selector == null ? null : selector.getTagsFilter();
         return new PagedFlux<>(() -> withContext(context -> serviceClient.getRevisionsSinglePageAsync(keyFilter,
-                labelFilter, null, acceptDateTime, settingFields, context)
+                labelFilter, null, acceptDateTime, settingFields, tags, context)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
             nextLink -> withContext(context -> serviceClient.getRevisionsNextSinglePageAsync(nextLink, acceptDateTime,
                     context)

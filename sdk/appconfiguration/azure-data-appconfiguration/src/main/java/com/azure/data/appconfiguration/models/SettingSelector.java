@@ -11,7 +11,6 @@ import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A set of options for selecting configuration settings from App Configuration service.
@@ -37,9 +36,7 @@ import java.util.Map;
 public class SettingSelector {
     private String keyFilter;
     private String labelFilter;
-
-    private Map<String, String> tagsFilter;
-
+    private List<String> tagsFilter;
     private SettingFields[] fields;
     private String acceptDatetime;
 
@@ -163,7 +160,7 @@ public class SettingSelector {
      *
      * @return tagsFilter The tags used to filter GET requests from the service.
      */
-    public Map<String, String> getTagsFilter() {
+    public List<String> getTagsFilter() {
         return tagsFilter;
     }
 
@@ -177,7 +174,7 @@ public class SettingSelector {
      *
      * @return SettingSelector The updated SettingSelector object.
      */
-    public SettingSelector setTagsFilter(Map<String, String> tagsFilter) {
+    public SettingSelector setTagsFilter(List<String> tagsFilter) {
         this.tagsFilter = tagsFilter;
         return this;
     }

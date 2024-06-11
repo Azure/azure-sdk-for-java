@@ -5,11 +5,13 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
+import com.azure.data.appconfiguration.implementation.Utility;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
 import javax.net.ssl.SSLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,11 +34,11 @@ public class ListSettingsByTagsFilter {
                 .buildClient();
 
         Map<String, String> tags = new HashMap<>();
-        tags.put("release", "first");
-
+        tags.put("release", "first");  // kv?tags=release=first&tags=seconds=secondvalue
+                                        // kv?tags=release=first,second=seconds
         Map<String, String> tags2 = new HashMap<>();
         tags2.put("release", "first");
-        tags2.put("release2", "second");
+        tags2.put("release2", "second"); // kv?tags=release=first&tags=release2=second     FOR Filter, list setting
         client.setConfigurationSetting(new ConfigurationSetting().setKey("keyForTag1").setValue("value1").setTags(tags));
         client.setConfigurationSetting(new ConfigurationSetting().setKey("keyForTag2").setValue("value2"));
         client.setConfigurationSetting(new ConfigurationSetting().setKey("keyForTag3").setValue("value3"));
@@ -50,7 +52,12 @@ public class ListSettingsByTagsFilter {
         });
 
         // List settings by tag filter
-        PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(new SettingSelector().setTagsFilter(tags2));
+
+        // Convert the map of tags to a list of tag filter
+
+        List<String> tagsFilterInString = Utility.getTagsFilterInString(tags);
+        PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(new SettingSelector().setKeyFilter("key*")
+                .setTagsFilter(tagsFilterInString));
 
         configurationSettings.forEach(setting -> {
             System.out.printf("Key: %s, Labels: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue());

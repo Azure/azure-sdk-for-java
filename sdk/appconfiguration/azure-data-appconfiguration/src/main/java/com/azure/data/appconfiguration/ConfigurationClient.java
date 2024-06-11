@@ -28,12 +28,12 @@ import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeade
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.Label;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.Label;
 import com.azure.data.appconfiguration.models.LabelFields;
 import com.azure.data.appconfiguration.models.LabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -44,7 +44,6 @@ import com.azure.data.appconfiguration.models.SnapshotSelector;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
@@ -52,7 +51,6 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
-import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 import static com.azure.data.appconfiguration.implementation.Utility.handleNotModifiedErrorToValidResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
@@ -1061,7 +1059,7 @@ public final class ConfigurationClient {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
-        final Map<String, String> tagsFilter = selector == null ? null : selector.getTagsFilter();
+        final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
 
         AtomicInteger pageETagIndex = new AtomicInteger(0);
         return new PagedIterable<>(
@@ -1070,7 +1068,7 @@ public final class ConfigurationClient {
                     try {
                         pagedResponse = serviceClient.getKeyValuesSinglePage(keyFilter, labelFilter, null, acceptDateTime,
                             settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
-                            getTagsFilterInString(tagsFilter), context);
+                            tagsFilter, context);
                     } catch (HttpResponseException ex) {
                         return handleNotModifiedErrorToValidResponse(ex, LOGGER);
                     }
@@ -1225,7 +1223,8 @@ public final class ConfigurationClient {
         return new PagedIterable<>(() -> {
             final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(
                 selector == null ? null : selector.getKeyFilter(), selector == null ? null : selector.getLabelFilter(),
-                null, acceptDateTime, selector == null ? null : toSettingFieldsList(selector.getFields()), context);
+                null, acceptDateTime, selector == null ? null : toSettingFieldsList(selector.getFields()),
+                    selector == null ? null : selector.getTagsFilter(), context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, nextLink -> {
             final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsNextSinglePage(nextLink,

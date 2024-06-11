@@ -4,10 +4,12 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.util.Configuration;
+import com.azure.data.appconfiguration.implementation.Utility;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -65,7 +67,8 @@ public class ListSettingsByTagsFilterAsync {
         TimeUnit.MILLISECONDS.sleep(2000);
 
         // List settings by tag filter
-        client.listConfigurationSettings(new SettingSelector().setTagsFilter(tags)).subscribe(
+        List<String> tagsFilterInString = Utility.getTagsFilterInString(tags);
+        client.listConfigurationSettings(new SettingSelector().setTagsFilter(tagsFilterInString)).subscribe(
             setting -> {
                 System.out.printf("Key: %s, Labels: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue());
                 Map<String, String> tags1 = setting.getTags();

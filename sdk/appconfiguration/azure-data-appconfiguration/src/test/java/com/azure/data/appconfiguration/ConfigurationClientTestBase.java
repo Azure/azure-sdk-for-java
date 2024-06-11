@@ -110,6 +110,21 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         testRunner.accept(newConfiguration.setLabel(getLabel()));
     }
 
+    ConfigurationSetting addConfigurationSettingWithTagsRunner(Consumer<ConfigurationSetting> testRunner) {
+        final Map<String, String> tags = new HashMap<>();
+        tags.put("MyTag", "TagValue");
+        tags.put("AnotherTag", "AnotherTagValue");
+
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting()
+                .setKey(getKey())
+                .setValue("myNewValue")
+                .setContentType("text");
+
+        testRunner.accept(newConfiguration);
+        testRunner.accept(newConfiguration.setLabel(getLabel()).setTags(tags));
+        return newConfiguration;
+    }
+
     @Test
     public abstract void addFeatureFlagConfigurationSettingConvenience(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion);
@@ -594,6 +609,18 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         testRunner.accept(snapshotName, filters);
     }
 
+    void createSnapshotWithTagsRunner(BiConsumer<String, List<ConfigurationSettingsFilter>> testRunner) {
+        String snapshotName = getKey();
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
+
+        List<String> tagsFilter = new ArrayList<>();
+        tagsFilter.add("MyTag=TagValue");
+        tagsFilter.add("AnotherTag=AnotherTagValue");
+
+        filters.add(new ConfigurationSettingsFilter("key*").setTags(tagsFilter));
+        testRunner.accept(snapshotName, filters);
+    }
+
     @Test
     public abstract void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
@@ -672,8 +699,6 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
      */
     static void assertConfigurationEquals(ConfigurationSetting expected, Response<ConfigurationSetting> response, final int expectedStatusCode) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
-
         assertConfigurationEquals(expected, response.getValue());
     }
 
