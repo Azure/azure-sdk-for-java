@@ -3,10 +3,11 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
-import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.semconv.ServiceAttributes;
+import io.opentelemetry.semconv.incubating.ServiceIncubatingAttributes;
 
 import java.util.Locale;
 import java.util.Map;
@@ -52,13 +53,13 @@ public final class ResourceParser {
     }
 
     private String getRoleName(Resource resource) {
-        String serviceName = resource.getAttribute(ResourceAttributes.SERVICE_NAME);
+        String serviceName = resource.getAttribute(ServiceAttributes.SERVICE_NAME);
         if (serviceName == null || DEFAULT_SERVICE_NAME.equals(serviceName)) {
             if (websiteSiteName != null) {
                 serviceName = websiteSiteName;
             }
         }
-        String serviceNamespace = resource.getAttribute(ResourceAttributes.SERVICE_NAMESPACE);
+        String serviceNamespace = resource.getAttribute(ServiceIncubatingAttributes.SERVICE_NAMESPACE);
         if (serviceName != null && serviceNamespace != null) {
             return "[" + serviceNamespace + "]/" + serviceName;
         } else if (serviceName != null) {
@@ -70,7 +71,7 @@ public final class ResourceParser {
     }
 
     private String getRoleInstance(Resource resource) {
-        String roleInstance = resource.getAttribute(ResourceAttributes.SERVICE_INSTANCE_ID);
+        String roleInstance = resource.getAttribute(ServiceIncubatingAttributes.SERVICE_INSTANCE_ID);
         if (roleInstance != null) {
             return roleInstance;
         }

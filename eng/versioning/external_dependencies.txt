@@ -220,6 +220,7 @@ io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.4.0-alp
 io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.4.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-jdbc;2.4.0-alpha
 io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.4.0-alpha
+io.opentelemetry.semconv:opentelemetry-semconv-incubating;1.25.0-alpha
 
 io.projectreactor:reactor-test;3.4.38
 io.github.hakky54:logcaptor;2.9.0
