@@ -5,50 +5,58 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.avs.models.ActionType;
 import com.azure.resourcemanager.avs.models.OperationDisplay;
-import com.azure.resourcemanager.avs.models.OperationProperties;
+import com.azure.resourcemanager.avs.models.Origin;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A REST API operation. */
+/**
+ * REST API Operation
+ * 
+ * Details of a REST API operation, returned from the Resource Provider Operations API.
+ */
 @Fluent
 public final class OperationInner {
     /*
-     * Name of the operation being performed on this object
+     * The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Contains the localized display information for this operation
+     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
      */
-    @JsonProperty(value = "display", access = JsonProperty.Access.WRITE_ONLY)
-    private OperationDisplay display;
-
-    /*
-     * Gets or sets a value indicating whether the operation is a data action or not
-     */
-    @JsonProperty(value = "isDataAction")
+    @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDataAction;
 
     /*
-     * Origin of the operation
+     * Localized display information for this particular operation.
      */
-    @JsonProperty(value = "origin")
-    private String origin;
+    @JsonProperty(value = "display")
+    private OperationDisplay display;
 
     /*
-     * Properties of the operation
+     * The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
      */
-    @JsonProperty(value = "properties")
-    private OperationProperties properties;
+    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
+    private Origin origin;
 
-    /** Creates an instance of OperationInner class. */
+    /*
+     * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+     */
+    @JsonProperty(value = "actionType", access = JsonProperty.Access.WRITE_ONLY)
+    private ActionType actionType;
+
+    /**
+     * Creates an instance of OperationInner class.
+     */
     public OperationInner() {
     }
 
     /**
-     * Get the name property: Name of the operation being performed on this object.
-     *
+     * Get the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,17 +64,9 @@ public final class OperationInner {
     }
 
     /**
-     * Get the display property: Contains the localized display information for this operation.
-     *
-     * @return the display value.
-     */
-    public OperationDisplay display() {
-        return this.display;
-    }
-
-    /**
-     * Get the isDataAction property: Gets or sets a value indicating whether the operation is a data action or not.
-     *
+     * Get the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
+     * operations and "false" for ARM/control-plane operations.
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -74,67 +74,53 @@ public final class OperationInner {
     }
 
     /**
-     * Set the isDataAction property: Gets or sets a value indicating whether the operation is a data action or not.
-     *
-     * @param isDataAction the isDataAction value to set.
+     * Get the display property: Localized display information for this particular operation.
+     * 
+     * @return the display value.
+     */
+    public OperationDisplay display() {
+        return this.display;
+    }
+
+    /**
+     * Set the display property: Localized display information for this particular operation.
+     * 
+     * @param display the display value to set.
      * @return the OperationInner object itself.
      */
-    public OperationInner withIsDataAction(Boolean isDataAction) {
-        this.isDataAction = isDataAction;
+    public OperationInner withDisplay(OperationDisplay display) {
+        this.display = display;
         return this;
     }
 
     /**
-     * Get the origin property: Origin of the operation.
-     *
+     * Get the origin property: The intended executor of the operation; as in Resource Based Access Control (RBAC) and
+     * audit logs UX. Default value is "user,system".
+     * 
      * @return the origin value.
      */
-    public String origin() {
+    public Origin origin() {
         return this.origin;
     }
 
     /**
-     * Set the origin property: Origin of the operation.
-     *
-     * @param origin the origin value to set.
-     * @return the OperationInner object itself.
+     * Get the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
+     * only APIs.
+     * 
+     * @return the actionType value.
      */
-    public OperationInner withOrigin(String origin) {
-        this.origin = origin;
-        return this;
-    }
-
-    /**
-     * Get the properties property: Properties of the operation.
-     *
-     * @return the properties value.
-     */
-    public OperationProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: Properties of the operation.
-     *
-     * @param properties the properties value to set.
-     * @return the OperationInner object itself.
-     */
-    public OperationInner withProperties(OperationProperties properties) {
-        this.properties = properties;
-        return this;
+    public ActionType actionType() {
+        return this.actionType;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
-        }
-        if (properties() != null) {
-            properties().validate();
         }
     }
 }

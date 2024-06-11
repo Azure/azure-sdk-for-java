@@ -7,7 +7,9 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An ExpressRoute Circuit. */
+/**
+ * An ExpressRoute Circuit.
+ */
 @Immutable
 public final class Circuit {
     /*
@@ -34,13 +36,15 @@ public final class Circuit {
     @JsonProperty(value = "expressRoutePrivatePeeringID", access = JsonProperty.Access.WRITE_ONLY)
     private String expressRoutePrivatePeeringId;
 
-    /** Creates an instance of Circuit class. */
+    /**
+     * Creates an instance of Circuit class.
+     */
     public Circuit() {
     }
 
     /**
      * Get the primarySubnet property: CIDR of primary subnet.
-     *
+     * 
      * @return the primarySubnet value.
      */
     public String primarySubnet() {
@@ -49,7 +53,7 @@ public final class Circuit {
 
     /**
      * Get the secondarySubnet property: CIDR of secondary subnet.
-     *
+     * 
      * @return the secondarySubnet value.
      */
     public String secondarySubnet() {
@@ -58,7 +62,7 @@ public final class Circuit {
 
     /**
      * Get the expressRouteId property: Identifier of the ExpressRoute Circuit (Microsoft Colo only).
-     *
+     * 
      * @return the expressRouteId value.
      */
     public String expressRouteId() {
@@ -67,7 +71,7 @@ public final class Circuit {
 
     /**
      * Get the expressRoutePrivatePeeringId property: ExpressRoute Circuit private peering identifier.
-     *
+     * 
      * @return the expressRoutePrivatePeeringId value.
      */
     public String expressRoutePrivatePeeringId() {
@@ -76,7 +80,7 @@ public final class Circuit {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

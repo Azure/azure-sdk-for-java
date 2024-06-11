@@ -6,24 +6,36 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.avs.models.ScriptPackageProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Script Package resources available for execution. */
+/**
+ * Script Package resources available for execution.
+ */
 @Immutable
 public final class ScriptPackageInner extends ProxyResource {
     /*
-     * ScriptPackage resource properties
+     * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
     private ScriptPackageProperties innerProperties;
 
-    /** Creates an instance of ScriptPackageInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of ScriptPackageInner class.
+     */
     public ScriptPackageInner() {
     }
 
     /**
-     * Get the innerProperties property: ScriptPackage resource properties.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private ScriptPackageProperties innerProperties() {
@@ -31,8 +43,26 @@ public final class ScriptPackageInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ScriptPackageProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the description property: User friendly description of the package.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -41,7 +71,7 @@ public final class ScriptPackageInner extends ProxyResource {
 
     /**
      * Get the version property: Module version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -50,7 +80,7 @@ public final class ScriptPackageInner extends ProxyResource {
 
     /**
      * Get the company property: Company that created and supports the package.
-     *
+     * 
      * @return the company value.
      */
     public String company() {
@@ -59,7 +89,7 @@ public final class ScriptPackageInner extends ProxyResource {
 
     /**
      * Get the uri property: Link to support by the package vendor.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -68,7 +98,7 @@ public final class ScriptPackageInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,25 +6,37 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.avs.models.CloudLinkProvisioningState;
 import com.azure.resourcemanager.avs.models.CloudLinkStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A cloud link resource. */
+/**
+ * A cloud link resource.
+ */
 @Fluent
 public final class CloudLinkInner extends ProxyResource {
     /*
-     * The properties of a cloud link.
+     * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
     private CloudLinkProperties innerProperties;
 
-    /** Creates an instance of CloudLinkInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of CloudLinkInner class.
+     */
     public CloudLinkInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of a cloud link.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private CloudLinkProperties innerProperties() {
@@ -32,8 +44,26 @@ public final class CloudLinkInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public CloudLinkProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the status property: The state of the cloud link.
-     *
+     * 
      * @return the status value.
      */
     public CloudLinkStatus status() {
@@ -42,7 +72,7 @@ public final class CloudLinkInner extends ProxyResource {
 
     /**
      * Get the linkedCloud property: Identifier of the other private cloud participating in the link.
-     *
+     * 
      * @return the linkedCloud value.
      */
     public String linkedCloud() {
@@ -51,7 +81,7 @@ public final class CloudLinkInner extends ProxyResource {
 
     /**
      * Set the linkedCloud property: Identifier of the other private cloud participating in the link.
-     *
+     * 
      * @param linkedCloud the linkedCloud value to set.
      * @return the CloudLinkInner object itself.
      */
@@ -65,7 +95,7 @@ public final class CloudLinkInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

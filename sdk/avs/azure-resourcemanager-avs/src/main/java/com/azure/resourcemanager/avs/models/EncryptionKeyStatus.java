@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of key provided. */
+/**
+ * Whether the the encryption key is connected or access denied.
+ */
 public final class EncryptionKeyStatus extends ExpandableStringEnum<EncryptionKeyStatus> {
-    /** Static value Connected for EncryptionKeyStatus. */
+    /**
+     * Static value Connected for EncryptionKeyStatus.
+     */
     public static final EncryptionKeyStatus CONNECTED = fromString("Connected");
 
-    /** Static value AccessDenied for EncryptionKeyStatus. */
+    /**
+     * Static value AccessDenied for EncryptionKeyStatus.
+     */
     public static final EncryptionKeyStatus ACCESS_DENIED = fromString("AccessDenied");
 
     /**
      * Creates a new instance of EncryptionKeyStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class EncryptionKeyStatus extends ExpandableStringEnum<EncryptionKe
 
     /**
      * Creates or finds a EncryptionKeyStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionKeyStatus.
      */
@@ -38,7 +44,7 @@ public final class EncryptionKeyStatus extends ExpandableStringEnum<EncryptionKe
 
     /**
      * Gets known EncryptionKeyStatus values.
-     *
+     * 
      * @return known EncryptionKeyStatus values.
      */
     public static Collection<EncryptionKeyStatus> values() {

@@ -5,12 +5,21 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.resourcemanager.avs.models.HcxEnterpriseSiteProvisioningState;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSiteStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an HCX Enterprise Site. */
+/**
+ * The properties of an HCX Enterprise Site.
+ */
 @Immutable
 public final class HcxEnterpriseSiteProperties {
+    /*
+     * The provisioning state of the resource.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private HcxEnterpriseSiteProvisioningState provisioningState;
+
     /*
      * The activation key
      */
@@ -23,13 +32,24 @@ public final class HcxEnterpriseSiteProperties {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private HcxEnterpriseSiteStatus status;
 
-    /** Creates an instance of HcxEnterpriseSiteProperties class. */
+    /**
+     * Creates an instance of HcxEnterpriseSiteProperties class.
+     */
     public HcxEnterpriseSiteProperties() {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public HcxEnterpriseSiteProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Get the activationKey property: The activation key.
-     *
+     * 
      * @return the activationKey value.
      */
     public String activationKey() {
@@ -38,7 +58,7 @@ public final class HcxEnterpriseSiteProperties {
 
     /**
      * Get the status property: The status of the HCX Enterprise Site.
-     *
+     * 
      * @return the status value.
      */
     public HcxEnterpriseSiteStatus status() {
@@ -47,7 +67,7 @@ public final class HcxEnterpriseSiteProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,27 +7,53 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The properties of an HCX addon. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "addonType")
+/**
+ * The properties of an HCX addon.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "addonType",
+    defaultImpl = AddonHcxProperties.class,
+    visible = true)
 @JsonTypeName("HCX")
 @Fluent
 public final class AddonHcxProperties extends AddonProperties {
+    /*
+     * Addon type
+     */
+    @JsonTypeId
+    @JsonProperty(value = "addonType", required = true)
+    private AddonType addonType = AddonType.HCX;
+
     /*
      * The HCX offer, example VMware MaaS Cloud Provider (Enterprise)
      */
     @JsonProperty(value = "offer", required = true)
     private String offer;
 
-    /** Creates an instance of AddonHcxProperties class. */
+    /**
+     * Creates an instance of AddonHcxProperties class.
+     */
     public AddonHcxProperties() {
     }
 
     /**
+     * Get the addonType property: Addon type.
+     * 
+     * @return the addonType value.
+     */
+    @Override
+    public AddonType addonType() {
+        return this.addonType;
+    }
+
+    /**
      * Get the offer property: The HCX offer, example VMware MaaS Cloud Provider (Enterprise).
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -36,7 +62,7 @@ public final class AddonHcxProperties extends AddonProperties {
 
     /**
      * Set the offer property: The HCX offer, example VMware MaaS Cloud Provider (Enterprise).
-     *
+     * 
      * @param offer the offer value to set.
      * @return the AddonHcxProperties object itself.
      */
@@ -47,16 +73,15 @@ public final class AddonHcxProperties extends AddonProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (offer() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property offer in model AddonHcxProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property offer in model AddonHcxProperties"));
         }
     }
 
