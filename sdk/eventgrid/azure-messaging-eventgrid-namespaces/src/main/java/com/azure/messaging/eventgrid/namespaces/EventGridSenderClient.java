@@ -134,7 +134,7 @@ public final class EventGridSenderClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void send(CloudEvent event) {
+    public void send(CloudEvent event) {
         // Generated convenience method for sendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         sendWithResponse(topicName, BinaryData.fromObject(event), requestOptions);
@@ -151,9 +151,8 @@ public final class EventGridSenderClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void send(List<CloudEvent> events) {
+    public void send(List<CloudEvent> events) {
         // Generated convenience method for sendEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions);

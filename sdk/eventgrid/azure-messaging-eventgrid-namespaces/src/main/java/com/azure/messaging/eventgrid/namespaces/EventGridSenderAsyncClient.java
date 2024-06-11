@@ -136,9 +136,8 @@ public final class EventGridSenderAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Publish operation on successful completion of {@link Mono}.
      */
-
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> send(CloudEvent event) {
+    public Mono<Void> send(CloudEvent event) {
         // Generated convenience method for sendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return sendWithResponse(topicName, BinaryData.fromObject(event), requestOptions).then();
@@ -156,9 +155,8 @@ public final class EventGridSenderAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Publish operation on successful completion of {@link Mono}.
      */
-
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> send(List<CloudEvent> events) {
+    public Mono<Void> send(List<CloudEvent> events) {
         // Generated convenience method for sendEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions).then();

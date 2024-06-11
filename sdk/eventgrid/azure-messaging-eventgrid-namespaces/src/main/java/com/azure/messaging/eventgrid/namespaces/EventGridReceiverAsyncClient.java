@@ -499,7 +499,6 @@ public final class EventGridReceiverAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Reject operation on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RejectResult> reject(List<String> lockTokens) {
         // Generated convenience method for rejectWithResponse

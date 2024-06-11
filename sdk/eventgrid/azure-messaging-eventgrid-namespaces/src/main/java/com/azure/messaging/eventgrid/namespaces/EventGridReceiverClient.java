@@ -367,7 +367,6 @@ public final class EventGridReceiverClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the Receive operation response.
      */
-
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReceiveResult receive(Integer maxEvents, Duration maxWaitTime) {
         // Generated convenience method for receiveWithResponse
@@ -467,7 +466,6 @@ public final class EventGridReceiverClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Release operation.
      */
-
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReleaseResult release(List<String> lockTokens) {
         // Generated convenience method for releaseWithResponse
@@ -516,7 +514,6 @@ public final class EventGridReceiverClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the RenewLock operation.
      */
-
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RenewLocksResult renewLocks(List<String> lockTokens) {
         // Generated convenience method for renewLocksWithResponse
