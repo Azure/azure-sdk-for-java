@@ -269,6 +269,30 @@ public final class EventGridReceiverClientBuilder implements HttpTrait<EventGrid
         return this;
     }
 
+    private String topicName;
+
+    /**
+     * Sets the topic name.
+     * @param topicName the topic name.
+     * @return the EventGridReceiverClientBuilder.
+     */
+    public EventGridReceiverClientBuilder topicName(String topicName) {
+        this.topicName = topicName;
+        return this;
+    }
+
+    private String subscriptionName;
+
+    /**
+     * Sets the subscription name.
+     * @param subscriptionName the subscription name.
+     * @return the EventGridReceiverClientBuilder.
+     */
+    public EventGridReceiverClientBuilder subscriptionName(String subscriptionName) {
+        this.subscriptionName = subscriptionName;
+        return this;
+    }
+
     /**
      * Builds an instance of EventGridReceiverClientImpl with the provided parameters.
      *
@@ -334,7 +358,13 @@ public final class EventGridReceiverClientBuilder implements HttpTrait<EventGrid
      */
     @Generated
     public EventGridReceiverAsyncClient buildAsyncClient() {
-        return new EventGridReceiverAsyncClient(buildInnerClient());
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Topic name cannot be null or empty"));
+        }
+        if (CoreUtils.isNullOrEmpty(subscriptionName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Subscription name cannot be null or empty"));
+        }
+        return new EventGridReceiverAsyncClient(buildInnerClient(), topicName, subscriptionName);
     }
 
     /**
@@ -344,7 +374,13 @@ public final class EventGridReceiverClientBuilder implements HttpTrait<EventGrid
      */
     @Generated
     public EventGridReceiverClient buildClient() {
-        return new EventGridReceiverClient(buildInnerClient());
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Topic name cannot be null or empty"));
+        }
+        if (CoreUtils.isNullOrEmpty(subscriptionName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Subscription name cannot be null or empty"));
+        }
+        return new EventGridReceiverClient(buildInnerClient(), topicName, subscriptionName);
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventGridReceiverClientBuilder.class);

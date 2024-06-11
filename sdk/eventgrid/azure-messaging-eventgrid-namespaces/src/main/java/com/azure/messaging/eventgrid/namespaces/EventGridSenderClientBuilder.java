@@ -269,6 +269,19 @@ public final class EventGridSenderClientBuilder implements HttpTrait<EventGridSe
         return this;
     }
 
+    private String topicName;
+
+    /**
+     * Sets the topic name.
+     *
+     * @param topicName the topic name.
+     * @return the EventGridSenderClientBuilder.
+     */
+    public EventGridSenderClientBuilder topicName(String topicName) {
+        this.topicName = topicName;
+        return this;
+    }
+
     /**
      * Builds an instance of EventGridSenderClientImpl with the provided parameters.
      *
@@ -334,7 +347,10 @@ public final class EventGridSenderClientBuilder implements HttpTrait<EventGridSe
      */
     @Generated
     public EventGridSenderAsyncClient buildAsyncClient() {
-        return new EventGridSenderAsyncClient(buildInnerClient());
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Topic name cannot be null or empty"));
+        }
+        return new EventGridSenderAsyncClient(buildInnerClient(), topicName);
     }
 
     /**
@@ -344,7 +360,10 @@ public final class EventGridSenderClientBuilder implements HttpTrait<EventGridSe
      */
     @Generated
     public EventGridSenderClient buildClient() {
-        return new EventGridSenderClient(buildInnerClient());
+        if (CoreUtils.isNullOrEmpty(topicName)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Topic name cannot be null or empty"));
+        }
+        return new EventGridSenderClient(buildInnerClient(), topicName);
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventGridSenderClientBuilder.class);

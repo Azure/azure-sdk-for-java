@@ -26,21 +26,24 @@ public final class EventGridSenderClient {
 
     @Generated
     private final EventGridSenderClientImpl serviceClient;
+    private final String topicName;
 
     /**
      * Initializes an instance of EventGridSenderClient class.
      *
      * @param serviceClient the service client implementation.
+     * @param topicName the topicName for this client.
      */
     @Generated
-    EventGridSenderClient(EventGridSenderClientImpl serviceClient) {
+    EventGridSenderClient(EventGridSenderClientImpl serviceClient, String topicName) {
         this.serviceClient = serviceClient;
+        this.topicName = topicName;
     }
 
     /**
      * Publish a single Cloud Event to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -55,9 +58,9 @@ public final class EventGridSenderClient {
      *     subject: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -80,7 +83,7 @@ public final class EventGridSenderClient {
     /**
      * Publish a batch of Cloud Events to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -97,9 +100,9 @@ public final class EventGridSenderClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -122,7 +125,6 @@ public final class EventGridSenderClient {
     /**
      * Publish a single Cloud Event to a namespace topic.
      *
-     * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -130,20 +132,17 @@ public final class EventGridSenderClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the Publish operation.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PublishResult send(String topicName, CloudEvent event) {
+    void send(CloudEvent event) {
         // Generated convenience method for sendWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return sendWithResponse(topicName, event, requestOptions).getValue().toObject(PublishResult.class);
+        sendWithResponse(topicName, BinaryData.fromObject(event), requestOptions);
     }
 
     /**
      * Publish a batch of Cloud Events to a namespace topic.
      *
-     * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -151,13 +150,12 @@ public final class EventGridSenderClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the Publish operation.
      */
-    @Generated
+
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PublishResult sendEvents(String topicName, List<CloudEvent> events) {
+    void send(List<CloudEvent> events) {
         // Generated convenience method for sendEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return sendEventsWithResponse(topicName, events, requestOptions).getValue().toObject(PublishResult.class);
+        sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions);
     }
 }

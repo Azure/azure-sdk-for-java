@@ -17,7 +17,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridReceiverClientImpl;
 import com.azure.messaging.eventgrid.namespaces.implementation.models.AcknowledgeRequest;
-import com.azure.messaging.eventgrid.namespaces.implementation.models.ReceiveResult;
+import com.azure.messaging.eventgrid.namespaces.models.ReceiveResult;
 import com.azure.messaging.eventgrid.namespaces.implementation.models.RejectRequest;
 import com.azure.messaging.eventgrid.namespaces.implementation.models.ReleaseRequest;
 import com.azure.messaging.eventgrid.namespaces.implementation.models.RenewLocksRequest;
@@ -38,15 +38,21 @@ public final class EventGridReceiverAsyncClient {
 
     @Generated
     private final EventGridReceiverClientImpl serviceClient;
+    private final String topicName;
+    private final String subscriptionName;
 
     /**
      * Initializes an instance of EventGridReceiverAsyncClient class.
      *
      * @param serviceClient the service client implementation.
+     * @param topicName the topicName for this client.
+     * @param subscriptionName the subscriptionName for this client.
      */
     @Generated
-    EventGridReceiverAsyncClient(EventGridReceiverClientImpl serviceClient) {
+    EventGridReceiverAsyncClient(EventGridReceiverClientImpl serviceClient, String topicName, String subscriptionName) {
         this.serviceClient = serviceClient;
+        this.topicName = topicName;
+        this.subscriptionName = subscriptionName;
     }
 
     /**
@@ -64,7 +70,7 @@ public final class EventGridReceiverAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     value (Required): [
@@ -112,7 +118,7 @@ public final class EventGridReceiverAsyncClient {
      * along with other failed lock tokens with their corresponding error information. Successfully acknowledged events
      * will no longer be available to be received by any consumer.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -120,9 +126,9 @@ public final class EventGridReceiverAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -180,7 +186,7 @@ public final class EventGridReceiverAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -188,9 +194,9 @@ public final class EventGridReceiverAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -238,7 +244,7 @@ public final class EventGridReceiverAsyncClient {
      * with other failed lock tokens with their corresponding error information. Successfully rejected events will be
      * dead-lettered and can no longer be received by a consumer.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -246,9 +252,9 @@ public final class EventGridReceiverAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -296,7 +302,7 @@ public final class EventGridReceiverAsyncClient {
      * along with other failed lock tokens with their corresponding error information. Successfully renewed locks will
      * ensure that the associated event is only available to the consumer that holds the renewed lock.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -304,9 +310,9 @@ public final class EventGridReceiverAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -354,8 +360,6 @@ public final class EventGridReceiverAsyncClient {
     /**
      * Receive a batch of Cloud Events from a subscription.
      *
-     * @param topicName Topic Name.
-     * @param eventSubscriptionName Event Subscription Name.
      * @param maxEvents Max Events count to be received. Minimum value is 1, while maximum value is 100 events. If not
      * specified, the default value is 1.
      * @param maxWaitTime Max wait time value for receive operation in Seconds. It is the time in seconds that the
@@ -370,10 +374,8 @@ public final class EventGridReceiverAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the Receive operation response on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReceiveResult> receive(String topicName, String eventSubscriptionName, Integer maxEvents,
-        Duration maxWaitTime) {
+    public Mono<ReceiveResult> receive(Integer maxEvents, Duration maxWaitTime) {
         // Generated convenience method for receiveWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (maxEvents != null) {
@@ -382,15 +384,13 @@ public final class EventGridReceiverAsyncClient {
         if (maxWaitTime != null) {
             requestOptions.addQueryParam("maxWaitTime", String.valueOf(maxWaitTime.getSeconds()), false);
         }
-        return receiveWithResponse(topicName, eventSubscriptionName, requestOptions).flatMap(FluxUtil::toMono)
+        return receiveWithResponse(topicName, subscriptionName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ReceiveResult.class));
     }
 
     /**
      * Receive a batch of Cloud Events from a subscription.
      *
-     * @param topicName Topic Name.
-     * @param eventSubscriptionName Event Subscription Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -399,12 +399,11 @@ public final class EventGridReceiverAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the Receive operation response on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReceiveResult> receive(String topicName, String eventSubscriptionName) {
+    public Mono<ReceiveResult> receive() {
         // Generated convenience method for receiveWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return receiveWithResponse(topicName, eventSubscriptionName, requestOptions).flatMap(FluxUtil::toMono)
+        return receiveWithResponse(topicName, subscriptionName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ReceiveResult.class));
     }
 
@@ -413,8 +412,6 @@ public final class EventGridReceiverAsyncClient {
      * along with other failed lock tokens with their corresponding error information. Successfully acknowledged events
      * will no longer be available to be received by any consumer.
      *
-     * @param topicName Topic Name.
-     * @param eventSubscriptionName Event Subscription Name.
      * @param lockTokens Array of lock tokens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -424,14 +421,13 @@ public final class EventGridReceiverAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Acknowledge operation on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AcknowledgeResult> acknowledge(String topicName, String eventSubscriptionName, List<String> lockTokens) {
+    public Mono<AcknowledgeResult> acknowledge(List<String> lockTokens) {
         // Generated convenience method for acknowledgeWithResponse
         RequestOptions requestOptions = new RequestOptions();
         AcknowledgeRequest requestObj = new AcknowledgeRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
-        return acknowledgeWithResponse(topicName, eventSubscriptionName, request, requestOptions)
+        return acknowledgeWithResponse(topicName, subscriptionName, request, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AcknowledgeResult.class));
     }
@@ -441,8 +437,6 @@ public final class EventGridReceiverAsyncClient {
      * with other failed lock tokens with their corresponding error information. Successfully released events can be
      * received by consumers.
      *
-     * @param topicName Topic Name.
-     * @param eventSubscriptionName Event Subscription Name.
      * @param lockTokens Array of lock tokens.
      * @param releaseDelayInSeconds Release cloud events with the specified delay in seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,9 +447,8 @@ public final class EventGridReceiverAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Release operation on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReleaseResult> release(String topicName, String eventSubscriptionName, List<String> lockTokens,
+    public Mono<ReleaseResult> release(List<String> lockTokens,
         ReleaseDelay releaseDelayInSeconds) {
         // Generated convenience method for releaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -464,7 +457,7 @@ public final class EventGridReceiverAsyncClient {
         if (releaseDelayInSeconds != null) {
             requestOptions.addQueryParam("releaseDelayInSeconds", releaseDelayInSeconds.toString(), false);
         }
-        return releaseWithResponse(topicName, eventSubscriptionName, request, requestOptions).flatMap(FluxUtil::toMono)
+        return releaseWithResponse(topicName, subscriptionName, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ReleaseResult.class));
     }
 
@@ -473,8 +466,6 @@ public final class EventGridReceiverAsyncClient {
      * with other failed lock tokens with their corresponding error information. Successfully released events can be
      * received by consumers.
      *
-     * @param topicName Topic Name.
-     * @param eventSubscriptionName Event Subscription Name.
      * @param lockTokens Array of lock tokens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -484,14 +475,13 @@ public final class EventGridReceiverAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Release operation on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReleaseResult> release(String topicName, String eventSubscriptionName, List<String> lockTokens) {
+    public Mono<ReleaseResult> release(List<String> lockTokens) {
         // Generated convenience method for releaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
         ReleaseRequest requestObj = new ReleaseRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
-        return releaseWithResponse(topicName, eventSubscriptionName, request, requestOptions).flatMap(FluxUtil::toMono)
+        return releaseWithResponse(topicName, subscriptionName, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ReleaseResult.class));
     }
 
@@ -500,8 +490,6 @@ public final class EventGridReceiverAsyncClient {
      * with other failed lock tokens with their corresponding error information. Successfully rejected events will be
      * dead-lettered and can no longer be received by a consumer.
      *
-     * @param topicName Topic Name.
-     * @param eventSubscriptionName Event Subscription Name.
      * @param lockTokens Array of lock tokens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -513,12 +501,12 @@ public final class EventGridReceiverAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RejectResult> reject(String topicName, String eventSubscriptionName, List<String> lockTokens) {
+    public Mono<RejectResult> reject(List<String> lockTokens) {
         // Generated convenience method for rejectWithResponse
         RequestOptions requestOptions = new RequestOptions();
         RejectRequest requestObj = new RejectRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
-        return rejectWithResponse(topicName, eventSubscriptionName, request, requestOptions).flatMap(FluxUtil::toMono)
+        return rejectWithResponse(topicName, subscriptionName, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(RejectResult.class));
     }
 
@@ -527,8 +515,6 @@ public final class EventGridReceiverAsyncClient {
      * along with other failed lock tokens with their corresponding error information. Successfully renewed locks will
      * ensure that the associated event is only available to the consumer that holds the renewed lock.
      *
-     * @param topicName Topic Name.
-     * @param eventSubscriptionName Event Subscription Name.
      * @param lockTokens Array of lock tokens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -538,14 +524,13 @@ public final class EventGridReceiverAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the RenewLock operation on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RenewLocksResult> renewLocks(String topicName, String eventSubscriptionName, List<String> lockTokens) {
+    public Mono<RenewLocksResult> renewLocks(List<String> lockTokens) {
         // Generated convenience method for renewLocksWithResponse
         RequestOptions requestOptions = new RequestOptions();
         RenewLocksRequest requestObj = new RenewLocksRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
-        return renewLocksWithResponse(topicName, eventSubscriptionName, request, requestOptions)
+        return renewLocksWithResponse(topicName, subscriptionName, request, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(RenewLocksResult.class));
     }

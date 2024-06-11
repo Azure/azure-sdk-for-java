@@ -14,7 +14,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridSenderClientImpl;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -28,21 +27,24 @@ public final class EventGridSenderAsyncClient {
 
     @Generated
     private final EventGridSenderClientImpl serviceClient;
+    private final String topicName;
 
     /**
      * Initializes an instance of EventGridSenderAsyncClient class.
      *
      * @param serviceClient the service client implementation.
+     * @param topicName the topicName for this client.
      */
     @Generated
-    EventGridSenderAsyncClient(EventGridSenderClientImpl serviceClient) {
+    EventGridSenderAsyncClient(EventGridSenderClientImpl serviceClient, String topicName) {
         this.serviceClient = serviceClient;
+        this.topicName = topicName;
     }
 
     /**
      * Publish a single Cloud Event to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -57,9 +59,9 @@ public final class EventGridSenderAsyncClient {
      *     subject: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -82,7 +84,7 @@ public final class EventGridSenderAsyncClient {
     /**
      * Publish a batch of Cloud Events to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -99,9 +101,9 @@ public final class EventGridSenderAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * { }
      * }</pre>
@@ -125,7 +127,6 @@ public final class EventGridSenderAsyncClient {
     /**
      * Publish a single Cloud Event to a namespace topic.
      *
-     * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -135,19 +136,17 @@ public final class EventGridSenderAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Publish operation on successful completion of {@link Mono}.
      */
-    @Generated
+
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PublishResult> send(String topicName, CloudEvent event) {
+    Mono<Void> send(CloudEvent event) {
         // Generated convenience method for sendWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return sendWithResponse(topicName, event, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(PublishResult.class));
+        return sendWithResponse(topicName, BinaryData.fromObject(event), requestOptions).then();
     }
 
     /**
      * Publish a batch of Cloud Events to a namespace topic.
      *
-     * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -157,12 +156,11 @@ public final class EventGridSenderAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the Publish operation on successful completion of {@link Mono}.
      */
-    @Generated
+
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PublishResult> sendEvents(String topicName, List<CloudEvent> events) {
+    Mono<Void> send(List<CloudEvent> events) {
         // Generated convenience method for sendEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return sendEventsWithResponse(topicName, events, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(PublishResult.class));
+        return sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions).then();
     }
 }
