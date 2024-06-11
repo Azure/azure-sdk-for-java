@@ -6,6 +6,7 @@ package com.azure.ai.translation.document;
 import com.azure.ai.translation.document.models.BatchRequest;
 import com.azure.ai.translation.document.models.DocumentStatus;
 import com.azure.ai.translation.document.models.SourceInput;
+import com.azure.ai.translation.document.models.Status;
 import com.azure.ai.translation.document.models.TargetInput;
 import com.azure.ai.translation.document.models.TranslationStatus;
 import java.time.LocalDateTime;
@@ -34,7 +35,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         TranslationStatus translationStatus = createSingleTranslationJob(2);
 
         // Add Status filter
-        List<String> succeededStatusList = Arrays.asList(DocumentTranslationStatus.SUCCEEDED.getValue());
+        List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("statuses",

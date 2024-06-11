@@ -298,7 +298,7 @@ SyncPoller<TranslationStatus, Void> response
 String translationId = response.poll().getValue().getId(); 
 
 // Add Status filter
-List<String> succeededStatusList = Arrays.asList(DocumentTranslationStatus.SUCCEEDED.getValue());
+List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());
 RequestOptions requestOptions = new RequestOptions();
 requestOptions.addQueryParam("statuses",
         succeededStatusList.stream()
@@ -349,7 +349,7 @@ SyncPoller<TranslationStatus, Void> response
 String translationId = response.poll().getValue().getId(); 
 
 // Add Status filter
-List<String> succeededStatusList = Arrays.asList(DocumentTranslationStatus.SUCCEEDED.getValue());
+List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());
 RequestOptions requestOptions = new RequestOptions();
 requestOptions.addQueryParam("statuses",
         succeededStatusList.stream()

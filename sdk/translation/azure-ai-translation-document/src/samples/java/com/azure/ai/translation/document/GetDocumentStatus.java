@@ -13,6 +13,7 @@ import com.azure.ai.translation.document.models.StorageSource;
 import com.azure.ai.translation.document.models.TargetInput;
 import com.azure.ai.translation.document.models.TranslationStatus;
 import com.azure.ai.translation.document.models.DocumentFilter;
+import com.azure.ai.translation.document.models.Status;
 import com.azure.core.credential.AzureKeyCredential;
 import java.util.Arrays;
 import java.util.List;
@@ -63,7 +64,7 @@ public class GetDocumentStatus {
         String translationId = response.poll().getValue().getId(); 
         
         // Add Status filter
-        List<String> succeededStatusList = Arrays.asList(DocumentTranslationStatus.SUCCEEDED.getValue());
+        List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addQueryParam("statuses",
                 succeededStatusList.stream()

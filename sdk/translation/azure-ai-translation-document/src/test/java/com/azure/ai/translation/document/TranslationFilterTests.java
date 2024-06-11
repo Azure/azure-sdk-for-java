@@ -7,6 +7,7 @@ import com.azure.ai.translation.document.models.BatchRequest;
 import com.azure.ai.translation.document.models.SourceInput;
 import com.azure.ai.translation.document.models.TargetInput;
 import com.azure.ai.translation.document.models.TranslationStatus;
+import com.azure.ai.translation.document.models.Status;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import org.junit.jupiter.api.Test;
@@ -33,12 +34,12 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesFilterByStatus() {
-        createTranslationJobs(1, 1, DocumentTranslationStatus.SUCCEEDED);
-        List<String> cancelledIds = createTranslationJobs(1, 1, DocumentTranslationStatus.CANCELLED);
+        createTranslationJobs(1, 1, Status.SUCCEEDED);
+        List<String> cancelledIds = createTranslationJobs(1, 1, Status.CANCELLED);
 
         // list translations with filter
-        List<String> cancelledStatusList = Arrays.asList(DocumentTranslationStatus.CANCELLED.getValue(),
-                DocumentTranslationStatus.CANCELLING.getValue());
+        List<String> cancelledStatusList = Arrays.asList(Status.CANCELLED.toString(),
+                Status.CANCELLING.toString());
 
         LocalDateTime testStartTime = LocalDateTime.now(ZoneOffset.UTC);
         RequestOptions requestOptions = new RequestOptions();
@@ -67,7 +68,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesFilterByIds() {
-        List<String> allIds = createTranslationJobs(2, 1, DocumentTranslationStatus.SUCCEEDED);
+        List<String> allIds = createTranslationJobs(2, 1, Status.SUCCEEDED);
         List<String> targetIds = new ArrayList<>();
         targetIds.add(allIds.get(0));
 
@@ -83,7 +84,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
                     .getTranslationsStatus(requestOptions);
             for (BinaryData d : translationStatusResult) {
                 String status = new ObjectMapper().readTree(d.toBytes()).get("status").asText();
-                assertTrue(status.equalsIgnoreCase(DocumentTranslationStatus.SUCCEEDED.toString()));
+                assertTrue(status.equalsIgnoreCase(Status.SUCCEEDED.toString()));
                 String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
                 assertTrue(targetIds.contains(id));
             }
@@ -100,7 +101,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         LocalDateTime testStartTime = LocalDateTime.now(ZoneOffset.UTC);
 
         // create test job
-        List<String> targetIds = createTranslationJobs(1, 1, DocumentTranslationStatus.SUCCEEDED);
+        List<String> targetIds = createTranslationJobs(1, 1, Status.SUCCEEDED);
 
         // list translations with filter
         RequestOptions requestOptions = new RequestOptions();
@@ -128,9 +129,9 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     @Test
     public void testGetTranslationStatusesFilterByCreatedBefore() {
         // create some translations
-        List<String> targetIds = createTranslationJobs(1, 1, DocumentTranslationStatus.SUCCEEDED);
+        List<String> targetIds = createTranslationJobs(1, 1, Status.SUCCEEDED);
         LocalDateTime timeStamp = LocalDateTime.now(ZoneOffset.UTC);
-        createTranslationJobs(1, 1, DocumentTranslationStatus.SUCCEEDED);
+        createTranslationJobs(1, 1, Status.SUCCEEDED);
 
         // getting only translations from the last hour
         LocalDateTime recentTimestamp = LocalDateTime.now(ZoneOffset.UTC).minusHours(1);
@@ -165,7 +166,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     @Test
     public void testGetTranslationStatusesOrderByCreatedOn() {
         // create some translations
-        createTranslationJobs(3, 1, DocumentTranslationStatus.SUCCEEDED);
+        createTranslationJobs(3, 1, Status.SUCCEEDED);
         // getting only translations from the last few hours
         LocalDateTime recentTimestamp = LocalDateTime.now(ZoneOffset.UTC).minusHours(2);
 
@@ -198,10 +199,10 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     }
 
     public List<String> createTranslationJobs(int jobsCount, int docsPerJob,
-            DocumentTranslationStatus jobTerminalStatus) {
+            Status jobTerminalStatus) {
 
         // create source container
-        if (jobTerminalStatus.equals(DocumentTranslationStatus.CANCELLED)) {
+        if (jobTerminalStatus.equals(Status.CANCELLED)) {
             docsPerJob = 20; // in order to avoid job completing before canceling
         }
         List<TestDocument> testDocuments = createDummyTestDocuments(docsPerJob);
@@ -225,14 +226,14 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
             String translationId = poller.poll().getValue().getId();
             translationIds.add(translationId);
 
-            if (jobTerminalStatus.equals(DocumentTranslationStatus.SUCCEEDED)) {
+            if (jobTerminalStatus.equals(Status.SUCCEEDED)) {
                 poller.waitForCompletion();
-            } else if (jobTerminalStatus.equals(DocumentTranslationStatus.CANCELLED)) {
+            } else if (jobTerminalStatus.equals(Status.CANCELLED)) {
                 getDocumentTranslationClient().cancelTranslation(translationId);
             }
         }
         // ensure that cancel status has propagated before returning
-        if (jobTerminalStatus.equals(DocumentTranslationStatus.CANCELLED)) {
+        if (jobTerminalStatus.equals(Status.CANCELLED)) {
             waitForJobCancellation(translationIds);
         }
         return translationIds;

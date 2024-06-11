@@ -22,10 +22,10 @@ import com.azure.core.test.annotation.LiveOnly;
 
 public class SingleDocumentTranslationTests extends DocumentTranslationClientTestBase {
     private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
-    private static final Path DOCUMENT_FILE_PATH = Paths.get(CURRENT_DIRECTORY, "src", "test", "java", "com", "azure",
-            "ai", "translation", "document", "TestData", "test-input.txt");
-    private static final Path GLOSSARY_FILE_PATH = Paths.get(CURRENT_DIRECTORY, "src", "test", "java", "com", "azure",
-            "ai", "translation", "document", "TestData", "test-glossary.csv");
+    private static final Path DOCUMENT_FILE_PATH = Paths.get(CURRENT_DIRECTORY, "src", "test", "resources",
+            "test-input.txt");
+    private static final Path GLOSSARY_FILE_PATH = Paths.get(CURRENT_DIRECTORY, "src", "test", "resources",
+            "test-glossary.csv");
 
     @LiveOnly
     @Test
