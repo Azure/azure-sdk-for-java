@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsDeletePrivateEndpointConnectionSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * DeleteSitePrivateEndpointConnectionSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteSitePrivateEndpointConnectionSlot.json
      */
     /**
      * Sample code: Delete a private endpoint connection for a site.
@@ -18,7 +17,11 @@ public final class WebAppsDeletePrivateEndpointConnectionSlotSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAPrivateEndpointConnectionForASite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().deletePrivateEndpointConnectionSlot("rg", "testSite",
-            "connection", "stage", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .deletePrivateEndpointConnectionSlot("rg", "testSite", "connection", "stage",
+                com.azure.core.util.Context.NONE);
     }
 }

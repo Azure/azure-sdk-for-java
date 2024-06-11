@@ -84,8 +84,8 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("code_interpreter".equals(discriminatorValue)) {
                     return RunStepCodeInterpreterToolCall.fromJson(readerToUse.reset());
-                } else if ("retrieval".equals(discriminatorValue)) {
-                    return RunStepRetrievalToolCall.fromJson(readerToUse.reset());
+                } else if ("file_search".equals(discriminatorValue)) {
+                    return RunStepFileSearchToolCall.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {
                     return RunStepFunctionToolCall.fromJson(readerToUse.reset());
                 } else {

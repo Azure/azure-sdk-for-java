@@ -6,14 +6,21 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** The authentication protocol that is used for the file share. Can only be specified when creating a share. */
+/**
+ * The authentication protocol that is used for the file share. Can only be specified when creating a share.
+ */
 public final class EnabledProtocols extends ExpandableStringEnum<EnabledProtocols> {
-    /** Static value SMB for EnabledProtocols. */
+    /**
+     * Static value SMB for EnabledProtocols.
+     */
     public static final EnabledProtocols SMB = fromString("SMB");
 
-    /** Static value NFS for EnabledProtocols. */
+    /**
+     * Static value NFS for EnabledProtocols.
+     */
     public static final EnabledProtocols NFS = fromString("NFS");
 
     /**

@@ -52,8 +52,8 @@ public final class RegionForOnlineOffline {
      */
     public void validate() {
         if (region() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property region in model RegionForOnlineOffline"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property region in model RegionForOnlineOffline"));
         }
     }
 

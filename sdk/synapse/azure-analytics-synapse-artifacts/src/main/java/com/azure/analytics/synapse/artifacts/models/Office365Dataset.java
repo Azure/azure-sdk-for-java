@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The Office365 account.
- */
+/** The Office365 account. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Office365Table")
 @JsonFlatten
@@ -33,16 +31,13 @@ public class Office365Dataset extends Dataset {
     @JsonProperty(value = "typeProperties.predicate")
     private Object predicate;
 
-    /**
-     * Creates an instance of Office365Dataset class.
-     */
-    public Office365Dataset() {
-    }
+    /** Creates an instance of Office365Dataset class. */
+    public Office365Dataset() {}
 
     /**
      * Get the tableName property: Name of the dataset to extract from Office 365. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -52,7 +47,7 @@ public class Office365Dataset extends Dataset {
     /**
      * Set the tableName property: Name of the dataset to extract from Office 365. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param tableName the tableName value to set.
      * @return the Office365Dataset object itself.
      */
@@ -64,7 +59,7 @@ public class Office365Dataset extends Dataset {
     /**
      * Get the predicate property: A predicate expression that can be used to filter the specific rows to extract from
      * Office 365. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the predicate value.
      */
     public Object getPredicate() {
@@ -74,7 +69,7 @@ public class Office365Dataset extends Dataset {
     /**
      * Set the predicate property: A predicate expression that can be used to filter the specific rows to extract from
      * Office 365. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param predicate the predicate value to set.
      * @return the Office365Dataset object itself.
      */
@@ -83,63 +78,49 @@ public class Office365Dataset extends Dataset {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Office365Dataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Office365Dataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Office365Dataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Office365Dataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Office365Dataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Office365Dataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Office365Dataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

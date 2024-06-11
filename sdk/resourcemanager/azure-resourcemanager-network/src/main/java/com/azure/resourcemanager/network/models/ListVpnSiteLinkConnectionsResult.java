@@ -7,11 +7,12 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkConnectionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
- * Result of the request to list all vpn connections to a virtual wan vpn gateway. It contains a list of Vpn
- * Connections and a URL nextLink to get the next set of results.
+ * Result of the request to list all vpn connections to a virtual wan vpn gateway. It contains a list of Vpn Connections
+ * and a URL nextLink to get the next set of results.
  */
 @Fluent
 public final class ListVpnSiteLinkConnectionsResult {
@@ -35,7 +36,7 @@ public final class ListVpnSiteLinkConnectionsResult {
 
     /**
      * Get the value property: List of VpnSiteLinkConnections.
-     * 
+     *
      * @return the value value.
      */
     public List<VpnSiteLinkConnectionInner> value() {
@@ -44,7 +45,7 @@ public final class ListVpnSiteLinkConnectionsResult {
 
     /**
      * Set the value property: List of VpnSiteLinkConnections.
-     * 
+     *
      * @param value the value value to set.
      * @return the ListVpnSiteLinkConnectionsResult object itself.
      */
@@ -55,7 +56,7 @@ public final class ListVpnSiteLinkConnectionsResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,7 +65,7 @@ public final class ListVpnSiteLinkConnectionsResult {
 
     /**
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the ListVpnSiteLinkConnectionsResult object itself.
      */
@@ -75,7 +76,7 @@ public final class ListVpnSiteLinkConnectionsResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

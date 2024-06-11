@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Linked service for Amazon Redshift.
- */
+/** Linked service for Amazon Redshift. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonRedshift")
 @JsonFlatten
@@ -58,16 +56,13 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /**
-     * Creates an instance of AmazonRedshiftLinkedService class.
-     */
-    public AmazonRedshiftLinkedService() {
-    }
+    /** Creates an instance of AmazonRedshiftLinkedService class. */
+    public AmazonRedshiftLinkedService() {}
 
     /**
      * Get the server property: The name of the Amazon Redshift server. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the server value.
      */
     public Object getServer() {
@@ -77,7 +72,7 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     /**
      * Set the server property: The name of the Amazon Redshift server. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param server the server value to set.
      * @return the AmazonRedshiftLinkedService object itself.
      */
@@ -89,7 +84,7 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     /**
      * Get the username property: The username of the Amazon Redshift source. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the username value.
      */
     public Object getUsername() {
@@ -99,7 +94,7 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     /**
      * Set the username property: The username of the Amazon Redshift source. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param username the username value to set.
      * @return the AmazonRedshiftLinkedService object itself.
      */
@@ -110,7 +105,7 @@ public class AmazonRedshiftLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password of the Amazon Redshift source.
-     * 
+     *
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -119,7 +114,7 @@ public class AmazonRedshiftLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password of the Amazon Redshift source.
-     * 
+     *
      * @param password the password value to set.
      * @return the AmazonRedshiftLinkedService object itself.
      */
@@ -131,7 +126,7 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     /**
      * Get the database property: The database name of the Amazon Redshift source. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the database value.
      */
     public Object getDatabase() {
@@ -141,7 +136,7 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     /**
      * Set the database property: The database name of the Amazon Redshift source. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param database the database value to set.
      * @return the AmazonRedshiftLinkedService object itself.
      */
@@ -151,9 +146,9 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     }
 
     /**
-     * Get the port property: The TCP port number that the Amazon Redshift server uses to listen for client
-     * connections. The default value is 5439. Type: integer (or Expression with resultType integer).
-     * 
+     * Get the port property: The TCP port number that the Amazon Redshift server uses to listen for client connections.
+     * The default value is 5439. Type: integer (or Expression with resultType integer).
+     *
      * @return the port value.
      */
     public Object getPort() {
@@ -161,9 +156,9 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     }
 
     /**
-     * Set the port property: The TCP port number that the Amazon Redshift server uses to listen for client
-     * connections. The default value is 5439. Type: integer (or Expression with resultType integer).
-     * 
+     * Set the port property: The TCP port number that the Amazon Redshift server uses to listen for client connections.
+     * The default value is 5439. Type: integer (or Expression with resultType integer).
+     *
      * @param port the port value to set.
      * @return the AmazonRedshiftLinkedService object itself.
      */
@@ -173,9 +168,9 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -183,9 +178,9 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonRedshiftLinkedService object itself.
      */
@@ -194,36 +189,28 @@ public class AmazonRedshiftLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonRedshiftLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonRedshiftLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonRedshiftLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AmazonRedshiftLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

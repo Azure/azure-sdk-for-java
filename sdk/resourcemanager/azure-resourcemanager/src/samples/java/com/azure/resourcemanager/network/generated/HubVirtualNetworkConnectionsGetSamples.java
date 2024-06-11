@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class HubVirtualNetworkConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * HubVirtualNetworkConnectionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/HubVirtualNetworkConnectionGet.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionGet.
@@ -18,7 +17,10 @@ public final class HubVirtualNetworkConnectionsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void hubVirtualNetworkConnectionGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getHubVirtualNetworkConnections().getWithResponse("rg1",
-            "virtualHub1", "connection1", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getHubVirtualNetworkConnections()
+            .getWithResponse("rg1", "virtualHub1", "connection1", com.azure.core.util.Context.NONE);
     }
 }

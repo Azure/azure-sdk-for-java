@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The provider extended location. */
+/**
+ * The provider extended location.
+ */
 @Fluent
 public final class ProviderExtendedLocation {
     /*
@@ -29,13 +31,15 @@ public final class ProviderExtendedLocation {
     @JsonProperty(value = "extendedLocations")
     private List<String> extendedLocations;
 
-    /** Creates an instance of ProviderExtendedLocation class. */
+    /**
+     * Creates an instance of ProviderExtendedLocation class.
+     */
     public ProviderExtendedLocation() {
     }
 
     /**
      * Get the location property: The azure location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -44,7 +48,7 @@ public final class ProviderExtendedLocation {
 
     /**
      * Set the location property: The azure location.
-     *
+     * 
      * @param location the location value to set.
      * @return the ProviderExtendedLocation object itself.
      */
@@ -55,7 +59,7 @@ public final class ProviderExtendedLocation {
 
     /**
      * Get the type property: The extended location type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -64,7 +68,7 @@ public final class ProviderExtendedLocation {
 
     /**
      * Set the type property: The extended location type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ProviderExtendedLocation object itself.
      */
@@ -75,7 +79,7 @@ public final class ProviderExtendedLocation {
 
     /**
      * Get the extendedLocations property: The extended locations for the azure location.
-     *
+     * 
      * @return the extendedLocations value.
      */
     public List<String> extendedLocations() {
@@ -84,7 +88,7 @@ public final class ProviderExtendedLocation {
 
     /**
      * Set the extendedLocations property: The extended locations for the azure location.
-     *
+     * 
      * @param extendedLocations the extendedLocations value to set.
      * @return the ProviderExtendedLocation object itself.
      */
@@ -95,7 +99,7 @@ public final class ProviderExtendedLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

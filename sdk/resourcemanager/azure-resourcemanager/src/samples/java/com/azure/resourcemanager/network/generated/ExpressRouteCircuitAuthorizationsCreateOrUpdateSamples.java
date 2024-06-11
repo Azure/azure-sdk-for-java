@@ -11,8 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitAuthor
  */
 public final class ExpressRouteCircuitAuthorizationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * ExpressRouteCircuitAuthorizationCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRouteCircuitAuthorizationCreate.json
      */
     /**
      * Sample code: Create ExpressRouteCircuit Authorization.
@@ -20,8 +19,11 @@ public final class ExpressRouteCircuitAuthorizationsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createExpressRouteCircuitAuthorization(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteCircuitAuthorizations().createOrUpdate("rg1",
-            "circuitName", "authorizatinName", new ExpressRouteCircuitAuthorizationInner(),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteCircuitAuthorizations()
+            .createOrUpdate("rg1", "circuitName", "authorizatinName", new ExpressRouteCircuitAuthorizationInner(),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -8,10 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
-/**
- * Azure blob write settings.
- */
+/** Azure blob write settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlobStorageWriteSettings")
 @Fluent
@@ -22,16 +21,13 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
     @JsonProperty(value = "blockSizeInMB")
     private Object blockSizeInMB;
 
-    /**
-     * Creates an instance of AzureBlobStorageWriteSettings class.
-     */
-    public AzureBlobStorageWriteSettings() {
-    }
+    /** Creates an instance of AzureBlobStorageWriteSettings class. */
+    public AzureBlobStorageWriteSettings() {}
 
     /**
      * Get the blockSizeInMB property: Indicates the block size(MB) when writing data to blob. Type: integer (or
      * Expression with resultType integer).
-     * 
+     *
      * @return the blockSizeInMB value.
      */
     public Object getBlockSizeInMB() {
@@ -41,7 +37,7 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
     /**
      * Set the blockSizeInMB property: Indicates the block size(MB) when writing data to blob. Type: integer (or
      * Expression with resultType integer).
-     * 
+     *
      * @param blockSizeInMB the blockSizeInMB value to set.
      * @return the AzureBlobStorageWriteSettings object itself.
      */
@@ -50,21 +46,24 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureBlobStorageWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureBlobStorageWriteSettings setCopyBehavior(Object copyBehavior) {
         super.setCopyBehavior(copyBehavior);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageWriteSettings setMetadata(List<MetadataItem> metadata) {
+        super.setMetadata(metadata);
         return this;
     }
 }

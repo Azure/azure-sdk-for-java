@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Definition of data flow source setting for debug.
- */
+/** Definition of data flow source setting for debug. */
 @Fluent
 public final class DataFlowSourceSetting {
     /*
@@ -32,18 +30,14 @@ public final class DataFlowSourceSetting {
     /*
      * Definition of data flow source setting for debug.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of DataFlowSourceSetting class.
-     */
-    public DataFlowSourceSetting() {
-    }
+    /** Creates an instance of DataFlowSourceSetting class. */
+    public DataFlowSourceSetting() {}
 
     /**
      * Get the sourceName property: The data flow source name.
-     * 
+     *
      * @return the sourceName value.
      */
     public String getSourceName() {
@@ -52,7 +46,7 @@ public final class DataFlowSourceSetting {
 
     /**
      * Set the sourceName property: The data flow source name.
-     * 
+     *
      * @param sourceName the sourceName value to set.
      * @return the DataFlowSourceSetting object itself.
      */
@@ -63,7 +57,7 @@ public final class DataFlowSourceSetting {
 
     /**
      * Get the rowLimit property: Defines the row limit of data flow source in debug.
-     * 
+     *
      * @return the rowLimit value.
      */
     public Integer getRowLimit() {
@@ -72,7 +66,7 @@ public final class DataFlowSourceSetting {
 
     /**
      * Set the rowLimit property: Defines the row limit of data flow source in debug.
-     * 
+     *
      * @param rowLimit the rowLimit value to set.
      * @return the DataFlowSourceSetting object itself.
      */
@@ -83,7 +77,7 @@ public final class DataFlowSourceSetting {
 
     /**
      * Get the additionalProperties property: Definition of data flow source setting for debug.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -93,7 +87,7 @@ public final class DataFlowSourceSetting {
 
     /**
      * Set the additionalProperties property: Definition of data flow source setting for debug.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the DataFlowSourceSetting object itself.
      */

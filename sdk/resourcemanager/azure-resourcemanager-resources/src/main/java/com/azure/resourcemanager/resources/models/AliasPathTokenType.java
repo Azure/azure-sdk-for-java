@@ -8,35 +8,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the token that the alias path is referring to. */
+/**
+ * The type of the token that the alias path is referring to.
+ */
 public final class AliasPathTokenType extends ExpandableStringEnum<AliasPathTokenType> {
-    /** Static value NotSpecified for AliasPathTokenType. */
+    /**
+     * Static value NotSpecified for AliasPathTokenType.
+     */
     public static final AliasPathTokenType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Any for AliasPathTokenType. */
+    /**
+     * Static value Any for AliasPathTokenType.
+     */
     public static final AliasPathTokenType ANY = fromString("Any");
 
-    /** Static value String for AliasPathTokenType. */
+    /**
+     * Static value String for AliasPathTokenType.
+     */
     public static final AliasPathTokenType STRING = fromString("String");
 
-    /** Static value Object for AliasPathTokenType. */
+    /**
+     * Static value Object for AliasPathTokenType.
+     */
     public static final AliasPathTokenType OBJECT = fromString("Object");
 
-    /** Static value Array for AliasPathTokenType. */
+    /**
+     * Static value Array for AliasPathTokenType.
+     */
     public static final AliasPathTokenType ARRAY = fromString("Array");
 
-    /** Static value Integer for AliasPathTokenType. */
+    /**
+     * Static value Integer for AliasPathTokenType.
+     */
     public static final AliasPathTokenType INTEGER = fromString("Integer");
 
-    /** Static value Number for AliasPathTokenType. */
+    /**
+     * Static value Number for AliasPathTokenType.
+     */
     public static final AliasPathTokenType NUMBER = fromString("Number");
 
-    /** Static value Boolean for AliasPathTokenType. */
+    /**
+     * Static value Boolean for AliasPathTokenType.
+     */
     public static final AliasPathTokenType BOOLEAN = fromString("Boolean");
 
     /**
      * Creates a new instance of AliasPathTokenType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +63,7 @@ public final class AliasPathTokenType extends ExpandableStringEnum<AliasPathToke
 
     /**
      * Creates or finds a AliasPathTokenType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AliasPathTokenType.
      */
@@ -56,7 +74,7 @@ public final class AliasPathTokenType extends ExpandableStringEnum<AliasPathToke
 
     /**
      * Gets known AliasPathTokenType values.
-     *
+     * 
      * @return known AliasPathTokenType values.
      */
     public static Collection<AliasPathTokenType> values() {

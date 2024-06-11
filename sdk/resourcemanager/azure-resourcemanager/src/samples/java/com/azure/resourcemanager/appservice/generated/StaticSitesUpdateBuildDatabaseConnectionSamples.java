@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.models.DatabaseConnectionPatchReques
  */
 public final class StaticSitesUpdateBuildDatabaseConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * PatchStaticSiteBuildDatabaseConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/PatchStaticSiteBuildDatabaseConnection.json
      */
     /**
      * Sample code: Patch a database connection for a static site build.
@@ -21,8 +20,11 @@ public final class StaticSitesUpdateBuildDatabaseConnectionSamples {
      */
     public static void
         patchADatabaseConnectionForAStaticSiteBuild(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().updateBuildDatabaseConnectionWithResponse("rg",
-            "testStaticSite0", "default", "default", new DatabaseConnectionPatchRequest(),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .updateBuildDatabaseConnectionWithResponse("rg", "testStaticSite0", "default", "default",
+                new DatabaseConnectionPatchRequest(), com.azure.core.util.Context.NONE);
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
 /**
@@ -15,8 +16,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class EncryptionScopeKeyVaultProperties {
     /*
-     * The object identifier for a key vault key object. When applied, the encryption scope will use the key referenced
-     * by the identifier to enable customer-managed key support on this encryption scope.
+     * The object identifier for a key vault key object. When applied, the encryption scope will use the key referenced by the identifier to enable customer-managed key support on this encryption scope.
      */
     @JsonProperty(value = "keyUri")
     private String keyUri;
@@ -33,7 +33,9 @@ public final class EncryptionScopeKeyVaultProperties {
     @JsonProperty(value = "lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastKeyRotationTimestamp;
 
-    /** Creates an instance of EncryptionScopeKeyVaultProperties class. */
+    /**
+     * Creates an instance of EncryptionScopeKeyVaultProperties class.
+     */
     public EncryptionScopeKeyVaultProperties() {
     }
 

@@ -12,14 +12,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * MariaDB server linked service.
- */
+/** MariaDB server linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MariaDB")
 @JsonFlatten
 @Fluent
 public class MariaDBLinkedService extends LinkedService {
+    /*
+     * The version of the MariaDB driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can
+     * support connection string and property bag, V2 can only support connection string.
+     */
+    @JsonProperty(value = "typeProperties.driverVersion")
+    private Object driverVersion;
+
     /*
      * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
@@ -27,10 +32,34 @@ public class MariaDBLinkedService extends LinkedService {
     private Object connectionString;
 
     /*
+     * Server name for connection. Type: string.
+     */
+    @JsonProperty(value = "typeProperties.server")
+    private Object server;
+
+    /*
+     * The port for the connection. Type: integer.
+     */
+    @JsonProperty(value = "typeProperties.port")
+    private Object port;
+
+    /*
+     * Username for authentication. Type: string.
+     */
+    @JsonProperty(value = "typeProperties.username")
+    private Object username;
+
+    /*
+     * Database name for connection. Type: string.
+     */
+    @JsonProperty(value = "typeProperties.database")
+    private Object database;
+
+    /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "typeProperties.pwd")
-    private AzureKeyVaultSecretReference pwd;
+    @JsonProperty(value = "typeProperties.password")
+    private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
@@ -39,16 +68,35 @@ public class MariaDBLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of MariaDBLinkedService class. */
+    public MariaDBLinkedService() {}
+
     /**
-     * Creates an instance of MariaDBLinkedService class.
+     * Get the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     *
+     * @return the driverVersion value.
      */
-    public MariaDBLinkedService() {
+    public Object getDriverVersion() {
+        return this.driverVersion;
+    }
+
+    /**
+     * Set the driverVersion property: The version of the MariaDB driver. Type: string. V1 or empty for legacy driver,
+     * V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     *
+     * @param driverVersion the driverVersion value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService setDriverVersion(Object driverVersion) {
+        this.driverVersion = driverVersion;
+        return this;
     }
 
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     * 
+     *
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -58,7 +106,7 @@ public class MariaDBLinkedService extends LinkedService {
     /**
      * Set the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     * 
+     *
      * @param connectionString the connectionString value to set.
      * @return the MariaDBLinkedService object itself.
      */
@@ -68,29 +116,109 @@ public class MariaDBLinkedService extends LinkedService {
     }
 
     /**
-     * Get the pwd property: The Azure key vault secret reference of password in connection string.
-     * 
-     * @return the pwd value.
+     * Get the server property: Server name for connection. Type: string.
+     *
+     * @return the server value.
      */
-    public AzureKeyVaultSecretReference getPwd() {
-        return this.pwd;
+    public Object getServer() {
+        return this.server;
     }
 
     /**
-     * Set the pwd property: The Azure key vault secret reference of password in connection string.
-     * 
-     * @param pwd the pwd value to set.
+     * Set the server property: Server name for connection. Type: string.
+     *
+     * @param server the server value to set.
      * @return the MariaDBLinkedService object itself.
      */
-    public MariaDBLinkedService setPwd(AzureKeyVaultSecretReference pwd) {
-        this.pwd = pwd;
+    public MariaDBLinkedService setServer(Object server) {
+        this.server = server;
         return this;
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the port property: The port for the connection. Type: integer.
+     *
+     * @return the port value.
+     */
+    public Object getPort() {
+        return this.port;
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer.
+     *
+     * @param port the port value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService setPort(Object port) {
+        this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. Type: string.
+     *
+     * @return the username value.
+     */
+    public Object getUsername() {
+        return this.username;
+    }
+
+    /**
+     * Set the username property: Username for authentication. Type: string.
+     *
+     * @param username the username value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService setUsername(Object username) {
+        this.username = username;
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string.
+     *
+     * @return the database value.
+     */
+    public Object getDatabase() {
+        return this.database;
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string.
+     *
+     * @param database the database value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService setDatabase(Object database) {
+        this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the password property: The Azure key vault secret reference of password in connection string.
+     *
+     * @return the password value.
+     */
+    public AzureKeyVaultSecretReference getPassword() {
+        return this.password;
+    }
+
+    /**
+     * Set the password property: The Azure key vault secret reference of password in connection string.
+     *
+     * @param password the password value to set.
+     * @return the MariaDBLinkedService object itself.
+     */
+    public MariaDBLinkedService setPassword(AzureKeyVaultSecretReference password) {
+        this.password = password;
+        return this;
+    }
+
+    /**
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -98,9 +226,9 @@ public class MariaDBLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MariaDBLinkedService object itself.
      */
@@ -109,36 +237,28 @@ public class MariaDBLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MariaDBLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MariaDBLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MariaDBLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MariaDBLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

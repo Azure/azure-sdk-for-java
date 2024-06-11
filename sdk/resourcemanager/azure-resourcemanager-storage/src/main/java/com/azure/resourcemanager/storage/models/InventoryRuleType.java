@@ -6,11 +6,16 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** The valid value is Inventory. */
+/**
+ * The valid value is Inventory.
+ */
 public final class InventoryRuleType extends ExpandableStringEnum<InventoryRuleType> {
-    /** Static value Inventory for InventoryRuleType. */
+    /**
+     * Static value Inventory for InventoryRuleType.
+     */
     public static final InventoryRuleType INVENTORY = fromString("Inventory");
 
     /**

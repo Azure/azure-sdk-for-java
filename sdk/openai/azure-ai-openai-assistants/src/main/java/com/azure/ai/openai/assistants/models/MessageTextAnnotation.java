@@ -35,7 +35,7 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
      * @param text the text value to set.
      */
     @Generated
-    protected MessageTextAnnotation(String text) {
+    public MessageTextAnnotation(String text) {
         this.text = text;
     }
 

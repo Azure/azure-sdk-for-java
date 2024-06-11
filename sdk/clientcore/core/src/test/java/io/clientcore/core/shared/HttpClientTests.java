@@ -30,7 +30,6 @@ import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.UrlBuilder;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
@@ -79,6 +78,7 @@ import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.DESERIALIZE;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
+import static io.clientcore.core.implementation.util.ImplUtils.bomAwareToString;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -186,8 +186,9 @@ public abstract class HttpClientTests {
     @Test
     public void utf8BomResponse() throws IOException {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        byte[] response = sendRequest(UTF_8_BOM_RESPONSE);
 
-        assertEquals(expected, CoreUtils.bomAwareToString(sendRequest(UTF_8_BOM_RESPONSE), null));
+        assertEquals(expected, bomAwareToString(response, 0, response.length, null));
     }
 
     /**
@@ -196,8 +197,9 @@ public abstract class HttpClientTests {
     @Test
     public void utf16BeBomResponse() throws IOException {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
+        byte[] response = sendRequest(UTF_16BE_BOM_RESPONSE);
 
-        assertEquals(expected, CoreUtils.bomAwareToString(sendRequest(UTF_16BE_BOM_RESPONSE), null));
+        assertEquals(expected, bomAwareToString(response, 0, response.length, null));
     }
 
     /**
@@ -206,8 +208,9 @@ public abstract class HttpClientTests {
     @Test
     public void utf16LeBomResponse() throws IOException {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16LE);
+        byte[] response = sendRequest(UTF_16LE_BOM_RESPONSE);
 
-        assertEquals(expected, CoreUtils.bomAwareToString(sendRequest(UTF_16LE_BOM_RESPONSE), null));
+        assertEquals(expected, bomAwareToString(response, 0, response.length, null));
     }
 
     /**
@@ -236,8 +239,9 @@ public abstract class HttpClientTests {
     @Test
     public void bomWithSameHeader() throws IOException {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        byte[] response = sendRequest(BOM_WITH_DIFFERENT_HEADER);
 
-        assertEquals(expected, CoreUtils.bomAwareToString(sendRequest(BOM_WITH_DIFFERENT_HEADER), "charset=utf-8"));
+        assertEquals(expected, bomAwareToString(response, 0, response.length, "charset=utf-8"));
     }
 
     /**
@@ -246,8 +250,9 @@ public abstract class HttpClientTests {
     @Test
     public void bomWithDifferentHeader() throws IOException {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        byte[] response = sendRequest(BOM_WITH_DIFFERENT_HEADER);
 
-        assertEquals(expected, CoreUtils.bomAwareToString(sendRequest(BOM_WITH_DIFFERENT_HEADER), "charset=utf-16"));
+        assertEquals(expected, bomAwareToString(response, 0, response.length, "charset=utf-16"));
     }
 
     /**
@@ -839,7 +844,7 @@ public abstract class HttpClientTests {
             method = HttpMethod.GET,
             path = "anything",
             expectedStatusCodes = { 200 },
-            requestHeaders = { "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
+            headers = { "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         HttpBinJSON get(@HostParam("url") String url);
     }
 
@@ -878,7 +883,7 @@ public abstract class HttpClientTests {
             method = HttpMethod.GET,
             path = "anything",
             expectedStatusCodes = { 200 },
-            requestHeaders = { "MyHeader:MyHeaderValue" })
+            headers = { "MyHeader:MyHeaderValue" })
         HttpBinJSON get(@HostParam("url") String url);
     }
 
@@ -1001,22 +1006,22 @@ public abstract class HttpClientTests {
             @BodyParam(ContentType.APPLICATION_JSON) String body);
 
         @HttpRequestInformation(
-            method = HttpMethod.PUT, path = "put", requestHeaders = { "Content-Type: application/json" })
+            method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/json" })
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
         @HttpRequestInformation(
-            method = HttpMethod.PUT, path = "put", requestHeaders = { "Content-Type: application/json; charset=utf-8" })
+            method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/json; charset=utf-8" })
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @HttpRequestInformation(
-            method = HttpMethod.PUT, path = "put", requestHeaders = { "Content-Type: application/octet-stream" })
+            method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/octet-stream" })
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @HttpRequestInformation(
-            method = HttpMethod.PUT, path = "put", requestHeaders = { "Content-Type: application/octet-stream" })
+            method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/octet-stream" })
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 
@@ -1458,7 +1463,7 @@ public abstract class HttpClientTests {
     }
 
     private static Stream<Arguments> downloadTestArgumentProvider() {
-        return Stream.of(Arguments.of(Named.named("default", Context.EMPTY)));
+        return Stream.of(Arguments.of(Named.named("default", Context.none())));
     }
 
     @ServiceInterface(name = "BinaryDataUploadServ", host = "{url}")
@@ -1814,8 +1819,8 @@ public abstract class HttpClientTests {
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
 
         try (Response<BinaryData> response =
-                 service.post(getServerUri(isSecure()), BinaryData.EMPTY, sse -> assertEquals(expected, sse.getData()),
-                     requestOptions)) {
+                 service.post(getServerUri(isSecure()), BinaryData.empty(),
+                     sse -> assertEquals(expected, sse.getData()), requestOptions)) {
             assertNotNull(response.getBody());
             assertNotEquals(0, response.getBody().getLength());
             assertNotNull(response.getValue());
@@ -1952,6 +1957,148 @@ public abstract class HttpClientTests {
             assertNotEquals(0, response.getBody().getLength());
             assertNotNull(response.getValue());
         }
+    }
+
+    @ServiceInterface(name = "Service31", host = "{url}")
+    private interface Service31 {
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "constantParam1=constantValue1", "constantParam2=constantValue2" })
+        HttpBinJSON get1(@HostParam("url") String url, @QueryParam("variableParam") String queryParam);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "param=constantValue1", "param=constantValue2" })
+        HttpBinJSON get2(@HostParam("url") String url, @QueryParam("param") String queryParam);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "param=constantValue1,constantValue2", "param=constantValue3" })
+        HttpBinJSON get3(@HostParam("url") String url, @QueryParam("param") String queryParam);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "constantParam1=", "constantParam1" })
+        HttpBinJSON get4(@HostParam("url") String url);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "constantParam1=some=value" })
+        HttpBinJSON get5(@HostParam("url") String url);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "" })
+        HttpBinJSON get6(@HostParam("url") String url);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "=value" })
+        HttpBinJSON get7(@HostParam("url") String url);
+    }
+
+    @Test
+    public void queryParamsRequest() {
+        final HttpBinJSON json = createService(Service31.class).get1(getRequestUri(), "variableValue");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(3, queryParams.size());
+        assertEquals(1, queryParams.get("constantParam1").size());
+        assertEquals("constantValue1", queryParams.get("constantParam1").get(0));
+        assertEquals(1, queryParams.get("constantParam2").size());
+        assertEquals("constantValue2", queryParams.get("constantParam2").get(0));
+        assertEquals(1, queryParams.get("variableParam").size());
+        assertEquals("variableValue", queryParams.get("variableParam").get(0));
+    }
+
+    @Test
+    public void queryParamsRequestWithMultipleValuesForSameName() {
+        final HttpBinJSON json = createService(Service31.class).get2(getRequestUri(), "variableValue");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals("constantValue1", queryParams.get("param").get(0));
+        assertEquals("constantValue2", queryParams.get("param").get(1));
+        assertEquals("variableValue", queryParams.get("param").get(2));
+    }
+
+    @Test
+    public void queryParamsRequestWithMultipleValuesForSameNameAndValueArray() {
+        final HttpBinJSON json =
+            createService(Service31.class).get3(getRequestUri(), "variableValue1,variableValue2,variableValue3");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals(3, queryParams.get("param").size());
+        assertEquals("constantValue1%2CconstantValue2", queryParams.get("param").get(0));
+        assertEquals("constantValue3", queryParams.get("param").get(1));
+        assertEquals("variableValue1%2CvariableValue2%2CvariableValue3", queryParams.get("param").get(2));
+    }
+
+    @Test
+    public void queryParamsRequestWithEmptyValues() {
+        final HttpBinJSON json = createService(Service31.class).get4(getRequestUri());
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertTrue(queryParams.containsKey("constantParam1"));
+        assertNull(queryParams.get("constantParam1"));
+    }
+
+    @Test
+    public void queryParamsRequestWithMoreThanOneEqualsSign() {
+        final HttpBinJSON json = createService(Service31.class).get5(getRequestUri());
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals("some%3Dvalue", queryParams.get("constantParam1").get(0));
+    }
+
+    @Test
+    public void queryParamsRequestWithEmptyName() {
+        assertThrows(IllegalStateException.class, () ->
+            createService(Service31.class).get6(getRequestUri()), "Query parameters cannot be null or empty.");
+        assertThrows(IllegalStateException.class, () ->
+            createService(Service31.class).get7(getRequestUri()), "Names for query parameters cannot be empty.");
     }
 
     // Helpers

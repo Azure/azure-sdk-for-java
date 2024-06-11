@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Azure Synapse nested debug resource.
- */
+/** Azure Synapse nested debug resource. */
 @Fluent
 public class SubResourceDebugResource {
     /*
@@ -18,15 +16,12 @@ public class SubResourceDebugResource {
     @JsonProperty(value = "name")
     private String name;
 
-    /**
-     * Creates an instance of SubResourceDebugResource class.
-     */
-    public SubResourceDebugResource() {
-    }
+    /** Creates an instance of SubResourceDebugResource class. */
+    public SubResourceDebugResource() {}
 
     /**
      * Get the name property: The resource name.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -35,7 +30,7 @@ public class SubResourceDebugResource {
 
     /**
      * Set the name property: The resource name.
-     * 
+     *
      * @param name the name value to set.
      * @return the SubResourceDebugResource object itself.
      */

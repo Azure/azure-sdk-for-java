@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 12.22.1 (2024-06-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+- Upgraded `azure-storage-blob` from `12.26.0` to version `12.26.1`.
+
 ## 12.22.0 (2024-05-15)
 
 ### Features Added

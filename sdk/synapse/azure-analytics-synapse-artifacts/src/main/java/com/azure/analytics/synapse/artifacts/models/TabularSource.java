@@ -10,14 +10,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Copy activity sources of tabular type.
- */
+/** Copy activity sources of tabular type. */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = TabularSource.class)
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        defaultImpl = TabularSource.class)
 @JsonTypeName("TabularSource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureTableSource", value = AzureTableSource.class),
@@ -26,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "OdbcSource", value = OdbcSource.class),
     @JsonSubTypes.Type(name = "MySqlSource", value = MySqlSource.class),
     @JsonSubTypes.Type(name = "PostgreSqlSource", value = PostgreSqlSource.class),
+    @JsonSubTypes.Type(name = "PostgreSqlV2Source", value = PostgreSqlV2Source.class),
     @JsonSubTypes.Type(name = "SybaseSource", value = SybaseSource.class),
     @JsonSubTypes.Type(name = "SapBwSource", value = SapBwSource.class),
     @JsonSubTypes.Type(name = "SalesforceSource", value = SalesforceSource.class),
@@ -51,6 +50,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "DrillSource", value = DrillSource.class),
     @JsonSubTypes.Type(name = "EloquaSource", value = EloquaSource.class),
     @JsonSubTypes.Type(name = "GoogleBigQuerySource", value = GoogleBigQuerySource.class),
+    @JsonSubTypes.Type(name = "GoogleBigQueryV2Source", value = GoogleBigQueryV2Source.class),
     @JsonSubTypes.Type(name = "GreenplumSource", value = GreenplumSource.class),
     @JsonSubTypes.Type(name = "HBaseSource", value = HBaseSource.class),
     @JsonSubTypes.Type(name = "HiveSource", value = HiveSource.class),
@@ -78,7 +78,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "DynamicsAXSource", value = DynamicsAXSource.class),
     @JsonSubTypes.Type(name = "OracleServiceCloudSource", value = OracleServiceCloudSource.class),
     @JsonSubTypes.Type(name = "GoogleAdWordsSource", value = GoogleAdWordsSource.class),
-    @JsonSubTypes.Type(name = "AmazonRedshiftSource", value = AmazonRedshiftSource.class) })
+    @JsonSubTypes.Type(name = "AmazonRedshiftSource", value = AmazonRedshiftSource.class),
+    @JsonSubTypes.Type(name = "WarehouseSource", value = WarehouseSource.class),
+    @JsonSubTypes.Type(name = "SalesforceV2Source", value = SalesforceV2Source.class),
+    @JsonSubTypes.Type(name = "ServiceNowV2Source", value = ServiceNowV2Source.class)
+})
 @Fluent
 public class TabularSource extends CopySource {
     /*
@@ -95,16 +99,13 @@ public class TabularSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /**
-     * Creates an instance of TabularSource class.
-     */
-    public TabularSource() {
-    }
+    /** Creates an instance of TabularSource class. */
+    public TabularSource() {}
 
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     * 
+     *
      * @return the queryTimeout value.
      */
     public Object getQueryTimeout() {
@@ -114,7 +115,7 @@ public class TabularSource extends CopySource {
     /**
      * Set the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     * 
+     *
      * @param queryTimeout the queryTimeout value to set.
      * @return the TabularSource object itself.
      */
@@ -126,7 +127,7 @@ public class TabularSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -136,7 +137,7 @@ public class TabularSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @param additionalColumns the additionalColumns value to set.
      * @return the TabularSource object itself.
      */
@@ -145,27 +146,21 @@ public class TabularSource extends CopySource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TabularSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TabularSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TabularSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

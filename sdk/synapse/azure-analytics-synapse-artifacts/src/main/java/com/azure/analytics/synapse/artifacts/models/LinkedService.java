@@ -21,10 +21,10 @@ import java.util.Map;
  * related store or compute resource.
  */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = LinkedService.class)
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        defaultImpl = LinkedService.class)
 @JsonTypeName("LinkedService")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureStorage", value = AzureStorageLinkedService.class),
@@ -50,6 +50,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureMySql", value = AzureMySqlLinkedService.class),
     @JsonSubTypes.Type(name = "MySql", value = MySqlLinkedService.class),
     @JsonSubTypes.Type(name = "PostgreSql", value = PostgreSqlLinkedService.class),
+    @JsonSubTypes.Type(name = "PostgreSqlV2", value = PostgreSqlV2LinkedService.class),
     @JsonSubTypes.Type(name = "Sybase", value = SybaseLinkedService.class),
     @JsonSubTypes.Type(name = "Db2", value = Db2LinkedService.class),
     @JsonSubTypes.Type(name = "Teradata", value = TeradataLinkedService.class),
@@ -101,6 +102,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "Drill", value = DrillLinkedService.class),
     @JsonSubTypes.Type(name = "Eloqua", value = EloquaLinkedService.class),
     @JsonSubTypes.Type(name = "GoogleBigQuery", value = GoogleBigQueryLinkedService.class),
+    @JsonSubTypes.Type(name = "GoogleBigQueryV2", value = GoogleBigQueryV2LinkedService.class),
     @JsonSubTypes.Type(name = "Greenplum", value = GreenplumLinkedService.class),
     @JsonSubTypes.Type(name = "HBase", value = HBaseLinkedService.class),
     @JsonSubTypes.Type(name = "Hive", value = HiveLinkedService.class),
@@ -136,9 +138,15 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerLinkedService.class),
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
     @JsonSubTypes.Type(name = "Snowflake", value = SnowflakeLinkedService.class),
+    @JsonSubTypes.Type(name = "SnowflakeV2", value = SnowflakeV2LinkedService.class),
     @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class),
     @JsonSubTypes.Type(name = "AzureSynapseArtifacts", value = AzureSynapseArtifactsLinkedService.class),
-    @JsonSubTypes.Type(name = "PowerBIWorkspace", value = PowerBIWorkspaceLinkedService.class) })
+    @JsonSubTypes.Type(name = "LakeHouse", value = LakeHouseLinkedService.class),
+    @JsonSubTypes.Type(name = "PowerBIWorkspace", value = PowerBIWorkspaceLinkedService.class),
+    @JsonSubTypes.Type(name = "SalesforceV2", value = SalesforceV2LinkedService.class),
+    @JsonSubTypes.Type(name = "SalesforceServiceCloudV2", value = SalesforceServiceCloudV2LinkedService.class),
+    @JsonSubTypes.Type(name = "Warehouse", value = WarehouseLinkedService.class)
+})
 @Fluent
 public class LinkedService {
     /*
@@ -169,18 +177,14 @@ public class LinkedService {
      * The Azure Synapse nested object which contains the information and credential which can be used to connect with
      * related store or compute resource.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of LinkedService class.
-     */
-    public LinkedService() {
-    }
+    /** Creates an instance of LinkedService class. */
+    public LinkedService() {}
 
     /**
      * Get the connectVia property: The integration runtime reference.
-     * 
+     *
      * @return the connectVia value.
      */
     public IntegrationRuntimeReference getConnectVia() {
@@ -189,7 +193,7 @@ public class LinkedService {
 
     /**
      * Set the connectVia property: The integration runtime reference.
-     * 
+     *
      * @param connectVia the connectVia value to set.
      * @return the LinkedService object itself.
      */
@@ -200,7 +204,7 @@ public class LinkedService {
 
     /**
      * Get the description property: Linked service description.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -209,7 +213,7 @@ public class LinkedService {
 
     /**
      * Set the description property: Linked service description.
-     * 
+     *
      * @param description the description value to set.
      * @return the LinkedService object itself.
      */
@@ -220,7 +224,7 @@ public class LinkedService {
 
     /**
      * Get the parameters property: Parameters for linked service.
-     * 
+     *
      * @return the parameters value.
      */
     public Map<String, ParameterSpecification> getParameters() {
@@ -229,7 +233,7 @@ public class LinkedService {
 
     /**
      * Set the parameters property: Parameters for linked service.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the LinkedService object itself.
      */
@@ -240,7 +244,7 @@ public class LinkedService {
 
     /**
      * Get the annotations property: List of tags that can be used for describing the linked service.
-     * 
+     *
      * @return the annotations value.
      */
     public List<Object> getAnnotations() {
@@ -249,7 +253,7 @@ public class LinkedService {
 
     /**
      * Set the annotations property: List of tags that can be used for describing the linked service.
-     * 
+     *
      * @param annotations the annotations value to set.
      * @return the LinkedService object itself.
      */
@@ -261,7 +265,7 @@ public class LinkedService {
     /**
      * Get the additionalProperties property: The Azure Synapse nested object which contains the information and
      * credential which can be used to connect with related store or compute resource.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -272,7 +276,7 @@ public class LinkedService {
     /**
      * Set the additionalProperties property: The Azure Synapse nested object which contains the information and
      * credential which can be used to connect with related store or compute resource.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the LinkedService object itself.
      */

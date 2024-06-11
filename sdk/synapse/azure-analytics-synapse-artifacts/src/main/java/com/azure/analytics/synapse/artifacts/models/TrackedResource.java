@@ -10,8 +10,8 @@ import java.util.Map;
 
 /**
  * Tracked Resource
- * 
- * The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a
+ *
+ * <p>The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a
  * 'location'.
  */
 @Fluent
@@ -28,15 +28,12 @@ public class TrackedResource extends Resource {
     @JsonProperty(value = "location", required = true)
     private String location;
 
-    /**
-     * Creates an instance of TrackedResource class.
-     */
-    public TrackedResource() {
-    }
+    /** Creates an instance of TrackedResource class. */
+    public TrackedResource() {}
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -45,7 +42,7 @@ public class TrackedResource extends Resource {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the TrackedResource object itself.
      */
@@ -56,7 +53,7 @@ public class TrackedResource extends Resource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     * 
+     *
      * @return the location value.
      */
     public String getLocation() {
@@ -65,7 +62,7 @@ public class TrackedResource extends Resource {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     * 
+     *
      * @param location the location value to set.
      * @return the TrackedResource object itself.
      */

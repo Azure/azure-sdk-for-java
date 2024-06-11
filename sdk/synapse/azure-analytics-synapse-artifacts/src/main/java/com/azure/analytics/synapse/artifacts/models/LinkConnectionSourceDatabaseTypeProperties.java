@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LinkConnectionSourceDatabaseTypeProperties model.
- */
+/** The LinkConnectionSourceDatabaseTypeProperties model. */
 @Fluent
 public final class LinkConnectionSourceDatabaseTypeProperties {
     /*
@@ -24,15 +22,12 @@ public final class LinkConnectionSourceDatabaseTypeProperties {
     @JsonProperty(value = "principalId")
     private String principalId;
 
-    /**
-     * Creates an instance of LinkConnectionSourceDatabaseTypeProperties class.
-     */
-    public LinkConnectionSourceDatabaseTypeProperties() {
-    }
+    /** Creates an instance of LinkConnectionSourceDatabaseTypeProperties class. */
+    public LinkConnectionSourceDatabaseTypeProperties() {}
 
     /**
      * Get the resourceId property: Link connection source database server's resource id.
-     * 
+     *
      * @return the resourceId value.
      */
     public String getResourceId() {
@@ -41,7 +36,7 @@ public final class LinkConnectionSourceDatabaseTypeProperties {
 
     /**
      * Set the resourceId property: Link connection source database server's resource id.
-     * 
+     *
      * @param resourceId the resourceId value to set.
      * @return the LinkConnectionSourceDatabaseTypeProperties object itself.
      */
@@ -52,7 +47,7 @@ public final class LinkConnectionSourceDatabaseTypeProperties {
 
     /**
      * Get the principalId property: Link connection source database server's principal id.
-     * 
+     *
      * @return the principalId value.
      */
     public String getPrincipalId() {
@@ -61,7 +56,7 @@ public final class LinkConnectionSourceDatabaseTypeProperties {
 
     /**
      * Set the principalId property: Link connection source database server's principal id.
-     * 
+     *
      * @param principalId the principalId value to set.
      * @return the LinkConnectionSourceDatabaseTypeProperties object itself.
      */

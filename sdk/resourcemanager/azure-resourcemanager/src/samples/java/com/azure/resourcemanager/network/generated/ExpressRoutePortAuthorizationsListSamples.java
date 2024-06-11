@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRoutePortAuthorizationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * ExpressRoutePortAuthorizationList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRoutePortAuthorizationList.json
      */
     /**
      * Sample code: List ExpressRoutePort Authorization.
@@ -18,7 +17,10 @@ public final class ExpressRoutePortAuthorizationsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listExpressRoutePortAuthorization(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRoutePortAuthorizations().list("rg1",
-            "expressRoutePortName", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRoutePortAuthorizations()
+            .list("rg1", "expressRoutePortName", com.azure.core.util.Context.NONE);
     }
 }

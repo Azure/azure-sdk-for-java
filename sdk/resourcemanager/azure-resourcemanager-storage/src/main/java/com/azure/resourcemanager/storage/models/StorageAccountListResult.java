@@ -7,9 +7,12 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The response from the List Storage Accounts operation. */
+/**
+ * The response from the List Storage Accounts operation.
+ */
 @Immutable
 public final class StorageAccountListResult {
     /*
@@ -19,13 +22,14 @@ public final class StorageAccountListResult {
     private List<StorageAccountInner> value;
 
     /*
-     * Request URL that can be used to query next page of storage accounts. Returned when total number of requested
-     * storage accounts exceed maximum page size.
+     * Request URL that can be used to query next page of storage accounts. Returned when total number of requested storage accounts exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of StorageAccountListResult class. */
+    /**
+     * Creates an instance of StorageAccountListResult class.
+     */
     public StorageAccountListResult() {
     }
 

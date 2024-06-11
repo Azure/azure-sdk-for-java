@@ -11,32 +11,29 @@ import com.azure.resourcemanager.resources.models.TemplateLink;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Deployments CreateOrUpdateAtManagementGroupScope. */
+/**
+ * Samples for Deployments CreateOrUpdateAtManagementGroupScope.
+ */
 public final class DeploymentsCreateOrUpdateAtManagementGroupScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentAtManagementGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PutDeploymentAtManagementGroup.json
      */
     /**
      * Sample code: Create deployment at management group scope.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createDeploymentAtManagementGroupScope(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .serviceClient()
             .getDeployments()
-            .createOrUpdateAtManagementGroupScope(
-                "my-management-group-id",
-                "my-deployment",
-                new ScopedDeployment()
-                    .withLocation("eastus")
-                    .withProperties(
-                        new DeploymentProperties()
-                            .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                            .withParameters(mapOf())
-                            .withMode(DeploymentMode.INCREMENTAL)),
+            .createOrUpdateAtManagementGroupScope("my-management-group-id", "my-deployment",
+                new ScopedDeployment().withLocation("eastus")
+                    .withProperties(new DeploymentProperties()
+                        .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                        .withParameters(mapOf())
+                        .withMode(DeploymentMode.INCREMENTAL)),
                 com.azure.core.util.Context.NONE);
     }
 

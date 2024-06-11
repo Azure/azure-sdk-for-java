@@ -110,6 +110,8 @@ public final class TestUtils {
         = GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID");
     public static final String AZURE_FORM_RECOGNIZER_CLIENT_SECRET
         = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
+    public static final String[] REMOVE_SANITIZER_ID = {"AZSDK2003", "AZSDK2030"};
+
     private TestUtils() {
     }
     static InputStream getContentDetectionFileData(String localFileUrl) {

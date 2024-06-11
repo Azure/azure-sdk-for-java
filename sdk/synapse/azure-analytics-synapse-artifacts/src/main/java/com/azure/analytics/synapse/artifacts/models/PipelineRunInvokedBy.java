@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Provides entity name and id that started the pipeline run.
- */
+/** Provides entity name and id that started the pipeline run. */
 @Immutable
 public final class PipelineRunInvokedBy {
     /*
@@ -30,15 +28,12 @@ public final class PipelineRunInvokedBy {
     @JsonProperty(value = "invokedByType", access = JsonProperty.Access.WRITE_ONLY)
     private String invokedByType;
 
-    /**
-     * Creates an instance of PipelineRunInvokedBy class.
-     */
-    public PipelineRunInvokedBy() {
-    }
+    /** Creates an instance of PipelineRunInvokedBy class. */
+    public PipelineRunInvokedBy() {}
 
     /**
      * Get the name property: Name of the entity that started the pipeline run.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -47,7 +42,7 @@ public final class PipelineRunInvokedBy {
 
     /**
      * Get the id property: The ID of the entity that started the run.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -56,7 +51,7 @@ public final class PipelineRunInvokedBy {
 
     /**
      * Get the invokedByType property: The type of the entity that started the run.
-     * 
+     *
      * @return the invokedByType value.
      */
     public String getInvokedByType() {

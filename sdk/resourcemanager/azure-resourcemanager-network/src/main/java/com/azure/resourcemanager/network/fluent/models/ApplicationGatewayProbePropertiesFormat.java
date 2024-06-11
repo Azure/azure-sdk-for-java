@@ -34,22 +34,19 @@ public final class ApplicationGatewayProbePropertiesFormat {
     private String path;
 
     /*
-     * The probing interval in seconds. This is the time interval between two consecutive probes. Acceptable values are
-     * from 1 second to 86400 seconds.
+     * The probing interval in seconds. This is the time interval between two consecutive probes. Acceptable values are from 1 second to 86400 seconds.
      */
     @JsonProperty(value = "interval")
     private Integer interval;
 
     /*
-     * The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period.
-     * Acceptable values are from 1 second to 86400 seconds.
+     * The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable values are from 1 second to 86400 seconds.
      */
     @JsonProperty(value = "timeout")
     private Integer timeout;
 
     /*
-     * The probe retry count. Backend server is marked down after consecutive probe failure count reaches
-     * UnhealthyThreshold. Acceptable values are from 1 second to 20.
+     * The probe retry count. Backend server is marked down after consecutive probe failure count reaches UnhealthyThreshold. Acceptable values are from 1 second to 20.
      */
     @JsonProperty(value = "unhealthyThreshold")
     private Integer unhealthyThreshold;
@@ -61,8 +58,7 @@ public final class ApplicationGatewayProbePropertiesFormat {
     private Boolean pickHostnameFromBackendHttpSettings;
 
     /*
-     * Whether the server name indication should be picked from the backend settings for Tls protocol. Default value is
-     * false.
+     * Whether the server name indication should be picked from the backend settings for Tls protocol. Default value is false.
      */
     @JsonProperty(value = "pickHostNameFromBackendSettings")
     private Boolean pickHostnameFromBackendSettings;
@@ -86,8 +82,7 @@ public final class ApplicationGatewayProbePropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Custom port which will be used for probing the backend servers. The valid value ranges from 1 to 65535. In case
-     * not set, port from http settings will be used. This property is valid for Basic, Standard_v2 and WAF_v2 only.
+     * Custom port which will be used for probing the backend servers. The valid value ranges from 1 to 65535. In case not set, port from http settings will be used. This property is valid for Basic, Standard_v2 and WAF_v2 only.
      */
     @JsonProperty(value = "port")
     private Integer port;
@@ -205,8 +200,8 @@ public final class ApplicationGatewayProbePropertiesFormat {
     }
 
     /**
-     * Get the unhealthyThreshold property: The probe retry count. Backend server is marked down after consecutive
-     * probe failure count reaches UnhealthyThreshold. Acceptable values are from 1 second to 20.
+     * Get the unhealthyThreshold property: The probe retry count. Backend server is marked down after consecutive probe
+     * failure count reaches UnhealthyThreshold. Acceptable values are from 1 second to 20.
      * 
      * @return the unhealthyThreshold value.
      */
@@ -215,8 +210,8 @@ public final class ApplicationGatewayProbePropertiesFormat {
     }
 
     /**
-     * Set the unhealthyThreshold property: The probe retry count. Backend server is marked down after consecutive
-     * probe failure count reaches UnhealthyThreshold. Acceptable values are from 1 second to 20.
+     * Set the unhealthyThreshold property: The probe retry count. Backend server is marked down after consecutive probe
+     * failure count reaches UnhealthyThreshold. Acceptable values are from 1 second to 20.
      * 
      * @param unhealthyThreshold the unhealthyThreshold value to set.
      * @return the ApplicationGatewayProbePropertiesFormat object itself.

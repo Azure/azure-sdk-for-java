@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * A list of sql scripts resources.
- */
+/** A list of sql scripts resources. */
 @Fluent
 public final class SqlScriptsListResponse {
     /*
@@ -25,15 +23,12 @@ public final class SqlScriptsListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /**
-     * Creates an instance of SqlScriptsListResponse class.
-     */
-    public SqlScriptsListResponse() {
-    }
+    /** Creates an instance of SqlScriptsListResponse class. */
+    public SqlScriptsListResponse() {}
 
     /**
      * Get the value property: List of sql scripts.
-     * 
+     *
      * @return the value value.
      */
     public List<SqlScriptResource> getValue() {
@@ -42,7 +37,7 @@ public final class SqlScriptsListResponse {
 
     /**
      * Set the value property: List of sql scripts.
-     * 
+     *
      * @param value the value value to set.
      * @return the SqlScriptsListResponse object itself.
      */
@@ -53,7 +48,7 @@ public final class SqlScriptsListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -62,7 +57,7 @@ public final class SqlScriptsListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the SqlScriptsListResponse object itself.
      */

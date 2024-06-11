@@ -14,11 +14,14 @@ import com.azure.resourcemanager.storage.models.ShareAccessTier;
 import com.azure.resourcemanager.storage.models.SignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The properties of the file share. */
+/**
+ * The properties of the file share.
+ */
 @Fluent
 public final class FileShareProperties {
     /*
@@ -35,8 +38,7 @@ public final class FileShareProperties {
     private Map<String, String> metadata;
 
     /*
-     * The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For
-     * Large File Shares, the maximum size is 102400.
+     * The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
      */
     @JsonProperty(value = "shareQuota")
     private Integer shareQuota;
@@ -78,8 +80,7 @@ public final class FileShareProperties {
     private Integer remainingRetentionDays;
 
     /*
-     * Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool.
-     * FileStorage account can choose Premium.
+     * Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. FileStorage account can choose Premium.
      */
     @JsonProperty(value = "accessTier")
     private ShareAccessTier accessTier;
@@ -97,8 +98,7 @@ public final class FileShareProperties {
     private String accessTierStatus;
 
     /*
-     * The approximate size of the data stored on the share. Note that this value may not include all recently created
-     * or recently resized files.
+     * The approximate size of the data stored on the share. Note that this value may not include all recently created or recently resized files.
      */
     @JsonProperty(value = "shareUsageBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long shareUsageBytes;
@@ -133,7 +133,9 @@ public final class FileShareProperties {
     @JsonProperty(value = "snapshotTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime snapshotTime;
 
-    /** Creates an instance of FileShareProperties class. */
+    /**
+     * Creates an instance of FileShareProperties class.
+     */
     public FileShareProperties() {
     }
 

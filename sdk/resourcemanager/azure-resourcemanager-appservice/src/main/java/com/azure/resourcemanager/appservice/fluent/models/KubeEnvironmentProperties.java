@@ -69,8 +69,7 @@ public final class KubeEnvironmentProperties {
     private AppLogsConfiguration appLogsConfiguration;
 
     /*
-     * Cluster configuration for Container Apps Environments to configure Dapr Instrumentation Key and VNET
-     * Configuration
+     * Cluster configuration for Container Apps Environments to configure Dapr Instrumentation Key and VNET Configuration
      */
     @JsonProperty(value = "containerAppsConfiguration")
     private ContainerAppsConfiguration containerAppsConfiguration;

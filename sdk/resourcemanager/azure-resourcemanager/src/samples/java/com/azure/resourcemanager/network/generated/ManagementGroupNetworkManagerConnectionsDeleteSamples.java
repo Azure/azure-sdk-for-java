@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ManagementGroupNetworkManagerConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * NetworkManagerConnectionManagementGroupDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerConnectionManagementGroupDelete.json
      */
     /**
      * Sample code: Delete Management Group Network Manager Connection.
@@ -19,7 +18,10 @@ public final class ManagementGroupNetworkManagerConnectionsDeleteSamples {
      */
     public static void
         deleteManagementGroupNetworkManagerConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getManagementGroupNetworkManagerConnections()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getManagementGroupNetworkManagerConnections()
             .deleteWithResponse("managementGroupA", "TestNMConnection", com.azure.core.util.Context.NONE);
     }
 }
