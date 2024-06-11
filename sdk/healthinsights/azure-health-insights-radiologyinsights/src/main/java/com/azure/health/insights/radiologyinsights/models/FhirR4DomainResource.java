@@ -228,7 +228,6 @@ public class FhirR4DomainResource extends FhirR4Resource {
     @Generated
     static FhirR4DomainResource fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String resourceType = null;
             String id = null;
             FhirR4Meta meta = null;
             String implicitRules = null;

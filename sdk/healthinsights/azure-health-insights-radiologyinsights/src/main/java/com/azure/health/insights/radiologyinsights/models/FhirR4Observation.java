@@ -601,7 +601,6 @@ public final class FhirR4Observation extends FhirR4DomainResource {
     @Generated
     public static FhirR4Observation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String resourceType = null;
             String id = null;
             FhirR4Meta meta = null;
             String implicitRules = null;

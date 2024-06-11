@@ -443,7 +443,6 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     @Generated
     public static FhirR4Condition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String resourceType = null;
             String id = null;
             FhirR4Meta meta = null;
             String implicitRules = null;
