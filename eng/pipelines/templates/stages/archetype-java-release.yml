@@ -45,7 +45,6 @@ stages:
             deploy:
               steps:
                 - checkout: none
-                - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
                 - download: current
                   displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
@@ -197,7 +196,6 @@ stages:
                             - Name: Azure/azure-sdk-for-java
                               Commitish: $(Build.SourceVersion)
                               WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
                       - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                       - ${{ if eq(parameters.UseEsrpRelease, 'true') }}:
                         - template: /eng/pipelines/templates/steps/java-publishing.yml
@@ -408,8 +406,6 @@ stages:
               - Name: Azure/azure-sdk-for-java
                 Commitish: $(Build.SourceVersion)
                 WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
-
-        - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
         - download: current
           displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
