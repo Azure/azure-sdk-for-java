@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.emptySet;
 import static java.util.Collections.singleton;
 
 public class TelemetryPipelineResponse {
@@ -34,11 +35,19 @@ public class TelemetryPipelineResponse {
     }
 
     public Set<ResponseError> getErrors() {
-        return parseErrors(body); // parseErrors on demand
+        try {
+            return parseErrors(body); // parseErrors on demand
+        } catch (IllegalStateException e) {
+            return emptySet();
+        }
     }
 
     public Set<String> getErrorMessages() {
-        return getErrors().stream().map(ResponseError::getMessage).collect(Collectors.toSet());
+        Set<ResponseError> responseErrors = getErrors();
+        if (responseErrors.isEmpty()) {
+            return singleton("Could not parse response");
+        }
+        return responseErrors.stream().map(ResponseError::getMessage).collect(Collectors.toSet());
     }
 
     public boolean isInvalidInstrumentationKey() {
@@ -51,8 +60,7 @@ public class TelemetryPipelineResponse {
         try {
             jsonNode = new ObjectMapper().readTree(body);
         } catch (JsonProcessingException e) {
-            // fallback to generic message
-            return singleton(null);
+            throw new IllegalStateException("Failed to parse response body", e);
         }
         List<JsonNode> errorNodes = new ArrayList<>();
         jsonNode.get("errors").forEach(errorNodes::add);

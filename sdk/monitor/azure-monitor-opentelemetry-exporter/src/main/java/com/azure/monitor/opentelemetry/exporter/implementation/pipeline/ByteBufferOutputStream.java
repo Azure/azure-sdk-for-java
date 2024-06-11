@@ -16,7 +16,7 @@ class ByteBufferOutputStream extends OutputStream {
 
     private ByteBuffer current;
 
-    public ByteBufferOutputStream(AppInsightsByteBufferPool byteBufferPool) {
+    ByteBufferOutputStream(AppInsightsByteBufferPool byteBufferPool) {
         this.byteBufferPool = byteBufferPool;
         current = byteBufferPool.remove();
         byteBuffers.add(current);

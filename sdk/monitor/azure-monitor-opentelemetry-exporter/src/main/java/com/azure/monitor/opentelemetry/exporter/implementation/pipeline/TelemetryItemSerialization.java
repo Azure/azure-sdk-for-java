@@ -36,7 +36,6 @@ public final class TelemetryItemSerialization {
     // deserialize raw bytes to a list of TelemetryItem without decoding
     public static List<TelemetryItem> deserializeWithoutEncode(byte[] data) {
         try {
-            ObjectMapper mapper = createObjectMapper();
             MappingIterator<TelemetryItem> iterator = mapper.readerFor(TelemetryItem.class).readValues(data);
             return iterator.readAll();
         } catch (Exception e) {
