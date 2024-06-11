@@ -34,9 +34,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRoutePortAuthorizationsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortAuthorizationInner;
 import com.azure.resourcemanager.network.models.ExpressRoutePortAuthorizationListResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ExpressRoutePortAuthorizationsClient.
@@ -54,7 +55,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Initializes an instance of ExpressRoutePortAuthorizationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ExpressRoutePortAuthorizationsClientImpl(NetworkManagementClientImpl client) {
@@ -123,7 +124,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -155,7 +156,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, expressRoutePortName,
@@ -165,7 +166,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -198,7 +199,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, expressRoutePortName, authorizationName,
@@ -207,7 +208,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -227,7 +228,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -249,7 +250,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -266,7 +267,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -285,7 +286,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -302,7 +303,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -321,7 +322,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -336,7 +337,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Deletes the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -353,7 +354,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Gets the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -386,7 +387,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, expressRoutePortName,
@@ -396,7 +397,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Gets the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -430,7 +431,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, expressRoutePortName, authorizationName,
@@ -439,7 +440,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Gets the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -458,7 +459,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Gets the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -476,7 +477,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Gets the specified authorization from the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -493,7 +494,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Creates or updates an authorization in the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -534,7 +535,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -545,7 +546,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Creates or updates an authorization in the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -587,7 +588,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, expressRoutePortName,
@@ -596,7 +597,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Creates or updates an authorization in the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -620,7 +621,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Creates or updates an authorization in the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -646,7 +647,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Creates or updates an authorization in the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -661,13 +662,15 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
     public SyncPoller<PollResult<ExpressRoutePortAuthorizationInner>, ExpressRoutePortAuthorizationInner>
         beginCreateOrUpdate(String resourceGroupName, String expressRoutePortName, String authorizationName,
             ExpressRoutePortAuthorizationInner authorizationParameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, expressRoutePortName, authorizationName,
-            authorizationParameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, expressRoutePortName, authorizationName,
+                authorizationParameters)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates an authorization in the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -683,13 +686,15 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
     public SyncPoller<PollResult<ExpressRoutePortAuthorizationInner>, ExpressRoutePortAuthorizationInner>
         beginCreateOrUpdate(String resourceGroupName, String expressRoutePortName, String authorizationName,
             ExpressRoutePortAuthorizationInner authorizationParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, expressRoutePortName, authorizationName,
-            authorizationParameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, expressRoutePortName, authorizationName,
+                authorizationParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates an authorization in the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -710,7 +715,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Creates or updates an authorization in the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -732,7 +737,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Creates or updates an authorization in the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -752,7 +757,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Creates or updates an authorization in the specified express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param authorizationName The name of the authorization.
@@ -773,7 +778,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Gets all authorizations in an express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -801,7 +806,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, expressRoutePortName,
@@ -813,7 +818,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Gets all authorizations in an express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param context The context to associate with this operation.
@@ -842,7 +847,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -854,7 +859,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Gets all authorizations in an express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -871,7 +876,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Gets all authorizations in an express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param context The context to associate with this operation.
@@ -889,7 +894,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Gets all authorizations in an express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -905,7 +910,7 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Gets all authorizations in an express route port.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the express route port.
      * @param context The context to associate with this operation.
@@ -922,9 +927,9 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -950,9 +955,9 @@ public final class ExpressRoutePortAuthorizationsClientImpl implements ExpressRo
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

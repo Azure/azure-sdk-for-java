@@ -7,9 +7,12 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.models.SshPublicKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The Storage Account Local User keys. */
+/**
+ * The Storage Account Local User keys.
+ */
 @Fluent
 public final class LocalUserKeysInner {
     /*
@@ -24,7 +27,9 @@ public final class LocalUserKeysInner {
     @JsonProperty(value = "sharedKey", access = JsonProperty.Access.WRITE_ONLY)
     private String sharedKey;
 
-    /** Creates an instance of LocalUserKeysInner class. */
+    /**
+     * Creates an instance of LocalUserKeysInner class.
+     */
     public LocalUserKeysInner() {
     }
 

@@ -13,8 +13,7 @@ import java.util.Map;
  */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/Accounts_Update.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Accounts_Update.json
      */
     /**
      * Sample code: Accounts_Update.
@@ -23,7 +22,8 @@ public final class AccountsUpdateSamples {
      */
     public static void accountsUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
         NetAppAccount resource = manager.accounts()
-            .getByResourceGroupWithResponse("myRG", "account1", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("myRG", "account1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("Tag1", "Value1")).apply();
     }
 

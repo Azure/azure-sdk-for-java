@@ -11,7 +11,9 @@ import com.azure.resourcemanager.resources.models.ResourceTypeAliases;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of the data policy manifest. */
+/**
+ * The properties of the data policy manifest.
+ */
 @Fluent
 public final class DataPolicyManifestProperties {
     /*
@@ -56,13 +58,15 @@ public final class DataPolicyManifestProperties {
     @JsonProperty(value = "resourceFunctions")
     private DataManifestResourceFunctionsDefinition innerResourceFunctions;
 
-    /** Creates an instance of DataPolicyManifestProperties class. */
+    /**
+     * Creates an instance of DataPolicyManifestProperties class.
+     */
     public DataPolicyManifestProperties() {
     }
 
     /**
      * Get the namespaces property: The list of namespaces for the data policy manifest.
-     *
+     * 
      * @return the namespaces value.
      */
     public List<String> namespaces() {
@@ -71,7 +75,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Set the namespaces property: The list of namespaces for the data policy manifest.
-     *
+     * 
      * @param namespaces the namespaces value to set.
      * @return the DataPolicyManifestProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Get the policyMode property: The policy mode of the data policy manifest.
-     *
+     * 
      * @return the policyMode value.
      */
     public String policyMode() {
@@ -91,7 +95,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Set the policyMode property: The policy mode of the data policy manifest.
-     *
+     * 
      * @param policyMode the policyMode value to set.
      * @return the DataPolicyManifestProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Get the isBuiltInOnly property: A value indicating whether policy mode is allowed only in built-in definitions.
-     *
+     * 
      * @return the isBuiltInOnly value.
      */
     public Boolean isBuiltInOnly() {
@@ -111,7 +115,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Set the isBuiltInOnly property: A value indicating whether policy mode is allowed only in built-in definitions.
-     *
+     * 
      * @param isBuiltInOnly the isBuiltInOnly value to set.
      * @return the DataPolicyManifestProperties object itself.
      */
@@ -122,7 +126,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Get the resourceTypeAliases property: An array of resource type aliases.
-     *
+     * 
      * @return the resourceTypeAliases value.
      */
     public List<ResourceTypeAliases> resourceTypeAliases() {
@@ -131,7 +135,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Set the resourceTypeAliases property: An array of resource type aliases.
-     *
+     * 
      * @param resourceTypeAliases the resourceTypeAliases value to set.
      * @return the DataPolicyManifestProperties object itself.
      */
@@ -142,7 +146,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Get the effects property: The effect definition.
-     *
+     * 
      * @return the effects value.
      */
     public List<DataEffect> effects() {
@@ -151,7 +155,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Set the effects property: The effect definition.
-     *
+     * 
      * @param effects the effects value to set.
      * @return the DataPolicyManifestProperties object itself.
      */
@@ -162,7 +166,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Get the fieldValues property: The non-alias field accessor values that can be used in the policy rule.
-     *
+     * 
      * @return the fieldValues value.
      */
     public List<String> fieldValues() {
@@ -171,7 +175,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Set the fieldValues property: The non-alias field accessor values that can be used in the policy rule.
-     *
+     * 
      * @param fieldValues the fieldValues value to set.
      * @return the DataPolicyManifestProperties object itself.
      */
@@ -182,7 +186,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Get the innerResourceFunctions property: The resource functions definition specified in the data manifest.
-     *
+     * 
      * @return the innerResourceFunctions value.
      */
     private DataManifestResourceFunctionsDefinition innerResourceFunctions() {
@@ -191,7 +195,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Get the standard property: The standard resource functions (subscription and/or resourceGroup).
-     *
+     * 
      * @return the standard value.
      */
     public List<String> standard() {
@@ -200,7 +204,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Set the standard property: The standard resource functions (subscription and/or resourceGroup).
-     *
+     * 
      * @param standard the standard value to set.
      * @return the DataPolicyManifestProperties object itself.
      */
@@ -214,7 +218,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Get the custom property: An array of data manifest custom resource definition.
-     *
+     * 
      * @return the custom value.
      */
     public List<DataManifestCustomResourceFunctionDefinition> custom() {
@@ -223,7 +227,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Set the custom property: An array of data manifest custom resource definition.
-     *
+     * 
      * @param custom the custom value to set.
      * @return the DataPolicyManifestProperties object itself.
      */
@@ -237,7 +241,7 @@ public final class DataPolicyManifestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

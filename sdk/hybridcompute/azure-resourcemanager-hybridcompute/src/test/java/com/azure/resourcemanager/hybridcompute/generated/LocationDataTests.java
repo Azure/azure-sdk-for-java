@@ -12,24 +12,24 @@ public final class LocationDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LocationData model = BinaryData.fromString(
-            "{\"name\":\"zdatqxhocdg\",\"city\":\"blgphuticn\",\"district\":\"kao\",\"countryOrRegion\":\"yiftyhxhuro\"}")
+            "{\"name\":\"dzxibqeojnxqbzvd\",\"city\":\"t\",\"district\":\"deicbtwnpzao\",\"countryOrRegion\":\"uhrhcffcyddgl\"}")
             .toObject(LocationData.class);
-        Assertions.assertEquals("zdatqxhocdg", model.name());
-        Assertions.assertEquals("blgphuticn", model.city());
-        Assertions.assertEquals("kao", model.district());
-        Assertions.assertEquals("yiftyhxhuro", model.countryOrRegion());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.name());
+        Assertions.assertEquals("t", model.city());
+        Assertions.assertEquals("deicbtwnpzao", model.district());
+        Assertions.assertEquals("uhrhcffcyddgl", model.countryOrRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocationData model = new LocationData().withName("zdatqxhocdg")
-            .withCity("blgphuticn")
-            .withDistrict("kao")
-            .withCountryOrRegion("yiftyhxhuro");
+        LocationData model = new LocationData().withName("dzxibqeojnxqbzvd")
+            .withCity("t")
+            .withDistrict("deicbtwnpzao")
+            .withCountryOrRegion("uhrhcffcyddgl");
         model = BinaryData.fromObject(model).toObject(LocationData.class);
-        Assertions.assertEquals("zdatqxhocdg", model.name());
-        Assertions.assertEquals("blgphuticn", model.city());
-        Assertions.assertEquals("kao", model.district());
-        Assertions.assertEquals("yiftyhxhuro", model.countryOrRegion());
+        Assertions.assertEquals("dzxibqeojnxqbzvd", model.name());
+        Assertions.assertEquals("t", model.city());
+        Assertions.assertEquals("deicbtwnpzao", model.district());
+        Assertions.assertEquals("uhrhcffcyddgl", model.countryOrRegion());
     }
 }

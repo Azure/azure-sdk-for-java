@@ -12,27 +12,20 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RouterQueueLiveTests extends JobRouterTestBase {
-    private JobRouterClient jobRouterClient;
-
     private JobRouterAdministrationClient routerAdminClient;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(RouterQueueLiveTests.class);
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createQueue(HttpClient httpClient) {
         // Setup
-        jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
         String distributionPolicyId = String.format("%s-CreateQueueAsync-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
@@ -67,7 +60,6 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updateQueue(HttpClient httpClient) {
         // Setup
-        jobRouterClient = getRouterClient(httpClient);
         routerAdminClient = getRouterAdministrationClient(httpClient);
         String distributionPolicyId = String.format("%s-UpdateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         DistributionPolicy distributionPolicy = createDistributionPolicy(routerAdminClient, distributionPolicyId);
@@ -75,11 +67,7 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
         RouterQueue queue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
-        Map<String, RouterValue> updatedQueueLabels = new HashMap<String, RouterValue>() {
-            {
-                put("Label_1", new RouterValue("UpdatedValue"));
-            }
-        };
+        Map<String, RouterValue> updatedQueueLabels = Collections.singletonMap("Label_1", new RouterValue("UpdatedValue"));
         queue.setLabels(updatedQueueLabels);
 
         // Action

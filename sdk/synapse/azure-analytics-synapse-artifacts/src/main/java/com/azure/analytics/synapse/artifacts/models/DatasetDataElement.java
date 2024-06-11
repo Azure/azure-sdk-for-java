@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Columns that define the structure of the dataset.
- */
+/** Columns that define the structure of the dataset. */
 @Fluent
 public final class DatasetDataElement {
     /*
@@ -24,15 +22,12 @@ public final class DatasetDataElement {
     @JsonProperty(value = "type")
     private Object type;
 
-    /**
-     * Creates an instance of DatasetDataElement class.
-     */
-    public DatasetDataElement() {
-    }
+    /** Creates an instance of DatasetDataElement class. */
+    public DatasetDataElement() {}
 
     /**
      * Get the name property: Name of the column. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the name value.
      */
     public Object getName() {
@@ -41,7 +36,7 @@ public final class DatasetDataElement {
 
     /**
      * Set the name property: Name of the column. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param name the name value to set.
      * @return the DatasetDataElement object itself.
      */
@@ -52,7 +47,7 @@ public final class DatasetDataElement {
 
     /**
      * Get the type property: Type of the column. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the type value.
      */
     public Object getType() {
@@ -61,7 +56,7 @@ public final class DatasetDataElement {
 
     /**
      * Set the type property: Type of the column. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param type the type value to set.
      * @return the DatasetDataElement object itself.
      */

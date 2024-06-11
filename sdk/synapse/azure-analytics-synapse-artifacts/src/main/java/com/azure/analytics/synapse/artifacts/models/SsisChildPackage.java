@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * SSIS embedded child package.
- */
+/** SSIS embedded child package. */
 @Fluent
 public final class SsisChildPackage {
     /*
@@ -36,16 +34,13 @@ public final class SsisChildPackage {
     @JsonProperty(value = "packageLastModifiedDate")
     private String packageLastModifiedDate;
 
-    /**
-     * Creates an instance of SsisChildPackage class.
-     */
-    public SsisChildPackage() {
-    }
+    /** Creates an instance of SsisChildPackage class. */
+    public SsisChildPackage() {}
 
     /**
      * Get the packagePath property: Path for embedded child package. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the packagePath value.
      */
     public Object getPackagePath() {
@@ -55,7 +50,7 @@ public final class SsisChildPackage {
     /**
      * Set the packagePath property: Path for embedded child package. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param packagePath the packagePath value to set.
      * @return the SsisChildPackage object itself.
      */
@@ -66,7 +61,7 @@ public final class SsisChildPackage {
 
     /**
      * Get the packageName property: Name for embedded child package.
-     * 
+     *
      * @return the packageName value.
      */
     public String getPackageName() {
@@ -75,7 +70,7 @@ public final class SsisChildPackage {
 
     /**
      * Set the packageName property: Name for embedded child package.
-     * 
+     *
      * @param packageName the packageName value to set.
      * @return the SsisChildPackage object itself.
      */
@@ -87,7 +82,7 @@ public final class SsisChildPackage {
     /**
      * Get the packageContent property: Content for embedded child package. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the packageContent value.
      */
     public Object getPackageContent() {
@@ -97,7 +92,7 @@ public final class SsisChildPackage {
     /**
      * Set the packageContent property: Content for embedded child package. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param packageContent the packageContent value to set.
      * @return the SsisChildPackage object itself.
      */
@@ -108,7 +103,7 @@ public final class SsisChildPackage {
 
     /**
      * Get the packageLastModifiedDate property: Last modified date for embedded child package.
-     * 
+     *
      * @return the packageLastModifiedDate value.
      */
     public String getPackageLastModifiedDate() {
@@ -117,7 +112,7 @@ public final class SsisChildPackage {
 
     /**
      * Set the packageLastModifiedDate property: Last modified date for embedded child package.
-     * 
+     *
      * @param packageLastModifiedDate the packageLastModifiedDate value to set.
      * @return the SsisChildPackage object itself.
      */

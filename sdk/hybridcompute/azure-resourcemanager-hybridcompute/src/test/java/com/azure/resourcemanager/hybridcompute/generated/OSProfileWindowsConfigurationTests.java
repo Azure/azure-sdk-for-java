@@ -14,19 +14,20 @@ public final class OSProfileWindowsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OSProfileWindowsConfiguration model = BinaryData
-            .fromString("{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"AutomaticByOS\"}}")
+            .fromString(
+                "{\"patchSettings\":{\"assessmentMode\":\"AutomaticByPlatform\",\"patchMode\":\"AutomaticByOS\"}}")
             .toObject(OSProfileWindowsConfiguration.class);
-        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.assessmentMode());
+        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
         Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.patchMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OSProfileWindowsConfiguration model
-            = new OSProfileWindowsConfiguration().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
+            = new OSProfileWindowsConfiguration().withAssessmentMode(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM)
                 .withPatchMode(PatchModeTypes.AUTOMATIC_BY_OS);
         model = BinaryData.fromObject(model).toObject(OSProfileWindowsConfiguration.class);
-        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.assessmentMode());
+        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
         Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.patchMode());
     }
 }

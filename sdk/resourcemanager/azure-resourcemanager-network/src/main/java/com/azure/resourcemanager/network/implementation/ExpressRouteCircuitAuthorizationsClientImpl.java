@@ -34,9 +34,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitAuthorizationsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitAuthorizationInner;
 import com.azure.resourcemanager.network.models.AuthorizationListResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ExpressRouteCircuitAuthorizationsClient.
@@ -54,7 +55,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Initializes an instance of ExpressRouteCircuitAuthorizationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ExpressRouteCircuitAuthorizationsClientImpl(NetworkManagementClientImpl client) {
@@ -118,7 +119,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Deletes the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -149,7 +150,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -159,7 +160,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Deletes the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -191,7 +192,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, circuitName, authorizationName, apiVersion,
@@ -200,7 +201,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Deletes the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -220,7 +221,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Deletes the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -242,7 +243,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Deletes the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -259,7 +260,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Deletes the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -277,7 +278,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Deletes the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -294,7 +295,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Deletes the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -313,7 +314,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Deletes the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -328,7 +329,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Deletes the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -344,7 +345,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Gets the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -376,7 +377,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -386,7 +387,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Gets the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -419,7 +420,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, circuitName, authorizationName, apiVersion,
@@ -428,7 +429,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Gets the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -447,7 +448,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Gets the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -465,7 +466,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Gets the specified authorization from the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -482,7 +483,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Creates or updates an authorization in the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -522,7 +523,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, circuitName,
@@ -533,7 +534,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Creates or updates an authorization in the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -575,7 +576,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, circuitName, authorizationName,
@@ -584,7 +585,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Creates or updates an authorization in the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -608,7 +609,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Creates or updates an authorization in the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -634,7 +635,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Creates or updates an authorization in the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -655,7 +656,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Creates or updates an authorization in the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -671,13 +672,15 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
     public SyncPoller<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdate(String resourceGroupName, String circuitName, String authorizationName,
             ExpressRouteCircuitAuthorizationInner authorizationParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters,
-            context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates an authorization in the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -692,12 +695,13 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
     public Mono<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(String resourceGroupName, String circuitName,
         String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, circuitName, authorizationName, authorizationParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an authorization in the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -719,7 +723,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Creates or updates an authorization in the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -738,7 +742,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Creates or updates an authorization in the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
@@ -759,7 +763,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Gets all authorizations in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -786,7 +790,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, circuitName, apiVersion,
@@ -798,7 +802,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Gets all authorizations in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param context The context to associate with this operation.
@@ -826,7 +830,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -838,7 +842,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Gets all authorizations in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -854,7 +858,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Gets all authorizations in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param context The context to associate with this operation.
@@ -872,7 +876,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Gets all authorizations in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -887,7 +891,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Gets all authorizations in an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param context The context to associate with this operation.
@@ -904,9 +908,9 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -932,9 +936,9 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

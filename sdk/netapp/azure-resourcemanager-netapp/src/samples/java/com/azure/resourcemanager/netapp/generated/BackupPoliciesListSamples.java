@@ -9,15 +9,14 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/BackupPolicies_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/BackupPolicies_List.json
      */
     /**
-     * Sample code: Backups_List.
+     * Sample code: BackupPolicies_List.
      * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void backupsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+    public static void backupPoliciesList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
         manager.backupPolicies().list("myRG", "account1", com.azure.core.util.Context.NONE);
     }
 }

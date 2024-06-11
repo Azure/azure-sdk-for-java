@@ -31,8 +31,8 @@ public final class SiteSealRequest {
     }
 
     /**
-     * Get the lightTheme property: If &lt;code&gt;true&lt;/code&gt; use the light color theme for site seal;
-     * otherwise, use the default color theme.
+     * Get the lightTheme property: If &lt;code&gt;true&lt;/code&gt; use the light color theme for site seal; otherwise,
+     * use the default color theme.
      * 
      * @return the lightTheme value.
      */
@@ -41,8 +41,8 @@ public final class SiteSealRequest {
     }
 
     /**
-     * Set the lightTheme property: If &lt;code&gt;true&lt;/code&gt; use the light color theme for site seal;
-     * otherwise, use the default color theme.
+     * Set the lightTheme property: If &lt;code&gt;true&lt;/code&gt; use the light color theme for site seal; otherwise,
+     * use the default color theme.
      * 
      * @param lightTheme the lightTheme value to set.
      * @return the SiteSealRequest object itself.

@@ -12,7 +12,9 @@ import com.azure.resourcemanager.resources.models.ManagementLockOwner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The lock information. */
+/**
+ * The lock information.
+ */
 @Fluent
 public final class ManagementLockObjectInner extends ProxyResource {
     /*
@@ -21,13 +23,15 @@ public final class ManagementLockObjectInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private ManagementLockProperties innerProperties = new ManagementLockProperties();
 
-    /** Creates an instance of ManagementLockObjectInner class. */
+    /**
+     * Creates an instance of ManagementLockObjectInner class.
+     */
     public ManagementLockObjectInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the lock.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagementLockProperties innerProperties() {
@@ -38,7 +42,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
      * Get the level property: The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly.
      * CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means
      * authorized users can only read from a resource, but they can't modify or delete it.
-     *
+     * 
      * @return the level value.
      */
     public LockLevel level() {
@@ -49,7 +53,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
      * Set the level property: The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly.
      * CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means
      * authorized users can only read from a resource, but they can't modify or delete it.
-     *
+     * 
      * @param level the level value to set.
      * @return the ManagementLockObjectInner object itself.
      */
@@ -63,7 +67,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
 
     /**
      * Get the notes property: Notes about the lock. Maximum of 512 characters.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -72,7 +76,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
 
     /**
      * Set the notes property: Notes about the lock. Maximum of 512 characters.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the ManagementLockObjectInner object itself.
      */
@@ -86,7 +90,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
 
     /**
      * Get the owners property: The owners of the lock.
-     *
+     * 
      * @return the owners value.
      */
     public List<ManagementLockOwner> owners() {
@@ -95,7 +99,7 @@ public final class ManagementLockObjectInner extends ProxyResource {
 
     /**
      * Set the owners property: The owners of the lock.
-     *
+     * 
      * @param owners the owners value to set.
      * @return the ManagementLockObjectInner object itself.
      */
@@ -109,15 +113,14 @@ public final class ManagementLockObjectInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ManagementLockObjectInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ManagementLockObjectInner"));
         } else {
             innerProperties().validate();
         }

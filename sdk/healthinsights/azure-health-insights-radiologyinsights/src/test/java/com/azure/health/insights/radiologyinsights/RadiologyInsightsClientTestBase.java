@@ -78,6 +78,10 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id"))));
         }
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `operation-location` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2030");
+        }
         return builder;
     }
     

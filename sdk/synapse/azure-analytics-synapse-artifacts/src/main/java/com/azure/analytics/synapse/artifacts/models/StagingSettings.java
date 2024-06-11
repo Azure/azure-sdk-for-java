@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Staging settings.
- */
+/** Staging settings. */
 @Fluent
 public final class StagingSettings {
     /*
@@ -39,18 +37,14 @@ public final class StagingSettings {
     /*
      * Staging settings.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of StagingSettings class.
-     */
-    public StagingSettings() {
-    }
+    /** Creates an instance of StagingSettings class. */
+    public StagingSettings() {}
 
     /**
      * Get the linkedServiceName property: Staging linked service reference.
-     * 
+     *
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference getLinkedServiceName() {
@@ -59,7 +53,7 @@ public final class StagingSettings {
 
     /**
      * Set the linkedServiceName property: Staging linked service reference.
-     * 
+     *
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the StagingSettings object itself.
      */
@@ -71,7 +65,7 @@ public final class StagingSettings {
     /**
      * Get the path property: The path to storage for storing the interim data. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the path value.
      */
     public Object getPath() {
@@ -81,7 +75,7 @@ public final class StagingSettings {
     /**
      * Set the path property: The path to storage for storing the interim data. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param path the path value to set.
      * @return the StagingSettings object itself.
      */
@@ -93,7 +87,7 @@ public final class StagingSettings {
     /**
      * Get the enableCompression property: Specifies whether to use compression when copying data via an interim
      * staging. Default value is false. Type: boolean (or Expression with resultType boolean).
-     * 
+     *
      * @return the enableCompression value.
      */
     public Object getEnableCompression() {
@@ -103,7 +97,7 @@ public final class StagingSettings {
     /**
      * Set the enableCompression property: Specifies whether to use compression when copying data via an interim
      * staging. Default value is false. Type: boolean (or Expression with resultType boolean).
-     * 
+     *
      * @param enableCompression the enableCompression value to set.
      * @return the StagingSettings object itself.
      */
@@ -114,7 +108,7 @@ public final class StagingSettings {
 
     /**
      * Get the additionalProperties property: Staging settings.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -124,7 +118,7 @@ public final class StagingSettings {
 
     /**
      * Set the additionalProperties property: Staging settings.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the StagingSettings object itself.
      */

@@ -7,14 +7,16 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Specifies a CORS rule for the Blob service. */
+/**
+ * Specifies a CORS rule for the Blob service.
+ */
 @Fluent
 public final class CorsRule {
     /*
-     * Required if CorsRule element is present. A list of origin domains that will be allowed via CORS, or "*" to allow
-     * all domains
+     * Required if CorsRule element is present. A list of origin domains that will be allowed via CORS, or "*" to allow all domains
      */
     @JsonProperty(value = "allowedOrigins", required = true)
     private List<String> allowedOrigins;
@@ -26,8 +28,7 @@ public final class CorsRule {
     private List<CorsRuleAllowedMethodsItem> allowedMethods;
 
     /*
-     * Required if CorsRule element is present. The number of seconds that the client/browser should cache a preflight
-     * response.
+     * Required if CorsRule element is present. The number of seconds that the client/browser should cache a preflight response.
      */
     @JsonProperty(value = "maxAgeInSeconds", required = true)
     private int maxAgeInSeconds;
@@ -44,7 +45,9 @@ public final class CorsRule {
     @JsonProperty(value = "allowedHeaders", required = true)
     private List<String> allowedHeaders;
 
-    /** Creates an instance of CorsRule class. */
+    /**
+     * Creates an instance of CorsRule class.
+     */
     public CorsRule() {
     }
 
@@ -165,24 +168,20 @@ public final class CorsRule {
      */
     public void validate() {
         if (allowedOrigins() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property allowedOrigins in model CorsRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property allowedOrigins in model CorsRule"));
         }
         if (allowedMethods() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property allowedMethods in model CorsRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property allowedMethods in model CorsRule"));
         }
         if (exposedHeaders() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property exposedHeaders in model CorsRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property exposedHeaders in model CorsRule"));
         }
         if (allowedHeaders() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property allowedHeaders in model CorsRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property allowedHeaders in model CorsRule"));
         }
     }
 

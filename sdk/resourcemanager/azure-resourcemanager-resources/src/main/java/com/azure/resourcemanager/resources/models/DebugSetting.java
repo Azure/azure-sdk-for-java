@@ -7,20 +7,20 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The debug setting. */
+/**
+ * The debug setting.
+ */
 @Fluent
 public final class DebugSetting {
     /*
-     * Specifies the type of information to log for debugging. The permitted values are none, requestContent,
-     * responseContent, or both requestContent and responseContent separated by a comma. The default is none. When
-     * setting this value, carefully consider the type of information you are passing in during deployment. By logging
-     * information about the request or response, you could potentially expose sensitive data that is retrieved through
-     * the deployment operations.
+     * Specifies the type of information to log for debugging. The permitted values are none, requestContent, responseContent, or both requestContent and responseContent separated by a comma. The default is none. When setting this value, carefully consider the type of information you are passing in during deployment. By logging information about the request or response, you could potentially expose sensitive data that is retrieved through the deployment operations.
      */
     @JsonProperty(value = "detailLevel")
     private String detailLevel;
 
-    /** Creates an instance of DebugSetting class. */
+    /**
+     * Creates an instance of DebugSetting class.
+     */
     public DebugSetting() {
     }
 
@@ -30,7 +30,7 @@ public final class DebugSetting {
      * default is none. When setting this value, carefully consider the type of information you are passing in during
      * deployment. By logging information about the request or response, you could potentially expose sensitive data
      * that is retrieved through the deployment operations.
-     *
+     * 
      * @return the detailLevel value.
      */
     public String detailLevel() {
@@ -43,7 +43,7 @@ public final class DebugSetting {
      * default is none. When setting this value, carefully consider the type of information you are passing in during
      * deployment. By logging information about the request or response, you could potentially expose sensitive data
      * that is retrieved through the deployment operations.
-     *
+     * 
      * @param detailLevel the detailLevel value to set.
      * @return the DebugSetting object itself.
      */
@@ -54,7 +54,7 @@ public final class DebugSetting {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

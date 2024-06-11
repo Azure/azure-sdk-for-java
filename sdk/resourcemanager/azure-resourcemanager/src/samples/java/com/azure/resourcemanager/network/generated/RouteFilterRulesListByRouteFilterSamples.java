@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RouteFilterRulesListByRouteFilterSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * RouteFilterRuleListByRouteFilter.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/RouteFilterRuleListByRouteFilter.json
      */
     /**
      * Sample code: RouteFilterRuleListByRouteFilter.
@@ -18,7 +17,10 @@ public final class RouteFilterRulesListByRouteFilterSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeFilterRuleListByRouteFilter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRouteFilterRules().listByRouteFilter("rg1", "filterName",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getRouteFilterRules()
+            .listByRouteFilter("rg1", "filterName", com.azure.core.util.Context.NONE);
     }
 }

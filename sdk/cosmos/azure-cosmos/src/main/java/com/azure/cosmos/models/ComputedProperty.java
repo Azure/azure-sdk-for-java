@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *         &#41;
  * &#41;;
  * containerProperties.setComputedProperties&#40;computedProperties&#41;;
- * database.createContainer&#40;containerProperties&#41;;
+ * database.createContainer&#40;containerProperties&#41;.subscribe&#40;&#41;;
  * </pre>
  * <!-- end com.azure.cosmos.computedProperty.createContainer -->
  *
@@ -30,8 +30,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  *                 new ComputedProperty&#40;&quot;upperName&quot;, &quot;SELECT VALUE UPPER&#40;c.name&#41; FROM c&quot;&#41;
  *         &#41;
  * &#41;;
+ * containerProperties.setComputedProperties&#40;computedProperties&#41;;
  * container = database.getContainer&#40;containerName&#41;;
- * container.replace&#40;containerProperties&#41;;
+ * container.replace&#40;containerProperties&#41;.subscribe&#40;&#41;;
  * </pre>
  * <!-- end com.azure.cosmos.computedProperty.replaceContainer -->
  */

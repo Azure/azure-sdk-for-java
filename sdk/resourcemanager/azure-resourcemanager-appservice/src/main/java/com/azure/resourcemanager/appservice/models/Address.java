@@ -182,24 +182,23 @@ public final class Address {
      */
     public void validate() {
         if (address1() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property address1 in model Address"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property address1 in model Address"));
         }
         if (city() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property city in model Address"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property city in model Address"));
         }
         if (country() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property country in model Address"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property country in model Address"));
         }
         if (postalCode() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property postalCode in model Address"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property postalCode in model Address"));
         }
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property state in model Address"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property state in model Address"));
         }
     }
 

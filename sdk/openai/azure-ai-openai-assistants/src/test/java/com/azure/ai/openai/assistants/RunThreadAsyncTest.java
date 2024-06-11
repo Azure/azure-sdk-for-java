@@ -8,6 +8,7 @@ import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.RunStep;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
@@ -36,7 +37,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
-            StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message))
+            StepVerifier.create(client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message)))
                     .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
                     .verifyComplete();
 
@@ -69,7 +70,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -96,7 +97,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
-            StepVerifier.create(client.createMessage(threadId, MessageRole.USER, message))
+            StepVerifier.create(client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message)))
                     .assertNext(threadMessage -> validateThreadMessage(threadMessage, threadId))
                     .verifyComplete();
 
@@ -134,7 +135,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -190,7 +191,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -251,7 +252,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -380,7 +381,7 @@ public class RunThreadAsyncTest extends AssistantsClientTestBase {
                             runReference.set(threadRun);
                         })
                         .verifyComplete();
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
                 run = runReference.get();
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
             assertSame(RunStatus.COMPLETED, run.getStatus());

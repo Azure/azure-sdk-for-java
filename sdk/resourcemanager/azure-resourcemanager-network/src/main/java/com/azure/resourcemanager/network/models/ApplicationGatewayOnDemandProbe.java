@@ -32,8 +32,7 @@ public final class ApplicationGatewayOnDemandProbe {
     private String path;
 
     /*
-     * The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period.
-     * Acceptable values are from 1 second to 86400 seconds.
+     * The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable values are from 1 second to 86400 seconds.
      */
     @JsonProperty(value = "timeout")
     private Integer timeout;
@@ -196,8 +195,8 @@ public final class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Get the backendAddressPool property: Reference to backend pool of application gateway to which probe request
-     * will be sent.
+     * Get the backendAddressPool property: Reference to backend pool of application gateway to which probe request will
+     * be sent.
      * 
      * @return the backendAddressPool value.
      */
@@ -206,8 +205,8 @@ public final class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Set the backendAddressPool property: Reference to backend pool of application gateway to which probe request
-     * will be sent.
+     * Set the backendAddressPool property: Reference to backend pool of application gateway to which probe request will
+     * be sent.
      * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayOnDemandProbe object itself.

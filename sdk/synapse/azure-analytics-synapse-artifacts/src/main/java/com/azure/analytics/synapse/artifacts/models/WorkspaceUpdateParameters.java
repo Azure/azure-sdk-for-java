@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Parameters for updating a workspace resource.
- */
+/** Parameters for updating a workspace resource. */
 @Fluent
 public final class WorkspaceUpdateParameters {
     /*
@@ -25,15 +23,12 @@ public final class WorkspaceUpdateParameters {
     @JsonProperty(value = "identity")
     private WorkspaceIdentity identity;
 
-    /**
-     * Creates an instance of WorkspaceUpdateParameters class.
-     */
-    public WorkspaceUpdateParameters() {
-    }
+    /** Creates an instance of WorkspaceUpdateParameters class. */
+    public WorkspaceUpdateParameters() {}
 
     /**
      * Get the tags property: The resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -42,7 +37,7 @@ public final class WorkspaceUpdateParameters {
 
     /**
      * Set the tags property: The resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the WorkspaceUpdateParameters object itself.
      */
@@ -53,7 +48,7 @@ public final class WorkspaceUpdateParameters {
 
     /**
      * Get the identity property: Managed service identity of the workspace.
-     * 
+     *
      * @return the identity value.
      */
     public WorkspaceIdentity getIdentity() {
@@ -62,7 +57,7 @@ public final class WorkspaceUpdateParameters {
 
     /**
      * Set the identity property: Managed service identity of the workspace.
-     * 
+     *
      * @param identity the identity value to set.
      * @return the WorkspaceUpdateParameters object itself.
      */

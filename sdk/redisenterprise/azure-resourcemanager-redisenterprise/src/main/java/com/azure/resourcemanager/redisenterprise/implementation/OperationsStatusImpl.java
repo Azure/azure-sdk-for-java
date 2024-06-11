@@ -10,8 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redisenterprise.fluent.OperationsStatusClient;
 import com.azure.resourcemanager.redisenterprise.fluent.models.OperationStatusInner;
-import com.azure.resourcemanager.redisenterprise.models.OperationStatus;
 import com.azure.resourcemanager.redisenterprise.models.OperationsStatus;
+import com.azure.resourcemanager.redisenterprise.models.OperationStatus;
 
 public final class OperationsStatusImpl implements OperationsStatus {
     private static final ClientLogger LOGGER = new ClientLogger(OperationsStatusImpl.class);

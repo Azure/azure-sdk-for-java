@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The ODBC table dataset.
- */
+/** The ODBC table dataset. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("OdbcTable")
 @JsonFlatten
@@ -26,15 +24,12 @@ public class OdbcTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
-    /**
-     * Creates an instance of OdbcTableDataset class.
-     */
-    public OdbcTableDataset() {
-    }
+    /** Creates an instance of OdbcTableDataset class. */
+    public OdbcTableDataset() {}
 
     /**
      * Get the tableName property: The ODBC table name. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -43,7 +38,7 @@ public class OdbcTableDataset extends Dataset {
 
     /**
      * Set the tableName property: The ODBC table name. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param tableName the tableName value to set.
      * @return the OdbcTableDataset object itself.
      */
@@ -52,63 +47,49 @@ public class OdbcTableDataset extends Dataset {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OdbcTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OdbcTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OdbcTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OdbcTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OdbcTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OdbcTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OdbcTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

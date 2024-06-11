@@ -8,22 +8,22 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesUpdateParameters;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
-/** The parameters that can be provided when updating the storage account properties. */
+/**
+ * The parameters that can be provided when updating the storage account properties.
+ */
 @Fluent
 public final class StorageAccountUpdateParameters {
     /*
-     * Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS,
-     * nor can accounts of those SKU names be updated to any other value.
+     * Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
      */
     @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
-     * Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and
-     * grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag
-     * must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
+     * Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -47,7 +47,9 @@ public final class StorageAccountUpdateParameters {
     @JsonProperty(value = "kind")
     private Kind kind;
 
-    /** Creates an instance of StorageAccountUpdateParameters class. */
+    /**
+     * Creates an instance of StorageAccountUpdateParameters class.
+     */
     public StorageAccountUpdateParameters() {
     }
 
@@ -371,6 +373,29 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
+     * Get the enableExtendedGroups property: Enables extended group support with local users feature, if set to true.
+     *
+     * @return the enableExtendedGroups value.
+     */
+    public Boolean enableExtendedGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableExtendedGroups();
+    }
+
+    /**
+     * Set the enableExtendedGroups property: Enables extended group support with local users feature, if set to true.
+     *
+     * @param enableExtendedGroups the enableExtendedGroups value to set.
+     * @return the StorageAccountUpdateParameters object itself.
+     */
+    public StorageAccountUpdateParameters withEnableExtendedGroups(Boolean enableExtendedGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
+        }
+        this.innerProperties().withEnableExtendedGroups(enableExtendedGroups);
+        return this;
+    }
+
+    /**
      * Get the networkRuleSet property: Network rule set.
      *
      * @return the networkRuleSet value.
@@ -575,8 +600,9 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * Get the publicNetworkAccess property: Allow, disallow, or let Network Security Perimeter configuration to
+     * evaluate public network access to Storage Account. Value is optional but if passed in, must be 'Enabled',
+     * 'Disabled' or 'SecuredByPerimeter'.
      *
      * @return the publicNetworkAccess value.
      */
@@ -585,8 +611,9 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * Set the publicNetworkAccess property: Allow, disallow, or let Network Security Perimeter configuration to
+     * evaluate public network access to Storage Account. Value is optional but if passed in, must be 'Enabled',
+     * 'Disabled' or 'SecuredByPerimeter'.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the StorageAccountUpdateParameters object itself.
@@ -618,8 +645,8 @@ public final class StorageAccountUpdateParameters {
      * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters withImmutableStorageWithVersioning(
-        ImmutableStorageAccount immutableStorageWithVersioning) {
+    public StorageAccountUpdateParameters
+        withImmutableStorageWithVersioning(ImmutableStorageAccount immutableStorageWithVersioning) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StorageAccountPropertiesUpdateParameters();
         }

@@ -23,7 +23,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ServicePrincipalsTests extends GraphRbacManagementTest {
@@ -33,7 +32,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
         String name = generateRandomResourceName("ssp", 21);
         ServicePrincipal servicePrincipal = null;
         // Disable `$.appId` sanitizer for this test
-        interceptorManager.removeSanitizers(Arrays.asList("AZSDK3432"));
+        interceptorManager.removeSanitizers("AZSDK3432");
         try {
             // Create
             servicePrincipal =

@@ -8,9 +8,22 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 1.49.1 (2024-06-06)
+
+### Bugs Fixed
+
+- Fixed a bug where some policies didn't close the connection appropriately. ([#40052](https://github.com/Azure/azure-sdk-for-java/pull/40052))
 - Fixed an issue where HTTP response headers would be logged twice. ([#40190](https://github.com/Azure/azure-sdk-for-java/pull/40190))
+- Fixed a bug where container types wouldn't resolve to using `JsonSerializable` serialization for values. ([#40112](https://github.com/Azure/azure-sdk-for-java/pull/40112))
+- Fixed a bug where a generic `ObjectMapper` couldn't consume `CloudEvent` correctly. ([#40332](https://github.com/Azure/azure-sdk-for-java/pull/40332))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.36` to `3.4.38`.
 
 ## 1.49.0 (2024-05-01)
 

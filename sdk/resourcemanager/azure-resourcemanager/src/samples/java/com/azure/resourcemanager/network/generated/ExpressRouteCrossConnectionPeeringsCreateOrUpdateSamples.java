@@ -12,8 +12,7 @@ import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringCo
  */
 public final class ExpressRouteCrossConnectionPeeringsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * ExpressRouteCrossConnectionBgpPeeringCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRouteCrossConnectionBgpPeeringCreate.json
      */
     /**
      * Sample code: ExpressRouteCrossConnectionBgpPeeringCreate.
@@ -22,11 +21,15 @@ public final class ExpressRouteCrossConnectionPeeringsCreateOrUpdateSamples {
      */
     public static void
         expressRouteCrossConnectionBgpPeeringCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteCrossConnectionPeerings()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteCrossConnectionPeerings()
             .createOrUpdate("CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering",
                 new ExpressRouteCrossConnectionPeeringInner().withPeerAsn(200L)
                     .withPrimaryPeerAddressPrefix("192.168.16.252/30")
-                    .withSecondaryPeerAddressPrefix("192.168.18.252/30").withVlanId(200)
+                    .withSecondaryPeerAddressPrefix("192.168.18.252/30")
+                    .withVlanId(200)
                     .withIpv6PeeringConfig(new Ipv6ExpressRouteCircuitPeeringConfig()
                         .withPrimaryPeerAddressPrefix("3FFE:FFFF:0:CD30::/126")
                         .withSecondaryPeerAddressPrefix("3FFE:FFFF:0:CD30::4/126")),

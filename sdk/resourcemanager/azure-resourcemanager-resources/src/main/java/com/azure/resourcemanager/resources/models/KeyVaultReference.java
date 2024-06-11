@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Key Vault reference. */
+/**
+ * Azure Key Vault reference.
+ */
 @Fluent
 public final class KeyVaultReference {
     /*
@@ -17,13 +19,15 @@ public final class KeyVaultReference {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of KeyVaultReference class. */
+    /**
+     * Creates an instance of KeyVaultReference class.
+     */
     public KeyVaultReference() {
     }
 
     /**
      * Get the id property: Azure Key Vault resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +36,7 @@ public final class KeyVaultReference {
 
     /**
      * Set the id property: Azure Key Vault resource id.
-     *
+     * 
      * @param id the id value to set.
      * @return the KeyVaultReference object itself.
      */
@@ -43,14 +47,13 @@ public final class KeyVaultReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model KeyVaultReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model KeyVaultReference"));
         }
     }
 

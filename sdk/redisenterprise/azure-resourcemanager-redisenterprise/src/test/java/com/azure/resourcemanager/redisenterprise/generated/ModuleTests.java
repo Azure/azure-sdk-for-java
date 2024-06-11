@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ModuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Module model = BinaryData.fromString("{\"name\":\"uhrhcffcyddgl\",\"args\":\"t\",\"version\":\"qkwpyeicxmqc\"}")
+        Module model = BinaryData.fromString("{\"name\":\"t\",\"args\":\"vdfgiotk\",\"version\":\"utqxlngx\"}")
             .toObject(Module.class);
-        Assertions.assertEquals("uhrhcffcyddgl", model.name());
-        Assertions.assertEquals("t", model.args());
+        Assertions.assertEquals("t", model.name());
+        Assertions.assertEquals("vdfgiotk", model.args());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Module model = new Module().withName("uhrhcffcyddgl").withArgs("t");
+        Module model = new Module().withName("t").withArgs("vdfgiotk");
         model = BinaryData.fromObject(model).toObject(Module.class);
-        Assertions.assertEquals("uhrhcffcyddgl", model.name());
-        Assertions.assertEquals("t", model.args());
+        Assertions.assertEquals("t", model.name());
+        Assertions.assertEquals("vdfgiotk", model.args());
     }
 }

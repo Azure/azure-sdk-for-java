@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The value of a parameter. */
+/**
+ * The value of a parameter.
+ */
 @Fluent
 public final class ParameterValuesValue {
     /*
@@ -16,13 +18,15 @@ public final class ParameterValuesValue {
     @JsonProperty(value = "value")
     private Object value;
 
-    /** Creates an instance of ParameterValuesValue class. */
+    /**
+     * Creates an instance of ParameterValuesValue class.
+     */
     public ParameterValuesValue() {
     }
 
     /**
      * Get the value property: The value of the parameter.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -31,7 +35,7 @@ public final class ParameterValuesValue {
 
     /**
      * Set the value property: The value of the parameter.
-     *
+     * 
      * @param value the value value to set.
      * @return the ParameterValuesValue object itself.
      */
@@ -42,7 +46,7 @@ public final class ParameterValuesValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

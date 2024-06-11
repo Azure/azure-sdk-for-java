@@ -15,14 +15,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Dataset location.
- */
+/** Dataset location. */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = DatasetLocation.class)
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        defaultImpl = DatasetLocation.class)
 @JsonTypeName("DatasetLocation")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureBlobStorageLocation", value = AzureBlobStorageLocation.class),
@@ -35,7 +33,9 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "FtpServerLocation", value = FtpServerLocation.class),
     @JsonSubTypes.Type(name = "SftpLocation", value = SftpLocation.class),
     @JsonSubTypes.Type(name = "HttpServerLocation", value = HttpServerLocation.class),
-    @JsonSubTypes.Type(name = "HdfsLocation", value = HdfsLocation.class) })
+    @JsonSubTypes.Type(name = "HdfsLocation", value = HdfsLocation.class),
+    @JsonSubTypes.Type(name = "LakeHouseLocation", value = LakeHouseLocation.class)
+})
 @Fluent
 public class DatasetLocation {
     /*
@@ -53,19 +53,15 @@ public class DatasetLocation {
     /*
      * Dataset location.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of DatasetLocation class.
-     */
-    public DatasetLocation() {
-    }
+    /** Creates an instance of DatasetLocation class. */
+    public DatasetLocation() {}
 
     /**
      * Get the folderPath property: Specify the folder path of dataset. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the folderPath value.
      */
     public Object getFolderPath() {
@@ -75,7 +71,7 @@ public class DatasetLocation {
     /**
      * Set the folderPath property: Specify the folder path of dataset. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param folderPath the folderPath value to set.
      * @return the DatasetLocation object itself.
      */
@@ -85,9 +81,8 @@ public class DatasetLocation {
     }
 
     /**
-     * Get the fileName property: Specify the file name of dataset. Type: string (or Expression with resultType
-     * string).
-     * 
+     * Get the fileName property: Specify the file name of dataset. Type: string (or Expression with resultType string).
+     *
      * @return the fileName value.
      */
     public Object getFileName() {
@@ -95,9 +90,8 @@ public class DatasetLocation {
     }
 
     /**
-     * Set the fileName property: Specify the file name of dataset. Type: string (or Expression with resultType
-     * string).
-     * 
+     * Set the fileName property: Specify the file name of dataset. Type: string (or Expression with resultType string).
+     *
      * @param fileName the fileName value to set.
      * @return the DatasetLocation object itself.
      */
@@ -108,7 +102,7 @@ public class DatasetLocation {
 
     /**
      * Get the additionalProperties property: Dataset location.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -118,7 +112,7 @@ public class DatasetLocation {
 
     /**
      * Set the additionalProperties property: Dataset location.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the DatasetLocation object itself.
      */
