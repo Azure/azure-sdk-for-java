@@ -18,8 +18,15 @@ public class EventGridCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         customizeEventGridClientImplImports(customization, logger);
+        removeExtraFiles(customization, logger);
     }
 
+    public void removeExtraFiles(LibraryCustomization customization, Logger logger) {
+        logger.info("removing PublishResult.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/implementation/models/PublishResult.java");
+        logger.info("removing CloudEvent.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/implementation/models/CloudEvent.java");
+    }
 
     public void customizeEventGridClientImplImports(LibraryCustomization customization, Logger logger) {
 
@@ -35,7 +42,5 @@ public class EventGridCustomization extends Customization {
                 });
             });
         });
-        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/implementation/models/PublishResult.java");
-        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/implementation/models/CloudEvent.java");
     }
 }
