@@ -982,7 +982,9 @@ public final class BlobsImpl {
                 @PathParam("blob") String blob,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -995,7 +997,9 @@ public final class BlobsImpl {
                 @PathParam("blob") String blob,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
+                @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -9178,6 +9182,11 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -9185,7 +9194,7 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsGetAccountInfoHeaders, Void>> getAccountInfoWithResponseAsync(
-            String containerName, String blob) {
+            String containerName, String blob, Integer timeout, String requestId) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
@@ -9197,7 +9206,9 @@ public final class BlobsImpl {
                                 blob,
                                 restype,
                                 comp,
+                                timeout,
                                 this.client.getVersion(),
+                                requestId,
                                 accept,
                                 context));
     }
@@ -9207,6 +9218,11 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
@@ -9215,12 +9231,21 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<BlobsGetAccountInfoHeaders, Void>> getAccountInfoWithResponseAsync(
-            String containerName, String blob, Context context) {
+            String containerName, String blob, Integer timeout, String requestId, Context context) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.getAccountInfo(
-                this.client.getUrl(), containerName, blob, restype, comp, this.client.getVersion(), accept, context);
+                this.client.getUrl(),
+                containerName,
+                blob,
+                restype,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
     }
 
     /**
@@ -9228,14 +9253,20 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getAccountInfoAsync(String containerName, String blob) {
-        return getAccountInfoWithResponseAsync(containerName, blob).flatMap(ignored -> Mono.empty());
+    public Mono<Void> getAccountInfoAsync(String containerName, String blob, Integer timeout, String requestId) {
+        return getAccountInfoWithResponseAsync(containerName, blob, timeout, requestId)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -9243,6 +9274,11 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
@@ -9250,8 +9286,10 @@ public final class BlobsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getAccountInfoAsync(String containerName, String blob, Context context) {
-        return getAccountInfoWithResponseAsync(containerName, blob, context).flatMap(ignored -> Mono.empty());
+    public Mono<Void> getAccountInfoAsync(
+            String containerName, String blob, Integer timeout, String requestId, Context context) {
+        return getAccountInfoWithResponseAsync(containerName, blob, timeout, requestId, context)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -9259,13 +9297,19 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(String containerName, String blob) {
+    public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(
+            String containerName, String blob, Integer timeout, String requestId) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
@@ -9277,7 +9321,9 @@ public final class BlobsImpl {
                                 blob,
                                 restype,
                                 comp,
+                                timeout,
                                 this.client.getVersion(),
+                                requestId,
                                 accept,
                                 context));
     }
@@ -9287,6 +9333,11 @@ public final class BlobsImpl {
      *
      * @param containerName The container name.
      * @param blob The blob name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageException thrown if the request is rejected by server.
@@ -9295,12 +9346,21 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(
-            String containerName, String blob, Context context) {
+            String containerName, String blob, Integer timeout, String requestId, Context context) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.getAccountInfoNoCustomHeaders(
-                this.client.getUrl(), containerName, blob, restype, comp, this.client.getVersion(), accept, context);
+                this.client.getUrl(),
+                containerName,
+                blob,
+                restype,
+                comp,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
     }
 
     /**

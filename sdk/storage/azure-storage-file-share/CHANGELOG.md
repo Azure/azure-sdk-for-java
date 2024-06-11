@@ -1,6 +1,8 @@
 # Release History
 
 ## 12.23.0-beta.1 (Unreleased)
+- Added support for snapshot management on NFS shares.
+- Added authorization error details in responses. 
 
 ### Features Added
 
