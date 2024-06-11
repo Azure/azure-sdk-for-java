@@ -50,6 +50,11 @@ public enum OpenAIServiceVersion implements ServiceVersion {
      */
     V2024_05_01_PREVIEW("2024-05-01-preview");
 
+    /**
+     * Enum value 2024-02-01.
+     */
+    V2024_02_01("2024-02-01");
+
     private final String version;
 
     OpenAIServiceVersion(String version) {
