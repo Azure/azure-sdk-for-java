@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.33.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.32.1 (2024-06-07)
 
 #### Other Changes
@@ -29,6 +39,7 @@
 
 #### Features Added
 * Added capability to use (and enforce) native netty transport. The native transport is more efficient - esepcially when the number of TCP connections being used is high. - See [PR 39834](https://github.com/Azure/azure-sdk-for-java/pull/39834)
+* Added ManagedIdentity authentication support for azure-cosmos-spark in Databricks. - See [PR 39870](https://github.com/Azure/azure-sdk-for-java/pull/39870)
 
 ### 4.29.0 (2024-04-16)
 
