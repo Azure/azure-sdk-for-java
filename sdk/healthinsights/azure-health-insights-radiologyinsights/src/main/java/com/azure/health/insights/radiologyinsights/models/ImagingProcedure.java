@@ -5,48 +5,46 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Imaging procedure.
  */
 @Immutable
-public final class ImagingProcedure {
+public final class ImagingProcedure implements JsonSerializable<ImagingProcedure> {
 
     /*
      * Modality : SNOMED CT code.
      */
     @Generated
-    @JsonProperty(value = "modality")
     private final FhirR4CodeableConcept modality;
 
     /*
      * Anatomy : SNOMED CT code.
      */
     @Generated
-    @JsonProperty(value = "anatomy")
     private final FhirR4CodeableConcept anatomy;
 
     /*
      * Laterality : SNOMED CT code.
      */
     @Generated
-    @JsonProperty(value = "laterality")
     private FhirR4CodeableConcept laterality;
 
     /*
      * Contrast : see RadiologyCodeWithTypes (below).
      */
     @Generated
-    @JsonProperty(value = "contrast")
     private RadiologyCodeWithTypes contrast;
 
     /*
      * View : see RadiologyCodeWithTypes (below).
      */
     @Generated
-    @JsonProperty(value = "view")
     private RadiologyCodeWithTypes view;
 
     /**
@@ -56,9 +54,7 @@ public final class ImagingProcedure {
      * @param anatomy the anatomy value to set.
      */
     @Generated
-    @JsonCreator
-    private ImagingProcedure(@JsonProperty(value = "modality") FhirR4CodeableConcept modality,
-        @JsonProperty(value = "anatomy") FhirR4CodeableConcept anatomy) {
+    private ImagingProcedure(FhirR4CodeableConcept modality, FhirR4CodeableConcept anatomy) {
         this.modality = modality;
         this.anatomy = anatomy;
     }
@@ -111,5 +107,62 @@ public final class ImagingProcedure {
     @Generated
     public RadiologyCodeWithTypes getView() {
         return this.view;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("modality", this.modality);
+        jsonWriter.writeJsonField("anatomy", this.anatomy);
+        jsonWriter.writeJsonField("laterality", this.laterality);
+        jsonWriter.writeJsonField("contrast", this.contrast);
+        jsonWriter.writeJsonField("view", this.view);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImagingProcedure from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImagingProcedure if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImagingProcedure.
+     */
+    @Generated
+    public static ImagingProcedure fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirR4CodeableConcept modality = null;
+            FhirR4CodeableConcept anatomy = null;
+            FhirR4CodeableConcept laterality = null;
+            RadiologyCodeWithTypes contrast = null;
+            RadiologyCodeWithTypes view = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("modality".equals(fieldName)) {
+                    modality = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("anatomy".equals(fieldName)) {
+                    anatomy = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("laterality".equals(fieldName)) {
+                    laterality = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("contrast".equals(fieldName)) {
+                    contrast = RadiologyCodeWithTypes.fromJson(reader);
+                } else if ("view".equals(fieldName)) {
+                    view = RadiologyCodeWithTypes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ImagingProcedure deserializedImagingProcedure = new ImagingProcedure(modality, anatomy);
+            deserializedImagingProcedure.laterality = laterality;
+            deserializedImagingProcedure.contrast = contrast;
+            deserializedImagingProcedure.view = view;
+            return deserializedImagingProcedure;
+        });
     }
 }

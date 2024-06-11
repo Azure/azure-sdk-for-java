@@ -5,35 +5,37 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Patient structured information, including demographics and known structured clinical information.
  */
 @Fluent
-public final class PatientDetails {
+public final class PatientDetails implements JsonSerializable<PatientDetails> {
 
     /*
      * The patient's sex.
      */
     @Generated
-    @JsonProperty(value = "sex")
     private PatientSex sex;
 
     /*
      * The patient's date of birth.
      */
     @Generated
-    @JsonProperty(value = "birthDate")
     private LocalDate birthDate;
 
     /*
      * Known clinical information for the patient, structured.
      */
     @Generated
-    @JsonProperty(value = "clinicalInfo")
     private List<FhirR4Resource> clinicalInfo;
 
     /**
@@ -107,5 +109,49 @@ public final class PatientDetails {
     public PatientDetails setClinicalInfo(List<FhirR4Resource> clinicalInfo) {
         this.clinicalInfo = clinicalInfo;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sex", this.sex == null ? null : this.sex.toString());
+        jsonWriter.writeStringField("birthDate", Objects.toString(this.birthDate, null));
+        jsonWriter.writeArrayField("clinicalInfo", this.clinicalInfo, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatientDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatientDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PatientDetails.
+     */
+    @Generated
+    public static PatientDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PatientDetails deserializedPatientDetails = new PatientDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("sex".equals(fieldName)) {
+                    deserializedPatientDetails.sex = PatientSex.fromString(reader.getString());
+                } else if ("birthDate".equals(fieldName)) {
+                    deserializedPatientDetails.birthDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("clinicalInfo".equals(fieldName)) {
+                    List<FhirR4Resource> clinicalInfo = reader.readArray(reader1 -> FhirR4Resource.fromJson(reader1));
+                    deserializedPatientDetails.clinicalInfo = clinicalInfo;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedPatientDetails;
+        });
     }
 }

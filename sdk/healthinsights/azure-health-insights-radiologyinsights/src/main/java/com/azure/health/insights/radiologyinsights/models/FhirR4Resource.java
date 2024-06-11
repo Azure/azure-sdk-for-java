@@ -5,11 +5,11 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -19,48 +19,42 @@ import java.util.Map;
  * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html.
  */
 @Fluent
-public class FhirR4Resource {
+public class FhirR4Resource implements JsonSerializable<FhirR4Resource> {
 
     /*
      * The type of resource
      */
     @Generated
-    @JsonProperty(value = "resourceType")
     private final String resourceType;
 
     /*
      * Resource Id
      */
     @Generated
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Metadata about the resource
      */
     @Generated
-    @JsonProperty(value = "meta")
     private FhirR4Meta meta;
 
     /*
      * A set of rules under which this content was created
      */
     @Generated
-    @JsonProperty(value = "implicitRules")
     private String implicitRules;
 
     /*
      * Language of the resource content
      */
     @Generated
-    @JsonProperty(value = "language")
     private String language;
 
     /*
      * Additional properties
      */
     @Generated
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -69,8 +63,7 @@ public class FhirR4Resource {
      * @param resourceType the resourceType value to set.
      */
     @Generated
-    @JsonCreator
-    public FhirR4Resource(@JsonProperty(value = "resourceType") String resourceType) {
+    public FhirR4Resource(String resourceType) {
         this.resourceType = resourceType;
     }
 
@@ -178,7 +171,6 @@ public class FhirR4Resource {
      * @return the additionalProperties value.
      */
     @Generated
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -195,12 +187,71 @@ public class FhirR4Resource {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Generated
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("meta", this.meta);
+        jsonWriter.writeStringField("implicitRules", this.implicitRules);
+        jsonWriter.writeStringField("language", this.language);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4Resource from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4Resource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirR4Resource.
+     */
+    @Generated
+    public static FhirR4Resource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String resourceType = null;
+            String id = null;
+            FhirR4Meta meta = null;
+            String implicitRules = null;
+            String language = null;
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resourceType".equals(fieldName)) {
+                    resourceType = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("meta".equals(fieldName)) {
+                    meta = FhirR4Meta.fromJson(reader);
+                } else if ("implicitRules".equals(fieldName)) {
+                    implicitRules = reader.getString();
+                } else if ("language".equals(fieldName)) {
+                    language = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            FhirR4Resource deserializedFhirR4Resource = new FhirR4Resource(resourceType);
+            deserializedFhirR4Resource.id = id;
+            deserializedFhirR4Resource.meta = meta;
+            deserializedFhirR4Resource.implicitRules = implicitRules;
+            deserializedFhirR4Resource.language = language;
+            deserializedFhirR4Resource.additionalProperties = additionalProperties;
+            return deserializedFhirR4Resource;
+        });
     }
 }

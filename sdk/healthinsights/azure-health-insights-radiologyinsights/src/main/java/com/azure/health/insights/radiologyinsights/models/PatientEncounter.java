@@ -5,20 +5,22 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * visit/encounter information.
  */
 @Fluent
-public final class PatientEncounter {
+public final class PatientEncounter implements JsonSerializable<PatientEncounter> {
 
     /*
      * The id of the visit.
      */
     @Generated
-    @JsonProperty(value = "id")
     private final String id;
 
     /*
@@ -27,14 +29,12 @@ public final class PatientEncounter {
      * discharge time.
      */
     @Generated
-    @JsonProperty(value = "period")
     private TimePeriod period;
 
     /*
      * The class of the encounter.
      */
     @Generated
-    @JsonProperty(value = "class")
     private EncounterClass classProperty;
 
     /**
@@ -43,8 +43,7 @@ public final class PatientEncounter {
      * @param id the id value to set.
      */
     @Generated
-    @JsonCreator
-    public PatientEncounter(@JsonProperty(value = "id") String id) {
+    public PatientEncounter(String id) {
         this.id = id;
     }
 
@@ -104,5 +103,53 @@ public final class PatientEncounter {
     public PatientEncounter setClassProperty(EncounterClass classProperty) {
         this.classProperty = classProperty;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("period", this.period);
+        jsonWriter.writeStringField("class", this.classProperty == null ? null : this.classProperty.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatientEncounter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatientEncounter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PatientEncounter.
+     */
+    @Generated
+    public static PatientEncounter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            TimePeriod period = null;
+            EncounterClass classProperty = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("period".equals(fieldName)) {
+                    period = TimePeriod.fromJson(reader);
+                } else if ("class".equals(fieldName)) {
+                    classProperty = EncounterClass.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            PatientEncounter deserializedPatientEncounter = new PatientEncounter(id);
+            deserializedPatientEncounter.period = period;
+            deserializedPatientEncounter.classProperty = classProperty;
+            return deserializedPatientEncounter;
+        });
     }
 }

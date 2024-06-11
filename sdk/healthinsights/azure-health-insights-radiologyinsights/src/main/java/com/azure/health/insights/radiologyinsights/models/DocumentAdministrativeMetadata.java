@@ -5,27 +5,29 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Document administrative metadata.
  */
 @Fluent
-public final class DocumentAdministrativeMetadata {
+public final class DocumentAdministrativeMetadata implements JsonSerializable<DocumentAdministrativeMetadata> {
 
     /*
      * List of procedure information associated with the document.
      */
     @Generated
-    @JsonProperty(value = "orderedProcedures")
     private List<OrderedProcedure> orderedProcedures;
 
     /*
      * Reference to the encounter associated with the document.
      */
     @Generated
-    @JsonProperty(value = "encounterId")
     private String encounterId;
 
     /**
@@ -77,5 +79,48 @@ public final class DocumentAdministrativeMetadata {
     public DocumentAdministrativeMetadata setEncounterId(String encounterId) {
         this.encounterId = encounterId;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("orderedProcedures", this.orderedProcedures,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("encounterId", this.encounterId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentAdministrativeMetadata from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentAdministrativeMetadata if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DocumentAdministrativeMetadata.
+     */
+    @Generated
+    public static DocumentAdministrativeMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DocumentAdministrativeMetadata deserializedDocumentAdministrativeMetadata
+                = new DocumentAdministrativeMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("orderedProcedures".equals(fieldName)) {
+                    List<OrderedProcedure> orderedProcedures
+                        = reader.readArray(reader1 -> OrderedProcedure.fromJson(reader1));
+                    deserializedDocumentAdministrativeMetadata.orderedProcedures = orderedProcedures;
+                } else if ("encounterId".equals(fieldName)) {
+                    deserializedDocumentAdministrativeMetadata.encounterId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedDocumentAdministrativeMetadata;
+        });
     }
 }

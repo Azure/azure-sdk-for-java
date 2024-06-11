@@ -5,27 +5,30 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Configuration affecting the Radiology Insights model's inference.
  */
 @Fluent
-public final class RadiologyInsightsModelConfiguration {
+public final class RadiologyInsightsModelConfiguration
+    implements JsonSerializable<RadiologyInsightsModelConfiguration> {
 
     /*
      * An indication whether the model should produce verbose output.
      */
     @Generated
-    @JsonProperty(value = "verbose")
     private Boolean verbose;
 
     /*
      * An indication whether the model's output should include evidence for the inferences.
      */
     @Generated
-    @JsonProperty(value = "includeEvidence")
     private Boolean includeEvidence;
 
     /*
@@ -34,21 +37,18 @@ public final class RadiologyInsightsModelConfiguration {
      * inference types.
      */
     @Generated
-    @JsonProperty(value = "inferenceTypes")
     private List<RadiologyInsightsInferenceType> inferenceTypes;
 
     /*
      * Options regarding follow up recommendation inferences and finding inferences.
      */
     @Generated
-    @JsonProperty(value = "inferenceOptions")
     private RadiologyInsightsInferenceOptions inferenceOptions;
 
     /*
      * Local for the model to use. If not specified, the model will use the default locale.
      */
     @Generated
-    @JsonProperty(value = "locale")
     private String locale;
 
     /**
@@ -172,5 +172,60 @@ public final class RadiologyInsightsModelConfiguration {
     public RadiologyInsightsModelConfiguration setLocale(String locale) {
         this.locale = locale;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("verbose", this.verbose);
+        jsonWriter.writeBooleanField("includeEvidence", this.includeEvidence);
+        jsonWriter.writeArrayField("inferenceTypes", this.inferenceTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("inferenceOptions", this.inferenceOptions);
+        jsonWriter.writeStringField("locale", this.locale);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RadiologyInsightsModelConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RadiologyInsightsModelConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RadiologyInsightsModelConfiguration.
+     */
+    @Generated
+    public static RadiologyInsightsModelConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RadiologyInsightsModelConfiguration deserializedRadiologyInsightsModelConfiguration
+                = new RadiologyInsightsModelConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("verbose".equals(fieldName)) {
+                    deserializedRadiologyInsightsModelConfiguration.verbose
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("includeEvidence".equals(fieldName)) {
+                    deserializedRadiologyInsightsModelConfiguration.includeEvidence
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("inferenceTypes".equals(fieldName)) {
+                    List<RadiologyInsightsInferenceType> inferenceTypes
+                        = reader.readArray(reader1 -> RadiologyInsightsInferenceType.fromString(reader1.getString()));
+                    deserializedRadiologyInsightsModelConfiguration.inferenceTypes = inferenceTypes;
+                } else if ("inferenceOptions".equals(fieldName)) {
+                    deserializedRadiologyInsightsModelConfiguration.inferenceOptions
+                        = RadiologyInsightsInferenceOptions.fromJson(reader);
+                } else if ("locale".equals(fieldName)) {
+                    deserializedRadiologyInsightsModelConfiguration.locale = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedRadiologyInsightsModelConfiguration;
+        });
     }
 }

@@ -5,7 +5,10 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,14 +21,12 @@ public final class FhirR4ContactDetail extends FhirR4Element {
      * Name of an individual to contact
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Contact details for individual or organization
      */
     @Generated
-    @JsonProperty(value = "telecom")
     private List<FhirR4ContactPoint> telecom;
 
     /**
@@ -53,5 +54,53 @@ public final class FhirR4ContactDetail extends FhirR4Element {
     @Generated
     public List<FhirR4ContactPoint> getTelecom() {
         return this.telecom;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("telecom", this.telecom, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4ContactDetail from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4ContactDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FhirR4ContactDetail.
+     */
+    @Generated
+    public static FhirR4ContactDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirR4ContactDetail deserializedFhirR4ContactDetail = new FhirR4ContactDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    deserializedFhirR4ContactDetail.setId(reader.getString());
+                } else if ("extension".equals(fieldName)) {
+                    List<FhirR4Extension> extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                    deserializedFhirR4ContactDetail.setExtension(extension);
+                } else if ("name".equals(fieldName)) {
+                    deserializedFhirR4ContactDetail.name = reader.getString();
+                } else if ("telecom".equals(fieldName)) {
+                    List<FhirR4ContactPoint> telecom
+                        = reader.readArray(reader1 -> FhirR4ContactPoint.fromJson(reader1));
+                    deserializedFhirR4ContactDetail.telecom = telecom;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedFhirR4ContactDetail;
+        });
     }
 }
