@@ -29,8 +29,6 @@
 * Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40083](https://github.com/Azure/azure-sdk-for-java/pull/40083).
 * Fixing bug with Spring JPA keywords that don't lead to criteria creation - See [PR 40167](https://github.com/Azure/azure-sdk-for-java/pull/40167).
 
-#### Other Changes
-
 ### 5.12.0 (2024-05-09)
 
 #### Features Added
