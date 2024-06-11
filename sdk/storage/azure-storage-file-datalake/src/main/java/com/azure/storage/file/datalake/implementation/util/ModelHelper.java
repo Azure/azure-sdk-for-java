@@ -181,31 +181,4 @@ public class ModelHelper {
             return null;
         }
     }
-
-    /**
-     * Takes in a destination path and creates a SpecializedBlobClientBuilder with a new path name
-     * @param destinationFileSystem The destination file system
-     * @param destinationPath The destination path
-     * @param sourceFileSystem The source file system
-     * @param httpPipeline The http pipeline
-     * @param serviceVersion The service version
-     * @param pathUrl The path URL
-     * @return An updated SpecializedBlobClientBuilder
-     */
-    public static SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationFileSystem,
-        String destinationPath, String sourceFileSystem, HttpPipeline httpPipeline,
-        DataLakeServiceVersion serviceVersion, String pathUrl) {
-        if (destinationFileSystem == null) {
-            destinationFileSystem = sourceFileSystem;
-        }
-        // Get current Blob URL and replace current path with user provided path
-        String newBlobEndpoint = BlobUrlParts.parse(DataLakeImplUtils.endpointToDesiredEndpoint(pathUrl,
-            "blob", "dfs")).setBlobName(destinationPath).setContainerName(destinationFileSystem).toUrl().toString();
-
-        return new SpecializedBlobClientBuilder()
-            .pipeline(httpPipeline)
-            .endpoint(newBlobEndpoint)
-            .blobName(destinationPath)
-            .serviceVersion(TransformUtils.toBlobServiceVersion(serviceVersion));
-    }
 }

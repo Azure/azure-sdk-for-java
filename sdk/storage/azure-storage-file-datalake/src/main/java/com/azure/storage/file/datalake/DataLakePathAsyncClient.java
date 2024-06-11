@@ -18,7 +18,9 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -40,6 +42,7 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
+import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -1677,9 +1680,29 @@ public class DataLakePathAsyncClient {
 
         return new DataLakePathAsyncClient(getHttpPipeline(), getAccountUrl(), serviceVersion, accountName,
             destinationFileSystem, destinationPath, pathResourceType,
-            ModelHelper.prepareBuilderReplacePath(destinationFileSystem, destinationPath, getFileSystemName(), getHttpPipeline(),
-                getServiceVersion(), getPathUrl()).buildBlockBlobAsyncClient(), sasToken,
+            prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobAsyncClient(), sasToken,
             customerProvidedKey, isTokenCredentialAuthenticated());
+    }
+
+    /**
+     * Takes in a destination path and creates a SpecializedBlobClientBuilder with a new path name
+     * @param destinationFileSystem The destination file system
+     * @param destinationPath The destination path
+     * @return An updated SpecializedBlobClientBuilder
+     */
+    SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationFileSystem, String destinationPath) {
+        if (destinationFileSystem == null) {
+            destinationFileSystem = getFileSystemName();
+        }
+        // Get current Blob URL and replace current path with user provided path
+        String newBlobEndpoint = BlobUrlParts.parse(DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(),
+            "blob", "dfs")).setContainerName(destinationFileSystem).toUrl().toString();
+
+        return new SpecializedBlobClientBuilder()
+            .pipeline(getHttpPipeline())
+            .endpoint(newBlobEndpoint)
+            .blobName(destinationPath)
+            .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()));
     }
 
     BlockBlobAsyncClient getBlockBlobAsyncClient() {

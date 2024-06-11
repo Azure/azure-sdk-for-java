@@ -1623,9 +1623,9 @@ public class DataLakePathClient {
         }
 
         return new DataLakePathClient(dataLakePathAsyncClient,
-            ModelHelper.prepareBuilderReplacePath(destinationFileSystem, destinationPath, getFileSystemName(), getHttpPipeline(), getServiceVersion(), getPathUrl()).buildBlockBlobClient(), getHttpPipeline(),
-            getAccountUrl(), serviceVersion, accountName, destinationFileSystem, destinationPath, pathResourceType,
-            sasToken, customerProvidedKey, isTokenCredentialAuthenticated());
+            dataLakePathAsyncClient.prepareBuilderReplacePath(destinationFileSystem, destinationPath).buildBlockBlobClient(),
+            getHttpPipeline(), getAccountUrl(), serviceVersion, accountName, destinationFileSystem, destinationPath,
+            pathResourceType, sasToken, customerProvidedKey, isTokenCredentialAuthenticated());
     }
 
     /**

@@ -323,9 +323,10 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
         Objects.requireNonNull(fileName, "'fileName' can not be set to null");
 
         String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+        BlockBlobClient blockBlobClient = dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(pathPrefix + fileName)
+            .buildBlockBlobClient();
 
-        return new DataLakeFileClient(dataLakeDirectoryAsyncClient.getFileAsyncClient(fileName),
-            dataLakeDirectoryAsyncClient.prepareBuilderAppendPath(pathPrefix + fileName).buildBlockBlobClient(),
+        return new DataLakeFileClient(dataLakeDirectoryAsyncClient.getFileAsyncClient(fileName), blockBlobClient,
             getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(), getFileSystemName(),
             pathPrefix + fileName, this.getSasToken(), getCpkInfo(), isTokenCredentialAuthenticated());
     }
