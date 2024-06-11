@@ -17,8 +17,8 @@ import java.util.Arrays;
 public class EventGridCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        customizeEventGridClientImplImports(customization, logger);
         removeExtraFiles(customization, logger);
+        customizeEventGridClientImplImports(customization, logger);
     }
 
     public void removeExtraFiles(LibraryCustomization customization, Logger logger) {
