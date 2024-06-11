@@ -163,4 +163,12 @@ public final class EventGridSenderAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions).then();
     }
+
+    /**
+     * Gets the topicName for this client.
+     * @return the topic name.
+     */
+    public String getTopicName() {
+        return topicName;
+    }
 }

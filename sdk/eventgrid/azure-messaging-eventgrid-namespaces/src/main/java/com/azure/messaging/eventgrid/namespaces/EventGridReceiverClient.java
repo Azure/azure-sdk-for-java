@@ -383,7 +383,7 @@ public final class EventGridReceiverClient {
     }
 
     /**
-     * Receive a batch of Cloud Events from a subscription.
+     * Receive a Cloud Event from a subscription. This method will wait 60 seconds for a response.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -431,7 +431,7 @@ public final class EventGridReceiverClient {
      * received by consumers.
      *
      * @param lockTokens Array of lock tokens.
-     * @param releaseDelayInSeconds Release cloud events with the specified delay in seconds.
+     * @param releaseDelay Release cloud events with the specified delay in seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -441,13 +441,13 @@ public final class EventGridReceiverClient {
      * @return the result of the Release operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReleaseResult release(List<String> lockTokens, ReleaseDelay releaseDelayInSeconds) {
+    public ReleaseResult release(List<String> lockTokens, ReleaseDelay releaseDelay) {
         // Generated convenience method for releaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
         ReleaseRequest requestObj = new ReleaseRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
-        if (releaseDelayInSeconds != null) {
-            requestOptions.addQueryParam("releaseDelayInSeconds", releaseDelayInSeconds.toString(), false);
+        if (releaseDelay != null) {
+            requestOptions.addQueryParam("releaseDelayInSeconds", releaseDelay.toString(), false);
         }
         return releaseWithResponse(topicName, subscriptionName, request, requestOptions).getValue()
             .toObject(ReleaseResult.class);
@@ -525,5 +525,21 @@ public final class EventGridReceiverClient {
         BinaryData request = BinaryData.fromObject(requestObj);
         return renewLocksWithResponse(topicName, subscriptionName, request, requestOptions).getValue()
             .toObject(RenewLocksResult.class);
+    }
+
+    /**
+     * Gets the topicName for this client.
+     * @return the topic name.
+     */
+    public String getTopicName() {
+        return topicName;
+    }
+
+    /**
+     * Gets the subscriptionName for this client.
+     * @return the subscription name.
+     */
+    public String getSubscriptionName() {
+        return subscriptionName;
     }
 }

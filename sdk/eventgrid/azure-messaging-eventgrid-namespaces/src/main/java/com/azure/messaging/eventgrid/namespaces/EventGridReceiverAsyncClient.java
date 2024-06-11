@@ -389,7 +389,7 @@ public final class EventGridReceiverAsyncClient {
     }
 
     /**
-     * Receive a batch of Cloud Events from a subscription.
+     * Receive a Cloud Event from a subscription. This method will wait 60 seconds for a response.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -438,7 +438,7 @@ public final class EventGridReceiverAsyncClient {
      * received by consumers.
      *
      * @param lockTokens Array of lock tokens.
-     * @param releaseDelayInSeconds Release cloud events with the specified delay in seconds.
+     * @param releaseDelay Release cloud events with the specified delay in seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -449,13 +449,13 @@ public final class EventGridReceiverAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReleaseResult> release(List<String> lockTokens,
-        ReleaseDelay releaseDelayInSeconds) {
+        ReleaseDelay releaseDelay) {
         // Generated convenience method for releaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
         ReleaseRequest requestObj = new ReleaseRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
-        if (releaseDelayInSeconds != null) {
-            requestOptions.addQueryParam("releaseDelayInSeconds", releaseDelayInSeconds.toString(), false);
+        if (releaseDelay != null) {
+            requestOptions.addQueryParam("releaseDelayInSeconds", releaseDelay.toString(), false);
         }
         return releaseWithResponse(topicName, subscriptionName, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ReleaseResult.class));
@@ -533,5 +533,21 @@ public final class EventGridReceiverAsyncClient {
         return renewLocksWithResponse(topicName, subscriptionName, request, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(RenewLocksResult.class));
+    }
+
+    /**
+     * Gets the topicName for this client.
+     * @return the topic name.
+     */
+    public String getTopicName() {
+        return topicName;
+    }
+
+    /**
+     * Gets the subscriptionName for this client.
+     * @return the subscription name.
+     */
+    public String getSubscriptionName() {
+        return subscriptionName;
     }
 }

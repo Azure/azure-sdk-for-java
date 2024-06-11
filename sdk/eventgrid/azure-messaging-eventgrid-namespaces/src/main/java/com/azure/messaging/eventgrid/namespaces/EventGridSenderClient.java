@@ -158,4 +158,12 @@ public final class EventGridSenderClient {
         RequestOptions requestOptions = new RequestOptions();
         sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions);
     }
+
+    /**
+     * Gets the topicName for this client.
+     * @return the topic name.
+     */
+    public String getTopicName() {
+        return topicName;
+    }
 }
