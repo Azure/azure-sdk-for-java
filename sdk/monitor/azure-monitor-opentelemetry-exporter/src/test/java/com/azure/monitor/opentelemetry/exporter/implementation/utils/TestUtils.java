@@ -28,7 +28,7 @@ public final class TestUtils {
             + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
 
     public static TelemetryItem createMetricTelemetry(String name, int value, String connectionString) {
-        return createMetricTelemetry(name, value, connectionString, null, null);
+        return createMetricTelemetry(name, value, connectionString, "status", "blocked");
     }
 
     public static TelemetryItem createMetricTelemetry(
@@ -52,11 +52,7 @@ public final class TestUtils {
         dataPoints.add(dataPoint);
 
         Map<String, String> properties = new HashMap<>();
-        if (propertyKey == null && propertyValue == null) {
-            properties.put("state", "blocked");
-        } else {
-            properties.put(propertyKey, propertyValue);
-        }
+        properties.put(propertyKey, propertyValue);
 
         data.setMetrics(dataPoints);
         data.setProperties(properties);
