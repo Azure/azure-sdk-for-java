@@ -19,6 +19,7 @@ from parameters import *
 from utils import update_service_ci_and_pom
 from utils import update_root_pom
 from utils import update_version
+from utils import is_windows
 
 os.chdir(pwd)
 
@@ -345,14 +346,14 @@ def generate_typespec_project(
         tspconfig_valid = True
         if url_match:
             # generate from remote url
-            tsp_cmd = ["npx", "tsp-client", "init", "--debug", "--tsp-config", tsp_project]
+            tsp_cmd = ["npx" + ('.cmd' if is_windows() else ''), "tsp-client", "init", "--debug", "--tsp-config", tsp_project]
         else:
             # sdk automation
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
             tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd = [
-                "npx",
+                "npx" + ('.cmd' if is_windows() else ''),
                 "tsp-client",
                 "init",
                 "--debug",
@@ -367,7 +368,7 @@ def generate_typespec_project(
             ]
 
         if tspconfig_valid:
-            check_call(tsp_cmd, sdk_root, shell=True)
+            check_call(tsp_cmd, sdk_root)
 
             sdk_folder = find_sdk_folder(sdk_root)
             logging.info("SDK folder: " + sdk_folder)
@@ -393,7 +394,7 @@ def generate_typespec_project(
                     drop_changes(sdk_root)
                     remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
                     # regenerate
-                    check_call(tsp_cmd, sdk_root, shell=True)
+                    check_call(tsp_cmd, sdk_root)
                 succeeded = True
     except subprocess.CalledProcessError as error:
         error_message = (
