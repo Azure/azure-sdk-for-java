@@ -69,7 +69,7 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
 
     private void processStatusCode206(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
         Set<ResponseError> errors = response.getErrors();
-        errors.forEach(error -> logger.verbose("Error in telemetry: " + error));
+        errors.forEach(error -> logger.verbose("Error in telemetry: {}", error));
         if (!errors.isEmpty()) {
             List<TelemetryItem> originalTelemetryItems = new ArrayList<>();
             for (ByteBuffer byteBuffer : request.getByteBuffers()) {

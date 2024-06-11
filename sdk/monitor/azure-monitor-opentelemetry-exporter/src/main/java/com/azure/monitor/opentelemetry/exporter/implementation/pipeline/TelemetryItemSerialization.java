@@ -29,12 +29,12 @@ public final class TelemetryItemSerialization {
     private static final ClientLogger logger = new ClientLogger(TelemetryItemSerialization.class);
 
     public static List<TelemetryItem> deserialize(byte[] data) {
-        return deserializeWithoutEncode(decode(data));
+        return deserializeAlreadyDecoded(decode(data));
     }
 
     // visible for testing
     // deserialize raw bytes to a list of TelemetryItem without decoding
-    public static List<TelemetryItem> deserializeWithoutEncode(byte[] data) {
+    public static List<TelemetryItem> deserializeAlreadyDecoded(byte[] data) {
         try {
             MappingIterator<TelemetryItem> iterator = mapper.readerFor(TelemetryItem.class).readValues(data);
             return iterator.readAll();
@@ -107,6 +107,7 @@ public final class TelemetryItemSerialization {
             mapper.writeValue(jg, telemetryItem);
         }
     }
+
     private TelemetryItemSerialization() {
     }
 }

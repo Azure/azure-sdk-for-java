@@ -43,8 +43,10 @@ public class TelemetryPipelineResponse {
     }
 
     public Set<String> getErrorMessages() {
-        Set<ResponseError> responseErrors = getErrors();
-        if (responseErrors.isEmpty()) {
+        Set<ResponseError> responseErrors;
+        try {
+            responseErrors = parseErrors(body);
+        } catch (IllegalStateException e) {
             return singleton("Could not parse response");
         }
         return responseErrors.stream().map(ResponseError::getMessage).collect(Collectors.toSet());

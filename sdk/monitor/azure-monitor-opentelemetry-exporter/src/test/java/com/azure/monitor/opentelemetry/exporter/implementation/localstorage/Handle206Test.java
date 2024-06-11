@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserializeWithoutEncode;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserializeAlreadyDecoded;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class Handle206Test {
@@ -97,7 +97,7 @@ public class Handle206Test {
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(1);
 
         String expected = Resources.readString("request_body_result_to_206_status_code.txt");
-        List<TelemetryItem> expectedTelemetryItems = deserializeWithoutEncode(expected.getBytes());
+        List<TelemetryItem> expectedTelemetryItems = deserializeAlreadyDecoded(expected.getBytes());
         LocalFileLoader.PersistedFile file = localFileLoader.loadTelemetriesFromDisk();
         assertThat(file.connectionString).isEqualTo(CONNECTION_STRING);
         List<TelemetryItem> actualTelemetryItems = deserialize(file.rawBytes.array());

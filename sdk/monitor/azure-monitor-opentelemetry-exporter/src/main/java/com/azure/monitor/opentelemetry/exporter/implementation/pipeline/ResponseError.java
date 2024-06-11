@@ -30,7 +30,6 @@ public final class ResponseError {
         return "ErrorResponse{" +
             "index=" + index +
             ", statusCode=" + statusCode +
-            ", message='" + message + '\'' +
-            '}';
+            ", message='" + message + '}';
     }
 }
