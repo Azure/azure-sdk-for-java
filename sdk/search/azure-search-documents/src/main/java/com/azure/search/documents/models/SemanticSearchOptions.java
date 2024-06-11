@@ -62,11 +62,6 @@ public final class SemanticSearchOptions {
      */
     private List<String> semanticFields;
 
-    /*
-     * Enables a debugging tool that can be used to further explore your reranked results.
-     */
-    private QueryDebugMode debug;
-
     /**
      * Creates a new instance of {@link SemanticSearchOptions}.
      */
@@ -247,26 +242,6 @@ public final class SemanticSearchOptions {
      */
     public SemanticSearchOptions setSemanticFields(String... semanticFields) {
         this.semanticFields = semanticFields == null ? null : Arrays.asList(semanticFields);
-        return this;
-    }
-
-    /**
-     * Get the debug property: Enables a debugging tool that can be used to further explore your reranked results.
-     *
-     * @return the debug value.
-     */
-    public QueryDebugMode getDebug() {
-        return this.debug;
-    }
-
-    /**
-     * Set the debug property: Enables a debugging tool that can be used to further explore your reranked results.
-     *
-     * @param debug the debug value to set.
-     * @return the SemanticSearchOptions object itself.
-     */
-    public SemanticSearchOptions setDebug(QueryDebugMode debug) {
-        this.debug = debug;
         return this;
     }
 }
