@@ -1,10 +1,10 @@
 # Release History
 
-## 1.0.0-beta.9 (2024-06-06)
+## 1.0.0-beta.9 (2024-06-11)
 
 ### Features Added
 
-- Added support for service API versions, `2024-04-01-preview` and `2024-05-01-preview`. 
+- Added support for service API versions, `2024-04-01-preview`, `2024-05-01-preview` and `2024-02-01`. 
 - Note that `AOAI` refers to Azure OpenAI and `OAI` refers to OpenAI.
 - Added timestamp granularity to Whisper transcription; this is an array of enumerated string values
   (word and/or segment) that controls which, if any, timestamp information is emitted to transcription results.
