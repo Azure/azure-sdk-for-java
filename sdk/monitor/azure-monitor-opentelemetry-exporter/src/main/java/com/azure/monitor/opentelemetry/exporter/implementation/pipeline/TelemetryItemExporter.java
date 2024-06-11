@@ -3,9 +3,6 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
-import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
