@@ -1293,7 +1293,6 @@ public class ShareApiTests extends FileShareTestBase {
 
         ShareSetPropertiesOptions setPropertiesOptions = new ShareSetPropertiesOptions();
         setPropertiesOptions.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
-        setPropertiesOptions.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED);
 
         premiumFileServiceClient.getShareClient(shareName).setProperties(setPropertiesOptions);
 

@@ -858,7 +858,6 @@ public class ShareAsyncApiTests extends FileShareTestBase {
 
         ShareSetPropertiesOptions setPropertiesOptions = new ShareSetPropertiesOptions();
         setPropertiesOptions.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
-        setPropertiesOptions.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED);
 
         premiumFileServiceAsyncClient.getShareAsyncClient(shareName).setProperties(setPropertiesOptions).block();
 
