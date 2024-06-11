@@ -46,9 +46,9 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         BlobServiceClient syncNoFaultClient = clientBuilder.buildClient();
 
         if (options.isFaultInjectionEnabledForDownloads()) {
-            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(), false));
+            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(true, getFaultProbabilities(), false));
         } else if (options.isFaultInjectionEnabledForUploads()) {
-            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(), true));
+            clientBuilder.addPolicy(new FaultInjectingHttpPolicy(true, getFaultProbabilities(), true));
         }
 
         BlobServiceClient syncClient = clientBuilder.buildClient();

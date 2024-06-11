@@ -12,16 +12,24 @@ spec:
     - name: fault-injector
       image: azsdkengsys.azurecr.io/stress/httpfaultinjector
       imagePullPolicy: Always
+      command: ['sh', '-c']
+      args:
+        - |
+          set -ex;
+          dotnet dev-certs https --export-path /mnt/outputs/dev-cert.pfx;
+          /root/.dotnet/tools/http-fault-injector;
       resources:
         limits:
           memory: 1Gi
           cpu: "1.0"
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: main
       image:  {{ .Stress.imageTag }}
       command: ['sh', '-c']
       args:
         - |
           set -exa;
+          keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias HttpFaultInject -file /mnt/outputs/dev-cert.pfx -storepass changeit;
           mkdir -p "$DEBUG_SHARE";
           . /mnt/outputs/.env;
           java \
