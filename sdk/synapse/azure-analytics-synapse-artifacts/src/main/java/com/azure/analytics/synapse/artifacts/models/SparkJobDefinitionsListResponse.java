@@ -5,30 +5,37 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of spark job definitions resources. */
+/**
+ * A list of spark job definitions resources.
+ */
 @Fluent
-public final class SparkJobDefinitionsListResponse {
+public final class SparkJobDefinitionsListResponse implements JsonSerializable<SparkJobDefinitionsListResponse> {
     /*
      * List of spark job definitions.
      */
-    @JsonProperty(value = "value", required = true)
     private List<SparkJobDefinitionResource> value;
 
     /*
      * The link to the next page of results, if any remaining results exist.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SparkJobDefinitionsListResponse class. */
-    public SparkJobDefinitionsListResponse() {}
+    /**
+     * Creates an instance of SparkJobDefinitionsListResponse class.
+     */
+    public SparkJobDefinitionsListResponse() {
+    }
 
     /**
      * Get the value property: List of spark job definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<SparkJobDefinitionResource> getValue() {
@@ -37,7 +44,7 @@ public final class SparkJobDefinitionsListResponse {
 
     /**
      * Set the value property: List of spark job definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the SparkJobDefinitionsListResponse object itself.
      */
@@ -48,7 +55,7 @@ public final class SparkJobDefinitionsListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -57,12 +64,55 @@ public final class SparkJobDefinitionsListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SparkJobDefinitionsListResponse object itself.
      */
     public SparkJobDefinitionsListResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkJobDefinitionsListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkJobDefinitionsListResponse if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SparkJobDefinitionsListResponse.
+     */
+    public static SparkJobDefinitionsListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkJobDefinitionsListResponse deserializedSparkJobDefinitionsListResponse
+                = new SparkJobDefinitionsListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SparkJobDefinitionResource> value
+                        = reader.readArray(reader1 -> SparkJobDefinitionResource.fromJson(reader1));
+                    deserializedSparkJobDefinitionsListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSparkJobDefinitionsListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkJobDefinitionsListResponse;
+        });
     }
 }

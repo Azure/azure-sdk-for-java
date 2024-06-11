@@ -5,44 +5,59 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Script activity type. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Script")
-@JsonFlatten
+/**
+ * Script activity type.
+ */
 @Fluent
 public class ScriptActivity extends ExecutionActivity {
     /*
-     * ScriptBlock execution timeout. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Type of activity.
      */
-    @JsonProperty(value = "typeProperties.scriptBlockExecutionTimeout")
+    private String type = "Script";
+
+    /*
+     * ScriptBlock execution timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     */
     private Object scriptBlockExecutionTimeout;
 
     /*
      * Array of script blocks. Type: array.
      */
-    @JsonProperty(value = "typeProperties.scripts")
     private List<ScriptActivityScriptBlock> scripts;
 
     /*
      * Log settings of script activity.
      */
-    @JsonProperty(value = "typeProperties.logSettings")
     private ScriptActivityTypePropertiesLogSettings logSettings;
 
-    /** Creates an instance of ScriptActivity class. */
-    public ScriptActivity() {}
+    /**
+     * Creates an instance of ScriptActivity class.
+     */
+    public ScriptActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the scriptBlockExecutionTimeout value.
      */
     public Object getScriptBlockExecutionTimeout() {
@@ -52,7 +67,7 @@ public class ScriptActivity extends ExecutionActivity {
     /**
      * Set the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param scriptBlockExecutionTimeout the scriptBlockExecutionTimeout value to set.
      * @return the ScriptActivity object itself.
      */
@@ -63,7 +78,7 @@ public class ScriptActivity extends ExecutionActivity {
 
     /**
      * Get the scripts property: Array of script blocks. Type: array.
-     *
+     * 
      * @return the scripts value.
      */
     public List<ScriptActivityScriptBlock> getScripts() {
@@ -72,7 +87,7 @@ public class ScriptActivity extends ExecutionActivity {
 
     /**
      * Set the scripts property: Array of script blocks. Type: array.
-     *
+     * 
      * @param scripts the scripts value to set.
      * @return the ScriptActivity object itself.
      */
@@ -83,7 +98,7 @@ public class ScriptActivity extends ExecutionActivity {
 
     /**
      * Get the logSettings property: Log settings of script activity.
-     *
+     * 
      * @return the logSettings value.
      */
     public ScriptActivityTypePropertiesLogSettings getLogSettings() {
@@ -92,7 +107,7 @@ public class ScriptActivity extends ExecutionActivity {
 
     /**
      * Set the logSettings property: Log settings of script activity.
-     *
+     * 
      * @param logSettings the logSettings value to set.
      * @return the ScriptActivity object itself.
      */
@@ -101,59 +116,178 @@ public class ScriptActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeJsonField("policy", getPolicy());
+        jsonWriter.writeStringField("type", this.type);
+        if (scriptBlockExecutionTimeout != null || scripts != null || logSettings != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("scriptBlockExecutionTimeout", this.scriptBlockExecutionTimeout);
+            jsonWriter.writeArrayField("scripts", this.scripts, (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeJsonField("logSettings", this.logSettings);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScriptActivity.
+     */
+    public static ScriptActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptActivity deserializedScriptActivity = new ScriptActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedScriptActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedScriptActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedScriptActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedScriptActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedScriptActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedScriptActivity.setUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedScriptActivity.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedScriptActivity.setPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedScriptActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("scriptBlockExecutionTimeout".equals(fieldName)) {
+                            deserializedScriptActivity.scriptBlockExecutionTimeout = reader.readUntyped();
+                        } else if ("scripts".equals(fieldName)) {
+                            List<ScriptActivityScriptBlock> scripts
+                                = reader.readArray(reader1 -> ScriptActivityScriptBlock.fromJson(reader1));
+                            deserializedScriptActivity.scripts = scripts;
+                        } else if ("logSettings".equals(fieldName)) {
+                            deserializedScriptActivity.logSettings
+                                = ScriptActivityTypePropertiesLogSettings.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedScriptActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedScriptActivity;
+        });
     }
 }

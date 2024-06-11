@@ -5,10 +5,60 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure Synapse nested resource, which belongs to a workspace. */
+/**
+ * Azure Synapse nested resource, which belongs to a workspace.
+ */
 @Immutable
 public class SubResource extends AzureEntityResource {
-    /** Creates an instance of SubResource class. */
-    public SubResource() {}
+    /**
+     * Creates an instance of SubResource class.
+     */
+    public SubResource() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubResource.
+     */
+    public static SubResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubResource deserializedSubResource = new SubResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSubResource.setId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedSubResource.setName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSubResource.setType(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedSubResource.setEtag(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubResource;
+        });
+    }
 }

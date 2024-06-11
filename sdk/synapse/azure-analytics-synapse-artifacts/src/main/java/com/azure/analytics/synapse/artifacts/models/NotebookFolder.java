@@ -5,23 +5,31 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The folder that this notebook is in. If not specified, this notebook will appear at the root level. */
+/**
+ * The folder that this notebook is in. If not specified, this notebook will appear at the root level.
+ */
 @Fluent
-public final class NotebookFolder {
+public final class NotebookFolder implements JsonSerializable<NotebookFolder> {
     /*
      * The name of the folder that this notebook is in.
      */
-    @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of NotebookFolder class. */
-    public NotebookFolder() {}
+    /**
+     * Creates an instance of NotebookFolder class.
+     */
+    public NotebookFolder() {
+    }
 
     /**
      * Get the name property: The name of the folder that this notebook is in.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -30,12 +38,48 @@ public final class NotebookFolder {
 
     /**
      * Set the name property: The name of the folder that this notebook is in.
-     *
+     * 
      * @param name the name value to set.
      * @return the NotebookFolder object itself.
      */
     public NotebookFolder setName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotebookFolder from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotebookFolder if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotebookFolder.
+     */
+    public static NotebookFolder fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotebookFolder deserializedNotebookFolder = new NotebookFolder();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNotebookFolder.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotebookFolder;
+        });
     }
 }

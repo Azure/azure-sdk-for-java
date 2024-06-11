@@ -5,36 +5,39 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Dataset reference type. */
+/**
+ * Dataset reference type.
+ */
 public final class DatasetReferenceType extends ExpandableStringEnum<DatasetReferenceType> {
-    /** Static value DatasetReference for DatasetReferenceType. */
+    /**
+     * Static value DatasetReference for DatasetReferenceType.
+     */
     public static final DatasetReferenceType DATASET_REFERENCE = fromString("DatasetReference");
 
     /**
      * Creates a new instance of DatasetReferenceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DatasetReferenceType() {}
+    public DatasetReferenceType() {
+    }
 
     /**
      * Creates or finds a DatasetReferenceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatasetReferenceType.
      */
-    @JsonCreator
     public static DatasetReferenceType fromString(String name) {
         return fromString(name, DatasetReferenceType.class);
     }
 
     /**
      * Gets known DatasetReferenceType values.
-     *
+     * 
      * @return known DatasetReferenceType values.
      */
     public static Collection<DatasetReferenceType> values() {

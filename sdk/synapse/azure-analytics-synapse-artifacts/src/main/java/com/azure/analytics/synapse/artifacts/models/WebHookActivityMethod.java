@@ -5,36 +5,39 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The list of HTTP methods supported by a WebHook activity. */
+/**
+ * The list of HTTP methods supported by a WebHook activity.
+ */
 public final class WebHookActivityMethod extends ExpandableStringEnum<WebHookActivityMethod> {
-    /** Static value POST for WebHookActivityMethod. */
+    /**
+     * Static value POST for WebHookActivityMethod.
+     */
     public static final WebHookActivityMethod POST = fromString("POST");
 
     /**
      * Creates a new instance of WebHookActivityMethod value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public WebHookActivityMethod() {}
+    public WebHookActivityMethod() {
+    }
 
     /**
      * Creates or finds a WebHookActivityMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WebHookActivityMethod.
      */
-    @JsonCreator
     public static WebHookActivityMethod fromString(String name) {
         return fromString(name, WebHookActivityMethod.class);
     }
 
     /**
      * Gets known WebHookActivityMethod values.
-     *
+     * 
      * @return known WebHookActivityMethod values.
      */
     public static Collection<WebHookActivityMethod> values() {

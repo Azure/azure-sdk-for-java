@@ -5,29 +5,36 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The exposure control response. */
+/**
+ * The exposure control response.
+ */
 @Immutable
-public final class ExposureControlResponse {
+public final class ExposureControlResponse implements JsonSerializable<ExposureControlResponse> {
     /*
      * The feature name.
      */
-    @JsonProperty(value = "featureName", access = JsonProperty.Access.WRITE_ONLY)
     private String featureName;
 
     /*
      * The feature value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
-    /** Creates an instance of ExposureControlResponse class. */
-    public ExposureControlResponse() {}
+    /**
+     * Creates an instance of ExposureControlResponse class.
+     */
+    public ExposureControlResponse() {
+    }
 
     /**
      * Get the featureName property: The feature name.
-     *
+     * 
      * @return the featureName value.
      */
     public String getFeatureName() {
@@ -36,10 +43,47 @@ public final class ExposureControlResponse {
 
     /**
      * Get the value property: The feature value.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {
         return this.value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExposureControlResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExposureControlResponse if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExposureControlResponse.
+     */
+    public static ExposureControlResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExposureControlResponse deserializedExposureControlResponse = new ExposureControlResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("featureName".equals(fieldName)) {
+                    deserializedExposureControlResponse.featureName = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedExposureControlResponse.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExposureControlResponse;
+        });
     }
 }
