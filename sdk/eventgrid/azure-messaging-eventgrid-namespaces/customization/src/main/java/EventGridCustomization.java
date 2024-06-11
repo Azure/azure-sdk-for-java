@@ -35,22 +35,7 @@ public class EventGridCustomization extends Customization {
                 });
             });
         });
-        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/models/PublishResult.java");
-        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/models/CloudEvent.java");
-
-        // add preview ServiceVersion
-        PackageCustomization packageCustomization = customization.getPackage("com.azure.messaging.eventgrid.namespaces");
-        ClassCustomization classCustomization = packageCustomization.getClass("EventGridServiceVersion");
-        classCustomization.customizeAst(compilationUnit -> {
-            EnumDeclaration clazz = compilationUnit.getEnumByName("EventGridServiceVersion").get();
-            clazz.getEntries().add(0, new EnumConstantDeclaration("/**\n" +
-                " * Enum value 2023-10-01-preview.\n" +
-                " */\n" +
-                "V2023_10_01_PREVIEW(\"2023-10-01-preview\")"));
-            clazz.getEntries().add(0, new EnumConstantDeclaration("/**\n" +
-                " * Enum value 2023-06-01-preview.\n" +
-                " */\n" +
-                "V2023_06_01_PREVIEW(\"2023-06-01-preview\")"));
-        });
+        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/implementation/models/PublishResult.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/implementation/models/CloudEvent.java");
     }
 }
