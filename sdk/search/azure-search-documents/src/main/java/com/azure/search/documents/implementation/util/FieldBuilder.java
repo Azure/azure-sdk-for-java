@@ -285,7 +285,7 @@ public final class FieldBuilder {
         if (simpleField != null) {
             key = simpleField.isKey();
             hidden = simpleField.isHidden();
-            stored = simpleField.isStored();
+            stored = false;
             filterable = simpleField.isFilterable();
             sortable = simpleField.isSortable();
             facetable = simpleField.isFacetable();

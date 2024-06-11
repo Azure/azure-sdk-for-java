@@ -57,11 +57,6 @@ public final class SemanticSearchOptions {
      */
     private String semanticQuery;
 
-    /*
-     * The comma-separated list of field names used for semantic ranking.
-     */
-    private List<String> semanticFields;
-
     /**
      * Creates a new instance of {@link SemanticSearchOptions}.
      */
@@ -211,37 +206,6 @@ public final class SemanticSearchOptions {
      */
     public SemanticSearchOptions setSemanticQuery(String semanticQuery) {
         this.semanticQuery = semanticQuery;
-        return this;
-    }
-
-    /**
-     * Get the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     *
-     * @return the semanticFields value.
-     */
-    public List<String> getSemanticFields() {
-        return this.semanticFields;
-    }
-
-    /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     *
-     * @param semanticFields the semanticFields value to set.
-     * @return the SemanticSearchOptions object itself.
-     */
-    public SemanticSearchOptions setSemanticFields(List<String> semanticFields) {
-        this.semanticFields = semanticFields;
-        return this;
-    }
-
-    /**
-     * Set the semanticFields property: The comma-separated list of field names used for semantic ranking.
-     *
-     * @param semanticFields the semanticFields value to set.
-     * @return the SemanticSearchOptions object itself.
-     */
-    public SemanticSearchOptions setSemanticFields(String... semanticFields) {
-        this.semanticFields = semanticFields == null ? null : Arrays.asList(semanticFields);
         return this;
     }
 }

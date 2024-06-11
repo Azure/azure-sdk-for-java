@@ -15,9 +15,6 @@ import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.azure.search.documents.indexes.models.CreateOrUpdateDataSourceConnectionOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateIndexerOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateSkillsetOptions;
 import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
@@ -1703,26 +1700,6 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context
     }
 
-    /**
-     * Code snippet for {@link SearchIndexerClient#createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions, Context)}
-     */
-    public void createOrUpdateIndexerWithResponse2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions-Context
-        SearchIndexer searchIndexerFromService = SEARCH_INDEXER_CLIENT.getIndexer("searchIndexer");
-        searchIndexerFromService.setFieldMappings(Collections.singletonList(
-            new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-        CreateOrUpdateIndexerOptions options = new CreateOrUpdateIndexerOptions(searchIndexerFromService)
-            .setOnlyIfUnchanged(true)
-            .setCacheReprocessingChangeDetectionDisabled(false)
-            .setCacheResetRequirementsIgnored(true);
-        Response<SearchIndexer> indexerFromService = SEARCH_INDEXER_CLIENT.createOrUpdateIndexerWithResponse(
-            options, new Context(KEY_1, VALUE_1));
-        System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
-                + "The target field name of indexer is %s.%n", indexerFromService.getStatusCode(),
-            indexerFromService.getValue().getName(),
-            indexerFromService.getValue().getFieldMappings().get(0).getTargetFieldName());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions-Context
-    }
 
     /**
      * Code snippet for {@link SearchIndexerClient#deleteIndexer(String)}
@@ -1953,25 +1930,6 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#createOrUpdateDataSourceConnectionWithResponse(CreateOrUpdateDataSourceConnectionOptions, Context)}
-     */
-    public void createOrUpdateDataSourceWithResponse2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions-Context
-        SearchIndexerDataSourceConnection dataSource = SEARCH_INDEXER_CLIENT.getDataSourceConnection("dataSource");
-        dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
-        CreateOrUpdateDataSourceConnectionOptions options = new CreateOrUpdateDataSourceConnectionOptions(dataSource)
-            .setOnlyIfUnchanged(true)
-            .setCacheResetRequirementsIgnored(true);
-
-        Response<SearchIndexerDataSourceConnection> updateDataSource = SEARCH_INDEXER_CLIENT
-            .createOrUpdateDataSourceConnectionWithResponse(options, new Context(KEY_1, VALUE_1));
-        System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
-                + "The container name of dataSource is %s.%n", updateDataSource.getStatusCode(),
-            updateDataSource.getValue().getName(), updateDataSource.getValue().getContainer().getName());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions-Context
-    }
-
-    /**
      * Code snippet for {@link SearchIndexerClient#deleteDataSourceConnection(String)}
      */
     public void deleteDataSource() {
@@ -2164,26 +2122,6 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#createOrUpdateSkillsetWithResponse(CreateOrUpdateSkillsetOptions, Context)}
-     */
-    public void createOrUpdateIndexerSkillsetWithResponse2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions-Context
-        SearchIndexerSkillset indexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset("searchIndexerSkillset");
-        indexerSkillset.setDescription("This is new description!");
-        CreateOrUpdateSkillsetOptions options = new CreateOrUpdateSkillsetOptions(indexerSkillset)
-            .setOnlyIfUnchanged(true)
-            .setCacheReprocessingChangeDetectionDisabled(false)
-            .setCacheResetRequirementsIgnored(true);
-        Response<SearchIndexerSkillset> updateSkillsetResponse = SEARCH_INDEXER_CLIENT.createOrUpdateSkillsetWithResponse(
-            options, new Context(KEY_1, VALUE_1));
-        System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
-                + "The description of indexer skillset is %s.%n", updateSkillsetResponse.getStatusCode(),
-            updateSkillsetResponse.getValue().getName(),
-            updateSkillsetResponse.getValue().getDescription());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions-Context
-    }
-
-    /**
      * Code snippet for {@link SearchIndexerClient#deleteSkillset(String)}
      */
     public void deleteSearchIndexerSkillset() {
@@ -2328,29 +2266,6 @@ public class SearchJavaDocCodeSnippets {
                 indexerFromService.getValue().getName(),
                 indexerFromService.getValue().getFieldMappings().get(0).getTargetFieldName()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions)}
-     */
-    public void createOrUpdateIndexerWithResponseAsync2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexer("searchIndexer")
-            .flatMap(searchIndexerFromService -> {
-                searchIndexerFromService.setFieldMappings(Collections.singletonList(
-                    new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateIndexerWithResponse(
-                    new CreateOrUpdateIndexerOptions(searchIndexerFromService)
-                        .setOnlyIfUnchanged(true)
-                        .setCacheReprocessingChangeDetectionDisabled(false)
-                        .setCacheResetRequirementsIgnored(true));
-            })
-            .subscribe(indexerFromService ->
-                System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
-                        + "The target field name of indexer is %s.%n", indexerFromService.getStatusCode(),
-                    indexerFromService.getValue().getName(),
-                    indexerFromService.getValue().getFieldMappings().get(0).getTargetFieldName()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions
     }
 
     /**
@@ -2551,25 +2466,7 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
     }
 
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateDataSourceConnectionWithResponse(CreateOrUpdateDataSourceConnectionOptions)}
-     */
-    public void createOrUpdateDataSourceWithResponseAsync2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions
-        SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnection("dataSource")
-            .flatMap(dataSource -> {
-                dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateDataSourceConnectionWithResponse(
-                    new CreateOrUpdateDataSourceConnectionOptions(dataSource)
-                        .setOnlyIfUnchanged(true)
-                        .setCacheResetRequirementsIgnored(true));
-            })
-            .subscribe(updateDataSource ->
-                System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
-                        + "The container name of dataSource is %s.%n", updateDataSource.getStatusCode(),
-                    updateDataSource.getValue().getName(), updateDataSource.getValue().getContainer().getName()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions
-    }
+
 
 
     /**
@@ -2733,27 +2630,6 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean
     }
 
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateSkillsetWithResponse(CreateOrUpdateSkillsetOptions)}
-     */
-    public void createOrUpdateIndexerSkillsetWithResponseAsync2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions
-        SEARCH_INDEXER_ASYNC_CLIENT.getSkillset("searchIndexerSkillset")
-            .flatMap(indexerSkillset -> {
-                indexerSkillset.setDescription("This is new description!");
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateSkillsetWithResponse(
-                    new CreateOrUpdateSkillsetOptions(indexerSkillset)
-                        .setOnlyIfUnchanged(true)
-                        .setCacheReprocessingChangeDetectionDisabled(false)
-                        .setCacheResetRequirementsIgnored(true));
-            })
-            .subscribe(updateSkillsetResponse ->
-                System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
-                        + "The description of indexer skillset is %s.%n", updateSkillsetResponse.getStatusCode(),
-                    updateSkillsetResponse.getValue().getName(),
-                    updateSkillsetResponse.getValue().getDescription()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions
-    }
 
     /**
      * Code snippet for {@link SearchIndexerAsyncClient#deleteSkillset(String)}
