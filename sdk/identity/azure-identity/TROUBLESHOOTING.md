@@ -23,6 +23,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot AzurePowerShellCredential authentication issues](#troubleshoot-azurepowershellcredential-authentication-issues)
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
 - [Troubleshoot IntelliJCredential authentication issues](#troubleshoot-intellijcredential-authentication-issues)
+- [Troubleshoot AzurePipelinesCredential authentication issues](#troubleshoot-azurepipelinescredential-authentication-issues)
 - [Troubleshoot authentication timeout issues](#troubleshoot-authentication-timeout-issues)
 - [Get additional help](#get-additional-help)
 
@@ -282,6 +283,8 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 | Error |Description| Mitigation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 |---|---|---|
 |`CredentialUnavailableException` raised with message. "IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE."| The Credential was not able to locate the cached token to use for authentication. | Ensure that you login on the  Azure Tools for IntelliJ plugin, that will populate the cache for the credential to pick up.
+
+## Troubleshoot `AzurePipelinesCredential` authentication issues
 
 ## Troubleshoot multi-tenant authentication issues
 `ClientAuthenticationException`

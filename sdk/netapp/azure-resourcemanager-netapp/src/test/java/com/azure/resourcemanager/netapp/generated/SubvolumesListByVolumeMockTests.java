@@ -6,54 +6,36 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SubvolumesListByVolumeMockTests {
     @Test
     public void testListByVolume() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"path\":\"xgvelfclduccbird\",\"size\":3261437061903336605,\"parentPath\":\"o\",\"provisioningState\":\"egstmninwjizci\"},\"id\":\"ghgshejjtbxqmu\",\"name\":\"uxlxqzvners\",\"type\":\"ycucrwnamikzeb\"}]}";
+            = "{\"value\":[{\"properties\":{\"path\":\"qxypokkhminq\",\"size\":6418388718617598308,\"parentPath\":\"ngnbdxxew\",\"provisioningState\":\"invudbch\"},\"id\":\"dtvqe\",\"name\":\"rqctmxxdtdd\",\"type\":\"flhuytxzv\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NetAppFilesManager manager = NetAppFilesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<SubvolumeInfo> response = manager.subvolumes()
+            .listByVolume("kfuarenlv", "htkln", "nafvvkyfedev", "bo", com.azure.core.util.Context.NONE);
 
-        PagedIterable<SubvolumeInfo> response = manager.subvolumes().listByVolume("rtixokff", "yinljqe", "qwhix",
-            "onsts", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("xgvelfclduccbird", response.iterator().next().path());
-        Assertions.assertEquals(3261437061903336605L, response.iterator().next().size());
-        Assertions.assertEquals("o", response.iterator().next().parentPath());
+        Assertions.assertEquals("qxypokkhminq", response.iterator().next().path());
+        Assertions.assertEquals(6418388718617598308L, response.iterator().next().size());
+        Assertions.assertEquals("ngnbdxxew", response.iterator().next().parentPath());
     }
 }

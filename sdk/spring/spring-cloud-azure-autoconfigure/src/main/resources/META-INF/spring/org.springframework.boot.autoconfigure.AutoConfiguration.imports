@@ -34,3 +34,4 @@ com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJdbcAutoConfigurat
 com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosDataAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosRepositoriesAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosReactiveRepositoriesAutoConfiguration
+com.azure.spring.cloud.autoconfigure.implementation.data.redis.AzureLettucePasswordlessAutoConfiguration

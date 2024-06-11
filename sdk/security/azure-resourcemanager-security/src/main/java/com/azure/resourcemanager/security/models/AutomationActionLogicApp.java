@@ -6,20 +6,31 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The logic app action that should be triggered. To learn more about Microsoft Defender for Cloud's Workflow
- * Automation capabilities, visit https://aka.ms/ASCWorkflowAutomationLearnMore.
+ * The logic app action that should be triggered. To learn more about Microsoft Defender for Cloud's Workflow Automation
+ * capabilities, visit https://aka.ms/ASCWorkflowAutomationLearnMore.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actionType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "actionType",
+    defaultImpl = AutomationActionLogicApp.class,
+    visible = true)
 @JsonTypeName("LogicApp")
 @Fluent
 public final class AutomationActionLogicApp extends AutomationAction {
     /*
-     * The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have
-     * permissions to trigger the Logic App
+     * The type of the action that will be triggered by the Automation
+     */
+    @JsonTypeId
+    @JsonProperty(value = "actionType", required = true)
+    private ActionType actionType = ActionType.LOGIC_APP;
+
+    /*
+     * The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have permissions to trigger the Logic App
      */
     @JsonProperty(value = "logicAppResourceId")
     private String logicAppResourceId;
@@ -34,6 +45,16 @@ public final class AutomationActionLogicApp extends AutomationAction {
      * Creates an instance of AutomationActionLogicApp class.
      */
     public AutomationActionLogicApp() {
+    }
+
+    /**
+     * Get the actionType property: The type of the action that will be triggered by the Automation.
+     * 
+     * @return the actionType value.
+     */
+    @Override
+    public ActionType actionType() {
+        return this.actionType;
     }
 
     /**

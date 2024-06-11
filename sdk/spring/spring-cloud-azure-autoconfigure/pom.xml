@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-  <version>5.12.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+  <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
 
   <name>Spring Cloud Azure AutoConfigure</name>
   <description>Spring Cloud Azure AutoConfigure</description>
@@ -40,13 +40,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-service</artifactId>
-      <version>5.12.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-      <version>5.12.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -55,13 +55,13 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-eventhubs</artifactId>
-      <version>5.12.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.19.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.19.4</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -69,7 +69,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-servicebus</artifactId>
-      <version>5.12.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -77,7 +77,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-storage-queue</artifactId>
-      <version>5.12.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -85,7 +85,7 @@
     <dependency>
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
-      <version>3.1.4</version> <!-- {x-version-update;org.springframework.kafka:spring-kafka;external_dependency} -->
+      <version>3.2.0</version> <!-- {x-version-update;org.springframework.kafka:spring-kafka;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -97,15 +97,21 @@
     <!-- Spring Data -->
 		<!-- Redis -->
     <dependency>
+      <groupId>io.lettuce</groupId>
+      <artifactId>lettuce-core</artifactId>
+      <version>6.3.2.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-redis</artifactId>
-      <version>3.2.5</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
+      <version>3.3.0</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>6.1.6</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->
+      <version>6.1.8</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -113,7 +119,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>5.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -121,7 +127,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>6.1.6</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
+      <version>6.1.8</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -133,7 +139,7 @@
     <dependency>
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
-      <version>3.1.5</version> <!-- {x-version-update;org.messaginghub:pooled-jms;external_dependency} -->
+      <version>3.1.6</version> <!-- {x-version-update;org.messaginghub:pooled-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -143,7 +149,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.49.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -167,7 +173,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -179,7 +185,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.58.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.61.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -191,13 +197,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.16.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.17.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -209,31 +215,31 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.18.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.18.4</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>4.22.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
+      <version>4.22.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.6.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.6.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.8.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.8.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.25.3</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.26.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -245,7 +251,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
-      <version>12.21.3</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+      <version>12.22.0</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -257,7 +263,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.20.3</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+      <version>12.21.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -271,25 +277,25 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>3.2.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+      <version>3.3.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
-      <version>6.1.6</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
+      <version>6.1.8</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-      <version>3.2.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+      <version>3.3.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>3.2.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>3.3.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -297,25 +303,25 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-client</artifactId>
-      <version>6.2.4</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+      <version>6.3.0</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-resource-server</artifactId>
-      <version>6.2.4</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+      <version>6.3.0</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-jose</artifactId>
-      <version>6.2.4</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+      <version>6.3.0</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>6.2.4</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
+      <version>6.3.0</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -350,7 +356,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-extensions</artifactId>
-      <version>1.1.14</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
+      <version>1.1.16</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -358,37 +364,37 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.15.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.17.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.15.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.17.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.15.4</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <version>2.17.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.15.4</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <version>2.17.1</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.15.4</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <version>2.17.1</version> <!-- {x-version-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
-      <version>2.15.4</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+      <version>2.17.1</version> <!-- {x-version-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -396,19 +402,19 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.2.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.3.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core-test</artifactId>
-      <version>6.1.6</version> <!-- {x-version-update;org.springframework:spring-core-test;external_dependency} -->
+      <version>6.1.8</version> <!-- {x-version-update;org.springframework:spring-core-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-metadata</artifactId>
-      <version>3.2.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-metadata;external_dependency} -->
+      <version>3.3.0</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-metadata;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -416,7 +422,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.7.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>5.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
@@ -424,13 +430,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.13</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.16</version> <!-- {x-version-update;net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.13</version> <!-- {x-version-update;net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.16</version> <!-- {x-version-update;net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- used to test AzureJdbcAutoConfiguration -->
@@ -444,14 +450,14 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.6.2</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.7.3</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>6.1.6</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
+      <version>6.1.8</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -543,33 +549,34 @@
             <bannedDependencies>
               <includes>
                 <include>com.mysql:mysql-connector-j:[8.3.0]</include> <!-- {x-include-update;com.mysql:mysql-connector-j;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-annotations:[2.15.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-core:[2.15.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.15.4]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.15.4]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.15.4]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.15.4]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.17.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.17.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.17.1]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.17.1]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.17.1]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+                <include>io.lettuce:lettuce-core:[6.3.2.RELEASE]</include> <!-- {x-include-update;io.lettuce:lettuce-core;external_dependency} -->
                 <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;jakarta.servlet:jakarta.servlet-api;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[3.0.2]</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
                 <include>org.apache.qpid:qpid-jms-client:[2.0.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[8.0.1.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
-                <include>org.messaginghub:pooled-jms:[3.1.5]</include> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.6.2]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[3.2.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure-processor:[3.2.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure:[3.2.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[3.2.5]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.messaginghub:pooled-jms:[3.1.6]</include> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.7.3]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[3.3.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure-processor:[3.3.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[3.3.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[3.3.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[4.1.1]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
-                <include>org.springframework.data:spring-data-redis:[3.2.5]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
-                <include>org.springframework.kafka:spring-kafka:[3.1.4]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
-                <include>org.springframework.security:spring-security-config:[6.2.4]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-client:[6.2.4]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-jose:[6.2.4]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-resource-server:[6.2.4]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
-                <include>org.springframework:spring-context-support:[6.1.6]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
-                <include>org.springframework:spring-jdbc:[6.1.6]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
-                <include>org.springframework:spring-jms:[6.1.6]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
-                <include>org.springframework:spring-tx:[6.1.6]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework.data:spring-data-redis:[3.3.0]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
+                <include>org.springframework.kafka:spring-kafka:[3.2.0]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
+                <include>org.springframework.security:spring-security-config:[6.3.0]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-client:[6.3.0]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-jose:[6.3.0]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-resource-server:[6.3.0]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+                <include>org.springframework:spring-context-support:[6.1.8]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
+                <include>org.springframework:spring-jdbc:[6.1.8]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
+                <include>org.springframework:spring-jms:[6.1.8]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework:spring-tx:[6.1.8]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -578,7 +585,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>

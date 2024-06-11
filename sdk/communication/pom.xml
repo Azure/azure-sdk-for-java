@@ -16,7 +16,6 @@
       <module>azure-communication-common</module>
       <module>azure-communication-email</module>
       <module>azure-communication-identity</module>
-      <module>azure-communication-networktraversal</module>
       <module>azure-communication-phonenumbers</module>
       <module>azure-communication-sms</module>
       <module>azure-communication-rooms</module>

@@ -19,6 +19,8 @@ import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -43,6 +45,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Base test class for logs ingestion client tests.
  */
 public abstract class LogsIngestionTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionTestBase.class);
+
     protected LogsIngestionClientBuilder clientBuilder;
     protected String dataCollectionEndpoint;
     protected String dataCollectionRuleId;
@@ -210,7 +214,7 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
             outputStream.close();
             return outputStream.toByteArray();
         } catch (IOException exception) {
-            System.out.println("Failed to unzip data");
+            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to unzip data");
         }
         return null;
     }

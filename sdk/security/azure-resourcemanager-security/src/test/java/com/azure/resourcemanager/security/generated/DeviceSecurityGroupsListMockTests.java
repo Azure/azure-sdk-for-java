@@ -6,66 +6,46 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.DeviceSecurityGroup;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DeviceSecurityGroupsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"thresholdRules\":[{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1257351168,\"maxThreshold\":660540648,\"displayName\":\"fdswbss\",\"description\":\"qjemosqmfsjbpwj\",\"isEnabled\":true},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1685613434,\"maxThreshold\":1651709312,\"displayName\":\"pdzy\",\"description\":\"khxfpz\",\"isEnabled\":true},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1535108628,\"maxThreshold\":450033416,\"displayName\":\"hadxjvvl\",\"description\":\"b\",\"isEnabled\":false}],\"timeWindowRules\":[{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT176H3M2S\",\"minThreshold\":2080003032,\"maxThreshold\":995765016,\"displayName\":\"lzncoqx\",\"description\":\"ytz\",\"isEnabled\":false},{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT82H56M55S\",\"minThreshold\":1962898544,\"maxThreshold\":1982270627,\"displayName\":\"vzmxy\",\"description\":\"zz\",\"isEnabled\":true},{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT105H21M39S\",\"minThreshold\":1423948962,\"maxThreshold\":842492163,\"displayName\":\"zbdbrlbo\",\"description\":\"tyolacbibt\",\"isEnabled\":true}],\"allowlistRules\":[{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"upmwxdsokrlnrpey\"],\"valueType\":\"IpCidr\",\"displayName\":\"ulddgiqlnhcxwww\",\"description\":\"nknsgvx\",\"isEnabled\":true},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"meatrtcqyfjvifb\",\"ojtehqyo\",\"trcoufk\",\"mbhukdfpknvk\"],\"valueType\":\"IpCidr\",\"displayName\":\"jezchmeo\",\"description\":\"zjlrknc\",\"isEnabled\":true},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"xmu\",\"eqkwqphfvsfts\"],\"valueType\":\"IpCidr\",\"displayName\":\"p\",\"description\":\"achdtezgfctu\",\"isEnabled\":false}],\"denylistRules\":[{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"rzvuxnxauohsh\",\"u\"],\"valueType\":\"String\",\"displayName\":\"vmjdhypn\",\"description\":\"cbdxvrivptbc\",\"isEnabled\":false},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"zgrz\",\"kekytkzvtvmaatv\"],\"valueType\":\"IpCidr\",\"displayName\":\"ceinharhbdxsby\",\"description\":\"s\",\"isEnabled\":true},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"fjuda\"],\"valueType\":\"IpCidr\",\"displayName\":\"sezsggdp\",\"description\":\"fcbrtsrdplqd\",\"isEnabled\":false},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"ciasfzrg\",\"zliyvsbfsinvabd\",\"uljgxotu\"],\"valueType\":\"String\",\"displayName\":\"i\",\"description\":\"osthulzugifg\",\"isEnabled\":true}]},\"id\":\"xl\",\"name\":\"lnocscygimizlu\",\"type\":\"jbwmgksrlmsppp\"}]}";
+            = "{\"value\":[{\"properties\":{\"thresholdRules\":[{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":204344826,\"maxThreshold\":226093368,\"displayName\":\"rsvevcneqswxhqh\",\"description\":\"htbzvulqevvj\",\"isEnabled\":true},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1612618025,\"maxThreshold\":1627896379,\"displayName\":\"ht\",\"description\":\"dmvghcmi\",\"isEnabled\":true},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1352761617,\"maxThreshold\":323492363,\"displayName\":\"fefbcyjrt\",\"description\":\"qeebudfyimooaezk\",\"isEnabled\":true}],\"timeWindowRules\":[{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT16H15M14S\",\"minThreshold\":406562064,\"maxThreshold\":281513677,\"displayName\":\"lqwbywaazba\",\"description\":\"ekfz\",\"isEnabled\":false},{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT135H42M5S\",\"minThreshold\":314618278,\"maxThreshold\":666401996,\"displayName\":\"bbt\",\"description\":\"noljdkxhmewy\",\"isEnabled\":true},{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT167H59M58S\",\"minThreshold\":801940331,\"maxThreshold\":787246492,\"displayName\":\"x\",\"description\":\"d\",\"isEnabled\":true}],\"allowlistRules\":[{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"bpkrpk\",\"qetp\",\"enefnoafpcnrx\",\"yrxowv\"],\"valueType\":\"String\",\"displayName\":\"mu\",\"description\":\"wblxph\",\"isEnabled\":true},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"frfa\",\"tnnsvrfajy\"],\"valueType\":\"IpCidr\",\"displayName\":\"ibufg\",\"description\":\"zhl\",\"isEnabled\":false},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"blfehbgc\"],\"valueType\":\"String\",\"displayName\":\"rcmeqljxdumhycx\",\"description\":\"ebldxagmdfjwc\",\"isEnabled\":true},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"wxjsjquv\"],\"valueType\":\"String\",\"displayName\":\"zdtsr\",\"description\":\"uvgzacrzhns\",\"isEnabled\":false}],\"denylistRules\":[{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"gbhuqczou\"],\"valueType\":\"IpCidr\",\"displayName\":\"u\",\"description\":\"cxglxoqwb\",\"isEnabled\":false},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"lqbzbwb\",\"wzhbhflj\",\"yodpiovnlhrwy\",\"kzu\"],\"valueType\":\"IpCidr\",\"displayName\":\"wxsvdeatj\",\"description\":\"bnirgoe\",\"isEnabled\":false},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"dnwt\",\"ntimznup\",\"mtbsetkodsqvhe\",\"aakghcrzmmmjyvdh\"],\"valueType\":\"String\",\"displayName\":\"wmlgstm\",\"description\":\"tqjisjmol\",\"isEnabled\":false}]},\"id\":\"aqfkakhgkrvtyycv\",\"name\":\"tvjej\",\"type\":\"awfus\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DeviceSecurityGroup> response
-            = manager.deviceSecurityGroups().list("fiomhcaqpvhs", com.azure.core.util.Context.NONE);
+            = manager.deviceSecurityGroups().list("w", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(true, response.iterator().next().thresholdRules().get(0).isEnabled());
-        Assertions.assertEquals(1257351168, response.iterator().next().thresholdRules().get(0).minThreshold());
-        Assertions.assertEquals(660540648, response.iterator().next().thresholdRules().get(0).maxThreshold());
+        Assertions.assertEquals(204344826, response.iterator().next().thresholdRules().get(0).minThreshold());
+        Assertions.assertEquals(226093368, response.iterator().next().thresholdRules().get(0).maxThreshold());
         Assertions.assertEquals(false, response.iterator().next().timeWindowRules().get(0).isEnabled());
-        Assertions.assertEquals(2080003032, response.iterator().next().timeWindowRules().get(0).minThreshold());
-        Assertions.assertEquals(995765016, response.iterator().next().timeWindowRules().get(0).maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT176H3M2S"),
+        Assertions.assertEquals(406562064, response.iterator().next().timeWindowRules().get(0).minThreshold());
+        Assertions.assertEquals(281513677, response.iterator().next().timeWindowRules().get(0).maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT16H15M14S"),
             response.iterator().next().timeWindowRules().get(0).timeWindowSize());
         Assertions.assertEquals(true, response.iterator().next().allowlistRules().get(0).isEnabled());
-        Assertions.assertEquals("upmwxdsokrlnrpey",
-            response.iterator().next().allowlistRules().get(0).allowlistValues().get(0));
+        Assertions.assertEquals("bpkrpk", response.iterator().next().allowlistRules().get(0).allowlistValues().get(0));
         Assertions.assertEquals(false, response.iterator().next().denylistRules().get(0).isEnabled());
-        Assertions.assertEquals("rzvuxnxauohsh",
-            response.iterator().next().denylistRules().get(0).denylistValues().get(0));
+        Assertions.assertEquals("gbhuqczou", response.iterator().next().denylistRules().get(0).denylistValues().get(0));
     }
 }

@@ -6,59 +6,41 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.GetSensitivitySettingsListResponse;
 import com.azure.resourcemanager.security.models.MipIntegrationStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SensitivitySettingsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sensitiveInfoTypesIds\":[\"1c04bd6e-074d-467e-8a0c-d5e0538bd22b\",\"94d42dd5-8b73-46c4-8ff8-404528a56512\",\"315e7a4d-4bba-471a-9317-db89856cc680\",\"9ae3ecd8-2768-4677-aed8-c58406b859e8\"],\"sensitivityThresholdLabelOrder\":0.48926473,\"sensitivityThresholdLabelId\":\"bac99707-f813-4c1c-a5f9-be2f25e833e8\",\"mipInformation\":{\"mipIntegrationStatus\":\"noConsent\",\"labels\":[{},{}],\"customInfoTypes\":[{},{},{}],\"builtInInfoTypes\":[{},{}]}},\"id\":\"ejjxumowynjmo\",\"name\":\"zmxuktdrsjtmnk\",\"type\":\"jouwfzcfdt\"},{\"properties\":{\"sensitiveInfoTypesIds\":[\"ffc9460a-876b-4cab-9cfd-63cabcd3bb65\",\"40612ec9-e767-489c-8abd-f27d435dffdf\"],\"sensitivityThresholdLabelOrder\":14.436942,\"sensitivityThresholdLabelId\":\"b3e8d67e-f00e-46f0-86ba-ce1d01ff9bb7\",\"mipInformation\":{\"mipIntegrationStatus\":\"noAutoLabelingRules\",\"labels\":[{},{}],\"customInfoTypes\":[{},{}],\"builtInInfoTypes\":[{},{},{},{}]}},\"id\":\"isqbcmlro\",\"name\":\"ommemsoqgbl\",\"type\":\"yeqdob\"},{\"properties\":{\"sensitiveInfoTypesIds\":[\"f1942607-5346-466f-99eb-da8d6caf7a45\",\"e9f658b8-904e-4d80-82c7-303799032f6d\"],\"sensitivityThresholdLabelOrder\":41.067593,\"sensitivityThresholdLabelId\":\"de8518f8-060f-4d03-8e2c-e7500190c96a\",\"mipInformation\":{\"mipIntegrationStatus\":\"noConsent\",\"labels\":[{}],\"customInfoTypes\":[{},{}],\"builtInInfoTypes\":[{},{},{},{}]}},\"id\":\"ixwnlpjcx\",\"name\":\"jgfmyqyyfr\",\"type\":\"idzfpsfy\"}]}";
+            = "{\"value\":[{\"properties\":{\"sensitiveInfoTypesIds\":[\"dbcfe9f7-467f-45e8-88a4-00e8c3289d5c\",\"935112e0-fffd-455c-b694-e636991aa33a\",\"b8f78a4e-6210-4501-b0a9-f669f0b88bf9\",\"e4930b1a-04d4-44e6-afeb-365c07c357f2\"],\"sensitivityThresholdLabelOrder\":52.83411,\"sensitivityThresholdLabelId\":\"23d8970d-90d6-469b-9b28-05e0393a42ef\",\"mipInformation\":{\"mipIntegrationStatus\":\"noAutoLabelingRules\",\"labels\":[{}],\"customInfoTypes\":[{},{},{}],\"builtInInfoTypes\":[{},{},{},{}]}},\"id\":\"aiildcpud\",\"name\":\"hquxsyjofpgv\",\"type\":\"drobujnjgy\"},{\"properties\":{\"sensitiveInfoTypesIds\":[\"fb347268-a1ae-47cb-9949-e314ab5ba98d\"],\"sensitivityThresholdLabelOrder\":21.384699,\"sensitivityThresholdLabelId\":\"4dbf24e7-9281-4bee-991f-b7f2f7e574b7\",\"mipInformation\":{\"mipIntegrationStatus\":\"Ok\",\"labels\":[{},{}],\"customInfoTypes\":[{},{}],\"builtInInfoTypes\":[{}]}},\"id\":\"cpskgrhnyts\",\"name\":\"gsazuq\",\"type\":\"n\"},{\"properties\":{\"sensitiveInfoTypesIds\":[\"379f8be5-a3eb-41c4-9b0e-7d25f717eb10\",\"fbd48b22-7a5d-4b8a-a2c6-eeb525fec07b\",\"3938b338-b0f7-47a0-97ef-bf05fa57ab57\"],\"sensitivityThresholdLabelOrder\":18.370468,\"sensitivityThresholdLabelId\":\"a54fe935-9e34-461c-92f4-79d8bea8f61a\",\"mipInformation\":{\"mipIntegrationStatus\":\"noAutoLabelingRules\",\"labels\":[{}],\"customInfoTypes\":[{},{},{}],\"builtInInfoTypes\":[{}]}},\"id\":\"vzwpffxsfyb\",\"name\":\"tmveho\",\"type\":\"flyuvbgtz\"},{\"properties\":{\"sensitiveInfoTypesIds\":[\"93d1d378-1c03-44dd-b400-ad01720f154b\",\"4ed00604-5a80-40cb-8187-1df6dcf53908\"],\"sensitivityThresholdLabelOrder\":48.46628,\"sensitivityThresholdLabelId\":\"1f8726ac-b838-4351-b35d-8f6158484e7d\",\"mipInformation\":{\"mipIntegrationStatus\":\"noAutoLabelingRules\",\"labels\":[{},{},{}],\"customInfoTypes\":[{},{}],\"builtInInfoTypes\":[{}]}},\"id\":\"pqsvb\",\"name\":\"eoge\",\"type\":\"trcnqnvnc\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GetSensitivitySettingsListResponse response
             = manager.sensitivitySettings().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(UUID.fromString("1c04bd6e-074d-467e-8a0c-d5e0538bd22b"),
+        Assertions.assertEquals(UUID.fromString("dbcfe9f7-467f-45e8-88a4-00e8c3289d5c"),
             response.value().get(0).properties().sensitiveInfoTypesIds().get(0));
-        Assertions.assertEquals(0.48926473F, response.value().get(0).properties().sensitivityThresholdLabelOrder());
-        Assertions.assertEquals(UUID.fromString("bac99707-f813-4c1c-a5f9-be2f25e833e8"),
+        Assertions.assertEquals(52.83411F, response.value().get(0).properties().sensitivityThresholdLabelOrder());
+        Assertions.assertEquals(UUID.fromString("23d8970d-90d6-469b-9b28-05e0393a42ef"),
             response.value().get(0).properties().sensitivityThresholdLabelId());
-        Assertions.assertEquals(MipIntegrationStatus.NO_CONSENT,
+        Assertions.assertEquals(MipIntegrationStatus.NO_AUTO_LABELING_RULES,
             response.value().get(0).properties().mipInformation().mipIntegrationStatus());
     }
 }

@@ -59,8 +59,8 @@ public final class UpdateRunStrategy {
      */
     public void validate() {
         if (stages() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property stages in model UpdateRunStrategy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property stages in model UpdateRunStrategy"));
         } else {
             stages().forEach(e -> e.validate());
         }

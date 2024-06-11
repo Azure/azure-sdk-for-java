@@ -9,7 +9,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.AzureADAdmini
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A List of azure ad administrators. */
+/**
+ * A List of azure ad administrators.
+ */
 @Fluent
 public final class AdministratorListResult {
     /*
@@ -24,13 +26,15 @@ public final class AdministratorListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AdministratorListResult class. */
+    /**
+     * Creates an instance of AdministratorListResult class.
+     */
     public AdministratorListResult() {
     }
 
     /**
      * Get the value property: The list of azure ad administrator of a server.
-     *
+     * 
      * @return the value value.
      */
     public List<AzureADAdministratorInner> value() {
@@ -39,7 +43,7 @@ public final class AdministratorListResult {
 
     /**
      * Set the value property: The list of azure ad administrator of a server.
-     *
+     * 
      * @param value the value value to set.
      * @return the AdministratorListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class AdministratorListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class AdministratorListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AdministratorListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class AdministratorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

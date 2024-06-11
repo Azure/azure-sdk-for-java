@@ -161,6 +161,11 @@ public final class SearchOptions {
     private SemanticSearchOptions semanticSearchOptions;
     private VectorSearchOptions vectorSearchOptions;
 
+    /*
+     * The query parameters to configure hybrid search behaviors.
+     */
+    private HybridSearch hybridSearch;
+
     /**
      * Creates an instance of {@link SearchOptions}.
      */
@@ -667,5 +672,25 @@ public final class SearchOptions {
      */
     public VectorSearchOptions getVectorSearchOptions() {
         return this.vectorSearchOptions;
+    }
+
+    /**
+     * Get the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     *
+     * @return the hybridSearch value.
+     */
+    public HybridSearch getHybridSearch() {
+        return this.hybridSearch;
+    }
+
+    /**
+     * Set the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     *
+     * @param hybridSearch the hybridSearch value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setHybridSearch(HybridSearch hybridSearch) {
+        this.hybridSearch = hybridSearch;
+        return this;
     }
 }

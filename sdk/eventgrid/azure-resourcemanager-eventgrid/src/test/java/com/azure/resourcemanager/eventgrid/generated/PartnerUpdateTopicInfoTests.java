@@ -33,8 +33,11 @@ public final class PartnerUpdateTopicInfoTests {
     public void testSerialize() throws Exception {
         PartnerUpdateTopicInfo model
             = new PartnerUpdateTopicInfo().withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                .withInlineEventTypes(mapOf("cyshurzafbljjgp", new InlineEventProperties().withDescription("i")
-                    .withDisplayName("xsqwpgrjbznorc").withDocumentationUrl("vsnb").withDataSchemaUrl("qabnmoc"))));
+                .withInlineEventTypes(mapOf("cyshurzafbljjgp",
+                    new InlineEventProperties().withDescription("i")
+                        .withDisplayName("xsqwpgrjbznorc")
+                        .withDocumentationUrl("vsnb")
+                        .withDataSchemaUrl("qabnmoc"))));
         model = BinaryData.fromObject(model).toObject(PartnerUpdateTopicInfo.class);
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
         Assertions.assertEquals("i", model.eventTypeInfo().inlineEventTypes().get("cyshurzafbljjgp").description());

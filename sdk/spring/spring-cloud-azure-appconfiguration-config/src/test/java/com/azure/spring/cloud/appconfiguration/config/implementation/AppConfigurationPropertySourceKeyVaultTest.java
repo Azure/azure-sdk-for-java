@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +42,7 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.stores.AppConfigurationSecretClientManager;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
 public class AppConfigurationPropertySourceKeyVaultTest {
 
@@ -125,7 +125,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
 
         try {
             propertySource.initProperties(null);
-        } catch (IOException e) {
+        } catch (InvalidConfigurationPropertyValueException e) {
             fail("Failed Reading in Feature Flags");
         }
 

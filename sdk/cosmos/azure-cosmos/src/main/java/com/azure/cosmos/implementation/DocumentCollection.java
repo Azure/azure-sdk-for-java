@@ -6,10 +6,11 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.SerializableWrapper;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ChangeFeedPolicy;
+import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
+import com.azure.cosmos.models.CosmosVectorEmbeddingPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -23,6 +24,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Collections;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Represents a document collection in the Azure Cosmos DB database service. A collection is a named logical container
@@ -40,6 +43,7 @@ public final class DocumentCollection extends Resource {
     private UniqueKeyPolicy uniqueKeyPolicy;
     private PartitionKeyDefinition partitionKeyDefinition;
     private ClientEncryptionPolicy clientEncryptionPolicyInternal;
+    private CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy;
 
     /**
      * Constructor.
@@ -410,6 +414,33 @@ public final class DocumentCollection extends Resource {
         this.set(Constants.Properties.CLIENT_ENCRYPTION_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
+    /**
+     * Gets the Vector Embedding Policy containing paths for embeddings along with path-specific settings for the item
+     * used in performing vector search on the items in a collection in the Azure CosmosDB database service.
+     *
+     * @return the Vector Embedding Policy.
+     */
+    public CosmosVectorEmbeddingPolicy getVectorEmbeddingPolicy() {
+        if (this.cosmosVectorEmbeddingPolicy == null) {
+            if (super.has(Constants.Properties.VECTOR_EMBEDDING_POLICY)) {
+                this.cosmosVectorEmbeddingPolicy = super.getObject(Constants.Properties.VECTOR_EMBEDDING_POLICY,
+                    CosmosVectorEmbeddingPolicy.class);
+            }
+        }
+        return this.cosmosVectorEmbeddingPolicy;
+    }
+
+    /**
+     * Sets the Vector Embedding Policy containing paths for embeddings along with path-specific settings for the item
+     * used in performing vector search on the items in a collection in the Azure CosmosDB database service.
+     *
+     * @param value the Vector Embedding Policy.
+     */
+    public void setVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy value) {
+        checkNotNull(value, "cosmosVectorEmbeddingPolicy cannot be null");
+        this.set(Constants.Properties.VECTOR_EMBEDDING_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
+    }
+
     public void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.indexingPolicy == null) {
@@ -456,7 +487,7 @@ public final class DocumentCollection extends Resource {
 
     public static class SerializableDocumentCollection implements SerializableWrapper<DocumentCollection> {
         private static final long serialVersionUID = 2l;
-        private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+        private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapperWithAllowDuplicates();
         public static SerializableDocumentCollection from(DocumentCollection documentCollection) {
             SerializableDocumentCollection serializableDocumentCollection = new SerializableDocumentCollection();
             serializableDocumentCollection.documentCollection = documentCollection;

@@ -17,22 +17,25 @@ public class MetadataKafkaStorageManager implements IMetadataReader {
         this.offsetStorageReader = offsetStorageReader;
     }
 
-    public Mono<Utils.ValueHolder<FeedRangesMetadataTopicOffset>> getFeedRangesMetadataOffset(String databaseName, String containerRid) {
+    public Mono<Utils.ValueHolder<FeedRangesMetadataTopicOffset>> getFeedRangesMetadataOffset(
+        String databaseName,
+        String containerRid,
+        String connectorName) {
         Map<String, Object> topicOffsetMap =
             this.offsetStorageReader
                 .offset(
                     FeedRangesMetadataTopicPartition.toMap(
-                            new FeedRangesMetadataTopicPartition(databaseName, containerRid)));
+                            new FeedRangesMetadataTopicPartition(databaseName, containerRid, connectorName)));
 
         return Mono.just(new Utils.ValueHolder<>(FeedRangesMetadataTopicOffset.fromMap(topicOffsetMap)));
     }
 
-    public Mono<Utils.ValueHolder<ContainersMetadataTopicOffset>> getContainersMetadataOffset(String databaseName) {
+    public Mono<Utils.ValueHolder<ContainersMetadataTopicOffset>> getContainersMetadataOffset(String databaseName, String connectorName) {
         Map<String, Object> topicOffsetMap =
             this.offsetStorageReader
                 .offset(
                     ContainersMetadataTopicPartition.toMap(
-                        new ContainersMetadataTopicPartition(databaseName)));
+                        new ContainersMetadataTopicPartition(databaseName, connectorName)));
 
         return Mono.just(new Utils.ValueHolder<>(ContainersMetadataTopicOffset.fromMap(topicOffsetMap)));
     }

@@ -119,7 +119,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertDistributionPolicyWithResponse(String distributionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertDistributionPolicy' is 'application/merge-patch+json' and stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertDistributionPolicy' is 'application/merge-patch+json'
+        // and stream-style-serialization is not enabled
         return this.serviceClient.upsertDistributionPolicyWithResponseAsync(distributionPolicyId, resource,
             requestOptions);
     }
@@ -497,7 +498,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertClassificationPolicyWithResponse(String classificationPolicyId,
         BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertClassificationPolicy' is 'application/merge-patch+json' and stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertClassificationPolicy' is 'application/merge-patch+json'
+        // and stream-style-serialization is not enabled
         return this.serviceClient.upsertClassificationPolicyWithResponseAsync(classificationPolicyId, resource,
             requestOptions);
     }
@@ -914,7 +916,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertExceptionPolicyWithResponse(String exceptionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertExceptionPolicy' is 'application/merge-patch+json' and stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertExceptionPolicy' is 'application/merge-patch+json' and
+        // stream-style-serialization is not enabled
         return this.serviceClient.upsertExceptionPolicyWithResponseAsync(exceptionPolicyId, resource, requestOptions);
     }
 
@@ -1310,7 +1313,8 @@ public final class JobRouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertQueueWithResponse(String queueId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertQueue' is 'application/merge-patch+json' and stream-style-serialization is not enabled
+        // Convenience API is not generated, as operation 'upsertQueue' is 'application/merge-patch+json' and
+        // stream-style-serialization is not enabled
         return this.serviceClient.upsertQueueWithResponseAsync(queueId, resource, requestOptions);
     }
 

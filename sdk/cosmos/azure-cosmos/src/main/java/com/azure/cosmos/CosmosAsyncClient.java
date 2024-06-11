@@ -122,7 +122,7 @@ public final class CosmosAsyncClient implements Closeable {
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
-        this.defaultCustomSerializer = builder.getCustomSerializer();
+        this.defaultCustomSerializer = builder.getCustomItemSerializer();
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
         SessionRetryOptions sessionRetryOptions = builder.getSessionRetryOptions();
 
@@ -170,6 +170,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withSessionRetryOptions(sessionRetryOptions)
                                        .withContainerProactiveInitConfig(this.proactiveContainerInitConfig)
                                        .withDefaultSerializer(this.defaultCustomSerializer)
+                                       .withRegionScopedSessionCapturingEnabled(builder.isRegionScopedSessionCapturingEnabled())
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();

@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -26,13 +26,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
 import com.azure.resourcemanager.containerservicefleet.implementation.ContainerServiceFleetManagementClientBuilder;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetMembersImpl;
-import com.azure.resourcemanager.containerservicefleet.implementation.FleetUpdateStrategiesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.FleetsImpl;
+import com.azure.resourcemanager.containerservicefleet.implementation.FleetUpdateStrategiesImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.OperationsImpl;
 import com.azure.resourcemanager.containerservicefleet.implementation.UpdateRunsImpl;
 import com.azure.resourcemanager.containerservicefleet.models.FleetMembers;
-import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategies;
 import com.azure.resourcemanager.containerservicefleet.models.Fleets;
+import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategies;
 import com.azure.resourcemanager.containerservicefleet.models.Operations;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRuns;
 import java.time.Duration;
@@ -64,8 +64,10 @@ public final class ContainerServiceFleetManager {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new ContainerServiceFleetManagementClientBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -216,12 +218,19 @@ public final class ContainerServiceFleetManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.containerservicefleet")
-                .append("/").append("1.1.0-beta.1");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.containerservicefleet")
+                .append("/")
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -240,18 +249,21 @@ public final class ContainerServiceFleetManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new ContainerServiceFleetManager(httpPipeline, profile, defaultPollInterval);
         }
     }

@@ -13,7 +13,7 @@ public final class AzureServersSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureServersSetting model = BinaryData.fromString(
-            "{\"kind\":\"AzureServersSetting\",\"properties\":{\"selectedProvider\":\"MdeTvm\"},\"id\":\"wohfm\",\"name\":\"nnzm\",\"type\":\"cjjkmqenh\"}")
+            "{\"kind\":\"AzureServersSetting\",\"properties\":{\"selectedProvider\":\"MdeTvm\"},\"id\":\"yjrcbqpb\",\"name\":\"spglq\",\"type\":\"o\"}")
             .toObject(AzureServersSetting.class);
         Assertions.assertEquals(ServerVulnerabilityAssessmentsAzureSettingSelectedProvider.MDE_TVM,
             model.selectedProvider());

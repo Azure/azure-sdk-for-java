@@ -17,6 +17,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_VALUE_3;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItem;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -38,10 +39,13 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
 public class AppConfigurationApplicationSettingPropertySourceTest {
 
     private static final String EMPTY_CONTENT_TYPE = "";
+
+    private static final String JSON_CONTENT_TYPE = "application/json";
 
     private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
 
@@ -58,6 +62,9 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
 
     private static final ConfigurationSetting ITEM_NULL = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
         null);
+
+    private static final ConfigurationSetting ITEM_INVALID_JSON = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3,
+        JSON_CONTENT_TYPE);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -161,5 +168,18 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
             .map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
+    }
+
+    @Test
+    public void jsonContentTypeWithInvalidJsonValueTest() {
+        List<ConfigurationSetting> items = new ArrayList<>();
+        items.add(ITEM_INVALID_JSON);
+        when(configurationListMock.iterator()).thenReturn(items.iterator())
+            .thenReturn(Collections.emptyIterator());
+        when(clientMock.listSettings(Mockito.any())).thenReturn(configurationListMock);
+
+        assertThatThrownBy(() -> propertySource.initProperties(null))
+            .isInstanceOf(InvalidConfigurationPropertyValueException.class)
+            .hasMessageNotContaining(ITEM_INVALID_JSON.getValue());
     }
 }

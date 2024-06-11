@@ -635,8 +635,10 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     public SyncPoller<PollResult<UpdateRunInner>, UpdateRunInner> beginCreateOrUpdate(String resourceGroupName,
         String fleetName, String updateRunName, UpdateRunInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateRunName, resource, ifMatch,
-            ifNoneMatch, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -658,7 +660,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
     private Mono<UpdateRunInner> createOrUpdateAsync(String resourceGroupName, String fleetName, String updateRunName,
         UpdateRunInner resource, String ifMatch, String ifNoneMatch) {
         return beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -680,7 +683,8 @@ public final class UpdateRunsClientImpl implements UpdateRunsClient {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         return beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateRunName, resource, ifMatch, ifNoneMatch)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

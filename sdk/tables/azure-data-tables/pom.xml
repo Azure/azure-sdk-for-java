@@ -40,6 +40,7 @@ Licensed under the MIT License.
       --add-opens com.azure.data.tables/com.azure.data.tables.implementation.models=ALL-UNNAMED
       --add-opens com.azure.data.tables/com.azure.data.tables.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
     <javadoc.excludePackageNames>com.azure.json,com.azure.xml,com.azure.core.*</javadoc.excludePackageNames>
     <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java:${basedir}/../../serialization/azure-json/src/main/java:${basedir}/../../serialization/azure-xml/src/main/java</javadoc.sourcepath>
   </properties>
@@ -48,12 +49,12 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.49.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -86,19 +87,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.6.5</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.6.6</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.24.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

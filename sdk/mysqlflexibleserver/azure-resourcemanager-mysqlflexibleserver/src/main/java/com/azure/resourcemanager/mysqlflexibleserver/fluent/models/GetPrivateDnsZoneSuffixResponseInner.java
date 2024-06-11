@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The response of get private dns zone suffix. */
+/**
+ * The response of get private dns zone suffix.
+ */
 @Fluent
 public final class GetPrivateDnsZoneSuffixResponseInner {
     /*
@@ -16,13 +18,15 @@ public final class GetPrivateDnsZoneSuffixResponseInner {
     @JsonProperty(value = "privateDnsZoneSuffix")
     private String privateDnsZoneSuffix;
 
-    /** Creates an instance of GetPrivateDnsZoneSuffixResponseInner class. */
+    /**
+     * Creates an instance of GetPrivateDnsZoneSuffixResponseInner class.
+     */
     public GetPrivateDnsZoneSuffixResponseInner() {
     }
 
     /**
      * Get the privateDnsZoneSuffix property: Represents the private DNS zone suffix.
-     *
+     * 
      * @return the privateDnsZoneSuffix value.
      */
     public String privateDnsZoneSuffix() {
@@ -31,7 +35,7 @@ public final class GetPrivateDnsZoneSuffixResponseInner {
 
     /**
      * Set the privateDnsZoneSuffix property: Represents the private DNS zone suffix.
-     *
+     * 
      * @param privateDnsZoneSuffix the privateDnsZoneSuffix value to set.
      * @return the GetPrivateDnsZoneSuffixResponseInner object itself.
      */
@@ -42,7 +46,7 @@ public final class GetPrivateDnsZoneSuffixResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

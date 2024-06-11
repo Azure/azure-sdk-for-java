@@ -61,8 +61,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesBackupClientResourceProviders to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesBackupClientResourceProviders to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
@@ -892,8 +892,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         MoveRPAcrossTiersRequest parameters) {
-        return this.beginMoveRecoveryPointAsync(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, recoveryPointId, parameters).getSyncPoller();
+        return this
+            .beginMoveRecoveryPointAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                recoveryPointId, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -916,8 +918,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     public SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         MoveRPAcrossTiersRequest parameters, Context context) {
-        return this.beginMoveRecoveryPointAsync(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, recoveryPointId, parameters, context).getSyncPoller();
+        return this
+            .beginMoveRecoveryPointAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                recoveryPointId, parameters, context)
+            .getSyncPoller();
     }
 
     /**

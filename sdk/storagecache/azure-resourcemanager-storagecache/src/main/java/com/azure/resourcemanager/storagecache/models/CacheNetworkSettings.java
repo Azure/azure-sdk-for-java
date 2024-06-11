@@ -26,7 +26,7 @@ public final class CacheNetworkSettings {
     private List<String> utilityAddresses;
 
     /*
-     * DNS servers for the cache to use. It will be set from the network configuration if no value is provided.
+     * DNS servers for the cache to use.  It will be set from the network configuration if no value is provided.
      */
     @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;

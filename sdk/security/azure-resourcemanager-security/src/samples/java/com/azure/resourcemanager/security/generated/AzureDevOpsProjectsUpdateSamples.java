@@ -15,9 +15,7 @@ import com.azure.resourcemanager.security.models.OnboardingState;
  */
 public final class AzureDevOpsProjectsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-09-01-preview/examples/
-     * SecurityConnectorsDevOps/UpdateAzureDevOpsProjects_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/UpdateAzureDevOpsProjects_example.json
      */
     /**
      * Sample code: Update_AzureDevOpsProjects.
@@ -25,8 +23,10 @@ public final class AzureDevOpsProjectsUpdateSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void updateAzureDevOpsProjects(com.azure.resourcemanager.security.SecurityManager manager) {
-        AzureDevOpsProject resource = manager.azureDevOpsProjects().getWithResponse("myRg", "mySecurityConnectorName",
-            "myAzDevOpsOrg", "myAzDevOpsProject", com.azure.core.util.Context.NONE).getValue();
+        AzureDevOpsProject resource = manager.azureDevOpsProjects()
+            .getWithResponse("myRg", "mySecurityConnectorName", "myAzDevOpsOrg", "myAzDevOpsProject",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
             .withProperties(new AzureDevOpsProjectProperties().withOnboardingState(OnboardingState.NOT_APPLICABLE)
                 .withActionableRemediation(new ActionableRemediation().withState(ActionableRemediationState.ENABLED)))

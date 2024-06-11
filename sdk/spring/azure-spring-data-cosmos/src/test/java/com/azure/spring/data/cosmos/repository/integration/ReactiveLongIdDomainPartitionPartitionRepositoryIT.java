@@ -171,6 +171,9 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
 
         Mono<Boolean> booleanMono = this.repository.existsById(DOMAIN_1.getNumber());
         StepVerifier.create(booleanMono).expectNext(true).expectComplete().verify();
+
+        booleanMono = this.repository.existsById(0L);
+        StepVerifier.create(booleanMono).expectNext(false).expectComplete().verify();
     }
 
     @Test

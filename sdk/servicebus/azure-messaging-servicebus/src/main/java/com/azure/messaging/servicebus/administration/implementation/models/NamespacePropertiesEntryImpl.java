@@ -4,9 +4,10 @@
 
 package com.azure.messaging.servicebus.administration.implementation.models;
 
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -205,7 +206,6 @@ public final class NamespacePropertiesEntryImpl implements XmlSerializable<Names
      * @param xmlReader The XmlReader being read.
      * @return An instance of NamespacePropertiesEntry if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the NamespacePropertiesEntry.
      */
     public static NamespacePropertiesEntryImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -220,7 +220,6 @@ public final class NamespacePropertiesEntryImpl implements XmlSerializable<Names
      * cases where the model can deserialize from different root element names.
      * @return An instance of NamespacePropertiesEntry if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the NamespacePropertiesEntry.
      */
     public static NamespacePropertiesEntryImpl fromXml(XmlReader xmlReader, String rootElementName)

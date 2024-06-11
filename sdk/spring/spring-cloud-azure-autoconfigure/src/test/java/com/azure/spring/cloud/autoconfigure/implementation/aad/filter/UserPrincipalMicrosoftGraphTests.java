@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.aad.filter;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properties.AadAuthorizationServerEndpoints;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -48,6 +50,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserPrincipalMicrosoftGraphTests {
+    private static final ClientLogger LOGGER = new ClientLogger(UserPrincipalMicrosoftGraphTests.class);
 
     private static final String MOCK_MICROSOFT_GRAPH_ENDPOINT = "http://localhost:8080/";
 
@@ -67,7 +70,7 @@ class UserPrincipalMicrosoftGraphTests {
                 });
             userGroupsJson = objectMapper.writeValueAsString(json);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to load user groups json.", e);
             userGroupsJson = null;
         }
         assertNotNull(userGroupsJson);

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class GovernanceRulesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
-     * ListBySubscriptionGovernanceRules_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/ListBySubscriptionGovernanceRules_example.json
      */
     /**
      * Sample code: List governance rules by subscription scope.
@@ -20,14 +18,12 @@ public final class GovernanceRulesListSamples {
      */
     public static void
         listGovernanceRulesBySubscriptionScope(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.governanceRules().list("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
-            com.azure.core.util.Context.NONE);
+        manager.governanceRules()
+            .list("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
-     * ListBySecurityConnectorGovernanceRules_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/ListBySecurityConnectorGovernanceRules_example.json
      */
     /**
      * Sample code: List governance rules by security connector scope.
@@ -36,15 +32,14 @@ public final class GovernanceRulesListSamples {
      */
     public static void
         listGovernanceRulesBySecurityConnectorScope(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.governanceRules().list(
-            "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
-            com.azure.core.util.Context.NONE);
+        manager.governanceRules()
+            .list(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/
-     * ListByManagementGroupGovernanceRules_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/ListByManagementGroupGovernanceRules_example.json
      */
     /**
      * Sample code: List governance rules by management group scope.
@@ -53,7 +48,7 @@ public final class GovernanceRulesListSamples {
      */
     public static void
         listGovernanceRulesByManagementGroupScope(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.governanceRules().list("providers/Microsoft.Management/managementGroups/contoso",
-            com.azure.core.util.Context.NONE);
+        manager.governanceRules()
+            .list("providers/Microsoft.Management/managementGroups/contoso", com.azure.core.util.Context.NONE);
     }
 }

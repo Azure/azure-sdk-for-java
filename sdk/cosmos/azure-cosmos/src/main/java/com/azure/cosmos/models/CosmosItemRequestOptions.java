@@ -306,7 +306,7 @@ public class CosmosItemRequestOptions {
     /**
      * Enables automatic retries for write operations even when the SDK can't
      * guarantee that they are idempotent. This is an override of the
-     * {@link CosmosClientBuilder#nonIdempotentWriteRetryPolicy(boolean, boolean)} behavior for a specific request/operation.
+     * {@link CosmosClientBuilder#nonIdempotentWriteRetryOptions(com.azure.cosmos.NonIdempotentWriteRetryOptions)} behavior for a specific request/operation.
      * <br/>
      * NOTE: the setting on the CosmosClientBuilder will determine the default behavior for Create, Replace,
      * Upsert and Delete operations. It can be overridden on per-request base in the request options. For patch
@@ -542,7 +542,7 @@ public class CosmosItemRequestOptions {
      * Gets the custom item serializer defined for this instance of request options
      * @return the custom item serializer
      */
-    public CosmosItemSerializer getCustomSerializer() {
+    public CosmosItemSerializer getCustomItemSerializer() {
         return this.customSerializer;
     }
 
@@ -550,11 +550,11 @@ public class CosmosItemRequestOptions {
      * Allows specifying a custom item serializer to be used for this operation. If the serializer
      * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
      * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
-     * @param itemSerializerOverride the custom item serializer for this operation
+     * @param customItemSerializer the custom item serializer for this operation
      * @return  the CosmosItemRequestOptions.
      */
-    public CosmosItemRequestOptions setCustomSerializer(CosmosItemSerializer itemSerializerOverride) {
-        this.customSerializer = itemSerializerOverride;
+    public CosmosItemRequestOptions setCustomItemSerializer(CosmosItemSerializer customItemSerializer) {
+        this.customSerializer = customItemSerializer;
 
         return this;
     }

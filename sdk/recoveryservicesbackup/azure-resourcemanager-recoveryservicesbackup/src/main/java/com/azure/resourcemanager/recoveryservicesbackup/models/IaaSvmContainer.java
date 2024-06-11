@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "containerType",
-    defaultImpl = IaaSvmContainer.class)
+    defaultImpl = IaaSvmContainer.class,
+    visible = true)
 @JsonTypeName("IaasVMContainer")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -26,6 +27,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "Microsoft.Compute/virtualMachines", value = AzureIaaSComputeVMContainer.class) })
 @Fluent
 public class IaaSvmContainer extends ProtectionContainer {
+    /*
+     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer
+     */
+    @JsonTypeId
+    @JsonProperty(value = "containerType", required = true)
+    private ProtectableContainerType containerType = ProtectableContainerType.IAAS_VMCONTAINER;
+
     /*
      * Fully qualified ARM url of the virtual machine represented by this Azure IaaS VM container.
      */
@@ -51,6 +62,20 @@ public class IaaSvmContainer extends ProtectionContainer {
     }
 
     /**
+     * Get the containerType property: Type of the container. The value of this property for: 1. Compute Azure VM is
+     * Microsoft.Compute/virtualMachines 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer.
+     * 
+     * @return the containerType value.
+     */
+    @Override
+    public ProtectableContainerType containerType() {
+        return this.containerType;
+    }
+
+    /**
      * Get the virtualMachineId property: Fully qualified ARM url of the virtual machine represented by this Azure IaaS
      * VM container.
      * 
@@ -73,8 +98,8 @@ public class IaaSvmContainer extends ProtectionContainer {
     }
 
     /**
-     * Get the virtualMachineVersion property: Specifies whether the container represents a Classic or an Azure
-     * Resource Manager VM.
+     * Get the virtualMachineVersion property: Specifies whether the container represents a Classic or an Azure Resource
+     * Manager VM.
      * 
      * @return the virtualMachineVersion value.
      */
@@ -83,8 +108,8 @@ public class IaaSvmContainer extends ProtectionContainer {
     }
 
     /**
-     * Set the virtualMachineVersion property: Specifies whether the container represents a Classic or an Azure
-     * Resource Manager VM.
+     * Set the virtualMachineVersion property: Specifies whether the container represents a Classic or an Azure Resource
+     * Manager VM.
      * 
      * @param virtualMachineVersion the virtualMachineVersion value to set.
      * @return the IaaSvmContainer object itself.

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.BackupStoreDetails;
 public final class BackupStoreDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupStoreDetails model =
-            BinaryData.fromString("{\"objectType\":\"BackupStoreDetails\"}").toObject(BackupStoreDetails.class);
+        BackupStoreDetails model
+            = BinaryData.fromString("{\"objectType\":\"BackupStoreDetails\"}").toObject(BackupStoreDetails.class);
     }
 
     @org.junit.jupiter.api.Test

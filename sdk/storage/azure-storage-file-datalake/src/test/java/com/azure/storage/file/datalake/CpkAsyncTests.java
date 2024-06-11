@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathInfo;
@@ -20,7 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LiveOnly
 public class CpkAsyncTests extends DataLakeTestBase {
+    // LiveOnly because "x-ms-encryption-key-sha256 should not be stored in recordings"
     private CustomerProvidedKey key;
     private DataLakeFileAsyncClient cpkFile;
     private DataLakeDirectoryAsyncClient cpkDirectory;

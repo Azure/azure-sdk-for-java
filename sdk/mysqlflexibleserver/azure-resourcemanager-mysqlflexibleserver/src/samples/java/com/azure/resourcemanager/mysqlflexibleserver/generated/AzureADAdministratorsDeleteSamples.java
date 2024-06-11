@@ -6,20 +6,21 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorName;
 
-/** Samples for AzureADAdministrators Delete. */
+/**
+ * Samples for AzureADAdministrators Delete.
+ */
 public final class AzureADAdministratorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/AAD/preview/2021-12-01-preview/examples/AzureADAdministratorDelete.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/AAD/preview/2023-06-01-preview/examples/AzureADAdministratorDelete.json
      */
     /**
      * Sample code: Delete an azure ad administrator.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
-    public static void deleteAnAzureAdAdministrator(
-        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .azureADAdministrators()
+    public static void
+        deleteAnAzureAdAdministrator(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
+        manager.azureADAdministrators()
             .delete("testrg", "mysqltestsvc4", AdministratorName.ACTIVE_DIRECTORY, com.azure.core.util.Context.NONE);
     }
 }

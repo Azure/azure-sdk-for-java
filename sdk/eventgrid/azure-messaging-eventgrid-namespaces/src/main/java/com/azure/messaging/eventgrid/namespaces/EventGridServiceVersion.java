@@ -11,17 +11,17 @@ import com.azure.core.util.ServiceVersion;
 public enum EventGridServiceVersion implements ServiceVersion {
 
     /**
-     * Enum value 2023-11-01.
-     */
-    V2023_11_01("2023-11-01"),
-    /**
      * Enum value 2023-06-01-preview.
      */
     V2023_06_01_PREVIEW("2023-06-01-preview"),
     /**
      * Enum value 2023-10-01-preview.
      */
-    V2023_10_01_PREVIEW("2023-10-01-preview");
+    V2023_10_01_PREVIEW("2023-10-01-preview"),
+    /**
+     * Enum value 2023-11-01.
+     */
+    V2023_11_01("2023-11-01");
 
     private final String version;
 
@@ -43,6 +43,6 @@ public enum EventGridServiceVersion implements ServiceVersion {
      * @return The latest {@link EventGridServiceVersion}.
      */
     public static EventGridServiceVersion getLatest() {
-        return V2023_10_01_PREVIEW;
+        return V2023_11_01;
     }
 }

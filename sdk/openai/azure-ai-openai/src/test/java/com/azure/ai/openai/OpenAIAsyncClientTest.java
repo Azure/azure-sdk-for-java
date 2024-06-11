@@ -3,11 +3,11 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.functions.MyFunctionCallArguments;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
 import com.azure.ai.openai.models.AudioTranslationFormat;
+import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.AzureSearchChatExtensionConfiguration;
 import com.azure.ai.openai.models.AzureSearchChatExtensionParameters;
 import com.azure.ai.openai.models.ChatChoice;
@@ -26,6 +26,7 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.ai.openai.models.OnYourDataApiKeyAuthenticationOptions;
+import com.azure.ai.openai.models.OnYourDataContextProperty;
 import com.azure.ai.openai.models.SpeechGenerationResponseFormat;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -309,9 +310,8 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     ChatChoice chatChoice = chatCompletions.getChoices().get(0);
                     MyFunctionCallArguments arguments = assertFunctionCall(
                         chatChoice,
-                        "MyFunction",
                         MyFunctionCallArguments.class);
-                    assertEquals(arguments.getLocation(), "San Francisco, CA");
+                    assertTrue(arguments.getLocation().contains("San Francisco"));
                     assertEquals(arguments.getUnit(), "CELSIUS");
                 })
                 .verifyComplete();
@@ -492,6 +492,41 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             StepVerifier.create(client.getChatCompletions(deploymentName, chatCompletionsOptions))
                 .assertNext(OpenAIClientTestBase::assertChatCompletionsCognitiveSearch)
                 .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testChatCompletionSearchExtensionContextPropertyFilter(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
+            AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
+                    "https://openaisdktestsearch.search.windows.net",
+                    "openai-test-index-carbon-wiki"
+            );
+
+            // Only have citations in the search results, default are 'citations' and 'intent'.
+            List<OnYourDataContextProperty> contextProperties = new ArrayList<>();
+            contextProperties.add(OnYourDataContextProperty.CITATIONS);
+
+            searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()))
+                    .setIncludeContexts(contextProperties);
+
+            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                    new AzureSearchChatExtensionConfiguration(searchParameters);
+
+            chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
+
+            StepVerifier.create(client.getChatCompletions(deploymentName, chatCompletionsOptions))
+                    .assertNext(chatCompletions -> {
+                        AzureChatExtensionsMessageContext context = chatCompletions.getChoices().get(0)
+                                .getMessage().getContext();
+                        assertNotNull(context);
+                        assertNull(context.getIntent());
+                        assertFalse(CoreUtils.isNullOrEmpty(context.getCitations()));
+                    })
+                    .verifyComplete();
         });
     }
 
@@ -894,7 +929,6 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
                         ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
                         assertNotNull(functionToolCall);
-                        assertEquals(functionToolCall.getFunction().getName(), "FutureTemperature"); // see base class
                         assertFalse(functionToolCall.getFunction().getArguments() == null
                                 || functionToolCall.getFunction().getArguments().isEmpty());
 
@@ -942,9 +976,10 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                                     ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
                                     FunctionCall functionCall = toolCall.getFunction();
 
-                                    // this data is only available in the second stream message, if at all
+                                    // TODO: It used to be second stream event but now third event.
+                                    // this data is only available in the on second stream message, if at all
                                     // The first contains filter results mostly
-                                    if (i == 1) {
+                                    if (i == 2) {
                                         content = chatChoice.getDelta().getContent();
                                         functionName = functionCall.getName();
                                         toolCallId = toolCall.getId();

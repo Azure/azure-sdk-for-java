@@ -21,8 +21,9 @@ public final class AmlFilesystemPropertiesMaintenanceWindowTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlFilesystemPropertiesMaintenanceWindow model = new AmlFilesystemPropertiesMaintenanceWindow()
-            .withDayOfWeek(MaintenanceDayOfWeekType.THURSDAY).withTimeOfDayUtc("vwryoqpso");
+        AmlFilesystemPropertiesMaintenanceWindow model
+            = new AmlFilesystemPropertiesMaintenanceWindow().withDayOfWeek(MaintenanceDayOfWeekType.THURSDAY)
+                .withTimeOfDayUtc("vwryoqpso");
         model = BinaryData.fromObject(model).toObject(AmlFilesystemPropertiesMaintenanceWindow.class);
         Assertions.assertEquals(MaintenanceDayOfWeekType.THURSDAY, model.dayOfWeek());
         Assertions.assertEquals("vwryoqpso", model.timeOfDayUtc());

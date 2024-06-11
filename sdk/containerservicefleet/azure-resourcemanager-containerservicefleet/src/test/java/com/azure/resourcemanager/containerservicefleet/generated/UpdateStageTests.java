@@ -14,21 +14,22 @@ public final class UpdateStageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateStage model = BinaryData.fromString(
-            "{\"name\":\"cfsf\",\"groups\":[{\"name\":\"mddystkiiux\"},{\"name\":\"qyud\"}],\"afterStageWaitInSeconds\":2120884016}")
+            "{\"name\":\"enevfyexfwhybci\",\"groups\":[{\"name\":\"vdcsitynn\"},{\"name\":\"amdecte\"},{\"name\":\"f\"}],\"afterStageWaitInSeconds\":1860942440}")
             .toObject(UpdateStage.class);
-        Assertions.assertEquals("cfsf", model.name());
-        Assertions.assertEquals("mddystkiiux", model.groups().get(0).name());
-        Assertions.assertEquals(2120884016, model.afterStageWaitInSeconds());
+        Assertions.assertEquals("enevfyexfwhybci", model.name());
+        Assertions.assertEquals("vdcsitynn", model.groups().get(0).name());
+        Assertions.assertEquals(1860942440, model.afterStageWaitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateStage model = new UpdateStage().withName("cfsf")
-            .withGroups(Arrays.asList(new UpdateGroup().withName("mddystkiiux"), new UpdateGroup().withName("qyud")))
-            .withAfterStageWaitInSeconds(2120884016);
+        UpdateStage model = new UpdateStage().withName("enevfyexfwhybci")
+            .withGroups(Arrays.asList(new UpdateGroup().withName("vdcsitynn"), new UpdateGroup().withName("amdecte"),
+                new UpdateGroup().withName("f")))
+            .withAfterStageWaitInSeconds(1860942440);
         model = BinaryData.fromObject(model).toObject(UpdateStage.class);
-        Assertions.assertEquals("cfsf", model.name());
-        Assertions.assertEquals("mddystkiiux", model.groups().get(0).name());
-        Assertions.assertEquals(2120884016, model.afterStageWaitInSeconds());
+        Assertions.assertEquals("enevfyexfwhybci", model.name());
+        Assertions.assertEquals("vdcsitynn", model.groups().get(0).name());
+        Assertions.assertEquals(1860942440, model.afterStageWaitInSeconds());
     }
 }

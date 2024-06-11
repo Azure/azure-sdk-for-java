@@ -8,6 +8,7 @@ import com.azure.ai.metricsadvisor.administration.models.DataSourceAuthenticatio
 import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@LiveOnly
 public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
     private MetricsAdvisorAdministrationClient client;
 

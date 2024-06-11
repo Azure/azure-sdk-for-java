@@ -10,8 +10,19 @@
 
 ### Other Changes
 
+## 2.9.4 (2024-05-01)
+
+### Features Added
+
+- `WindowedSubscriber` to translate the asynchronous stream of events or messages to `IterableStream` ([38705](https://github.com/Azure/azure-sdk-for-java/pull/38705)).
+
+### Other Changes
+
+- Improvements to logging. ([#39904](https://github.com/Azure/azure-sdk-for-java/pull/39904))
+
 #### Dependency Updates
 
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
 - Upgraded `qpid-proton-j-extensions` from `1.2.4` to `1.2.5`.
 
 ## 2.9.3 (2024-04-05)
