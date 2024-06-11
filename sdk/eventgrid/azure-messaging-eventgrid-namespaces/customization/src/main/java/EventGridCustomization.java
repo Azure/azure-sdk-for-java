@@ -30,14 +30,19 @@ public class EventGridCustomization extends Customization {
 
     public void customizeEventGridClientImplImports(LibraryCustomization customization, Logger logger) {
 
-        Arrays.asList("com.azure.messaging.eventgrid.namespaces", "com.azure.messaging.eventgrid.namespaces.models").forEach(p -> {
+        Arrays.asList("com.azure.messaging.eventgrid.namespaces",
+            "com.azure.messaging.eventgrid.namespaces.models",
+            "com.azure.messaging.eventgrid.namespaces.implementation.models").forEach(p -> {
             logger.info("Working on " + p);
             PackageCustomization packageCustomization = customization.getPackage(p);
             packageCustomization.listClasses().forEach(c -> {
                 c.customizeAst(comp -> {
-                    if (comp.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.models.CloudEvent"))) {
+                    if (comp.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.implementation.models.CloudEvent"))) {
                         logger.info("Removed CloudEvent import from " + c.getClassName());
                         comp.addImport("com.azure.core.models.CloudEvent");
+                    }
+                    if (comp.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.implementation.models.PublishResult"))) {
+                        logger.info("Removed PublishResult import from " + c.getClassName());
                     }
                 });
             });
