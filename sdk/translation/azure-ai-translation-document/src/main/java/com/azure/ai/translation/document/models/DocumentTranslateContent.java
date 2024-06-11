@@ -20,7 +20,7 @@ public final class DocumentTranslateContent {
     private final DocumentFileDetails document;
 
     /*
-     * Glossary-translation memory will be used during translation in the form. 
+     * Glossary-translation memory will be used during translation in the form.
      */
     @Generated
     private List<GlossaryFileDetails> glossary;

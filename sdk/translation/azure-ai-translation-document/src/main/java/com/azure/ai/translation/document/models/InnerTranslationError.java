@@ -5,11 +5,8 @@ package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * New Inner Error format which conforms to Cognitive Services API Guidelines
@@ -20,37 +17,42 @@ import java.io.IOException;
  * details(key value pair), inner error(this can be nested).
  */
 @Immutable
-public final class InnerTranslationError implements JsonSerializable<InnerTranslationError> {
+public final class InnerTranslationError {
 
     /*
      * Gets code error string.
      */
     @Generated
+    @JsonProperty(value = "code")
     private final String code;
 
     /*
      * Gets high level error message.
      */
     @Generated
+    @JsonProperty(value = "message")
     private final String message;
 
     /*
-     * Gets the source of the error. 
+     * Gets the source of the error.
      * For example it would be "documents" or
      * "document id" in case of invalid document.
      */
     @Generated
+    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /*
      * New Inner Error format which conforms to Cognitive Services API Guidelines
      * which is available at
-     * https://microsoft.sharepoint.com/%3Aw%3A/t/CognitiveServicesPMO/EUoytcrjuJdKpeOKIK_QRC8BPtUYQpKBi8JsWyeDMRsWlQ?e=CPq8ow.
+     * https://microsoft.sharepoint.com/%3Aw%3A/t/CognitiveServicesPMO/EUoytcrjuJdKpeOKIK_QRC8BPtUYQpKBi8JsWyeDMRsWlQ?e=
+     * CPq8ow.
      * This
      * contains required properties ErrorCode, message and optional properties target,
      * details(key value pair), inner error(this can be nested).
      */
     @Generated
+    @JsonProperty(value = "innerError")
     private InnerTranslationError innerError;
 
     /**
@@ -60,7 +62,9 @@ public final class InnerTranslationError implements JsonSerializable<InnerTransl
      * @param message the message value to set.
      */
     @Generated
-    private InnerTranslationError(String code, String message) {
+    @JsonCreator
+    private InnerTranslationError(@JsonProperty(value = "code") String code,
+        @JsonProperty(value = "message") String message) {
         this.code = code;
         this.message = message;
     }
@@ -110,56 +114,5 @@ public final class InnerTranslationError implements JsonSerializable<InnerTransl
     @Generated
     public InnerTranslationError getInnerError() {
         return this.innerError;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeJsonField("innerError", this.innerError);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of InnerTranslationError from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of InnerTranslationError if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the InnerTranslationError.
-     */
-    @Generated
-    public static InnerTranslationError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String code = null;
-            String message = null;
-            String target = null;
-            InnerTranslationError innerError = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("code".equals(fieldName)) {
-                    code = reader.getString();
-                } else if ("message".equals(fieldName)) {
-                    message = reader.getString();
-                } else if ("target".equals(fieldName)) {
-                    target = reader.getString();
-                } else if ("innerError".equals(fieldName)) {
-                    innerError = InnerTranslationError.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            InnerTranslationError deserializedInnerTranslationError = new InnerTranslationError(code, message);
-            deserializedInnerTranslationError.target = target;
-            deserializedInnerTranslationError.innerError = innerError;
-            return deserializedInnerTranslationError;
-        });
     }
 }

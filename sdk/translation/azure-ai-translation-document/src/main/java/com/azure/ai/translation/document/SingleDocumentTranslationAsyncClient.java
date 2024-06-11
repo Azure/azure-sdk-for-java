@@ -82,7 +82,8 @@ public final class SingleDocumentTranslationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> documentTranslateWithResponse(String targetLanguage, BinaryData documentTranslateContent,
         RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation 'documentTranslate' is 'multipart/form-data'
+        // Protocol API requires serialization of parts with content-disposition and data, as operation
+        // 'documentTranslate' is 'multipart/form-data'
         return this.serviceClient.documentTranslateWithResponseAsync(targetLanguage, documentTranslateContent,
             requestOptions);
     }
