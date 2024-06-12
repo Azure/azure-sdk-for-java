@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyStore;
@@ -200,7 +199,7 @@ public class KeyVaultClient {
 
             if (tenantId != null && clientId != null && clientSecret != null) {
                 String aadAuthenticationUri =
-                    getLoginUri(new URI(keyVaultBaseUri), disableChallengeResourceVerification);
+                    getLoginUri(new URI(keyVaultUri), disableChallengeResourceVerification);
                 accessToken =
                     AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
             } else {
