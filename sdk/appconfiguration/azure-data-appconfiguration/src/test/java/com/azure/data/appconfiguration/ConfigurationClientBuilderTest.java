@@ -44,7 +44,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConfigurationClientBuilderTest extends TestProxyTestBase {
-    private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String DEFAULT_DOMAIN_NAME = ".azconfig.io";
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
     private final String key = "newKey";
