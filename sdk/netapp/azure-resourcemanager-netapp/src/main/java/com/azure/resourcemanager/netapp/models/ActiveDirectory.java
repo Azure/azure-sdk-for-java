@@ -56,8 +56,7 @@ public final class ActiveDirectory {
     private String statusDetails;
 
     /*
-     * NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount
-     * volumes
+     * NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount volumes
      */
     @JsonProperty(value = "smbServerName")
     private String smbServerName;
@@ -75,22 +74,19 @@ public final class ActiveDirectory {
     private String site;
 
     /*
-     * Users to be added to the Built-in Backup Operator active directory group. A list of unique usernames without
-     * domain specifier
+     * Users to be added to the Built-in Backup Operator active directory group. A list of unique usernames without domain specifier
      */
     @JsonProperty(value = "backupOperators")
     private List<String> backupOperators;
 
     /*
-     * Users to be added to the Built-in Administrators active directory group. A list of unique usernames without
-     * domain specifier
+     * Users to be added to the Built-in Administrators active directory group. A list of unique usernames without domain specifier
      */
     @JsonProperty(value = "administrators")
     private List<String> administrators;
 
     /*
-     * kdc server IP addresses for the active directory machine. This optional parameter is used only while creating
-     * kerberos volume.
+     * kdc server IP addresses for the active directory machine. This optional parameter is used only while creating kerberos volume.
      */
     @JsonProperty(value = "kdcIP")
     private String kdcIp;
@@ -102,9 +98,7 @@ public final class ActiveDirectory {
     private String adName;
 
     /*
-     * When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded Active Directory
-     * Certificate Service's self-signed root CA certificate, this optional parameter is used only for dual protocol
-     * with LDAP user-mapping volumes.
+     * When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter is used only for dual protocol with LDAP user-mapping volumes.
      */
     @JsonProperty(value = "serverRootCACertificate")
     private String serverRootCACertificate;
@@ -122,8 +116,7 @@ public final class ActiveDirectory {
     private Boolean ldapSigning;
 
     /*
-     * Domain Users in the Active directory to be given SeSecurityPrivilege privilege (Needed for SMB Continuously
-     * available shares for SQL). A list of unique usernames without domain specifier
+     * Domain Users in the Active directory to be given SeSecurityPrivilege privilege (Needed for SMB Continuously available shares for SQL). A list of unique usernames without domain specifier
      */
     @JsonProperty(value = "securityOperators")
     private List<String> securityOperators;
@@ -135,7 +128,7 @@ public final class ActiveDirectory {
     private Boolean ldapOverTls;
 
     /*
-     * If enabled, NFS client local users can also (in addition to LDAP users) access the NFS volumes.
+     *  If enabled, NFS client local users can also (in addition to LDAP users) access the NFS volumes.
      */
     @JsonProperty(value = "allowLocalNfsUsersWithLdap")
     private Boolean allowLocalNfsUsersWithLdap;
@@ -153,8 +146,7 @@ public final class ActiveDirectory {
     private LdapSearchScopeOpt ldapSearchScope;
 
     /*
-     * Comma separated list of IPv4 addresses of preferred servers for LDAP client. At most two comma separated IPv4
-     * addresses can be passed.
+     * Comma separated list of IPv4 addresses of preferred servers for LDAP client. At most two comma separated IPv4 addresses can be passed.
      */
     @JsonProperty(value = "preferredServersForLdapClient")
     private String preferredServersForLdapClient;
@@ -394,8 +386,8 @@ public final class ActiveDirectory {
     }
 
     /**
-     * Get the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is
-     * used only while creating kerberos volume.
+     * Get the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is used
+     * only while creating kerberos volume.
      * 
      * @return the kdcIp value.
      */
@@ -404,8 +396,8 @@ public final class ActiveDirectory {
     }
 
     /**
-     * Set the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is
-     * used only while creating kerberos volume.
+     * Set the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is used
+     * only while creating kerberos volume.
      * 
      * @param kdcIp the kdcIp value to set.
      * @return the ActiveDirectory object itself.
@@ -439,8 +431,8 @@ public final class ActiveDirectory {
 
     /**
      * Get the serverRootCACertificate property: When LDAP over SSL/TLS is enabled, the LDAP client is required to have
-     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter
-     * is used only for dual protocol with LDAP user-mapping volumes.
+     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter is
+     * used only for dual protocol with LDAP user-mapping volumes.
      * 
      * @return the serverRootCACertificate value.
      */
@@ -450,8 +442,8 @@ public final class ActiveDirectory {
 
     /**
      * Set the serverRootCACertificate property: When LDAP over SSL/TLS is enabled, the LDAP client is required to have
-     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter
-     * is used only for dual protocol with LDAP user-mapping volumes.
+     * base64 encoded Active Directory Certificate Service's self-signed root CA certificate, this optional parameter is
+     * used only for dual protocol with LDAP user-mapping volumes.
      * 
      * @param serverRootCACertificate the serverRootCACertificate value to set.
      * @return the ActiveDirectory object itself.

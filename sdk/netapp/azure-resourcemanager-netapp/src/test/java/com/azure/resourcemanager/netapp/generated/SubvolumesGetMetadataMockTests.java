@@ -6,60 +6,43 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.SubvolumeModel;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SubvolumesGetMetadataMockTests {
     @Test
     public void testGetMetadata() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"id\":\"pfnznthjtwkj\",\"name\":\"srxuzvoam\",\"type\":\"cqiosmgbza\",\"properties\":{\"path\":\"qdlyrtl\",\"parentPath\":\"ap\",\"size\":1522364843172111954,\"bytesUsed\":773093768865892885,\"permissions\":\"hjm\",\"creationTimeStamp\":\"2021-01-20T21:27:07Z\",\"accessedTimeStamp\":\"2021-04-06T21:21:13Z\",\"modifiedTimeStamp\":\"2021-07-25T22:28:32Z\",\"changedTimeStamp\":\"2021-06-18T22:17:48Z\",\"provisioningState\":\"Succeeded\"}}";
+            = "{\"id\":\"qboshbra\",\"name\":\"pyyrmfs\",\"type\":\"pavbo\",\"properties\":{\"path\":\"pdbwnupgahxkum\",\"parentPath\":\"jcaacfdmmcpugm\",\"size\":2799453974287418624,\"bytesUsed\":5289288139576843863,\"permissions\":\"hbzehewho\",\"creationTimeStamp\":\"2021-08-24T10:40:17Z\",\"accessedTimeStamp\":\"2021-07-22T20:31:39Z\",\"modifiedTimeStamp\":\"2021-02-23T10:26:16Z\",\"changedTimeStamp\":\"2021-07-12T10:48:01Z\",\"provisioningState\":\"Succeeded\"}}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NetAppFilesManager manager = NetAppFilesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SubvolumeModel response = manager.subvolumes()
+            .getMetadata("ybww", "bdvibidmhmwffpl", "muvapc", "ccrrvweyoxoyyu", "phaimmoi",
+                com.azure.core.util.Context.NONE);
 
-        SubvolumeModel response = manager.subvolumes().getMetadata("cxcjxgry", "fmpcycilrmca", "kggnoxu", "t",
-            "ksxwpnd", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("qdlyrtl", response.path());
-        Assertions.assertEquals("ap", response.parentPath());
-        Assertions.assertEquals(1522364843172111954L, response.size());
-        Assertions.assertEquals(773093768865892885L, response.bytesUsed());
-        Assertions.assertEquals("hjm", response.permissions());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T21:27:07Z"), response.creationTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T21:21:13Z"), response.accessedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T22:28:32Z"), response.modifiedTimestamp());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T22:17:48Z"), response.changedTimestamp());
+        Assertions.assertEquals("pdbwnupgahxkum", response.path());
+        Assertions.assertEquals("jcaacfdmmcpugm", response.parentPath());
+        Assertions.assertEquals(2799453974287418624L, response.size());
+        Assertions.assertEquals(5289288139576843863L, response.bytesUsed());
+        Assertions.assertEquals("hbzehewho", response.permissions());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-24T10:40:17Z"), response.creationTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T20:31:39Z"), response.accessedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-23T10:26:16Z"), response.modifiedTimestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-12T10:48:01Z"), response.changedTimestamp());
         Assertions.assertEquals("Succeeded", response.provisioningState());
     }
 }

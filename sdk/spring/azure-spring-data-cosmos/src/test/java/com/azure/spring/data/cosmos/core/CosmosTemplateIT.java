@@ -33,6 +33,9 @@ import com.azure.spring.data.cosmos.domain.AutoScaleSample;
 import com.azure.spring.data.cosmos.domain.BasicItem;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
+import com.azure.spring.data.cosmos.domain.PersonWithTransientEtag;
+import com.azure.spring.data.cosmos.domain.PersonWithTransientId;
+import com.azure.spring.data.cosmos.domain.PersonWithTransientPartitionKey;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
@@ -42,6 +45,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -79,9 +83,11 @@ import static com.azure.spring.data.cosmos.common.TestConstants.HOBBY1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
 import static com.azure.spring.data.cosmos.common.TestConstants.ID_3;
+import static com.azure.spring.data.cosmos.common.TestConstants.ID_4;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.TRANSIENT_PROPERTY;
 import static com.azure.spring.data.cosmos.common.TestConstants.NEW_PASSPORT_IDS_BY_COUNTRY;
 import static com.azure.spring.data.cosmos.common.TestConstants.NOT_EXIST_ID;
 import static com.azure.spring.data.cosmos.common.TestConstants.PAGE_SIZE_1;
@@ -110,6 +116,9 @@ public class CosmosTemplateIT {
         ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
     private static final Person TEST_PERSON_3 = new Person(ID_3, NEW_FIRST_NAME, NEW_LAST_NAME, HOBBIES,
+        ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+
+    private static final Person TEST_PERSON_4 = new Person(ID_4, NEW_FIRST_NAME, NEW_LAST_NAME, TRANSIENT_PROPERTY, HOBBIES,
         ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
     private static final AuditableEntity TEST_AUDITABLE_ENTITY_1 = new AuditableEntity();
@@ -158,12 +167,12 @@ public class CosmosTemplateIT {
     private static CosmosEntityInformation<Person, String> personInfo;
     private static CosmosEntityInformation<AuditableEntity, String> auditableEntityInfo;
     private static String containerName;
-
     private MappingCosmosConverter cosmosConverter;
 
     private Person insertedPerson;
 
     private BasicItem pointReadItem;
+
     @Autowired
     private ApplicationContext applicationContext;
     @Autowired
@@ -226,6 +235,36 @@ public class CosmosTemplateIT {
             assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.CONFLICT_STATUS_CODE);
             assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         }
+    }
+
+    @Test
+    public void testInsertDocShouldNotPersistTransientFields() {
+        final Person personWithTransientField = TEST_PERSON_4;
+        assertThat(personWithTransientField.getTransientProperty()).isNotNull();
+        final Person insertedPerson = cosmosTemplate.insert(Person.class.getSimpleName(), personWithTransientField, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4)));
+        Assert.assertEquals(TRANSIENT_PROPERTY, insertedPerson.getTransientProperty());
+        final Person retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), insertedPerson.getId(), Person.class);
+        assertThat(retrievedPerson.getTransientProperty()).isNull();
+    }
+
+    @Test
+    public void testInsertAllAndFindAllWithTransientField() {
+        final Iterable<Person> entitiesToSave = Collections.singleton(TEST_PERSON_4);
+        for (Person entity : entitiesToSave) {
+            assertThat(entity.getTransientProperty()).isNotNull();
+        }
+
+        Iterable<Person> insertAllResponse = cosmosTemplate.insertAll(personInfo, entitiesToSave);
+        //check that the transient field is retained in the response
+        for (Person person : insertAllResponse) {
+            Assert.assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
+        }
+
+        Iterable<Person> findByIdsResponse = cosmosTemplate.findByIds(Arrays.asList(TEST_PERSON_4.getId()), Person.class, containerName);
+        for (Person person : findByIdsResponse) {
+            assertThat(person.getTransientProperty()).isNull();
+        }
+
     }
 
 
@@ -418,13 +457,36 @@ public class CosmosTemplateIT {
         final String firstName = NEW_FIRST_NAME
             + "_"
             + UUID.randomUUID();
-        final Person newPerson = new Person(TEST_PERSON.getId(), firstName, NEW_FIRST_NAME, null, null,
+        final Person newPerson = new Person(TEST_PERSON.getId(), firstName, NEW_FIRST_NAME, null,  null,
             AGE, PASSPORT_IDS_BY_COUNTRY);
 
         final Person person = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), newPerson);
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        assertEquals(person.getFirstName(), firstName);
+    }
+
+    @Test
+    public void testUpsertNewDocumentIgnoresTransientFields() {
+        final String firstName = NEW_FIRST_NAME
+            + "_"
+            + UUID.randomUUID();
+        final Person newPerson = new Person(TEST_PERSON_4.getId(), firstName, NEW_FIRST_NAME, TRANSIENT_PROPERTY, null,  null,
+            AGE, PASSPORT_IDS_BY_COUNTRY);
+
+        assertThat(newPerson.getTransientProperty()).isNotNull();
+
+        final Person person = cosmosTemplate.upsertAndReturnEntity(Person.class.getSimpleName(), newPerson);
+
+        Assert.assertEquals(TRANSIENT_PROPERTY, person.getTransientProperty());
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+
+        final Person retrievedPerson = cosmosTemplate.findById(Person.class.getSimpleName(), person.getId(), Person.class);
+        assertThat(retrievedPerson.getTransientProperty()).isNull();
 
         assertEquals(person.getFirstName(), firstName);
     }
@@ -1097,6 +1159,45 @@ public class CosmosTemplateIT {
         assertEquals(Integer.parseInt(TestConstants.AUTOSCALE_MAX_THROUGHPUT),
             throughput.getProperties().getAutoscaleMaxThroughput());
         collectionManager.deleteContainer(autoScaleSampleInfo);
+    }
+
+    @Test
+    public void createWithTransientIdFails() throws ClassNotFoundException {
+        try{
+        final CosmosEntityInformation<PersonWithTransientId, String> transientId =
+            new CosmosEntityInformation<>(PersonWithTransientId.class);
+            cosmosTemplate.createContainerIfNotExists(transientId);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            //assert that the exception is thrown
+            assertThat(ex.getMessage()).contains("id");
+        }
+    }
+
+    @Test
+    public void createWithTransientEtagFails() throws ClassNotFoundException {
+        try{
+            final CosmosEntityInformation<PersonWithTransientEtag, String> transientEtag =
+                new CosmosEntityInformation<>(PersonWithTransientEtag.class);
+            cosmosTemplate.createContainerIfNotExists(transientEtag);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            //assert that the exception is thrown
+            assertThat(ex.getMessage()).contains("etag");
+        }
+    }
+
+    @Test
+    public void createWithTransientPartitionKeyFails() throws ClassNotFoundException {
+        try{
+            final CosmosEntityInformation<PersonWithTransientPartitionKey, String> transientPartitionKey =
+                new CosmosEntityInformation<>(PersonWithTransientPartitionKey.class);
+            cosmosTemplate.createContainerIfNotExists(transientPartitionKey);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            //assert that the exception is thrown
+            assertThat(ex.getMessage()).contains("lastName");
+        }
     }
 
     @Test

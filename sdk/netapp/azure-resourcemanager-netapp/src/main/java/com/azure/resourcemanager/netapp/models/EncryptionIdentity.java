@@ -19,8 +19,7 @@ public final class EncryptionIdentity {
     private String principalId;
 
     /*
-     * The ARM resource identifier of the user assigned identity used to authenticate with key vault. Applicable if
-     * identity.type has 'UserAssigned'. It should match key of identity.userAssignedIdentities.
+     * The ARM resource identifier of the user assigned identity used to authenticate with key vault. Applicable if identity.type has 'UserAssigned'. It should match key of identity.userAssignedIdentities.
      */
     @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;

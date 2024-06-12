@@ -133,7 +133,7 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
     /**
      * Face attribute supported by Detection01.
      */
-    public static final class Detection01 {
+    public static final class ModelDetection01 {
 
         /**
          * 3-D roll/yaw/pitch angles for face direction.
@@ -178,7 +178,7 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
     /**
      * Face attribute supported by Detection03.
      */
-    public static final class Detection03 {
+    public static final class ModelDetection03 {
 
         /**
          * Face is blurry or not. Level returns 'Low', 'Medium' or 'High'. Value returns a number between [0,1], the
@@ -201,7 +201,7 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
     /**
      * Face attribute supported by Recognition03.
      */
-    public static final class Recognition03 {
+    public static final class ModelRecognition03 {
 
         /**
          * The overall image quality regarding whether the image being used in the detection is of sufficient quality to
@@ -217,7 +217,7 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
     /**
      * Face attribute supported by Recognition04.
      */
-    public static final class Recognition04 {
+    public static final class ModelRecognition04 {
 
         /**
          * The overall image quality regarding whether the image being used in the detection is of sufficient quality to

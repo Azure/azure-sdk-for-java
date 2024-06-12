@@ -35,7 +35,6 @@ public class QueueSelectorAttachmentInternal {
      */
     @Generated
     public QueueSelectorAttachmentInternal() {
-        this.kind = QueueSelectorAttachmentKind.fromString("QueueSelectorAttachmentInternal");
     }
 
     /*
@@ -44,7 +43,8 @@ public class QueueSelectorAttachmentInternal {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private QueueSelectorAttachmentKind kind;
+    private QueueSelectorAttachmentKind kind
+        = QueueSelectorAttachmentKind.fromString("QueueSelectorAttachmentInternal");
 
     /**
      * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.

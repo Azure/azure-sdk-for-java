@@ -330,73 +330,6 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
     }
 
     /**
-     * Creates an instance of ThreadRun class.
-     *
-     * @param id the id value to set.
-     * @param threadId the threadId value to set.
-     * @param assistantId the assistantId value to set.
-     * @param status the status value to set.
-     * @param lastError the lastError value to set.
-     * @param model the model value to set.
-     * @param instructions the instructions value to set.
-     * @param tools the tools value to set.
-     * @param fileIds the fileIds value to set.
-     * @param createdAt the createdAt value to set.
-     * @param expiresAt the expiresAt value to set.
-     * @param startedAt the startedAt value to set.
-     * @param completedAt the completedAt value to set.
-     * @param cancelledAt the cancelledAt value to set.
-     * @param failedAt the failedAt value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    private ThreadRun(String id, String threadId, String assistantId, RunStatus status, RunError lastError,
-        String model, String instructions, List<ToolDefinition> tools, List<String> fileIds, OffsetDateTime createdAt,
-        OffsetDateTime expiresAt, OffsetDateTime startedAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt,
-        OffsetDateTime failedAt, Map<String, String> metadata) {
-        this.id = id;
-        this.threadId = threadId;
-        this.assistantId = assistantId;
-        this.status = status;
-        this.lastError = lastError;
-        this.model = model;
-        this.instructions = instructions;
-        this.tools = tools;
-        this.fileIds = fileIds;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        if (expiresAt == null) {
-            this.expiresAt = null;
-        } else {
-            this.expiresAt = expiresAt.toEpochSecond();
-        }
-        if (startedAt == null) {
-            this.startedAt = null;
-        } else {
-            this.startedAt = startedAt.toEpochSecond();
-        }
-        if (completedAt == null) {
-            this.completedAt = null;
-        } else {
-            this.completedAt = completedAt.toEpochSecond();
-        }
-        if (cancelledAt == null) {
-            this.cancelledAt = null;
-        } else {
-            this.cancelledAt = cancelledAt.toEpochSecond();
-        }
-        if (failedAt == null) {
-            this.failedAt = null;
-        } else {
-            this.failedAt = failedAt.toEpochSecond();
-        }
-        this.metadata = metadata;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -419,6 +352,9 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
         jsonWriter.writeNumberField("completed_at", this.completedAt);
         jsonWriter.writeNumberField("cancelled_at", this.cancelledAt);
         jsonWriter.writeNumberField("failed_at", this.failedAt);
+        jsonWriter.writeStringField("incomplete_details",
+            this.incompleteDetails == null ? null : this.incompleteDetails.toString());
+        jsonWriter.writeJsonField("usage", this.usage);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("required_action", this.requiredAction);
         return jsonWriter.writeEndObject();
@@ -451,6 +387,8 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
             OffsetDateTime completedAt = null;
             OffsetDateTime cancelledAt = null;
             OffsetDateTime failedAt = null;
+            IncompleteRunDetails incompleteDetails = null;
+            RunCompletionUsage usage = null;
             Map<String, String> metadata = null;
             RequiredAction requiredAction = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -503,6 +441,10 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
                     if (failedAtHolder != null) {
                         failedAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(failedAtHolder), ZoneOffset.UTC);
                     }
+                } else if ("incomplete_details".equals(fieldName)) {
+                    incompleteDetails = IncompleteRunDetails.fromString(reader.getString());
+                } else if ("usage".equals(fieldName)) {
+                    usage = RunCompletionUsage.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
                 } else if ("required_action".equals(fieldName)) {
@@ -511,11 +453,118 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
                     reader.skipChildren();
                 }
             }
-            ThreadRun deserializedThreadRun
-                = new ThreadRun(id, threadId, assistantId, status, lastError, model, instructions, tools, fileIds,
-                    createdAt, expiresAt, startedAt, completedAt, cancelledAt, failedAt, metadata);
+            ThreadRun deserializedThreadRun = new ThreadRun(id, threadId, assistantId, status, lastError, model,
+                instructions, tools, fileIds, createdAt, expiresAt, startedAt, completedAt, cancelledAt, failedAt,
+                incompleteDetails, usage, metadata);
             deserializedThreadRun.requiredAction = requiredAction;
             return deserializedThreadRun;
         });
+    }
+
+    /*
+     * Usage statistics related to the run. This value will be `null` if the run is not in a terminal state (i.e.
+     * `in_progress`, `queued`, etc.).
+     */
+    @Generated
+    private final RunCompletionUsage usage;
+
+    /**
+     * Get the usage property: Usage statistics related to the run. This value will be `null` if the run is not in a
+     * terminal state (i.e. `in_progress`, `queued`, etc.).
+     *
+     * @return the usage value.
+     */
+    @Generated
+    public RunCompletionUsage getUsage() {
+        return this.usage;
+    }
+
+    /*
+     * Details on why the run is incomplete. Will be `null` if the run is not incomplete.
+     */
+    @Generated
+    private final IncompleteRunDetails incompleteDetails;
+
+    /**
+     * Creates an instance of ThreadRun class.
+     *
+     * @param id the id value to set.
+     * @param threadId the threadId value to set.
+     * @param assistantId the assistantId value to set.
+     * @param status the status value to set.
+     * @param lastError the lastError value to set.
+     * @param model the model value to set.
+     * @param instructions the instructions value to set.
+     * @param tools the tools value to set.
+     * @param fileIds the fileIds value to set.
+     * @param createdAt the createdAt value to set.
+     * @param expiresAt the expiresAt value to set.
+     * @param startedAt the startedAt value to set.
+     * @param completedAt the completedAt value to set.
+     * @param cancelledAt the cancelledAt value to set.
+     * @param failedAt the failedAt value to set.
+     * @param incompleteDetails the incompleteDetails value to set.
+     * @param usage the usage value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    private ThreadRun(String id, String threadId, String assistantId, RunStatus status, RunError lastError,
+        String model, String instructions, List<ToolDefinition> tools, List<String> fileIds, OffsetDateTime createdAt,
+        OffsetDateTime expiresAt, OffsetDateTime startedAt, OffsetDateTime completedAt, OffsetDateTime cancelledAt,
+        OffsetDateTime failedAt, IncompleteRunDetails incompleteDetails, RunCompletionUsage usage,
+        Map<String, String> metadata) {
+        this.id = id;
+        this.threadId = threadId;
+        this.assistantId = assistantId;
+        this.status = status;
+        this.lastError = lastError;
+        this.model = model;
+        this.instructions = instructions;
+        this.tools = tools;
+        this.fileIds = fileIds;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        if (expiresAt == null) {
+            this.expiresAt = null;
+        } else {
+            this.expiresAt = expiresAt.toEpochSecond();
+        }
+        if (startedAt == null) {
+            this.startedAt = null;
+        } else {
+            this.startedAt = startedAt.toEpochSecond();
+        }
+        if (completedAt == null) {
+            this.completedAt = null;
+        } else {
+            this.completedAt = completedAt.toEpochSecond();
+        }
+        if (cancelledAt == null) {
+            this.cancelledAt = null;
+        } else {
+            this.cancelledAt = cancelledAt.toEpochSecond();
+        }
+        if (failedAt == null) {
+            this.failedAt = null;
+        } else {
+            this.failedAt = failedAt.toEpochSecond();
+        }
+        this.incompleteDetails = incompleteDetails;
+        this.usage = usage;
+        this.metadata = metadata;
+    }
+
+    /**
+     * Get the incompleteDetails property: Details on why the run is incomplete. Will be `null` if the run is not
+     * incomplete.
+     *
+     * @return the incompleteDetails value.
+     */
+    @Generated
+    public IncompleteRunDetails getIncompleteDetails() {
+        return this.incompleteDetails;
     }
 }

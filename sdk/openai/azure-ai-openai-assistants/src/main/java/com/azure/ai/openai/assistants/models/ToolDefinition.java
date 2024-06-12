@@ -22,7 +22,6 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
      */
     @Generated
     public ToolDefinition() {
-        this.type = "ToolDefinition";
     }
 
     /**
@@ -91,7 +90,7 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
      * The object type.
      */
     @Generated
-    private String type;
+    private String type = "ToolDefinition";
 
     /**
      * Get the type property: The object type.

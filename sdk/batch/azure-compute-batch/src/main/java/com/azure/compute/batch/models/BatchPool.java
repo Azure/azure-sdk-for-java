@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -732,21 +733,21 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
                 } else if ("eTag".equals(fieldName)) {
                     deserializedBatchPool.eTag = reader.getString();
                 } else if ("lastModified".equals(fieldName)) {
-                    deserializedBatchPool.lastModified
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchPool.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("creationTime".equals(fieldName)) {
-                    deserializedBatchPool.creationTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchPool.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("state".equals(fieldName)) {
                     deserializedBatchPool.state = BatchPoolState.fromString(reader.getString());
                 } else if ("stateTransitionTime".equals(fieldName)) {
-                    deserializedBatchPool.stateTransitionTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchPool.stateTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("allocationState".equals(fieldName)) {
                     deserializedBatchPool.allocationState = AllocationState.fromString(reader.getString());
                 } else if ("allocationStateTransitionTime".equals(fieldName)) {
-                    deserializedBatchPool.allocationStateTransitionTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchPool.allocationStateTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("vmSize".equals(fieldName)) {
                     deserializedBatchPool.vmSize = reader.getString();
                 } else if ("virtualMachineConfiguration".equals(fieldName)) {

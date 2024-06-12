@@ -4,11 +4,15 @@
 
 ### Features Added
 
+- Added `createRunStream` and `createThreadAndRunStream` methods to `AssistantsClient` and `AssistantsAsyncClient` classes. A suite of classes extending from `StreamUpdate` were added for users to be able to consume the incremental updates from the service
+
 ### Breaking Changes
 
-- Removed methods `uploadFile(FileDetails file, FilePurpose purpose, String filename)` from `AssistantsClient` and `AssistantsAsyncClient` classes. Use `uploadFile(FileDetails file, FilePurpose purpose)` method, and set "filename" via `setFilename` method in `FileDetails` class.
+- Removed method `uploadFile(FileDetails file, FilePurpose purpose)`. Use `uploadFile(FileDetails file, FilePurpose purpose, String fileName)` instead.
 
 ### Bugs Fixed
+
+- A combination of inputs for `uploadFile` would allow users to not send `String filename` to the service resulting always in an error, as this is actually mandatory.
 
 ### Other Changes
 

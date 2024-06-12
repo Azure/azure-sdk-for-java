@@ -9,8 +9,7 @@ package com.azure.resourcemanager.netapp.generated;
  */
 public final class PoolsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/Pools_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Pools_List.json
      */
     /**
      * Sample code: Pools_List.

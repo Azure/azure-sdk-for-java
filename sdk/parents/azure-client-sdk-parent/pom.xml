@@ -1007,7 +1007,7 @@
           <configuration>
             <skip>${revapi.skip}</skip>
             <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
-            <analysisConfigurationFiles combine.self="append" combine.children="append">
+            <analysisConfigurationFiles>
               <configurationFile>
                 <resource>revapi/revapi.json</resource>
               </configurationFile>
@@ -1814,32 +1814,6 @@
       <properties>
         <java.security.manager.configuration>-Djava.security.manager=allow</java.security.manager.configuration>
       </properties>
-    </profile>
-
-    <profile>
-      <id>standalone-revapi-suppressions</id>
-      <activation>
-        <file>
-          <exists>revapi-suppressions.json</exists>
-        </file>
-      </activation>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.revapi</groupId>
-            <artifactId>revapi-maven-plugin</artifactId>
-            <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-            <configuration>
-              <analysisConfigurationFiles combine.self="append" combine.children="append">
-                <configurationFile>
-                  <path>revapi-suppressions.json</path>
-                </configurationFile>
-              </analysisConfigurationFiles>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
     </profile>
   </profiles>
 </project>

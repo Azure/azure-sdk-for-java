@@ -1,5 +1,21 @@
 # Release History
 
+## 1.0.0-beta.25 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.24 (2024-05-29)
+
+### Features Added
+
+- [Support explicit fixed sampling rate of 100% without ingestion sampling](https://github.com/Azure/azure-sdk-for-java/pull/40338)
+
 ## 1.0.0-beta.23 (2024-05-23)
 
 ### Other Changes
