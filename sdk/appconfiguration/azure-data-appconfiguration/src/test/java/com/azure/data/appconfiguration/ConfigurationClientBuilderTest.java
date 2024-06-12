@@ -25,6 +25,7 @@ import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -40,6 +41,7 @@ import java.util.Objects;
 
 import static com.azure.data.appconfiguration.ConfigurationClientTestBase.FAKE_CONNECTION_STRING;
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.data.appconfiguration.TestHelper.getTokenCredential;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -182,9 +184,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void nullServiceVersion(HttpClient httpClient) {
-        TokenCredential tokenCredential = interceptorManager.isPlaybackMode()
-            ? new MockTokenCredential()
-            : new AzurePowerShellCredentialBuilder().build();
+        TokenCredential tokenCredential = getTokenCredential(interceptorManager);
 
         String endpoint = Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
 

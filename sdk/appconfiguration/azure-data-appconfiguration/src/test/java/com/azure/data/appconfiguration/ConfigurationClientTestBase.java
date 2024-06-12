@@ -24,6 +24,7 @@ import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -73,9 +74,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
 
     <T> T clientSetup(BiFunction<TokenCredential, String, T> clientBuilder) {
         if (tokenCredential == null) {
-            tokenCredential = interceptorManager.isPlaybackMode()
-                ? new MockTokenCredential()
-                : new AzurePowerShellCredentialBuilder().build();
+            tokenCredential = TestHelper.getTokenCredential(interceptorManager);
         }
 
         String endpoint = interceptorManager.isPlaybackMode()
@@ -88,6 +87,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
 
         return Objects.requireNonNull(clientBuilder.apply(tokenCredential, endpoint));
     }
+
 
     String getKey() {
         return testResourceNamer.randomName(keyPrefix, RESOURCE_LENGTH);

@@ -11,6 +11,7 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -36,7 +37,7 @@ public class AadCredentialTest extends TestProxyTestBase {
                 .httpClient(interceptorManager.getPlaybackClient())
                 .buildClient();
         } else {
-            tokenCredential = new AzurePowerShellCredentialBuilder().build();
+            tokenCredential = TestHelper.getTokenCredential(interceptorManager);
             String endpoint = Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .endpoint(endpoint)
