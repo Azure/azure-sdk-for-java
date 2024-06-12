@@ -15,10 +15,15 @@ variables:
   value: '18.x'
 - name: fromTypeSpec
   value: $[ne(variables['TSP_CONFIG'], '')]
+- name: pythonVersion
+  value: '3.10'
 
 steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: ${{ variables.pythonVersion }}
+
 - bash: |
-    sudo apt-get install -y --upgrade python3-pip python3-setuptools
     pip3 install --upgrade wheel
     pip3 install --upgrade PyYAML requests
   displayName: Update python
