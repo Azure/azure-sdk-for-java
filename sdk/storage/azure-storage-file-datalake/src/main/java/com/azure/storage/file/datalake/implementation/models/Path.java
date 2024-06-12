@@ -347,11 +347,12 @@ public final class Path implements JsonSerializable<Path> {
 
     /**
      * Reads an instance of Path from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of Path if the JsonReader was pointing to an instance of it, or null if it was pointing to
      * JSON null.
-     * @throws IOException If an error occurs while reading the Path.
+     * @throws IOException IOException If an error occurs while reading the Path.
+     * @throws IllegalStateException If a token is not an allowed type.
      */
     public static Path fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
@@ -371,7 +372,7 @@ public final class Path implements JsonSerializable<Path> {
                         deserializedPath.isDirectory = null;
                     } else {
                         throw new IllegalStateException(
-                            "Invalid token, expected one of STRING, NUMBER, or NULL. Was " + token);
+                            "Invalid token, expected one of STRING, BOOLEAN, or NULL. Was " + token);
                     }
                 } else if ("lastModified".equals(fieldName)) {
                     deserializedPath.lastModified = reader.getString();

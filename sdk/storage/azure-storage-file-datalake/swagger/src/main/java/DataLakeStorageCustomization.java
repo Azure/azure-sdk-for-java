@@ -5,6 +5,7 @@ import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
+import com.azure.autorest.customization.JavadocCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -118,7 +119,7 @@ public class DataLakeStorageCustomization extends Customization {
                 "                    } else if (token == JsonToken.NULL) {\n" +
                 "                        deserializedPath.isDirectory = null;\n" +
                 "                    } else {\n" +
-                "                        throw new IllegalStateException(\"Invalid token, expected one of STRING, NUMBER, or NULL. Was \" + token);\n" +
+                "                        throw new IllegalStateException(\"Invalid token, expected one of STRING, BOOLEAN, or NULL. Was \" + token);\n" +
                 "                    }\n" +
                 "                } else if (\"lastModified\".equals(fieldName)) {\n" +
                 "                    deserializedPath.lastModified = reader.getString();\n" +
@@ -159,6 +160,9 @@ public class DataLakeStorageCustomization extends Customization {
                 "    }"
             );
         });
+
+        JavadocCustomization setActiveJavadoc = path.getMethod("fromJson").getJavadoc();
+        setActiveJavadoc.addThrows("IllegalStateException", "If a token is not an allowed type.");
     }
 
     private static void replaceMethodToJson(ClassOrInterfaceDeclaration clazz, String newBody) {
