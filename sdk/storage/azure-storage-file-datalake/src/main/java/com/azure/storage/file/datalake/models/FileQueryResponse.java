@@ -4,9 +4,6 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.storage.common.implementation.FluxInputStream;
-
-import java.io.InputStream;
 
 /**
  * This class contains the response information return from the server when querying a file.
