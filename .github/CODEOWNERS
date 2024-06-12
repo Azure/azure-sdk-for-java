@@ -215,7 +215,7 @@
 # ServiceOwners:                                     @swmachan
 
 # ServiceLabel: %Cognitive - Speech
-# ServiceOwners:                                     @robch @oscholz
+# ServiceOwners:                                     @rhurey
 
 # ServiceLabel: %Cognitive - LUIS
 # ServiceOwners:                                     @cahann @kayousef
@@ -251,25 +251,28 @@
 # ServiceOwners:                                     @acsdevx-msft
 
 # PRLabel: %Communication - Calling Server
-/sdk/communication/azure-communication-callingserver/ @minwoolee-msft
+/sdk/communication/azure-communication-callingserver/  @minwoolee-msft
 
 # PRLabel: %Communication - Call Automation
 /sdk/communication/azure-communication-callautomation/ @juntuchen-msft @cochi2
 
 # PRLabel: %Communication - Chat
-/sdk/communication/azure-communication-chat/ @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/azure-communication-chat/           @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+
+# PRLabel: %Communication - Email
+/sdk/communication/azure-communication-email/          @yogeshmo
 
 # PRLabel: %Communication - Identity
-/sdk/communication/azure-communication-identity/      @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
+/sdk/communication/azure-communication-identity/       @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
 
 # PRLabel: %Communication - Common
-/sdk/communication/azure-communication-common/        @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
+/sdk/communication/azure-communication-common/         @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
 
 # PRLabel: %Communication - Phone Numbers
-/sdk/communication/azure-communication-phonenumbers/  @miguhern @whisper6284 @RoyHerrod @danielav7
+/sdk/communication/azure-communication-phonenumbers/   @miguhern @whisper6284 @RoyHerrod @danielav7
 
 # PRLabel: %Communication - SMS
-/sdk/communication/azure-communication-sms/           @DimaKolomiiets @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
+/sdk/communication/azure-communication-sms/            @DimaKolomiiets @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
 
 # PRLabel: %Communication - Resource Manager
 /sdk/communication/azure-resourcemanager-communication/
@@ -492,7 +495,7 @@
 
 # ServiceLabel: %KeyVault
 # AzureSdkOwners:                                    @vcolin7
-# ServiceOwners:                                     @RandalliLama @schaabs @jlichwa
+# ServiceOwners:                                     @jlichwa @jackrichins @riteshchitlangia1 @vickm
 
 # ServiceLabel: %Kubernetes Configuration
 # ServiceOwners:                                     @NarayanThiru
