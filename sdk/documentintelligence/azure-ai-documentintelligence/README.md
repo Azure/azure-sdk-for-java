@@ -27,7 +27,7 @@ It includes the following main features:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-documentintelligence</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -40,6 +40,7 @@ This table shows the relationship between SDK versions and supported API version
 |--------------|----------------------------------|
 | 1.0.0-beta.1 | 2023-10-31-preview               |
 | 1.0.0-beta.2 | 2024-02-29-preview               |
+| 1.0.0-beta.3 | 2024-02-29-preview               |
 
 > Note: Please rely on the older `azure-ai-formrecognizer` library through the older service API versions for retired
 > models, such as `"prebuilt-businessCard"` and `"prebuilt-document"`. For more information, see [Changelog][changelog].
