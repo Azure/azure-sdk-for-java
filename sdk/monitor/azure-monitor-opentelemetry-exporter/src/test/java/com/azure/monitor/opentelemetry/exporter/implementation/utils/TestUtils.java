@@ -28,7 +28,7 @@ public final class TestUtils {
             + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
 
     public static TelemetryItem createMetricTelemetry(String name, int value, String connectionString) {
-        return createMetricTelemetry(name, value, connectionString, "status", "blocked");
+        return createMetricTelemetry(name, value, connectionString, "state", "blocked");
     }
 
     public static TelemetryItem createMetricTelemetry(
