@@ -186,7 +186,9 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     public void nullServiceVersion(HttpClient httpClient) {
         TokenCredential tokenCredential = getTokenCredential(interceptorManager);
 
-        String endpoint = Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
+        String endpoint = interceptorManager.isPlaybackMode()
+            ? new ConfigurationClientCredentials(FAKE_CONNECTION_STRING).getBaseUri()
+            : Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
 
         Objects.requireNonNull(tokenCredential, "tokenCredential expected to be set.");
         Objects.requireNonNull(endpoint, "endpoint expected to be set.");
