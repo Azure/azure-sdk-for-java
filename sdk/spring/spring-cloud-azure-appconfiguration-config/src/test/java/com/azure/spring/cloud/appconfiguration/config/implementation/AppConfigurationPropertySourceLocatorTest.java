@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +41,7 @@ import org.springframework.core.env.PropertySource;
 
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
@@ -88,7 +90,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     private ReplicaLookUp replicaLookUpMock;
 
     @Mock
-    private FeatureFlagClient featureFlagLoader;
+    private FeatureFlagClient featureFlagClientMock;
 
     @Mock
     private ConfigStore configStoreMock;
@@ -155,9 +157,10 @@ public class AppConfigurationPropertySourceLocatorTest {
     @Test
     public void compositeSourceIsCreated() {
         setupEmptyEnvironment();
+        when(featureFlagClientMock.getProperties()).thenReturn(Map.of());
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock,
-            keyVaultClientFactory, null, stores, replicaLookUpMock, featureFlagLoader);
+            keyVaultClientFactory, null, stores, replicaLookUpMock, featureFlagClientMock);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -178,6 +181,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     @Test
     public void compositeSourceIsCreatedWithMonitoring() {
         setupEmptyEnvironment();
+        when(featureFlagClientMock.getProperties()).thenReturn(Map.of());
 
         String watchKey = "wk1";
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
@@ -194,7 +198,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             .thenReturn(TestUtils.createItem("", watchKey, "0", EMPTY_LABEL, ""));
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
-            null, stores, replicaLookUpMock, featureFlagLoader);
+            null, stores, replicaLookUpMock, featureFlagClientMock);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -217,6 +221,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void compositeSourceIsCreatedWithMonitoringWatchKeyDoesNotExist() {
         // The listed Watch Key doesn't have a value in app config. When one is added will cause a refresh.
         setupEmptyEnvironment();
+        when(featureFlagClientMock.getProperties()).thenReturn(Map.of());
 
         String watchKey = "wk1";
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
@@ -233,7 +238,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             .thenReturn(null);
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
-            null, stores, replicaLookUpMock, featureFlagLoader);
+            null, stores, replicaLookUpMock, featureFlagClientMock);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -258,9 +263,10 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(devEnvironment.getPropertySources()).thenReturn(sources);
         when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true))).thenReturn(Arrays.asList(replicaClientMock));
         when(replicaClientMock.listSettings(Mockito.any())).thenReturn(List.of());
+        when(featureFlagClientMock.getProperties()).thenReturn(Map.of());
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
-            null, stores, replicaLookUpMock, featureFlagLoader);
+            null, stores, replicaLookUpMock, featureFlagClientMock);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -283,9 +289,10 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(multiEnvironment.getPropertySources()).thenReturn(sources);
         when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true))).thenReturn(Arrays.asList(replicaClientMock));
         when(replicaClientMock.listSettings(Mockito.any())).thenReturn(List.of());
+        when(featureFlagClientMock.getProperties()).thenReturn(Map.of());
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
-            null, stores, replicaLookUpMock, featureFlagLoader);
+            null, stores, replicaLookUpMock, featureFlagClientMock);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -305,6 +312,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     @Test
     public void storeCreatedWithFeatureFlags() {
         setupEmptyEnvironment();
+        when(featureFlagClientMock.getProperties()).thenReturn(Map.of("fake_features", new Feature()));
 
         FeatureFlagStore featureFlagStore = new FeatureFlagStore();
         featureFlagStore.setEnabled(true);
@@ -318,7 +326,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(replicaClientMock.listSettings(Mockito.any())).thenReturn(List.of(featureFlag));
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
-            null, stores, replicaLookUpMock, featureFlagLoader);
+            null, stores, replicaLookUpMock, featureFlagClientMock);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -338,6 +346,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     @Test
     public void storeCreatedWithFeatureFlagsWithMonitoring() {
         setupEmptyEnvironment();
+        when(featureFlagClientMock.getProperties()).thenReturn(Map.of("fake_features", new Feature()));
 
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(true);
@@ -354,7 +363,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(replicaClientMock.listSettings(Mockito.any())).thenReturn(List.of(featureFlag));
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
-            null, stores, replicaLookUpMock, featureFlagLoader);
+            null, stores, replicaLookUpMock, featureFlagClientMock);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -374,9 +383,10 @@ public class AppConfigurationPropertySourceLocatorTest {
     @Test
     public void watchedKeyCheck() {
         setupEmptyEnvironment();
+        when(featureFlagClientMock.getProperties()).thenReturn(Map.of());
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
-            null, stores, replicaLookUpMock, featureFlagLoader);
+            null, stores, replicaLookUpMock, featureFlagClientMock);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -411,7 +421,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.getMonitoring()).thenReturn(monitor);
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
-            null, List.of(configStoreMock), replicaLookUpMock, featureFlagLoader);
+            null, List.of(configStoreMock), replicaLookUpMock, featureFlagClientMock);
 
         when(replicaClientMock.getWatchKey(Mockito.any(), Mockito.anyString())).thenThrow(new RuntimeException());
         RuntimeException e = assertThrows(RuntimeException.class, () -> locator.locate(emptyEnvironment));
@@ -427,7 +437,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         AppConfigurationPropertySourceLocator.STARTUP.set(false);
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
-            null, stores, replicaLookUpMock, featureFlagLoader);
+            null, stores, replicaLookUpMock, featureFlagClientMock);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getLoadState(Mockito.anyString())).thenReturn(true);
@@ -438,6 +448,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
     @Test
     public void notFailFastShouldPass() {
+        when(featureFlagClientMock.getProperties()).thenReturn(Map.of());
         when(emptyEnvironment.getActiveProfiles()).thenReturn(new String[] {});
         when(emptyEnvironment.getPropertySources()).thenReturn(sources);
         when(clientFactoryMock.getAvailableClients(Mockito.anyString(), Mockito.eq(true))).thenReturn(Arrays.asList(replicaClientMock));
@@ -448,7 +459,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(configStoreMock.isFailFast()).thenReturn(false);
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
-            null, List.of(configStoreMock), replicaLookUpMock, featureFlagLoader);
+            null, List.of(configStoreMock), replicaLookUpMock, featureFlagClientMock);
 
         properties.getStores().get(0).setFailFast(false);
 
@@ -465,11 +476,12 @@ public class AppConfigurationPropertySourceLocatorTest {
     @Test
     public void multiplePropertySourcesExistForMultiStores() {
         setupEmptyEnvironment();
+        when(featureFlagClientMock.getProperties()).thenReturn(Map.of());
         TestUtils.addStore(properties, TEST_STORE_NAME_2, TEST_CONN_STRING_2, KEY_FILTER);
 
         locator = new AppConfigurationPropertySourceLocator(appProperties,
             clientFactoryMock, keyVaultClientFactory, null, properties.getStores(), replicaLookUpMock,
-            featureFlagLoader);
+            featureFlagClientMock);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
@@ -519,7 +531,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(appPropertiesMock.getStartDate()).thenReturn(Instant.now());
 
         locator = new AppConfigurationPropertySourceLocator(appPropertiesMock, clientFactoryMock, keyVaultClientFactory,
-            null, List.of(configStoreMockError), replicaLookUpMock, featureFlagLoader);
+            null, List.of(configStoreMockError), replicaLookUpMock, featureFlagClientMock);
 
         assertThrows(RuntimeException.class, () -> locator.locate(env));
         verify(appPropertiesMock, times(1)).getPrekillTime();
@@ -533,7 +545,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         properties.getStores().get(0).setMonitoring(monitoring);
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
-            null, stores, replicaLookUpMock, featureFlagLoader);
+            null, stores, replicaLookUpMock, featureFlagClientMock);
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
             PropertySource<?> source = locator.locate(emptyEnvironment);
