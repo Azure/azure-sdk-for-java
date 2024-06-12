@@ -110,6 +110,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         propertySource = new AppConfigurationApplicationSettingPropertySource(TEST_STORE_NAME, replicaClientMock,
             keyVaultClientFactory, KEY_FILTER, labelFilter);
 
+        TEST_ITEMS.clear();
         TEST_ITEMS.add(ITEM_1);
         TEST_ITEMS.add(ITEM_2);
         TEST_ITEMS.add(ITEM_3);
