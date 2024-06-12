@@ -27,7 +27,6 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.feature.Fea
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
-import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreTrigger;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 
@@ -199,25 +198,12 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
         if (monitoring.isEnabled()) {
             // Setting new ETag values for Watch
-            List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client, monitoring.getTriggers());
+            List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
+                .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel())).toList();
 
             newState.setState(configStore.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
         }
         newState.setLoadState(configStore.getEndpoint(), true, configStore.isFailFast());
-    }
-
-    private List<ConfigurationSetting> getWatchKeys(AppConfigurationReplicaClient client,
-        List<AppConfigurationStoreTrigger> triggers) {
-        List<ConfigurationSetting> watchKeysSettings = new ArrayList<>();
-        for (AppConfigurationStoreTrigger trigger : triggers) {
-            ConfigurationSetting watchKey = client.getWatchKey(trigger.getKey(), trigger.getLabel());
-            if (watchKey != null) {
-                watchKeysSettings.add(watchKey);
-            } else {
-                watchKeysSettings.add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
-            }
-        }
-        return watchKeysSettings;
     }
 
     private StateHolder failedToGeneratePropertySource(ConfigStore configStore, StateHolder newState, Exception e) {

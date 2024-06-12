@@ -57,6 +57,8 @@ public final class TestConstants {
     public static final String TEST_KEY_VAULT_1 = "test_key_vault_1";
 
     public static final String TEST_URI_VAULT_1 = "https://test.key.vault.com/my_secret_url";
+    
+    public static final String TEST_URI_VAULT_2 = "not a valid uri";
 
     public static final String TEST_LABEL_VAULT_1 = "test_label_vault_1";
 

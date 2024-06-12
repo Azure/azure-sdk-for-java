@@ -5,12 +5,11 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
+
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
-import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
