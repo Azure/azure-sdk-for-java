@@ -168,7 +168,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     failedToGeneratePropertySource(configStore, newState, new RuntimeException(message));
                 }
 
-                if (configStore.getFeatureFlags().getEnabled()) {
+                if (featureFlagClient.properties.size() > 0) {
+                    // This can be true if feature flags are enabled or if a Snapshot contained feature flags
                     AppConfigurationFeatureManagementPropertySource acfmps = new AppConfigurationFeatureManagementPropertySource(
                         featureFlagClient);
                     composite.addPropertySource(acfmps);
