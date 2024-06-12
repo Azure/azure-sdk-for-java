@@ -25,7 +25,6 @@ import com.azure.data.appconfiguration.implementation.ClientConstants;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -218,9 +217,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
     @Test
     public void defaultPipeline() {
-        TokenCredential tokenCredential = interceptorManager.isPlaybackMode()
-            ? new MockTokenCredential()
-            : new AzurePowerShellCredentialBuilder().build();
+        TokenCredential tokenCredential = TestHelper.getTokenCredential(interceptorManager);
 
         String endpoint = interceptorManager.isPlaybackMode()
             ? new ConfigurationClientCredentials(FAKE_CONNECTION_STRING).getBaseUri()
