@@ -192,10 +192,10 @@ public class KeyVaultClient {
         AccessToken accessToken = null;
 
         try {
-            String resource = URLEncoder.encode(keyVaultBaseUri, StandardCharsets.UTF_8);
+            String resource = URLEncoder.encode(keyVaultBaseUri, "UTF-8");
 
             if (managedIdentity != null) {
-                managedIdentity = URLEncoder.encode(managedIdentity, StandardCharsets.UTF_8);
+                managedIdentity = URLEncoder.encode(managedIdentity, "UTF-8");
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
