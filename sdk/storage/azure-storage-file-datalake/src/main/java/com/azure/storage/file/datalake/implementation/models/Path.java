@@ -329,7 +329,9 @@ public final class Path implements JsonSerializable<Path> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeBooleanField("isDirectory", this.isDirectory);
+        if (isDirectory != null) {
+            jsonWriter.writeStringField("isDirectory", String.valueOf(this.isDirectory));
+        }
         jsonWriter.writeStringField("lastModified", this.lastModified);
         if (contentLength != null) {
             jsonWriter.writeStringField("contentLength", String.valueOf(this.contentLength));

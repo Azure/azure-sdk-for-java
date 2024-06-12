@@ -83,7 +83,9 @@ public class DataLakeStorageCustomization extends Customization {
                 "{\n" +
                     "        jsonWriter.writeStartObject();\n" +
                     "        jsonWriter.writeStringField(\"name\", this.name);\n" +
-                    "        jsonWriter.writeBooleanField(\"isDirectory\", this.isDirectory);\n" +
+                    "        if (isDirectory != null) {\n" +
+                    "            jsonWriter.writeStringField(\"isDirectory\", String.valueOf(this.isDirectory));\n" +
+                    "        }\n" +
                     "        jsonWriter.writeStringField(\"lastModified\", this.lastModified);\n" +
                     "        if (contentLength != null) {\n" +
                     "            jsonWriter.writeStringField(\"contentLength\", String.valueOf(this.contentLength));\n" +
