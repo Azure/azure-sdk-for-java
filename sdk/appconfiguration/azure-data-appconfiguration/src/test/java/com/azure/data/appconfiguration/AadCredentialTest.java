@@ -10,8 +10,6 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
