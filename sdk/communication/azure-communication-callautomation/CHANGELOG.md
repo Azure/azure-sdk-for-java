@@ -1,8 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-- Introduced `TeamsRecordingStateChanged` and `TeamsComplianceRecordingStateChanged` events.
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -12,6 +10,21 @@
 
 ### Other Changes
 
+## 1.2.0 (2024-04-15)
+
+### Features Added
+
+- Support for Bring Your Own Storage recording option
+- Support for PauseOnStart recording option
+- Support for Recording state change with new recording kind's
+
+### Breaking Changes
+
+- Support for MicrosoftTeamsAppIdentifier CommunicationIdentifier
+
+### Bugs Fixed
+
+### Other Changes
 
 ## 1.1.4 (2024-04-23)
 
@@ -21,7 +34,6 @@
 
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-communication-common` from `1.3.1` to version `1.3.2`.
-
 
 ## 1.1.3 (2024-03-20)
 
