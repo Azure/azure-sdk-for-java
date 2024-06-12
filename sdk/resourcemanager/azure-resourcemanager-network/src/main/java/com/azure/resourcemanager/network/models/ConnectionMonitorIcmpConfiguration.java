@@ -25,8 +25,7 @@ public final class ConnectionMonitorIcmpConfiguration {
     }
 
     /**
-     * Get the disableTraceRoute property: Value indicating whether path evaluation with trace route should be
-     * disabled.
+     * Get the disableTraceRoute property: Value indicating whether path evaluation with trace route should be disabled.
      * 
      * @return the disableTraceRoute value.
      */
@@ -35,8 +34,7 @@ public final class ConnectionMonitorIcmpConfiguration {
     }
 
     /**
-     * Set the disableTraceRoute property: Value indicating whether path evaluation with trace route should be
-     * disabled.
+     * Set the disableTraceRoute property: Value indicating whether path evaluation with trace route should be disabled.
      * 
      * @param disableTraceRoute the disableTraceRoute value to set.
      * @return the ConnectionMonitorIcmpConfiguration object itself.

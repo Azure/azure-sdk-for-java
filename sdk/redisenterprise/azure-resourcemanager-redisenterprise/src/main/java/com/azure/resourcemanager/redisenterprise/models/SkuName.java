@@ -13,6 +13,11 @@ import java.util.Collection;
  */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
     /**
+     * Static value Enterprise_E5 for SkuName.
+     */
+    public static final SkuName ENTERPRISE_E5 = fromString("Enterprise_E5");
+
+    /**
      * Static value Enterprise_E10 for SkuName.
      */
     public static final SkuName ENTERPRISE_E10 = fromString("Enterprise_E10");

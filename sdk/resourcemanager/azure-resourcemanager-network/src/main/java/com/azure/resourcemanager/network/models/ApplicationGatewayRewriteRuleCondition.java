@@ -63,8 +63,8 @@ public final class ApplicationGatewayRewriteRuleCondition {
     }
 
     /**
-     * Get the pattern property: The pattern, either fixed string or regular expression, that evaluates the
-     * truthfulness of the condition.
+     * Get the pattern property: The pattern, either fixed string or regular expression, that evaluates the truthfulness
+     * of the condition.
      * 
      * @return the pattern value.
      */
@@ -73,8 +73,8 @@ public final class ApplicationGatewayRewriteRuleCondition {
     }
 
     /**
-     * Set the pattern property: The pattern, either fixed string or regular expression, that evaluates the
-     * truthfulness of the condition.
+     * Set the pattern property: The pattern, either fixed string or regular expression, that evaluates the truthfulness
+     * of the condition.
      * 
      * @param pattern the pattern value to set.
      * @return the ApplicationGatewayRewriteRuleCondition object itself.

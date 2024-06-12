@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureMachineScope;
+import com.azure.resourcemanager.network.models.PacketCaptureSettings;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
 import com.azure.resourcemanager.network.models.PacketCaptureTargetType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -94,8 +95,8 @@ public final class PacketCaptureResultInner {
     }
 
     /**
-     * Get the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are
-     * currently supported.
+     * Get the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
+     * supported.
      * 
      * @return the target value.
      */
@@ -104,8 +105,8 @@ public final class PacketCaptureResultInner {
     }
 
     /**
-     * Set the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are
-     * currently supported.
+     * Set the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
+     * supported.
      * 
      * @param target the target value to set.
      * @return the PacketCaptureResultInner object itself.
@@ -119,8 +120,8 @@ public final class PacketCaptureResultInner {
     }
 
     /**
-     * Get the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture.
-     * If both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     * Get the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
+     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
      * 
      * @return the scope value.
      */
@@ -129,8 +130,8 @@ public final class PacketCaptureResultInner {
     }
 
     /**
-     * Set the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture.
-     * If both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     * Set the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
+     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
      * 
      * @param scope the scope value to set.
      * @return the PacketCaptureResultInner object itself.
@@ -167,8 +168,7 @@ public final class PacketCaptureResultInner {
     }
 
     /**
-     * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are
-     * truncated.
+     * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
      * 
      * @return the bytesToCapturePerPacket value.
      */
@@ -177,8 +177,7 @@ public final class PacketCaptureResultInner {
     }
 
     /**
-     * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are
-     * truncated.
+     * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
      * 
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set.
      * @return the PacketCaptureResultInner object itself.
@@ -280,6 +279,56 @@ public final class PacketCaptureResultInner {
             this.innerProperties = new PacketCaptureResultProperties();
         }
         this.innerProperties().withFilters(filters);
+        return this;
+    }
+
+    /**
+     * Get the continuousCapture property: This continuous capture is a nullable boolean, which can hold 'null', 'true'
+     * or 'false' value. If we do not pass this parameter, it would be consider as 'null', default value is 'null'.
+     * 
+     * @return the continuousCapture value.
+     */
+    public Boolean continuousCapture() {
+        return this.innerProperties() == null ? null : this.innerProperties().continuousCapture();
+    }
+
+    /**
+     * Set the continuousCapture property: This continuous capture is a nullable boolean, which can hold 'null', 'true'
+     * or 'false' value. If we do not pass this parameter, it would be consider as 'null', default value is 'null'.
+     * 
+     * @param continuousCapture the continuousCapture value to set.
+     * @return the PacketCaptureResultInner object itself.
+     */
+    public PacketCaptureResultInner withContinuousCapture(Boolean continuousCapture) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureResultProperties();
+        }
+        this.innerProperties().withContinuousCapture(continuousCapture);
+        return this;
+    }
+
+    /**
+     * Get the captureSettings property: The capture setting holds the 'FileCount', 'FileSizeInBytes',
+     * 'SessionTimeLimitInSeconds' values.
+     * 
+     * @return the captureSettings value.
+     */
+    public PacketCaptureSettings captureSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().captureSettings();
+    }
+
+    /**
+     * Set the captureSettings property: The capture setting holds the 'FileCount', 'FileSizeInBytes',
+     * 'SessionTimeLimitInSeconds' values.
+     * 
+     * @param captureSettings the captureSettings value to set.
+     * @return the PacketCaptureResultInner object itself.
+     */
+    public PacketCaptureResultInner withCaptureSettings(PacketCaptureSettings captureSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCaptureResultProperties();
+        }
+        this.innerProperties().withCaptureSettings(captureSettings);
         return this;
     }
 

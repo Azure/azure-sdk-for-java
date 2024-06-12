@@ -7,9 +7,12 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The response from the ListKeys operation. */
+/**
+ * The response from the ListKeys operation.
+ */
 @Immutable
 public final class StorageAccountListKeysResultInner {
     /*
@@ -18,7 +21,9 @@ public final class StorageAccountListKeysResultInner {
     @JsonProperty(value = "keys", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageAccountKey> keys;
 
-    /** Creates an instance of StorageAccountListKeysResultInner class. */
+    /**
+     * Creates an instance of StorageAccountListKeysResultInner class.
+     */
     public StorageAccountListKeysResultInner() {
     }
 

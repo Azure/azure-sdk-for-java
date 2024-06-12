@@ -202,6 +202,7 @@ public class ModelHelper {
         properties.setRootSquash(sharePropertiesInternal.getRootSquash());
         properties.setMetadata(sharePropertiesInternal.getMetadata());
         properties.setProvisionedBandwidthMiBps(sharePropertiesInternal.getProvisionedBandwidthMiBps());
+        properties.setSnapshotVirtualDirectoryAccessEnabled(sharePropertiesInternal.isEnableSnapshotVirtualDirectoryAccess());
 
         return properties;
     }
@@ -459,6 +460,7 @@ public class ModelHelper {
             .setAccessTierChangeTime(headers.getXMsAccessTierChangeTime())
             .setAccessTierTransitionState(headers.getXMsAccessTierTransitionState())
             .setProtocols(ModelHelper.parseShareProtocols(headers.getXMsEnabledProtocols()))
+            .setSnapshotVirtualDirectoryAccessEnabled(headers.isXMsEnableSnapshotVirtualDirectoryAccess())
             .setRootSquash(headers.getXMsRootSquash());
 
         return new SimpleResponse<>(response, shareProperties);

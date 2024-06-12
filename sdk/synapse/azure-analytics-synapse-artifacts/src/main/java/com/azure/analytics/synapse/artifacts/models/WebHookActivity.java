@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * WebHook activity.
- */
+/** WebHook activity. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("WebHook")
 @JsonFlatten
@@ -67,15 +65,12 @@ public class WebHookActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.reportStatusOnCallBack")
     private Object reportStatusOnCallBack;
 
-    /**
-     * Creates an instance of WebHookActivity class.
-     */
-    public WebHookActivity() {
-    }
+    /** Creates an instance of WebHookActivity class. */
+    public WebHookActivity() {}
 
     /**
      * Get the method property: Rest API method for target endpoint.
-     * 
+     *
      * @return the method value.
      */
     public WebHookActivityMethod getMethod() {
@@ -84,7 +79,7 @@ public class WebHookActivity extends ControlActivity {
 
     /**
      * Set the method property: Rest API method for target endpoint.
-     * 
+     *
      * @param method the method value to set.
      * @return the WebHookActivity object itself.
      */
@@ -96,7 +91,7 @@ public class WebHookActivity extends ControlActivity {
     /**
      * Get the url property: WebHook activity target endpoint and path. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the url value.
      */
     public Object getUrl() {
@@ -106,7 +101,7 @@ public class WebHookActivity extends ControlActivity {
     /**
      * Set the url property: WebHook activity target endpoint and path. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param url the url value to set.
      * @return the WebHookActivity object itself.
      */
@@ -119,7 +114,7 @@ public class WebHookActivity extends ControlActivity {
      * Get the timeout property: The timeout within which the webhook should be called back. If there is no value
      * specified, it defaults to 10 minutes. Type: string. Pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     * 
+     *
      * @return the timeout value.
      */
     public String getTimeout() {
@@ -130,7 +125,7 @@ public class WebHookActivity extends ControlActivity {
      * Set the timeout property: The timeout within which the webhook should be called back. If there is no value
      * specified, it defaults to 10 minutes. Type: string. Pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     * 
+     *
      * @param timeout the timeout value to set.
      * @return the WebHookActivity object itself.
      */
@@ -143,7 +138,7 @@ public class WebHookActivity extends ControlActivity {
      * Get the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the headers value.
      */
     public Object getHeaders() {
@@ -154,7 +149,7 @@ public class WebHookActivity extends ControlActivity {
      * Set the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     * 
+     *
      * @param headers the headers value to set.
      * @return the WebHookActivity object itself.
      */
@@ -166,7 +161,7 @@ public class WebHookActivity extends ControlActivity {
     /**
      * Get the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the body value.
      */
     public Object getBody() {
@@ -176,7 +171,7 @@ public class WebHookActivity extends ControlActivity {
     /**
      * Set the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     * 
+     *
      * @param body the body value to set.
      * @return the WebHookActivity object itself.
      */
@@ -187,7 +182,7 @@ public class WebHookActivity extends ControlActivity {
 
     /**
      * Get the authentication property: Authentication method used for calling the endpoint.
-     * 
+     *
      * @return the authentication value.
      */
     public WebActivityAuthentication getAuthentication() {
@@ -196,7 +191,7 @@ public class WebHookActivity extends ControlActivity {
 
     /**
      * Set the authentication property: Authentication method used for calling the endpoint.
-     * 
+     *
      * @param authentication the authentication value to set.
      * @return the WebHookActivity object itself.
      */
@@ -209,7 +204,7 @@ public class WebHookActivity extends ControlActivity {
      * Get the reportStatusOnCallBack property: When set to true, statusCode, output and error in callback request body
      * will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback
      * request. Default is false. Type: boolean (or Expression with resultType boolean).
-     * 
+     *
      * @return the reportStatusOnCallBack value.
      */
     public Object getReportStatusOnCallBack() {
@@ -220,7 +215,7 @@ public class WebHookActivity extends ControlActivity {
      * Set the reportStatusOnCallBack property: When set to true, statusCode, output and error in callback request body
      * will be consumed by activity. The activity can be marked as failed by setting statusCode &gt;= 400 in callback
      * request. Default is false. Type: boolean (or Expression with resultType boolean).
-     * 
+     *
      * @param reportStatusOnCallBack the reportStatusOnCallBack value to set.
      * @return the WebHookActivity object itself.
      */
@@ -229,54 +224,42 @@ public class WebHookActivity extends ControlActivity {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebHookActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebHookActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebHookActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebHookActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebHookActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public WebHookActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

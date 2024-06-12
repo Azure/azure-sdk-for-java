@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Google Cloud Storage read settings.
- */
+/** Google Cloud Storage read settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GoogleCloudStorageReadSettings")
 @Fluent
@@ -80,16 +78,13 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
-    /**
-     * Creates an instance of GoogleCloudStorageReadSettings class.
-     */
-    public GoogleCloudStorageReadSettings() {
-    }
+    /** Creates an instance of GoogleCloudStorageReadSettings class. */
+    public GoogleCloudStorageReadSettings() {}
 
     /**
-     * Get the recursive property: If true, files under the folder path will be read recursively. Default is true.
-     * Type: boolean (or Expression with resultType boolean).
-     * 
+     * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
+     * boolean (or Expression with resultType boolean).
+     *
      * @return the recursive value.
      */
     public Object getRecursive() {
@@ -97,9 +92,9 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the recursive property: If true, files under the folder path will be read recursively. Default is true.
-     * Type: boolean (or Expression with resultType boolean).
-     * 
+     * Set the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
+     * boolean (or Expression with resultType boolean).
+     *
      * @param recursive the recursive value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
@@ -111,7 +106,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Get the wildcardFolderPath property: Google Cloud Storage wildcardFolderPath. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the wildcardFolderPath value.
      */
     public Object getWildcardFolderPath() {
@@ -121,7 +116,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Set the wildcardFolderPath property: Google Cloud Storage wildcardFolderPath. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param wildcardFolderPath the wildcardFolderPath value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
@@ -133,7 +128,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Get the wildcardFileName property: Google Cloud Storage wildcardFileName. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the wildcardFileName value.
      */
     public Object getWildcardFileName() {
@@ -143,7 +138,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Set the wildcardFileName property: Google Cloud Storage wildcardFileName. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param wildcardFileName the wildcardFileName value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
@@ -155,7 +150,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Get the prefix property: The prefix filter for the Google Cloud Storage object name. Type: string (or Expression
      * with resultType string).
-     * 
+     *
      * @return the prefix value.
      */
     public Object getPrefix() {
@@ -165,7 +160,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Set the prefix property: The prefix filter for the Google Cloud Storage object name. Type: string (or Expression
      * with resultType string).
-     * 
+     *
      * @param prefix the prefix value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
@@ -175,9 +170,9 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the fileListPath property: Point to a text file that lists each file (relative path to the path configured
-     * in the dataset) that you want to copy. Type: string (or Expression with resultType string).
-     * 
+     * Get the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
+     * the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
      * @return the fileListPath value.
      */
     public Object getFileListPath() {
@@ -185,9 +180,9 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the fileListPath property: Point to a text file that lists each file (relative path to the path configured
-     * in the dataset) that you want to copy. Type: string (or Expression with resultType string).
-     * 
+     * Set the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
+     * the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
      * @param fileListPath the fileListPath value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
@@ -199,7 +194,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
      * Expression with resultType boolean).
-     * 
+     *
      * @return the enablePartitionDiscovery value.
      */
     public Object getEnablePartitionDiscovery() {
@@ -209,7 +204,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
      * Expression with resultType boolean).
-     * 
+     *
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
@@ -219,9 +214,9 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string
-     * (or Expression with resultType string).
-     * 
+     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
+     * Expression with resultType string).
+     *
      * @return the partitionRootPath value.
      */
     public Object getPartitionRootPath() {
@@ -229,9 +224,9 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string
-     * (or Expression with resultType string).
-     * 
+     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
+     * Expression with resultType string).
+     *
      * @param partitionRootPath the partitionRootPath value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
@@ -243,7 +238,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Get the deleteFilesAfterCompletion property: Indicates whether the source files need to be deleted after copy
      * completion. Default is false. Type: boolean (or Expression with resultType boolean).
-     * 
+     *
      * @return the deleteFilesAfterCompletion value.
      */
     public Object getDeleteFilesAfterCompletion() {
@@ -253,7 +248,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Set the deleteFilesAfterCompletion property: Indicates whether the source files need to be deleted after copy
      * completion. Default is false. Type: boolean (or Expression with resultType boolean).
-     * 
+     *
      * @param deleteFilesAfterCompletion the deleteFilesAfterCompletion value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
@@ -265,7 +260,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Get the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the modifiedDatetimeStart value.
      */
     public Object getModifiedDatetimeStart() {
@@ -275,7 +270,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Set the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
@@ -287,7 +282,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Get the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @return the modifiedDatetimeEnd value.
      */
     public Object getModifiedDatetimeEnd() {
@@ -297,7 +292,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * Set the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     * 
+     *
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
@@ -306,9 +301,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public GoogleCloudStorageReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

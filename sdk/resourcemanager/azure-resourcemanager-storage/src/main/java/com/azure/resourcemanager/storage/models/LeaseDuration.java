@@ -6,14 +6,21 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Specifies whether the lease on a container is of infinite or fixed duration, only when the container is leased. */
+/**
+ * Specifies whether the lease on a container is of infinite or fixed duration, only when the container is leased.
+ */
 public final class LeaseDuration extends ExpandableStringEnum<LeaseDuration> {
-    /** Static value Infinite for LeaseDuration. */
+    /**
+     * Static value Infinite for LeaseDuration.
+     */
     public static final LeaseDuration INFINITE = fromString("Infinite");
 
-    /** Static value Fixed for LeaseDuration. */
+    /**
+     * Static value Fixed for LeaseDuration.
+     */
     public static final LeaseDuration FIXED = fromString("Fixed");
 
     /**

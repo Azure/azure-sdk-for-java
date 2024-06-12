@@ -17,20 +17,21 @@ import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
+import com.azure.ai.openai.assistants.models.FileSearchToolDefinition;
 import com.azure.ai.openai.assistants.models.FunctionDefinition;
 import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
-import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
-import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
-import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
+import com.azure.ai.openai.assistants.models.VectorStoreDeletionStatus;
+import com.azure.ai.openai.assistants.models.VectorStoreUpdateOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -64,7 +65,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
-    // Remove the `id` and `name` sanitizers from the list of common sanitizers.
+    // Remove the `id`, `name`, `Set-Cookie` sanitizers from the list of common sanitizers.
+    // See list of sanitizers: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs
     private static final String[] REMOVE_SANITIZER_ID = {"AZSDK3430", "AZSDK3493", "AZSDK2015"};
 
     private static final String JAVA_SDK_TESTS_ASSISTANTS_TXT =  "java_sdk_tests_assistants.txt";
@@ -121,7 +123,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+            removeDefaultSanitizers();
         }
 
         return builder;
@@ -144,7 +146,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+            removeDefaultSanitizers();
         }
 
         return builder;
@@ -163,6 +165,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
     }
 
+    private void removeDefaultSanitizers() {
+        interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+    }
+
     public static final String GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
 
     void createAssistantsRunner(Consumer<AssistantCreationOptions> testRunner) {
@@ -172,16 +178,9 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                 .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
     }
 
-    void createAssistantsFileRunner(Consumer<AssistantCreationOptions> testRunner) {
-        testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-                        .setName("Math Tutor")
-                        .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
-                        .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
-    }
-
     void createRunRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
         testRunner.accept(new AssistantThreadCreationOptions()
-                .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
                         "I need to solve the equation `3x + 11 = 14`. Can you help me?"))));
     }
 
@@ -197,7 +196,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(
                 new CreateAndRunThreadOptions(assistantId)
                         .setThread(new AssistantThreadCreationOptions()
-                                .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                                .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
                                         "I need to solve the equation `3x + 11 = 14`. Can you help me?")))));
 
     }
@@ -206,7 +205,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(
             new CreateAndRunThreadOptions(assistantId)
                 .setThread(new AssistantThreadCreationOptions()
-                    .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                    .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
                         "Please make a graph for my boilerplate equation")))));
 
     }
@@ -217,13 +216,12 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     void createRetrievalRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
         FileDetails fileDetails = new FileDetails(
-            BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))
-        ).setFilename("java_sdk_tests_assistants.txt");
+            BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")), "java_sdk_tests_assistants.txt");
 
         AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
             .setName("Java SDK Retrieval Sample")
             .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
-            .setTools(Arrays.asList(new RetrievalToolDefinition()));
+            .setTools(Arrays.asList(new FileSearchToolDefinition()));
 
         testRunner.accept(fileDetails, assistantOptions);
     }
@@ -247,23 +245,26 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     void uploadAssistantTextFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
         String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-            .setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
         testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
     }
 
     void uploadAssistantImageFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
         String fileName = MS_LOGO_PNG;
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-            .setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
         testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
     }
 
     void uploadFineTuningJsonFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
         String fileName = JAVA_SDK_TESTS_FINE_TUNING_JSON;
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-            .setFilename(fileName);
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
         testRunner.accept(fileDetails, FilePurpose.FINE_TUNE);
+    }
+
+    void modifyVectorStoreRunner(Consumer<VectorStoreUpdateOptions> testRunner) {
+        VectorStoreUpdateOptions updateVectorStoreOptions = new VectorStoreUpdateOptions()
+                .setName("updatedName");
+        testRunner.accept(updateVectorStoreOptions);
     }
 
     public HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
@@ -382,54 +383,72 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return createAssistant(client, assistantCreationOptions);
     }
 
-    String uploadFile(AssistantsClient client) {
-        String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-            .setFilename(fileName);
+    String uploadFile(AssistantsClient client, String fileName, FilePurpose filePurpose) {
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
 
         OpenAIFile openAIFile = client.uploadFile(
             fileDetails,
-            FilePurpose.ASSISTANTS);
+            filePurpose);
         assertNotNull(openAIFile.getId());
         assertNotNull(openAIFile.getCreatedAt());
         return openAIFile.getId();
     }
 
-    void deleteFile(AssistantsClient client, String fileId) {
-        if (CoreUtils.isNullOrEmpty(fileId)) {
-            return;
-        }
-        FileDeletionStatus deletionStatus = client.deleteFile(fileId);
-        assertEquals(fileId, deletionStatus.getId());
-        assertTrue(deletionStatus.isDeleted());
+    String uploadFileAsync(AssistantsAsyncClient client, String fileName, FilePurpose filePurpose) {
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
+
+        OpenAIFile openAIFile = client.uploadFile(
+                fileDetails,
+                filePurpose).block();
+        assertNotNull(openAIFile.getId());
+        assertNotNull(openAIFile.getCreatedAt());
+        return openAIFile.getId();
     }
 
-    String uploadFile(AssistantsAsyncClient client) {
-        AtomicReference<String> openAIFileRef = new AtomicReference<>();
-        String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
-        StepVerifier.create(client.uploadFile(
-            new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-                .setFilename(fileName),
-            FilePurpose.ASSISTANTS))
-                .assertNext(openAIFile -> {
-                    assertNotNull(openAIFile.getId());
-                    assertNotNull(openAIFile.getCreatedAt());
-                    openAIFileRef.set(openAIFile.getId());
-                })
-                .verifyComplete();
-        return openAIFileRef.get();
-    }
-
-    void deleteFile(AssistantsAsyncClient client, String fileId) {
-        if (CoreUtils.isNullOrEmpty(fileId)) {
+    void deleteFiles(AssistantsClient client, String... fileIds) {
+        if (CoreUtils.isNullOrEmpty(fileIds)) {
             return;
         }
-        StepVerifier.create(client.deleteFile(fileId))
-                .assertNext(deletionStatus -> {
-                    assertEquals(fileId, deletionStatus.getId());
-                    assertTrue(deletionStatus.isDeleted());
-                })
-                .verifyComplete();
+        for (String fileId : fileIds) {
+            FileDeletionStatus deletionStatus = client.deleteFile(fileId);
+            assertEquals(fileId, deletionStatus.getId());
+            assertTrue(deletionStatus.isDeleted());
+        }
+    }
+
+    void deleteFilesAsync(AssistantsAsyncClient client, String... fileIds) {
+        if (CoreUtils.isNullOrEmpty(fileIds)) {
+            return;
+        }
+        for (String fileId : fileIds) {
+            StepVerifier.create(client.deleteFile(fileId))
+                    .assertNext(deletionStatus -> {
+                        assertEquals(fileId, deletionStatus.getId());
+                        assertTrue(deletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+        }
+    }
+
+    void deleteVectorStores(AssistantsClient client, String... vectorStoreIds) {
+        if (!CoreUtils.isNullOrEmpty(vectorStoreIds)) {
+            for (String vectorStoreId : vectorStoreIds) {
+                VectorStoreDeletionStatus vectorStoreDeletionStatus = client.deleteVectorStore(vectorStoreId);
+                assertTrue(vectorStoreDeletionStatus.isDeleted());
+            }
+        }
+    }
+
+    void deleteVectorStoresAsync(AssistantsAsyncClient client, String... vectorStoreIds) {
+        if (!CoreUtils.isNullOrEmpty(vectorStoreIds)) {
+            for (String vectorStoreId : vectorStoreIds) {
+                StepVerifier.create(client.deleteVectorStore(vectorStoreId))
+                        .assertNext(vectorStoreDeletionStatus -> {
+                            assertTrue(vectorStoreDeletionStatus.isDeleted());
+                        })
+                        .verifyComplete();
+            }
+        }
     }
 
     String createAssistant(AssistantsClient client, AssistantCreationOptions assistantCreationOptions) {
@@ -569,25 +588,5 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertEquals("thread.message", threadMessage.getObject());
         assertEquals(MessageRole.USER, threadMessage.getRole());
         assertFalse(threadMessage.getContent().isEmpty());
-    }
-
-
-    void validateOpenAIPageableListOfMessageFile(PageableList<MessageFile> pageableList,
-                                                 String messageId, List<String> fileIdList) {
-        assertNotNull(pageableList);
-        assertEquals("list", pageableList.getObject());
-        List<MessageFile> messageFiles = pageableList.getData();
-        assertNotNull(messageFiles);
-        assertEquals(fileIdList.size(), messageFiles.size());
-        for (int i = 0; i < messageFiles.size(); i++) {
-            validateMessageFile(messageFiles.get(i), messageId, fileIdList.get(i));
-        }
-    }
-    void validateMessageFile(MessageFile messageFile, String messageId, String fileId) {
-        assertNotNull(messageFile);
-        assertNotNull(fileId, messageFile.getId());
-        assertNotNull(messageFile.getCreatedAt());
-        assertEquals("thread.message.file", messageFile.getObject());
-        assertEquals(messageId, messageFile.getMessageId());
     }
 }

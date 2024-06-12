@@ -78,8 +78,8 @@ public final class MatchVariable {
      */
     public void validate() {
         if (variableName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property variableName in model MatchVariable"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property variableName in model MatchVariable"));
         }
     }
 

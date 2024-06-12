@@ -67,10 +67,11 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
             assert responseCode == 200 : "Unexpected response code: " + responseCode;
             response.getBody().close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
 
+    @Override
     public Mono<Void> runAsync() {
         return Mono.error(new UnsupportedOperationException("Not implemented"));
     }
@@ -82,7 +83,7 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
         request.getHeaders().set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-        request.getHeaders().set(HttpHeaderName.ACCEPT,"application/json");
+        request.getHeaders().set(HttpHeaderName.ACCEPT, "application/json");
         return request;
     }
 

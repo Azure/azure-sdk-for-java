@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Data flow debug settings.
- */
+/** Data flow debug settings. */
 @Fluent
 public final class DataFlowDebugPackageDebugSettings {
     /*
@@ -32,15 +30,12 @@ public final class DataFlowDebugPackageDebugSettings {
     @JsonProperty(value = "datasetParameters")
     private Object datasetParameters;
 
-    /**
-     * Creates an instance of DataFlowDebugPackageDebugSettings class.
-     */
-    public DataFlowDebugPackageDebugSettings() {
-    }
+    /** Creates an instance of DataFlowDebugPackageDebugSettings class. */
+    public DataFlowDebugPackageDebugSettings() {}
 
     /**
      * Get the sourceSettings property: Source setting for data flow debug.
-     * 
+     *
      * @return the sourceSettings value.
      */
     public List<DataFlowSourceSetting> getSourceSettings() {
@@ -49,7 +44,7 @@ public final class DataFlowDebugPackageDebugSettings {
 
     /**
      * Set the sourceSettings property: Source setting for data flow debug.
-     * 
+     *
      * @param sourceSettings the sourceSettings value to set.
      * @return the DataFlowDebugPackageDebugSettings object itself.
      */
@@ -60,7 +55,7 @@ public final class DataFlowDebugPackageDebugSettings {
 
     /**
      * Get the parameters property: Data flow parameters.
-     * 
+     *
      * @return the parameters value.
      */
     public Map<String, Object> getParameters() {
@@ -69,7 +64,7 @@ public final class DataFlowDebugPackageDebugSettings {
 
     /**
      * Set the parameters property: Data flow parameters.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the DataFlowDebugPackageDebugSettings object itself.
      */
@@ -80,7 +75,7 @@ public final class DataFlowDebugPackageDebugSettings {
 
     /**
      * Get the datasetParameters property: Parameters for dataset.
-     * 
+     *
      * @return the datasetParameters value.
      */
     public Object getDatasetParameters() {
@@ -89,7 +84,7 @@ public final class DataFlowDebugPackageDebugSettings {
 
     /**
      * Set the datasetParameters property: Parameters for dataset.
-     * 
+     *
      * @param datasetParameters the datasetParameters value to set.
      * @return the DataFlowDebugPackageDebugSettings object itself.
      */

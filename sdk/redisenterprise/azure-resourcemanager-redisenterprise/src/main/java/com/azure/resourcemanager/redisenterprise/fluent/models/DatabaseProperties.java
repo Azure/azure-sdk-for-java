@@ -7,6 +7,7 @@ package com.azure.resourcemanager.redisenterprise.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
+import com.azure.resourcemanager.redisenterprise.models.DeferUpgradeSetting;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
 import com.azure.resourcemanager.redisenterprise.models.Module;
 import com.azure.resourcemanager.redisenterprise.models.Persistence;
@@ -24,8 +25,7 @@ import java.util.List;
 @Fluent
 public final class DatabaseProperties {
     /*
-     * Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is
-     * TLS-encrypted.
+     * Specifies whether redis clients can connect using TLS-encrypted or plaintext redis protocols. Default is TLS-encrypted.
      */
     @JsonProperty(value = "clientProtocol")
     private Protocol clientProtocol;
@@ -77,6 +77,18 @@ public final class DatabaseProperties {
      */
     @JsonProperty(value = "geoReplication")
     private DatabasePropertiesGeoReplication geoReplication;
+
+    /*
+     * Version of Redis the database is running on, e.g. '6.0'
+     */
+    @JsonProperty(value = "redisVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String redisVersion;
+
+    /*
+     * Option to defer upgrade when newest version is released - default is NotDeferred. Learn more:  https://aka.ms/redisversionupgrade
+     */
+    @JsonProperty(value = "deferUpgrade")
+    private DeferUpgradeSetting deferUpgrade;
 
     /**
      * Creates an instance of DatabaseProperties class.
@@ -207,8 +219,8 @@ public final class DatabaseProperties {
     }
 
     /**
-     * Get the modules property: Optional set of redis modules to enable in this database - modules can only be added
-     * at creation time.
+     * Get the modules property: Optional set of redis modules to enable in this database - modules can only be added at
+     * creation time.
      * 
      * @return the modules value.
      */
@@ -217,8 +229,8 @@ public final class DatabaseProperties {
     }
 
     /**
-     * Set the modules property: Optional set of redis modules to enable in this database - modules can only be added
-     * at creation time.
+     * Set the modules property: Optional set of redis modules to enable in this database - modules can only be added at
+     * creation time.
      * 
      * @param modules the modules value to set.
      * @return the DatabaseProperties object itself.
@@ -245,6 +257,37 @@ public final class DatabaseProperties {
      */
     public DatabaseProperties withGeoReplication(DatabasePropertiesGeoReplication geoReplication) {
         this.geoReplication = geoReplication;
+        return this;
+    }
+
+    /**
+     * Get the redisVersion property: Version of Redis the database is running on, e.g. '6.0'.
+     * 
+     * @return the redisVersion value.
+     */
+    public String redisVersion() {
+        return this.redisVersion;
+    }
+
+    /**
+     * Get the deferUpgrade property: Option to defer upgrade when newest version is released - default is NotDeferred.
+     * Learn more: https://aka.ms/redisversionupgrade.
+     * 
+     * @return the deferUpgrade value.
+     */
+    public DeferUpgradeSetting deferUpgrade() {
+        return this.deferUpgrade;
+    }
+
+    /**
+     * Set the deferUpgrade property: Option to defer upgrade when newest version is released - default is NotDeferred.
+     * Learn more: https://aka.ms/redisversionupgrade.
+     * 
+     * @param deferUpgrade the deferUpgrade value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withDeferUpgrade(DeferUpgradeSetting deferUpgrade) {
+        this.deferUpgrade = deferUpgrade;
         return this;
     }
 

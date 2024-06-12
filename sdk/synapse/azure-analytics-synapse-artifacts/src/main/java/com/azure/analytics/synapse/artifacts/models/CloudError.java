@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The object that defines the structure of an Azure Synapse error response.
- */
+/** The object that defines the structure of an Azure Synapse error response. */
 @JsonFlatten
 @Fluent
 public class CloudError {
@@ -39,15 +37,12 @@ public class CloudError {
     @JsonProperty(value = "error.details")
     private List<CloudError> details;
 
-    /**
-     * Creates an instance of CloudError class.
-     */
-    public CloudError() {
-    }
+    /** Creates an instance of CloudError class. */
+    public CloudError() {}
 
     /**
      * Get the code property: Error code.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -56,7 +51,7 @@ public class CloudError {
 
     /**
      * Set the code property: Error code.
-     * 
+     *
      * @param code the code value to set.
      * @return the CloudError object itself.
      */
@@ -67,7 +62,7 @@ public class CloudError {
 
     /**
      * Get the message property: Error message.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -76,7 +71,7 @@ public class CloudError {
 
     /**
      * Set the message property: Error message.
-     * 
+     *
      * @param message the message value to set.
      * @return the CloudError object itself.
      */
@@ -87,7 +82,7 @@ public class CloudError {
 
     /**
      * Get the target property: Property name/path in request associated with error.
-     * 
+     *
      * @return the target value.
      */
     public String getTarget() {
@@ -96,7 +91,7 @@ public class CloudError {
 
     /**
      * Set the target property: Property name/path in request associated with error.
-     * 
+     *
      * @param target the target value to set.
      * @return the CloudError object itself.
      */
@@ -107,7 +102,7 @@ public class CloudError {
 
     /**
      * Get the details property: Array with additional error details.
-     * 
+     *
      * @return the details value.
      */
     public List<CloudError> getDetails() {
@@ -116,7 +111,7 @@ public class CloudError {
 
     /**
      * Set the details property: Array with additional error details.
-     * 
+     *
      * @param details the details value to set.
      * @return the CloudError object itself.
      */

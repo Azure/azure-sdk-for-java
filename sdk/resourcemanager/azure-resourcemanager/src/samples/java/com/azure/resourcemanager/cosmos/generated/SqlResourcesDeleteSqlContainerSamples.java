@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class SqlResourcesDeleteSqlContainerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBSqlContainerDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBSqlContainerDelete.json
      */
     /**
      * Sample code: CosmosDBSqlContainerDelete.
@@ -18,7 +17,10 @@ public final class SqlResourcesDeleteSqlContainerSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlContainerDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getSqlResources().deleteSqlContainer("rg1", "ddb1",
-            "databaseName", "containerName", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getSqlResources()
+            .deleteSqlContainer("rg1", "ddb1", "databaseName", "containerName", com.azure.core.util.Context.NONE);
     }
 }

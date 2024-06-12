@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-vertx</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
+  <version>1.0.0-beta.20</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
 
   <name>Microsoft Azure Vert.x HTTP Client Library</name>
   <description>This package contains the Vert.x HTTP client plugin for azure-core.</description>
@@ -107,13 +107,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

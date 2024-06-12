@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class WebApplicationFirewallPoliciesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/WafListAllPolicies.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/WafListAllPolicies.json
      */
     /**
      * Sample code: Lists all WAF policies in a subscription.
@@ -18,7 +17,10 @@ public final class WebApplicationFirewallPoliciesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listsAllWAFPoliciesInASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getWebApplicationFirewallPolicies()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getWebApplicationFirewallPolicies()
             .list(com.azure.core.util.Context.NONE);
     }
 }

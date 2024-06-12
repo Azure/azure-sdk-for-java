@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Linked service reference type.
- */
+/** Linked service reference type. */
 @Fluent
 public final class LinkedServiceReference {
     /*
@@ -31,15 +29,12 @@ public final class LinkedServiceReference {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
-    /**
-     * Creates an instance of LinkedServiceReference class.
-     */
-    public LinkedServiceReference() {
-    }
+    /** Creates an instance of LinkedServiceReference class. */
+    public LinkedServiceReference() {}
 
     /**
      * Get the type property: Linked service reference type.
-     * 
+     *
      * @return the type value.
      */
     public Type getType() {
@@ -48,7 +43,7 @@ public final class LinkedServiceReference {
 
     /**
      * Set the type property: Linked service reference type.
-     * 
+     *
      * @param type the type value to set.
      * @return the LinkedServiceReference object itself.
      */
@@ -59,7 +54,7 @@ public final class LinkedServiceReference {
 
     /**
      * Get the referenceName property: Reference LinkedService name.
-     * 
+     *
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -68,7 +63,7 @@ public final class LinkedServiceReference {
 
     /**
      * Set the referenceName property: Reference LinkedService name.
-     * 
+     *
      * @param referenceName the referenceName value to set.
      * @return the LinkedServiceReference object itself.
      */
@@ -79,7 +74,7 @@ public final class LinkedServiceReference {
 
     /**
      * Get the parameters property: Arguments for LinkedService.
-     * 
+     *
      * @return the parameters value.
      */
     public Map<String, Object> getParameters() {
@@ -88,7 +83,7 @@ public final class LinkedServiceReference {
 
     /**
      * Set the parameters property: Arguments for LinkedService.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the LinkedServiceReference object itself.
      */

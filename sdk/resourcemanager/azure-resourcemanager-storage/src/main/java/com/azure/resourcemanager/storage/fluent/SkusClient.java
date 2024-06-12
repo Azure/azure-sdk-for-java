@@ -11,11 +11,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.SkuInformationInner;
 
-/** An instance of this class provides access to all the operations defined in SkusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SkusClient.
+ */
 public interface SkusClient {
     /**
      * Lists the available SKUs supported by Microsoft.Storage for given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Storage SKUs operation as paginated response with {@link PagedFlux}.
@@ -25,7 +27,7 @@ public interface SkusClient {
 
     /**
      * Lists the available SKUs supported by Microsoft.Storage for given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Storage SKUs operation as paginated response with {@link PagedIterable}.
@@ -35,7 +37,7 @@ public interface SkusClient {
 
     /**
      * Lists the available SKUs supported by Microsoft.Storage for given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

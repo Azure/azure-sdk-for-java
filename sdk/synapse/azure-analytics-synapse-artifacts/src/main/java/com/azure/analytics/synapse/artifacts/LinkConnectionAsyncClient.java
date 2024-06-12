@@ -21,17 +21,14 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the asynchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class LinkConnectionAsyncClient {
-    @Generated
-    private final LinkConnectionsImpl serviceClient;
+    @Generated private final LinkConnectionsImpl serviceClient;
 
     /**
      * Initializes an instance of LinkConnectionAsyncClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -41,7 +38,7 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * List link connections.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedFlux}.
@@ -54,7 +51,7 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * Creates or updates a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @param linkConnection Link connection resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,14 +61,14 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LinkConnectionResource>> createOrUpdateWithResponse(String linkConnectionName,
-        LinkConnectionResource linkConnection) {
+    public Mono<Response<LinkConnectionResource>> createOrUpdateWithResponse(
+            String linkConnectionName, LinkConnectionResource linkConnection) {
         return this.serviceClient.createOrUpdateWithResponseAsync(linkConnectionName, linkConnection);
     }
 
     /**
      * Creates or updates a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @param linkConnection Link connection resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,14 +78,14 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionResource> createOrUpdate(String linkConnectionName,
-        LinkConnectionResource linkConnection) {
+    public Mono<LinkConnectionResource> createOrUpdate(
+            String linkConnectionName, LinkConnectionResource linkConnection) {
         return this.serviceClient.createOrUpdateAsync(linkConnectionName, linkConnection);
     }
 
     /**
      * Get a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -103,7 +100,7 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * Get a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -118,7 +115,7 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * Delete a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -133,7 +130,7 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * Delete a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -148,7 +145,7 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * Edit tables for a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @param editTablesRequest Edit tables request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,7 +161,7 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * Edit tables for a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @param editTablesRequest Edit tables request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +178,7 @@ public final class LinkConnectionAsyncClient {
     /**
      * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -197,7 +194,7 @@ public final class LinkConnectionAsyncClient {
     /**
      * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -213,7 +210,7 @@ public final class LinkConnectionAsyncClient {
     /**
      * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -229,7 +226,7 @@ public final class LinkConnectionAsyncClient {
     /**
      * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -244,13 +241,13 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * Get the detailed status of a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed status of a link connection along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the detailed status of a link connection along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -260,7 +257,7 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * Get the detailed status of a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -275,7 +272,7 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * List the link tables of a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -290,7 +287,7 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * List the link tables of a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -305,7 +302,7 @@ public final class LinkConnectionAsyncClient {
 
     /**
      * Query the link table status of a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @param queryTableStatusRequest Query table status request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,14 +312,14 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LinkConnectionQueryTableStatus>> queryTableStatusWithResponse(String linkConnectionName,
-        QueryTableStatusRequest queryTableStatusRequest) {
+    public Mono<Response<LinkConnectionQueryTableStatus>> queryTableStatusWithResponse(
+            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest) {
         return this.serviceClient.queryTableStatusWithResponseAsync(linkConnectionName, queryTableStatusRequest);
     }
 
     /**
      * Query the link table status of a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @param queryTableStatusRequest Query table status request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,14 +329,14 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionQueryTableStatus> queryTableStatus(String linkConnectionName,
-        QueryTableStatusRequest queryTableStatusRequest) {
+    public Mono<LinkConnectionQueryTableStatus> queryTableStatus(
+            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest) {
         return this.serviceClient.queryTableStatusAsync(linkConnectionName, queryTableStatusRequest);
     }
 
     /**
      * Update landing zone credential of a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @param updateLandingZoneCredentialRequest update landing zone credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,15 +346,15 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateLandingZoneCredentialWithResponse(String linkConnectionName,
-        UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
-        return this.serviceClient.updateLandingZoneCredentialWithResponseAsync(linkConnectionName,
-            updateLandingZoneCredentialRequest);
+    public Mono<Response<Void>> updateLandingZoneCredentialWithResponse(
+            String linkConnectionName, UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
+        return this.serviceClient.updateLandingZoneCredentialWithResponseAsync(
+                linkConnectionName, updateLandingZoneCredentialRequest);
     }
 
     /**
      * Update landing zone credential of a link connection.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @param updateLandingZoneCredentialRequest update landing zone credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,16 +364,16 @@ public final class LinkConnectionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateLandingZoneCredential(String linkConnectionName,
-        UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
-        return this.serviceClient.updateLandingZoneCredentialAsync(linkConnectionName,
-            updateLandingZoneCredentialRequest);
+    public Mono<Void> updateLandingZoneCredential(
+            String linkConnectionName, UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
+        return this.serviceClient.updateLandingZoneCredentialAsync(
+                linkConnectionName, updateLandingZoneCredentialRequest);
     }
 
     /**
      * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -392,7 +389,7 @@ public final class LinkConnectionAsyncClient {
     /**
      * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -408,7 +405,7 @@ public final class LinkConnectionAsyncClient {
     /**
      * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -424,7 +421,7 @@ public final class LinkConnectionAsyncClient {
     /**
      * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     * 
+     *
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

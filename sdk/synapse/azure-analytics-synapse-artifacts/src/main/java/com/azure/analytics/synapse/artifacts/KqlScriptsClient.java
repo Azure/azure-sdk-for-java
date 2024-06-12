@@ -14,17 +14,14 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/**
- * Initializes a new instance of the synchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class KqlScriptsClient {
-    @Generated
-    private final KqlScriptsImpl serviceClient;
+    @Generated private final KqlScriptsImpl serviceClient;
 
     /**
      * Initializes an instance of KqlScriptsClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -34,7 +31,7 @@ public final class KqlScriptsClient {
 
     /**
      * Get all KQL scripts.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all KQL scripts as paginated response with {@link PagedIterable}.
@@ -47,7 +44,7 @@ public final class KqlScriptsClient {
 
     /**
      * Get all KQL scripts.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.

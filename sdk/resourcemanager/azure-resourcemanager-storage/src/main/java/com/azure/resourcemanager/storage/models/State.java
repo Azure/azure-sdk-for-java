@@ -6,23 +6,36 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Gets the state of virtual network rule. */
+/**
+ * Gets the state of virtual network rule.
+ */
 public final class State extends ExpandableStringEnum<State> {
-    /** Static value Provisioning for State. */
+    /**
+     * Static value Provisioning for State.
+     */
     public static final State PROVISIONING = fromString("Provisioning");
 
-    /** Static value Deprovisioning for State. */
+    /**
+     * Static value Deprovisioning for State.
+     */
     public static final State DEPROVISIONING = fromString("Deprovisioning");
 
-    /** Static value Succeeded for State. */
+    /**
+     * Static value Succeeded for State.
+     */
     public static final State SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for State. */
+    /**
+     * Static value Failed for State.
+     */
     public static final State FAILED = fromString("Failed");
 
-    /** Static value NetworkSourceDeleted for State. */
+    /**
+     * Static value NetworkSourceDeleted for State.
+     */
     public static final State NETWORK_SOURCE_DELETED = fromString("NetworkSourceDeleted");
 
     /**

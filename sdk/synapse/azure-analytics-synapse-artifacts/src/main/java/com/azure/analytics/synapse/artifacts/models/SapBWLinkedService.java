@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * SAP Business Warehouse Linked Service.
- */
+/** SAP Business Warehouse Linked Service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapBW")
 @JsonFlatten
@@ -59,15 +57,12 @@ public class SapBWLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /**
-     * Creates an instance of SapBWLinkedService class.
-     */
-    public SapBWLinkedService() {
-    }
+    /** Creates an instance of SapBWLinkedService class. */
+    public SapBWLinkedService() {}
 
     /**
      * Get the server property: Host name of the SAP BW instance. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the server value.
      */
     public Object getServer() {
@@ -76,7 +71,7 @@ public class SapBWLinkedService extends LinkedService {
 
     /**
      * Set the server property: Host name of the SAP BW instance. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param server the server value to set.
      * @return the SapBWLinkedService object itself.
      */
@@ -86,9 +81,9 @@ public class SapBWLinkedService extends LinkedService {
     }
 
     /**
-     * Get the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented
-     * as a string.) Type: string (or Expression with resultType string).
-     * 
+     * Get the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented as
+     * a string.) Type: string (or Expression with resultType string).
+     *
      * @return the systemNumber value.
      */
     public Object getSystemNumber() {
@@ -96,9 +91,9 @@ public class SapBWLinkedService extends LinkedService {
     }
 
     /**
-     * Set the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented
-     * as a string.) Type: string (or Expression with resultType string).
-     * 
+     * Set the systemNumber property: System number of the BW system. (Usually a two-digit decimal number represented as
+     * a string.) Type: string (or Expression with resultType string).
+     *
      * @param systemNumber the systemNumber value to set.
      * @return the SapBWLinkedService object itself.
      */
@@ -110,7 +105,7 @@ public class SapBWLinkedService extends LinkedService {
     /**
      * Get the clientId property: Client ID of the client on the BW system. (Usually a three-digit decimal number
      * represented as a string) Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -120,7 +115,7 @@ public class SapBWLinkedService extends LinkedService {
     /**
      * Set the clientId property: Client ID of the client on the BW system. (Usually a three-digit decimal number
      * represented as a string) Type: string (or Expression with resultType string).
-     * 
+     *
      * @param clientId the clientId value to set.
      * @return the SapBWLinkedService object itself.
      */
@@ -132,7 +127,7 @@ public class SapBWLinkedService extends LinkedService {
     /**
      * Get the userName property: Username to access the SAP BW server. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the userName value.
      */
     public Object getUserName() {
@@ -142,7 +137,7 @@ public class SapBWLinkedService extends LinkedService {
     /**
      * Set the userName property: Username to access the SAP BW server. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param userName the userName value to set.
      * @return the SapBWLinkedService object itself.
      */
@@ -153,7 +148,7 @@ public class SapBWLinkedService extends LinkedService {
 
     /**
      * Get the password property: Password to access the SAP BW server.
-     * 
+     *
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -162,7 +157,7 @@ public class SapBWLinkedService extends LinkedService {
 
     /**
      * Set the password property: Password to access the SAP BW server.
-     * 
+     *
      * @param password the password value to set.
      * @return the SapBWLinkedService object itself.
      */
@@ -172,9 +167,9 @@ public class SapBWLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -182,9 +177,9 @@ public class SapBWLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     * 
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapBWLinkedService object itself.
      */
@@ -193,36 +188,28 @@ public class SapBWLinkedService extends LinkedService {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapBWLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapBWLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapBWLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SapBWLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

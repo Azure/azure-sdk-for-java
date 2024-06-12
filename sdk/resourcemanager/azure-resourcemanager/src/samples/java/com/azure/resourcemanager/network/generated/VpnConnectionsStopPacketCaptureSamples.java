@@ -12,8 +12,7 @@ import java.util.Arrays;
  */
 public final class VpnConnectionsStopPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * VpnConnectionStopPacketCapture.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VpnConnectionStopPacketCapture.json
      */
     /**
      * Sample code: Start packet capture on vpn connection without filter.
@@ -22,11 +21,14 @@ public final class VpnConnectionsStopPacketCaptureSamples {
      */
     public static void
         startPacketCaptureOnVpnConnectionWithoutFilter(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnConnections().stopPacketCapture("rg1", "gateway1",
-            "vpnConnection1",
-            new VpnConnectionPacketCaptureStopParameters().withSasUrl(
-                "https://teststorage.blob.core.windows.net/?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-09-13T07:44:05Z&st=2019-09-06T23:44:05Z&spr=https&sig=V1h9D1riltvZMI69d6ihENnFo%2FrCvTqGgjO2lf%2FVBhE%3D")
-                .withLinkConnectionNames(Arrays.asList("vpnSiteLink1", "vpnSiteLink2")),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVpnConnections()
+            .stopPacketCapture("rg1", "gateway1", "vpnConnection1",
+                new VpnConnectionPacketCaptureStopParameters().withSasUrl(
+                    "https://teststorage.blob.core.windows.net/?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-09-13T07:44:05Z&st=2019-09-06T23:44:05Z&spr=https&sig=V1h9D1riltvZMI69d6ihENnFo%2FrCvTqGgjO2lf%2FVBhE%3D")
+                    .withLinkConnectionNames(Arrays.asList("vpnSiteLink1", "vpnSiteLink2")),
+                com.azure.core.util.Context.NONE);
     }
 }

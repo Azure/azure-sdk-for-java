@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteGatewaysListBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * ExpressRouteGatewayListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRouteGatewayListBySubscription.json
      */
     /**
      * Sample code: ExpressRouteGatewayListBySubscription.
@@ -18,7 +17,10 @@ public final class ExpressRouteGatewaysListBySubscriptionSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void expressRouteGatewayListBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getExpressRouteGateways()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getExpressRouteGateways()
             .listBySubscriptionWithResponse(com.azure.core.util.Context.NONE);
     }
 }
