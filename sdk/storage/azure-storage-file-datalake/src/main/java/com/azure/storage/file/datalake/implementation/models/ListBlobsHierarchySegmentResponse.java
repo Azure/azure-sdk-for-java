@@ -5,62 +5,57 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * An enumeration of blobs.
  */
-@JacksonXmlRootElement(localName = "EnumerationResults")
 @Fluent
-public final class ListBlobsHierarchySegmentResponse {
+public final class ListBlobsHierarchySegmentResponse implements XmlSerializable<ListBlobsHierarchySegmentResponse> {
     /*
      * The ServiceEndpoint property.
      */
-    @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
     /*
      * The ContainerName property.
      */
-    @JacksonXmlProperty(localName = "ContainerName", isAttribute = true)
     private String containerName;
 
     /*
      * The Prefix property.
      */
-    @JsonProperty(value = "Prefix", required = true)
     private String prefix;
 
     /*
      * The Marker property.
      */
-    @JsonProperty(value = "Marker", required = true)
     private String marker;
 
     /*
      * The MaxResults property.
      */
-    @JsonProperty(value = "MaxResults", required = true)
     private int maxResults;
 
     /*
      * The Delimiter property.
      */
-    @JsonProperty(value = "Delimiter", required = true)
     private String delimiter;
 
     /*
      * The Segment property.
      */
-    @JsonProperty(value = "Blobs", required = true)
     private BlobHierarchyListSegment segment;
 
     /*
      * The NextMarker property.
      */
-    @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
     /**
@@ -227,5 +222,84 @@ public final class ListBlobsHierarchySegmentResponse {
     public ListBlobsHierarchySegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringAttribute("ServiceEndpoint", this.serviceEndpoint);
+        xmlWriter.writeStringAttribute("ContainerName", this.containerName);
+        xmlWriter.writeStringElement("Prefix", this.prefix);
+        xmlWriter.writeStringElement("Marker", this.marker);
+        xmlWriter.writeIntElement("MaxResults", this.maxResults);
+        xmlWriter.writeStringElement("Delimiter", this.delimiter);
+        xmlWriter.writeXml(this.segment, "Blobs");
+        xmlWriter.writeStringElement("NextMarker", this.nextMarker);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of ListBlobsHierarchySegmentResponse from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of ListBlobsHierarchySegmentResponse if the XmlReader was pointing to an instance of it, or
+     * null if it was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ListBlobsHierarchySegmentResponse.
+     */
+    public static ListBlobsHierarchySegmentResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of ListBlobsHierarchySegmentResponse from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of ListBlobsHierarchySegmentResponse if the XmlReader was pointing to an instance of it, or
+     * null if it was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ListBlobsHierarchySegmentResponse.
+     */
+    public static ListBlobsHierarchySegmentResponse fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            ListBlobsHierarchySegmentResponse deserializedListBlobsHierarchySegmentResponse
+                = new ListBlobsHierarchySegmentResponse();
+            deserializedListBlobsHierarchySegmentResponse.serviceEndpoint
+                = reader.getStringAttribute(null, "ServiceEndpoint");
+            deserializedListBlobsHierarchySegmentResponse.containerName
+                = reader.getStringAttribute(null, "ContainerName");
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Prefix".equals(elementName.getLocalPart())) {
+                    deserializedListBlobsHierarchySegmentResponse.prefix = reader.getStringElement();
+                } else if ("Marker".equals(elementName.getLocalPart())) {
+                    deserializedListBlobsHierarchySegmentResponse.marker = reader.getStringElement();
+                } else if ("MaxResults".equals(elementName.getLocalPart())) {
+                    deserializedListBlobsHierarchySegmentResponse.maxResults = reader.getIntElement();
+                } else if ("Delimiter".equals(elementName.getLocalPart())) {
+                    deserializedListBlobsHierarchySegmentResponse.delimiter = reader.getStringElement();
+                } else if ("Blobs".equals(elementName.getLocalPart())) {
+                    deserializedListBlobsHierarchySegmentResponse.segment
+                        = BlobHierarchyListSegment.fromXml(reader, "Blobs");
+                } else if ("NextMarker".equals(elementName.getLocalPart())) {
+                    deserializedListBlobsHierarchySegmentResponse.nextMarker = reader.getStringElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedListBlobsHierarchySegmentResponse;
+        });
     }
 }

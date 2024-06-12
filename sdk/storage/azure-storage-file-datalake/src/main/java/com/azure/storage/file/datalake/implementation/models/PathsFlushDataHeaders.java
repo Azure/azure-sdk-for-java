@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /**
@@ -19,61 +18,51 @@ public final class PathsFlushDataHeaders {
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
-    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The Last-Modified property.
      */
-    @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /*
      * The Content-Length property.
      */
-    @JsonProperty(value = "Content-Length")
     private Long contentLength;
 
     /*
      * The x-ms-encryption-key-sha256 property.
      */
-    @JsonProperty(value = "x-ms-encryption-key-sha256")
     private String xMsEncryptionKeySha256;
 
     /*
      * The x-ms-lease-renewed property.
      */
-    @JsonProperty(value = "x-ms-lease-renewed")
     private Boolean xMsLeaseRenewed;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
-    @JsonProperty(value = "x-ms-request-server-encrypted")
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");

@@ -5,29 +5,30 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The FileSystem model.
  */
 @Fluent
-public final class FileSystem {
+public final class FileSystem implements JsonSerializable<FileSystem> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The lastModified property.
      */
-    @JsonProperty(value = "lastModified")
     private String lastModified;
 
     /*
      * The eTag property.
      */
-    @JsonProperty(value = "eTag")
     private String eTag;
 
     /**
@@ -94,5 +95,47 @@ public final class FileSystem {
     public FileSystem setETag(String eTag) {
         this.eTag = eTag;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("lastModified", this.lastModified);
+        jsonWriter.writeStringField("eTag", this.eTag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileSystem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileSystem if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the FileSystem.
+     */
+    public static FileSystem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileSystem deserializedFileSystem = new FileSystem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFileSystem.name = reader.getString();
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedFileSystem.lastModified = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedFileSystem.eTag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileSystem;
+        });
     }
 }

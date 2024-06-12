@@ -6,7 +6,6 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /**
@@ -17,25 +16,21 @@ public final class SourceModifiedAccessConditions {
     /*
      * Specify an ETag value to operate only on blobs with a matching value.
      */
-    @JsonProperty(value = "sourceIfMatch")
     private String sourceIfMatch;
 
     /*
      * Specify an ETag value to operate only on blobs without a matching value.
      */
-    @JsonProperty(value = "sourceIfNoneMatch")
     private String sourceIfNoneMatch;
 
     /*
      * Specify this header value to operate only on a blob if it has been modified since the specified date/time.
      */
-    @JsonProperty(value = "sourceIfModifiedSince")
     private DateTimeRfc1123 sourceIfModifiedSince;
 
     /*
      * Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      */
-    @JsonProperty(value = "sourceIfUnmodifiedSince")
     private DateTimeRfc1123 sourceIfUnmodifiedSince;
 
     /**

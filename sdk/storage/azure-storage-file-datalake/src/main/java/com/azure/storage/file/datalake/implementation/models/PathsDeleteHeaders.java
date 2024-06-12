@@ -7,7 +7,6 @@ package com.azure.storage.file.datalake.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The PathsDeleteHeaders model.
@@ -17,31 +16,26 @@ public final class PathsDeleteHeaders {
     /*
      * The x-ms-deletion-id property.
      */
-    @JsonProperty(value = "x-ms-deletion-id")
     private String xMsDeletionId;
 
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The x-ms-continuation property.
      */
-    @JsonProperty(value = "x-ms-continuation")
     private String xMsContinuation;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private String date;
 
     private static final HttpHeaderName X_MS_DELETION_ID = HttpHeaderName.fromString("x-ms-deletion-id");

@@ -5,25 +5,27 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /**
  * The service error response object.
  */
-@JacksonXmlRootElement(localName = "StorageErrorError")
 @Fluent
-public final class StorageErrorError {
+public final class StorageErrorError implements XmlSerializable<StorageErrorError> {
     /*
      * The service error code.
      */
-    @JsonProperty(value = "Code")
     private String code;
 
     /*
      * The service error message.
      */
-    @JsonProperty(value = "Message")
     private String message;
 
     /**
@@ -70,5 +72,61 @@ public final class StorageErrorError {
     public StorageErrorError setMessage(String message) {
         this.message = message;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageErrorError" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("Code", this.code);
+        xmlWriter.writeStringElement("Message", this.message);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of StorageErrorError from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of StorageErrorError if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the StorageErrorError.
+     */
+    public static StorageErrorError fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of StorageErrorError from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of StorageErrorError if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the StorageErrorError.
+     */
+    public static StorageErrorError fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageErrorError" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            StorageErrorError deserializedStorageErrorError = new StorageErrorError();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Code".equals(elementName.getLocalPart())) {
+                    deserializedStorageErrorError.code = reader.getStringElement();
+                } else if ("Message".equals(elementName.getLocalPart())) {
+                    deserializedStorageErrorError.message = reader.getStringElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedStorageErrorError;
+        });
     }
 }

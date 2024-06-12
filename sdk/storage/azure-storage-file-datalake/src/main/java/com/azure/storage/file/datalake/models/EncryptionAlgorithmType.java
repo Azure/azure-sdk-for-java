@@ -4,9 +4,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Defines values for EncryptionAlgorithmType.
  */
@@ -31,7 +28,6 @@ public enum EncryptionAlgorithmType {
      * @param value the serialized value to parse.
      * @return the parsed EncryptionAlgorithmType object, or null if unable to parse.
      */
-    @JsonCreator
     public static EncryptionAlgorithmType fromString(String value) {
         if (value == null) {
             return null;
@@ -48,7 +44,6 @@ public enum EncryptionAlgorithmType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

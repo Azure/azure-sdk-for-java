@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /**
@@ -19,139 +18,116 @@ public final class PathsGetPropertiesHeaders {
     /*
      * The x-ms-group property.
      */
-    @JsonProperty(value = "x-ms-group")
     private String xMsGroup;
 
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The x-ms-lease-status property.
      */
-    @JsonProperty(value = "x-ms-lease-status")
     private String xMsLeaseStatus;
 
     /*
      * The Content-Range property.
      */
-    @JsonProperty(value = "Content-Range")
     private String contentRange;
 
     /*
      * The x-ms-lease-state property.
      */
-    @JsonProperty(value = "x-ms-lease-state")
     private String xMsLeaseState;
 
     /*
      * The x-ms-acl property.
      */
-    @JsonProperty(value = "x-ms-acl")
     private String xMsAcl;
 
     /*
      * The Last-Modified property.
      */
-    @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-properties property.
      */
-    @JsonProperty(value = "x-ms-properties")
     private String xMsProperties;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-resource-type property.
      */
-    @JsonProperty(value = "x-ms-resource-type")
     private String xMsResourceType;
 
     /*
      * The Content-MD5 property.
      */
-    @JsonProperty(value = "Content-MD5")
     private String contentMD5;
 
     /*
      * The Accept-Ranges property.
      */
-    @JsonProperty(value = "Accept-Ranges")
     private String acceptRanges;
 
     /*
      * The Cache-Control property.
      */
-    @JsonProperty(value = "Cache-Control")
     private String cacheControl;
 
     /*
      * The ETag property.
      */
-    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The Content-Disposition property.
      */
-    @JsonProperty(value = "Content-Disposition")
     private String contentDisposition;
 
     /*
      * The Content-Encoding property.
      */
-    @JsonProperty(value = "Content-Encoding")
     private String contentEncoding;
 
     /*
      * The x-ms-permissions property.
      */
-    @JsonProperty(value = "x-ms-permissions")
     private String xMsPermissions;
 
     /*
      * The x-ms-lease-duration property.
      */
-    @JsonProperty(value = "x-ms-lease-duration")
     private String xMsLeaseDuration;
 
     /*
      * The Content-Length property.
      */
-    @JsonProperty(value = "Content-Length")
     private Long contentLength;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The Content-Language property.
      */
-    @JsonProperty(value = "Content-Language")
     private String contentLanguage;
 
     /*
      * The x-ms-owner property.
      */
-    @JsonProperty(value = "x-ms-owner")
     private String xMsOwner;
 
     /*
      * The Content-Type property.
      */
-    @JsonProperty(value = "Content-Type")
     private String contentType;
 
     private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");

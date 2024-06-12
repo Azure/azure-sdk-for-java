@@ -6,7 +6,6 @@ package com.azure.storage.file.datalake.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Parameter group.
@@ -14,49 +13,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PathHttpHeaders {
     /*
-     * Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a
-     * read request.
+     * Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
      */
-    @JsonProperty(value = "cacheControl")
     private String cacheControl;
 
     /*
-     * Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned
-     * with a read request.
+     * Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read request.
      */
-    @JsonProperty(value = "contentEncoding")
     private String contentEncoding;
 
     /*
-     * Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with
-     * a read request.
+     * Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read request.
      */
-    @JsonProperty(value = "contentLanguage")
     private String contentLanguage;
 
     /*
      * Optional. Sets the blob's Content-Disposition header.
      */
-    @JsonProperty(value = "contentDisposition")
     private String contentDisposition;
 
     /*
-     * Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a
-     * read request.
+     * Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
      */
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * Specify the transactional md5 for the body, to be validated by the service.
      */
-    @JsonProperty(value = "contentMd5")
     private byte[] contentMd5;
 
     /*
      * Specify the transactional md5 for the body, to be validated by the service.
      */
-    @JsonProperty(value = "transactionalContentHash")
     private byte[] transactionalContentHash;
 
     /**

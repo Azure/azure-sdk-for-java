@@ -1913,8 +1913,11 @@ public final class FileSystemsImpl {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.listBlobHierarchySegment(this.client.getUrl(),
             this.client.getFileSystem(), restype, comp, prefix, delimiter, marker, maxResults, includeConverted,
             showonly, timeout, this.client.getVersion(), requestId, accept, context));
@@ -1955,8 +1958,11 @@ public final class FileSystemsImpl {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.listBlobHierarchySegment(this.client.getUrl(), this.client.getFileSystem(), restype, comp,
             prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout, this.client.getVersion(),
             requestId, accept, context);
@@ -2064,8 +2070,11 @@ public final class FileSystemsImpl {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.listBlobHierarchySegmentNoCustomHeaders(this.client.getUrl(),
             this.client.getFileSystem(), restype, comp, prefix, delimiter, marker, maxResults, includeConverted,
             showonly, timeout, this.client.getVersion(), requestId, accept, context));
@@ -2105,8 +2114,11 @@ public final class FileSystemsImpl {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.listBlobHierarchySegmentNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
             restype, comp, prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout,
             this.client.getVersion(), requestId, accept, context);
@@ -2147,8 +2159,11 @@ public final class FileSystemsImpl {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.listBlobHierarchySegmentSync(this.client.getUrl(), this.client.getFileSystem(), restype, comp,
             prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout, this.client.getVersion(),
             requestId, accept, context);
@@ -2222,8 +2237,11 @@ public final class FileSystemsImpl {
         final String restype = "container";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.listBlobHierarchySegmentNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
             restype, comp, prefix, delimiter, marker, maxResults, includeConverted, showonly, timeout,
             this.client.getVersion(), requestId, accept, context);

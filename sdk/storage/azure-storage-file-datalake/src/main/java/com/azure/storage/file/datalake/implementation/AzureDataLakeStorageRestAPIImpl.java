@@ -182,7 +182,7 @@ public final class AzureDataLakeStorageRestAPIImpl {
      * @param fileSystem The filesystem identifier.
      * @param path The file or directory path.
      */
-    AzureDataLakeStorageRestAPIImpl(String url, String resource, String version, int xMsLeaseDuration,
+    public AzureDataLakeStorageRestAPIImpl(String url, String resource, String version, int xMsLeaseDuration,
         String fileSystem, String path) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), url, resource, version, xMsLeaseDuration, fileSystem,
@@ -201,7 +201,7 @@ public final class AzureDataLakeStorageRestAPIImpl {
      * @param fileSystem The filesystem identifier.
      * @param path The file or directory path.
      */
-    AzureDataLakeStorageRestAPIImpl(HttpPipeline httpPipeline, String url, String resource, String version,
+    public AzureDataLakeStorageRestAPIImpl(HttpPipeline httpPipeline, String url, String resource, String version,
         int xMsLeaseDuration, String fileSystem, String path) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, resource, version, xMsLeaseDuration,
             fileSystem, path);
@@ -220,7 +220,7 @@ public final class AzureDataLakeStorageRestAPIImpl {
      * @param fileSystem The filesystem identifier.
      * @param path The file or directory path.
      */
-    AzureDataLakeStorageRestAPIImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url,
+    public AzureDataLakeStorageRestAPIImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url,
         String resource, String version, int xMsLeaseDuration, String fileSystem, String path) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

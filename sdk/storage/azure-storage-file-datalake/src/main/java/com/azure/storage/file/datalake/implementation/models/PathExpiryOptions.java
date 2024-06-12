@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class PathExpiryOptions extends ExpandableStringEnum<PathExpiryOpti
      * @param name a name to look for.
      * @return the corresponding PathExpiryOptions.
      */
-    @JsonCreator
     public static PathExpiryOptions fromString(String name) {
         return fromString(name, PathExpiryOptions.class);
     }

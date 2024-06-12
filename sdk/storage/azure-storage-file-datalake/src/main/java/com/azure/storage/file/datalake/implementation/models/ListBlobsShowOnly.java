@@ -4,9 +4,6 @@
 
 package com.azure.storage.file.datalake.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Defines values for ListBlobsShowOnly.
  */
@@ -31,7 +28,6 @@ public enum ListBlobsShowOnly {
      * @param value the serialized value to parse.
      * @return the parsed ListBlobsShowOnly object, or null if unable to parse.
      */
-    @JsonCreator
     public static ListBlobsShowOnly fromString(String value) {
         if (value == null) {
             return null;
@@ -48,7 +44,6 @@ public enum ListBlobsShowOnly {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /**
@@ -19,97 +18,81 @@ public final class PathsUpdateHeaders {
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The Content-Range property.
      */
-    @JsonProperty(value = "Content-Range")
     private String contentRange;
 
     /*
      * The Last-Modified property.
      */
-    @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-properties property.
      */
-    @JsonProperty(value = "x-ms-properties")
     private String xMsProperties;
 
     /*
      * The x-ms-continuation property.
      */
-    @JsonProperty(value = "x-ms-continuation")
     private String xMsContinuation;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     /*
      * The Content-MD5 property.
      */
-    @JsonProperty(value = "Content-MD5")
     private String contentMD5;
 
     /*
      * The Accept-Ranges property.
      */
-    @JsonProperty(value = "Accept-Ranges")
     private String acceptRanges;
 
     /*
      * The Cache-Control property.
      */
-    @JsonProperty(value = "Cache-Control")
     private String cacheControl;
 
     /*
      * The ETag property.
      */
-    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The Content-Disposition property.
      */
-    @JsonProperty(value = "Content-Disposition")
     private String contentDisposition;
 
     /*
      * The Content-Encoding property.
      */
-    @JsonProperty(value = "Content-Encoding")
     private String contentEncoding;
 
     /*
      * The Content-Length property.
      */
-    @JsonProperty(value = "Content-Length")
     private Long contentLength;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The Content-Language property.
      */
-    @JsonProperty(value = "Content-Language")
     private String contentLanguage;
 
     /*
      * The Content-Type property.
      */
-    @JsonProperty(value = "Content-Type")
     private String contentType;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");

@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Parameter group.
@@ -15,7 +14,6 @@ public final class LeaseAccessConditions {
     /*
      * If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      */
-    @JsonProperty(value = "leaseId")
     private String leaseId;
 
     /**
@@ -25,8 +23,8 @@ public final class LeaseAccessConditions {
     }
 
     /**
-     * Get the leaseId property: If specified, the operation only succeeds if the resource's lease is active and
-     * matches this ID.
+     * Get the leaseId property: If specified, the operation only succeeds if the resource's lease is active and matches
+     * this ID.
      * 
      * @return the leaseId value.
      */
@@ -35,8 +33,8 @@ public final class LeaseAccessConditions {
     }
 
     /**
-     * Set the leaseId property: If specified, the operation only succeeds if the resource's lease is active and
-     * matches this ID.
+     * Set the leaseId property: If specified, the operation only succeeds if the resource's lease is active and matches
+     * this ID.
      * 
      * @param leaseId the leaseId value to set.
      * @return the LeaseAccessConditions object itself.

@@ -4,9 +4,6 @@
 
 package com.azure.storage.file.datalake.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Defines values for PathGetPropertiesAction.
  */
@@ -36,7 +33,6 @@ public enum PathGetPropertiesAction {
      * @param value the serialized value to parse.
      * @return the parsed PathGetPropertiesAction object, or null if unable to parse.
      */
-    @JsonCreator
     public static PathGetPropertiesAction fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum PathGetPropertiesAction {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;
