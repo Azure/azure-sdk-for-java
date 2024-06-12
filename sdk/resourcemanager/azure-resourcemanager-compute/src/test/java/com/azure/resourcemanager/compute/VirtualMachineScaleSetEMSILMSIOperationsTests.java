@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
@@ -24,11 +23,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-@LiveOnly
 public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManagementTest {
     // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
     private String rgName = "";
-    private Region region = Region.US_WEST_CENTRAL;
+    private Region region = Region.US_EAST;
     private final String vmssName = "javavmss";
 
     @Override
@@ -151,25 +149,31 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
         PagedIterable<RoleAssignment> roleAssignmentsForNetwork =
             this.msiManager.authorizationManager().roleAssignments().listByScope(network.id());
         boolean found = false;
-        for (RoleAssignment roleAssignment : roleAssignmentsForNetwork) {
-            if (roleAssignment.principalId() != null
-                && roleAssignment.principalId().equalsIgnoreCase(createdIdentity.principalId())) {
-                found = true;
-                break;
+        if (!isPlaybackMode()) {
+            for (RoleAssignment roleAssignment : roleAssignmentsForNetwork) {
+                if (roleAssignment.principalId() != null
+                    && roleAssignment.principalId().equalsIgnoreCase(createdIdentity.principalId())) {
+                    found = true;
+                    break;
+                }
             }
+            Assertions
+                .assertTrue(
+                    found,
+                    "Expected role assignment not found for the virtual network for identity" + createdIdentity.name());
         }
-        Assertions
-            .assertTrue(
-                found,
-                "Expected role assignment not found for the virtual network for identity" + createdIdentity.name());
 
-        RoleAssignment assignment =
-            lookupRoleAssignmentUsingScopeAndRoleAsync(network.id(), BuiltInRole.READER, createdIdentity.principalId())
-                .block();
+        RoleAssignment assignment = null;
+        if (!isPlaybackMode()) {
+            assignment =
+                lookupRoleAssignmentUsingScopeAndRoleAsync(network.id(), BuiltInRole.READER, createdIdentity.principalId())
+                    .block();
 
-        Assertions
-            .assertNotNull(
-                assignment, "Expected role assignment with ROLE not found for the virtual network for identity");
+            Assertions
+                .assertNotNull(
+                    assignment, "Expected role assignment with ROLE not found for the virtual network for identity");
+        }
+
 
         // Ensure expected role assignment exists for explicitly created EMSI
         //
@@ -190,14 +194,16 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 "Expected role assignment not found for the resource group for identity"
                     + implicitlyCreatedIdentity.name());
 
-        assignment =
-            lookupRoleAssignmentUsingScopeAndRoleAsync(
+        if (!isPlaybackMode()) {
+            assignment =
+                lookupRoleAssignmentUsingScopeAndRoleAsync(
                     resourceGroup.id(), BuiltInRole.CONTRIBUTOR, implicitlyCreatedIdentity.principalId())
-                .block();
+                    .block();
 
-        Assertions
-            .assertNotNull(
-                assignment, "Expected role assignment with ROLE not found for the resource group for identity");
+            Assertions
+                .assertNotNull(
+                    assignment, "Expected role assignment with ROLE not found for the resource group for identity");
+        }
 
         emsiIds = virtualMachineScaleSet.userAssignedManagedServiceIdentityIds();
         Iterator<String> itr = emsiIds.iterator();
@@ -398,17 +404,20 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
                 "Expected role assignment not found for the virtual network for local identity"
                     + virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
 
-        RoleAssignment assignment =
-            lookupRoleAssignmentUsingScopeAndRoleAsync(
+        RoleAssignment assignment = null;
+        if (!isPlaybackMode()) {
+            assignment =
+                lookupRoleAssignmentUsingScopeAndRoleAsync(
                     network.id(),
                     BuiltInRole.CONTRIBUTOR,
                     virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())
-                .block();
+                    .block();
 
-        Assertions
-            .assertNotNull(
-                assignment,
-                "Expected role assignment with ROLE not found for the virtual network for system assigned identity");
+            Assertions
+                .assertNotNull(
+                    assignment,
+                    "Expected role assignment with ROLE not found for the virtual network for system assigned identity");
+        }
 
         // Ensure expected role assignment exists for EMSI
         //
@@ -431,15 +440,17 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
             .assertTrue(
                 found, "Expected role assignment not found for the resource group for identity" + identity.name());
 
-        assignment =
-            lookupRoleAssignmentUsingScopeAndRoleAsync(
+        if (!isPlaybackMode()) {
+            assignment =
+                lookupRoleAssignmentUsingScopeAndRoleAsync(
                     resourceGroup.id(), BuiltInRole.CONTRIBUTOR, identity.principalId())
-                .block();
+                    .block();
 
-        Assertions
-            .assertNotNull(
-                assignment,
-                "Expected role assignment with ROLE not found for the resource group for system assigned identity");
+            Assertions
+                .assertNotNull(
+                    assignment,
+                    "Expected role assignment with ROLE not found for the resource group for system assigned identity");
+        }
     }
 
     @Test
