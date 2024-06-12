@@ -10,7 +10,9 @@ import com.azure.resourcemanager.avs.models.PortMirroringStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** NSX Port Mirroring Properties. */
+/**
+ * NSX Port Mirroring Properties.
+ */
 @Fluent
 public final class WorkloadNetworkPortMirroringProperties {
     /*
@@ -55,13 +57,15 @@ public final class WorkloadNetworkPortMirroringProperties {
     @JsonProperty(value = "revision")
     private Long revision;
 
-    /** Creates an instance of WorkloadNetworkPortMirroringProperties class. */
+    /**
+     * Creates an instance of WorkloadNetworkPortMirroringProperties class.
+     */
     public WorkloadNetworkPortMirroringProperties() {
     }
 
     /**
      * Get the displayName property: Display name of the port mirroring profile.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -70,7 +74,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Set the displayName property: Display name of the port mirroring profile.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkPortMirroringProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Get the direction property: Direction of port mirroring profile.
-     *
+     * 
      * @return the direction value.
      */
     public PortMirroringDirectionEnum direction() {
@@ -90,7 +94,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Set the direction property: Direction of port mirroring profile.
-     *
+     * 
      * @param direction the direction value to set.
      * @return the WorkloadNetworkPortMirroringProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Get the source property: Source VM Group.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -110,7 +114,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Set the source property: Source VM Group.
-     *
+     * 
      * @param source the source value to set.
      * @return the WorkloadNetworkPortMirroringProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Get the destination property: Destination VM Group.
-     *
+     * 
      * @return the destination value.
      */
     public String destination() {
@@ -130,7 +134,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Set the destination property: Destination VM Group.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the WorkloadNetworkPortMirroringProperties object itself.
      */
@@ -141,7 +145,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Get the status property: Port Mirroring Status.
-     *
+     * 
      * @return the status value.
      */
     public PortMirroringStatusEnum status() {
@@ -150,7 +154,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadNetworkPortMirroringProvisioningState provisioningState() {
@@ -159,7 +163,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Get the revision property: NSX revision number.
-     *
+     * 
      * @return the revision value.
      */
     public Long revision() {
@@ -168,7 +172,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Set the revision property: NSX revision number.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the WorkloadNetworkPortMirroringProperties object itself.
      */
@@ -179,7 +183,7 @@ public final class WorkloadNetworkPortMirroringProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

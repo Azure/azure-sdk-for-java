@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Subnet configuration for segment. */
+/**
+ * Subnet configuration for segment.
+ */
 @Fluent
 public final class WorkloadNetworkSegmentSubnet {
     /*
@@ -23,13 +25,15 @@ public final class WorkloadNetworkSegmentSubnet {
     @JsonProperty(value = "gatewayAddress")
     private String gatewayAddress;
 
-    /** Creates an instance of WorkloadNetworkSegmentSubnet class. */
+    /**
+     * Creates an instance of WorkloadNetworkSegmentSubnet class.
+     */
     public WorkloadNetworkSegmentSubnet() {
     }
 
     /**
      * Get the dhcpRanges property: DHCP Range assigned for subnet.
-     *
+     * 
      * @return the dhcpRanges value.
      */
     public List<String> dhcpRanges() {
@@ -38,7 +42,7 @@ public final class WorkloadNetworkSegmentSubnet {
 
     /**
      * Set the dhcpRanges property: DHCP Range assigned for subnet.
-     *
+     * 
      * @param dhcpRanges the dhcpRanges value to set.
      * @return the WorkloadNetworkSegmentSubnet object itself.
      */
@@ -49,7 +53,7 @@ public final class WorkloadNetworkSegmentSubnet {
 
     /**
      * Get the gatewayAddress property: Gateway address.
-     *
+     * 
      * @return the gatewayAddress value.
      */
     public String gatewayAddress() {
@@ -58,7 +62,7 @@ public final class WorkloadNetworkSegmentSubnet {
 
     /**
      * Set the gatewayAddress property: Gateway address.
-     *
+     * 
      * @param gatewayAddress the gatewayAddress value to set.
      * @return the WorkloadNetworkSegmentSubnet object itself.
      */
@@ -69,7 +73,7 @@ public final class WorkloadNetworkSegmentSubnet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

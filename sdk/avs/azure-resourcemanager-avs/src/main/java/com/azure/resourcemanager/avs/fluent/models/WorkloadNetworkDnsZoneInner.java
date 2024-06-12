@@ -6,26 +6,37 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** NSX DNS Zone. */
+/**
+ * NSX DNS Zone.
+ */
 @Fluent
 public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
     /*
-     * DNS Zone properties
+     * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
     private WorkloadNetworkDnsZoneProperties innerProperties;
 
-    /** Creates an instance of WorkloadNetworkDnsZoneInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of WorkloadNetworkDnsZoneInner class.
+     */
     public WorkloadNetworkDnsZoneInner() {
     }
 
     /**
-     * Get the innerProperties property: DNS Zone properties.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private WorkloadNetworkDnsZoneProperties innerProperties() {
@@ -33,8 +44,17 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the displayName property: Display name of the DNS Zone.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -43,7 +63,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Set the displayName property: Display name of the DNS Zone.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
@@ -57,7 +77,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Get the domain property: Domain names of the DNS Zone.
-     *
+     * 
      * @return the domain value.
      */
     public List<String> domain() {
@@ -66,7 +86,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Set the domain property: Domain names of the DNS Zone.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
@@ -80,7 +100,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Get the dnsServerIps property: DNS Server IP array of the DNS Zone.
-     *
+     * 
      * @return the dnsServerIps value.
      */
     public List<String> dnsServerIps() {
@@ -89,7 +109,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Set the dnsServerIps property: DNS Server IP array of the DNS Zone.
-     *
+     * 
      * @param dnsServerIps the dnsServerIps value to set.
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
@@ -103,7 +123,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Get the sourceIp property: Source IP of the DNS Zone.
-     *
+     * 
      * @return the sourceIp value.
      */
     public String sourceIp() {
@@ -112,7 +132,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Set the sourceIp property: Source IP of the DNS Zone.
-     *
+     * 
      * @param sourceIp the sourceIp value to set.
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
@@ -126,20 +146,20 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Get the dnsServices property: Number of DNS Services using the DNS zone.
-     *
+     * 
      * @return the dnsServices value.
      */
-    public Long dnsServices() {
+    public Integer dnsServices() {
         return this.innerProperties() == null ? null : this.innerProperties().dnsServices();
     }
 
     /**
      * Set the dnsServices property: Number of DNS Services using the DNS zone.
-     *
+     * 
      * @param dnsServices the dnsServices value to set.
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
-    public WorkloadNetworkDnsZoneInner withDnsServices(Long dnsServices) {
+    public WorkloadNetworkDnsZoneInner withDnsServices(Integer dnsServices) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkloadNetworkDnsZoneProperties();
         }
@@ -149,7 +169,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadNetworkDnsZoneProvisioningState provisioningState() {
@@ -158,7 +178,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Get the revision property: NSX revision number.
-     *
+     * 
      * @return the revision value.
      */
     public Long revision() {
@@ -167,7 +187,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Set the revision property: NSX revision number.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
@@ -181,7 +201,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

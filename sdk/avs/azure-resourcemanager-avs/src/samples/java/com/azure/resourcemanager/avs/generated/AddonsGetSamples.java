@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for Addons Get. */
+/**
+ * Samples for Addons Get.
+ */
 public final class AddonsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_SRM.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_Get_SRM.json
      */
     /**
      * Sample code: Addons_Get_SRM.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetSRM(com.azure.resourcemanager.avs.AvsManager manager) {
@@ -19,11 +21,11 @@ public final class AddonsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_VR.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_Get_VR.json
      */
     /**
      * Sample code: Addons_Get_VR.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetVR(com.azure.resourcemanager.avs.AvsManager manager) {
@@ -31,11 +33,11 @@ public final class AddonsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_HCX.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_Get_HCX.json
      */
     /**
      * Sample code: Addons_Get_HCX.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetHCX(com.azure.resourcemanager.avs.AvsManager manager) {
@@ -43,11 +45,11 @@ public final class AddonsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/Addons_Get_ArcReg.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/Addons_Get_ArcReg.json
      */
     /**
      * Sample code: Addons_Get_ArcReg.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetArcReg(com.azure.resourcemanager.avs.AvsManager manager) {

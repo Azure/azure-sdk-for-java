@@ -13,34 +13,28 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadNetworkSegmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkSegmentInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"k\",\"connectedGateway\":\"oxafn\",\"subnet\":{\"dhcpRanges\":[\"ichkoymkcdyhb\",\"kkpwdreqnovvq\",\"ovljxywsu\"],\"gatewayAddress\":\"yrs\"},\"portVif\":[{\"portName\":\"tgadgvraeaen\"},{\"portName\":\"nzar\"},{\"portName\":\"lquuijfqkacewii\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":4401878821743951844},\"id\":\"wwiftohqkvpuv\",\"name\":\"sgplsakn\",\"type\":\"n\"}")
-                .toObject(WorkloadNetworkSegmentInner.class);
-        Assertions.assertEquals("k", model.displayName());
-        Assertions.assertEquals("oxafn", model.connectedGateway());
-        Assertions.assertEquals("ichkoymkcdyhb", model.subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("yrs", model.subnet().gatewayAddress());
-        Assertions.assertEquals(4401878821743951844L, model.revision());
+        WorkloadNetworkSegmentInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"vvt\",\"connectedGateway\":\"einqf\",\"subnet\":{\"dhcpRanges\":[\"qknp\"],\"gatewayAddress\":\"gnepttwqmsni\"},\"portVif\":[{\"portName\":\"mqnrojlpijnkr\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":1073683971901315269},\"id\":\"tizzronasxif\",\"name\":\"ozqyzh\",\"type\":\"tw\"}")
+            .toObject(WorkloadNetworkSegmentInner.class);
+        Assertions.assertEquals("vvt", model.displayName());
+        Assertions.assertEquals("einqf", model.connectedGateway());
+        Assertions.assertEquals("qknp", model.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("gnepttwqmsni", model.subnet().gatewayAddress());
+        Assertions.assertEquals(1073683971901315269L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkSegmentInner model =
-            new WorkloadNetworkSegmentInner()
-                .withDisplayName("k")
-                .withConnectedGateway("oxafn")
-                .withSubnet(
-                    new WorkloadNetworkSegmentSubnet()
-                        .withDhcpRanges(Arrays.asList("ichkoymkcdyhb", "kkpwdreqnovvq", "ovljxywsu"))
-                        .withGatewayAddress("yrs"))
-                .withRevision(4401878821743951844L);
+        WorkloadNetworkSegmentInner model = new WorkloadNetworkSegmentInner().withDisplayName("vvt")
+            .withConnectedGateway("einqf")
+            .withSubnet(new WorkloadNetworkSegmentSubnet().withDhcpRanges(Arrays.asList("qknp"))
+                .withGatewayAddress("gnepttwqmsni"))
+            .withRevision(1073683971901315269L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkSegmentInner.class);
-        Assertions.assertEquals("k", model.displayName());
-        Assertions.assertEquals("oxafn", model.connectedGateway());
-        Assertions.assertEquals("ichkoymkcdyhb", model.subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("yrs", model.subnet().gatewayAddress());
-        Assertions.assertEquals(4401878821743951844L, model.revision());
+        Assertions.assertEquals("vvt", model.displayName());
+        Assertions.assertEquals("einqf", model.connectedGateway());
+        Assertions.assertEquals("qknp", model.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("gnepttwqmsni", model.subnet().gatewayAddress());
+        Assertions.assertEquals(1073683971901315269L, model.revision());
     }
 }

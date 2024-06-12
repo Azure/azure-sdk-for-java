@@ -5,36 +5,133 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of a management cluster. */
+/**
+ * The properties of a management cluster.
+ */
 @Fluent
-public final class ManagementCluster extends CommonClusterProperties {
-    /** Creates an instance of ManagementCluster class. */
+public final class ManagementCluster {
+    /*
+     * The cluster size
+     */
+    @JsonProperty(value = "clusterSize")
+    private Integer clusterSize;
+
+    /*
+     * The state of the cluster provisioning
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ClusterProvisioningState provisioningState;
+
+    /*
+     * The identity
+     */
+    @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer clusterId;
+
+    /*
+     * The hosts
+     */
+    @JsonProperty(value = "hosts")
+    private List<String> hosts;
+
+    /*
+     * Name of the vsan datastore associated with the cluster
+     */
+    @JsonProperty(value = "vsanDatastoreName")
+    private String vsanDatastoreName;
+
+    /**
+     * Creates an instance of ManagementCluster class.
+     */
     public ManagementCluster() {
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the clusterSize property: The cluster size.
+     * 
+     * @return the clusterSize value.
+     */
+    public Integer clusterSize() {
+        return this.clusterSize;
+    }
+
+    /**
+     * Set the clusterSize property: The cluster size.
+     * 
+     * @param clusterSize the clusterSize value to set.
+     * @return the ManagementCluster object itself.
+     */
     public ManagementCluster withClusterSize(Integer clusterSize) {
-        super.withClusterSize(clusterSize);
+        this.clusterSize = clusterSize;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the provisioningState property: The state of the cluster provisioning.
+     * 
+     * @return the provisioningState value.
+     */
+    public ClusterProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the clusterId property: The identity.
+     * 
+     * @return the clusterId value.
+     */
+    public Integer clusterId() {
+        return this.clusterId;
+    }
+
+    /**
+     * Get the hosts property: The hosts.
+     * 
+     * @return the hosts value.
+     */
+    public List<String> hosts() {
+        return this.hosts;
+    }
+
+    /**
+     * Set the hosts property: The hosts.
+     * 
+     * @param hosts the hosts value to set.
+     * @return the ManagementCluster object itself.
+     */
     public ManagementCluster withHosts(List<String> hosts) {
-        super.withHosts(hosts);
+        this.hosts = hosts;
+        return this;
+    }
+
+    /**
+     * Get the vsanDatastoreName property: Name of the vsan datastore associated with the cluster.
+     * 
+     * @return the vsanDatastoreName value.
+     */
+    public String vsanDatastoreName() {
+        return this.vsanDatastoreName;
+    }
+
+    /**
+     * Set the vsanDatastoreName property: Name of the vsan datastore associated with the cluster.
+     * 
+     * @param vsanDatastoreName the vsanDatastoreName value to set.
+     * @return the ManagementCluster object itself.
+     */
+    public ManagementCluster withVsanDatastoreName(String vsanDatastoreName) {
+        this.vsanDatastoreName = vsanDatastoreName;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

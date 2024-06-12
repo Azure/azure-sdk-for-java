@@ -7,15 +7,29 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** VM-Host placement policy properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+/**
+ * VM-Host placement policy properties.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = VmHostPlacementPolicyProperties.class,
+    visible = true)
 @JsonTypeName("VmHost")
 @Fluent
 public final class VmHostPlacementPolicyProperties extends PlacementPolicyProperties {
+    /*
+     * Placement Policy type
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private PlacementPolicyType type = PlacementPolicyType.VM_HOST;
+
     /*
      * Virtual machine members list
      */
@@ -46,13 +60,25 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
     @JsonProperty(value = "azureHybridBenefitType")
     private AzureHybridBenefitType azureHybridBenefitType;
 
-    /** Creates an instance of VmHostPlacementPolicyProperties class. */
+    /**
+     * Creates an instance of VmHostPlacementPolicyProperties class.
+     */
     public VmHostPlacementPolicyProperties() {
     }
 
     /**
+     * Get the type property: Placement Policy type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public PlacementPolicyType type() {
+        return this.type;
+    }
+
+    /**
      * Get the vmMembers property: Virtual machine members list.
-     *
+     * 
      * @return the vmMembers value.
      */
     public List<String> vmMembers() {
@@ -61,7 +87,7 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
 
     /**
      * Set the vmMembers property: Virtual machine members list.
-     *
+     * 
      * @param vmMembers the vmMembers value to set.
      * @return the VmHostPlacementPolicyProperties object itself.
      */
@@ -72,7 +98,7 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
 
     /**
      * Get the hostMembers property: Host members list.
-     *
+     * 
      * @return the hostMembers value.
      */
     public List<String> hostMembers() {
@@ -81,7 +107,7 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
 
     /**
      * Set the hostMembers property: Host members list.
-     *
+     * 
      * @param hostMembers the hostMembers value to set.
      * @return the VmHostPlacementPolicyProperties object itself.
      */
@@ -92,7 +118,7 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
 
     /**
      * Get the affinityType property: placement policy affinity type.
-     *
+     * 
      * @return the affinityType value.
      */
     public AffinityType affinityType() {
@@ -101,7 +127,7 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
 
     /**
      * Set the affinityType property: placement policy affinity type.
-     *
+     * 
      * @param affinityType the affinityType value to set.
      * @return the VmHostPlacementPolicyProperties object itself.
      */
@@ -112,7 +138,7 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
 
     /**
      * Get the affinityStrength property: vm-host placement policy affinity strength (should/must).
-     *
+     * 
      * @return the affinityStrength value.
      */
     public AffinityStrength affinityStrength() {
@@ -121,7 +147,7 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
 
     /**
      * Set the affinityStrength property: vm-host placement policy affinity strength (should/must).
-     *
+     * 
      * @param affinityStrength the affinityStrength value to set.
      * @return the VmHostPlacementPolicyProperties object itself.
      */
@@ -132,7 +158,7 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
 
     /**
      * Get the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
-     *
+     * 
      * @return the azureHybridBenefitType value.
      */
     public AzureHybridBenefitType azureHybridBenefitType() {
@@ -141,7 +167,7 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
 
     /**
      * Set the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
-     *
+     * 
      * @param azureHybridBenefitType the azureHybridBenefitType value to set.
      * @return the VmHostPlacementPolicyProperties object itself.
      */
@@ -150,14 +176,18 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmHostPlacementPolicyProperties withState(PlacementPolicyState state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmHostPlacementPolicyProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
@@ -166,29 +196,26 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (vmMembers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmMembers in model VmHostPlacementPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vmMembers in model VmHostPlacementPolicyProperties"));
         }
         if (hostMembers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hostMembers in model VmHostPlacementPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hostMembers in model VmHostPlacementPolicyProperties"));
         }
         if (affinityType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property affinityType in model VmHostPlacementPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property affinityType in model VmHostPlacementPolicyProperties"));
         }
     }
 
