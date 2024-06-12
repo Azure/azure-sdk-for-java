@@ -429,11 +429,11 @@
 # ServiceOwners:                                     @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @barustum @jamdavi
 
 # PRLabel: %Event Grid
-/sdk/eventgrid/                                     @billwert @mssfang @srnagar @lmolkova
+/sdk/eventgrid/                                      @billwert @mssfang @srnagar @lmolkova
 
 # ServiceLabel: %Event Grid
-# AzureSdkOwners:                                   @billwert
-# ServiceOwners:                                    @Kishp01 @ahamad-MS
+# AzureSdkOwners:                                    @billwert
+# ServiceOwners:                                     @Kishp01 @ahamad-MS
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                      @conniey @anuchandy @lmolkova
@@ -455,7 +455,7 @@
 # ServiceOwners:                                     @ahmedelnably @fabiocav
 
 # PRLabel: %clientcore
-/sdk/clientcore/                                    @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
+/sdk/clientcore/                                     @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
 
 # ServiceLabel: %clientcore
 # AzureSdkOwners:                                    @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
@@ -470,7 +470,7 @@
 # ServiceOwners:                                     @aim-for-better @idear1203 @deshriva
 
 # ServiceLabel: %HPC Cache
-# ServiceOwners:                                    @romahamu @omzevall
+# ServiceOwners:                                     @romahamu @omzevall
 
 # PRLabel: %Azure.Identity
 /sdk/identity/                                       @g2vinay @billwert @joshfree @Azure/azure-sdk-write-identity
@@ -495,7 +495,7 @@
 
 # ServiceLabel: %KeyVault
 # AzureSdkOwners:                                    @vcolin7
-# ServiceOwners:                                     @jlichwa @jackrichins @riteshchitlangia1 @vickm
+# ServiceOwners:                                     @jlichwa @jackrichins @vickm
 
 # ServiceLabel: %Kubernetes Configuration
 # ServiceOwners:                                     @NarayanThiru
@@ -811,10 +811,10 @@
 # AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams @harsimar
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/        @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-feature-management*/             @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
