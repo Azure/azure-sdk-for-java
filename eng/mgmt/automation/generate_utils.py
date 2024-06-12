@@ -90,7 +90,9 @@ def generate(
     if require_sdk_integration:
         update_service_ci_and_pom(sdk_root, service, group, module)
         update_root_pom(sdk_root, service)
+    logging.info("start update_version")
     update_version(sdk_root, output_folder)
+    logging.info("finish update_version")
 
     return True
 

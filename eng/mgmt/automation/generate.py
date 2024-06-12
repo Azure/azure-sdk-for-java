@@ -339,10 +339,13 @@ def main():
         output_folder = OUTPUT_FOLDER_FORMAT.format(service)
         namespace = NAMESPACE_FORMAT.format(service)
         succeeded = generate(sdk_root, module=module, output_folder=output_folder, namespace=namespace, **args)
-
+        logging.info("finish generate")
     if succeeded:
+        logging.info("start compile_arm_package")
         succeeded = compile_arm_package(sdk_root, module)
+        logging.info("finish compile_arm_package")
         if succeeded:
+
             compare_with_maven_package(sdk_root, service, stable_version, current_version, module)
 
             if args.get("auto_commit_external_change") and args.get("user_name") and args.get("user_email"):
