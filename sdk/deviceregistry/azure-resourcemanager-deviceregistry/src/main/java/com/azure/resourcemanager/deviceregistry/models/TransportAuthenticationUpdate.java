@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,17 +12,17 @@ import java.util.List;
  * Definition of the authentication mechanism for the southbound connector.
  */
 @Fluent
-public final class TransportAuthentication {
+public final class TransportAuthenticationUpdate {
     /*
      * Defines a reference to a secret which contains all certificates and private keys that can be used by the southbound connector connecting to the shop floor/OT device. The accepted extensions are .der for certificates and .pfx/.pem for private keys.
      */
-    @JsonProperty(value = "ownCertificates", required = true)
+    @JsonProperty(value = "ownCertificates")
     private List<OwnCertificate> ownCertificates;
 
     /**
-     * Creates an instance of TransportAuthentication class.
+     * Creates an instance of TransportAuthenticationUpdate class.
      */
-    public TransportAuthentication() {
+    public TransportAuthenticationUpdate() {
     }
 
     /**
@@ -43,9 +42,9 @@ public final class TransportAuthentication {
      * are .der for certificates and .pfx/.pem for private keys.
      * 
      * @param ownCertificates the ownCertificates value to set.
-     * @return the TransportAuthentication object itself.
+     * @return the TransportAuthenticationUpdate object itself.
      */
-    public TransportAuthentication withOwnCertificates(List<OwnCertificate> ownCertificates) {
+    public TransportAuthenticationUpdate withOwnCertificates(List<OwnCertificate> ownCertificates) {
         this.ownCertificates = ownCertificates;
         return this;
     }
@@ -56,14 +55,8 @@ public final class TransportAuthentication {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (ownCertificates() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property ownCertificates in model TransportAuthentication"));
-        } else {
+        if (ownCertificates() != null) {
             ownCertificates().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(TransportAuthentication.class);
 }

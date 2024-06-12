@@ -5,24 +5,23 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The x509 certificate for authentication mode Certificate.
  */
 @Fluent
-public final class X509Credentials {
+public final class X509CredentialsUpdate {
     /*
      * A reference to secret containing the certificate and private key (e.g. stored as .der/.pem or .der/.pfx).
      */
-    @JsonProperty(value = "certificateReference", required = true)
+    @JsonProperty(value = "certificateReference")
     private String certificateReference;
 
     /**
-     * Creates an instance of X509Credentials class.
+     * Creates an instance of X509CredentialsUpdate class.
      */
-    public X509Credentials() {
+    public X509CredentialsUpdate() {
     }
 
     /**
@@ -40,9 +39,9 @@ public final class X509Credentials {
      * stored as .der/.pem or .der/.pfx).
      * 
      * @param certificateReference the certificateReference value to set.
-     * @return the X509Credentials object itself.
+     * @return the X509CredentialsUpdate object itself.
      */
-    public X509Credentials withCertificateReference(String certificateReference) {
+    public X509CredentialsUpdate withCertificateReference(String certificateReference) {
         this.certificateReference = certificateReference;
         return this;
     }
@@ -53,12 +52,5 @@ public final class X509Credentials {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (certificateReference() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property certificateReference in model X509Credentials"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(X509Credentials.class);
 }

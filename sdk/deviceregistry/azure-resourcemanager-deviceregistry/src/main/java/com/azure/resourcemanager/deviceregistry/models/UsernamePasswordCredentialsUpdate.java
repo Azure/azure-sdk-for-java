@@ -5,30 +5,29 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The credentials for authentication mode UsernamePassword.
  */
 @Fluent
-public final class UsernamePasswordCredentials {
+public final class UsernamePasswordCredentialsUpdate {
     /*
      * A reference to secret containing the username.
      */
-    @JsonProperty(value = "usernameReference", required = true)
+    @JsonProperty(value = "usernameReference")
     private String usernameReference;
 
     /*
      * A reference to secret containing the password.
      */
-    @JsonProperty(value = "passwordReference", required = true)
+    @JsonProperty(value = "passwordReference")
     private String passwordReference;
 
     /**
-     * Creates an instance of UsernamePasswordCredentials class.
+     * Creates an instance of UsernamePasswordCredentialsUpdate class.
      */
-    public UsernamePasswordCredentials() {
+    public UsernamePasswordCredentialsUpdate() {
     }
 
     /**
@@ -44,9 +43,9 @@ public final class UsernamePasswordCredentials {
      * Set the usernameReference property: A reference to secret containing the username.
      * 
      * @param usernameReference the usernameReference value to set.
-     * @return the UsernamePasswordCredentials object itself.
+     * @return the UsernamePasswordCredentialsUpdate object itself.
      */
-    public UsernamePasswordCredentials withUsernameReference(String usernameReference) {
+    public UsernamePasswordCredentialsUpdate withUsernameReference(String usernameReference) {
         this.usernameReference = usernameReference;
         return this;
     }
@@ -64,9 +63,9 @@ public final class UsernamePasswordCredentials {
      * Set the passwordReference property: A reference to secret containing the password.
      * 
      * @param passwordReference the passwordReference value to set.
-     * @return the UsernamePasswordCredentials object itself.
+     * @return the UsernamePasswordCredentialsUpdate object itself.
      */
-    public UsernamePasswordCredentials withPasswordReference(String passwordReference) {
+    public UsernamePasswordCredentialsUpdate withPasswordReference(String passwordReference) {
         this.passwordReference = passwordReference;
         return this;
     }
@@ -77,17 +76,5 @@ public final class UsernamePasswordCredentials {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (usernameReference() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property usernameReference in model UsernamePasswordCredentials"));
-        }
-        if (passwordReference() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property passwordReference in model UsernamePasswordCredentials"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(UsernamePasswordCredentials.class);
 }

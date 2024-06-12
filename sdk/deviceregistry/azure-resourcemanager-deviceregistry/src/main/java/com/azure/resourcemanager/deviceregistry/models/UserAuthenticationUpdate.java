@@ -5,36 +5,35 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Definition of the client authentication mechanism to the server.
  */
 @Fluent
-public final class UserAuthentication {
+public final class UserAuthenticationUpdate {
     /*
      * Defines the mode to authenticate the user of the client at the server.
      */
-    @JsonProperty(value = "mode", required = true)
+    @JsonProperty(value = "mode")
     private UserAuthenticationMode mode;
 
     /*
      * Defines the username and password references when UsernamePassword user authentication mode is selected.
      */
     @JsonProperty(value = "usernamePasswordCredentials")
-    private UsernamePasswordCredentials usernamePasswordCredentials;
+    private UsernamePasswordCredentialsUpdate usernamePasswordCredentials;
 
     /*
      * Defines the certificate reference when Certificate user authentication mode is selected.
      */
     @JsonProperty(value = "x509Credentials")
-    private X509Credentials x509Credentials;
+    private X509CredentialsUpdate x509Credentials;
 
     /**
-     * Creates an instance of UserAuthentication class.
+     * Creates an instance of UserAuthenticationUpdate class.
      */
-    public UserAuthentication() {
+    public UserAuthenticationUpdate() {
     }
 
     /**
@@ -50,9 +49,9 @@ public final class UserAuthentication {
      * Set the mode property: Defines the mode to authenticate the user of the client at the server.
      * 
      * @param mode the mode value to set.
-     * @return the UserAuthentication object itself.
+     * @return the UserAuthenticationUpdate object itself.
      */
-    public UserAuthentication withMode(UserAuthenticationMode mode) {
+    public UserAuthenticationUpdate withMode(UserAuthenticationMode mode) {
         this.mode = mode;
         return this;
     }
@@ -63,7 +62,7 @@ public final class UserAuthentication {
      * 
      * @return the usernamePasswordCredentials value.
      */
-    public UsernamePasswordCredentials usernamePasswordCredentials() {
+    public UsernamePasswordCredentialsUpdate usernamePasswordCredentials() {
         return this.usernamePasswordCredentials;
     }
 
@@ -72,9 +71,10 @@ public final class UserAuthentication {
      * user authentication mode is selected.
      * 
      * @param usernamePasswordCredentials the usernamePasswordCredentials value to set.
-     * @return the UserAuthentication object itself.
+     * @return the UserAuthenticationUpdate object itself.
      */
-    public UserAuthentication withUsernamePasswordCredentials(UsernamePasswordCredentials usernamePasswordCredentials) {
+    public UserAuthenticationUpdate
+        withUsernamePasswordCredentials(UsernamePasswordCredentialsUpdate usernamePasswordCredentials) {
         this.usernamePasswordCredentials = usernamePasswordCredentials;
         return this;
     }
@@ -85,7 +85,7 @@ public final class UserAuthentication {
      * 
      * @return the x509Credentials value.
      */
-    public X509Credentials x509Credentials() {
+    public X509CredentialsUpdate x509Credentials() {
         return this.x509Credentials;
     }
 
@@ -94,9 +94,9 @@ public final class UserAuthentication {
      * selected.
      * 
      * @param x509Credentials the x509Credentials value to set.
-     * @return the UserAuthentication object itself.
+     * @return the UserAuthenticationUpdate object itself.
      */
-    public UserAuthentication withX509Credentials(X509Credentials x509Credentials) {
+    public UserAuthenticationUpdate withX509Credentials(X509CredentialsUpdate x509Credentials) {
         this.x509Credentials = x509Credentials;
         return this;
     }
@@ -107,10 +107,6 @@ public final class UserAuthentication {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (mode() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property mode in model UserAuthentication"));
-        }
         if (usernamePasswordCredentials() != null) {
             usernamePasswordCredentials().validate();
         }
@@ -118,6 +114,4 @@ public final class UserAuthentication {
             x509Credentials().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(UserAuthentication.class);
 }
