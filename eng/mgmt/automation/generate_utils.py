@@ -363,8 +363,7 @@ def generate_typespec_project(
         if url_match:
             # generate from remote url
             tsp_cmd = [
-                "npx" + (".cmd" if is_windows() else ""),
-                "tsp-client",
+                "tsp-client" + (".cmd" if is_windows() else ""),
                 "init",
                 "--debug",
                 "--tsp-config",
@@ -376,8 +375,7 @@ def generate_typespec_project(
             tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd = [
-                "npx" + (".cmd" if is_windows() else ""),
-                "tsp-client",
+                "tsp-client" + (".cmd" if is_windows() else ""),
                 "init",
                 "--debug",
                 "--tsp-config",
