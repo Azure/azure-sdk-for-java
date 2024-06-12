@@ -69,7 +69,6 @@ public class AppConfigurationReplicaClientBuilderTest {
 
         clientBuilder = null;
         when(envMock.getActiveProfiles()).thenReturn(new String[0]);
-        // when(clientFactoryMock.build()).thenReturn(builderMock);
     }
 
     @AfterEach
@@ -185,11 +184,10 @@ public class AppConfigurationReplicaClientBuilderTest {
         clientBuilder.setEnvironment(envMock);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
-
-        //ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
-        //when(builderMock.endpoint(Mockito.eq(TEST_ENDPOINT))).thenReturn(builder);
-        //when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
+        
+        when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
         when(clientFactoryMock.build()).thenReturn(builderMock);
+        when(builderMock.connectionString(Mockito.anyString())).thenReturn(builderMock);
 
         List<AppConfigurationReplicaClient> clients = spy.buildClients(configStore);
 
