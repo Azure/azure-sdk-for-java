@@ -1540,8 +1540,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      * that represents the stream to use for reading the query response.
      */
     public Response<InputStream> openQueryInputStreamWithResponse(FileQueryOptions queryOptions) {
-            return DataLakeImplUtils.returnOrConvertException(() ->
-                blockBlobClient.openQueryInputStreamWithResponse(Transforms.toBlobQueryOptions(queryOptions)),  LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(() ->
+            blockBlobClient.openQueryInputStreamWithResponse(Transforms.toBlobQueryOptions(queryOptions)),  LOGGER);
     }
 
     /**

@@ -1152,38 +1152,32 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults,
         Duration timeout) {
-        BiFunction<String, Integer, PagedResponse<PathItem>> retriever = (marker, pageSize) ->
-            listPathsSegment(marker, recursive, userPrincipleNameReturned, pageSize == null ? maxResults : pageSize,
-                timeout);
+        BiFunction<String, Integer, PagedResponse<PathItem>> retriever = (marker, pageSize) -> {
+            Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation = () ->
+                this.fileSystemDataLakeStorage.getFileSystems().listPathsWithResponse(recursive, null, null, marker,
+                    getDirectoryPath(), pageSize == null ? maxResults : pageSize, userPrincipleNameReturned,
+                    Context.NONE);
 
-        return new PagedIterable<>(() -> retriever.apply(null, maxResults), marker ->
-            retriever.apply(marker, maxResults));
-    }
+            ResponseBase<FileSystemsListPathsHeaders, PathList> response = StorageImplUtils.sendRequest(operation,
+                timeout, DataLakeStorageException.class);
 
-    private PagedResponse<PathItem> listPathsSegment(String marker, boolean recursive,
-        boolean userPrincipleNameReturned, Integer maxResults, Duration timeout) {
+            List<PathItem> value = response.getValue() == null
+                ? Collections.emptyList()
+                : response.getValue().getPaths().stream()
+                .map(Transforms::toPathItem)
+                .collect(Collectors.toList());
 
-        Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation = () ->
-            this.fileSystemDataLakeStorage.getFileSystems().listPathsWithResponse(
-                recursive, null, null, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned, Context.NONE);
+            return new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                value,
+                response.getDeserializedHeaders().getXMsContinuation(),
+                response.getDeserializedHeaders());
+        };
 
-        ResponseBase<FileSystemsListPathsHeaders, PathList> response = StorageImplUtils.sendRequest(operation, timeout,
-            DataLakeStorageException.class);
 
-        // Map the response to PathItems
-        List<PathItem> value = response.getValue() == null
-            ? Collections.emptyList()
-            : response.getValue().getPaths().stream()
-            .map(Transforms::toPathItem)
-            .collect(Collectors.toList());
-
-        return new PagedResponseBase<>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            value,
-            response.getDeserializedHeaders().getXMsContinuation(),
-            response.getDeserializedHeaders());
+        return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
     }
 
     /**

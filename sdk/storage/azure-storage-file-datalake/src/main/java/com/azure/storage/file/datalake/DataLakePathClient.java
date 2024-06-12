@@ -16,7 +16,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -655,15 +654,6 @@ public class DataLakePathClient {
 
         ResponseBase<PathsDeleteHeaders, Void> response = sendRequest(operation, timeout, DataLakeStorageException.class);
         return new SimpleResponse<>(response, null);
-//        do {
-//            Response<Void> response = this.dataLakeStorage.getPaths()
-//                .deleteWithResponse(null, null, recursive, continuation, paginated, lac, mac, finalContext);
-//
-//            lastResponse = response;  // Store the last successful response
-//            continuation = response.getHeaders().getValue(Transforms.X_MS_CONTINUATION);
-//        } while (continuation != null && !continuation.isEmpty());
-//
-//        return new SimpleResponse<>(lastResponse, null);
     }
 
     /**
@@ -1058,9 +1048,6 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessControlChangeResult> setAccessControlRecursiveWithResponse(
         PathSetAccessControlRecursiveOptions options, Duration timeout, Context context) {
-//        return  setAccessControlRecursiveWithResponse(PathAccessControlEntry.serializeList(options.getAccessControlList()),
-//            options.getProgressHandler(), PathSetAccessControlRecursiveMode.SET, options.getBatchSize(),
-//            options.getMaxBatches(), options.isContinueOnFailure(), options.getContinuationToken(), timeout, context);
         Mono<Response<AccessControlChangeResult>> response =
             dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
@@ -1068,159 +1055,6 @@ public class DataLakePathClient {
                 options.isContinueOnFailure(), options.getContinuationToken(), context);
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
-    }
-
-    Response<AccessControlChangeResult> setAccessControlRecursiveWithResponse(
-        String accessControlList, Consumer<Response<AccessControlChanges>> progressHandler,
-        PathSetAccessControlRecursiveMode mode, Integer batchSize, Integer maxBatches, Boolean continueOnFailure,
-        String continuationToken, Duration timeout, Context context) {
-        StorageImplUtils.assertNotNull("accessControlList", accessControlList);
-
-        context = context == null ? Context.NONE : context;
-        Context contextFinal = context;
-
-        AtomicInteger directoriesSuccessfulCount = new AtomicInteger(0);
-        AtomicInteger filesSuccessfulCount = new AtomicInteger(0);
-        AtomicInteger failureCount = new AtomicInteger(0);
-        AtomicInteger batchesCount = new AtomicInteger(0);
-
-        try {
-            Callable<ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse>> operation = () ->
-                this.dataLakeStorage.getPaths().setAccessControlRecursiveWithResponse(mode, null,
-                    continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal);
-
-            ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse> response =
-                sendRequest(operation, timeout, DataLakeStorageException.class);
-
-            return setAccessControlRecursiveWithResponseHelper(response, maxBatches, directoriesSuccessfulCount,
-                filesSuccessfulCount, failureCount, batchesCount, progressHandler, accessControlList, mode, batchSize,
-                continueOnFailure, continuationToken, null, timeout, contextFinal);
-        } catch (Exception e) {
-            if (e instanceof DataLakeStorageException) {
-                throw LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
-                    continuationToken));
-            } else {
-                throw LOGGER.logExceptionAsError(ModelHelper.changeAclFailed(e, continuationToken));
-            }
-        }
-    }
-
-    Response<AccessControlChangeResult> setAccessControlRecursiveWithResponseHelper(
-        ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse> response,
-        Integer maxBatches, AtomicInteger directoriesSuccessfulCount, AtomicInteger filesSuccessfulCount,
-        AtomicInteger failureCount, AtomicInteger batchesCount,
-        Consumer<Response<AccessControlChanges>> progressHandler, String accessControlStr,
-        PathSetAccessControlRecursiveMode mode, Integer batchSize, Boolean continueOnFailure, String lastToken,
-        List<AccessControlChangeFailure> batchFailures, Duration timeout, Context context) {
-
-        // We only enter the helper after making a service call, so increment the counter immediately.
-        batchesCount.incrementAndGet();
-
-        // Update counters
-        directoriesSuccessfulCount.addAndGet(response.getValue().getDirectoriesSuccessful());
-        filesSuccessfulCount.addAndGet(response.getValue().getFilesSuccessful());
-        failureCount.addAndGet(response.getValue().getFailureCount());
-
-        // Update first batch failures.
-        if (failureCount.get() > 0 && batchFailures == null) {
-            batchFailures = response.getValue().getFailedEntries()
-                .stream()
-                .map(aclFailedEntry -> new AccessControlChangeFailure()
-                    .setDirectory(aclFailedEntry.getType().equals("DIRECTORY"))
-                    .setName(aclFailedEntry.getName())
-                    .setErrorMessage(aclFailedEntry.getErrorMessage())
-                ).collect(Collectors.toList());
-        }
-        List<AccessControlChangeFailure> finalBatchFailures = batchFailures;
-
-        /*
-        Determine which token we should report/return/use next.
-        If there was a token present on the response (still processing and either no errors or forceFlag set),
-        use that one.
-        If there were no failures or force flag set and still nothing present, we are at the end, so use that.
-        If there were failures and no force flag set, use the last token (no token is returned in this case).
-         */
-        String newToken = response.getDeserializedHeaders().getXMsContinuation();
-        String effectiveNextToken;
-        if (newToken != null && !newToken.isEmpty()) {
-            effectiveNextToken = newToken;
-        } else {
-            if (failureCount.get() == 0 || (continueOnFailure == null || continueOnFailure)) {
-                effectiveNextToken = newToken;
-            } else {
-                effectiveNextToken = lastToken;
-            }
-        }
-
-        // Report progress
-        if (progressHandler != null) {
-            AccessControlChanges changes = new AccessControlChanges();
-
-            changes.setContinuationToken(effectiveNextToken);
-
-            changes.setBatchFailures(
-                response.getValue().getFailedEntries()
-                    .stream()
-                    .map(aclFailedEntry -> new AccessControlChangeFailure()
-                        .setDirectory(aclFailedEntry.getType().equals("DIRECTORY"))
-                        .setName(aclFailedEntry.getName())
-                        .setErrorMessage(aclFailedEntry.getErrorMessage())
-                    ).collect(Collectors.toList())
-            );
-
-            changes.setBatchCounters(new AccessControlChangeCounters()
-                .setChangedDirectoriesCount(response.getValue().getDirectoriesSuccessful())
-                .setChangedFilesCount(response.getValue().getFilesSuccessful())
-                .setFailedChangesCount(response.getValue().getFailureCount()));
-
-            changes.setAggregateCounters(new AccessControlChangeCounters()
-                .setChangedDirectoriesCount(directoriesSuccessfulCount.get())
-                .setChangedFilesCount(filesSuccessfulCount.get())
-                .setFailedChangesCount(failureCount.get()));
-
-            progressHandler.accept(
-                new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), changes,
-                    response.getDeserializedHeaders()));
-        }
-
-        /*
-        Determine if we are finished either because there is no new continuation (failure or finished) token or we have
-        hit maxBatches.
-         */
-        if ((newToken == null || newToken.isEmpty()) || (maxBatches != null && batchesCount.get() >= maxBatches)) {
-            AccessControlChangeResult result = new AccessControlChangeResult()
-                .setBatchFailures(batchFailures)
-                .setContinuationToken(effectiveNextToken)
-                .setCounters(new AccessControlChangeCounters()
-                    .setChangedDirectoriesCount(directoriesSuccessfulCount.get())
-                    .setChangedFilesCount(filesSuccessfulCount.get())
-                    .setFailedChangesCount(failureCount.get()));
-
-            return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result,
-                response.getDeserializedHeaders());
-        }
-
-        // If we're not finished, issue another request
-        try {
-            Callable<ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse>> operation =
-                () -> this.dataLakeStorage.getPaths().setAccessControlRecursiveWithResponse(mode, null,
-                    effectiveNextToken, continueOnFailure, batchSize, accessControlStr, null, context);
-
-            ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse> response2 =
-                sendRequest(operation, timeout, DataLakeStorageException.class);
-
-            return setAccessControlRecursiveWithResponseHelper(response2, maxBatches, directoriesSuccessfulCount,
-                filesSuccessfulCount, failureCount, batchesCount, progressHandler, accessControlStr, mode, batchSize,
-                continueOnFailure, effectiveNextToken, finalBatchFailures, timeout, context);
-        } catch (Exception e) {
-            if (e instanceof DataLakeStorageException) {
-                throw LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
-                    effectiveNextToken));
-            } else {
-                throw LOGGER.logExceptionAsError(ModelHelper.changeAclFailed(e, effectiveNextToken));
-            }
-
-        }
     }
 
     /**
@@ -1338,10 +1172,6 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessControlChangeResult> updateAccessControlRecursiveWithResponse(
         PathUpdateAccessControlRecursiveOptions options, Duration timeout, Context context) {
-//        return setAccessControlRecursiveWithResponse(
-//                PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
-//                PathSetAccessControlRecursiveMode.MODIFY, options.getBatchSize(), options.getMaxBatches(),
-//                options.isContinueOnFailure(), options.getContinuationToken(), timeout, context);
         Mono<Response<AccessControlChangeResult>> response =
             dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
                 PathAccessControlEntry.serializeList(options.getAccessControlList()), options.getProgressHandler(),
@@ -1463,10 +1293,6 @@ public class DataLakePathClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessControlChangeResult> removeAccessControlRecursiveWithResponse(
         PathRemoveAccessControlRecursiveOptions options, Duration timeout, Context context) {
-//        return setAccessControlRecursiveWithResponse(PathRemoveAccessControlEntry.serializeList(
-//            options.getAccessControlList()), options.getProgressHandler(), PathSetAccessControlRecursiveMode.REMOVE,
-//            options.getBatchSize(), options.getMaxBatches(), options.isContinueOnFailure(),
-//            options.getContinuationToken(), timeout, context);
         Mono<Response<AccessControlChangeResult>> response =
             dataLakePathAsyncClient.setAccessControlRecursiveWithResponse(
                 PathRemoveAccessControlEntry.serializeList(options.getAccessControlList()),

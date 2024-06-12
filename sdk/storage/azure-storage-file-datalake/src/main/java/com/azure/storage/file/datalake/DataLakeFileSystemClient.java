@@ -20,7 +20,6 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
-import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -715,36 +714,35 @@ public class DataLakeFileSystemClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PathItem> listPaths(ListPathsOptions options, Duration timeout) {
-        Integer maxResults = options != null ? options.getMaxResults() : null;
-        BiFunction<String, Integer, PagedResponse<PathItem>> retriever = (marker, pageSize) ->
-            listPathsSegment(marker, options, timeout);
+        ListPathsOptions finalOptions = options == null ? new ListPathsOptions() : options;
+        Integer maxResults = finalOptions.getMaxResults();
+        boolean recursive = finalOptions.isRecursive();
+        boolean upn = finalOptions.isUserPrincipalNameReturned();
+        String path = finalOptions.getPath();
 
-        return new PagedIterable<>(() -> retriever.apply(null, maxResults), marker -> retriever.apply(marker, maxResults));
-    }
+        BiFunction<String, Integer, PagedResponse<PathItem>> pageRetriever = (continuation, pageSize) -> {
 
-    private PagedResponse<PathItem> listPathsSegment(String continuationToken, ListPathsOptions options, Duration timeout) {
-        Integer pageSize = options != null ? options.getMaxResults() : null;
-        boolean recursive = options != null && options.isRecursive();
-        boolean upn = options != null && options.isUserPrincipalNameReturned();
-        String path = options != null ? options.getPath() : null;
+            Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation = () ->
+            this.azureDataLakeStorage.getFileSystems().listPathsWithResponse(recursive, null, null, continuation, path,
+                pageSize == null ? maxResults : pageSize, upn, Context.NONE);
 
-        Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation = () ->
-            this.azureDataLakeStorage.getFileSystems().listPathsWithResponse(recursive, null,
-                timeout != null ? (int) timeout.toMillis() : null, continuationToken, path, pageSize, upn, Context.NONE);
+            ResponseBase<FileSystemsListPathsHeaders, PathList> response = StorageImplUtils.sendRequest(operation,
+                timeout, DataLakeStorageException.class);
 
-        ResponseBase<FileSystemsListPathsHeaders, PathList> response = StorageImplUtils.sendRequest(operation, timeout,
-            DataLakeStorageException.class);
-        List<PathItem> items = response.getValue() == null ? Collections.emptyList()
-            : response.getValue().getPaths().stream().map(Transforms::toPathItem).collect(Collectors.toList());
+            List<PathItem> items = response.getValue().getPaths().stream()
+                .map(Transforms::toPathItem)
+                .collect(Collectors.toList());
 
-        // Create and return a page response with the list of items and the continuation token.
-        return new PagedResponseBase<>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            items,
-            response.getDeserializedHeaders().getXMsContinuation(),
-            response.getDeserializedHeaders());
+            return new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                items,
+                response.getDeserializedHeaders().getXMsContinuation(),
+                response.getDeserializedHeaders());
+        };
+
+        return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
     }
 
     /**
@@ -797,36 +795,30 @@ public class DataLakeFileSystemClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PathDeletedItem> listDeletedPaths(String prefix, Duration timeout,
         Context context) {
-        BiFunction<String, Integer, PagedResponse<PathDeletedItem>> retriever = (marker, pageSize) ->
-            listDeletedPathsSegment(marker, pageSize, prefix, timeout, context);
+        BiFunction<String, Integer, PagedResponse<PathDeletedItem>> retriever = (marker, pageSize) -> {
+            Callable<ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> operation =
+                () -> this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponse(prefix, null,
+                    marker, pageSize, null, ListBlobsShowOnly.DELETED, null, null, context);
 
-        return new PagedIterable<>(() -> retriever.apply(null, null),
-            marker -> retriever.apply(marker, null));
-    }
+            ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse> response =
+                StorageImplUtils.sendRequest(operation, timeout, DataLakeStorageException.class);
 
-    private PagedResponse<PathDeletedItem> listDeletedPathsSegment(String marker, Integer pageSize, String prefix,
-        Duration timeout, Context context) {
-        Callable<ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> operation =
-            () -> this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponse(prefix, null, marker,
-                pageSize, null, ListBlobsShowOnly.DELETED, timeout != null ? (int) timeout.toMillis() : null, null,
-                context);
+            List<PathDeletedItem> items = response.getValue().getSegment() == null ? Collections.emptyList()
+                : Stream.concat(
+                    response.getValue().getSegment().getBlobItems().stream().map(Transforms::toPathDeletedItem),
+                response.getValue().getSegment().getBlobPrefixes().stream().map(Transforms::toPathDeletedItem))
+                .collect(Collectors.toList());
 
-        ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse> response =
-            StorageImplUtils.sendRequest(operation, timeout, DataLakeStorageException.class);
+            return new PagedResponseBase<>(
+                response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                items,
+                response.getValue().getNextMarker(),
+                response.getDeserializedHeaders());
+        };
 
-        List<PathDeletedItem> items = response.getValue().getSegment() == null ? Collections.emptyList()
-            : Stream.concat(
-                response.getValue().getSegment().getBlobItems().stream().map(Transforms::toPathDeletedItem),
-                response.getValue().getSegment().getBlobPrefixes().stream().map(Transforms::toPathDeletedItem)
-            ).collect(Collectors.toList());
-
-        return new PagedResponseBase<>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            items,
-            response.getValue().getNextMarker(),
-            response.getDeserializedHeaders());
+        return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
     }
 
     /**

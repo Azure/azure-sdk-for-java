@@ -3,15 +3,11 @@
 
 package com.azure.storage.file.datalake.implementation.util;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
@@ -153,10 +149,12 @@ public class ModelHelper {
      * @param metadata The metadata.
      *
      * @return The metadata represented as a String.
+     * @throws IllegalArgumentException If the metadata contains invalid characters.
      */
     public static String buildMetadataString(Map<String, String> metadata) {
         if (!CoreUtils.isNullOrEmpty(metadata)) {
             StringBuilder sb = new StringBuilder();
+            boolean firstMetadata = true;
             for (final Map.Entry<String, String> entry : metadata.entrySet()) {
                 if (Objects.isNull(entry.getKey()) || entry.getKey().isEmpty()) {
                     throw new IllegalArgumentException("The key for one of the metadata key-value pairs is null, "
@@ -171,11 +169,16 @@ public class ModelHelper {
                 will work as normal. Doing this encoding for the customers preserves the existing behavior of
                 metadata.
                  */
-                sb.append(entry.getKey()).append('=')
+                if (!firstMetadata) {
+                    sb.append(',');
+                }
+
+                sb.append(entry.getKey())
+                    .append('=')
                     .append(new String(Base64.getEncoder().encode(entry.getValue().getBytes(StandardCharsets.UTF_8)),
-                        StandardCharsets.UTF_8)).append(',');
+                        StandardCharsets.UTF_8));
+                firstMetadata = false;
             }
-            sb.deleteCharAt(sb.length() - 1); // Remove the extraneous "," after the last element.
             return sb.toString();
         } else {
             return null;
