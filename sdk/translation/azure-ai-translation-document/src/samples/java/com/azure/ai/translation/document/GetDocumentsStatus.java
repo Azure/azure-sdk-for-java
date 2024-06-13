@@ -26,44 +26,49 @@ import com.azure.core.util.polling.SyncPoller;
 public class GetDocumentsStatus {
     public static void main(final String[] args) {
         DocumentTranslationClient documentTranslationClient = new DocumentTranslationClientBuilder()
-            .endpoint("{endpoint}")
-            .credential(new AzureKeyCredential("{key}"))
-            .buildClient();
+                .endpoint("{endpoint}")
+                .credential(new AzureKeyCredential("{key}"))
+                .buildClient();
 
         // BEGIN:GetDocumentsStatus
-        SyncPoller<TranslationStatus, Void> response
-            = documentTranslationClient
+        SyncPoller<TranslationStatus, Void> response = documentTranslationClient
                 .beginStartTranslation(
-                    new StartTranslationDetails(Arrays.asList(new BatchRequest(
-                        new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
-                            .setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"))
-                            .setLanguage("en")
-                            .setStorageSource(StorageSource.AZURE_BLOB),
-                        Arrays
-                            .asList(
-                                new TargetInput("https://myblob.blob.core.windows.net/destinationContainer1", "fr")
-                                    .setCategory("general")
-                                    .setGlossaries(Arrays.asList(new Glossary(
-                                        "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf", "XLIFF")
-                                        .setStorageSource(StorageSource.AZURE_BLOB)))
-                                    .setStorageSource(StorageSource.AZURE_BLOB),
-                                new TargetInput("https://myblob.blob.core.windows.net/destinationContainer2", "es")
-                                    .setCategory("general")
-                                    .setStorageSource(StorageSource.AZURE_BLOB)))
-                        .setStorageType(StorageInputType.FOLDER))));
-        
-        String translationId = response.poll().getValue().getId(); 
-        
+                        new StartTranslationDetails(Arrays.asList(new BatchRequest(
+                                new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
+                                        .setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"))
+                                        .setLanguage("en")
+                                        .setStorageSource(StorageSource.AZURE_BLOB),
+                                Arrays
+                                        .asList(
+                                                new TargetInput(
+                                                        "https://myblob.blob.core.windows.net/destinationContainer1",
+                                                        "fr")
+                                                        .setCategory("general")
+                                                        .setGlossaries(Arrays.asList(new Glossary(
+                                                                "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
+                                                                "XLIFF")
+                                                                .setStorageSource(StorageSource.AZURE_BLOB)))
+                                                        .setStorageSource(StorageSource.AZURE_BLOB),
+                                                new TargetInput(
+                                                        "https://myblob.blob.core.windows.net/destinationContainer2",
+                                                        "es")
+                                                        .setCategory("general")
+                                                        .setStorageSource(StorageSource.AZURE_BLOB)))
+                                .setStorageType(StorageInputType.FOLDER))));
+
+        String translationId = response.poll().getValue().getId();
+
         // Add Status filter
-        List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());        
+        List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());
         try {
-            PagedIterable<DocumentStatus> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, null, null, null, succeededStatusList, null, null, null);
-            for (DocumentStatus d: documentStatusResponse) {
-                String id = d.getId();
+            PagedIterable<DocumentStatus> documentStatusResponse = documentTranslationClient
+                    .getDocumentsStatus(translationId, null, null, null, succeededStatusList, null, null, null);
+            for (DocumentStatus documentStatus : documentStatusResponse) {
+                String id = documentStatus.getId();
                 System.out.println("Document Translation ID is: " + id);
-                String status = d.getStatus().toString();
-                System.out.println("Document Translation status is: " + status);                
-            }           
+                String status = documentStatus.getStatus().toString();
+                System.out.println("Document Translation status is: " + status);
+            }
         } catch (Exception e) {
             System.err.println("An exception occurred: " + e.getMessage());
             e.printStackTrace();

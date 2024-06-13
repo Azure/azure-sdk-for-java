@@ -207,31 +207,35 @@ Please refer to the service documentation for a conceptual discussion of [cancel
 Gets a list and the status of all translation jobs submitted by the user (associated with the resource).
 
 ```java GetTranslationsStatus
-SyncPoller<TranslationStatus, Void> response
-    = documentTranslationClient
+SyncPoller<TranslationStatus, Void> response = documentTranslationClient
         .beginStartTranslation(
-            new StartTranslationDetails(Arrays.asList(new BatchRequest(
-                new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
-                    .setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"))
-                    .setLanguage("en")
-                    .setStorageSource(StorageSource.AZURE_BLOB),
-                Arrays
-                    .asList(
-                        new TargetInput("https://myblob.blob.core.windows.net/destinationContainer1", "fr")
-                            .setCategory("general")
-                            .setGlossaries(Arrays.asList(new Glossary(
-                                "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf", "XLIFF")
-                                .setStorageSource(StorageSource.AZURE_BLOB)))
-                            .setStorageSource(StorageSource.AZURE_BLOB),
-                        new TargetInput("https://myblob.blob.core.windows.net/destinationContainer2", "es")
-                            .setCategory("general")
-                            .setStorageSource(StorageSource.AZURE_BLOB)))
-                .setStorageType(StorageInputType.FOLDER))));
+                new StartTranslationDetails(Arrays.asList(new BatchRequest(
+                        new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
+                                .setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"))
+                                .setLanguage("en")
+                                .setStorageSource(StorageSource.AZURE_BLOB),
+                        Arrays
+                                .asList(
+                                        new TargetInput(
+                                                "https://myblob.blob.core.windows.net/destinationContainer1",
+                                                "fr")
+                                                .setCategory("general")
+                                                .setGlossaries(Arrays.asList(new Glossary(
+                                                        "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
+                                                        "XLIFF")
+                                                        .setStorageSource(StorageSource.AZURE_BLOB)))
+                                                .setStorageSource(StorageSource.AZURE_BLOB),
+                                        new TargetInput(
+                                                "https://myblob.blob.core.windows.net/destinationContainer2",
+                                                "es")
+                                                .setCategory("general")
+                                                .setStorageSource(StorageSource.AZURE_BLOB)))
+                        .setStorageType(StorageInputType.FOLDER))));
 
 PagedIterable<TranslationStatus> translationStatuses = documentTranslationClient.getTranslationsStatus();
-for (TranslationStatus t: translationStatuses) {
-    System.out.println("Translation ID is: " + t.getId());
-    System.out.println("Translation status is: " + t.getStatus().toString());
+for (TranslationStatus translationStatus : translationStatuses) {
+    System.out.println("Translation ID is: " + translationStatus.getId());
+    System.out.println("Translation status is: " + translationStatus.getStatus().toString());
 }
 ```
 Please refer to the service documentation for a conceptual discussion of [getTranslationsStatus][getTranslationsStatus_doc].
@@ -274,39 +278,44 @@ Please refer to the service documentation for a conceptual discussion of [getTra
 Gets the status for all documents in a translation job.
 
 ```java GetDocumentsStatus
-SyncPoller<TranslationStatus, Void> response
-    = documentTranslationClient
+SyncPoller<TranslationStatus, Void> response = documentTranslationClient
         .beginStartTranslation(
-            new StartTranslationDetails(Arrays.asList(new BatchRequest(
-                new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
-                    .setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"))
-                    .setLanguage("en")
-                    .setStorageSource(StorageSource.AZURE_BLOB),
-                Arrays
-                    .asList(
-                        new TargetInput("https://myblob.blob.core.windows.net/destinationContainer1", "fr")
-                            .setCategory("general")
-                            .setGlossaries(Arrays.asList(new Glossary(
-                                "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf", "XLIFF")
-                                .setStorageSource(StorageSource.AZURE_BLOB)))
-                            .setStorageSource(StorageSource.AZURE_BLOB),
-                        new TargetInput("https://myblob.blob.core.windows.net/destinationContainer2", "es")
-                            .setCategory("general")
-                            .setStorageSource(StorageSource.AZURE_BLOB)))
-                .setStorageType(StorageInputType.FOLDER))));
+                new StartTranslationDetails(Arrays.asList(new BatchRequest(
+                        new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
+                                .setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"))
+                                .setLanguage("en")
+                                .setStorageSource(StorageSource.AZURE_BLOB),
+                        Arrays
+                                .asList(
+                                        new TargetInput(
+                                                "https://myblob.blob.core.windows.net/destinationContainer1",
+                                                "fr")
+                                                .setCategory("general")
+                                                .setGlossaries(Arrays.asList(new Glossary(
+                                                        "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
+                                                        "XLIFF")
+                                                        .setStorageSource(StorageSource.AZURE_BLOB)))
+                                                .setStorageSource(StorageSource.AZURE_BLOB),
+                                        new TargetInput(
+                                                "https://myblob.blob.core.windows.net/destinationContainer2",
+                                                "es")
+                                                .setCategory("general")
+                                                .setStorageSource(StorageSource.AZURE_BLOB)))
+                        .setStorageType(StorageInputType.FOLDER))));
 
-String translationId = response.poll().getValue().getId(); 
+String translationId = response.poll().getValue().getId();
 
 // Add Status filter
-List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());        
+List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());
 try {
-    PagedIterable<DocumentStatus> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, null, null, null, succeededStatusList, null, null, null);
-    for (DocumentStatus d: documentStatusResponse) {
-        String id = d.getId();
+    PagedIterable<DocumentStatus> documentStatusResponse = documentTranslationClient
+            .getDocumentsStatus(translationId, null, null, null, succeededStatusList, null, null, null);
+    for (DocumentStatus documentStatus : documentStatusResponse) {
+        String id = documentStatus.getId();
         System.out.println("Document Translation ID is: " + id);
-        String status = d.getStatus().toString();
-        System.out.println("Document Translation status is: " + status);                
-    }           
+        String status = documentStatus.getStatus().toString();
+        System.out.println("Document Translation status is: " + status);
+    }
 } catch (Exception e) {
     System.err.println("An exception occurred: " + e.getMessage());
     e.printStackTrace();
@@ -318,35 +327,40 @@ Please refer to the service documentation for a conceptual discussion of [getDoc
 Request the status for a specific document in a job.
 
 ```java GetDocumentStatus
-SyncPoller<TranslationStatus, Void> response
-    = documentTranslationClient
+SyncPoller<TranslationStatus, Void> response = documentTranslationClient
         .beginStartTranslation(
-            new StartTranslationDetails(Arrays.asList(new BatchRequest(
-                new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
-                    .setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"))
-                    .setLanguage("en")
-                    .setStorageSource(StorageSource.AZURE_BLOB),
-                Arrays
-                    .asList(
-                        new TargetInput("https://myblob.blob.core.windows.net/destinationContainer1", "fr")
-                            .setCategory("general")
-                            .setGlossaries(Arrays.asList(new Glossary(
-                                "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf", "XLIFF")
-                                .setStorageSource(StorageSource.AZURE_BLOB)))
-                            .setStorageSource(StorageSource.AZURE_BLOB),
-                        new TargetInput("https://myblob.blob.core.windows.net/destinationContainer2", "es")
-                            .setCategory("general")
-                            .setStorageSource(StorageSource.AZURE_BLOB)))
-                .setStorageType(StorageInputType.FOLDER))));
+                new StartTranslationDetails(Arrays.asList(new BatchRequest(
+                        new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
+                                .setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"))
+                                .setLanguage("en")
+                                .setStorageSource(StorageSource.AZURE_BLOB),
+                        Arrays
+                                .asList(
+                                        new TargetInput(
+                                                "https://myblob.blob.core.windows.net/destinationContainer1",
+                                                "fr")
+                                                .setCategory("general")
+                                                .setGlossaries(Arrays.asList(new Glossary(
+                                                        "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
+                                                        "XLIFF")
+                                                        .setStorageSource(StorageSource.AZURE_BLOB)))
+                                                .setStorageSource(StorageSource.AZURE_BLOB),
+                                        new TargetInput(
+                                                "https://myblob.blob.core.windows.net/destinationContainer2",
+                                                "es")
+                                                .setCategory("general")
+                                                .setStorageSource(StorageSource.AZURE_BLOB)))
+                        .setStorageType(StorageInputType.FOLDER))));
 
-String translationId = response.poll().getValue().getId(); 
+String translationId = response.poll().getValue().getId();
 
 // Add Status filter
-List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());        
+List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());
 try {
-    PagedIterable<DocumentStatus> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, null, null, null, succeededStatusList, null, null, null);
-    for (DocumentStatus d: documentStatusResponse) {
-        String id = d.getId();
+    PagedIterable<DocumentStatus> documentStatusResponse = documentTranslationClient
+            .getDocumentsStatus(translationId, null, null, null, succeededStatusList, null, null, null);
+    for (DocumentStatus documentsStatus : documentStatusResponse) {
+        String id = documentsStatus.getId();
         System.out.println("Document Translation ID is: " + id);
         DocumentStatus documentStatus = documentTranslationClient.getDocumentStatus(translationId, id);
         System.out.println("Document ID is: " + documentStatus.getId());
@@ -355,7 +369,7 @@ try {
         System.out.println("Document path is: " + documentStatus.getPath());
         System.out.println("Document source path is: " + documentStatus.getSourcePath());
     }
-} catch (Exception e) {            
+} catch (Exception e) {
     System.err.println("An exception occurred: " + e.getMessage());
     e.printStackTrace();
 }
