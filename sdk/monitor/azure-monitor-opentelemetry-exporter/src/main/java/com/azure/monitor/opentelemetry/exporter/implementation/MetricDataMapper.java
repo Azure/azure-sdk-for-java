@@ -263,7 +263,7 @@ public class MetricDataMapper {
         }
 
         if (isServer(metricName)) {
-            return statusCode < 400 || (captureHttpServer4xxAsError && statusCode < 500);
+            return (captureHttpServer4xxAsError && statusCode < 400) || statusCode < 500;
         }
 
         return false;
