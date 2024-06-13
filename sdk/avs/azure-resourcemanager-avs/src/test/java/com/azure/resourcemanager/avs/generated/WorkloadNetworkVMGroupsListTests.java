@@ -14,31 +14,25 @@ public final class WorkloadNetworkVMGroupsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVMGroupsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"huwrykqgaifm\",\"members\":[\"lb\",\"dvk\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":6460022338840232895},\"id\":\"vdsrhnjiv\",\"name\":\"lvtno\",\"type\":\"qfzgemjdftul\"},{\"properties\":{\"displayName\":\"duceamtmc\",\"members\":[\"m\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Canceled\",\"revision\":3712273461973968952},\"id\":\"knssxmojm\",\"name\":\"vpkjpr\",\"type\":\"kwcf\"},{\"properties\":{\"displayName\":\"jyxgtczh\",\"members\":[\"bsdshmkxmaehvbbx\",\"ripltf\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":6787000307588779868},\"id\":\"ywrckp\",\"name\":\"kl\",\"type\":\"hpluodpvruudlg\"}],\"nextLink\":\"bth\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"pxehuwrykqga\",\"members\":[\"viklb\",\"dvk\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":6460022338840232895},\"id\":\"vdsrhnjiv\",\"name\":\"lvtno\",\"type\":\"qfzgemjdftul\"}],\"nextLink\":\"tduceamt\"}")
             .toObject(WorkloadNetworkVMGroupsList.class);
-        Assertions.assertEquals("huwrykqgaifm", model.value().get(0).displayName());
-        Assertions.assertEquals("lb", model.value().get(0).members().get(0));
+        Assertions.assertEquals("pxehuwrykqga", model.value().get(0).displayName());
+        Assertions.assertEquals("viklb", model.value().get(0).members().get(0));
         Assertions.assertEquals(6460022338840232895L, model.value().get(0).revision());
-        Assertions.assertEquals("bth", model.nextLink());
+        Assertions.assertEquals("tduceamt", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkVMGroupsList model = new WorkloadNetworkVMGroupsList().withValue(Arrays.asList(
-            new WorkloadNetworkVMGroupInner().withDisplayName("huwrykqgaifm")
-                .withMembers(Arrays.asList("lb", "dvk"))
-                .withRevision(6460022338840232895L),
-            new WorkloadNetworkVMGroupInner().withDisplayName("duceamtmc")
-                .withMembers(Arrays.asList("m"))
-                .withRevision(3712273461973968952L),
-            new WorkloadNetworkVMGroupInner().withDisplayName("jyxgtczh")
-                .withMembers(Arrays.asList("bsdshmkxmaehvbbx", "ripltf"))
-                .withRevision(6787000307588779868L)))
-            .withNextLink("bth");
+        WorkloadNetworkVMGroupsList model = new WorkloadNetworkVMGroupsList()
+            .withValue(Arrays.asList(new WorkloadNetworkVMGroupInner().withDisplayName("pxehuwrykqga")
+                .withMembers(Arrays.asList("viklb", "dvk"))
+                .withRevision(6460022338840232895L)))
+            .withNextLink("tduceamt");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVMGroupsList.class);
-        Assertions.assertEquals("huwrykqgaifm", model.value().get(0).displayName());
-        Assertions.assertEquals("lb", model.value().get(0).members().get(0));
+        Assertions.assertEquals("pxehuwrykqga", model.value().get(0).displayName());
+        Assertions.assertEquals("viklb", model.value().get(0).members().get(0));
         Assertions.assertEquals(6460022338840232895L, model.value().get(0).revision());
-        Assertions.assertEquals("bth", model.nextLink());
+        Assertions.assertEquals("tduceamt", model.nextLink());
     }
 }

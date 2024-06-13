@@ -14,16 +14,16 @@ public final class ScriptPackagesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptPackagesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"bhjpglkfgohdne\",\"version\":\"lfphsdyhtozfikd\",\"company\":\"wq\",\"uri\":\"v\"},\"id\":\"xclvit\",\"name\":\"hqzonosggbhcoh\",\"type\":\"wdsjnkalju\"}],\"nextLink\":\"iswac\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"qkdltfz\",\"version\":\"hhvh\",\"company\":\"r\",\"uri\":\"dkwobdagx\"},\"id\":\"bqdxbx\",\"name\":\"akbogqxndlkzgxh\",\"type\":\"ripl\"}],\"nextLink\":\"odxun\"}")
             .toObject(ScriptPackagesList.class);
-        Assertions.assertEquals("iswac", model.nextLink());
+        Assertions.assertEquals("odxun", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScriptPackagesList model
-            = new ScriptPackagesList().withValue(Arrays.asList(new ScriptPackageInner())).withNextLink("iswac");
+            = new ScriptPackagesList().withValue(Arrays.asList(new ScriptPackageInner())).withNextLink("odxun");
         model = BinaryData.fromObject(model).toObject(ScriptPackagesList.class);
-        Assertions.assertEquals("iswac", model.nextLink());
+        Assertions.assertEquals("odxun", model.nextLink());
     }
 }

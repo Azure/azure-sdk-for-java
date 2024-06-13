@@ -14,21 +14,21 @@ public final class WorkloadNetworkGatewayListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkGatewayList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"wyt\",\"path\":\"ib\"},\"id\":\"cgpik\",\"name\":\"zimejzanlfzx\",\"type\":\"av\"},{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"nokixrjqcirgz\",\"path\":\"rlazszrnw\"},\"id\":\"indfpwpjyl\",\"name\":\"bt\",\"type\":\"h\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"dhszfjv\",\"path\":\"gofel\"},\"id\":\"grqmqhldvrii\",\"name\":\"ojnal\",\"type\":\"hfkvtvsexsowuel\"}],\"nextLink\":\"hhahhxvrhmzkwpjg\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Building\",\"displayName\":\"vrmbzono\",\"path\":\"xrjqcirgzpfrlazs\"},\"id\":\"nwoiind\",\"name\":\"pwp\",\"type\":\"ylwbtlhflsjcdhsz\"},{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"gofel\",\"path\":\"grqmqhldvrii\"},\"id\":\"jnalghf\",\"name\":\"vtvsexsowueluq\",\"type\":\"hahhxvrhmzkwpj\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"ughftqsx\",\"path\":\"xujxuknd\"},\"id\":\"igrjguufzdm\",\"name\":\"yqtfihwh\",\"type\":\"otzi\"}],\"nextLink\":\"amvpphoszqzudph\"}")
             .toObject(WorkloadNetworkGatewayList.class);
-        Assertions.assertEquals("wyt", model.value().get(0).displayName());
-        Assertions.assertEquals("hhahhxvrhmzkwpjg", model.nextLink());
+        Assertions.assertEquals("vrmbzono", model.value().get(0).displayName());
+        Assertions.assertEquals("amvpphoszqzudph", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkGatewayList model = new WorkloadNetworkGatewayList()
-            .withValue(Arrays.asList(new WorkloadNetworkGatewayInner().withDisplayName("wyt"),
-                new WorkloadNetworkGatewayInner().withDisplayName("nokixrjqcirgz"),
-                new WorkloadNetworkGatewayInner().withDisplayName("dhszfjv")))
-            .withNextLink("hhahhxvrhmzkwpjg");
+            .withValue(Arrays.asList(new WorkloadNetworkGatewayInner().withDisplayName("vrmbzono"),
+                new WorkloadNetworkGatewayInner().withDisplayName("gofel"),
+                new WorkloadNetworkGatewayInner().withDisplayName("ughftqsx")))
+            .withNextLink("amvpphoszqzudph");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkGatewayList.class);
-        Assertions.assertEquals("wyt", model.value().get(0).displayName());
-        Assertions.assertEquals("hhahhxvrhmzkwpjg", model.nextLink());
+        Assertions.assertEquals("vrmbzono", model.value().get(0).displayName());
+        Assertions.assertEquals("amvpphoszqzudph", model.nextLink());
     }
 }

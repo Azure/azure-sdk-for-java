@@ -15,27 +15,28 @@ public final class WorkloadNetworkDhcpListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDhcpList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"aabjyvayffimrz\",\"segments\":[\"zqogse\",\"nevfdnw\",\"wmewzsyy\"],\"provisioningState\":\"Succeeded\",\"revision\":3107095039290817109},\"id\":\"bjudpfrxtrthzv\",\"name\":\"ytdw\",\"type\":\"qbrqubpaxhexiili\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"tiirqtdqoa\",\"segments\":[\"uzf\"],\"provisioningState\":\"Succeeded\",\"revision\":5365807785374779073},\"id\":\"rxxle\",\"name\":\"tramxjez\",\"type\":\"lwnwxuqlcvydyp\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"ooaojkniodkooebw\",\"segments\":[\"hemms\",\"vdkcrodtj\"],\"provisioningState\":\"Updating\",\"revision\":9136407884135204027},\"id\":\"lt\",\"name\":\"acjvefkd\",\"type\":\"foakgg\"}],\"nextLink\":\"pagao\"}")
+            "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"xdy\",\"segments\":[\"y\",\"cogjltdtbn\",\"hadoocrk\",\"cikhnv\"],\"provisioningState\":\"Succeeded\",\"revision\":1095041786802242377},\"id\":\"queziky\",\"name\":\"ggxkallatmelwuip\",\"type\":\"ccjzkzivgvv\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"y\",\"segments\":[\"rnxxmueed\",\"drd\",\"stkwqqtch\"],\"provisioningState\":\"Canceled\",\"revision\":6465025791585269802},\"id\":\"d\",\"name\":\"aygdvwvgpioh\",\"type\":\"wxrt\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"xepxgyqagvrvmn\",\"segments\":[\"kghimdblxgwimfnj\",\"fjxwmsz\",\"kfoqreyfkzikfj\"],\"provisioningState\":\"Succeeded\",\"revision\":488040231209258224},\"id\":\"xwczelpcire\",\"name\":\"sfeaenwabfat\",\"type\":\"lddxbjhwua\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"zjosp\",\"segments\":[\"ulpjr\",\"xagl\"],\"provisioningState\":\"Updating\",\"revision\":7892134745945256266},\"id\":\"sytxitcskfcktqum\",\"name\":\"ekkezzikhlyfjh\",\"type\":\"gqggebdunygae\"}],\"nextLink\":\"db\"}")
             .toObject(WorkloadNetworkDhcpList.class);
-        Assertions.assertEquals("aabjyvayffimrz", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(3107095039290817109L, model.value().get(0).properties().revision());
-        Assertions.assertEquals("pagao", model.nextLink());
+        Assertions.assertEquals("xdy", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(1095041786802242377L, model.value().get(0).properties().revision());
+        Assertions.assertEquals("db", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkDhcpList model = new WorkloadNetworkDhcpList().withValue(Arrays.asList(
             new WorkloadNetworkDhcpInner().withProperties(
-                new WorkloadNetworkDhcpEntity().withDisplayName("aabjyvayffimrz").withRevision(3107095039290817109L)),
+                new WorkloadNetworkDhcpEntity().withDisplayName("xdy").withRevision(1095041786802242377L)),
             new WorkloadNetworkDhcpInner().withProperties(
-                new WorkloadNetworkDhcpEntity().withDisplayName("tiirqtdqoa").withRevision(5365807785374779073L)),
-            new WorkloadNetworkDhcpInner()
-                .withProperties(new WorkloadNetworkDhcpEntity().withDisplayName("ooaojkniodkooebw")
-                    .withRevision(9136407884135204027L))))
-            .withNextLink("pagao");
+                new WorkloadNetworkDhcpEntity().withDisplayName("y").withRevision(6465025791585269802L)),
+            new WorkloadNetworkDhcpInner().withProperties(
+                new WorkloadNetworkDhcpEntity().withDisplayName("xepxgyqagvrvmn").withRevision(488040231209258224L)),
+            new WorkloadNetworkDhcpInner().withProperties(
+                new WorkloadNetworkDhcpEntity().withDisplayName("zjosp").withRevision(7892134745945256266L))))
+            .withNextLink("db");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpList.class);
-        Assertions.assertEquals("aabjyvayffimrz", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(3107095039290817109L, model.value().get(0).properties().revision());
-        Assertions.assertEquals("pagao", model.nextLink());
+        Assertions.assertEquals("xdy", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(1095041786802242377L, model.value().get(0).properties().revision());
+        Assertions.assertEquals("db", model.nextLink());
     }
 }

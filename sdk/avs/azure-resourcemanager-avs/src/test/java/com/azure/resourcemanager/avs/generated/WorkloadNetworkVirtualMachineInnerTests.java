@@ -12,15 +12,16 @@ public final class WorkloadNetworkVirtualMachineInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVirtualMachineInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Building\",\"displayName\":\"ydfce\",\"vmType\":\"EDGE\"},\"id\":\"hvygdyftumr\",\"name\":\"wnawjslbiw\",\"type\":\"ojgcyzt\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"kslircizjxvydfc\",\"vmType\":\"EDGE\"},\"id\":\"lhvygdyftu\",\"name\":\"rtwnawjslbi\",\"type\":\"kojgcyzts\"}")
             .toObject(WorkloadNetworkVirtualMachineInner.class);
-        Assertions.assertEquals("ydfce", model.displayName());
+        Assertions.assertEquals("kslircizjxvydfc", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkVirtualMachineInner model = new WorkloadNetworkVirtualMachineInner().withDisplayName("ydfce");
+        WorkloadNetworkVirtualMachineInner model
+            = new WorkloadNetworkVirtualMachineInner().withDisplayName("kslircizjxvydfc");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVirtualMachineInner.class);
-        Assertions.assertEquals("ydfce", model.displayName());
+        Assertions.assertEquals("kslircizjxvydfc", model.displayName());
     }
 }

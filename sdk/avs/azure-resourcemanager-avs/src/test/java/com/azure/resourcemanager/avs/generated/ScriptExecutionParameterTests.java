@@ -12,15 +12,15 @@ public final class ScriptExecutionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptExecutionParameter model
-            = BinaryData.fromString("{\"type\":\"ScriptExecutionParameter\",\"name\":\"xe\"}")
+            = BinaryData.fromString("{\"type\":\"ScriptExecutionParameter\",\"name\":\"gaokonzmnsikv\"}")
                 .toObject(ScriptExecutionParameter.class);
-        Assertions.assertEquals("xe", model.name());
+        Assertions.assertEquals("gaokonzmnsikv", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptExecutionParameter model = new ScriptExecutionParameter().withName("xe");
+        ScriptExecutionParameter model = new ScriptExecutionParameter().withName("gaokonzmnsikv");
         model = BinaryData.fromObject(model).toObject(ScriptExecutionParameter.class);
-        Assertions.assertEquals("xe", model.name());
+        Assertions.assertEquals("gaokonzmnsikv", model.name());
     }
 }

@@ -13,7 +13,7 @@ public final class SystemAssignedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SystemAssignedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"f8dd1f58-cc01-41ba-a8e1-df8b01571a90\",\"tenantId\":\"5073a52b-3d59-4b32-9209-503937243187\",\"type\":\"SystemAssigned\"}")
+            "{\"principalId\":\"aa3fbcf1-8a1e-4fab-ba99-71503502f277\",\"tenantId\":\"4397a71c-c662-4228-89ad-dee705117920\",\"type\":\"SystemAssigned\"}")
             .toObject(SystemAssignedServiceIdentity.class);
         Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }

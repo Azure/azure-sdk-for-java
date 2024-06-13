@@ -15,33 +15,37 @@ public final class ClusterInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterInner model = BinaryData.fromString(
-            "{\"properties\":{\"clusterSize\":57544677,\"provisioningState\":\"Deleting\",\"clusterId\":1358705226,\"hosts\":[\"tki\",\"uxh\",\"yudxorrqnbp\"],\"vsanDatastoreName\":\"zvyifqrvkdvj\"},\"sku\":{\"name\":\"llr\",\"tier\":\"Standard\",\"size\":\"f\",\"family\":\"t\",\"capacity\":207833423},\"id\":\"ulexxbczwtr\",\"name\":\"wiqzbqjvsovmyo\",\"type\":\"acspkwl\"}")
+            "{\"properties\":{\"clusterSize\":1625524147,\"provisioningState\":\"Deleting\",\"clusterId\":55863349,\"hosts\":[\"ltyfsop\",\"usue\",\"nzwdejba\",\"orxzdmohctbqvud\"],\"vsanDatastoreName\":\"dndnvow\"},\"sku\":{\"name\":\"ujjugwdkcglh\",\"tier\":\"Basic\",\"size\":\"jdyggdtji\",\"family\":\"b\",\"capacity\":2140516005},\"id\":\"qweykhmenev\",\"name\":\"yexfwh\",\"type\":\"bcibvyvdcsitynn\"}")
             .toObject(ClusterInner.class);
-        Assertions.assertEquals("llr", model.sku().name());
-        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
-        Assertions.assertEquals("f", model.sku().size());
-        Assertions.assertEquals("t", model.sku().family());
-        Assertions.assertEquals(207833423, model.sku().capacity());
-        Assertions.assertEquals(57544677, model.clusterSize());
-        Assertions.assertEquals("tki", model.hosts().get(0));
-        Assertions.assertEquals("zvyifqrvkdvj", model.vsanDatastoreName());
+        Assertions.assertEquals("ujjugwdkcglh", model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("jdyggdtji", model.sku().size());
+        Assertions.assertEquals("b", model.sku().family());
+        Assertions.assertEquals(2140516005, model.sku().capacity());
+        Assertions.assertEquals(1625524147, model.clusterSize());
+        Assertions.assertEquals("ltyfsop", model.hosts().get(0));
+        Assertions.assertEquals("dndnvow", model.vsanDatastoreName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterInner model = new ClusterInner().withSku(
-            new Sku().withName("llr").withTier(SkuTier.STANDARD).withSize("f").withFamily("t").withCapacity(207833423))
-            .withClusterSize(57544677)
-            .withHosts(Arrays.asList("tki", "uxh", "yudxorrqnbp"))
-            .withVsanDatastoreName("zvyifqrvkdvj");
+        ClusterInner model = new ClusterInner()
+            .withSku(new Sku().withName("ujjugwdkcglh")
+                .withTier(SkuTier.BASIC)
+                .withSize("jdyggdtji")
+                .withFamily("b")
+                .withCapacity(2140516005))
+            .withClusterSize(1625524147)
+            .withHosts(Arrays.asList("ltyfsop", "usue", "nzwdejba", "orxzdmohctbqvud"))
+            .withVsanDatastoreName("dndnvow");
         model = BinaryData.fromObject(model).toObject(ClusterInner.class);
-        Assertions.assertEquals("llr", model.sku().name());
-        Assertions.assertEquals(SkuTier.STANDARD, model.sku().tier());
-        Assertions.assertEquals("f", model.sku().size());
-        Assertions.assertEquals("t", model.sku().family());
-        Assertions.assertEquals(207833423, model.sku().capacity());
-        Assertions.assertEquals(57544677, model.clusterSize());
-        Assertions.assertEquals("tki", model.hosts().get(0));
-        Assertions.assertEquals("zvyifqrvkdvj", model.vsanDatastoreName());
+        Assertions.assertEquals("ujjugwdkcglh", model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("jdyggdtji", model.sku().size());
+        Assertions.assertEquals("b", model.sku().family());
+        Assertions.assertEquals(2140516005, model.sku().capacity());
+        Assertions.assertEquals(1625524147, model.clusterSize());
+        Assertions.assertEquals("ltyfsop", model.hosts().get(0));
+        Assertions.assertEquals("dndnvow", model.vsanDatastoreName());
     }
 }

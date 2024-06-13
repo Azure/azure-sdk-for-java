@@ -16,61 +16,39 @@ public final class ClusterListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"clusterSize\":1194387790,\"provisioningState\":\"Canceled\",\"clusterId\":737203180,\"hosts\":[\"usue\",\"nzwdejba\"],\"vsanDatastoreName\":\"rxzdmohctbqvudwx\"},\"sku\":{\"name\":\"ndnvo\",\"tier\":\"Standard\",\"size\":\"jugwdkcglhsl\",\"family\":\"jdyggdtji\",\"capacity\":165344831},\"id\":\"uofqwe\",\"name\":\"kh\",\"type\":\"enevfyexfwhybci\"},{\"properties\":{\"clusterSize\":153812125,\"provisioningState\":\"Cancelled\",\"clusterId\":301752241,\"hosts\":[\"nnaamdectehfiqsc\",\"eypvhezrkg\"],\"vsanDatastoreName\":\"c\"},\"sku\":{\"name\":\"refovgmkqsleyyvx\",\"tier\":\"Standard\",\"size\":\"k\",\"family\":\"t\",\"capacity\":738552235},\"id\":\"jcrcczsqpjhvmda\",\"name\":\"v\",\"type\":\"ysou\"},{\"properties\":{\"clusterSize\":5520044,\"provisioningState\":\"Canceled\",\"clusterId\":389510865,\"hosts\":[\"pfhyhl\"],\"vsanDatastoreName\":\"pmopjmc\"},\"sku\":{\"name\":\"atuokthfuiu\",\"tier\":\"Premium\",\"size\":\"fcp\",\"family\":\"xodpuozmyzydagfu\",\"capacity\":906864290},\"id\":\"zyiuokk\",\"name\":\"whrdxwzywqsmbsu\",\"type\":\"exim\"}],\"nextLink\":\"yocf\"}")
+            "{\"value\":[{\"properties\":{\"clusterSize\":409786419,\"provisioningState\":\"Failed\",\"clusterId\":86962705,\"hosts\":[\"qwoochcbon\"],\"vsanDatastoreName\":\"pkvlrxn\"},\"sku\":{\"name\":\"ea\",\"tier\":\"Premium\",\"size\":\"heoflokeyyienjbd\",\"family\":\"tgrhpdjpjumas\",\"capacity\":271162944},\"id\":\"pqyegualhbxxh\",\"name\":\"jj\",\"type\":\"zvdudgwdslfhotwm\"}],\"nextLink\":\"npwlbjnpg\"}")
             .toObject(ClusterList.class);
-        Assertions.assertEquals("ndnvo", model.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.STANDARD, model.value().get(0).sku().tier());
-        Assertions.assertEquals("jugwdkcglhsl", model.value().get(0).sku().size());
-        Assertions.assertEquals("jdyggdtji", model.value().get(0).sku().family());
-        Assertions.assertEquals(165344831, model.value().get(0).sku().capacity());
-        Assertions.assertEquals(1194387790, model.value().get(0).clusterSize());
-        Assertions.assertEquals("usue", model.value().get(0).hosts().get(0));
-        Assertions.assertEquals("rxzdmohctbqvudwx", model.value().get(0).vsanDatastoreName());
-        Assertions.assertEquals("yocf", model.nextLink());
+        Assertions.assertEquals("ea", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, model.value().get(0).sku().tier());
+        Assertions.assertEquals("heoflokeyyienjbd", model.value().get(0).sku().size());
+        Assertions.assertEquals("tgrhpdjpjumas", model.value().get(0).sku().family());
+        Assertions.assertEquals(271162944, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(409786419, model.value().get(0).clusterSize());
+        Assertions.assertEquals("qwoochcbon", model.value().get(0).hosts().get(0));
+        Assertions.assertEquals("pkvlrxn", model.value().get(0).vsanDatastoreName());
+        Assertions.assertEquals("npwlbjnpg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterList model
-            = new ClusterList()
-                .withValue(Arrays.asList(
-                    new ClusterInner()
-                        .withSku(new Sku().withName("ndnvo")
-                            .withTier(SkuTier.STANDARD)
-                            .withSize("jugwdkcglhsl")
-                            .withFamily("jdyggdtji")
-                            .withCapacity(165344831))
-                        .withClusterSize(1194387790)
-                        .withHosts(Arrays.asList("usue", "nzwdejba"))
-                        .withVsanDatastoreName("rxzdmohctbqvudwx"),
-                    new ClusterInner()
-                        .withSku(new Sku().withName("refovgmkqsleyyvx")
-                            .withTier(SkuTier.STANDARD)
-                            .withSize("k")
-                            .withFamily("t")
-                            .withCapacity(738552235))
-                        .withClusterSize(153812125)
-                        .withHosts(Arrays.asList("nnaamdectehfiqsc", "eypvhezrkg"))
-                        .withVsanDatastoreName("c"),
-                    new ClusterInner()
-                        .withSku(new Sku().withName("atuokthfuiu")
-                            .withTier(SkuTier.PREMIUM)
-                            .withSize("fcp")
-                            .withFamily("xodpuozmyzydagfu")
-                            .withCapacity(906864290))
-                        .withClusterSize(5520044)
-                        .withHosts(Arrays.asList("pfhyhl"))
-                        .withVsanDatastoreName("pmopjmc")))
-                .withNextLink("yocf");
+        ClusterList model = new ClusterList().withValue(Arrays.asList(new ClusterInner()
+            .withSku(new Sku().withName("ea")
+                .withTier(SkuTier.PREMIUM)
+                .withSize("heoflokeyyienjbd")
+                .withFamily("tgrhpdjpjumas")
+                .withCapacity(271162944))
+            .withClusterSize(409786419)
+            .withHosts(Arrays.asList("qwoochcbon"))
+            .withVsanDatastoreName("pkvlrxn"))).withNextLink("npwlbjnpg");
         model = BinaryData.fromObject(model).toObject(ClusterList.class);
-        Assertions.assertEquals("ndnvo", model.value().get(0).sku().name());
-        Assertions.assertEquals(SkuTier.STANDARD, model.value().get(0).sku().tier());
-        Assertions.assertEquals("jugwdkcglhsl", model.value().get(0).sku().size());
-        Assertions.assertEquals("jdyggdtji", model.value().get(0).sku().family());
-        Assertions.assertEquals(165344831, model.value().get(0).sku().capacity());
-        Assertions.assertEquals(1194387790, model.value().get(0).clusterSize());
-        Assertions.assertEquals("usue", model.value().get(0).hosts().get(0));
-        Assertions.assertEquals("rxzdmohctbqvudwx", model.value().get(0).vsanDatastoreName());
-        Assertions.assertEquals("yocf", model.nextLink());
+        Assertions.assertEquals("ea", model.value().get(0).sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, model.value().get(0).sku().tier());
+        Assertions.assertEquals("heoflokeyyienjbd", model.value().get(0).sku().size());
+        Assertions.assertEquals("tgrhpdjpjumas", model.value().get(0).sku().family());
+        Assertions.assertEquals(271162944, model.value().get(0).sku().capacity());
+        Assertions.assertEquals(409786419, model.value().get(0).clusterSize());
+        Assertions.assertEquals("qwoochcbon", model.value().get(0).hosts().get(0));
+        Assertions.assertEquals("pkvlrxn", model.value().get(0).vsanDatastoreName());
+        Assertions.assertEquals("npwlbjnpg", model.nextLink());
     }
 }

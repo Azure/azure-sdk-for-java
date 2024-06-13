@@ -21,7 +21,7 @@ public final class ScriptCmdletsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"xousxauzl\",\"timeout\":\"sgmwoh\",\"audience\":\"Any\",\"parameters\":[{\"type\":\"Float\",\"name\":\"mmkjsvthnwpztek\",\"description\":\"mribiat\",\"visibility\":\"Hidden\",\"optional\":\"Required\"},{\"type\":\"Credential\",\"name\":\"tangcfhnykzcu\",\"description\":\"wvxwlmzqwmvt\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"}]},\"id\":\"cuqudtcvclxy\",\"name\":\"pdkvg\",\"type\":\"abuiy\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"i\",\"timeout\":\"kclacjfrn\",\"audience\":\"Automation\",\"parameters\":[{\"type\":\"String\",\"name\":\"lwvsgm\",\"description\":\"hqf\",\"visibility\":\"Visible\",\"optional\":\"Required\"},{\"type\":\"Float\",\"name\":\"kjsvthnwpzteko\",\"description\":\"ribi\",\"visibility\":\"Hidden\",\"optional\":\"Required\"},{\"type\":\"SecureString\",\"name\":\"fotang\",\"description\":\"hnykz\",\"visibility\":\"Hidden\",\"optional\":\"Required\"},{\"type\":\"Int\",\"name\":\"lmzqwmvtxnjmx\",\"description\":\"uqudtcvclxyn\",\"visibility\":\"Visible\",\"optional\":\"Required\"}]},\"id\":\"abuiy\",\"name\":\"ibuz\",\"type\":\"hdugneiknpg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class ScriptCmdletsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ScriptCmdlet> response
-            = manager.scriptCmdlets().list("gjsxv", "qcbfrmbodths", "qgvriibakcla", com.azure.core.util.Context.NONE);
+        PagedIterable<ScriptCmdlet> response = manager.scriptCmdlets()
+            .list("ljfp", "picrmnzhrgmqgjsx", "pqcbfrmbodthsq", com.azure.core.util.Context.NONE);
 
     }
 }

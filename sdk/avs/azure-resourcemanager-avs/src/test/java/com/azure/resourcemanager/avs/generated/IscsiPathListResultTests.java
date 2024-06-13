@@ -14,19 +14,19 @@ public final class IscsiPathListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IscsiPathListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Building\",\"networkBlock\":\"ali\"},\"id\":\"rqhakauha\",\"name\":\"hsfwxosowzxcug\",\"type\":\"cjooxdjebwpucwwf\"}],\"nextLink\":\"vbvmeu\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"networkBlock\":\"z\"},\"id\":\"zka\",\"name\":\"kuwbcrnwb\",\"type\":\"ehhseyvjusrts\"}],\"nextLink\":\"spkdee\"}")
             .toObject(IscsiPathListResult.class);
-        Assertions.assertEquals("ali", model.value().get(0).networkBlock());
-        Assertions.assertEquals("vbvmeu", model.nextLink());
+        Assertions.assertEquals("z", model.value().get(0).networkBlock());
+        Assertions.assertEquals("spkdee", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IscsiPathListResult model
-            = new IscsiPathListResult().withValue(Arrays.asList(new IscsiPathInner().withNetworkBlock("ali")))
-                .withNextLink("vbvmeu");
+            = new IscsiPathListResult().withValue(Arrays.asList(new IscsiPathInner().withNetworkBlock("z")))
+                .withNextLink("spkdee");
         model = BinaryData.fromObject(model).toObject(IscsiPathListResult.class);
-        Assertions.assertEquals("ali", model.value().get(0).networkBlock());
-        Assertions.assertEquals("vbvmeu", model.nextLink());
+        Assertions.assertEquals("z", model.value().get(0).networkBlock());
+        Assertions.assertEquals("spkdee", model.nextLink());
     }
 }

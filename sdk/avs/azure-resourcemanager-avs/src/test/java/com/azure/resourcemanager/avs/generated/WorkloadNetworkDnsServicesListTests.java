@@ -15,40 +15,46 @@ public final class WorkloadNetworkDnsServicesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDnsServicesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"olmncwsobqwcs\",\"dnsServiceIp\":\"nwdcfhu\",\"defaultDnsZone\":\"dpfuvg\",\"fqdnZones\":[\"jjcanvxbvtv\"],\"logLevel\":\"DEBUG\",\"status\":\"FAILURE\",\"provisioningState\":\"Canceled\",\"revision\":1171285354715728812},\"id\":\"xqtvcofu\",\"name\":\"f\",\"type\":\"vkg\"},{\"properties\":{\"displayName\":\"gdknnqv\",\"dnsServiceIp\":\"znqntoru\",\"defaultDnsZone\":\"gsahmkycgrauw\",\"fqdnZones\":[\"taeburuvdm\",\"vsmzlxwab\"],\"logLevel\":\"FATAL\",\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":4480372692035357519},\"id\":\"puqujmqlgkfbtn\",\"name\":\"oaongbjc\",\"type\":\"tujitcjedft\"}],\"nextLink\":\"ae\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"yyceuzsoi\",\"dnsServiceIp\":\"ud\",\"defaultDnsZone\":\"rx\",\"fqdnZones\":[\"hzv\",\"ytdw\",\"qbrqubpaxhexiili\",\"pdtii\"],\"logLevel\":\"ERROR\",\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":7272913098862288792},\"id\":\"zfgs\",\"name\":\"uyfxrxxleptramxj\",\"type\":\"zwl\"},{\"properties\":{\"displayName\":\"xuqlcvydypat\",\"dnsServiceIp\":\"oa\",\"defaultDnsZone\":\"kniod\",\"fqdnZones\":[\"ebwnujhe\",\"msbvdkcrodtjinf\",\"jlfltkacjvefkdlf\"],\"logLevel\":\"FATAL\",\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":9029046645236606228},\"id\":\"owpulpq\",\"name\":\"lyls\",\"type\":\"xkqjnsjervt\"},{\"properties\":{\"displayName\":\"xsdszuempsb\",\"dnsServiceIp\":\"f\",\"defaultDnsZone\":\"eyvpnqicvinvkj\",\"fqdnZones\":[\"xrbuukzclew\",\"hmlwpaztzpo\",\"ncckw\"],\"logLevel\":\"FATAL\",\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":3103220879835924511},\"id\":\"qa\",\"name\":\"zfeqztppri\",\"type\":\"lxorjaltolmncws\"}],\"nextLink\":\"qwcsdbnwdcfhuc\"}")
             .toObject(WorkloadNetworkDnsServicesList.class);
-        Assertions.assertEquals("olmncwsobqwcs", model.value().get(0).displayName());
-        Assertions.assertEquals("nwdcfhu", model.value().get(0).dnsServiceIp());
-        Assertions.assertEquals("dpfuvg", model.value().get(0).defaultDnsZone());
-        Assertions.assertEquals("jjcanvxbvtv", model.value().get(0).fqdnZones().get(0));
-        Assertions.assertEquals(DnsServiceLogLevelEnum.DEBUG, model.value().get(0).logLevel());
-        Assertions.assertEquals(1171285354715728812L, model.value().get(0).revision());
-        Assertions.assertEquals("ae", model.nextLink());
+        Assertions.assertEquals("yyceuzsoi", model.value().get(0).displayName());
+        Assertions.assertEquals("ud", model.value().get(0).dnsServiceIp());
+        Assertions.assertEquals("rx", model.value().get(0).defaultDnsZone());
+        Assertions.assertEquals("hzv", model.value().get(0).fqdnZones().get(0));
+        Assertions.assertEquals(DnsServiceLogLevelEnum.ERROR, model.value().get(0).logLevel());
+        Assertions.assertEquals(7272913098862288792L, model.value().get(0).revision());
+        Assertions.assertEquals("qwcsdbnwdcfhuc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkDnsServicesList model = new WorkloadNetworkDnsServicesList().withValue(Arrays.asList(
-            new WorkloadNetworkDnsServiceInner().withDisplayName("olmncwsobqwcs")
-                .withDnsServiceIp("nwdcfhu")
-                .withDefaultDnsZone("dpfuvg")
-                .withFqdnZones(Arrays.asList("jjcanvxbvtv"))
-                .withLogLevel(DnsServiceLogLevelEnum.DEBUG)
-                .withRevision(1171285354715728812L),
-            new WorkloadNetworkDnsServiceInner().withDisplayName("gdknnqv")
-                .withDnsServiceIp("znqntoru")
-                .withDefaultDnsZone("gsahmkycgrauw")
-                .withFqdnZones(Arrays.asList("taeburuvdm", "vsmzlxwab"))
+            new WorkloadNetworkDnsServiceInner().withDisplayName("yyceuzsoi")
+                .withDnsServiceIp("ud")
+                .withDefaultDnsZone("rx")
+                .withFqdnZones(Arrays.asList("hzv", "ytdw", "qbrqubpaxhexiili", "pdtii"))
+                .withLogLevel(DnsServiceLogLevelEnum.ERROR)
+                .withRevision(7272913098862288792L),
+            new WorkloadNetworkDnsServiceInner().withDisplayName("xuqlcvydypat")
+                .withDnsServiceIp("oa")
+                .withDefaultDnsZone("kniod")
+                .withFqdnZones(Arrays.asList("ebwnujhe", "msbvdkcrodtjinf", "jlfltkacjvefkdlf"))
                 .withLogLevel(DnsServiceLogLevelEnum.FATAL)
-                .withRevision(4480372692035357519L)))
-            .withNextLink("ae");
+                .withRevision(9029046645236606228L),
+            new WorkloadNetworkDnsServiceInner().withDisplayName("xsdszuempsb")
+                .withDnsServiceIp("f")
+                .withDefaultDnsZone("eyvpnqicvinvkj")
+                .withFqdnZones(Arrays.asList("xrbuukzclew", "hmlwpaztzpo", "ncckw"))
+                .withLogLevel(DnsServiceLogLevelEnum.FATAL)
+                .withRevision(3103220879835924511L)))
+            .withNextLink("qwcsdbnwdcfhuc");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDnsServicesList.class);
-        Assertions.assertEquals("olmncwsobqwcs", model.value().get(0).displayName());
-        Assertions.assertEquals("nwdcfhu", model.value().get(0).dnsServiceIp());
-        Assertions.assertEquals("dpfuvg", model.value().get(0).defaultDnsZone());
-        Assertions.assertEquals("jjcanvxbvtv", model.value().get(0).fqdnZones().get(0));
-        Assertions.assertEquals(DnsServiceLogLevelEnum.DEBUG, model.value().get(0).logLevel());
-        Assertions.assertEquals(1171285354715728812L, model.value().get(0).revision());
-        Assertions.assertEquals("ae", model.nextLink());
+        Assertions.assertEquals("yyceuzsoi", model.value().get(0).displayName());
+        Assertions.assertEquals("ud", model.value().get(0).dnsServiceIp());
+        Assertions.assertEquals("rx", model.value().get(0).defaultDnsZone());
+        Assertions.assertEquals("hzv", model.value().get(0).fqdnZones().get(0));
+        Assertions.assertEquals(DnsServiceLogLevelEnum.ERROR, model.value().get(0).logLevel());
+        Assertions.assertEquals(7272913098862288792L, model.value().get(0).revision());
+        Assertions.assertEquals("qwcsdbnwdcfhuc", model.nextLink());
     }
 }

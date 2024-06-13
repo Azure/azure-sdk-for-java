@@ -20,7 +20,7 @@ public final class ScriptCmdletsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"xxgewpk\",\"timeout\":\"qylkmqpzoyhlf\",\"audience\":\"Automation\",\"parameters\":[{\"type\":\"Credential\",\"name\":\"xoe\",\"description\":\"injipnwjf\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"}]},\"id\":\"cbahhpzpofoiy\",\"name\":\"w\",\"type\":\"filkmkkholv\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"kmqp\",\"timeout\":\"yhlfb\",\"audience\":\"Any\",\"parameters\":[{\"type\":\"Float\",\"name\":\"oebqinjipn\",\"description\":\"fujqlafcba\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"},{\"type\":\"Bool\",\"name\":\"iyjwpfilkmkkho\",\"description\":\"dndviauogp\",\"visibility\":\"Visible\",\"optional\":\"Optional\"}]},\"id\":\"tiuky\",\"name\":\"fchnmnah\",\"type\":\"nxhkxjqi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ScriptCmdletsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ScriptCmdlet response = manager.scriptCmdlets()
-            .getWithResponse("ibuz", "hdugneiknpg", "xgjiuqh", "btozipqwje", com.azure.core.util.Context.NONE)
+            .getWithResponse("xgjiuqh", "btozipqwje", "mur", "xxgewpk", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

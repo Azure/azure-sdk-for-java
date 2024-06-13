@@ -11,7 +11,7 @@ public final class AddonPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddonProperties model
-            = BinaryData.fromString("{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Deleting\"}")
+            = BinaryData.fromString("{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Updating\"}")
                 .toObject(AddonProperties.class);
     }
 

@@ -20,7 +20,7 @@ public final class ClustersListZonesWithResponseMockTests {
     @Test
     public void testListZonesWithResponse() throws Exception {
         String responseStr
-            = "{\"zones\":[{\"hosts\":[\"xwh\",\"ansym\",\"yqhlwigdivbkbx\",\"omfaj\"],\"zone\":\"asqvd\"},{\"hosts\":[\"y\"],\"zone\":\"xakjsqzhzb\"},{\"hosts\":[\"gims\",\"dxasicddyvv\",\"skgfmocwahpq\"],\"zone\":\"tjeaahhvjhh\"}]}";
+            = "{\"zones\":[{\"hosts\":[\"frpmpdnqqskaw\"],\"zone\":\"qvmmbn\"},{\"hosts\":[\"rtql\"],\"zone\":\"megni\"},{\"hosts\":[\"kxlzyqdrfeg\",\"ealzxwhcansymoyq\"],\"zone\":\"wigdi\"},{\"hosts\":[\"bxgomfaj\",\"wasqvdaeyyg\"],\"zone\":\"akjsqz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ClustersListZonesWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ClusterZoneList response = manager.clusters()
-            .listZonesWithResponse("pqfrtqlkz", "egnitg", "kxlzyqdrfeg", com.azure.core.util.Context.NONE)
+            .listZonesWithResponse("vcpwpgclrc", "vtsoxf", "kenx", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

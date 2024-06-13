@@ -27,8 +27,7 @@ public final class PlacementPoliciesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.placementPolicies()
-            .delete("tzenk", "if", "zhmkdasvflyh", "xcudchxgsr", com.azure.core.util.Context.NONE);
+        manager.placementPolicies().delete("k", "reljeamur", "zmlovuanash", "xlpm", com.azure.core.util.Context.NONE);
 
     }
 }

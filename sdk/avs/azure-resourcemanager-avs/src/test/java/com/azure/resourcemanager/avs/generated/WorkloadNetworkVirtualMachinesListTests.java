@@ -14,21 +14,21 @@ public final class WorkloadNetworkVirtualMachinesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVirtualMachinesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"otmrfhir\",\"vmType\":\"SERVICE\"},\"id\":\"oxoftpipiwycz\",\"name\":\"hxacpqjlihhyu\",\"type\":\"pskasdvlmfwdg\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"cvpa\",\"vmType\":\"REGULAR\"},\"id\":\"euzvx\",\"name\":\"risjnhnytxifqjz\",\"type\":\"xmrhu\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"esutrgjupauutpw\",\"vmType\":\"REGULAR\"},\"id\":\"hej\",\"name\":\"g\",\"type\":\"zpnfqntcypsxj\"}],\"nextLink\":\"oimwkslirc\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"xoftpipiwyczu\",\"vmType\":\"REGULAR\"},\"id\":\"pqjlihhyusps\",\"name\":\"asdvl\",\"type\":\"fwdgzxulucvp\"},{\"properties\":{\"provisioningState\":\"Building\",\"displayName\":\"euzvx\",\"vmType\":\"REGULAR\"},\"id\":\"jn\",\"name\":\"nytx\",\"type\":\"fq\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"rhublwpcesutrg\",\"vmType\":\"REGULAR\"},\"id\":\"uutpwoqhih\",\"name\":\"jqgwzp\",\"type\":\"fqntcyp\"}],\"nextLink\":\"jv\"}")
             .toObject(WorkloadNetworkVirtualMachinesList.class);
-        Assertions.assertEquals("otmrfhir", model.value().get(0).displayName());
-        Assertions.assertEquals("oimwkslirc", model.nextLink());
+        Assertions.assertEquals("xoftpipiwyczu", model.value().get(0).displayName());
+        Assertions.assertEquals("jv", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkVirtualMachinesList model = new WorkloadNetworkVirtualMachinesList()
-            .withValue(Arrays.asList(new WorkloadNetworkVirtualMachineInner().withDisplayName("otmrfhir"),
-                new WorkloadNetworkVirtualMachineInner().withDisplayName("cvpa"),
-                new WorkloadNetworkVirtualMachineInner().withDisplayName("esutrgjupauutpw")))
-            .withNextLink("oimwkslirc");
+            .withValue(Arrays.asList(new WorkloadNetworkVirtualMachineInner().withDisplayName("xoftpipiwyczu"),
+                new WorkloadNetworkVirtualMachineInner().withDisplayName("euzvx"),
+                new WorkloadNetworkVirtualMachineInner().withDisplayName("rhublwpcesutrg")))
+            .withNextLink("jv");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVirtualMachinesList.class);
-        Assertions.assertEquals("otmrfhir", model.value().get(0).displayName());
-        Assertions.assertEquals("oimwkslirc", model.nextLink());
+        Assertions.assertEquals("xoftpipiwyczu", model.value().get(0).displayName());
+        Assertions.assertEquals("jv", model.nextLink());
     }
 }

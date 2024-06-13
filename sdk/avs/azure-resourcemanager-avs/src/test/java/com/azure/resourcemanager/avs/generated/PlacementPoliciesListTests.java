@@ -16,30 +16,24 @@ public final class PlacementPoliciesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlacementPoliciesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"runmp\",\"provisioningState\":\"Updating\"},\"id\":\"bh\",\"name\":\"bnlankxmyskpb\",\"type\":\"enbtkcxywny\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"nlqidybyxczf\",\"provisioningState\":\"Failed\"},\"id\":\"axdbabph\",\"name\":\"wrqlfktsthsuco\",\"type\":\"mnyyazt\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"rq\",\"provisioningState\":\"Deleting\"},\"id\":\"ckzywbiexzfeyue\",\"name\":\"xibxujwbhqwalm\",\"type\":\"zyoxaepdkzjan\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"d\",\"provisioningState\":\"Updating\"},\"id\":\"xbniwdjs\",\"name\":\"zt\",\"type\":\"dbpgnxytxhp\"}],\"nextLink\":\"bzpfzab\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"ebrjcxe\",\"provisioningState\":\"Failed\"},\"id\":\"utttxfvjrbirp\",\"name\":\"xepcyvahfn\",\"type\":\"jky\"},{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"ujqgidok\",\"provisioningState\":\"Failed\"},\"id\":\"yoxgvcltbgsnc\",\"name\":\"hkjeszzhbi\",\"type\":\"htxfvgxbfsmxnehm\"}],\"nextLink\":\"ec\"}")
             .toObject(PlacementPoliciesList.class);
-        Assertions.assertEquals(PlacementPolicyState.ENABLED, model.value().get(0).properties().state());
-        Assertions.assertEquals("runmp", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("bzpfzab", model.nextLink());
+        Assertions.assertEquals(PlacementPolicyState.DISABLED, model.value().get(0).properties().state());
+        Assertions.assertEquals("ebrjcxe", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("ec", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlacementPoliciesList model = new PlacementPoliciesList()
-            .withValue(Arrays.asList(
-                new PlacementPolicyInner().withProperties(
-                    new PlacementPolicyProperties().withState(PlacementPolicyState.ENABLED).withDisplayName("runmp")),
-                new PlacementPolicyInner()
-                    .withProperties(new PlacementPolicyProperties().withState(PlacementPolicyState.DISABLED)
-                        .withDisplayName("nlqidybyxczf")),
-                new PlacementPolicyInner().withProperties(
-                    new PlacementPolicyProperties().withState(PlacementPolicyState.ENABLED).withDisplayName("rq")),
-                new PlacementPolicyInner().withProperties(
-                    new PlacementPolicyProperties().withState(PlacementPolicyState.DISABLED).withDisplayName("d"))))
-            .withNextLink("bzpfzab");
+        PlacementPoliciesList model = new PlacementPoliciesList().withValue(Arrays.asList(
+            new PlacementPolicyInner().withProperties(
+                new PlacementPolicyProperties().withState(PlacementPolicyState.DISABLED).withDisplayName("ebrjcxe")),
+            new PlacementPolicyInner().withProperties(
+                new PlacementPolicyProperties().withState(PlacementPolicyState.ENABLED).withDisplayName("ujqgidok"))))
+            .withNextLink("ec");
         model = BinaryData.fromObject(model).toObject(PlacementPoliciesList.class);
-        Assertions.assertEquals(PlacementPolicyState.ENABLED, model.value().get(0).properties().state());
-        Assertions.assertEquals("runmp", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("bzpfzab", model.nextLink());
+        Assertions.assertEquals(PlacementPolicyState.DISABLED, model.value().get(0).properties().state());
+        Assertions.assertEquals("ebrjcxe", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("ec", model.nextLink());
     }
 }

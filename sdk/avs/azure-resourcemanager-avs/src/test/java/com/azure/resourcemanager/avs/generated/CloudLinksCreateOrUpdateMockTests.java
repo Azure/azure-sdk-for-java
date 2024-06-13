@@ -21,7 +21,7 @@ public final class CloudLinksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Failed\",\"linkedCloud\":\"pgfewetwlyx\"},\"id\":\"cxy\",\"name\":\"xhdjhl\",\"type\":\"mmbcxfhbcp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Deleting\",\"linkedCloud\":\"wnpjhlfzswpchwa\"},\"id\":\"bousn\",\"name\":\"epgfew\",\"type\":\"twly\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class CloudLinksCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CloudLink response = manager.cloudLinks()
-            .define("talhsnvkcdmxzr")
-            .withExistingPrivateCloud("wpfaj", "jwltlwtjjgu")
-            .withLinkedCloud("wiaaomylweaz")
+            .define("lkb")
+            .withExistingPrivateCloud("qxzhem", "yhohujswtwkozzwc")
+            .withLinkedCloud("jwltlwtjjgu")
             .create();
 
-        Assertions.assertEquals("pgfewetwlyx", response.linkedCloud());
+        Assertions.assertEquals("wnpjhlfzswpchwa", response.linkedCloud());
     }
 }

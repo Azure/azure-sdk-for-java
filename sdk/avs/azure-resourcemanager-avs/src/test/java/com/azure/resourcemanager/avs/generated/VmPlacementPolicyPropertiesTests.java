@@ -15,24 +15,24 @@ public final class VmPlacementPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmPlacementPolicyProperties model = BinaryData.fromString(
-            "{\"type\":\"VmVm\",\"vmMembers\":[\"xpgpq\",\"hiszepnnbjcrxgib\",\"daxconfozauorsuk\",\"kwbqplhlvnuu\"],\"affinityType\":\"Affinity\",\"state\":\"Disabled\",\"displayName\":\"phwzsoldweyuqdu\",\"provisioningState\":\"Failed\"}")
+            "{\"type\":\"VmVm\",\"vmMembers\":[\"duvwpklvxwmygd\",\"pgpqchiszepnnb\"],\"affinityType\":\"Affinity\",\"state\":\"Enabled\",\"displayName\":\"ibbdaxconfoza\",\"provisioningState\":\"Succeeded\"}")
             .toObject(VmPlacementPolicyProperties.class);
-        Assertions.assertEquals(PlacementPolicyState.DISABLED, model.state());
-        Assertions.assertEquals("phwzsoldweyuqdu", model.displayName());
-        Assertions.assertEquals("xpgpq", model.vmMembers().get(0));
+        Assertions.assertEquals(PlacementPolicyState.ENABLED, model.state());
+        Assertions.assertEquals("ibbdaxconfoza", model.displayName());
+        Assertions.assertEquals("duvwpklvxwmygd", model.vmMembers().get(0));
         Assertions.assertEquals(AffinityType.AFFINITY, model.affinityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmPlacementPolicyProperties model = new VmPlacementPolicyProperties().withState(PlacementPolicyState.DISABLED)
-            .withDisplayName("phwzsoldweyuqdu")
-            .withVmMembers(Arrays.asList("xpgpq", "hiszepnnbjcrxgib", "daxconfozauorsuk", "kwbqplhlvnuu"))
+        VmPlacementPolicyProperties model = new VmPlacementPolicyProperties().withState(PlacementPolicyState.ENABLED)
+            .withDisplayName("ibbdaxconfoza")
+            .withVmMembers(Arrays.asList("duvwpklvxwmygd", "pgpqchiszepnnb"))
             .withAffinityType(AffinityType.AFFINITY);
         model = BinaryData.fromObject(model).toObject(VmPlacementPolicyProperties.class);
-        Assertions.assertEquals(PlacementPolicyState.DISABLED, model.state());
-        Assertions.assertEquals("phwzsoldweyuqdu", model.displayName());
-        Assertions.assertEquals("xpgpq", model.vmMembers().get(0));
+        Assertions.assertEquals(PlacementPolicyState.ENABLED, model.state());
+        Assertions.assertEquals("ibbdaxconfoza", model.displayName());
+        Assertions.assertEquals("duvwpklvxwmygd", model.vmMembers().get(0));
         Assertions.assertEquals(AffinityType.AFFINITY, model.affinityType());
     }
 }

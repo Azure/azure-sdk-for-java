@@ -14,40 +14,52 @@ public final class WorkloadNetworkDnsZonesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDnsZonesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"csphkaiv\",\"domain\":[\"qscywu\",\"gwol\"],\"dnsServerIps\":[\"zbwemh\",\"i\",\"sbrgz\",\"wmsweypqwd\"],\"sourceIp\":\"gicccnxqhuex\",\"dnsServices\":1362682825,\"provisioningState\":\"Building\",\"revision\":4528392326800353907},\"id\":\"zywemhzrncsdtclu\",\"name\":\"iypbsfgytgusl\",\"type\":\"eadcygqukyhejhz\"},{\"properties\":{\"displayName\":\"gfpelolppvksrpqv\",\"domain\":[\"raehtwdwrft\",\"wib\"],\"dnsServerIps\":[\"dl\"],\"sourceIp\":\"shfwpracstwity\",\"dnsServices\":56359046,\"provisioningState\":\"Updating\",\"revision\":375127635730332608},\"id\":\"cpnmdyodn\",\"name\":\"zxltjcvn\",\"type\":\"ltiugcxnavv\"}],\"nextLink\":\"qiby\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"khnzbonlw\",\"domain\":[\"egokdwbwhkszzcmr\",\"exztvbtq\",\"sfraoyzko\"],\"dnsServerIps\":[\"lmnguxaw\",\"aldsy\"],\"sourceIp\":\"ximerqfobwyznk\",\"dnsServices\":1383706321,\"provisioningState\":\"Canceled\",\"revision\":8888415937713510387},\"id\":\"pagmhrskdsnf\",\"name\":\"sd\",\"type\":\"akgtdlmkkzevdlh\"},{\"properties\":{\"displayName\":\"usdsttwv\",\"domain\":[\"bbejdcngqqm\",\"akufgmjz\",\"wr\"],\"dnsServerIps\":[\"twaenuuzko\",\"bminrfdwoyuhhzi\",\"iefozbhdmsml\"],\"sourceIp\":\"qhoftrmaequiah\",\"dnsServices\":1867167840,\"provisioningState\":\"Deleting\",\"revision\":5475411267046068461},\"id\":\"z\",\"name\":\"iyylhalnswhccsp\",\"type\":\"kaivwit\"},{\"properties\":{\"displayName\":\"ywuggwoluhcz\",\"domain\":[\"mhairsbrgzdwmsw\"],\"dnsServerIps\":[\"qwdxggicc\"],\"sourceIp\":\"xqhuexm\",\"dnsServices\":735026566,\"provisioningState\":\"Building\",\"revision\":3065309169479098927},\"id\":\"ywemhzrn\",\"name\":\"sdtclusiypbs\",\"type\":\"gytguslfead\"},{\"properties\":{\"displayName\":\"qukyhejhzi\",\"domain\":[\"fpel\",\"lppvksrpq\",\"ujzra\",\"htwdwrftswibyrcd\"],\"dnsServerIps\":[\"shfwpracstwity\"],\"sourceIp\":\"evxccedcp\",\"dnsServices\":586634828,\"provisioningState\":\"Deleting\",\"revision\":720976602557393254},\"id\":\"xltjcvnhltiu\",\"name\":\"cxnavv\",\"type\":\"xqi\"}],\"nextLink\":\"qunyowxwlmdjr\"}")
             .toObject(WorkloadNetworkDnsZonesList.class);
-        Assertions.assertEquals("csphkaiv", model.value().get(0).displayName());
-        Assertions.assertEquals("qscywu", model.value().get(0).domain().get(0));
-        Assertions.assertEquals("zbwemh", model.value().get(0).dnsServerIps().get(0));
-        Assertions.assertEquals("gicccnxqhuex", model.value().get(0).sourceIp());
-        Assertions.assertEquals(1362682825, model.value().get(0).dnsServices());
-        Assertions.assertEquals(4528392326800353907L, model.value().get(0).revision());
-        Assertions.assertEquals("qiby", model.nextLink());
+        Assertions.assertEquals("khnzbonlw", model.value().get(0).displayName());
+        Assertions.assertEquals("egokdwbwhkszzcmr", model.value().get(0).domain().get(0));
+        Assertions.assertEquals("lmnguxaw", model.value().get(0).dnsServerIps().get(0));
+        Assertions.assertEquals("ximerqfobwyznk", model.value().get(0).sourceIp());
+        Assertions.assertEquals(1383706321, model.value().get(0).dnsServices());
+        Assertions.assertEquals(8888415937713510387L, model.value().get(0).revision());
+        Assertions.assertEquals("qunyowxwlmdjr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkDnsZonesList model = new WorkloadNetworkDnsZonesList().withValue(Arrays.asList(
-            new WorkloadNetworkDnsZoneInner().withDisplayName("csphkaiv")
-                .withDomain(Arrays.asList("qscywu", "gwol"))
-                .withDnsServerIps(Arrays.asList("zbwemh", "i", "sbrgz", "wmsweypqwd"))
-                .withSourceIp("gicccnxqhuex")
-                .withDnsServices(1362682825)
-                .withRevision(4528392326800353907L),
-            new WorkloadNetworkDnsZoneInner().withDisplayName("gfpelolppvksrpqv")
-                .withDomain(Arrays.asList("raehtwdwrft", "wib"))
-                .withDnsServerIps(Arrays.asList("dl"))
-                .withSourceIp("shfwpracstwity")
-                .withDnsServices(56359046)
-                .withRevision(375127635730332608L)))
-            .withNextLink("qiby");
+            new WorkloadNetworkDnsZoneInner().withDisplayName("khnzbonlw")
+                .withDomain(Arrays.asList("egokdwbwhkszzcmr", "exztvbtq", "sfraoyzko"))
+                .withDnsServerIps(Arrays.asList("lmnguxaw", "aldsy"))
+                .withSourceIp("ximerqfobwyznk")
+                .withDnsServices(1383706321)
+                .withRevision(8888415937713510387L),
+            new WorkloadNetworkDnsZoneInner().withDisplayName("usdsttwv")
+                .withDomain(Arrays.asList("bbejdcngqqm", "akufgmjz", "wr"))
+                .withDnsServerIps(Arrays.asList("twaenuuzko", "bminrfdwoyuhhzi", "iefozbhdmsml"))
+                .withSourceIp("qhoftrmaequiah")
+                .withDnsServices(1867167840)
+                .withRevision(5475411267046068461L),
+            new WorkloadNetworkDnsZoneInner().withDisplayName("ywuggwoluhcz")
+                .withDomain(Arrays.asList("mhairsbrgzdwmsw"))
+                .withDnsServerIps(Arrays.asList("qwdxggicc"))
+                .withSourceIp("xqhuexm")
+                .withDnsServices(735026566)
+                .withRevision(3065309169479098927L),
+            new WorkloadNetworkDnsZoneInner().withDisplayName("qukyhejhzi")
+                .withDomain(Arrays.asList("fpel", "lppvksrpq", "ujzra", "htwdwrftswibyrcd"))
+                .withDnsServerIps(Arrays.asList("shfwpracstwity"))
+                .withSourceIp("evxccedcp")
+                .withDnsServices(586634828)
+                .withRevision(720976602557393254L)))
+            .withNextLink("qunyowxwlmdjr");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDnsZonesList.class);
-        Assertions.assertEquals("csphkaiv", model.value().get(0).displayName());
-        Assertions.assertEquals("qscywu", model.value().get(0).domain().get(0));
-        Assertions.assertEquals("zbwemh", model.value().get(0).dnsServerIps().get(0));
-        Assertions.assertEquals("gicccnxqhuex", model.value().get(0).sourceIp());
-        Assertions.assertEquals(1362682825, model.value().get(0).dnsServices());
-        Assertions.assertEquals(4528392326800353907L, model.value().get(0).revision());
-        Assertions.assertEquals("qiby", model.nextLink());
+        Assertions.assertEquals("khnzbonlw", model.value().get(0).displayName());
+        Assertions.assertEquals("egokdwbwhkszzcmr", model.value().get(0).domain().get(0));
+        Assertions.assertEquals("lmnguxaw", model.value().get(0).dnsServerIps().get(0));
+        Assertions.assertEquals("ximerqfobwyznk", model.value().get(0).sourceIp());
+        Assertions.assertEquals(1383706321, model.value().get(0).dnsServices());
+        Assertions.assertEquals(8888415937713510387L, model.value().get(0).revision());
+        Assertions.assertEquals("qunyowxwlmdjr", model.nextLink());
     }
 }

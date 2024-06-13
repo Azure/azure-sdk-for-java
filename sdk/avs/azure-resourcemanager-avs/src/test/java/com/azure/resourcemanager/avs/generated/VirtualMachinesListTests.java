@@ -14,16 +14,19 @@ public final class VirtualMachinesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachinesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"jbkcnxdhbttkph\",\"moRefId\":\"pnvjtoqnermclf\",\"folderPath\":\"phoxus\",\"restrictMovement\":\"Enabled\"},\"id\":\"bgyepsbj\",\"name\":\"azqugxywpmueefj\",\"type\":\"wfqkquj\"}],\"nextLink\":\"suyonobglaocq\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"sucocmnyyazttbtw\",\"moRefId\":\"qpuedckzywbiex\",\"folderPath\":\"eyueaxibxujwb\",\"restrictMovement\":\"Enabled\"},\"id\":\"lmuzy\",\"name\":\"xaepdkzjancuxr\",\"type\":\"d\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"bniwdj\",\"moRefId\":\"zt\",\"folderPath\":\"bpg\",\"restrictMovement\":\"Enabled\"},\"id\":\"x\",\"name\":\"pzxbz\",\"type\":\"fzab\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"xwtctyqiklbbovpl\",\"moRefId\":\"bhvgy\",\"folderPath\":\"uosvmkfssxqukk\",\"restrictMovement\":\"Enabled\"},\"id\":\"mg\",\"name\":\"xnkjzkdesl\",\"type\":\"vlopwiyighx\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"baiuebbaumny\",\"moRefId\":\"ped\",\"folderPath\":\"jn\",\"restrictMovement\":\"Disabled\"},\"id\":\"hsmtxpsiebtfhvp\",\"name\":\"sapskr\",\"type\":\"qmhjjdhtld\"}],\"nextLink\":\"yzxuutkncw\"}")
             .toObject(VirtualMachinesList.class);
-        Assertions.assertEquals("suyonobglaocq", model.nextLink());
+        Assertions.assertEquals("yzxuutkncw", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachinesList model = new VirtualMachinesList().withValue(Arrays.asList(new VirtualMachineInner()))
-            .withNextLink("suyonobglaocq");
+        VirtualMachinesList model
+            = new VirtualMachinesList()
+                .withValue(Arrays.asList(new VirtualMachineInner(), new VirtualMachineInner(),
+                    new VirtualMachineInner(), new VirtualMachineInner()))
+                .withNextLink("yzxuutkncw");
         model = BinaryData.fromObject(model).toObject(VirtualMachinesList.class);
-        Assertions.assertEquals("suyonobglaocq", model.nextLink());
+        Assertions.assertEquals("yzxuutkncw", model.nextLink());
     }
 }

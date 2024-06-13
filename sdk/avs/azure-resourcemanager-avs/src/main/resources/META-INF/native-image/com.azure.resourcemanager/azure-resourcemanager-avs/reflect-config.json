@@ -84,11 +84,6 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.PrivateCloudsList",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
   "name" : "com.azure.resourcemanager.avs.models.PrivateCloudUpdate",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,

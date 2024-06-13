@@ -12,7 +12,7 @@ public final class AddonInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddonInner model = BinaryData.fromString(
-            "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Building\"},\"id\":\"dfgiot\",\"name\":\"ftutqxlngxlefgu\",\"type\":\"nxkrx\"}")
+            "{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"jjxhvpmo\",\"name\":\"exhd\",\"type\":\"xibqeojnx\"}")
             .toObject(AddonInner.class);
     }
 

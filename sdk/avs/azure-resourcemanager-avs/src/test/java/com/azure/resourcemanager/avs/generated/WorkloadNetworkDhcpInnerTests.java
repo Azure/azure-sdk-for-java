@@ -13,18 +13,18 @@ public final class WorkloadNetworkDhcpInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDhcpInner model = BinaryData.fromString(
-            "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"lpqblylsyxk\",\"segments\":[\"sjervti\"],\"provisioningState\":\"Deleting\",\"revision\":5238622412229222087},\"id\":\"uem\",\"name\":\"sbzkf\",\"type\":\"beyvpnqicvinvkjj\"}")
+            "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"t\",\"segments\":[\"lr\",\"cyjmoadsuvarmy\",\"dmjsjqb\"],\"provisioningState\":\"Building\",\"revision\":1070182178135164646},\"id\":\"wlycoduhpkxkg\",\"name\":\"mareqnajxqugj\",\"type\":\"ky\"}")
             .toObject(WorkloadNetworkDhcpInner.class);
-        Assertions.assertEquals("lpqblylsyxk", model.properties().displayName());
-        Assertions.assertEquals(5238622412229222087L, model.properties().revision());
+        Assertions.assertEquals("t", model.properties().displayName());
+        Assertions.assertEquals(1070182178135164646L, model.properties().revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkDhcpInner model = new WorkloadNetworkDhcpInner().withProperties(
-            new WorkloadNetworkDhcpEntity().withDisplayName("lpqblylsyxk").withRevision(5238622412229222087L));
+        WorkloadNetworkDhcpInner model = new WorkloadNetworkDhcpInner()
+            .withProperties(new WorkloadNetworkDhcpEntity().withDisplayName("t").withRevision(1070182178135164646L));
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpInner.class);
-        Assertions.assertEquals("lpqblylsyxk", model.properties().displayName());
-        Assertions.assertEquals(5238622412229222087L, model.properties().revision());
+        Assertions.assertEquals("t", model.properties().displayName());
+        Assertions.assertEquals(1070182178135164646L, model.properties().revision());
     }
 }

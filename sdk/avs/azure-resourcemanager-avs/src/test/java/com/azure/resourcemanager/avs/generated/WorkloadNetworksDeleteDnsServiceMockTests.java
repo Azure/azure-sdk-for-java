@@ -27,7 +27,7 @@ public final class WorkloadNetworksDeleteDnsServiceMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workloadNetworks().deleteDnsService("qogsfikayian", "haru", "t", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().deleteDnsService("ysidfvclgl", "n", "uijtkbu", com.azure.core.util.Context.NONE);
 
     }
 }

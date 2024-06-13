@@ -13,7 +13,7 @@ public final class ClusterZoneListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterZoneListInner model = BinaryData.fromString(
-            "{\"zones\":[{\"hosts\":[\"txfvgx\",\"fsm\",\"nehmpvecx\",\"odebfqkkrbmpu\"],\"zone\":\"riwflzlfb\"},{\"hosts\":[\"uzycispnqza\"],\"zone\":\"gkbrpyyd\"}]}")
+            "{\"zones\":[{\"hosts\":[\"zrnkcqvyxlwh\",\"lsicohoqqnwv\",\"ryavwhheunmmqh\",\"yxzk\"],\"zone\":\"ocukoklyax\"},{\"hosts\":[\"nuqszfkbey\"],\"zone\":\"wrmjmwvvjektc\"}]}")
             .toObject(ClusterZoneListInner.class);
     }
 

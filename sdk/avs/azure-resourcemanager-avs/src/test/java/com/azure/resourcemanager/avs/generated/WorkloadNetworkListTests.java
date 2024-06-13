@@ -14,17 +14,19 @@ public final class WorkloadNetworkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"aeqidbqfatpxll\",\"name\":\"xcyjmoadsuvarmy\",\"type\":\"dmjsjqb\"},{\"properties\":{\"provisioningState\":\"Building\"},\"id\":\"xrwlyc\",\"name\":\"duhpk\",\"type\":\"kgymareqnajxqug\"}],\"nextLink\":\"ky\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"uu\",\"name\":\"jfqka\",\"type\":\"e\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"pubjibw\",\"name\":\"iftohqkvpu\",\"type\":\"ksgplsa\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"synljphuopxodl\",\"name\":\"iyntorzihle\",\"type\":\"sjswsrms\"},{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"zbchckqqzqioxiy\",\"name\":\"uiizynke\",\"type\":\"yatrwy\"}],\"nextLink\":\"mibzyhwitsmypyyn\"}")
             .toObject(WorkloadNetworkList.class);
-        Assertions.assertEquals("ky", model.nextLink());
+        Assertions.assertEquals("mibzyhwitsmypyyn", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkList model
-            = new WorkloadNetworkList().withValue(Arrays.asList(new WorkloadNetworkInner(), new WorkloadNetworkInner()))
-                .withNextLink("ky");
+            = new WorkloadNetworkList()
+                .withValue(Arrays.asList(new WorkloadNetworkInner(), new WorkloadNetworkInner(),
+                    new WorkloadNetworkInner(), new WorkloadNetworkInner()))
+                .withNextLink("mibzyhwitsmypyyn");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkList.class);
-        Assertions.assertEquals("ky", model.nextLink());
+        Assertions.assertEquals("mibzyhwitsmypyyn", model.nextLink());
     }
 }

@@ -13,21 +13,21 @@ public final class ClusterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterProperties model = BinaryData.fromString(
-            "{\"clusterSize\":1196709774,\"provisioningState\":\"Succeeded\",\"clusterId\":2009602222,\"hosts\":[\"flbvvnchrkcciwwz\",\"uqkhrsajiwku\"],\"vsanDatastoreName\":\"oskg\"}")
+            "{\"clusterSize\":1611277697,\"provisioningState\":\"Updating\",\"clusterId\":1602339472,\"hosts\":[\"f\",\"qsc\",\"eypvhezrkg\",\"hcjrefovgmk\"],\"vsanDatastoreName\":\"leyyvx\"}")
             .toObject(ClusterProperties.class);
-        Assertions.assertEquals(1196709774, model.clusterSize());
-        Assertions.assertEquals("flbvvnchrkcciwwz", model.hosts().get(0));
-        Assertions.assertEquals("oskg", model.vsanDatastoreName());
+        Assertions.assertEquals(1611277697, model.clusterSize());
+        Assertions.assertEquals("f", model.hosts().get(0));
+        Assertions.assertEquals("leyyvx", model.vsanDatastoreName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterProperties model = new ClusterProperties().withClusterSize(1196709774)
-            .withHosts(Arrays.asList("flbvvnchrkcciwwz", "uqkhrsajiwku"))
-            .withVsanDatastoreName("oskg");
+        ClusterProperties model = new ClusterProperties().withClusterSize(1611277697)
+            .withHosts(Arrays.asList("f", "qsc", "eypvhezrkg", "hcjrefovgmk"))
+            .withVsanDatastoreName("leyyvx");
         model = BinaryData.fromObject(model).toObject(ClusterProperties.class);
-        Assertions.assertEquals(1196709774, model.clusterSize());
-        Assertions.assertEquals("flbvvnchrkcciwwz", model.hosts().get(0));
-        Assertions.assertEquals("oskg", model.vsanDatastoreName());
+        Assertions.assertEquals(1611277697, model.clusterSize());
+        Assertions.assertEquals("f", model.hosts().get(0));
+        Assertions.assertEquals("leyyvx", model.vsanDatastoreName());
     }
 }
