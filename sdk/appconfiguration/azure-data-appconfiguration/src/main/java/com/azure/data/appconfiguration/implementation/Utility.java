@@ -199,7 +199,11 @@ public class Utility {
 
         if (tagsFilter != null) {
             tagsFilters = new ArrayList<>();
-            tagsFilter.forEach((key, value) -> tagsFilters.add(key + "=" + value));
+            tagsFilter.forEach((key, value) -> {
+                if (!CoreUtils.isNullOrEmpty(key) && !CoreUtils.isNullOrEmpty(value)) {
+                    tagsFilters.add(key + "=" + value);
+                }
+            });
         } else {
             tagsFilters = null;
         }

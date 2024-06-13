@@ -4,8 +4,11 @@
 
 ### Features Added
 
+- Added a new service API support: `2023-11-01`.
 - Added a new method `listLabels` to support listing labels capabilities.
-- Added a new property `tagsFilter` to `SettingSelector` to support filtering settings by tags.
+- Added new class `Label` and `LabelSelector`, and a new enum `LabelFields`.
+- Added a new property `tagsFilter` to `SettingSelector` to support filtering settings or revisions with tags filter.
+- Added a new property `tags` to `ConfigurationSettingsFilter` to support filtering settings with tags filter for snapshot.
 
 ### Breaking Changes
 
