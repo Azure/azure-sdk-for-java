@@ -41,6 +41,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -103,7 +104,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 .setDedicatedGatewayRequestOptions(new DedicatedGatewayRequestOptions()
                     .setIntegratedCacheBypassed(Boolean.parseBoolean(prop.getProperty(BYPASS_CACHE))))
                 .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
-                .setExcludeRegions(new ArrayList<>(List.of(prop.getProperty(EXCLUDE_REGIONS).split(","))));
+                .setExcludeRegions(new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(","))));
 
         }
     }
@@ -119,7 +120,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 .setDedicatedGatewayRequestOptions(new DedicatedGatewayRequestOptions()
                     .setIntegratedCacheBypassed(Boolean.parseBoolean(prop.getProperty(BYPASS_CACHE))))
                 .setScanInQueryEnabled(Boolean.parseBoolean(prop.getProperty(SCAN_IN_QUERY)))
-                .setExcludeRegions(new ArrayList<>(List.of(prop.getProperty(EXCLUDE_REGIONS).split(","))))
+                .setExcludeRegions(new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(","))))
                 .setMaxDegreeOfParallelism(Integer.parseInt(prop.getProperty(MAX_DEGREE_OF_PARALLELISM)))
                 .setMaxBufferedItemCount(Integer.parseInt(prop.getProperty(MAX_BUFFERED_ITEM_COUNT)))
                 .setResponseContinuationTokenLimitInKb(Integer.parseInt(prop.getProperty(RESPONSE_CONTINUATION_TOKEN_LIMIT_KB)))
@@ -141,7 +142,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
                     .setDedicatedGatewayRequestOptions(new DedicatedGatewayRequestOptions()
                         .setIntegratedCacheBypassed(Boolean.parseBoolean(prop.getProperty(BYPASS_CACHE))))
-                    .setExcludeRegions(new ArrayList<>(List.of(prop.getProperty(EXCLUDE_REGIONS).split(","))))
+                    .setExcludeRegions(new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(","))))
                     .setResponseContinuationTokenLimitInKb(Integer.parseInt(prop.getProperty(RESPONSE_CONTINUATION_TOKEN_LIMIT_KB)))
                     .setQueryMetricsEnabled(Boolean.parseBoolean(prop.getProperty(QUERY_METRICS)))
                     .setIndexMetricsEnabled(Boolean.parseBoolean(prop.getProperty(INDEX_METRICS)))
@@ -151,14 +152,14 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
     private static void createBulkOptions(String operationType, String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
         if (operationType.equals("Batch") && spanName.contains("nonTransactionalBatch")) {
-                cosmosCommonRequestOptions.setExcludeRegions((new ArrayList<>(List.of(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
+                cosmosCommonRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME));
         }
     }
 
     private static void createChangeFeedOptions(String operationType, String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
         if (spanName.contains("queryChangeFeed")) {
-                cosmosCommonRequestOptions.setExcludeRegions((new ArrayList<>(List.of(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
+                cosmosCommonRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
                     .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
                     .setMaxPrefetchPageCount(Integer.parseInt(prop.getProperty(MAX_PREFETCH_PAGE_COUNT)))
@@ -703,20 +704,20 @@ public class OperationPoliciesTest extends TestSuiteBase {
        assertThat(requestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()).isEqualTo(Boolean.parseBoolean(options[4]));
        assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(options[5]);
        assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(options[6]));
-       assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(List.of(options[8].split(","))));
+       assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
     }
     private void validateOptions(String[] options, CosmosBatchResponse response) {
         OverridableRequestOptions requestOptions = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor().getRequestOptions(
             response.getDiagnostics().getDiagnosticsContext());
         assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase()).isEqualTo(options[1]);
         assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(options[6]));
-        assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(List.of(options[8].split(","))));
+        assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
     }
 
     private void validateOptions(String[] options, CosmosBulkItemResponse response) {
         OverridableRequestOptions requestOptions = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor().getRequestOptions(
             response.getCosmosDiagnostics().getDiagnosticsContext());
-        assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(List.of(options[8].split(","))));
+        assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
         assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(options[5]);
     }
 
@@ -726,7 +727,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         if (isChangeFeed) {
             assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(changedOptions[5]);
             assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(changedOptions[6]));
-            assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(List.of(changedOptions[8].split(","))));
+            assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(changedOptions[8].split(","))));
             assertThat(requestOptions.getMaxItemCount()).isEqualTo(Integer.parseInt(changedOptions[12]));
             assertThat(requestOptions.getMaxPrefetchPageCount()).isEqualTo(Integer.parseInt(changedOptions[15]));
         } else if (isReadMany) {
@@ -736,7 +737,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             assertThat(requestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()).isEqualTo(Boolean.parseBoolean(changedOptions[4]));
             assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(changedOptions[5]);
             assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(changedOptions[6]));
-            assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(List.of(changedOptions[8].split(","))));
+            assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(changedOptions[8].split(","))));
             assertThat(requestOptions.getResponseContinuationTokenLimitInKb()).isEqualTo(Integer.parseInt(changedOptions[11]));
             assertThat(requestOptions.getMaxItemCount()).isEqualTo(Integer.parseInt(changedOptions[12]));
             assertThat(requestOptions.isQueryMetricsEnabled()).isEqualTo(Boolean.parseBoolean(changedOptions[13]));
@@ -749,7 +750,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(changedOptions[5]);
             assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(changedOptions[6]));
             assertThat(requestOptions.isScanInQueryEnabled()).isEqualTo(Boolean.parseBoolean(changedOptions[7]));
-            assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(List.of(changedOptions[8].split(","))));
+            assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(changedOptions[8].split(","))));
             assertThat(requestOptions.getMaxDegreeOfParallelism()).isEqualTo(Integer.parseInt(changedOptions[9]));
             assertThat(requestOptions.getMaxBufferedItemCount()).isEqualTo(Integer.parseInt(changedOptions[10]));
             assertThat(requestOptions.getResponseContinuationTokenLimitInKb()).isEqualTo(Integer.parseInt(changedOptions[11]));
