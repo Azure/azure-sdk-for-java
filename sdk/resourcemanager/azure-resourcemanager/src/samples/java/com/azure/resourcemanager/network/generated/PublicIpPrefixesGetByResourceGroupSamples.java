@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PublicIpPrefixesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PublicIpPrefixGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PublicIpPrefixGet.json
      */
     /**
      * Sample code: Get public IP prefix.
@@ -18,7 +17,10 @@ public final class PublicIpPrefixesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPublicIPPrefix(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPublicIpPrefixes().getByResourceGroupWithResponse("rg1",
-            "test-ipprefix", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPublicIpPrefixes()
+            .getByResourceGroupWithResponse("rg1", "test-ipprefix", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -425,9 +425,8 @@ public final class BlobContainerAsyncClient {
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Context context) {
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getContainers().createWithResponseAsync(
-            containerName, null, metadata, accessType, null, blobContainerEncryptionScope, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return this.azureBlobStorage.getContainers().createNoCustomHeadersWithResponseAsync(containerName, null,
+            metadata, accessType, null, blobContainerEncryptionScope, context);
     }
 
     /**
@@ -573,10 +572,9 @@ public final class BlobContainerAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getContainers().deleteWithResponseAsync(containerName, null,
+        return this.azureBlobStorage.getContainers().deleteNoCustomHeadersWithResponseAsync(containerName, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, context)
-            .map(response -> new SimpleResponse<>(response, null));
+            requestConditions.getIfUnmodifiedSince(), null, context);
     }
 
     /**
@@ -799,9 +797,8 @@ public final class BlobContainerAsyncClient {
                 "If-Modified-Since is the only HTTP access condition supported for this API"));
         }
 
-        return this.azureBlobStorage.getContainers().setMetadataWithResponseAsync(containerName, null,
-            requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return this.azureBlobStorage.getContainers().setMetadataNoCustomHeadersWithResponseAsync(containerName, null,
+            requestConditions.getLeaseId(), metadata, requestConditions.getIfModifiedSince(), null, context);
     }
 
     /**
@@ -990,10 +987,9 @@ public final class BlobContainerAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getContainers().setAccessPolicyWithResponseAsync(
-            containerName, null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, identifiers, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return this.azureBlobStorage.getContainers().setAccessPolicyNoCustomHeadersWithResponseAsync(containerName,
+            null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), null, identifiers, context);
     }
 
     /**
@@ -1524,7 +1520,8 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, context)
+        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, null,
+            null, context)
             .map(rb -> {
                 ContainersGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));

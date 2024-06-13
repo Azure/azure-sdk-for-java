@@ -23,7 +23,7 @@ public final class AssistantThreadCreationOptions implements JsonSerializable<As
      * The initial messages to associate with the new thread.
      */
     @Generated
-    private List<ThreadInitializationMessage> messages;
+    private List<ThreadMessageOptions> messages;
 
     /*
      * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
@@ -46,7 +46,7 @@ public final class AssistantThreadCreationOptions implements JsonSerializable<As
      * @return the messages value.
      */
     @Generated
-    public List<ThreadInitializationMessage> getMessages() {
+    public List<ThreadMessageOptions> getMessages() {
         return this.messages;
     }
 
@@ -57,7 +57,7 @@ public final class AssistantThreadCreationOptions implements JsonSerializable<As
      * @return the AssistantThreadCreationOptions object itself.
      */
     @Generated
-    public AssistantThreadCreationOptions setMessages(List<ThreadInitializationMessage> messages) {
+    public AssistantThreadCreationOptions setMessages(List<ThreadMessageOptions> messages) {
         this.messages = messages;
         return this;
     }
@@ -96,6 +96,7 @@ public final class AssistantThreadCreationOptions implements JsonSerializable<As
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("tool_resources", this.toolResources);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -117,9 +118,12 @@ public final class AssistantThreadCreationOptions implements JsonSerializable<As
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("messages".equals(fieldName)) {
-                    List<ThreadInitializationMessage> messages
-                        = reader.readArray(reader1 -> ThreadInitializationMessage.fromJson(reader1));
+                    List<ThreadMessageOptions> messages
+                        = reader.readArray(reader1 -> ThreadMessageOptions.fromJson(reader1));
                     deserializedAssistantThreadCreationOptions.messages = messages;
+                } else if ("tool_resources".equals(fieldName)) {
+                    deserializedAssistantThreadCreationOptions.toolResources
+                        = CreateToolResourcesOptions.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
                     deserializedAssistantThreadCreationOptions.metadata = metadata;
@@ -129,5 +133,45 @@ public final class AssistantThreadCreationOptions implements JsonSerializable<As
             }
             return deserializedAssistantThreadCreationOptions;
         });
+    }
+
+    /*
+     * A set of resources that are made available to the assistant's tools in this thread. The resources are specific to
+     * the
+     * type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool
+     * requires
+     * a list of vector store IDs.
+     */
+    @Generated
+    private CreateToolResourcesOptions toolResources;
+
+    /**
+     * Get the toolResources property: A set of resources that are made available to the assistant's tools in this
+     * thread. The resources are specific to the
+     * type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool
+     * requires
+     * a list of vector store IDs.
+     *
+     * @return the toolResources value.
+     */
+    @Generated
+    public CreateToolResourcesOptions getToolResources() {
+        return this.toolResources;
+    }
+
+    /**
+     * Set the toolResources property: A set of resources that are made available to the assistant's tools in this
+     * thread. The resources are specific to the
+     * type of tool. For example, the `code_interpreter` tool requires a list of file IDs, while the `file_search` tool
+     * requires
+     * a list of vector store IDs.
+     *
+     * @param toolResources the toolResources value to set.
+     * @return the AssistantThreadCreationOptions object itself.
+     */
+    @Generated
+    public AssistantThreadCreationOptions setToolResources(CreateToolResourcesOptions toolResources) {
+        this.toolResources = toolResources;
+        return this;
     }
 }

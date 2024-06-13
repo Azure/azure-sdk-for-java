@@ -22,14 +22,13 @@ public class ChatMessageContentItem implements JsonSerializable<ChatMessageConte
      */
     @Generated
     public ChatMessageContentItem() {
-        this.type = "ChatMessageContentItem";
     }
 
     /*
      * The discriminated object type.
      */
     @Generated
-    private String type;
+    private String type = "ChatMessageContentItem";
 
     /**
      * Get the type property: The discriminated object type.

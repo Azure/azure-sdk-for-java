@@ -5,7 +5,6 @@ package io.clientcore.core.util.configuration;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.HttpClientProvider;
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.EnvironmentConfiguration;
 import io.clientcore.core.implementation.util.ImplUtils;
 import io.clientcore.core.util.ClientLogger;
@@ -15,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
  * Contains configuration information that is used during construction of client libraries.
@@ -358,7 +359,7 @@ public class Configuration {
 
     private String getWithFallback(ConfigurationProperty<?> property) {
         String name = property.getName();
-        if (!CoreUtils.isNullOrEmpty(name)) {
+        if (!isNullOrEmpty(name)) {
             String value = getLocalProperty(name, property.getAliases(), property.getValueSanitizer());
             if (value != null) {
                 return value;
@@ -390,7 +391,7 @@ public class Configuration {
         Map<String, String> props = new HashMap<>();
 
         for (Map.Entry<String, String> prop : configs.entrySet()) {
-            String key = CoreUtils.isNullOrEmpty(path) ? prop.getKey() : prop.getKey().substring(path.length() + 1);
+            String key = isNullOrEmpty(path) ? prop.getKey() : prop.getKey().substring(path.length() + 1);
             String value = prop.getValue();
 
             LOGGER.atVerbose().addKeyValue("name", prop.getKey()).log("Got property from configuration source.");
@@ -430,7 +431,7 @@ public class Configuration {
     @SuppressWarnings("unchecked")
     private static <T> T convertToPrimitiveOrDefault(String value, T defaultValue) {
         // Value is null or empty, return the default.
-        if (CoreUtils.isNullOrEmpty(value)) {
+        if (isNullOrEmpty(value)) {
             return defaultValue;
         }
 

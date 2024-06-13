@@ -18,6 +18,11 @@ import java.util.Arrays;
  * Samples for Pools CreateOrUpdate.
  */
 public final class PoolsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure/examples/2024-04-04-preview/CreateOrUpdatePool.
+     * json
+     */
     /**
      * Sample code: Pools_CreateOrUpdate.
      * 

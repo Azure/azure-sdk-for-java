@@ -21,12 +21,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
  * Server used when running {@link HttpClient tests}.
@@ -223,7 +226,40 @@ public class HttpClientTestsServer {
             responseBody.headers(headers);
         }
 
+        if (!isNullOrEmpty(req.getQueryString())) {
+            Map<String, List<String>> queryParams = parseQueryParams(req);
+
+            responseBody.queryParams(queryParams);
+        }
+
         handleRequest(resp, contentType, SERIALIZER.serializeToBytes(responseBody));
+    }
+
+    private static Map<String, List<String>> parseQueryParams(HttpServletRequest req) {
+        String[] queryParams = req.getQueryString().split("&");
+        Map<String, List<String>> queryParamsMap = new HashMap<>();
+
+        for (String queryParam : queryParams) {
+            final String[] queryParamParts = queryParam.split("=");
+            final String paramName = queryParamParts[0];
+            final String paramValue = queryParamParts.length == 2 ? queryParamParts[1] : null;
+
+            List<String> currentValues = queryParamsMap.get(paramName);
+
+            if (!isNullOrEmpty(paramValue)) {
+                if (currentValues == null) {
+                    currentValues = new ArrayList<>();
+                }
+
+                currentValues.add(paramValue);
+
+                queryParamsMap.put(paramName, currentValues);
+            } else {
+                queryParamsMap.put(paramName, null);
+            }
+        }
+
+        return queryParamsMap;
     }
 
     private static String cleanseUrl(HttpServletRequest req) {

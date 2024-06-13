@@ -5,43 +5,53 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Execute pipeline activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ExecutePipeline")
-@JsonFlatten
 @Fluent
 public class ExecutePipelineActivity extends ControlActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "ExecutePipeline";
+
+    /*
      * Pipeline reference.
      */
-    @JsonProperty(value = "typeProperties.pipeline", required = true)
     private PipelineReference pipeline;
 
     /*
      * Pipeline parameters.
      */
-    @JsonProperty(value = "typeProperties.parameters")
     private Map<String, Object> parameters;
 
     /*
      * Defines whether activity execution will wait for the dependent pipeline execution to finish. Default is false.
      */
-    @JsonProperty(value = "typeProperties.waitOnCompletion")
     private Boolean waitOnCompletion;
 
     /**
      * Creates an instance of ExecutePipelineActivity class.
      */
     public ExecutePipelineActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -158,5 +168,101 @@ public class ExecutePipelineActivity extends ControlActivity {
     public ExecutePipelineActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (pipeline != null || parameters != null || waitOnCompletion != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeJsonField("pipeline", this.pipeline);
+            jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
+            jsonWriter.writeBooleanField("waitOnCompletion", this.waitOnCompletion);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecutePipelineActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecutePipelineActivity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExecutePipelineActivity.
+     */
+    public static ExecutePipelineActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecutePipelineActivity deserializedExecutePipelineActivity = new ExecutePipelineActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedExecutePipelineActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedExecutePipelineActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedExecutePipelineActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedExecutePipelineActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedExecutePipelineActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedExecutePipelineActivity.setUserProperties(userProperties);
+                } else if ("type".equals(fieldName)) {
+                    deserializedExecutePipelineActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("pipeline".equals(fieldName)) {
+                            deserializedExecutePipelineActivity.pipeline = PipelineReference.fromJson(reader);
+                        } else if ("parameters".equals(fieldName)) {
+                            Map<String, Object> parameters = reader.readMap(reader1 -> reader1.readUntyped());
+                            deserializedExecutePipelineActivity.parameters = parameters;
+                        } else if ("waitOnCompletion".equals(fieldName)) {
+                            deserializedExecutePipelineActivity.waitOnCompletion
+                                = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedExecutePipelineActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedExecutePipelineActivity;
+        });
     }
 }

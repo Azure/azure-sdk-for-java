@@ -185,7 +185,7 @@ public class MappingCosmosConverter
      * @throws MappingException no mapping metadata for entity type
      * @throws CosmosAccessException fail to map document value
      */
-    public <T> JsonNode repopulateAnyTransientFieldsFromMap(JsonNode responseItem, Map<Field, Object> transientValues) {
+    public <T> JsonNode repopulateTransientFields(JsonNode responseItem, Map<Field, Object> transientValues) {
         ObjectNode updatedItem = (ObjectNode) responseItem;
         transientValues.forEach((field, value) -> {
             if (value != null) {
@@ -203,7 +203,7 @@ public class MappingCosmosConverter
      * @throws MappingException no such field found
      * @return HashMap
      */
-    public <T> Map<Field, Object> getTransientFieldsAndValuesMap(T object, List<String> transientFields) {
+    public <T> Map<Field, Object> getTransientFieldsMap(T object, List<String> transientFields) {
         Map<Field, Object> transientValuesMap = new HashMap<>();
         transientFields.forEach(fieldName -> {
             try {
@@ -226,7 +226,6 @@ public class MappingCosmosConverter
      * @param entityInfo entity information
      * @return List
      */
-
     public <T> List<String> getTransientFields(T objectToSave, CosmosEntityInformation<T, ?> entityInfo) {
         @SuppressWarnings("unchecked")
         Class<T> domainType = (Class<T>) objectToSave.getClass();

@@ -18,6 +18,10 @@ import java.util.Map;
  * Samples for StandbyContainerGroupPools CreateOrUpdate.
  */
 public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/
+     * StandbyContainerGroupPools_CreateOrUpdate.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_CreateOrUpdate.
      * 

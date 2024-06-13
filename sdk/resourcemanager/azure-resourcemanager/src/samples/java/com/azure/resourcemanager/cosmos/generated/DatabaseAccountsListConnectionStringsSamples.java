@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseAccountsListConnectionStringsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBDatabaseAccountListConnectionStrings.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountListConnectionStrings.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListConnectionStrings.
@@ -19,13 +18,15 @@ public final class DatabaseAccountsListConnectionStringsSamples {
      */
     public static void
         cosmosDBDatabaseAccountListConnectionStrings(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts()
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getDatabaseAccounts()
             .listConnectionStringsWithResponse("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBDatabaseAccountListConnectionStringsMongo.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountListConnectionStringsMongo.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListConnectionStringsMongo.
@@ -34,7 +35,10 @@ public final class DatabaseAccountsListConnectionStringsSamples {
      */
     public static void
         cosmosDBDatabaseAccountListConnectionStringsMongo(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts()
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getDatabaseAccounts()
             .listConnectionStringsWithResponse("rg1", "mongo-ddb1", com.azure.core.util.Context.NONE);
     }
 }

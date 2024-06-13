@@ -7,9 +7,12 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.fluent.models.ObjectReplicationPolicyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** List storage account object replication policies. */
+/**
+ * List storage account object replication policies.
+ */
 @Fluent
 public final class ObjectReplicationPolicies {
     /*
@@ -18,7 +21,9 @@ public final class ObjectReplicationPolicies {
     @JsonProperty(value = "value")
     private List<ObjectReplicationPolicyInner> value;
 
-    /** Creates an instance of ObjectReplicationPolicies class. */
+    /**
+     * Creates an instance of ObjectReplicationPolicies class.
+     */
     public ObjectReplicationPolicies() {
     }
 

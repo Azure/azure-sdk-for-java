@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.FirewallPolicyRuleCollection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ public final class FirewallPolicyRuleCollectionGroupProperties {
     /**
      * Get the size property: A read-only string that represents the size of the
      * FirewallPolicyRuleCollectionGroupProperties in MB. (ex 1.2MB).
-     * 
+     *
      * @return the size value.
      */
     public String size() {
@@ -57,7 +58,7 @@ public final class FirewallPolicyRuleCollectionGroupProperties {
 
     /**
      * Get the priority property: Priority of the Firewall Policy Rule Collection Group resource.
-     * 
+     *
      * @return the priority value.
      */
     public Integer priority() {
@@ -66,7 +67,7 @@ public final class FirewallPolicyRuleCollectionGroupProperties {
 
     /**
      * Set the priority property: Priority of the Firewall Policy Rule Collection Group resource.
-     * 
+     *
      * @param priority the priority value to set.
      * @return the FirewallPolicyRuleCollectionGroupProperties object itself.
      */
@@ -77,7 +78,7 @@ public final class FirewallPolicyRuleCollectionGroupProperties {
 
     /**
      * Get the ruleCollections property: Group of Firewall Policy rule collections.
-     * 
+     *
      * @return the ruleCollections value.
      */
     public List<FirewallPolicyRuleCollection> ruleCollections() {
@@ -86,7 +87,7 @@ public final class FirewallPolicyRuleCollectionGroupProperties {
 
     /**
      * Set the ruleCollections property: Group of Firewall Policy rule collections.
-     * 
+     *
      * @param ruleCollections the ruleCollections value to set.
      * @return the FirewallPolicyRuleCollectionGroupProperties object itself.
      */
@@ -97,9 +98,8 @@ public final class FirewallPolicyRuleCollectionGroupProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the firewall policy rule collection group
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the firewall policy rule collection group resource.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -108,7 +108,7 @@ public final class FirewallPolicyRuleCollectionGroupProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

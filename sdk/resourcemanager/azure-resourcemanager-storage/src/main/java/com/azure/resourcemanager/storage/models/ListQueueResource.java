@@ -7,9 +7,12 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.fluent.models.ListQueueInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Response schema. Contains list of queues returned. */
+/**
+ * Response schema. Contains list of queues returned.
+ */
 @Immutable
 public final class ListQueueResource {
     /*
@@ -24,7 +27,9 @@ public final class ListQueueResource {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ListQueueResource class. */
+    /**
+     * Creates an instance of ListQueueResource class.
+     */
     public ListQueueResource() {
     }
 

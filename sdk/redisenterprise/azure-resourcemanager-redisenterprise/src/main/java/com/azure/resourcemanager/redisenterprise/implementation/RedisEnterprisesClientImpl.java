@@ -146,7 +146,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Create RedisEnterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -188,7 +188,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Create RedisEnterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -230,7 +230,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Create RedisEnterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -249,7 +249,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Create RedisEnterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,7 +271,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Create RedisEnterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -288,7 +288,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Create RedisEnterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,7 +306,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Create RedisEnterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -323,7 +323,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Create RedisEnterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -342,7 +342,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Create RedisEnterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -358,7 +358,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Create RedisEnterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -375,7 +375,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Update RedisEnterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -417,7 +417,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Update RedisEnterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -459,7 +459,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Update RedisEnterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -478,7 +478,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Update RedisEnterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -500,7 +500,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Update RedisEnterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -517,7 +517,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Update RedisEnterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -535,7 +535,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Update RedisEnterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -552,7 +552,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Update RedisEnterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -571,7 +571,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Update RedisEnterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -587,7 +587,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param parameters Parameters supplied to the Update RedisEnterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -605,7 +605,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a RedisEnterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -639,7 +639,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a RedisEnterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -674,7 +674,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a RedisEnterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -691,7 +691,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a RedisEnterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -711,7 +711,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a RedisEnterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -726,7 +726,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a RedisEnterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -743,7 +743,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a RedisEnterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -758,7 +758,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a RedisEnterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -775,7 +775,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a RedisEnterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -789,7 +789,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a RedisEnterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -804,7 +804,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Gets information about a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -840,7 +840,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Gets information about a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -876,7 +876,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Gets information about a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -892,7 +892,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Gets information about a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -909,7 +909,7 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Gets information about a RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

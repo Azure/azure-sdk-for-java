@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class ExpressionType extends ExpandableStringEnum<ExpressionType> {
      * @param name a name to look for.
      * @return the corresponding ExpressionType.
      */
-    @JsonCreator
     public static ExpressionType fromString(String name) {
         return fromString(name, ExpressionType.class);
     }

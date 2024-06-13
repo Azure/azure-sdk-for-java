@@ -80,12 +80,14 @@ public final class FilePathAvailabilityRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model FilePathAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model FilePathAvailabilityRequest"));
         }
         if (subnetId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property subnetId in model FilePathAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnetId in model FilePathAvailabilityRequest"));
         }
     }
 

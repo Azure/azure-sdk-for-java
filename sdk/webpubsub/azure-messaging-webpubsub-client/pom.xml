@@ -42,21 +42,21 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.49.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.49.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
 
     <!-- netty-codec-http is included in dependency for internal WebSocket implementation -->
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
-      <version>4.1.108.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+      <version>4.1.110.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-test;dependency} -->
+      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -80,7 +80,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -101,7 +101,7 @@
           <rules>
             <bannedDependencies>
               <includes combine.children="append">
-                <include>io.netty:netty-codec-http:[4.1.108.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                <include>io.netty:netty-codec-http:[4.1.110.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

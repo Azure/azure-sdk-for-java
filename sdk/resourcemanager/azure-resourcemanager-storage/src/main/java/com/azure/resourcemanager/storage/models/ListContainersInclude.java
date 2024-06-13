@@ -6,11 +6,16 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Defines values for ListContainersInclude. */
+/**
+ * Defines values for ListContainersInclude.
+ */
 public final class ListContainersInclude extends ExpandableStringEnum<ListContainersInclude> {
-    /** Static value deleted for ListContainersInclude. */
+    /**
+     * Static value deleted for ListContainersInclude.
+     */
     public static final ListContainersInclude DELETED = fromString("deleted");
 
     /**

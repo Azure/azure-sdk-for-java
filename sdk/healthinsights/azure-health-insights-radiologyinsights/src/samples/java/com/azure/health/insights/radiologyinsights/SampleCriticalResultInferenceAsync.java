@@ -33,6 +33,7 @@ import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInfer
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsResult;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 
@@ -94,7 +95,7 @@ public class SampleCriticalResultInferenceAsync {
         // END: com.azure.health.insights.radiologyinsights.buildasyncclient
 
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsights
-        PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+        PollerFlux<RadiologyInsightsResult, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(createRadiologyInsightsRequest());
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsights
 

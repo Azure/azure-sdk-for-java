@@ -7,16 +7,20 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource Id model. */
+/**
+ * The resource Id model.
+ */
 @Immutable
-public final class ResourceReference {
+public class ResourceReference {
     /*
      * The fully qualified resource Id.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of ResourceReference class. */
+    /**
+     * Creates an instance of ResourceReference class.
+     */
     public ResourceReference() {
     }
 

@@ -18,6 +18,24 @@ public final class StorageError {
     @JsonProperty(value = "Message")
     private String message;
 
+    /*
+     * The CopySourceStatusCode property.
+     */
+    @JsonProperty(value = "CopySourceStatusCode")
+    private Long copySourceStatusCode;
+
+    /*
+     * The CopySourceErrorCode property.
+     */
+    @JsonProperty(value = "CopySourceErrorCode")
+    private String copySourceErrorCode;
+
+    /*
+     * The CopySourceErrorMessage property.
+     */
+    @JsonProperty(value = "CopySourceErrorMessage")
+    private String copySourceErrorMessage;
+
     /** Creates an instance of StorageError class. */
     public StorageError() {}
 
@@ -38,6 +56,66 @@ public final class StorageError {
      */
     public StorageError setMessage(String message) {
         this.message = message;
+        return this;
+    }
+
+    /**
+     * Get the copySourceStatusCode property: The CopySourceStatusCode property.
+     *
+     * @return the copySourceStatusCode value.
+     */
+    public Long getCopySourceStatusCode() {
+        return this.copySourceStatusCode;
+    }
+
+    /**
+     * Set the copySourceStatusCode property: The CopySourceStatusCode property.
+     *
+     * @param copySourceStatusCode the copySourceStatusCode value to set.
+     * @return the StorageError object itself.
+     */
+    public StorageError setCopySourceStatusCode(Long copySourceStatusCode) {
+        this.copySourceStatusCode = copySourceStatusCode;
+        return this;
+    }
+
+    /**
+     * Get the copySourceErrorCode property: The CopySourceErrorCode property.
+     *
+     * @return the copySourceErrorCode value.
+     */
+    public String getCopySourceErrorCode() {
+        return this.copySourceErrorCode;
+    }
+
+    /**
+     * Set the copySourceErrorCode property: The CopySourceErrorCode property.
+     *
+     * @param copySourceErrorCode the copySourceErrorCode value to set.
+     * @return the StorageError object itself.
+     */
+    public StorageError setCopySourceErrorCode(String copySourceErrorCode) {
+        this.copySourceErrorCode = copySourceErrorCode;
+        return this;
+    }
+
+    /**
+     * Get the copySourceErrorMessage property: The CopySourceErrorMessage property.
+     *
+     * @return the copySourceErrorMessage value.
+     */
+    public String getCopySourceErrorMessage() {
+        return this.copySourceErrorMessage;
+    }
+
+    /**
+     * Set the copySourceErrorMessage property: The CopySourceErrorMessage property.
+     *
+     * @param copySourceErrorMessage the copySourceErrorMessage value to set.
+     * @return the StorageError object itself.
+     */
+    public StorageError setCopySourceErrorMessage(String copySourceErrorMessage) {
+        this.copySourceErrorMessage = copySourceErrorMessage;
         return this;
     }
 }

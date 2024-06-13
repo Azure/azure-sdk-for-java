@@ -10,6 +10,10 @@ import com.azure.resourcemanager.devopsinfrastructure.models.Pool;
  * Samples for Pools Update.
  */
 public final class PoolsUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure/examples/2024-04-04-preview/UpdatePool.json
+     */
     /**
      * Sample code: Pools_Update.
      * 

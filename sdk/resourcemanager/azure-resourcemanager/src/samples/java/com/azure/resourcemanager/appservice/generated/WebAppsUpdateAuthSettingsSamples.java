@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.generated;
 import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsInner;
 import com.azure.resourcemanager.appservice.models.BuiltInAuthenticationProvider;
 import com.azure.resourcemanager.appservice.models.UnauthenticatedClientAction;
+
 import java.util.Arrays;
 
 /**
@@ -14,23 +15,28 @@ import java.util.Arrays;
  */
 public final class WebAppsUpdateAuthSettingsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdateAuthSettings.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAuthSettings.json
      */
     /**
      * Sample code: Update Auth Settings.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAuthSettings(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().updateAuthSettingsWithResponse("testrg123", "sitef6141",
-            new SiteAuthSettingsInner().withEnabled(true).withRuntimeVersion("~1")
-                .withUnauthenticatedClientAction(UnauthenticatedClientAction.REDIRECT_TO_LOGIN_PAGE)
-                .withTokenStoreEnabled(true)
-                .withAllowedExternalRedirectUrls(
-                    Arrays.asList("sitef6141.customdomain.net", "sitef6141.customdomain.info"))
-                .withDefaultProvider(BuiltInAuthenticationProvider.GOOGLE).withTokenRefreshExtensionHours(120.0D)
-                .withClientId("42d795a9-8abb-4d06-8534-39528af40f8e.apps.googleusercontent.com"),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .updateAuthSettingsWithResponse("testrg123", "sitef6141",
+                new SiteAuthSettingsInner().withEnabled(true)
+                    .withRuntimeVersion("~1")
+                    .withUnauthenticatedClientAction(UnauthenticatedClientAction.REDIRECT_TO_LOGIN_PAGE)
+                    .withTokenStoreEnabled(true)
+                    .withAllowedExternalRedirectUrls(
+                        Arrays.asList("sitef6141.customdomain.net", "sitef6141.customdomain.info"))
+                    .withDefaultProvider(BuiltInAuthenticationProvider.GOOGLE)
+                    .withTokenRefreshExtensionHours(120.0D)
+                    .withClientId("42d795a9-8abb-4d06-8534-39528af40f8e.apps.googleusercontent.com"),
+                com.azure.core.util.Context.NONE);
     }
 }

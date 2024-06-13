@@ -8,9 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** The Storage Account ManagementPolicy properties. */
+/**
+ * The Storage Account ManagementPolicy properties.
+ */
 @Fluent
 public final class ManagementPolicyProperties {
     /*
@@ -20,13 +23,14 @@ public final class ManagementPolicyProperties {
     private OffsetDateTime lastModifiedTime;
 
     /*
-     * The Storage Account ManagementPolicy, in JSON format. See more details in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * The Storage Account ManagementPolicy, in JSON format. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      */
     @JsonProperty(value = "policy", required = true)
     private ManagementPolicySchema policy;
 
-    /** Creates an instance of ManagementPolicyProperties class. */
+    /**
+     * Creates an instance of ManagementPolicyProperties class.
+     */
     public ManagementPolicyProperties() {
     }
 
@@ -68,10 +72,9 @@ public final class ManagementPolicyProperties {
      */
     public void validate() {
         if (policy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property policy in model ManagementPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property policy in model ManagementPolicyProperties"));
         } else {
             policy().validate();
         }

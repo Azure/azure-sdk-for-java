@@ -78,12 +78,14 @@ public final class TroubleshootingProperties {
      */
     public void validate() {
         if (storageId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property storageId in model TroubleshootingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageId in model TroubleshootingProperties"));
         }
         if (storagePath() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storagePath in model TroubleshootingProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storagePath in model TroubleshootingProperties"));
         }
     }
 

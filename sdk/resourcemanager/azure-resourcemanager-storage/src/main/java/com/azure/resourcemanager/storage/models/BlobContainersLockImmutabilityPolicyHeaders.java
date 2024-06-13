@@ -9,7 +9,9 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BlobContainersLockImmutabilityPolicyHeaders model. */
+/**
+ * The BlobContainersLockImmutabilityPolicyHeaders model.
+ */
 @Fluent
 public final class BlobContainersLockImmutabilityPolicyHeaders {
     /*
@@ -21,7 +23,7 @@ public final class BlobContainersLockImmutabilityPolicyHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of BlobContainersLockImmutabilityPolicyHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobContainersLockImmutabilityPolicyHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +32,7 @@ public final class BlobContainersLockImmutabilityPolicyHeaders {
 
     /**
      * Get the etag property: The Etag property.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -39,7 +41,7 @@ public final class BlobContainersLockImmutabilityPolicyHeaders {
 
     /**
      * Set the etag property: The Etag property.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the BlobContainersLockImmutabilityPolicyHeaders object itself.
      */
@@ -50,7 +52,7 @@ public final class BlobContainersLockImmutabilityPolicyHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

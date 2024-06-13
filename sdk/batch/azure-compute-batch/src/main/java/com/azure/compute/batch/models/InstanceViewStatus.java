@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -146,8 +147,8 @@ public final class InstanceViewStatus implements JsonSerializable<InstanceViewSt
                 } else if ("message".equals(fieldName)) {
                     deserializedInstanceViewStatus.message = reader.getString();
                 } else if ("time".equals(fieldName)) {
-                    deserializedInstanceViewStatus.time
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedInstanceViewStatus.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

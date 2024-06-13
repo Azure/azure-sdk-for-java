@@ -79,6 +79,8 @@ public class MapsRenderClientTestBase extends TestProxyTestBase {
             interceptorManager.addSanitizers(
                 Collections.singletonList(
                     new TestProxySanitizer("subscription-key", ".+", "REDACTED", TestProxySanitizerType.HEADER)));
+            // Remove `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3493");
         }
 
         if (interceptorManager.isPlaybackMode()) {

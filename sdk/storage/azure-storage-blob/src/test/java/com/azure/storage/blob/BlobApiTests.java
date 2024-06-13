@@ -96,6 +96,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -359,6 +360,66 @@ public class BlobApiTests extends BlobTestBase {
         bc.uploadWithResponse(blobUploadOptions, null, null);
         BlobProperties properties = bc.getProperties();
         assertEquals(AccessTier.COLD, properties.getAccessTier());
+    }
+
+    @LiveOnly
+    @Test
+    public void uploadAndDownloadAndUploadAgain() {
+        byte[] randomData = getRandomByteArray(20 * Constants.MB);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+
+        String blobName = generateBlobName();
+        BlobClient blobClient = cc.getBlobClient(blobName);
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong((long) Constants.MB)
+            .setMaxSingleUploadSizeLong(2L * Constants.MB)
+            .setMaxConcurrency(5);
+        BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(input)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        blobClient.uploadWithResponse(parallelUploadOptions, null, null);
+
+        InputStream inputStream = blobClient.openInputStream();
+
+        // Upload the downloaded content to a different location
+        String blobName2 = generateBlobName();
+
+        parallelUploadOptions = new BlobParallelUploadOptions(inputStream)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        BlobClient blobClient2 = cc.getBlobClient(blobName2);
+        blobClient2.uploadWithResponse(parallelUploadOptions, null, null);
+    }
+
+    @LiveOnly
+    @Test
+    public void uploadAndDownloadAndUploadAgainWithSize() {
+        byte[] randomData = getRandomByteArray(20 * Constants.MB);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+
+        String blobName = generateBlobName();
+        BlobClient blobClient = cc.getBlobClient(blobName);
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong((long) Constants.MB)
+            .setMaxSingleUploadSizeLong(2L * Constants.MB)
+            .setMaxConcurrency(5);
+        BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(input)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        blobClient.uploadWithResponse(parallelUploadOptions, null, null);
+
+        InputStream inputStream = blobClient.openInputStream();
+
+        // Upload the downloaded content to a different location
+        String blobName2 = generateBlobName();
+
+        parallelUploadOptions = new BlobParallelUploadOptions(inputStream, 20 * Constants.MB)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        BlobClient blobClient2 = cc.getBlobClient(blobName2);
+        blobClient2.uploadWithResponse(parallelUploadOptions, null, null);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -2889,6 +2950,30 @@ public class BlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void getAccountInfoBase() {
+        StorageAccountInfo info = bc.getAccountInfo();
+
+        assertNotNull(info.getAccountKind());
+        assertNotNull(info.getSkuName());
+        assertFalse(info.isHierarchicalNamespaceEnabled());
+    }
+
+    @Test
+    public void getAccountInfoBaseFail() {
+        BlobServiceClient serviceClient = instrument(new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(new MockTokenCredential()))
+            .buildClient();
+
+        BlobClient blobClient = serviceClient.getBlobContainerClient(generateContainerName()).getBlobClient(generateBlobName());
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, blobClient::getAccountInfo);
+        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+
+    }
+
+
+    @Test
     public void getContainerName() {
         assertEquals(containerName, bc.getContainerName());
     }
@@ -3051,15 +3136,18 @@ public class BlobApiTests extends BlobTestBase {
         assertTrue(aadBlob.exists());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        BlobClient aadBlob = instrument(new BlobClientBuilder().endpoint(bc.getBlobUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        BlobClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildClient();
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, aadBlob::exists);
-        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+        assertNotNull(aadBlob.getProperties());
     }
 
     @Test

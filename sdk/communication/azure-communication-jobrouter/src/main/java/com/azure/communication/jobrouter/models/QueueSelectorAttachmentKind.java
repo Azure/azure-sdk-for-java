@@ -5,7 +5,6 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -60,7 +59,6 @@ public final class QueueSelectorAttachmentKind extends ExpandableStringEnum<Queu
      * @return the corresponding QueueSelectorAttachmentKind.
      */
     @Generated
-    @JsonCreator
     public static QueueSelectorAttachmentKind fromString(String name) {
         return fromString(name, QueueSelectorAttachmentKind.class);
     }

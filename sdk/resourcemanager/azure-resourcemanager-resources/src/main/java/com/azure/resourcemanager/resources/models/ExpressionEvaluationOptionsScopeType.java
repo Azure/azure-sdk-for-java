@@ -8,21 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The scope to be used for evaluation of parameters, variables and functions in a nested template. */
+/**
+ * The scope to be used for evaluation of parameters, variables and functions in a nested template.
+ */
 public final class ExpressionEvaluationOptionsScopeType
     extends ExpandableStringEnum<ExpressionEvaluationOptionsScopeType> {
-    /** Static value NotSpecified for ExpressionEvaluationOptionsScopeType. */
+    /**
+     * Static value NotSpecified for ExpressionEvaluationOptionsScopeType.
+     */
     public static final ExpressionEvaluationOptionsScopeType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Outer for ExpressionEvaluationOptionsScopeType. */
+    /**
+     * Static value Outer for ExpressionEvaluationOptionsScopeType.
+     */
     public static final ExpressionEvaluationOptionsScopeType OUTER = fromString("Outer");
 
-    /** Static value Inner for ExpressionEvaluationOptionsScopeType. */
+    /**
+     * Static value Inner for ExpressionEvaluationOptionsScopeType.
+     */
     public static final ExpressionEvaluationOptionsScopeType INNER = fromString("Inner");
 
     /**
      * Creates a new instance of ExpressionEvaluationOptionsScopeType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +39,7 @@ public final class ExpressionEvaluationOptionsScopeType
 
     /**
      * Creates or finds a ExpressionEvaluationOptionsScopeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExpressionEvaluationOptionsScopeType.
      */
@@ -42,7 +50,7 @@ public final class ExpressionEvaluationOptionsScopeType
 
     /**
      * Gets known ExpressionEvaluationOptionsScopeType values.
-     *
+     * 
      * @return known ExpressionEvaluationOptionsScopeType values.
      */
     public static Collection<ExpressionEvaluationOptionsScopeType> values() {

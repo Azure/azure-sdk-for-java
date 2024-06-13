@@ -114,12 +114,14 @@ public final class TroubleshootingParameters {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetResourceId in model TroubleshootingParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceId in model TroubleshootingParameters"));
         }
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model TroubleshootingParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model TroubleshootingParameters"));
         } else {
             innerProperties().validate();
         }

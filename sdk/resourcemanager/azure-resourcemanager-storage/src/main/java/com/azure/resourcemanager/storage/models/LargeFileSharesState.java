@@ -6,14 +6,21 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled. */
+/**
+ * Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled.
+ */
 public final class LargeFileSharesState extends ExpandableStringEnum<LargeFileSharesState> {
-    /** Static value Disabled for LargeFileSharesState. */
+    /**
+     * Static value Disabled for LargeFileSharesState.
+     */
     public static final LargeFileSharesState DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for LargeFileSharesState. */
+    /**
+     * Static value Enabled for LargeFileSharesState.
+     */
     public static final LargeFileSharesState ENABLED = fromString("Enabled");
 
     /**

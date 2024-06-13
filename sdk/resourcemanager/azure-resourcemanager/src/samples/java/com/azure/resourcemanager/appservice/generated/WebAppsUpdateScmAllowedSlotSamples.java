@@ -11,9 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentia
  */
 public final class WebAppsUpdateScmAllowedSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdatePublishingCredentialsPolicySlot
-     * .json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdatePublishingCredentialsPolicySlot.json
      */
     /**
      * Sample code: Update SCM Allowed.
@@ -21,8 +19,11 @@ public final class WebAppsUpdateScmAllowedSlotSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateSCMAllowed(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().updateScmAllowedSlotWithResponse("rg", "testSite",
-            "stage", new CsmPublishingCredentialsPoliciesEntityInner().withAllow(true),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .updateScmAllowedSlotWithResponse("rg", "testSite", "stage",
+                new CsmPublishingCredentialsPoliciesEntityInner().withAllow(true), com.azure.core.util.Context.NONE);
     }
 }

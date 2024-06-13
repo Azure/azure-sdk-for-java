@@ -1,6 +1,6 @@
 # Release History
 
-## 1.13.0-beta.2 (Unreleased)
+## 1.13.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.13.0-beta.2 (2024-06-10)
+
+### Features Added
+- Added support for a client assertion in `OnBehalfOfCredential` [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files)
+
+### Bugs Fixed
+- Fixed an issue which may block `AzurePowershellCredential` from functioning correctly. [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files) 
+
+## 1.12.2 (2024-06-10)
+
+### Bugs Fixed
+- Managed identity bug fixes
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+- Upgraded `msal4j` from `1.15.0` to version `1.15.1`.
 
 ## 1.13.0-beta.1 (2024-05-23)
 

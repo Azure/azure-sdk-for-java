@@ -5,11 +5,12 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,89 +18,75 @@ import java.util.Map;
  * The properties of the Spark job.
  */
 @Fluent
-public final class SparkJobProperties {
+public final class SparkJobProperties implements JsonSerializable<SparkJobProperties> {
     /*
      * The name of the job.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * File containing the application to execute.
      */
-    @JsonProperty(value = "file", required = true)
     private String file;
 
     /*
      * Main class for Java/Scala application.
      */
-    @JsonProperty(value = "className")
     private String className;
 
     /*
      * Spark configuration properties.
      */
-    @JsonProperty(value = "conf")
     private Object conf;
 
     /*
      * Command line arguments for the application.
      */
-    @JsonProperty(value = "args")
     private List<String> args;
 
     /*
      * Jars to be used in this job.
      */
-    @JsonProperty(value = "jars")
     private List<String> jars;
 
     /*
      * files to be used in this job.
      */
-    @JsonProperty(value = "files")
     private List<String> files;
 
     /*
      * Archives to be used in this job.
      */
-    @JsonProperty(value = "archives")
     private List<String> archives;
 
     /*
      * Amount of memory to use for the driver process.
      */
-    @JsonProperty(value = "driverMemory", required = true)
     private String driverMemory;
 
     /*
      * Number of cores to use for the driver.
      */
-    @JsonProperty(value = "driverCores", required = true)
     private int driverCores;
 
     /*
      * Amount of memory to use per executor process.
      */
-    @JsonProperty(value = "executorMemory", required = true)
     private String executorMemory;
 
     /*
      * Number of cores to use for each executor.
      */
-    @JsonProperty(value = "executorCores", required = true)
     private int executorCores;
 
     /*
      * Number of executors to launch for this job.
      */
-    @JsonProperty(value = "numExecutors", required = true)
     private int numExecutors;
 
     /*
      * The properties of the Spark job.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -373,7 +360,6 @@ public final class SparkJobProperties {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -389,11 +375,91 @@ public final class SparkJobProperties {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("file", this.file);
+        jsonWriter.writeStringField("driverMemory", this.driverMemory);
+        jsonWriter.writeIntField("driverCores", this.driverCores);
+        jsonWriter.writeStringField("executorMemory", this.executorMemory);
+        jsonWriter.writeIntField("executorCores", this.executorCores);
+        jsonWriter.writeIntField("numExecutors", this.numExecutors);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("className", this.className);
+        jsonWriter.writeUntypedField("conf", this.conf);
+        jsonWriter.writeArrayField("args", this.args, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("jars", this.jars, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("files", this.files, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("archives", this.archives, (writer, element) -> writer.writeString(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkJobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkJobProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SparkJobProperties.
+     */
+    public static SparkJobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkJobProperties deserializedSparkJobProperties = new SparkJobProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("file".equals(fieldName)) {
+                    deserializedSparkJobProperties.file = reader.getString();
+                } else if ("driverMemory".equals(fieldName)) {
+                    deserializedSparkJobProperties.driverMemory = reader.getString();
+                } else if ("driverCores".equals(fieldName)) {
+                    deserializedSparkJobProperties.driverCores = reader.getInt();
+                } else if ("executorMemory".equals(fieldName)) {
+                    deserializedSparkJobProperties.executorMemory = reader.getString();
+                } else if ("executorCores".equals(fieldName)) {
+                    deserializedSparkJobProperties.executorCores = reader.getInt();
+                } else if ("numExecutors".equals(fieldName)) {
+                    deserializedSparkJobProperties.numExecutors = reader.getInt();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSparkJobProperties.name = reader.getString();
+                } else if ("className".equals(fieldName)) {
+                    deserializedSparkJobProperties.className = reader.getString();
+                } else if ("conf".equals(fieldName)) {
+                    deserializedSparkJobProperties.conf = reader.readUntyped();
+                } else if ("args".equals(fieldName)) {
+                    List<String> args = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSparkJobProperties.args = args;
+                } else if ("jars".equals(fieldName)) {
+                    List<String> jars = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSparkJobProperties.jars = jars;
+                } else if ("files".equals(fieldName)) {
+                    List<String> files = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSparkJobProperties.files = files;
+                } else if ("archives".equals(fieldName)) {
+                    List<String> archives = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSparkJobProperties.archives = archives;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSparkJobProperties.additionalProperties = additionalProperties;
+
+            return deserializedSparkJobProperties;
+        });
     }
 }
