@@ -63,7 +63,7 @@ public interface PrivateCloud {
      * 
      * @return the identity value.
      */
-    SystemAssignedServiceIdentity identity();
+    PrivateCloudIdentity identity();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -377,7 +377,7 @@ public interface PrivateCloud {
              * @param identity The managed service identities assigned to this resource.
              * @return the next definition stage.
              */
-            WithCreate withIdentity(SystemAssignedServiceIdentity identity);
+            WithCreate withIdentity(PrivateCloudIdentity identity);
         }
 
         /**
@@ -638,7 +638,7 @@ public interface PrivateCloud {
              * @param identity The managed service identities assigned to this resource.
              * @return the next definition stage.
              */
-            Update withIdentity(SystemAssignedServiceIdentity identity);
+            Update withIdentity(PrivateCloudIdentity identity);
         }
 
         /**

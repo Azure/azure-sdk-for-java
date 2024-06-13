@@ -22,7 +22,7 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
     @Test
     public void testCreateVMGroup() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"paseksgb\",\"members\":[\"ntuygdhgaqipir\",\"iwrqofulopmjnl\",\"x\",\"hcbjpibk\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":2124934229054015076},\"id\":\"t\",\"name\":\"toyint\",\"type\":\"pbrlcyrduczkgofx\"}";
+            = "{\"properties\":{\"displayName\":\"iidlop\",\"members\":[\"wdpyq\",\"ybxubmdna\",\"cbq\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":1864803261739962895},\"id\":\"acigel\",\"name\":\"ohdbvqvwzkj\",\"type\":\"pwbeonr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkVMGroup response = manager.workloadNetworks()
-            .defineVMGroup("ttzlswvajqfutlx")
-            .withExistingPrivateCloud("vgbgatzuuvbxng", "ebwgga")
-            .withDisplayName("zasunwqrjzfrgq")
-            .withMembers(Arrays.asList("hcmbuocnjrohmbp", "ryxameblydyvkfkm"))
-            .withRevision(5427029931191366862L)
+            .defineVMGroup("sgl")
+            .withExistingPrivateCloud("bqqqagwwrxa", "mz")
+            .withDisplayName("zezkhhltnjadh")
+            .withMembers(Arrays.asList("wjqo"))
+            .withRevision(5714887426369504206L)
             .create();
 
-        Assertions.assertEquals("paseksgb", response.displayName());
-        Assertions.assertEquals("ntuygdhgaqipir", response.members().get(0));
-        Assertions.assertEquals(2124934229054015076L, response.revision());
+        Assertions.assertEquals("iidlop", response.displayName());
+        Assertions.assertEquals("wdpyq", response.members().get(0));
+        Assertions.assertEquals(1864803261739962895L, response.revision());
     }
 }

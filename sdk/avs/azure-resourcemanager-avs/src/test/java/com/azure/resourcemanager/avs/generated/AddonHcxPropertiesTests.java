@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AddonHcxPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddonHcxProperties model = BinaryData
-            .fromString("{\"addonType\":\"HCX\",\"offer\":\"vnqqybaryeua\",\"provisioningState\":\"Failed\"}")
-            .toObject(AddonHcxProperties.class);
-        Assertions.assertEquals("vnqqybaryeua", model.offer());
+        AddonHcxProperties model
+            = BinaryData.fromString("{\"addonType\":\"HCX\",\"offer\":\"ygo\",\"provisioningState\":\"Succeeded\"}")
+                .toObject(AddonHcxProperties.class);
+        Assertions.assertEquals("ygo", model.offer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddonHcxProperties model = new AddonHcxProperties().withOffer("vnqqybaryeua");
+        AddonHcxProperties model = new AddonHcxProperties().withOffer("ygo");
         model = BinaryData.fromObject(model).toObject(AddonHcxProperties.class);
-        Assertions.assertEquals("vnqqybaryeua", model.offer());
+        Assertions.assertEquals("ygo", model.offer());
     }
 }

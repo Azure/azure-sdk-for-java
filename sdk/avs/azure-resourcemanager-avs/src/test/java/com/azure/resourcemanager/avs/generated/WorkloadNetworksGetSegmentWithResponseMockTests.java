@@ -21,7 +21,7 @@ public final class WorkloadNetworksGetSegmentWithResponseMockTests {
     @Test
     public void testGetSegmentWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"pzdqtvhcspod\",\"connectedGateway\":\"axsipietgb\",\"subnet\":{\"dhcpRanges\":[\"ulbmoichdlp\",\"fpubntnbatz\",\"iqsowsaaelc\"],\"gatewayAddress\":\"tc\"},\"portVif\":[{\"portName\":\"lrvkmjc\"},{\"portName\":\"jvlgfggcvkyyliz\"},{\"portName\":\"bjpsfxsfuztlvtm\"},{\"portName\":\"gbwidqlvh\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Building\",\"revision\":3953520849175184771},\"id\":\"rvjfnmjmvlw\",\"name\":\"z\",\"type\":\"iblkujr\"}";
+            = "{\"properties\":{\"displayName\":\"stmhqykizmd\",\"connectedGateway\":\"aoaf\",\"subnet\":{\"dhcpRanges\":[\"v\",\"xmycjimryvwgcw\"],\"gatewayAddress\":\"bmzgwes\"},\"portVif\":[{\"portName\":\"wefohecbvo\"},{\"portName\":\"ndyqleal\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":5841187732800294671},\"id\":\"wkxxpvbrdfjmzs\",\"name\":\"zfhotlh\",\"type\":\"k\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,14 @@ public final class WorkloadNetworksGetSegmentWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkSegment response = manager.workloadNetworks()
-            .getSegmentWithResponse("wlpxuzzjg", "refqy", "qotoihiqakydiwfb", com.azure.core.util.Context.NONE)
+            .getSegmentWithResponse("aabeolhbhlvbmxuq", "bsxtkcudfbsfarfs", "owlkjxnqpv",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pzdqtvhcspod", response.displayName());
-        Assertions.assertEquals("axsipietgb", response.connectedGateway());
-        Assertions.assertEquals("ulbmoichdlp", response.subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("tc", response.subnet().gatewayAddress());
-        Assertions.assertEquals(3953520849175184771L, response.revision());
+        Assertions.assertEquals("stmhqykizmd", response.displayName());
+        Assertions.assertEquals("aoaf", response.connectedGateway());
+        Assertions.assertEquals("v", response.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("bmzgwes", response.subnet().gatewayAddress());
+        Assertions.assertEquals(5841187732800294671L, response.revision());
     }
 }

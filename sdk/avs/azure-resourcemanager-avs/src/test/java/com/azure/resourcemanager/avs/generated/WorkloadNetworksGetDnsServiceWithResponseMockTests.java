@@ -22,7 +22,7 @@ public final class WorkloadNetworksGetDnsServiceWithResponseMockTests {
     @Test
     public void testGetDnsServiceWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"gueiookjbsahrtdt\",\"dnsServiceIp\":\"elqacslmot\",\"defaultDnsZone\":\"bnfxofvc\",\"fqdnZones\":[\"dirazf\",\"xejw\"],\"logLevel\":\"ERROR\",\"status\":\"FAILURE\",\"provisioningState\":\"Building\",\"revision\":6269795613332829239},\"id\":\"pexcmjurbuhh\",\"name\":\"kyqltqsrogt\",\"type\":\"wkffdjkt\"}";
+            = "{\"properties\":{\"displayName\":\"myccx\",\"dnsServiceIp\":\"hcoxov\",\"defaultDnsZone\":\"khenlus\",\"fqdnZones\":[\"dtjxtxrdcqt\"],\"logLevel\":\"ERROR\",\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":7902462386564610802},\"id\":\"lvyjtcvuwkas\",\"name\":\"zies\",\"type\":\"uughtuqfecjxeyg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class WorkloadNetworksGetDnsServiceWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkDnsService response = manager.workloadNetworks()
-            .getDnsServiceWithResponse("qa", "jjvpilguooqja", "m", com.azure.core.util.Context.NONE)
+            .getDnsServiceWithResponse("nszonwpngaj", "n", "ixjawrtm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("gueiookjbsahrtdt", response.displayName());
-        Assertions.assertEquals("elqacslmot", response.dnsServiceIp());
-        Assertions.assertEquals("bnfxofvc", response.defaultDnsZone());
-        Assertions.assertEquals("dirazf", response.fqdnZones().get(0));
+        Assertions.assertEquals("myccx", response.displayName());
+        Assertions.assertEquals("hcoxov", response.dnsServiceIp());
+        Assertions.assertEquals("khenlus", response.defaultDnsZone());
+        Assertions.assertEquals("dtjxtxrdcqt", response.fqdnZones().get(0));
         Assertions.assertEquals(DnsServiceLogLevelEnum.ERROR, response.logLevel());
-        Assertions.assertEquals(6269795613332829239L, response.revision());
+        Assertions.assertEquals(7902462386564610802L, response.revision());
     }
 }

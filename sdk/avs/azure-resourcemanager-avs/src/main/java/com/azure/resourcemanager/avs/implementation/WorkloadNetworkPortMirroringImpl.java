@@ -11,7 +11,6 @@ import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
 import com.azure.resourcemanager.avs.models.PortMirroringStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroring;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringProvisioningState;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringUpdate;
 
 public final class WorkloadNetworkPortMirroringImpl implements WorkloadNetworkPortMirroring,
     WorkloadNetworkPortMirroring.Definition, WorkloadNetworkPortMirroring.Update {
@@ -81,8 +80,6 @@ public final class WorkloadNetworkPortMirroringImpl implements WorkloadNetworkPo
 
     private String portMirroringId;
 
-    private WorkloadNetworkPortMirroringUpdate updateWorkloadNetworkPortMirroring;
-
     public WorkloadNetworkPortMirroringImpl withExistingPrivateCloud(String resourceGroupName,
         String privateCloudName) {
         this.resourceGroupName = resourceGroupName;
@@ -111,23 +108,20 @@ public final class WorkloadNetworkPortMirroringImpl implements WorkloadNetworkPo
     }
 
     public WorkloadNetworkPortMirroringImpl update() {
-        this.updateWorkloadNetworkPortMirroring = new WorkloadNetworkPortMirroringUpdate();
         return this;
     }
 
     public WorkloadNetworkPortMirroring apply() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updatePortMirroring(resourceGroupName, privateCloudName, portMirroringId,
-                updateWorkloadNetworkPortMirroring, Context.NONE);
+            .updatePortMirroring(resourceGroupName, privateCloudName, portMirroringId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkPortMirroring apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updatePortMirroring(resourceGroupName, privateCloudName, portMirroringId,
-                updateWorkloadNetworkPortMirroring, context);
+            .updatePortMirroring(resourceGroupName, privateCloudName, portMirroringId, this.innerModel(), context);
         return this;
     }
 
@@ -157,56 +151,27 @@ public final class WorkloadNetworkPortMirroringImpl implements WorkloadNetworkPo
     }
 
     public WorkloadNetworkPortMirroringImpl withDisplayName(String displayName) {
-        if (isInCreateMode()) {
-            this.innerModel().withDisplayName(displayName);
-            return this;
-        } else {
-            this.updateWorkloadNetworkPortMirroring.withDisplayName(displayName);
-            return this;
-        }
+        this.innerModel().withDisplayName(displayName);
+        return this;
     }
 
     public WorkloadNetworkPortMirroringImpl withDirection(PortMirroringDirectionEnum direction) {
-        if (isInCreateMode()) {
-            this.innerModel().withDirection(direction);
-            return this;
-        } else {
-            this.updateWorkloadNetworkPortMirroring.withDirection(direction);
-            return this;
-        }
+        this.innerModel().withDirection(direction);
+        return this;
     }
 
     public WorkloadNetworkPortMirroringImpl withSource(String source) {
-        if (isInCreateMode()) {
-            this.innerModel().withSource(source);
-            return this;
-        } else {
-            this.updateWorkloadNetworkPortMirroring.withSource(source);
-            return this;
-        }
+        this.innerModel().withSource(source);
+        return this;
     }
 
     public WorkloadNetworkPortMirroringImpl withDestination(String destination) {
-        if (isInCreateMode()) {
-            this.innerModel().withDestination(destination);
-            return this;
-        } else {
-            this.updateWorkloadNetworkPortMirroring.withDestination(destination);
-            return this;
-        }
+        this.innerModel().withDestination(destination);
+        return this;
     }
 
     public WorkloadNetworkPortMirroringImpl withRevision(Long revision) {
-        if (isInCreateMode()) {
-            this.innerModel().withRevision(revision);
-            return this;
-        } else {
-            this.updateWorkloadNetworkPortMirroring.withRevision(revision);
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        this.innerModel().withRevision(revision);
+        return this;
     }
 }

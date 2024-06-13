@@ -14,21 +14,20 @@ public final class WorkloadNetworkGatewayListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkGatewayList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Building\",\"displayName\":\"vrmbzono\",\"path\":\"xrjqcirgzpfrlazs\"},\"id\":\"nwoiind\",\"name\":\"pwp\",\"type\":\"ylwbtlhflsjcdhsz\"},{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"gofel\",\"path\":\"grqmqhldvrii\"},\"id\":\"jnalghf\",\"name\":\"vtvsexsowueluq\",\"type\":\"hahhxvrhmzkwpj\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"ughftqsx\",\"path\":\"xujxuknd\"},\"id\":\"igrjguufzdm\",\"name\":\"yqtfihwh\",\"type\":\"otzi\"}],\"nextLink\":\"amvpphoszqzudph\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Building\",\"displayName\":\"ty\",\"path\":\"evxccedcp\"},\"id\":\"dyodnwzxltj\",\"name\":\"vnhltiugcx\",\"type\":\"avvwxqi\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"y\",\"path\":\"xwlmdjr\"},\"id\":\"fgbvfvpdbo\",\"name\":\"acizsjqlhkrr\",\"type\":\"bdeibqipqk\"}],\"nextLink\":\"vxndz\"}")
             .toObject(WorkloadNetworkGatewayList.class);
-        Assertions.assertEquals("vrmbzono", model.value().get(0).displayName());
-        Assertions.assertEquals("amvpphoszqzudph", model.nextLink());
+        Assertions.assertEquals("ty", model.value().get(0).displayName());
+        Assertions.assertEquals("vxndz", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkGatewayList model = new WorkloadNetworkGatewayList()
-            .withValue(Arrays.asList(new WorkloadNetworkGatewayInner().withDisplayName("vrmbzono"),
-                new WorkloadNetworkGatewayInner().withDisplayName("gofel"),
-                new WorkloadNetworkGatewayInner().withDisplayName("ughftqsx")))
-            .withNextLink("amvpphoszqzudph");
+            .withValue(Arrays.asList(new WorkloadNetworkGatewayInner().withDisplayName("ty"),
+                new WorkloadNetworkGatewayInner().withDisplayName("y")))
+            .withNextLink("vxndz");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkGatewayList.class);
-        Assertions.assertEquals("vrmbzono", model.value().get(0).displayName());
-        Assertions.assertEquals("amvpphoszqzudph", model.nextLink());
+        Assertions.assertEquals("ty", model.value().get(0).displayName());
+        Assertions.assertEquals("vxndz", model.nextLink());
     }
 }

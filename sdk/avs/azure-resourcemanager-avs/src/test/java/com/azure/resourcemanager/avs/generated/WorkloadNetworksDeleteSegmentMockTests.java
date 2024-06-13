@@ -27,8 +27,7 @@ public final class WorkloadNetworksDeleteSegmentMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workloadNetworks()
-            .deleteSegment("lfojuidjp", "uyjucejikzo", "ovvtzejetjkln", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().deleteSegment("yych", "nsjlpjrtws", "hv", com.azure.core.util.Context.NONE);
 
     }
 }

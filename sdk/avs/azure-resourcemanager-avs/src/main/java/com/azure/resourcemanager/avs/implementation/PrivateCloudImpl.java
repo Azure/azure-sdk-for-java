@@ -20,10 +20,10 @@ import com.azure.resourcemanager.avs.models.InternetEnum;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
 import com.azure.resourcemanager.avs.models.NsxPublicIpQuotaRaisedEnum;
 import com.azure.resourcemanager.avs.models.PrivateCloud;
+import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.PrivateCloudProvisioningState;
 import com.azure.resourcemanager.avs.models.PrivateCloudUpdate;
 import com.azure.resourcemanager.avs.models.Sku;
-import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +62,7 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         return this.innerModel().sku();
     }
 
-    public SystemAssignedServiceIdentity identity() {
+    public PrivateCloudIdentity identity() {
         return this.innerModel().identity();
     }
 
@@ -321,7 +321,7 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
         }
     }
 
-    public PrivateCloudImpl withIdentity(SystemAssignedServiceIdentity identity) {
+    public PrivateCloudImpl withIdentity(PrivateCloudIdentity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
             return this;

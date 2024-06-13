@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.generated;
 
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServerUpdate;
 
 /**
  * Samples for WorkloadNetworks UpdateDhcp.
@@ -23,10 +22,6 @@ public final class WorkloadNetworksUpdateDhcpSamples {
         WorkloadNetworkDhcp resource = manager.workloadNetworks()
             .getDhcpWithResponse("group1", "dhcp1", "cloud1", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update()
-            .withProperties(new WorkloadNetworkDhcpServerUpdate().withRevision(1L)
-                .withServerAddress("40.1.5.1/24")
-                .withLeaseTime(86400L))
-            .apply();
+        resource.update().apply();
     }
 }

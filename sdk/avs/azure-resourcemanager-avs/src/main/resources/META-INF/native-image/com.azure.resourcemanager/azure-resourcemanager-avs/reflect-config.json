@@ -79,7 +79,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentity",
+  "name" : "com.azure.resourcemanager.avs.models.PrivateCloudIdentity",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -384,16 +384,6 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpUpdate",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpEntityUpdate",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
   "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServicesList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -409,11 +399,6 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServiceUpdate",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
   "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZonesList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -425,11 +410,6 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDnsZoneProperties",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneUpdate",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -460,11 +440,6 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPortMirroringProperties",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringUpdate",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -509,11 +484,6 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentUpdate",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
   "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkVirtualMachinesList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -540,11 +510,6 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVMGroupProperties",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupUpdate",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -599,17 +564,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpRelayUpdate",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
   "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServer",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServerUpdate",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -684,7 +639,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentityType",
+  "name" : "com.azure.resourcemanager.avs.models.ResourceIdentityType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

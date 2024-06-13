@@ -27,7 +27,7 @@ public final class AuthorizationsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.authorizations().delete("jy", "dh", "u", com.azure.core.util.Context.NONE);
+        manager.authorizations().delete("sdymbrn", "suxmpraf", "g", com.azure.core.util.Context.NONE);
 
     }
 }

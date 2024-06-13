@@ -23,7 +23,7 @@ public final class ScriptExecutionsGetExecutionLogsWithResponseMockTests {
     @Test
     public void testGetExecutionLogsWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"scriptCmdletId\":\"fapvuhrylniofrz\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"jed\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"st\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"vnlvxbcuiiznktwf\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"nv\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"dibmikostbzbkiwb\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"qnyophzfyls\"}],\"failureReason\":\"rpfbcunezz\",\"timeout\":\"e\",\"retention\":\"lfwyfwlwxjwetn\",\"submittedAt\":\"2021-06-29T10:43:54Z\",\"startedAt\":\"2021-07-28T00:42:45Z\",\"finishedAt\":\"2021-02-10T04:43:11Z\",\"provisioningState\":\"Cancelling\",\"output\":[\"ylptrsqqwztcm\"],\"namedOutputs\":{\"jexfdeqvhp\":\"datachcxwaxfewzj\",\"zjrgyww\":\"dataylkkshkbffmbm\"},\"information\":[\"xs\"],\"warnings\":[\"fujg\"],\"errors\":[\"aaoepttaqut\"]},\"id\":\"wemxswvruunzz\",\"name\":\"gehkfkimrtixokff\",\"type\":\"yinljqe\"}";
+            = "{\"properties\":{\"scriptCmdletId\":\"cbm\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"xmvwfg\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"ayxonsupeujl\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"hcvsqltnzoi\"}],\"failureReason\":\"sxgnx\",\"timeout\":\"yqo\",\"retention\":\"p\",\"submittedAt\":\"2021-05-25T17:04:08Z\",\"startedAt\":\"2021-08-14T04:57:20Z\",\"finishedAt\":\"2021-04-29T21:53:48Z\",\"provisioningState\":\"Cancelled\",\"output\":[\"qxeiiqbimhtmwwi\",\"h\",\"hfqpofv\"],\"namedOutputs\":{\"vqihebwtswbzuwf\":\"datablembnkbwvqvxkd\",\"felisdjub\":\"dataduragegizvc\",\"kxkbsazgakgacyr\":\"datagbqi\"},\"information\":[\"dmspof\",\"pv\",\"hryl\",\"iofrzgbzjedmstk\"],\"warnings\":[\"v\"],\"errors\":[\"uiiznktwfansnvpd\"]},\"id\":\"mik\",\"name\":\"stbz\",\"type\":\"kiwbuqnyoph\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,18 @@ public final class ScriptExecutionsGetExecutionLogsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ScriptExecution response = manager.scriptExecutions()
-            .getExecutionLogsWithResponse("gbqi", "kxkbsazgakgacyr", "m",
-                Arrays.asList(ScriptOutputStreamType.ERROR, ScriptOutputStreamType.OUTPUT),
+            .getExecutionLogsWithResponse("yasflvgsgzwy", "akoi", "knsmjblmljhlnymz",
+                Arrays.asList(ScriptOutputStreamType.ERROR, ScriptOutputStreamType.WARNING,
+                    ScriptOutputStreamType.OUTPUT, ScriptOutputStreamType.ERROR),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fapvuhrylniofrz", response.scriptCmdletId());
-        Assertions.assertEquals("jed", response.parameters().get(0).name());
-        Assertions.assertEquals("nv", response.hiddenParameters().get(0).name());
-        Assertions.assertEquals("rpfbcunezz", response.failureReason());
-        Assertions.assertEquals("e", response.timeout());
-        Assertions.assertEquals("lfwyfwlwxjwetn", response.retention());
-        Assertions.assertEquals("ylptrsqqwztcm", response.output().get(0));
+        Assertions.assertEquals("cbm", response.scriptCmdletId());
+        Assertions.assertEquals("xmvwfg", response.parameters().get(0).name());
+        Assertions.assertEquals("hcvsqltnzoi", response.hiddenParameters().get(0).name());
+        Assertions.assertEquals("sxgnx", response.failureReason());
+        Assertions.assertEquals("yqo", response.timeout());
+        Assertions.assertEquals("p", response.retention());
+        Assertions.assertEquals("qxeiiqbimhtmwwi", response.output().get(0));
     }
 }

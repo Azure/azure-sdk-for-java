@@ -137,7 +137,7 @@ public interface WorkloadNetworkDhcp {
     /**
      * The template for WorkloadNetworkDhcp update.
      */
-    interface Update extends UpdateStages.WithProperties {
+    interface Update {
         /**
          * Executes the update request.
          * 
@@ -158,18 +158,6 @@ public interface WorkloadNetworkDhcp {
      * The WorkloadNetworkDhcp update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the WorkloadNetworkDhcp update allowing to specify properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The updatable properties of a DHCP update.
-             * 
-             * @param properties The updatable properties of a DHCP update.
-             * @return the next definition stage.
-             */
-            Update withProperties(WorkloadNetworkDhcpEntityUpdate properties);
-        }
     }
 
     /**

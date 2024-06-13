@@ -14,25 +14,31 @@ public final class WorkloadNetworkVMGroupsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVMGroupsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"pxehuwrykqga\",\"members\":[\"viklb\",\"dvk\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":6460022338840232895},\"id\":\"vdsrhnjiv\",\"name\":\"lvtno\",\"type\":\"qfzgemjdftul\"}],\"nextLink\":\"tduceamt\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"qjzgxmrhublw\",\"members\":[\"sutrgjup\",\"uutpwoqhih\",\"jqgwzp\",\"fqntcyp\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":4546309057929935505},\"id\":\"kslircizjxvydfc\",\"name\":\"acvlhv\",\"type\":\"gdyftumrtwna\"},{\"properties\":{\"displayName\":\"lbiw\",\"members\":[\"gcyztsfmznbae\",\"ph\",\"hqnrn\",\"pxehuwrykqga\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":1763839992025561679},\"id\":\"dvk\",\"name\":\"bejdznxcv\",\"type\":\"srhnjivo\"},{\"properties\":{\"displayName\":\"novqfzge\",\"members\":[\"ftul\",\"ltducea\",\"tmczuomejwcwwqi\"],\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":6715076788595047640},\"id\":\"msvpkjpr\",\"name\":\"kwcf\",\"type\":\"ql\"}],\"nextLink\":\"x\"}")
             .toObject(WorkloadNetworkVMGroupsList.class);
-        Assertions.assertEquals("pxehuwrykqga", model.value().get(0).displayName());
-        Assertions.assertEquals("viklb", model.value().get(0).members().get(0));
-        Assertions.assertEquals(6460022338840232895L, model.value().get(0).revision());
-        Assertions.assertEquals("tduceamt", model.nextLink());
+        Assertions.assertEquals("qjzgxmrhublw", model.value().get(0).displayName());
+        Assertions.assertEquals("sutrgjup", model.value().get(0).members().get(0));
+        Assertions.assertEquals(4546309057929935505L, model.value().get(0).revision());
+        Assertions.assertEquals("x", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkVMGroupsList model = new WorkloadNetworkVMGroupsList()
-            .withValue(Arrays.asList(new WorkloadNetworkVMGroupInner().withDisplayName("pxehuwrykqga")
-                .withMembers(Arrays.asList("viklb", "dvk"))
-                .withRevision(6460022338840232895L)))
-            .withNextLink("tduceamt");
+        WorkloadNetworkVMGroupsList model = new WorkloadNetworkVMGroupsList().withValue(Arrays.asList(
+            new WorkloadNetworkVMGroupInner().withDisplayName("qjzgxmrhublw")
+                .withMembers(Arrays.asList("sutrgjup", "uutpwoqhih", "jqgwzp", "fqntcyp"))
+                .withRevision(4546309057929935505L),
+            new WorkloadNetworkVMGroupInner().withDisplayName("lbiw")
+                .withMembers(Arrays.asList("gcyztsfmznbae", "ph", "hqnrn", "pxehuwrykqga"))
+                .withRevision(1763839992025561679L),
+            new WorkloadNetworkVMGroupInner().withDisplayName("novqfzge")
+                .withMembers(Arrays.asList("ftul", "ltducea", "tmczuomejwcwwqi"))
+                .withRevision(6715076788595047640L)))
+            .withNextLink("x");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVMGroupsList.class);
-        Assertions.assertEquals("pxehuwrykqga", model.value().get(0).displayName());
-        Assertions.assertEquals("viklb", model.value().get(0).members().get(0));
-        Assertions.assertEquals(6460022338840232895L, model.value().get(0).revision());
-        Assertions.assertEquals("tduceamt", model.nextLink());
+        Assertions.assertEquals("qjzgxmrhublw", model.value().get(0).displayName());
+        Assertions.assertEquals("sutrgjup", model.value().get(0).members().get(0));
+        Assertions.assertEquals(4546309057929935505L, model.value().get(0).revision());
+        Assertions.assertEquals("x", model.nextLink());
     }
 }

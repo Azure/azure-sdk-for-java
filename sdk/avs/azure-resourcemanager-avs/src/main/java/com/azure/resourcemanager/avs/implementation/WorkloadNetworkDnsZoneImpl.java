@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDnsZoneInner;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZone;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneProvisioningState;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneUpdate;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,7 +60,7 @@ public final class WorkloadNetworkDnsZoneImpl
         return this.innerModel().sourceIp();
     }
 
-    public Integer dnsServices() {
+    public Long dnsServices() {
         return this.innerModel().dnsServices();
     }
 
@@ -91,8 +90,6 @@ public final class WorkloadNetworkDnsZoneImpl
 
     private String dnsZoneId;
 
-    private WorkloadNetworkDnsZoneUpdate updateWorkloadNetworkDnsZone;
-
     public WorkloadNetworkDnsZoneImpl withExistingPrivateCloud(String resourceGroupName, String privateCloudName) {
         this.resourceGroupName = resourceGroupName;
         this.privateCloudName = privateCloudName;
@@ -120,21 +117,20 @@ public final class WorkloadNetworkDnsZoneImpl
     }
 
     public WorkloadNetworkDnsZoneImpl update() {
-        this.updateWorkloadNetworkDnsZone = new WorkloadNetworkDnsZoneUpdate();
         return this;
     }
 
     public WorkloadNetworkDnsZone apply() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, updateWorkloadNetworkDnsZone, Context.NONE);
+            .updateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkDnsZone apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, updateWorkloadNetworkDnsZone, context);
+            .updateDnsZone(resourceGroupName, privateCloudName, dnsZoneId, this.innerModel(), context);
         return this;
     }
 
@@ -164,66 +160,32 @@ public final class WorkloadNetworkDnsZoneImpl
     }
 
     public WorkloadNetworkDnsZoneImpl withDisplayName(String displayName) {
-        if (isInCreateMode()) {
-            this.innerModel().withDisplayName(displayName);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsZone.withDisplayName(displayName);
-            return this;
-        }
+        this.innerModel().withDisplayName(displayName);
+        return this;
     }
 
     public WorkloadNetworkDnsZoneImpl withDomain(List<String> domain) {
-        if (isInCreateMode()) {
-            this.innerModel().withDomain(domain);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsZone.withDomain(domain);
-            return this;
-        }
+        this.innerModel().withDomain(domain);
+        return this;
     }
 
     public WorkloadNetworkDnsZoneImpl withDnsServerIps(List<String> dnsServerIps) {
-        if (isInCreateMode()) {
-            this.innerModel().withDnsServerIps(dnsServerIps);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsZone.withDnsServerIps(dnsServerIps);
-            return this;
-        }
+        this.innerModel().withDnsServerIps(dnsServerIps);
+        return this;
     }
 
     public WorkloadNetworkDnsZoneImpl withSourceIp(String sourceIp) {
-        if (isInCreateMode()) {
-            this.innerModel().withSourceIp(sourceIp);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsZone.withSourceIp(sourceIp);
-            return this;
-        }
+        this.innerModel().withSourceIp(sourceIp);
+        return this;
     }
 
-    public WorkloadNetworkDnsZoneImpl withDnsServices(Integer dnsServices) {
-        if (isInCreateMode()) {
-            this.innerModel().withDnsServices(dnsServices);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsZone.withDnsServices(dnsServices);
-            return this;
-        }
+    public WorkloadNetworkDnsZoneImpl withDnsServices(Long dnsServices) {
+        this.innerModel().withDnsServices(dnsServices);
+        return this;
     }
 
     public WorkloadNetworkDnsZoneImpl withRevision(Long revision) {
-        if (isInCreateMode()) {
-            this.innerModel().withRevision(revision);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsZone.withRevision(revision);
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        this.innerModel().withRevision(revision);
+        return this;
     }
 }

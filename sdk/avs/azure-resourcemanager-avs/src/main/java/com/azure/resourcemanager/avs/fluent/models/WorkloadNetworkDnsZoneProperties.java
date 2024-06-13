@@ -42,7 +42,7 @@ public final class WorkloadNetworkDnsZoneProperties {
      * Number of DNS Services using the DNS zone.
      */
     @JsonProperty(value = "dnsServices")
-    private Integer dnsServices;
+    private Long dnsServices;
 
     /*
      * The provisioning state
@@ -147,7 +147,7 @@ public final class WorkloadNetworkDnsZoneProperties {
      * 
      * @return the dnsServices value.
      */
-    public Integer dnsServices() {
+    public Long dnsServices() {
         return this.dnsServices;
     }
 
@@ -157,7 +157,7 @@ public final class WorkloadNetworkDnsZoneProperties {
      * @param dnsServices the dnsServices value to set.
      * @return the WorkloadNetworkDnsZoneProperties object itself.
      */
-    public WorkloadNetworkDnsZoneProperties withDnsServices(Integer dnsServices) {
+    public WorkloadNetworkDnsZoneProperties withDnsServices(Long dnsServices) {
         this.dnsServices = dnsServices;
         return this;
     }

@@ -7,35 +7,34 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.UUID;
 
 /**
  * Managed service identity (either system assigned, or none).
  */
 @Fluent
-public final class SystemAssignedServiceIdentity {
+public final class PrivateCloudIdentity {
     /*
      * The service principal ID of the system assigned identity. This property will only be provided for a system assigned identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID principalId;
+    private String principalId;
 
     /*
      * The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID tenantId;
+    private String tenantId;
 
     /*
      * Type of managed service identity (either system assigned, or none).
      */
     @JsonProperty(value = "type", required = true)
-    private SystemAssignedServiceIdentityType type;
+    private ResourceIdentityType type;
 
     /**
-     * Creates an instance of SystemAssignedServiceIdentity class.
+     * Creates an instance of PrivateCloudIdentity class.
      */
-    public SystemAssignedServiceIdentity() {
+    public PrivateCloudIdentity() {
     }
 
     /**
@@ -44,7 +43,7 @@ public final class SystemAssignedServiceIdentity {
      * 
      * @return the principalId value.
      */
-    public UUID principalId() {
+    public String principalId() {
         return this.principalId;
     }
 
@@ -54,7 +53,7 @@ public final class SystemAssignedServiceIdentity {
      * 
      * @return the tenantId value.
      */
-    public UUID tenantId() {
+    public String tenantId() {
         return this.tenantId;
     }
 
@@ -63,7 +62,7 @@ public final class SystemAssignedServiceIdentity {
      * 
      * @return the type value.
      */
-    public SystemAssignedServiceIdentityType type() {
+    public ResourceIdentityType type() {
         return this.type;
     }
 
@@ -71,9 +70,9 @@ public final class SystemAssignedServiceIdentity {
      * Set the type property: Type of managed service identity (either system assigned, or none).
      * 
      * @param type the type value to set.
-     * @return the SystemAssignedServiceIdentity object itself.
+     * @return the PrivateCloudIdentity object itself.
      */
-    public SystemAssignedServiceIdentity withType(SystemAssignedServiceIdentityType type) {
+    public PrivateCloudIdentity withType(ResourceIdentityType type) {
         this.type = type;
         return this;
     }
@@ -86,10 +85,9 @@ public final class SystemAssignedServiceIdentity {
     public void validate() {
         if (type() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property type in model SystemAssignedServiceIdentity"));
+                .log(new IllegalArgumentException("Missing required property type in model PrivateCloudIdentity"));
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(SystemAssignedServiceIdentity.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateCloudIdentity.class);
 }

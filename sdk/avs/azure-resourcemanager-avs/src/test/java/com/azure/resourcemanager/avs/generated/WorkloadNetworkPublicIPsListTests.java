@@ -14,27 +14,24 @@ public final class WorkloadNetworkPublicIPsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkPublicIPsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"wmyijejveg\",\"numberOfPublicIPs\":6616068099885541326,\"publicIPBlock\":\"aixexccbdreaxh\",\"provisioningState\":\"Canceled\"},\"id\":\"rrvqa\",\"name\":\"qkghtpwijnhy\",\"type\":\"svfycxzbfv\"},{\"properties\":{\"displayName\":\"vrvmtgjqppyost\",\"numberOfPublicIPs\":2863905998828514603,\"publicIPBlock\":\"yhgfipnsx\",\"provisioningState\":\"Canceled\"},\"id\":\"a\",\"name\":\"krrjrea\",\"type\":\"xt\"},{\"properties\":{\"displayName\":\"mhjglikkxwslolb\",\"numberOfPublicIPs\":5257661976935925415,\"publicIPBlock\":\"lmv\",\"provisioningState\":\"Deleting\"},\"id\":\"ktgplcr\",\"name\":\"wjxeznoigbr\",\"type\":\"jwmwkpnbs\"},{\"properties\":{\"displayName\":\"jjoqkagf\",\"numberOfPublicIPs\":4992993506097111219,\"publicIPBlock\":\"augzxnfaazpxdtn\",\"provisioningState\":\"Failed\"},\"id\":\"qjjlwuen\",\"name\":\"rkpyouaibrebqaay\",\"type\":\"j\"}],\"nextLink\":\"xqtnq\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"pqlmfe\",\"numberOfPublicIPs\":5076002706235027340,\"publicIPBlock\":\"wkyhkobopgxe\",\"provisioningState\":\"Deleting\"},\"id\":\"epbqpcrfkbw\",\"name\":\"csnjvcdwxlpqekft\",\"type\":\"khtj\"},{\"properties\":{\"displayName\":\"ngwfqatm\",\"numberOfPublicIPs\":6035898469586356847,\"publicIPBlock\":\"dvypgikdgsz\",\"provisioningState\":\"Canceled\"},\"id\":\"irryuzhlh\",\"name\":\"joqrvqqaatj\",\"type\":\"nrvgoupmfiibfgg\"},{\"properties\":{\"displayName\":\"olvrw\",\"numberOfPublicIPs\":639224671106145818,\"publicIPBlock\":\"k\",\"provisioningState\":\"Failed\"},\"id\":\"wjygvjayvblmhvk\",\"name\":\"uhbxvvy\",\"type\":\"gsopbyrqufegxu\"},{\"properties\":{\"displayName\":\"fbn\",\"numberOfPublicIPs\":2314508611274397861,\"publicIPBlock\":\"l\",\"provisioningState\":\"Building\"},\"id\":\"itvgbmhrixkwm\",\"name\":\"ijejvegrhbpn\",\"type\":\"ixexcc\"}],\"nextLink\":\"reaxhcexdr\"}")
             .toObject(WorkloadNetworkPublicIPsList.class);
-        Assertions.assertEquals("wmyijejveg", model.value().get(0).displayName());
-        Assertions.assertEquals(6616068099885541326L, model.value().get(0).numberOfPublicIPs());
-        Assertions.assertEquals("xqtnq", model.nextLink());
+        Assertions.assertEquals("pqlmfe", model.value().get(0).displayName());
+        Assertions.assertEquals(5076002706235027340L, model.value().get(0).numberOfPublicIPs());
+        Assertions.assertEquals("reaxhcexdr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkloadNetworkPublicIPsList model = new WorkloadNetworkPublicIPsList().withValue(Arrays.asList(
-            new WorkloadNetworkPublicIpInner().withDisplayName("wmyijejveg")
-                .withNumberOfPublicIPs(6616068099885541326L),
-            new WorkloadNetworkPublicIpInner().withDisplayName("vrvmtgjqppyost")
-                .withNumberOfPublicIPs(2863905998828514603L),
-            new WorkloadNetworkPublicIpInner().withDisplayName("mhjglikkxwslolb")
-                .withNumberOfPublicIPs(5257661976935925415L),
-            new WorkloadNetworkPublicIpInner().withDisplayName("jjoqkagf").withNumberOfPublicIPs(4992993506097111219L)))
-            .withNextLink("xqtnq");
+            new WorkloadNetworkPublicIpInner().withDisplayName("pqlmfe").withNumberOfPublicIPs(5076002706235027340L),
+            new WorkloadNetworkPublicIpInner().withDisplayName("ngwfqatm").withNumberOfPublicIPs(6035898469586356847L),
+            new WorkloadNetworkPublicIpInner().withDisplayName("olvrw").withNumberOfPublicIPs(639224671106145818L),
+            new WorkloadNetworkPublicIpInner().withDisplayName("fbn").withNumberOfPublicIPs(2314508611274397861L)))
+            .withNextLink("reaxhcexdr");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkPublicIPsList.class);
-        Assertions.assertEquals("wmyijejveg", model.value().get(0).displayName());
-        Assertions.assertEquals(6616068099885541326L, model.value().get(0).numberOfPublicIPs());
-        Assertions.assertEquals("xqtnq", model.nextLink());
+        Assertions.assertEquals("pqlmfe", model.value().get(0).displayName());
+        Assertions.assertEquals(5076002706235027340L, model.value().get(0).numberOfPublicIPs());
+        Assertions.assertEquals("reaxhcexdr", model.nextLink());
     }
 }

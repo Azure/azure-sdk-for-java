@@ -18,10 +18,6 @@
 
 * `models.LogSpecification` was removed
 
-* `models.ResourceIdentityType` was removed
-
-* `models.PrivateCloudIdentity` was removed
-
 * `models.OperationProperties` was removed
 
 * `models.CommonClusterProperties` was removed
@@ -29,10 +25,6 @@
 #### `models.WorkloadNetworkDhcp$Update` was modified
 
 * `withProperties(models.WorkloadNetworkDhcpEntity)` was removed
-
-#### `models.WorkloadNetworkDnsZone$Update` was modified
-
-* `withDnsServices(java.lang.Long)` was removed
 
 #### `models.WorkloadNetworks` was modified
 
@@ -44,71 +36,26 @@
 * `properties()` was removed
 * `java.lang.String origin()` -> `models.Origin origin()`
 
-#### `models.WorkloadNetworkDnsZone` was modified
-
-* `java.lang.Long dnsServices()` -> `java.lang.Integer dnsServices()`
-
-#### `models.PrivateCloud$Update` was modified
-
-* `withIdentity(models.PrivateCloudIdentity)` was removed
-
-#### `models.WorkloadNetworkDnsZone$Definition` was modified
-
-* `withDnsServices(java.lang.Long)` was removed
-
 #### `models.ManagementCluster` was modified
 
 * `withClusterSize(java.lang.Integer)` was removed
 * `withHosts(java.util.List)` was removed
 
-#### `models.PrivateCloudUpdate` was modified
-
-* `models.PrivateCloudIdentity identity()` -> `models.SystemAssignedServiceIdentity identity()`
-* `withIdentity(models.PrivateCloudIdentity)` was removed
-
-#### `models.PrivateCloud$Definition` was modified
-
-* `withIdentity(models.PrivateCloudIdentity)` was removed
-
-#### `models.PrivateCloud` was modified
-
-* `models.PrivateCloudIdentity identity()` -> `models.SystemAssignedServiceIdentity identity()`
-
-#### `models.Addon$Update` was modified
-
-* `withProperties(models.AddonProperties)` was removed
-
 ### Features Added
-
-* `models.WorkloadNetworkDhcpRelayUpdate` was added
-
-* `models.WorkloadNetworkVMGroupUpdate` was added
 
 * `models.CloudLinkProvisioningState` was added
 
 * `models.IscsiPath` was added
 
-* `models.WorkloadNetworkDnsServiceUpdate` was added
-
 * `models.IscsiPaths` was added
-
-* `models.SystemAssignedServiceIdentityType` was added
 
 * `models.ScriptCmdletAudience` was added
 
 * `models.VirtualMachineProvisioningState` was added
 
-* `models.WorkloadNetworkDnsZoneUpdate` was added
-
 * `models.HcxEnterpriseSiteProvisioningState` was added
 
 * `models.ActionType` was added
-
-* `models.WorkloadNetworkPortMirroringUpdate` was added
-
-* `models.WorkloadNetworkDhcpUpdate` was added
-
-* `models.WorkloadNetworkDhcpEntityUpdate` was added
 
 * `models.WorkloadNetworkProvisioningState` was added
 
@@ -124,13 +71,7 @@
 
 * `models.ScriptPackageProvisioningState` was added
 
-* `models.SystemAssignedServiceIdentity` was added
-
 * `models.OperationListResult` was added
-
-* `models.WorkloadNetworkDhcpServerUpdate` was added
-
-* `models.WorkloadNetworkSegmentUpdate` was added
 
 * `models.Origin` was added
 
@@ -140,10 +81,6 @@
 
 * `withVsanDatastoreName(java.lang.String)` was added
 
-#### `models.WorkloadNetworkDhcp$Update` was modified
-
-* `withProperties(models.WorkloadNetworkDhcpEntityUpdate)` was added
-
 #### `models.DatastoreList` was modified
 
 * `withNextLink(java.lang.String)` was added
@@ -151,8 +88,8 @@
 
 #### `models.ClusterList` was modified
 
-* `withNextLink(java.lang.String)` was added
 * `withValue(java.util.List)` was added
+* `withNextLink(java.lang.String)` was added
 
 #### `models.ScriptStringExecutionParameter` was modified
 
@@ -164,9 +101,9 @@
 
 #### `models.ScriptCmdlet` was modified
 
+* `systemData()` was added
 * `audience()` was added
 * `provisioningState()` was added
-* `systemData()` was added
 
 #### `models.GlobalReachConnectionList` was modified
 
@@ -182,18 +119,14 @@
 
 * `systemData()` was added
 
-#### `models.WorkloadNetworkDnsZone$Update` was modified
-
-* `withDnsServices(java.lang.Integer)` was added
-
 #### `models.WorkloadNetworkDhcpEntity` was modified
 
 * `dhcpType()` was added
 
 #### `models.WorkloadNetworks` was modified
 
-* `get(java.lang.String,java.lang.String)` was added
 * `getWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `get(java.lang.String,java.lang.String)` was added
 
 #### `models.Operation` was modified
 
@@ -228,8 +161,8 @@
 
 #### `models.WorkloadNetworkDhcpList` was modified
 
-* `withValue(java.util.List)` was added
 * `withNextLink(java.lang.String)` was added
+* `withValue(java.util.List)` was added
 
 #### `models.WorkloadNetworkDnsZone` was modified
 
@@ -241,8 +174,8 @@
 
 #### `models.ScriptPackage` was modified
 
-* `provisioningState()` was added
 * `systemData()` was added
+* `provisioningState()` was added
 
 #### `models.Addon` was modified
 
@@ -265,7 +198,6 @@
 
 * `withDnsZoneType(models.DnsZoneType)` was added
 * `withSku(models.Sku)` was added
-* `withIdentity(models.SystemAssignedServiceIdentity)` was added
 
 #### `models.AddonVrProperties` was modified
 
@@ -278,8 +210,8 @@
 
 #### `models.WorkloadNetworkVirtualMachine` was modified
 
-* `provisioningState()` was added
 * `systemData()` was added
+* `provisioningState()` was added
 
 #### `AvsManager` was modified
 
@@ -306,31 +238,27 @@
 
 #### `models.ScriptExecutionsList` was modified
 
-* `withNextLink(java.lang.String)` was added
 * `withValue(java.util.List)` was added
+* `withNextLink(java.lang.String)` was added
 
 #### `models.WorkloadNetwork` was modified
 
 * `systemData()` was added
 * `provisioningState()` was added
 
-#### `models.WorkloadNetworkDnsZone$Definition` was modified
-
-* `withDnsServices(java.lang.Integer)` was added
-
 #### `models.HcxEnterpriseSiteList` was modified
 
-* `withValue(java.util.List)` was added
 * `withNextLink(java.lang.String)` was added
+* `withValue(java.util.List)` was added
 
 #### `models.ManagementCluster` was modified
 
-* `withVsanDatastoreName(java.lang.String)` was added
-* `hosts()` was added
-* `vsanDatastoreName()` was added
 * `clusterId()` was added
-* `provisioningState()` was added
+* `vsanDatastoreName()` was added
+* `hosts()` was added
 * `clusterSize()` was added
+* `withVsanDatastoreName(java.lang.String)` was added
+* `provisioningState()` was added
 
 #### `models.VmHostPlacementPolicyProperties` was modified
 
@@ -339,15 +267,14 @@
 #### `models.PrivateCloudUpdate` was modified
 
 * `sku()` was added
-* `withIdentity(models.SystemAssignedServiceIdentity)` was added
 * `dnsZoneType()` was added
-* `withDnsZoneType(models.DnsZoneType)` was added
 * `withSku(models.Sku)` was added
+* `withDnsZoneType(models.DnsZoneType)` was added
 
 #### `models.WorkloadNetworkPortMirroringList` was modified
 
-* `withValue(java.util.List)` was added
 * `withNextLink(java.lang.String)` was added
+* `withValue(java.util.List)` was added
 
 #### `models.ScriptSecureStringExecutionParameter` was modified
 
@@ -367,14 +294,13 @@
 
 #### `models.WorkloadNetworkVirtualMachinesList` was modified
 
-* `withNextLink(java.lang.String)` was added
 * `withValue(java.util.List)` was added
+* `withNextLink(java.lang.String)` was added
 
 #### `models.PrivateCloud$Definition` was modified
 
-* `withIdentity(models.SystemAssignedServiceIdentity)` was added
-* `withVirtualNetworkId(java.lang.String)` was added
 * `withDnsZoneType(models.DnsZoneType)` was added
+* `withVirtualNetworkId(java.lang.String)` was added
 
 #### `models.WorkloadNetworkVMGroup` was modified
 
@@ -398,8 +324,8 @@
 
 #### `models.Endpoints` was modified
 
-* `nsxtManagerIp()` was added
 * `hcxCloudManagerIp()` was added
+* `nsxtManagerIp()` was added
 * `vcenterIp()` was added
 
 #### `models.PlacementPolicyProperties` was modified
@@ -417,8 +343,8 @@
 
 #### `models.HcxEnterpriseSite` was modified
 
-* `provisioningState()` was added
 * `systemData()` was added
+* `provisioningState()` was added
 
 #### `models.Datastore$Update` was modified
 
@@ -426,34 +352,34 @@
 
 #### `models.PlacementPoliciesList` was modified
 
-* `withValue(java.util.List)` was added
 * `withNextLink(java.lang.String)` was added
+* `withValue(java.util.List)` was added
 
 #### `models.ClusterUpdate` was modified
 
-* `withSku(models.Sku)` was added
 * `sku()` was added
+* `withSku(models.Sku)` was added
 
 #### `models.WorkloadNetworkPublicIPsList` was modified
 
-* `withNextLink(java.lang.String)` was added
 * `withValue(java.util.List)` was added
+* `withNextLink(java.lang.String)` was added
 
 #### `models.Sku` was modified
 
+* `withFamily(java.lang.String)` was added
 * `family()` was added
 * `capacity()` was added
-* `withCapacity(java.lang.Integer)` was added
-* `withSize(java.lang.String)` was added
-* `withTier(models.SkuTier)` was added
 * `tier()` was added
+* `withSize(java.lang.String)` was added
 * `size()` was added
-* `withFamily(java.lang.String)` was added
+* `withTier(models.SkuTier)` was added
+* `withCapacity(java.lang.Integer)` was added
 
 #### `models.WorkloadNetworkSegmentsList` was modified
 
-* `withNextLink(java.lang.String)` was added
 * `withValue(java.util.List)` was added
+* `withNextLink(java.lang.String)` was added
 
 #### `models.ScriptExecutionParameter` was modified
 
@@ -466,8 +392,8 @@
 
 #### `models.PrivateCloud` was modified
 
-* `virtualNetworkId()` was added
 * `systemData()` was added
+* `virtualNetworkId()` was added
 * `dnsZoneType()` was added
 
 #### `models.WorkloadNetworkDnsService` was modified

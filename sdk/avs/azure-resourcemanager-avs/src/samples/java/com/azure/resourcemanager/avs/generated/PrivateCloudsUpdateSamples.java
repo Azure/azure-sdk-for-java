@@ -9,8 +9,8 @@ import com.azure.resourcemanager.avs.models.EncryptionKeyVaultProperties;
 import com.azure.resourcemanager.avs.models.EncryptionState;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
 import com.azure.resourcemanager.avs.models.PrivateCloud;
-import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentityType;
+import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
+import com.azure.resourcemanager.avs.models.ResourceIdentityType;
 
 /**
  * Samples for PrivateClouds Update.
@@ -29,7 +29,7 @@ public final class PrivateCloudsUpdateSamples {
             .getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withIdentity(new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.NONE))
+            .withIdentity(new PrivateCloudIdentity().withType(ResourceIdentityType.NONE))
             .withManagementCluster(new ManagementCluster().withClusterSize(4))
             .withEncryption(new Encryption().withStatus(EncryptionState.ENABLED)
                 .withKeyVaultProperties(new EncryptionKeyVaultProperties().withKeyName("fakeTokenPlaceholder")

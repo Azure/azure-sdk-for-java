@@ -22,7 +22,7 @@ public final class CloudLinksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Building\",\"linkedCloud\":\"xcvhrfs\"},\"id\":\"uagrttikteusqc\",\"name\":\"kvyklxubyjaffmm\",\"type\":\"bl\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"status\":\"Active\",\"linkedCloud\":\"hmfdnbzydvfvfcj\"},\"id\":\"eoisrvhmgor\",\"name\":\"fukiscvwmzhw\",\"type\":\"lefaxvxilcbtgn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,8 @@ public final class CloudLinksListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CloudLink> response
-            = manager.cloudLinks().list("uqovekqvgqouwif", "mpjw", com.azure.core.util.Context.NONE);
+        PagedIterable<CloudLink> response = manager.cloudLinks().list("xg", "moy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xcvhrfs", response.iterator().next().linkedCloud());
+        Assertions.assertEquals("hmfdnbzydvfvfcj", response.iterator().next().linkedCloud());
     }
 }

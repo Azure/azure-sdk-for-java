@@ -20,7 +20,7 @@ public final class VirtualMachinesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"wmqs\",\"moRefId\":\"cdqzhlctddu\",\"folderPath\":\"ndy\",\"restrictMovement\":\"Enabled\"},\"id\":\"rqbnjjrc\",\"name\":\"egy\",\"type\":\"cw\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"ljeamu\",\"moRefId\":\"zmlovuanash\",\"folderPath\":\"lpmjerb\",\"restrictMovement\":\"Disabled\"},\"id\":\"vidizozsdb\",\"name\":\"cxjmonfdgnwncyp\",\"type\":\"uwwltvuqjctz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class VirtualMachinesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualMachine response = manager.virtualMachines()
-            .getWithResponse("hzyvlixqnrkcx", "jibnxmysu", "swqrntvlwijp", "ttexoqqpwcyyufmh",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("gnl", "zonzlrpiqywnc", "jtszcof", "zehtdhgb", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -21,7 +21,7 @@ public final class WorkloadNetworksGetVMGroupWithResponseMockTests {
     @Test
     public void testGetVMGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"jonfhjirwgdnqzbr\",\"members\":[\"pzhz\",\"tk\",\"jcitdigsxcdglj\"],\"status\":\"FAILURE\",\"provisioningState\":\"Canceled\",\"revision\":3943540533882111445},\"id\":\"omflrytswfp\",\"name\":\"mdgycxn\",\"type\":\"skw\"}";
+            = "{\"properties\":{\"displayName\":\"vjfn\",\"members\":[\"vlwyzg\"],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":7387831702993633483},\"id\":\"fojuidjpuuyj\",\"name\":\"c\",\"type\":\"jikzoeovvtzej\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class WorkloadNetworksGetVMGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkVMGroup response = manager.workloadNetworks()
-            .getVMGroupWithResponse("qvlnnpxybafiqgea", "rbgjekglkl", "yulidwcwvm", com.azure.core.util.Context.NONE)
+            .getVMGroupWithResponse("sfuztlvtmv", "gbwidqlvh", "koveof", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jonfhjirwgdnqzbr", response.displayName());
-        Assertions.assertEquals("pzhz", response.members().get(0));
-        Assertions.assertEquals(3943540533882111445L, response.revision());
+        Assertions.assertEquals("vjfn", response.displayName());
+        Assertions.assertEquals("vlwyzg", response.members().get(0));
+        Assertions.assertEquals(7387831702993633483L, response.revision());
     }
 }

@@ -149,7 +149,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * 
      * @return the dnsServices value.
      */
-    public Integer dnsServices() {
+    public Long dnsServices() {
         return this.innerProperties() == null ? null : this.innerProperties().dnsServices();
     }
 
@@ -159,7 +159,7 @@ public final class WorkloadNetworkDnsZoneInner extends ProxyResource {
      * @param dnsServices the dnsServices value to set.
      * @return the WorkloadNetworkDnsZoneInner object itself.
      */
-    public WorkloadNetworkDnsZoneInner withDnsServices(Integer dnsServices) {
+    public WorkloadNetworkDnsZoneInner withDnsServices(Long dnsServices) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkloadNetworkDnsZoneProperties();
         }

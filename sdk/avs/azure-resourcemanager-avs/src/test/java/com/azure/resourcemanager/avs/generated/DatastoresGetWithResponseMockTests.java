@@ -22,7 +22,7 @@ public final class DatastoresGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Cancelled\",\"netAppVolume\":{\"id\":\"zaefedxihc\"},\"diskPoolVolume\":{\"targetId\":\"phkmcrjdqnsdfz\",\"lunName\":\"bg\",\"mountOption\":\"ATTACH\",\"path\":\"lkdghr\"},\"elasticSanVolume\":{\"targetId\":\"uutlwxezwzhok\"},\"status\":\"LostCommunication\"},\"id\":\"hh\",\"name\":\"qlgehg\",\"type\":\"pipifh\"}";
+            = "{\"properties\":{\"provisioningState\":\"Failed\",\"netAppVolume\":{\"id\":\"lxunsmjbnkppxy\"},\"diskPoolVolume\":{\"targetId\":\"nlsvxeiz\",\"lunName\":\"gwklnsr\",\"mountOption\":\"ATTACH\",\"path\":\"ycxcktpiym\"},\"elasticSanVolume\":{\"targetId\":\"teeammxqiekkkzd\"},\"status\":\"Detached\"},\"id\":\"g\",\"name\":\"ojbmxv\",\"type\":\"vrefdeesv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class DatastoresGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Datastore response = manager.datastores()
-            .getWithResponse("disdosfjbjsvgj", "whryvycytdcl", "gc", "knfnwmbtmvpdv", com.azure.core.util.Context.NONE)
+            .getWithResponse("tjeaahhvjhh", "akz", "bbjjidjksyxk", "xvxevblbjednljla", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zaefedxihc", response.netAppVolume().id());
-        Assertions.assertEquals("phkmcrjdqnsdfz", response.diskPoolVolume().targetId());
-        Assertions.assertEquals("bg", response.diskPoolVolume().lunName());
+        Assertions.assertEquals("lxunsmjbnkppxy", response.netAppVolume().id());
+        Assertions.assertEquals("nlsvxeiz", response.diskPoolVolume().targetId());
+        Assertions.assertEquals("gwklnsr", response.diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.ATTACH, response.diskPoolVolume().mountOption());
-        Assertions.assertEquals("uutlwxezwzhok", response.elasticSanVolume().targetId());
+        Assertions.assertEquals("teeammxqiekkkzd", response.elasticSanVolume().targetId());
     }
 }

@@ -1237,9 +1237,9 @@ public final class PlacementPoliciesUpdateSamples {
 import com.azure.resourcemanager.avs.models.AvailabilityProperties;
 import com.azure.resourcemanager.avs.models.AvailabilityStrategy;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
+import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
+import com.azure.resourcemanager.avs.models.ResourceIdentityType;
 import com.azure.resourcemanager.avs.models.Sku;
-import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentityType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -1262,8 +1262,7 @@ public final class PrivateCloudsCreateOrUpdateSamples {
             .withExistingResourceGroup("group1")
             .withSku(new Sku().withName("AV36"))
             .withTags(mapOf())
-            .withIdentity(
-                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withIdentity(new PrivateCloudIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .withManagementCluster(new ManagementCluster().withClusterSize(4))
             .withNetworkBlock("192.168.48.0/22")
             .create();
@@ -1497,8 +1496,8 @@ import com.azure.resourcemanager.avs.models.EncryptionKeyVaultProperties;
 import com.azure.resourcemanager.avs.models.EncryptionState;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
 import com.azure.resourcemanager.avs.models.PrivateCloud;
-import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentityType;
+import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
+import com.azure.resourcemanager.avs.models.ResourceIdentityType;
 
 /**
  * Samples for PrivateClouds Update.
@@ -1517,7 +1516,7 @@ public final class PrivateCloudsUpdateSamples {
             .getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withIdentity(new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.NONE))
+            .withIdentity(new PrivateCloudIdentity().withType(ResourceIdentityType.NONE))
             .withManagementCluster(new ManagementCluster().withClusterSize(4))
             .withEncryption(new Encryption().withStatus(EncryptionState.ENABLED)
                 .withKeyVaultProperties(new EncryptionKeyVaultProperties().withKeyName("fakeTokenPlaceholder")
@@ -2623,7 +2622,6 @@ public final class WorkloadNetworksListVirtualMachinesSamples {
 
 ```java
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServerUpdate;
 
 /**
  * Samples for WorkloadNetworks UpdateDhcp.
@@ -2641,11 +2639,7 @@ public final class WorkloadNetworksUpdateDhcpSamples {
         WorkloadNetworkDhcp resource = manager.workloadNetworks()
             .getDhcpWithResponse("group1", "dhcp1", "cloud1", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update()
-            .withProperties(new WorkloadNetworkDhcpServerUpdate().withRevision(1L)
-                .withServerAddress("40.1.5.1/24")
-                .withLeaseTime(86400L))
-            .apply();
+        resource.update().apply();
     }
 }
 ```

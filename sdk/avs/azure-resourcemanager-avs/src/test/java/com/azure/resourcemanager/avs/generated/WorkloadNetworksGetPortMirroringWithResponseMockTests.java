@@ -22,7 +22,7 @@ public final class WorkloadNetworksGetPortMirroringWithResponseMockTests {
     @Test
     public void testGetPortMirroringWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"ibidmhmwffp\",\"direction\":\"EGRESS\",\"source\":\"vapckccrrvwey\",\"destination\":\"oy\",\"status\":\"SUCCESS\",\"provisioningState\":\"Updating\",\"revision\":9160700650803876468},\"id\":\"oir\",\"name\":\"qboshbra\",\"type\":\"apyyrmfsvbpavbo\"}";
+            = "{\"properties\":{\"displayName\":\"q\",\"direction\":\"EGRESS\",\"source\":\"renlvhhtklnvnafv\",\"destination\":\"yfedevjbo\",\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":41375191452971631},\"id\":\"khminqcymc\",\"name\":\"ngnbdxxew\",\"type\":\"ninvudbchaqdt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class WorkloadNetworksGetPortMirroringWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkPortMirroring response = manager.workloadNetworks()
-            .getPortMirroringWithResponse("fyuicdh", "bd", "bwwg", com.azure.core.util.Context.NONE)
+            .getPortMirroringWithResponse("evrh", "ljyoogwx", "nsduugwbsre", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ibidmhmwffp", response.displayName());
+        Assertions.assertEquals("q", response.displayName());
         Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, response.direction());
-        Assertions.assertEquals("vapckccrrvwey", response.source());
-        Assertions.assertEquals("oy", response.destination());
-        Assertions.assertEquals(9160700650803876468L, response.revision());
+        Assertions.assertEquals("renlvhhtklnvnafv", response.source());
+        Assertions.assertEquals("yfedevjbo", response.destination());
+        Assertions.assertEquals(41375191452971631L, response.revision());
     }
 }

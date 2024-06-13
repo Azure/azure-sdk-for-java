@@ -20,7 +20,7 @@ public final class LocationsCheckQuotaAvailabilityWithResponseMockTests {
     @Test
     public void testCheckQuotaAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"hostsRemaining\":{\"gzukxitmm\":867480662,\"gqqqxh\":287881704,\"xrxc\":107951618,\"uisavokq\":978629087},\"quotaEnabled\":\"Disabled\"}";
+            = "{\"hostsRemaining\":{\"uzaofjchvcyyy\":1357028156,\"gdotcubiipuipwo\":915050797,\"nmacj\":567350116,\"nizshqvcim\":167629289},\"quotaEnabled\":\"Disabled\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class LocationsCheckQuotaAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Quota response = manager.locations()
-            .checkQuotaAvailabilityWithResponse("ktlahbqa", com.azure.core.util.Context.NONE)
+            .checkQuotaAvailabilityWithResponse("dufiq", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

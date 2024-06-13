@@ -23,7 +23,7 @@ public final class PlacementPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"ff\",\"provisioningState\":\"Canceled\"},\"id\":\"tmhheioqa\",\"name\":\"hvseufuqyrx\",\"type\":\"dlcgqlsismjqfr\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"lwxezwzhokvbwnh\",\"provisioningState\":\"Failed\"},\"id\":\"gehgppi\",\"name\":\"ifhpf\",\"type\":\"oajvgcxtxjcs\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class PlacementPoliciesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PlacementPolicy> response = manager.placementPolicies()
-            .list("jaeukmrsieekpn", "zaapmudqmeqwi", "pibudqwyxebeybpm", com.azure.core.util.Context.NONE);
+            .list("fedxihchrphkm", "rjdqnsdfzp", "gtgkylkdghr", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PlacementPolicyState.DISABLED, response.iterator().next().properties().state());
-        Assertions.assertEquals("ff", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("lwxezwzhokvbwnh", response.iterator().next().properties().displayName());
     }
 }

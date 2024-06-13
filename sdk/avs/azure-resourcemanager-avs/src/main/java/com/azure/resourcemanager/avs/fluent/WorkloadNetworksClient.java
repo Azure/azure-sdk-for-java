@@ -21,12 +21,6 @@ import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkSegmentInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVirtualMachineInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVMGroupInner;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpUpdate;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServiceUpdate;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneUpdate;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringUpdate;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentUpdate;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in WorkloadNetworksClient.
@@ -224,7 +218,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcp(String resourceGroupName,
-        String privateCloudName, String dhcpId, WorkloadNetworkDhcpUpdate workloadNetworkDhcp);
+        String privateCloudName, String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp);
 
     /**
      * Update a WorkloadNetworkDhcp.
@@ -241,7 +235,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcp(String resourceGroupName,
-        String privateCloudName, String dhcpId, WorkloadNetworkDhcpUpdate workloadNetworkDhcp, Context context);
+        String privateCloudName, String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context);
 
     /**
      * Update a WorkloadNetworkDhcp.
@@ -257,7 +251,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDhcpInner updateDhcp(String resourceGroupName, String privateCloudName, String dhcpId,
-        WorkloadNetworkDhcpUpdate workloadNetworkDhcp);
+        WorkloadNetworkDhcpInner workloadNetworkDhcp);
 
     /**
      * Update a WorkloadNetworkDhcp.
@@ -274,7 +268,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDhcpInner updateDhcp(String resourceGroupName, String privateCloudName, String dhcpId,
-        WorkloadNetworkDhcpUpdate workloadNetworkDhcp, Context context);
+        WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context);
 
     /**
      * Delete a WorkloadNetworkDhcp.
@@ -478,7 +472,7 @@ public interface WorkloadNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateDnsService(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService);
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService);
 
     /**
      * Update a WorkloadNetworkDnsService.
@@ -496,7 +490,7 @@ public interface WorkloadNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateDnsService(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService, Context context);
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context);
 
     /**
      * Update a WorkloadNetworkDnsService.
@@ -512,7 +506,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDnsServiceInner updateDnsService(String resourceGroupName, String privateCloudName,
-        String dnsServiceId, WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService);
+        String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService);
 
     /**
      * Update a WorkloadNetworkDnsService.
@@ -529,7 +523,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDnsServiceInner updateDnsService(String resourceGroupName, String privateCloudName,
-        String dnsServiceId, WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService, Context context);
+        String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context);
 
     /**
      * Delete a WorkloadNetworkDnsService.
@@ -730,7 +724,7 @@ public interface WorkloadNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZone(
         String resourceGroupName, String privateCloudName, String dnsZoneId,
-        WorkloadNetworkDnsZoneUpdate workloadNetworkDnsZone);
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone);
 
     /**
      * Update a WorkloadNetworkDnsZone.
@@ -748,7 +742,7 @@ public interface WorkloadNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZone(
         String resourceGroupName, String privateCloudName, String dnsZoneId,
-        WorkloadNetworkDnsZoneUpdate workloadNetworkDnsZone, Context context);
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context);
 
     /**
      * Update a WorkloadNetworkDnsZone.
@@ -764,7 +758,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDnsZoneInner updateDnsZone(String resourceGroupName, String privateCloudName, String dnsZoneId,
-        WorkloadNetworkDnsZoneUpdate workloadNetworkDnsZone);
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone);
 
     /**
      * Update a WorkloadNetworkDnsZone.
@@ -781,7 +775,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDnsZoneInner updateDnsZone(String resourceGroupName, String privateCloudName, String dnsZoneId,
-        WorkloadNetworkDnsZoneUpdate workloadNetworkDnsZone, Context context);
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context);
 
     /**
      * Delete a WorkloadNetworkDnsZone.
@@ -1044,7 +1038,7 @@ public interface WorkloadNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginUpdatePortMirroring(String resourceGroupName, String privateCloudName, String portMirroringId,
-            WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring);
+            WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring);
 
     /**
      * Update a WorkloadNetworkPortMirroring.
@@ -1062,7 +1056,7 @@ public interface WorkloadNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginUpdatePortMirroring(String resourceGroupName, String privateCloudName, String portMirroringId,
-            WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring, Context context);
+            WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context);
 
     /**
      * Update a WorkloadNetworkPortMirroring.
@@ -1078,7 +1072,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkPortMirroringInner updatePortMirroring(String resourceGroupName, String privateCloudName,
-        String portMirroringId, WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring);
+        String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring);
 
     /**
      * Update a WorkloadNetworkPortMirroring.
@@ -1095,7 +1089,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkPortMirroringInner updatePortMirroring(String resourceGroupName, String privateCloudName,
-        String portMirroringId, WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring, Context context);
+        String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context);
 
     /**
      * Delete a WorkloadNetworkPortMirroring.
@@ -1483,7 +1477,7 @@ public interface WorkloadNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
         String resourceGroupName, String privateCloudName, String segmentId,
-        WorkloadNetworkSegmentUpdate workloadNetworkSegment);
+        WorkloadNetworkSegmentInner workloadNetworkSegment);
 
     /**
      * Update a WorkloadNetworkSegment.
@@ -1501,7 +1495,7 @@ public interface WorkloadNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
         String resourceGroupName, String privateCloudName, String segmentId,
-        WorkloadNetworkSegmentUpdate workloadNetworkSegment, Context context);
+        WorkloadNetworkSegmentInner workloadNetworkSegment, Context context);
 
     /**
      * Update a WorkloadNetworkSegment.
@@ -1517,7 +1511,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkSegmentInner updateSegments(String resourceGroupName, String privateCloudName, String segmentId,
-        WorkloadNetworkSegmentUpdate workloadNetworkSegment);
+        WorkloadNetworkSegmentInner workloadNetworkSegment);
 
     /**
      * Update a WorkloadNetworkSegment.
@@ -1534,7 +1528,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkSegmentInner updateSegments(String resourceGroupName, String privateCloudName, String segmentId,
-        WorkloadNetworkSegmentUpdate workloadNetworkSegment, Context context);
+        WorkloadNetworkSegmentInner workloadNetworkSegment, Context context);
 
     /**
      * Delete a WorkloadNetworkSegment.
@@ -1797,7 +1791,7 @@ public interface WorkloadNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroup(
         String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup);
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup);
 
     /**
      * Update a WorkloadNetworkVMGroup.
@@ -1815,7 +1809,7 @@ public interface WorkloadNetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroup(
         String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup, Context context);
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context);
 
     /**
      * Update a WorkloadNetworkVMGroup.
@@ -1831,7 +1825,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkVMGroupInner updateVMGroup(String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup);
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup);
 
     /**
      * Update a WorkloadNetworkVMGroup.
@@ -1848,7 +1842,7 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkVMGroupInner updateVMGroup(String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup, Context context);
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context);
 
     /**
      * Delete a WorkloadNetworkVMGroup.

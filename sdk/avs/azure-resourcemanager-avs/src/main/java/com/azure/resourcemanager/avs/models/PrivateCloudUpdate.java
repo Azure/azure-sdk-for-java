@@ -33,7 +33,7 @@ public final class PrivateCloudUpdate {
      * The managed service identities assigned to this resource.
      */
     @JsonProperty(value = "identity")
-    private SystemAssignedServiceIdentity identity;
+    private PrivateCloudIdentity identity;
 
     /*
      * The updatable properties of a private cloud resource
@@ -92,7 +92,7 @@ public final class PrivateCloudUpdate {
      * 
      * @return the identity value.
      */
-    public SystemAssignedServiceIdentity identity() {
+    public PrivateCloudIdentity identity() {
         return this.identity;
     }
 
@@ -102,7 +102,7 @@ public final class PrivateCloudUpdate {
      * @param identity the identity value to set.
      * @return the PrivateCloudUpdate object itself.
      */
-    public PrivateCloudUpdate withIdentity(SystemAssignedServiceIdentity identity) {
+    public PrivateCloudUpdate withIdentity(PrivateCloudIdentity identity) {
         this.identity = identity;
         return this;
     }

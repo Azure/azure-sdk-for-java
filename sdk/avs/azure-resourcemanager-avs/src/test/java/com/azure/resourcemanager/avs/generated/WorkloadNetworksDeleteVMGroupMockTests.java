@@ -28,7 +28,7 @@ public final class WorkloadNetworksDeleteVMGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.workloadNetworks()
-            .deleteVMGroup("qjjyslurl", "shhkvpedw", "slsrhmpq", com.azure.core.util.Context.NONE);
+            .deleteVMGroup("tjklntikyjuzk", "bqzolxr", "vhqjwtrhtgvg", com.azure.core.util.Context.NONE);
 
     }
 }

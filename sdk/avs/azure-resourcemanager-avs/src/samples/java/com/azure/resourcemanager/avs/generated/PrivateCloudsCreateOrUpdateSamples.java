@@ -7,9 +7,9 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.resourcemanager.avs.models.AvailabilityProperties;
 import com.azure.resourcemanager.avs.models.AvailabilityStrategy;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
+import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
+import com.azure.resourcemanager.avs.models.ResourceIdentityType;
 import com.azure.resourcemanager.avs.models.Sku;
-import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentity;
-import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentityType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +32,7 @@ public final class PrivateCloudsCreateOrUpdateSamples {
             .withExistingResourceGroup("group1")
             .withSku(new Sku().withName("AV36"))
             .withTags(mapOf())
-            .withIdentity(
-                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+            .withIdentity(new PrivateCloudIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .withManagementCluster(new ManagementCluster().withClusterSize(4))
             .withNetworkBlock("192.168.48.0/22")
             .create();

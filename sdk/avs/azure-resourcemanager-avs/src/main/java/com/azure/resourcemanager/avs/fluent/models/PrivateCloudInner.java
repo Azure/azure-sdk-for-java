@@ -17,9 +17,9 @@ import com.azure.resourcemanager.avs.models.IdentitySource;
 import com.azure.resourcemanager.avs.models.InternetEnum;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
 import com.azure.resourcemanager.avs.models.NsxPublicIpQuotaRaisedEnum;
+import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.PrivateCloudProvisioningState;
 import com.azure.resourcemanager.avs.models.Sku;
-import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +45,7 @@ public final class PrivateCloudInner extends Resource {
      * The managed service identities assigned to this resource.
      */
     @JsonProperty(value = "identity")
-    private SystemAssignedServiceIdentity identity;
+    private PrivateCloudIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -93,7 +93,7 @@ public final class PrivateCloudInner extends Resource {
      * 
      * @return the identity value.
      */
-    public SystemAssignedServiceIdentity identity() {
+    public PrivateCloudIdentity identity() {
         return this.identity;
     }
 
@@ -103,7 +103,7 @@ public final class PrivateCloudInner extends Resource {
      * @param identity the identity value to set.
      * @return the PrivateCloudInner object itself.
      */
-    public PrivateCloudInner withIdentity(SystemAssignedServiceIdentity identity) {
+    public PrivateCloudInner withIdentity(PrivateCloudIdentity identity) {
         this.identity = identity;
         return this;
     }
