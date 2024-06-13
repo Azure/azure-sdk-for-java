@@ -4,33 +4,48 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for DayOfWeek. */
+/**
+ * Defines values for DayOfWeek.
+ */
 public enum DayOfWeek {
-    /** Enum value Sunday. */
+    /**
+     * Enum value Sunday.
+     */
     SUNDAY("Sunday"),
 
-    /** Enum value Monday. */
+    /**
+     * Enum value Monday.
+     */
     MONDAY("Monday"),
 
-    /** Enum value Tuesday. */
+    /**
+     * Enum value Tuesday.
+     */
     TUESDAY("Tuesday"),
 
-    /** Enum value Wednesday. */
+    /**
+     * Enum value Wednesday.
+     */
     WEDNESDAY("Wednesday"),
 
-    /** Enum value Thursday. */
+    /**
+     * Enum value Thursday.
+     */
     THURSDAY("Thursday"),
 
-    /** Enum value Friday. */
+    /**
+     * Enum value Friday.
+     */
     FRIDAY("Friday"),
 
-    /** Enum value Saturday. */
+    /**
+     * Enum value Saturday.
+     */
     SATURDAY("Saturday");
 
-    /** The actual serialized value for a DayOfWeek instance. */
+    /**
+     * The actual serialized value for a DayOfWeek instance.
+     */
     private final String value;
 
     DayOfWeek(String value) {
@@ -39,11 +54,10 @@ public enum DayOfWeek {
 
     /**
      * Parses a serialized value to a DayOfWeek instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DayOfWeek object, or null if unable to parse.
      */
-    @JsonCreator
     public static DayOfWeek fromString(String value) {
         if (value == null) {
             return null;
@@ -57,8 +71,9 @@ public enum DayOfWeek {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

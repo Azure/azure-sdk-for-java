@@ -5,47 +5,51 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Session properties. */
+/**
+ * Session properties.
+ */
 @Fluent
-public final class NotebookSessionProperties {
+public final class NotebookSessionProperties implements JsonSerializable<NotebookSessionProperties> {
     /*
      * Amount of memory to use for the driver process.
      */
-    @JsonProperty(value = "driverMemory", required = true)
     private String driverMemory;
 
     /*
      * Number of cores to use for the driver.
      */
-    @JsonProperty(value = "driverCores", required = true)
     private int driverCores;
 
     /*
      * Amount of memory to use per executor process.
      */
-    @JsonProperty(value = "executorMemory", required = true)
     private String executorMemory;
 
     /*
      * Number of cores to use for each executor.
      */
-    @JsonProperty(value = "executorCores", required = true)
     private int executorCores;
 
     /*
      * Number of executors to launch for this session.
      */
-    @JsonProperty(value = "numExecutors", required = true)
     private int numExecutors;
 
-    /** Creates an instance of NotebookSessionProperties class. */
-    public NotebookSessionProperties() {}
+    /**
+     * Creates an instance of NotebookSessionProperties class.
+     */
+    public NotebookSessionProperties() {
+    }
 
     /**
      * Get the driverMemory property: Amount of memory to use for the driver process.
-     *
+     * 
      * @return the driverMemory value.
      */
     public String getDriverMemory() {
@@ -54,7 +58,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Set the driverMemory property: Amount of memory to use for the driver process.
-     *
+     * 
      * @param driverMemory the driverMemory value to set.
      * @return the NotebookSessionProperties object itself.
      */
@@ -65,7 +69,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Get the driverCores property: Number of cores to use for the driver.
-     *
+     * 
      * @return the driverCores value.
      */
     public int getDriverCores() {
@@ -74,7 +78,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Set the driverCores property: Number of cores to use for the driver.
-     *
+     * 
      * @param driverCores the driverCores value to set.
      * @return the NotebookSessionProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Get the executorMemory property: Amount of memory to use per executor process.
-     *
+     * 
      * @return the executorMemory value.
      */
     public String getExecutorMemory() {
@@ -94,7 +98,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Set the executorMemory property: Amount of memory to use per executor process.
-     *
+     * 
      * @param executorMemory the executorMemory value to set.
      * @return the NotebookSessionProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Get the executorCores property: Number of cores to use for each executor.
-     *
+     * 
      * @return the executorCores value.
      */
     public int getExecutorCores() {
@@ -114,7 +118,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Set the executorCores property: Number of cores to use for each executor.
-     *
+     * 
      * @param executorCores the executorCores value to set.
      * @return the NotebookSessionProperties object itself.
      */
@@ -125,7 +129,7 @@ public final class NotebookSessionProperties {
 
     /**
      * Get the numExecutors property: Number of executors to launch for this session.
-     *
+     * 
      * @return the numExecutors value.
      */
     public int getNumExecutors() {
@@ -134,12 +138,61 @@ public final class NotebookSessionProperties {
 
     /**
      * Set the numExecutors property: Number of executors to launch for this session.
-     *
+     * 
      * @param numExecutors the numExecutors value to set.
      * @return the NotebookSessionProperties object itself.
      */
     public NotebookSessionProperties setNumExecutors(int numExecutors) {
         this.numExecutors = numExecutors;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("driverMemory", this.driverMemory);
+        jsonWriter.writeIntField("driverCores", this.driverCores);
+        jsonWriter.writeStringField("executorMemory", this.executorMemory);
+        jsonWriter.writeIntField("executorCores", this.executorCores);
+        jsonWriter.writeIntField("numExecutors", this.numExecutors);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotebookSessionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotebookSessionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NotebookSessionProperties.
+     */
+    public static NotebookSessionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotebookSessionProperties deserializedNotebookSessionProperties = new NotebookSessionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("driverMemory".equals(fieldName)) {
+                    deserializedNotebookSessionProperties.driverMemory = reader.getString();
+                } else if ("driverCores".equals(fieldName)) {
+                    deserializedNotebookSessionProperties.driverCores = reader.getInt();
+                } else if ("executorMemory".equals(fieldName)) {
+                    deserializedNotebookSessionProperties.executorMemory = reader.getString();
+                } else if ("executorCores".equals(fieldName)) {
+                    deserializedNotebookSessionProperties.executorCores = reader.getInt();
+                } else if ("numExecutors".equals(fieldName)) {
+                    deserializedNotebookSessionProperties.numExecutors = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotebookSessionProperties;
+        });
     }
 }

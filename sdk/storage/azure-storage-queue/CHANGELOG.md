@@ -1,6 +1,6 @@
 # Release History
 
-## 12.22.0-beta.1 (Unreleased)
+## 12.22.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.22.0-beta.1 (2024-06-11)
+
+### Features Added
+- Added support for bearer token challenges.
+- Added support for service version 2024-08-04.
 
 ## 12.21.1 (2024-06-06)
 
