@@ -258,22 +258,22 @@ public class MetricDataMapper {
             return true;
         }
 
-        if (isClient(metricName) || (isServer(metricName) && captureHttpServer4xxAsError)) {
+        if (isClient(metricName)) {
             return statusCode < 400;
         }
 
         if (isServer(metricName)) {
-            return statusCode < 500;
+            return statusCode < 400 || (captureHttpServer4xxAsError && statusCode < 500);
         }
 
         return false;
     }
 
     private static boolean isClient(String metricName) {
-       return metricName != null && metricName.contains(".client.");
+       return metricName.contains(".client.");
     }
 
     private static boolean isServer(String metricName) {
-       return metricName != null && metricName.contains(".server.");
+       return metricName.contains(".server.");
     }
 }
