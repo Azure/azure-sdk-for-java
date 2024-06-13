@@ -6,27 +6,53 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** a plain text value execution parameter. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+/**
+ * a plain text value execution parameter.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ScriptStringExecutionParameter.class,
+    visible = true)
 @JsonTypeName("Value")
 @Fluent
 public final class ScriptStringExecutionParameter extends ScriptExecutionParameter {
+    /*
+     * script execution parameter type
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private ScriptExecutionParameterType type = ScriptExecutionParameterType.VALUE;
+
     /*
      * The value for the passed parameter
      */
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of ScriptStringExecutionParameter class. */
+    /**
+     * Creates an instance of ScriptStringExecutionParameter class.
+     */
     public ScriptStringExecutionParameter() {
     }
 
     /**
+     * Get the type property: script execution parameter type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public ScriptExecutionParameterType type() {
+        return this.type;
+    }
+
+    /**
      * Get the value property: The value for the passed parameter.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -35,7 +61,7 @@ public final class ScriptStringExecutionParameter extends ScriptExecutionParamet
 
     /**
      * Set the value property: The value for the passed parameter.
-     *
+     * 
      * @param value the value value to set.
      * @return the ScriptStringExecutionParameter object itself.
      */
@@ -44,7 +70,9 @@ public final class ScriptStringExecutionParameter extends ScriptExecutionParamet
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScriptStringExecutionParameter withName(String name) {
         super.withName(name);
@@ -53,7 +81,7 @@ public final class ScriptStringExecutionParameter extends ScriptExecutionParamet
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

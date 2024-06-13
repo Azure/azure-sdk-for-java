@@ -6,65 +6,42 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.Cluster;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.avs.models.SkuTier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ClustersListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"clusterSize\":331049008,\"provisioningState\":\"Canceled\",\"clusterId\":2026678131,\"hosts\":[\"jzh\",\"izxfpxt\"],\"vsanDatastoreName\":\"scjavftju\"},\"sku\":{\"name\":\"dqazkmtgguwpijra\",\"tier\":\"Premium\",\"size\":\"m\",\"family\":\"hfcf\",\"capacity\":1456716709},\"id\":\"gkn\",\"name\":\"uvyinzqodfvpgs\",\"type\":\"oxgsgbpfgzdjtx\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"sku\":{\"name\":\"dmdqb\"},\"properties\":{\"clusterSize\":181668941,\"provisioningState\":\"Updating\",\"clusterId\":543854908,\"hosts\":[\"acbslhhxu\",\"bxv\",\"d\",\"tnsi\"]},\"id\":\"ud\",\"name\":\"z\",\"type\":\"mes\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AvsManager manager = AvsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Cluster> response
+            = manager.clusters().list("gncxykxhdj", "limmbcxf", com.azure.core.util.Context.NONE);
 
-        AvsManager manager =
-            AvsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Cluster> response =
-            manager.clusters().list("itvtzeexavo", "tfgle", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("dmdqb", response.iterator().next().sku().name());
-        Assertions.assertEquals(181668941, response.iterator().next().clusterSize());
-        Assertions.assertEquals("acbslhhxu", response.iterator().next().hosts().get(0));
+        Assertions.assertEquals("dqazkmtgguwpijra", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().sku().tier());
+        Assertions.assertEquals("m", response.iterator().next().sku().size());
+        Assertions.assertEquals("hfcf", response.iterator().next().sku().family());
+        Assertions.assertEquals(1456716709, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(331049008, response.iterator().next().clusterSize());
+        Assertions.assertEquals("jzh", response.iterator().next().hosts().get(0));
+        Assertions.assertEquals("scjavftju", response.iterator().next().vsanDatastoreName());
     }
 }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneProvisioningSt
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** NSX DNS Zone Properties. */
+/**
+ * NSX DNS Zone Properties.
+ */
 @Fluent
 public final class WorkloadNetworkDnsZoneProperties {
     /*
@@ -40,7 +42,7 @@ public final class WorkloadNetworkDnsZoneProperties {
      * Number of DNS Services using the DNS zone.
      */
     @JsonProperty(value = "dnsServices")
-    private Long dnsServices;
+    private Integer dnsServices;
 
     /*
      * The provisioning state
@@ -54,13 +56,15 @@ public final class WorkloadNetworkDnsZoneProperties {
     @JsonProperty(value = "revision")
     private Long revision;
 
-    /** Creates an instance of WorkloadNetworkDnsZoneProperties class. */
+    /**
+     * Creates an instance of WorkloadNetworkDnsZoneProperties class.
+     */
     public WorkloadNetworkDnsZoneProperties() {
     }
 
     /**
      * Get the displayName property: Display name of the DNS Zone.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -69,7 +73,7 @@ public final class WorkloadNetworkDnsZoneProperties {
 
     /**
      * Set the displayName property: Display name of the DNS Zone.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkDnsZoneProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class WorkloadNetworkDnsZoneProperties {
 
     /**
      * Get the domain property: Domain names of the DNS Zone.
-     *
+     * 
      * @return the domain value.
      */
     public List<String> domain() {
@@ -89,7 +93,7 @@ public final class WorkloadNetworkDnsZoneProperties {
 
     /**
      * Set the domain property: Domain names of the DNS Zone.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the WorkloadNetworkDnsZoneProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class WorkloadNetworkDnsZoneProperties {
 
     /**
      * Get the dnsServerIps property: DNS Server IP array of the DNS Zone.
-     *
+     * 
      * @return the dnsServerIps value.
      */
     public List<String> dnsServerIps() {
@@ -109,7 +113,7 @@ public final class WorkloadNetworkDnsZoneProperties {
 
     /**
      * Set the dnsServerIps property: DNS Server IP array of the DNS Zone.
-     *
+     * 
      * @param dnsServerIps the dnsServerIps value to set.
      * @return the WorkloadNetworkDnsZoneProperties object itself.
      */
@@ -120,7 +124,7 @@ public final class WorkloadNetworkDnsZoneProperties {
 
     /**
      * Get the sourceIp property: Source IP of the DNS Zone.
-     *
+     * 
      * @return the sourceIp value.
      */
     public String sourceIp() {
@@ -129,7 +133,7 @@ public final class WorkloadNetworkDnsZoneProperties {
 
     /**
      * Set the sourceIp property: Source IP of the DNS Zone.
-     *
+     * 
      * @param sourceIp the sourceIp value to set.
      * @return the WorkloadNetworkDnsZoneProperties object itself.
      */
@@ -140,27 +144,27 @@ public final class WorkloadNetworkDnsZoneProperties {
 
     /**
      * Get the dnsServices property: Number of DNS Services using the DNS zone.
-     *
+     * 
      * @return the dnsServices value.
      */
-    public Long dnsServices() {
+    public Integer dnsServices() {
         return this.dnsServices;
     }
 
     /**
      * Set the dnsServices property: Number of DNS Services using the DNS zone.
-     *
+     * 
      * @param dnsServices the dnsServices value to set.
      * @return the WorkloadNetworkDnsZoneProperties object itself.
      */
-    public WorkloadNetworkDnsZoneProperties withDnsServices(Long dnsServices) {
+    public WorkloadNetworkDnsZoneProperties withDnsServices(Integer dnsServices) {
         this.dnsServices = dnsServices;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadNetworkDnsZoneProvisioningState provisioningState() {
@@ -169,7 +173,7 @@ public final class WorkloadNetworkDnsZoneProperties {
 
     /**
      * Get the revision property: NSX revision number.
-     *
+     * 
      * @return the revision value.
      */
     public Long revision() {
@@ -178,7 +182,7 @@ public final class WorkloadNetworkDnsZoneProperties {
 
     /**
      * Set the revision property: NSX revision number.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the WorkloadNetworkDnsZoneProperties object itself.
      */
@@ -189,7 +193,7 @@ public final class WorkloadNetworkDnsZoneProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

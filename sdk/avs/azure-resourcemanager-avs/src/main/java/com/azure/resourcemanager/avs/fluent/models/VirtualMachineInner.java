@@ -6,25 +6,37 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.avs.models.VirtualMachineProvisioningState;
 import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovementState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Machine. */
+/**
+ * Virtual Machine.
+ */
 @Immutable
 public final class VirtualMachineInner extends ProxyResource {
     /*
-     * Virtual machine properties.
+     * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
     private VirtualMachineProperties innerProperties;
 
-    /** Creates an instance of VirtualMachineInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of VirtualMachineInner class.
+     */
     public VirtualMachineInner() {
     }
 
     /**
-     * Get the innerProperties property: Virtual machine properties.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineProperties innerProperties() {
@@ -32,8 +44,26 @@ public final class VirtualMachineInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public VirtualMachineProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the displayName property: Display name of the VM.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -42,7 +72,7 @@ public final class VirtualMachineInner extends ProxyResource {
 
     /**
      * Get the moRefId property: Virtual machine managed object reference id.
-     *
+     * 
      * @return the moRefId value.
      */
     public String moRefId() {
@@ -51,7 +81,7 @@ public final class VirtualMachineInner extends ProxyResource {
 
     /**
      * Get the folderPath property: Path to virtual machine's folder starting from datacenter virtual machine folder.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -60,7 +90,7 @@ public final class VirtualMachineInner extends ProxyResource {
 
     /**
      * Get the restrictMovement property: Whether VM DRS-driven movement is restricted (enabled) or not (disabled).
-     *
+     * 
      * @return the restrictMovement value.
      */
     public VirtualMachineRestrictMovementState restrictMovement() {
@@ -69,7 +99,7 @@ public final class VirtualMachineInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

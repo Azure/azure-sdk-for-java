@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadNetworkDhcpRelayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkDhcpRelay model =
-            BinaryData
-                .fromString(
-                    "{\"dhcpType\":\"RELAY\",\"serverAddresses\":[\"fffwafqroudaspav\"],\"displayName\":\"hrv\",\"segments\":[\"n\"],\"provisioningState\":\"Updating\",\"revision\":152087869378436778}")
-                .toObject(WorkloadNetworkDhcpRelay.class);
-        Assertions.assertEquals("hrv", model.displayName());
-        Assertions.assertEquals(152087869378436778L, model.revision());
-        Assertions.assertEquals("fffwafqroudaspav", model.serverAddresses().get(0));
+        WorkloadNetworkDhcpRelay model = BinaryData.fromString(
+            "{\"dhcpType\":\"RELAY\",\"serverAddresses\":[\"kokwbqplhlvnu\",\"epzl\",\"phwzsoldweyuqdu\",\"vmnnrw\"],\"displayName\":\"i\",\"segments\":[\"talywjhhgdnhxms\",\"v\",\"omi\",\"ox\"],\"provisioningState\":\"Canceled\",\"revision\":2254648320750623886}")
+            .toObject(WorkloadNetworkDhcpRelay.class);
+        Assertions.assertEquals("i", model.displayName());
+        Assertions.assertEquals(2254648320750623886L, model.revision());
+        Assertions.assertEquals("kokwbqplhlvnu", model.serverAddresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkDhcpRelay model =
-            new WorkloadNetworkDhcpRelay()
-                .withDisplayName("hrv")
-                .withRevision(152087869378436778L)
-                .withServerAddresses(Arrays.asList("fffwafqroudaspav"));
+        WorkloadNetworkDhcpRelay model = new WorkloadNetworkDhcpRelay().withDisplayName("i")
+            .withRevision(2254648320750623886L)
+            .withServerAddresses(Arrays.asList("kokwbqplhlvnu", "epzl", "phwzsoldweyuqdu", "vmnnrw"));
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpRelay.class);
-        Assertions.assertEquals("hrv", model.displayName());
-        Assertions.assertEquals(152087869378436778L, model.revision());
-        Assertions.assertEquals("fffwafqroudaspav", model.serverAddresses().get(0));
+        Assertions.assertEquals("i", model.displayName());
+        Assertions.assertEquals(2254648320750623886L, model.revision());
+        Assertions.assertEquals("kokwbqplhlvnu", model.serverAddresses().get(0));
     }
 }

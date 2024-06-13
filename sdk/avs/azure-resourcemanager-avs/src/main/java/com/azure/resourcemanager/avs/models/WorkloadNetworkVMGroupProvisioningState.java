@@ -8,30 +8,44 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state. */
+/**
+ * Workload Network VM Group provisioning state.
+ */
 public final class WorkloadNetworkVMGroupProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkVMGroupProvisioningState> {
-    /** Static value Succeeded for WorkloadNetworkVMGroupProvisioningState. */
+    /**
+     * Static value Succeeded for WorkloadNetworkVMGroupProvisioningState.
+     */
     public static final WorkloadNetworkVMGroupProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for WorkloadNetworkVMGroupProvisioningState. */
+    /**
+     * Static value Failed for WorkloadNetworkVMGroupProvisioningState.
+     */
     public static final WorkloadNetworkVMGroupProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Building for WorkloadNetworkVMGroupProvisioningState. */
-    public static final WorkloadNetworkVMGroupProvisioningState BUILDING = fromString("Building");
-
-    /** Static value Deleting for WorkloadNetworkVMGroupProvisioningState. */
-    public static final WorkloadNetworkVMGroupProvisioningState DELETING = fromString("Deleting");
-
-    /** Static value Updating for WorkloadNetworkVMGroupProvisioningState. */
-    public static final WorkloadNetworkVMGroupProvisioningState UPDATING = fromString("Updating");
-
-    /** Static value Canceled for WorkloadNetworkVMGroupProvisioningState. */
+    /**
+     * Static value Canceled for WorkloadNetworkVMGroupProvisioningState.
+     */
     public static final WorkloadNetworkVMGroupProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Static value Building for WorkloadNetworkVMGroupProvisioningState.
+     */
+    public static final WorkloadNetworkVMGroupProvisioningState BUILDING = fromString("Building");
+
+    /**
+     * Static value Deleting for WorkloadNetworkVMGroupProvisioningState.
+     */
+    public static final WorkloadNetworkVMGroupProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Static value Updating for WorkloadNetworkVMGroupProvisioningState.
+     */
+    public static final WorkloadNetworkVMGroupProvisioningState UPDATING = fromString("Updating");
+
+    /**
      * Creates a new instance of WorkloadNetworkVMGroupProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,7 +54,7 @@ public final class WorkloadNetworkVMGroupProvisioningState
 
     /**
      * Creates or finds a WorkloadNetworkVMGroupProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkloadNetworkVMGroupProvisioningState.
      */
@@ -51,7 +65,7 @@ public final class WorkloadNetworkVMGroupProvisioningState
 
     /**
      * Gets known WorkloadNetworkVMGroupProvisioningState values.
-     *
+     * 
      * @return known WorkloadNetworkVMGroupProvisioningState values.
      */
     public static Collection<WorkloadNetworkVMGroupProvisioningState> values() {

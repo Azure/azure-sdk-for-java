@@ -6,26 +6,37 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.models.GlobalReachConnectionProvisioningState;
 import com.azure.resourcemanager.avs.models.GlobalReachConnectionStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A global reach connection resource. */
+/**
+ * A global reach connection resource.
+ */
 @Fluent
 public final class GlobalReachConnectionInner extends ProxyResource {
     /*
-     * The properties of a global reach connection resource
+     * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
     private GlobalReachConnectionProperties innerProperties;
 
-    /** Creates an instance of GlobalReachConnectionInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of GlobalReachConnectionInner class.
+     */
     public GlobalReachConnectionInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of a global reach connection resource.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private GlobalReachConnectionProperties innerProperties() {
@@ -33,8 +44,17 @@ public final class GlobalReachConnectionInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the provisioningState property: The state of the ExpressRoute Circuit Authorization provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public GlobalReachConnectionProvisioningState provisioningState() {
@@ -44,7 +64,7 @@ public final class GlobalReachConnectionInner extends ProxyResource {
     /**
      * Get the addressPrefix property: The network used for global reach carved out from the original network block
      * provided for the private cloud.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -54,7 +74,7 @@ public final class GlobalReachConnectionInner extends ProxyResource {
     /**
      * Get the authorizationKey property: Authorization key from the peer express route used for the global reach
      * connection.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -64,7 +84,7 @@ public final class GlobalReachConnectionInner extends ProxyResource {
     /**
      * Set the authorizationKey property: Authorization key from the peer express route used for the global reach
      * connection.
-     *
+     * 
      * @param authorizationKey the authorizationKey value to set.
      * @return the GlobalReachConnectionInner object itself.
      */
@@ -78,7 +98,7 @@ public final class GlobalReachConnectionInner extends ProxyResource {
 
     /**
      * Get the circuitConnectionStatus property: The connection status of the global reach connection.
-     *
+     * 
      * @return the circuitConnectionStatus value.
      */
     public GlobalReachConnectionStatus circuitConnectionStatus() {
@@ -88,7 +108,7 @@ public final class GlobalReachConnectionInner extends ProxyResource {
     /**
      * Get the peerExpressRouteCircuit property: Identifier of the ExpressRoute Circuit to peer with in the global reach
      * connection.
-     *
+     * 
      * @return the peerExpressRouteCircuit value.
      */
     public String peerExpressRouteCircuit() {
@@ -98,7 +118,7 @@ public final class GlobalReachConnectionInner extends ProxyResource {
     /**
      * Set the peerExpressRouteCircuit property: Identifier of the ExpressRoute Circuit to peer with in the global reach
      * connection.
-     *
+     * 
      * @param peerExpressRouteCircuit the peerExpressRouteCircuit value to set.
      * @return the GlobalReachConnectionInner object itself.
      */
@@ -113,7 +133,7 @@ public final class GlobalReachConnectionInner extends ProxyResource {
     /**
      * Get the expressRouteId property: The ID of the Private Cloud's ExpressRoute Circuit that is participating in the
      * global reach connection.
-     *
+     * 
      * @return the expressRouteId value.
      */
     public String expressRouteId() {
@@ -123,7 +143,7 @@ public final class GlobalReachConnectionInner extends ProxyResource {
     /**
      * Set the expressRouteId property: The ID of the Private Cloud's ExpressRoute Circuit that is participating in the
      * global reach connection.
-     *
+     * 
      * @param expressRouteId the expressRouteId value to set.
      * @return the GlobalReachConnectionInner object itself.
      */
@@ -137,7 +157,7 @@ public final class GlobalReachConnectionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

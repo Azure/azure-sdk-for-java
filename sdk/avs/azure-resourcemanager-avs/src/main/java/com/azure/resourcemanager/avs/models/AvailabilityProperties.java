@@ -7,7 +7,9 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties describing private cloud availability zone distribution. */
+/**
+ * The properties describing private cloud availability zone distribution.
+ */
 @Fluent
 public final class AvailabilityProperties {
     /*
@@ -28,13 +30,15 @@ public final class AvailabilityProperties {
     @JsonProperty(value = "secondaryZone")
     private Integer secondaryZone;
 
-    /** Creates an instance of AvailabilityProperties class. */
+    /**
+     * Creates an instance of AvailabilityProperties class.
+     */
     public AvailabilityProperties() {
     }
 
     /**
      * Get the strategy property: The availability strategy for the private cloud.
-     *
+     * 
      * @return the strategy value.
      */
     public AvailabilityStrategy strategy() {
@@ -43,7 +47,7 @@ public final class AvailabilityProperties {
 
     /**
      * Set the strategy property: The availability strategy for the private cloud.
-     *
+     * 
      * @param strategy the strategy value to set.
      * @return the AvailabilityProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class AvailabilityProperties {
 
     /**
      * Get the zone property: The primary availability zone for the private cloud.
-     *
+     * 
      * @return the zone value.
      */
     public Integer zone() {
@@ -63,7 +67,7 @@ public final class AvailabilityProperties {
 
     /**
      * Set the zone property: The primary availability zone for the private cloud.
-     *
+     * 
      * @param zone the zone value to set.
      * @return the AvailabilityProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class AvailabilityProperties {
 
     /**
      * Get the secondaryZone property: The secondary availability zone for the private cloud.
-     *
+     * 
      * @return the secondaryZone value.
      */
     public Integer secondaryZone() {
@@ -83,7 +87,7 @@ public final class AvailabilityProperties {
 
     /**
      * Set the secondaryZone property: The secondary availability zone for the private cloud.
-     *
+     * 
      * @param secondaryZone the secondaryZone value to set.
      * @return the AvailabilityProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class AvailabilityProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

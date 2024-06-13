@@ -6,25 +6,37 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.models.VMTypeEnum;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** NSX Virtual Machine. */
+/**
+ * NSX Virtual Machine.
+ */
 @Fluent
 public final class WorkloadNetworkVirtualMachineInner extends ProxyResource {
     /*
-     * Virtual machine properties.
+     * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
     private WorkloadNetworkVirtualMachineProperties innerProperties;
 
-    /** Creates an instance of WorkloadNetworkVirtualMachineInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of WorkloadNetworkVirtualMachineInner class.
+     */
     public WorkloadNetworkVirtualMachineInner() {
     }
 
     /**
-     * Get the innerProperties property: Virtual machine properties.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private WorkloadNetworkVirtualMachineProperties innerProperties() {
@@ -32,8 +44,26 @@ public final class WorkloadNetworkVirtualMachineInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public WorkloadNetworkProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the displayName property: Display name of the VM.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -42,7 +72,7 @@ public final class WorkloadNetworkVirtualMachineInner extends ProxyResource {
 
     /**
      * Set the displayName property: Display name of the VM.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkVirtualMachineInner object itself.
      */
@@ -56,7 +86,7 @@ public final class WorkloadNetworkVirtualMachineInner extends ProxyResource {
 
     /**
      * Get the vmType property: Virtual machine type.
-     *
+     * 
      * @return the vmType value.
      */
     public VMTypeEnum vmType() {
@@ -65,7 +95,7 @@ public final class WorkloadNetworkVirtualMachineInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,27 +6,38 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
 import com.azure.resourcemanager.avs.models.PortMirroringStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** NSX Port Mirroring. */
+/**
+ * NSX Port Mirroring.
+ */
 @Fluent
 public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
     /*
-     * Port Mirroring Properties.
+     * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
     private WorkloadNetworkPortMirroringProperties innerProperties;
 
-    /** Creates an instance of WorkloadNetworkPortMirroringInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of WorkloadNetworkPortMirroringInner class.
+     */
     public WorkloadNetworkPortMirroringInner() {
     }
 
     /**
-     * Get the innerProperties property: Port Mirroring Properties.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private WorkloadNetworkPortMirroringProperties innerProperties() {
@@ -34,8 +45,17 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the displayName property: Display name of the port mirroring profile.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -44,7 +64,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Set the displayName property: Display name of the port mirroring profile.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkPortMirroringInner object itself.
      */
@@ -58,7 +78,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Get the direction property: Direction of port mirroring profile.
-     *
+     * 
      * @return the direction value.
      */
     public PortMirroringDirectionEnum direction() {
@@ -67,7 +87,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Set the direction property: Direction of port mirroring profile.
-     *
+     * 
      * @param direction the direction value to set.
      * @return the WorkloadNetworkPortMirroringInner object itself.
      */
@@ -81,7 +101,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Get the source property: Source VM Group.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -90,7 +110,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Set the source property: Source VM Group.
-     *
+     * 
      * @param source the source value to set.
      * @return the WorkloadNetworkPortMirroringInner object itself.
      */
@@ -104,7 +124,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Get the destination property: Destination VM Group.
-     *
+     * 
      * @return the destination value.
      */
     public String destination() {
@@ -113,7 +133,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Set the destination property: Destination VM Group.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the WorkloadNetworkPortMirroringInner object itself.
      */
@@ -127,7 +147,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Get the status property: Port Mirroring Status.
-     *
+     * 
      * @return the status value.
      */
     public PortMirroringStatusEnum status() {
@@ -136,7 +156,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadNetworkPortMirroringProvisioningState provisioningState() {
@@ -145,7 +165,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Get the revision property: NSX revision number.
-     *
+     * 
      * @return the revision value.
      */
     public Long revision() {
@@ -154,7 +174,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Set the revision property: NSX revision number.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the WorkloadNetworkPortMirroringInner object itself.
      */
@@ -168,7 +188,7 @@ public final class WorkloadNetworkPortMirroringInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
