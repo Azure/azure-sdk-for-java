@@ -29,7 +29,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.PrivateCloudListResult",
+  "name" : "com.azure.resourcemanager.avs.models.PrivateCloudList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -84,6 +84,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.avs.models.PrivateCloudsList",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.avs.models.PrivateCloudUpdate",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -94,7 +99,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.AddonListResult",
+  "name" : "com.azure.resourcemanager.avs.models.AddonList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -109,7 +114,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.ExpressRouteAuthorizationListResult",
+  "name" : "com.azure.resourcemanager.avs.models.ExpressRouteAuthorizationList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -124,7 +129,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.CloudLinkListResult",
+  "name" : "com.azure.resourcemanager.avs.models.CloudLinkList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -139,7 +144,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.ClusterListResult",
+  "name" : "com.azure.resourcemanager.avs.models.ClusterList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -164,7 +169,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.DatastoreListResult",
+  "name" : "com.azure.resourcemanager.avs.models.DatastoreList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -204,7 +209,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.PlacementPolicyListResult",
+  "name" : "com.azure.resourcemanager.avs.models.PlacementPoliciesList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -229,7 +234,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.VirtualMachineListResult",
+  "name" : "com.azure.resourcemanager.avs.models.VirtualMachinesList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -249,7 +254,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.GlobalReachConnectionListResult",
+  "name" : "com.azure.resourcemanager.avs.models.GlobalReachConnectionList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -264,7 +269,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.HcxEnterpriseSiteListResult",
+  "name" : "com.azure.resourcemanager.avs.models.HcxEnterpriseSiteList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -299,7 +304,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.ScriptExecutionListResult",
+  "name" : "com.azure.resourcemanager.avs.models.ScriptExecutionsList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -319,7 +324,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.ScriptPackageListResult",
+  "name" : "com.azure.resourcemanager.avs.models.ScriptPackagesList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -334,7 +339,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.ScriptCmdletListResult",
+  "name" : "com.azure.resourcemanager.avs.models.ScriptCmdletsList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -354,7 +359,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkListResult",
+  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -369,7 +374,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpListResult",
+  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -394,7 +399,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServiceListResult",
+  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServicesList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -414,7 +419,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneListResult",
+  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZonesList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -434,7 +439,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkGatewayListResult",
+  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkGatewayList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -449,7 +454,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringListResult",
+  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -469,7 +474,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIpListResult",
+  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIPsList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -484,7 +489,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentListResult",
+  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentsList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -514,7 +519,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkVirtualMachineListResult",
+  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkVirtualMachinesList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -529,7 +534,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupListResult",
+  "name" : "com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupsList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

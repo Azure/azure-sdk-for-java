@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AddonVrPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddonVrProperties model
-            = BinaryData.fromString("{\"addonType\":\"VR\",\"vrsCount\":753972372,\"provisioningState\":\"Cancelled\"}")
-                .toObject(AddonVrProperties.class);
-        Assertions.assertEquals(753972372, model.vrsCount());
+        AddonVrProperties model = BinaryData
+            .fromString("{\"addonType\":\"VR\",\"vrsCount\":1575012328,\"provisioningState\":\"Succeeded\"}")
+            .toObject(AddonVrProperties.class);
+        Assertions.assertEquals(1575012328, model.vrsCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddonVrProperties model = new AddonVrProperties().withVrsCount(753972372);
+        AddonVrProperties model = new AddonVrProperties().withVrsCount(1575012328);
         model = BinaryData.fromObject(model).toObject(AddonVrProperties.class);
-        Assertions.assertEquals(753972372, model.vrsCount());
+        Assertions.assertEquals(1575012328, model.vrsCount());
     }
 }

@@ -21,7 +21,7 @@ public final class CloudLinksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Active\",\"linkedCloud\":\"utcxapzhy\"},\"id\":\"etoge\",\"name\":\"joxslhvnhla\",\"type\":\"rqnkkzjcjbtr\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Building\",\"linkedCloud\":\"cjbtrgaehvvib\"},\"id\":\"jj\",\"name\":\"toqbeitpkxztmoob\",\"type\":\"lftidgfcwqmpim\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class CloudLinksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CloudLink response = manager.cloudLinks()
-            .getWithResponse("qcuubgqibrta", "metttwgd", "lqxihhrmooiz", com.azure.core.util.Context.NONE)
+            .getWithResponse("y", "petogebjox", "lhvnhlab", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("utcxapzhy", response.linkedCloud());
+        Assertions.assertEquals("cjbtrgaehvvib", response.linkedCloud());
     }
 }

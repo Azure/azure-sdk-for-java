@@ -43,21 +43,21 @@ import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkSegmentInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVirtualMachineInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVMGroupInner;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpListResult;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpList;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpUpdate;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServiceListResult;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServicesList;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServiceUpdate;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneListResult;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZonesList;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneUpdate;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkGatewayListResult;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkListResult;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringListResult;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkGatewayList;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkList;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringList;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringUpdate;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIpListResult;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentListResult;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIPsList;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentsList;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentUpdate;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkVirtualMachineListResult;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupListResult;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkVirtualMachinesList;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupsList;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -99,7 +99,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkListResult>> list(@HostParam("$host") String endpoint,
+        Mono<Response<WorkloadNetworkList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -119,7 +119,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkDhcpListResult>> listDhcp(@HostParam("$host") String endpoint,
+        Mono<Response<WorkloadNetworkDhcpList>> listDhcp(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -171,7 +171,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkDnsServiceListResult>> listDnsServices(@HostParam("$host") String endpoint,
+        Mono<Response<WorkloadNetworkDnsServicesList>> listDnsServices(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -223,7 +223,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkDnsZoneListResult>> listDnsZones(@HostParam("$host") String endpoint,
+        Mono<Response<WorkloadNetworkDnsZonesList>> listDnsZones(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -275,7 +275,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/gateways")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkGatewayListResult>> listGateways(@HostParam("$host") String endpoint,
+        Mono<Response<WorkloadNetworkGatewayList>> listGateways(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -295,7 +295,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPortMirroringListResult>> listPortMirroring(@HostParam("$host") String endpoint,
+        Mono<Response<WorkloadNetworkPortMirroringList>> listPortMirroring(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -351,7 +351,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPublicIpListResult>> listPublicIPs(@HostParam("$host") String endpoint,
+        Mono<Response<WorkloadNetworkPublicIPsList>> listPublicIPs(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -392,7 +392,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkSegmentListResult>> listSegments(@HostParam("$host") String endpoint,
+        Mono<Response<WorkloadNetworkSegmentsList>> listSegments(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -444,7 +444,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/virtualMachines")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkVirtualMachineListResult>> listVirtualMachines(@HostParam("$host") String endpoint,
+        Mono<Response<WorkloadNetworkVirtualMachinesList>> listVirtualMachines(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -465,7 +465,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkVMGroupListResult>> listVMGroups(@HostParam("$host") String endpoint,
+        Mono<Response<WorkloadNetworkVMGroupsList>> listVMGroups(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -517,7 +517,14 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkListResult>> listNext(
+        Mono<Response<WorkloadNetworkList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<WorkloadNetworkDhcpList>> listDhcpNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -525,7 +532,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkDhcpListResult>> listDhcpNext(
+        Mono<Response<WorkloadNetworkDnsServicesList>> listDnsServicesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -533,7 +540,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkDnsServiceListResult>> listDnsServicesNext(
+        Mono<Response<WorkloadNetworkDnsZonesList>> listDnsZonesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -541,7 +548,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkDnsZoneListResult>> listDnsZonesNext(
+        Mono<Response<WorkloadNetworkGatewayList>> listGatewaysNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -549,7 +556,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkGatewayListResult>> listGatewaysNext(
+        Mono<Response<WorkloadNetworkPortMirroringList>> listPortMirroringNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -557,7 +564,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPortMirroringListResult>> listPortMirroringNext(
+        Mono<Response<WorkloadNetworkPublicIPsList>> listPublicIPsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -565,7 +572,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPublicIpListResult>> listPublicIPsNext(
+        Mono<Response<WorkloadNetworkSegmentsList>> listSegmentsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -573,7 +580,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkSegmentListResult>> listSegmentsNext(
+        Mono<Response<WorkloadNetworkVirtualMachinesList>> listVirtualMachinesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -581,15 +588,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkVirtualMachineListResult>> listVirtualMachinesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkVMGroupListResult>> listVMGroupsNext(
+        Mono<Response<WorkloadNetworkVMGroupsList>> listVMGroupsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }

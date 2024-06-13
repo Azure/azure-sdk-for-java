@@ -22,7 +22,7 @@ public final class IscsiPathsListByPrivateCloudMockTests {
     @Test
     public void testListByPrivateCloud() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Building\",\"networkBlock\":\"jltfvnzcyjtotpv\"},\"id\":\"vpbdbzqgq\",\"name\":\"ihed\",\"type\":\"vqwt\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"networkBlock\":\"zinkfkbgbzbowxeq\"},\"id\":\"ljmygvkzqkjjeokb\",\"name\":\"efezrxcczurtlei\",\"type\":\"q\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class IscsiPathsListByPrivateCloudMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<IscsiPath> response
-            = manager.iscsiPaths().listByPrivateCloud("hu", "cmjkavlgorbmftpm", com.azure.core.util.Context.NONE);
+        PagedIterable<IscsiPath> response = manager.iscsiPaths()
+            .listByPrivateCloud("ohdxbzlmcmu", "pcvhdbevwqqxeys", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jltfvnzcyjtotpv", response.iterator().next().networkBlock());
+        Assertions.assertEquals("zinkfkbgbzbowxeq", response.iterator().next().networkBlock());
     }
 }

@@ -13,21 +13,21 @@ public final class WorkloadNetworkDhcpRelayUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDhcpRelayUpdate model = BinaryData.fromString(
-            "{\"dhcpType\":\"RELAY\",\"serverAddresses\":[\"dieuzaofj\",\"hvcyyysfg\",\"otcubi\"],\"displayName\":\"uipwoqonmacje\",\"revision\":3710084328619196753}")
+            "{\"dhcpType\":\"RELAY\",\"serverAddresses\":[\"vcyy\",\"s\",\"gdotcubiipuipwo\"],\"displayName\":\"nmacj\",\"revision\":2045062341145189898}")
             .toObject(WorkloadNetworkDhcpRelayUpdate.class);
-        Assertions.assertEquals("uipwoqonmacje", model.displayName());
-        Assertions.assertEquals(3710084328619196753L, model.revision());
-        Assertions.assertEquals("dieuzaofj", model.serverAddresses().get(0));
+        Assertions.assertEquals("nmacj", model.displayName());
+        Assertions.assertEquals(2045062341145189898L, model.revision());
+        Assertions.assertEquals("vcyy", model.serverAddresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkDhcpRelayUpdate model = new WorkloadNetworkDhcpRelayUpdate().withDisplayName("uipwoqonmacje")
-            .withRevision(3710084328619196753L)
-            .withServerAddresses(Arrays.asList("dieuzaofj", "hvcyyysfg", "otcubi"));
+        WorkloadNetworkDhcpRelayUpdate model = new WorkloadNetworkDhcpRelayUpdate().withDisplayName("nmacj")
+            .withRevision(2045062341145189898L)
+            .withServerAddresses(Arrays.asList("vcyy", "s", "gdotcubiipuipwo"));
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpRelayUpdate.class);
-        Assertions.assertEquals("uipwoqonmacje", model.displayName());
-        Assertions.assertEquals(3710084328619196753L, model.revision());
-        Assertions.assertEquals("dieuzaofj", model.serverAddresses().get(0));
+        Assertions.assertEquals("nmacj", model.displayName());
+        Assertions.assertEquals(2045062341145189898L, model.revision());
+        Assertions.assertEquals("vcyy", model.serverAddresses().get(0));
     }
 }

@@ -11,7 +11,7 @@ public final class ClusterZoneTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterZone model
-            = BinaryData.fromString("{\"hosts\":[\"nhwlrsffrzpwvl\",\"dqgbiqylihkaetc\"],\"zone\":\"vfcivfsnkymuc\"}")
+            = BinaryData.fromString("{\"hosts\":[\"nuqqkpikadrgvt\",\"agnb\",\"ynhijggme\"],\"zone\":\"siarbutrcvpn\"}")
                 .toObject(ClusterZone.class);
     }
 

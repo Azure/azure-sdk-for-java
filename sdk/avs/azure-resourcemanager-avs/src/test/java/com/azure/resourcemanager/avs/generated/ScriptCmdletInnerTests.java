@@ -11,7 +11,7 @@ public final class ScriptCmdletInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptCmdletInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"description\":\"hos\",\"timeout\":\"dqrhzoymib\",\"audience\":\"Automation\",\"parameters\":[{\"type\":\"Float\",\"name\":\"wfluszdt\",\"description\":\"rkwofyyvoqa\",\"visibility\":\"Hidden\",\"optional\":\"Required\"},{\"type\":\"SecureString\",\"name\":\"giwbwoenwa\",\"description\":\"rtdtkcnqxw\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"},{\"type\":\"Float\",\"name\":\"ujw\",\"description\":\"sipqii\",\"visibility\":\"Visible\",\"optional\":\"Required\"}]},\"id\":\"rpqlp\",\"name\":\"wcciuqgbdbu\",\"type\":\"auvfbtkuwhhmhyk\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"ocogj\",\"timeout\":\"dtbnnha\",\"audience\":\"Any\",\"parameters\":[{\"type\":\"Credential\",\"name\":\"ikhnvpamqgxqq\",\"description\":\"zikywgg\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"},{\"type\":\"Bool\",\"name\":\"elwuipi\",\"description\":\"jzkzi\",\"visibility\":\"Visible\",\"optional\":\"Optional\"},{\"type\":\"SecureString\",\"name\":\"rhyrnxxmueed\",\"description\":\"rdvstkwqqtch\",\"visibility\":\"Hidden\",\"optional\":\"Required\"}]},\"id\":\"tdaaygdvwvg\",\"name\":\"iohgwxrtfud\",\"type\":\"epxgyqagvr\"}")
             .toObject(ScriptCmdletInner.class);
     }
 

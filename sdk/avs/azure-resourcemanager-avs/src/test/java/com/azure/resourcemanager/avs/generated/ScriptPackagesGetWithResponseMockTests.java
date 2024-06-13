@@ -20,7 +20,7 @@ public final class ScriptPackagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"bgqjxgpnrhgo\",\"version\":\"gpikqmh\",\"company\":\"owjrmzvuporqz\",\"uri\":\"uydzvk\"},\"id\":\"xcnqmxqpswokmvkh\",\"name\":\"ggdhbemzqkzszuw\",\"type\":\"wtglxx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"orqzdfuy\",\"version\":\"vkfvxcnqmxqpswok\",\"company\":\"khlg\",\"uri\":\"hbemzq\"},\"id\":\"sz\",\"name\":\"wiwtglxxhl\",\"type\":\"fpgpicrmnzhrgm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ScriptPackagesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ScriptPackage response = manager.scriptPackages()
-            .getWithResponse("niypfpubcpzg", "xtiv", "j", com.azure.core.util.Context.NONE)
+            .getWithResponse("n", "hgovfgp", "kqmhhaowjr", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

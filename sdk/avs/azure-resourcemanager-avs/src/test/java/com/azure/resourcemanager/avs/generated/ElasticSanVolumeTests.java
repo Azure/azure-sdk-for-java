@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ElasticSanVolumeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticSanVolume model = BinaryData.fromString("{\"targetId\":\"ywnuzoq\"}").toObject(ElasticSanVolume.class);
-        Assertions.assertEquals("ywnuzoq", model.targetId());
+        ElasticSanVolume model
+            = BinaryData.fromString("{\"targetId\":\"gsncghkjeszz\"}").toObject(ElasticSanVolume.class);
+        Assertions.assertEquals("gsncghkjeszz", model.targetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticSanVolume model = new ElasticSanVolume().withTargetId("ywnuzoq");
+        ElasticSanVolume model = new ElasticSanVolume().withTargetId("gsncghkjeszz");
         model = BinaryData.fromObject(model).toObject(ElasticSanVolume.class);
-        Assertions.assertEquals("ywnuzoq", model.targetId());
+        Assertions.assertEquals("gsncghkjeszz", model.targetId());
     }
 }

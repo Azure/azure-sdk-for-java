@@ -28,7 +28,7 @@ public final class ScriptExecutionsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.scriptExecutions()
-            .delete("vqihebwtswbzuwf", "duragegizvc", "felisdjub", com.azure.core.util.Context.NONE);
+            .delete("dibmikostbzbkiwb", "qnyophzfyls", "crpfbcunez", com.azure.core.util.Context.NONE);
 
     }
 }

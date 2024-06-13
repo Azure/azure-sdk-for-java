@@ -16,27 +16,27 @@ public final class DatastorePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatastoreProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleting\",\"netAppVolume\":{\"id\":\"pmr\"},\"diskPoolVolume\":{\"targetId\":\"izcdrqjsd\",\"lunName\":\"ydnfyhxdeoejz\",\"mountOption\":\"MOUNT\",\"path\":\"fsj\"},\"elasticSanVolume\":{\"targetId\":\"gzfbishcbk\"},\"status\":\"DeadOrError\"}")
+            "{\"provisioningState\":\"Updating\",\"netAppVolume\":{\"id\":\"pwvlqdq\"},\"diskPoolVolume\":{\"targetId\":\"iqylihkaetck\",\"lunName\":\"vfcivfsnkymuc\",\"mountOption\":\"ATTACH\",\"path\":\"fbebrjcxer\"},\"elasticSanVolume\":{\"targetId\":\"wutttxfvjrbi\"},\"status\":\"Detached\"}")
             .toObject(DatastoreProperties.class);
-        Assertions.assertEquals("pmr", model.netAppVolume().id());
-        Assertions.assertEquals("izcdrqjsd", model.diskPoolVolume().targetId());
-        Assertions.assertEquals("ydnfyhxdeoejz", model.diskPoolVolume().lunName());
-        Assertions.assertEquals(MountOptionEnum.MOUNT, model.diskPoolVolume().mountOption());
-        Assertions.assertEquals("gzfbishcbk", model.elasticSanVolume().targetId());
+        Assertions.assertEquals("pwvlqdq", model.netAppVolume().id());
+        Assertions.assertEquals("iqylihkaetck", model.diskPoolVolume().targetId());
+        Assertions.assertEquals("vfcivfsnkymuc", model.diskPoolVolume().lunName());
+        Assertions.assertEquals(MountOptionEnum.ATTACH, model.diskPoolVolume().mountOption());
+        Assertions.assertEquals("wutttxfvjrbi", model.elasticSanVolume().targetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatastoreProperties model = new DatastoreProperties().withNetAppVolume(new NetAppVolume().withId("pmr"))
-            .withDiskPoolVolume(new DiskPoolVolume().withTargetId("izcdrqjsd")
-                .withLunName("ydnfyhxdeoejz")
-                .withMountOption(MountOptionEnum.MOUNT))
-            .withElasticSanVolume(new ElasticSanVolume().withTargetId("gzfbishcbk"));
+        DatastoreProperties model = new DatastoreProperties().withNetAppVolume(new NetAppVolume().withId("pwvlqdq"))
+            .withDiskPoolVolume(new DiskPoolVolume().withTargetId("iqylihkaetck")
+                .withLunName("vfcivfsnkymuc")
+                .withMountOption(MountOptionEnum.ATTACH))
+            .withElasticSanVolume(new ElasticSanVolume().withTargetId("wutttxfvjrbi"));
         model = BinaryData.fromObject(model).toObject(DatastoreProperties.class);
-        Assertions.assertEquals("pmr", model.netAppVolume().id());
-        Assertions.assertEquals("izcdrqjsd", model.diskPoolVolume().targetId());
-        Assertions.assertEquals("ydnfyhxdeoejz", model.diskPoolVolume().lunName());
-        Assertions.assertEquals(MountOptionEnum.MOUNT, model.diskPoolVolume().mountOption());
-        Assertions.assertEquals("gzfbishcbk", model.elasticSanVolume().targetId());
+        Assertions.assertEquals("pwvlqdq", model.netAppVolume().id());
+        Assertions.assertEquals("iqylihkaetck", model.diskPoolVolume().targetId());
+        Assertions.assertEquals("vfcivfsnkymuc", model.diskPoolVolume().lunName());
+        Assertions.assertEquals(MountOptionEnum.ATTACH, model.diskPoolVolume().mountOption());
+        Assertions.assertEquals("wutttxfvjrbi", model.elasticSanVolume().targetId());
     }
 }

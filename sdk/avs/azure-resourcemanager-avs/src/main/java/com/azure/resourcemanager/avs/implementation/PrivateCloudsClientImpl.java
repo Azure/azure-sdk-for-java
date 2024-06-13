@@ -36,7 +36,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.PrivateCloudsClient;
 import com.azure.resourcemanager.avs.fluent.models.AdminCredentialsInner;
 import com.azure.resourcemanager.avs.fluent.models.PrivateCloudInner;
-import com.azure.resourcemanager.avs.models.PrivateCloudListResult;
+import com.azure.resourcemanager.avs.models.PrivateCloudList;
+import com.azure.resourcemanager.avs.models.PrivateCloudsList;
 import com.azure.resourcemanager.avs.models.PrivateCloudUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -78,7 +79,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AVS/privateClouds")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateCloudListResult>> list(@HostParam("$host") String endpoint,
+        Mono<Response<PrivateCloudList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -86,7 +87,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateCloudListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+        Mono<Response<PrivateCloudsList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
@@ -167,7 +168,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateCloudListResult>> listInSubscriptionNext(
+        Mono<Response<PrivateCloudList>> listInSubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -175,7 +176,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateCloudListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<PrivateCloudsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 

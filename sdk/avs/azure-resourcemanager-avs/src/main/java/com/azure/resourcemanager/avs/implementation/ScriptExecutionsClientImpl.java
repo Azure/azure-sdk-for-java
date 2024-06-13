@@ -34,7 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.ScriptExecutionsClient;
 import com.azure.resourcemanager.avs.fluent.models.ScriptExecutionInner;
-import com.azure.resourcemanager.avs.models.ScriptExecutionListResult;
+import com.azure.resourcemanager.avs.models.ScriptExecutionsList;
 import com.azure.resourcemanager.avs.models.ScriptOutputStreamType;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -77,7 +77,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptExecutions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScriptExecutionListResult>> list(@HostParam("$host") String endpoint,
+        Mono<Response<ScriptExecutionsList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("Accept") String accept,
@@ -133,9 +133,8 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScriptExecutionListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ScriptExecutionsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**

@@ -23,7 +23,7 @@ public final class PlacementPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"ff\",\"provisioningState\":\"Canceled\"},\"id\":\"tmhheioqa\",\"name\":\"hvseufuqyrx\",\"type\":\"dlcgqlsismjqfr\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"lnzonzlrpiqywn\",\"provisioningState\":\"Failed\"},\"id\":\"szcofizeht\",\"name\":\"hgbjkvrelje\",\"type\":\"murvzm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class PlacementPoliciesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PlacementPolicy> response = manager.placementPolicies()
-            .list("jaeukmrsieekpn", "zaapmudqmeqwi", "pibudqwyxebeybpm", com.azure.core.util.Context.NONE);
+        PagedIterable<PlacementPolicy> response
+            = manager.placementPolicies().list("hcz", "xrxzbujrtr", "qvwre", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PlacementPolicyState.DISABLED, response.iterator().next().properties().state());
-        Assertions.assertEquals("ff", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(PlacementPolicyState.ENABLED, response.iterator().next().properties().state());
+        Assertions.assertEquals("lnzonzlrpiqywn", response.iterator().next().properties().displayName());
     }
 }

@@ -14,30 +14,30 @@ public final class WorkloadNetworkDnsServiceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDnsServiceUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"zkoj\",\"dnsServiceIp\":\"c\",\"defaultDnsZone\":\"foqouicybx\",\"fqdnZones\":[\"gszufoxciqopid\"],\"logLevel\":\"FATAL\",\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":7131609280783369360}}")
+            "{\"properties\":{\"displayName\":\"wae\",\"dnsServiceIp\":\"uzkopbminrfd\",\"defaultDnsZone\":\"yuhhziu\",\"fqdnZones\":[\"ozbhdmsmlmzq\",\"oftrmaequia\",\"xicslfao\",\"z\"],\"logLevel\":\"INFO\",\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":6031076886992856914}}")
             .toObject(WorkloadNetworkDnsServiceUpdate.class);
-        Assertions.assertEquals("zkoj", model.displayName());
-        Assertions.assertEquals("c", model.dnsServiceIp());
-        Assertions.assertEquals("foqouicybx", model.defaultDnsZone());
-        Assertions.assertEquals("gszufoxciqopid", model.fqdnZones().get(0));
-        Assertions.assertEquals(DnsServiceLogLevelEnum.FATAL, model.logLevel());
-        Assertions.assertEquals(7131609280783369360L, model.revision());
+        Assertions.assertEquals("wae", model.displayName());
+        Assertions.assertEquals("uzkopbminrfd", model.dnsServiceIp());
+        Assertions.assertEquals("yuhhziu", model.defaultDnsZone());
+        Assertions.assertEquals("ozbhdmsmlmzq", model.fqdnZones().get(0));
+        Assertions.assertEquals(DnsServiceLogLevelEnum.INFO, model.logLevel());
+        Assertions.assertEquals(6031076886992856914L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkDnsServiceUpdate model = new WorkloadNetworkDnsServiceUpdate().withDisplayName("zkoj")
-            .withDnsServiceIp("c")
-            .withDefaultDnsZone("foqouicybx")
-            .withFqdnZones(Arrays.asList("gszufoxciqopid"))
-            .withLogLevel(DnsServiceLogLevelEnum.FATAL)
-            .withRevision(7131609280783369360L);
+        WorkloadNetworkDnsServiceUpdate model = new WorkloadNetworkDnsServiceUpdate().withDisplayName("wae")
+            .withDnsServiceIp("uzkopbminrfd")
+            .withDefaultDnsZone("yuhhziu")
+            .withFqdnZones(Arrays.asList("ozbhdmsmlmzq", "oftrmaequia", "xicslfao", "z"))
+            .withLogLevel(DnsServiceLogLevelEnum.INFO)
+            .withRevision(6031076886992856914L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDnsServiceUpdate.class);
-        Assertions.assertEquals("zkoj", model.displayName());
-        Assertions.assertEquals("c", model.dnsServiceIp());
-        Assertions.assertEquals("foqouicybx", model.defaultDnsZone());
-        Assertions.assertEquals("gszufoxciqopid", model.fqdnZones().get(0));
-        Assertions.assertEquals(DnsServiceLogLevelEnum.FATAL, model.logLevel());
-        Assertions.assertEquals(7131609280783369360L, model.revision());
+        Assertions.assertEquals("wae", model.displayName());
+        Assertions.assertEquals("uzkopbminrfd", model.dnsServiceIp());
+        Assertions.assertEquals("yuhhziu", model.defaultDnsZone());
+        Assertions.assertEquals("ozbhdmsmlmzq", model.fqdnZones().get(0));
+        Assertions.assertEquals(DnsServiceLogLevelEnum.INFO, model.logLevel());
+        Assertions.assertEquals(6031076886992856914L, model.revision());
     }
 }

@@ -34,7 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.PlacementPoliciesClient;
 import com.azure.resourcemanager.avs.fluent.models.PlacementPolicyInner;
-import com.azure.resourcemanager.avs.models.PlacementPolicyListResult;
+import com.azure.resourcemanager.avs.models.PlacementPoliciesList;
 import com.azure.resourcemanager.avs.models.PlacementPolicyUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -76,7 +76,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/placementPolicies")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PlacementPolicyListResult>> list(@HostParam("$host") String endpoint,
+        Mono<Response<PlacementPoliciesList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("clusterName") String clusterName,
@@ -132,9 +132,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PlacementPolicyListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<PlacementPoliciesList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**

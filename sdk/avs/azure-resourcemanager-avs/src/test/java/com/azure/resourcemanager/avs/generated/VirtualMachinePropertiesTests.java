@@ -11,7 +11,7 @@ public final class VirtualMachinePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Canceled\",\"displayName\":\"abgy\",\"moRefId\":\"sbj\",\"folderPath\":\"zq\",\"restrictMovement\":\"Disabled\"}")
+            "{\"provisioningState\":\"Succeeded\",\"displayName\":\"p\",\"moRefId\":\"afkuwb\",\"folderPath\":\"nwbmeh\",\"restrictMovement\":\"Disabled\"}")
             .toObject(VirtualMachineProperties.class);
     }
 
