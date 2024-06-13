@@ -7,6 +7,11 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 
 import java.util.List;
 
+/**
+ * The common request options for operations. This class should be used with the addPolicy method in the {@link com.azure.cosmos.CosmosClientBuilder}
+ *  to change request options without restarting the application.
+ *
+ */
 public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
     private ConsistencyLevel consistencyLevel;

@@ -21,6 +21,7 @@ public class CosmosOperationDetails {
     /**
      * Applies the options in the CosmosCommonRequestOptions to the internal request options.
      *
+     * @param cosmosCommonRequestOptions the common request options for overriding.
      */
     public void setCommonOptions(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
         requestOptions.override(cosmosCommonRequestOptions);
