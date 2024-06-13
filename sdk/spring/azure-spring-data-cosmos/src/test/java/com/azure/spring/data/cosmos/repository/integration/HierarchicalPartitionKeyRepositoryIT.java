@@ -10,6 +10,8 @@ import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.HierarchicalPartitionKeyEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.HierarchicalPartitionKeyRepository;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -38,6 +40,9 @@ public class HierarchicalPartitionKeyRepositoryIT {
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
+    private static CosmosEntityInformation<HierarchicalPartitionKeyEntity, String> hierarchicalPartitionKeyEntityInformation
+        = new CosmosEntityInformation<>(HierarchicalPartitionKeyEntity.class);
+
     @Autowired
     private CosmosTemplate template;
 
@@ -50,6 +55,11 @@ public class HierarchicalPartitionKeyRepositoryIT {
     @Before
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, HierarchicalPartitionKeyEntity.class);
+    }
+
+    @AfterClass
+    public static void cleanUp() {
+        collectionManager.deleteContainer(hierarchicalPartitionKeyEntityInformation);
     }
 
     @Test
