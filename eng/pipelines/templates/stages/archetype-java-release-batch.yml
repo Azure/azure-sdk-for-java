@@ -51,6 +51,7 @@ stages:
           sdl:
             credscan:
               enabled: false
+              justificationForDisabling: 'Credscan was run earlier in the pipeline when we produced the artifacts. No reason to run here.'
 
         strategy:
           runOnce:
