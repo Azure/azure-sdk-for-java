@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
@@ -12,7 +14,7 @@ import java.util.List;
  *  to change request options without restarting the application.
  *
  */
-public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOptions {
+public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
     private ConsistencyLevel consistencyLevel;
     private Boolean contentResponseOnWriteEnabled;

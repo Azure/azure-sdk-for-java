@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosDiagnosticsContext;
@@ -8,7 +10,7 @@ import com.azure.cosmos.implementation.OverridableRequestOptions;
  * Encapsulates the details of an operation and allows for overriding some properties in the internal request options.
  *
  */
-public class CosmosOperationDetails {
+public final class CosmosOperationDetails {
 
     private final OverridableRequestOptions requestOptions;
     private final CosmosDiagnosticsContext cosmosDiagnosticsContext;
@@ -32,7 +34,7 @@ public class CosmosOperationDetails {
      *
      * @return the internal request options.
      */
-    public ICosmosCommonRequestOptions getRequestOptions() {
+    public ReadOnlyCommonRequestOptions getRequestOptions() {
         return requestOptions;
     }
 
