@@ -46,6 +46,12 @@ stages:
           name: azsdk-pool-mms-ubuntu-2004-general
           image: azsdk-pool-mms-ubuntu-2004-1espt
           os: linux
+
+        templateContext:
+          sdl:
+            credscan:
+              suppressionsFile: ""
+
         strategy:
           runOnce:
             deploy:
