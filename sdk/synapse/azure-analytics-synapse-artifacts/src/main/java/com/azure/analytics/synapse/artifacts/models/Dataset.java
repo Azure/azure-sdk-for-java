@@ -5,14 +5,12 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,176 +18,72 @@ import java.util.Map;
  * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
  * folders, and documents.
  */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = Dataset.class)
-@JsonTypeName("Dataset")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class),
-    @JsonSubTypes.Type(name = "Avro", value = AvroDataset.class),
-    @JsonSubTypes.Type(name = "Excel", value = ExcelDataset.class),
-    @JsonSubTypes.Type(name = "Parquet", value = ParquetDataset.class),
-    @JsonSubTypes.Type(name = "DelimitedText", value = DelimitedTextDataset.class),
-    @JsonSubTypes.Type(name = "Json", value = JsonDataset.class),
-    @JsonSubTypes.Type(name = "Xml", value = XmlDataset.class),
-    @JsonSubTypes.Type(name = "Orc", value = OrcDataset.class),
-    @JsonSubTypes.Type(name = "Binary", value = BinaryDataset.class),
-    @JsonSubTypes.Type(name = "AzureBlob", value = AzureBlobDataset.class),
-    @JsonSubTypes.Type(name = "AzureTable", value = AzureTableDataset.class),
-    @JsonSubTypes.Type(name = "AzureSqlTable", value = AzureSqlTableDataset.class),
-    @JsonSubTypes.Type(name = "AzureSqlMITable", value = AzureSqlMITableDataset.class),
-    @JsonSubTypes.Type(name = "AzureSqlDWTable", value = AzureSqlDWTableDataset.class),
-    @JsonSubTypes.Type(name = "CassandraTable", value = CassandraTableDataset.class),
-    @JsonSubTypes.Type(name = "CustomDataset", value = CustomDataset.class),
-    @JsonSubTypes.Type(name = "CosmosDbSqlApiCollection", value = CosmosDbSqlApiCollectionDataset.class),
-    @JsonSubTypes.Type(name = "DocumentDbCollection", value = DocumentDbCollectionDataset.class),
-    @JsonSubTypes.Type(name = "DynamicsEntity", value = DynamicsEntityDataset.class),
-    @JsonSubTypes.Type(name = "DynamicsCrmEntity", value = DynamicsCrmEntityDataset.class),
-    @JsonSubTypes.Type(name = "CommonDataServiceForAppsEntity", value = CommonDataServiceForAppsEntityDataset.class),
-    @JsonSubTypes.Type(name = "AzureDataLakeStoreFile", value = AzureDataLakeStoreDataset.class),
-    @JsonSubTypes.Type(name = "AzureBlobFSFile", value = AzureBlobFSDataset.class),
-    @JsonSubTypes.Type(name = "Office365Table", value = Office365Dataset.class),
-    @JsonSubTypes.Type(name = "FileShare", value = FileShareDataset.class),
-    @JsonSubTypes.Type(name = "MongoDbCollection", value = MongoDbCollectionDataset.class),
-    @JsonSubTypes.Type(name = "MongoDbAtlasCollection", value = MongoDbAtlasCollectionDataset.class),
-    @JsonSubTypes.Type(name = "MongoDbV2Collection", value = MongoDbV2CollectionDataset.class),
-    @JsonSubTypes.Type(name = "CosmosDbMongoDbApiCollection", value = CosmosDbMongoDbApiCollectionDataset.class),
-    @JsonSubTypes.Type(name = "ODataResource", value = ODataResourceDataset.class),
-    @JsonSubTypes.Type(name = "OracleTable", value = OracleTableDataset.class),
-    @JsonSubTypes.Type(name = "AmazonRdsForOracleTable", value = AmazonRdsForOracleTableDataset.class),
-    @JsonSubTypes.Type(name = "TeradataTable", value = TeradataTableDataset.class),
-    @JsonSubTypes.Type(name = "AzureMySqlTable", value = AzureMySqlTableDataset.class),
-    @JsonSubTypes.Type(name = "AmazonRedshiftTable", value = AmazonRedshiftTableDataset.class),
-    @JsonSubTypes.Type(name = "Db2Table", value = Db2TableDataset.class),
-    @JsonSubTypes.Type(name = "RelationalTable", value = RelationalTableDataset.class),
-    @JsonSubTypes.Type(name = "InformixTable", value = InformixTableDataset.class),
-    @JsonSubTypes.Type(name = "OdbcTable", value = OdbcTableDataset.class),
-    @JsonSubTypes.Type(name = "MySqlTable", value = MySqlTableDataset.class),
-    @JsonSubTypes.Type(name = "PostgreSqlTable", value = PostgreSqlTableDataset.class),
-    @JsonSubTypes.Type(name = "PostgreSqlV2Table", value = PostgreSqlV2TableDataset.class),
-    @JsonSubTypes.Type(name = "MicrosoftAccessTable", value = MicrosoftAccessTableDataset.class),
-    @JsonSubTypes.Type(name = "SalesforceObject", value = SalesforceObjectDataset.class),
-    @JsonSubTypes.Type(name = "SalesforceServiceCloudObject", value = SalesforceServiceCloudObjectDataset.class),
-    @JsonSubTypes.Type(name = "SybaseTable", value = SybaseTableDataset.class),
-    @JsonSubTypes.Type(name = "SapBwCube", value = SapBwCubeDataset.class),
-    @JsonSubTypes.Type(name = "SapCloudForCustomerResource", value = SapCloudForCustomerResourceDataset.class),
-    @JsonSubTypes.Type(name = "SapEccResource", value = SapEccResourceDataset.class),
-    @JsonSubTypes.Type(name = "SapHanaTable", value = SapHanaTableDataset.class),
-    @JsonSubTypes.Type(name = "SapOpenHubTable", value = SapOpenHubTableDataset.class),
-    @JsonSubTypes.Type(name = "SqlServerTable", value = SqlServerTableDataset.class),
-    @JsonSubTypes.Type(name = "AmazonRdsForSqlServerTable", value = AmazonRdsForSqlServerTableDataset.class),
-    @JsonSubTypes.Type(name = "RestResource", value = RestResourceDataset.class),
-    @JsonSubTypes.Type(name = "SapTableResource", value = SapTableResourceDataset.class),
-    @JsonSubTypes.Type(name = "SapOdpResource", value = SapOdpResourceDataset.class),
-    @JsonSubTypes.Type(name = "WebTable", value = WebTableDataset.class),
-    @JsonSubTypes.Type(name = "AzureSearchIndex", value = AzureSearchIndexDataset.class),
-    @JsonSubTypes.Type(name = "HttpFile", value = HttpDataset.class),
-    @JsonSubTypes.Type(name = "AmazonMWSObject", value = AmazonMWSObjectDataset.class),
-    @JsonSubTypes.Type(name = "AzurePostgreSqlTable", value = AzurePostgreSqlTableDataset.class),
-    @JsonSubTypes.Type(name = "ConcurObject", value = ConcurObjectDataset.class),
-    @JsonSubTypes.Type(name = "CouchbaseTable", value = CouchbaseTableDataset.class),
-    @JsonSubTypes.Type(name = "DrillTable", value = DrillTableDataset.class),
-    @JsonSubTypes.Type(name = "EloquaObject", value = EloquaObjectDataset.class),
-    @JsonSubTypes.Type(name = "GoogleBigQueryObject", value = GoogleBigQueryObjectDataset.class),
-    @JsonSubTypes.Type(name = "GoogleBigQueryV2Object", value = GoogleBigQueryV2ObjectDataset.class),
-    @JsonSubTypes.Type(name = "GreenplumTable", value = GreenplumTableDataset.class),
-    @JsonSubTypes.Type(name = "HBaseObject", value = HBaseObjectDataset.class),
-    @JsonSubTypes.Type(name = "HiveObject", value = HiveObjectDataset.class),
-    @JsonSubTypes.Type(name = "HubspotObject", value = HubspotObjectDataset.class),
-    @JsonSubTypes.Type(name = "ImpalaObject", value = ImpalaObjectDataset.class),
-    @JsonSubTypes.Type(name = "JiraObject", value = JiraObjectDataset.class),
-    @JsonSubTypes.Type(name = "MagentoObject", value = MagentoObjectDataset.class),
-    @JsonSubTypes.Type(name = "MariaDBTable", value = MariaDBTableDataset.class),
-    @JsonSubTypes.Type(name = "AzureMariaDBTable", value = AzureMariaDBTableDataset.class),
-    @JsonSubTypes.Type(name = "MarketoObject", value = MarketoObjectDataset.class),
-    @JsonSubTypes.Type(name = "PaypalObject", value = PaypalObjectDataset.class),
-    @JsonSubTypes.Type(name = "PhoenixObject", value = PhoenixObjectDataset.class),
-    @JsonSubTypes.Type(name = "PrestoObject", value = PrestoObjectDataset.class),
-    @JsonSubTypes.Type(name = "QuickBooksObject", value = QuickBooksObjectDataset.class),
-    @JsonSubTypes.Type(name = "ServiceNowObject", value = ServiceNowObjectDataset.class),
-    @JsonSubTypes.Type(name = "ShopifyObject", value = ShopifyObjectDataset.class),
-    @JsonSubTypes.Type(name = "SparkObject", value = SparkObjectDataset.class),
-    @JsonSubTypes.Type(name = "SquareObject", value = SquareObjectDataset.class),
-    @JsonSubTypes.Type(name = "XeroObject", value = XeroObjectDataset.class),
-    @JsonSubTypes.Type(name = "ZohoObject", value = ZohoObjectDataset.class),
-    @JsonSubTypes.Type(name = "NetezzaTable", value = NetezzaTableDataset.class),
-    @JsonSubTypes.Type(name = "VerticaTable", value = VerticaTableDataset.class),
-    @JsonSubTypes.Type(name = "SalesforceMarketingCloudObject", value = SalesforceMarketingCloudObjectDataset.class),
-    @JsonSubTypes.Type(name = "ResponsysObject", value = ResponsysObjectDataset.class),
-    @JsonSubTypes.Type(name = "DynamicsAXResource", value = DynamicsAXResourceDataset.class),
-    @JsonSubTypes.Type(name = "OracleServiceCloudObject", value = OracleServiceCloudObjectDataset.class),
-    @JsonSubTypes.Type(name = "AzureDataExplorerTable", value = AzureDataExplorerTableDataset.class),
-    @JsonSubTypes.Type(name = "GoogleAdWordsObject", value = GoogleAdWordsObjectDataset.class),
-    @JsonSubTypes.Type(name = "SnowflakeTable", value = SnowflakeDataset.class),
-    @JsonSubTypes.Type(name = "SnowflakeV2Table", value = SnowflakeV2Dataset.class),
-    @JsonSubTypes.Type(name = "SharePointOnlineListResource", value = SharePointOnlineListResourceDataset.class),
-    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeDataset", value = AzureDatabricksDeltaLakeDataset.class),
-    @JsonSubTypes.Type(name = "LakeHouseTable", value = LakeHouseTableDataset.class),
-    @JsonSubTypes.Type(name = "SalesforceV2Object", value = SalesforceV2ObjectDataset.class),
-    @JsonSubTypes.Type(name = "SalesforceServiceCloudV2Object", value = SalesforceServiceCloudV2ObjectDataset.class),
-    @JsonSubTypes.Type(name = "WarehouseTable", value = WarehouseTableDataset.class),
-    @JsonSubTypes.Type(name = "ServiceNowV2Object", value = ServiceNowV2ObjectDataset.class)
-})
 @Fluent
-public class Dataset {
+public class Dataset implements JsonSerializable<Dataset> {
+    /*
+     * Type of dataset.
+     */
+    private String type;
+
     /*
      * Dataset description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType:
-     * DatasetDataElement.
+     * Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
      */
-    @JsonProperty(value = "structure")
     private Object structure;
 
     /*
-     * Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array),
-     * itemType: DatasetSchemaDataElement.
+     * Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType: DatasetSchemaDataElement.
      */
-    @JsonProperty(value = "schema")
     private Object schema;
 
     /*
      * Linked service reference.
      */
-    @JsonProperty(value = "linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;
 
     /*
      * Parameters for dataset.
      */
-    @JsonProperty(value = "parameters")
     private Map<String, ParameterSpecification> parameters;
 
     /*
      * List of tags that can be used for describing the Dataset.
      */
-    @JsonProperty(value = "annotations")
     private List<Object> annotations;
 
     /*
      * The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
      */
-    @JsonProperty(value = "folder")
     private DatasetFolder folder;
 
     /*
-     * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
-     * folders, and documents.
+     * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files, folders, and documents.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of Dataset class. */
-    public Dataset() {}
+    /**
+     * Creates an instance of Dataset class.
+     */
+    public Dataset() {
+        this.type = "Dataset";
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the description property: Dataset description.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -198,7 +92,7 @@ public class Dataset {
 
     /**
      * Set the description property: Dataset description.
-     *
+     * 
      * @param description the description value to set.
      * @return the Dataset object itself.
      */
@@ -210,7 +104,7 @@ public class Dataset {
     /**
      * Get the structure property: Columns that define the structure of the dataset. Type: array (or Expression with
      * resultType array), itemType: DatasetDataElement.
-     *
+     * 
      * @return the structure value.
      */
     public Object getStructure() {
@@ -220,7 +114,7 @@ public class Dataset {
     /**
      * Set the structure property: Columns that define the structure of the dataset. Type: array (or Expression with
      * resultType array), itemType: DatasetDataElement.
-     *
+     * 
      * @param structure the structure value to set.
      * @return the Dataset object itself.
      */
@@ -232,7 +126,7 @@ public class Dataset {
     /**
      * Get the schema property: Columns that define the physical type schema of the dataset. Type: array (or Expression
      * with resultType array), itemType: DatasetSchemaDataElement.
-     *
+     * 
      * @return the schema value.
      */
     public Object getSchema() {
@@ -242,7 +136,7 @@ public class Dataset {
     /**
      * Set the schema property: Columns that define the physical type schema of the dataset. Type: array (or Expression
      * with resultType array), itemType: DatasetSchemaDataElement.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the Dataset object itself.
      */
@@ -253,7 +147,7 @@ public class Dataset {
 
     /**
      * Get the linkedServiceName property: Linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference getLinkedServiceName() {
@@ -262,7 +156,7 @@ public class Dataset {
 
     /**
      * Set the linkedServiceName property: Linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the Dataset object itself.
      */
@@ -273,7 +167,7 @@ public class Dataset {
 
     /**
      * Get the parameters property: Parameters for dataset.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, ParameterSpecification> getParameters() {
@@ -282,7 +176,7 @@ public class Dataset {
 
     /**
      * Set the parameters property: Parameters for dataset.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the Dataset object itself.
      */
@@ -293,7 +187,7 @@ public class Dataset {
 
     /**
      * Get the annotations property: List of tags that can be used for describing the Dataset.
-     *
+     * 
      * @return the annotations value.
      */
     public List<Object> getAnnotations() {
@@ -302,7 +196,7 @@ public class Dataset {
 
     /**
      * Set the annotations property: List of tags that can be used for describing the Dataset.
-     *
+     * 
      * @param annotations the annotations value to set.
      * @return the Dataset object itself.
      */
@@ -314,7 +208,7 @@ public class Dataset {
     /**
      * Get the folder property: The folder that this Dataset is in. If not specified, Dataset will appear at the root
      * level.
-     *
+     * 
      * @return the folder value.
      */
     public DatasetFolder getFolder() {
@@ -324,7 +218,7 @@ public class Dataset {
     /**
      * Set the folder property: The folder that this Dataset is in. If not specified, Dataset will appear at the root
      * level.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the Dataset object itself.
      */
@@ -336,10 +230,9 @@ public class Dataset {
     /**
      * Get the additionalProperties property: The Azure Data Factory nested object which identifies data within
      * different data stores, such as tables, files, folders, and documents.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -347,7 +240,7 @@ public class Dataset {
     /**
      * Set the additionalProperties property: The Azure Data Factory nested object which identifies data within
      * different data stores, such as tables, files, folders, and documents.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the Dataset object itself.
      */
@@ -356,11 +249,306 @@ public class Dataset {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeUntypedField("structure", this.structure);
+        jsonWriter.writeUntypedField("schema", this.schema);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", this.annotations, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", this.folder);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Dataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Dataset if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Dataset.
+     */
+    public static Dataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AmazonS3Object".equals(discriminatorValue)) {
+                    return AmazonS3Dataset.fromJson(readerToUse.reset());
+                } else if ("Avro".equals(discriminatorValue)) {
+                    return AvroDataset.fromJson(readerToUse.reset());
+                } else if ("Excel".equals(discriminatorValue)) {
+                    return ExcelDataset.fromJson(readerToUse.reset());
+                } else if ("Parquet".equals(discriminatorValue)) {
+                    return ParquetDataset.fromJson(readerToUse.reset());
+                } else if ("DelimitedText".equals(discriminatorValue)) {
+                    return DelimitedTextDataset.fromJson(readerToUse.reset());
+                } else if ("Json".equals(discriminatorValue)) {
+                    return JsonDataset.fromJson(readerToUse.reset());
+                } else if ("Xml".equals(discriminatorValue)) {
+                    return XmlDataset.fromJson(readerToUse.reset());
+                } else if ("Orc".equals(discriminatorValue)) {
+                    return OrcDataset.fromJson(readerToUse.reset());
+                } else if ("Binary".equals(discriminatorValue)) {
+                    return BinaryDataset.fromJson(readerToUse.reset());
+                } else if ("AzureBlob".equals(discriminatorValue)) {
+                    return AzureBlobDataset.fromJson(readerToUse.reset());
+                } else if ("AzureTable".equals(discriminatorValue)) {
+                    return AzureTableDataset.fromJson(readerToUse.reset());
+                } else if ("AzureSqlTable".equals(discriminatorValue)) {
+                    return AzureSqlTableDataset.fromJson(readerToUse.reset());
+                } else if ("AzureSqlMITable".equals(discriminatorValue)) {
+                    return AzureSqlMITableDataset.fromJson(readerToUse.reset());
+                } else if ("AzureSqlDWTable".equals(discriminatorValue)) {
+                    return AzureSqlDWTableDataset.fromJson(readerToUse.reset());
+                } else if ("CassandraTable".equals(discriminatorValue)) {
+                    return CassandraTableDataset.fromJson(readerToUse.reset());
+                } else if ("CustomDataset".equals(discriminatorValue)) {
+                    return CustomDataset.fromJson(readerToUse.reset());
+                } else if ("CosmosDbSqlApiCollection".equals(discriminatorValue)) {
+                    return CosmosDbSqlApiCollectionDataset.fromJson(readerToUse.reset());
+                } else if ("DocumentDbCollection".equals(discriminatorValue)) {
+                    return DocumentDbCollectionDataset.fromJson(readerToUse.reset());
+                } else if ("DynamicsEntity".equals(discriminatorValue)) {
+                    return DynamicsEntityDataset.fromJson(readerToUse.reset());
+                } else if ("DynamicsCrmEntity".equals(discriminatorValue)) {
+                    return DynamicsCrmEntityDataset.fromJson(readerToUse.reset());
+                } else if ("CommonDataServiceForAppsEntity".equals(discriminatorValue)) {
+                    return CommonDataServiceForAppsEntityDataset.fromJson(readerToUse.reset());
+                } else if ("AzureDataLakeStoreFile".equals(discriminatorValue)) {
+                    return AzureDataLakeStoreDataset.fromJson(readerToUse.reset());
+                } else if ("AzureBlobFSFile".equals(discriminatorValue)) {
+                    return AzureBlobFSDataset.fromJson(readerToUse.reset());
+                } else if ("Office365Table".equals(discriminatorValue)) {
+                    return Office365Dataset.fromJson(readerToUse.reset());
+                } else if ("FileShare".equals(discriminatorValue)) {
+                    return FileShareDataset.fromJson(readerToUse.reset());
+                } else if ("MongoDbCollection".equals(discriminatorValue)) {
+                    return MongoDbCollectionDataset.fromJson(readerToUse.reset());
+                } else if ("MongoDbAtlasCollection".equals(discriminatorValue)) {
+                    return MongoDbAtlasCollectionDataset.fromJson(readerToUse.reset());
+                } else if ("MongoDbV2Collection".equals(discriminatorValue)) {
+                    return MongoDbV2CollectionDataset.fromJson(readerToUse.reset());
+                } else if ("CosmosDbMongoDbApiCollection".equals(discriminatorValue)) {
+                    return CosmosDbMongoDbApiCollectionDataset.fromJson(readerToUse.reset());
+                } else if ("ODataResource".equals(discriminatorValue)) {
+                    return ODataResourceDataset.fromJson(readerToUse.reset());
+                } else if ("OracleTable".equals(discriminatorValue)) {
+                    return OracleTableDataset.fromJson(readerToUse.reset());
+                } else if ("AmazonRdsForOracleTable".equals(discriminatorValue)) {
+                    return AmazonRdsForOracleTableDataset.fromJson(readerToUse.reset());
+                } else if ("TeradataTable".equals(discriminatorValue)) {
+                    return TeradataTableDataset.fromJson(readerToUse.reset());
+                } else if ("AzureMySqlTable".equals(discriminatorValue)) {
+                    return AzureMySqlTableDataset.fromJson(readerToUse.reset());
+                } else if ("AmazonRedshiftTable".equals(discriminatorValue)) {
+                    return AmazonRedshiftTableDataset.fromJson(readerToUse.reset());
+                } else if ("Db2Table".equals(discriminatorValue)) {
+                    return Db2TableDataset.fromJson(readerToUse.reset());
+                } else if ("RelationalTable".equals(discriminatorValue)) {
+                    return RelationalTableDataset.fromJson(readerToUse.reset());
+                } else if ("InformixTable".equals(discriminatorValue)) {
+                    return InformixTableDataset.fromJson(readerToUse.reset());
+                } else if ("OdbcTable".equals(discriminatorValue)) {
+                    return OdbcTableDataset.fromJson(readerToUse.reset());
+                } else if ("MySqlTable".equals(discriminatorValue)) {
+                    return MySqlTableDataset.fromJson(readerToUse.reset());
+                } else if ("PostgreSqlTable".equals(discriminatorValue)) {
+                    return PostgreSqlTableDataset.fromJson(readerToUse.reset());
+                } else if ("PostgreSqlV2Table".equals(discriminatorValue)) {
+                    return PostgreSqlV2TableDataset.fromJson(readerToUse.reset());
+                } else if ("MicrosoftAccessTable".equals(discriminatorValue)) {
+                    return MicrosoftAccessTableDataset.fromJson(readerToUse.reset());
+                } else if ("SalesforceObject".equals(discriminatorValue)) {
+                    return SalesforceObjectDataset.fromJson(readerToUse.reset());
+                } else if ("SalesforceServiceCloudObject".equals(discriminatorValue)) {
+                    return SalesforceServiceCloudObjectDataset.fromJson(readerToUse.reset());
+                } else if ("SybaseTable".equals(discriminatorValue)) {
+                    return SybaseTableDataset.fromJson(readerToUse.reset());
+                } else if ("SapBwCube".equals(discriminatorValue)) {
+                    return SapBwCubeDataset.fromJson(readerToUse.reset());
+                } else if ("SapCloudForCustomerResource".equals(discriminatorValue)) {
+                    return SapCloudForCustomerResourceDataset.fromJson(readerToUse.reset());
+                } else if ("SapEccResource".equals(discriminatorValue)) {
+                    return SapEccResourceDataset.fromJson(readerToUse.reset());
+                } else if ("SapHanaTable".equals(discriminatorValue)) {
+                    return SapHanaTableDataset.fromJson(readerToUse.reset());
+                } else if ("SapOpenHubTable".equals(discriminatorValue)) {
+                    return SapOpenHubTableDataset.fromJson(readerToUse.reset());
+                } else if ("SqlServerTable".equals(discriminatorValue)) {
+                    return SqlServerTableDataset.fromJson(readerToUse.reset());
+                } else if ("AmazonRdsForSqlServerTable".equals(discriminatorValue)) {
+                    return AmazonRdsForSqlServerTableDataset.fromJson(readerToUse.reset());
+                } else if ("RestResource".equals(discriminatorValue)) {
+                    return RestResourceDataset.fromJson(readerToUse.reset());
+                } else if ("SapTableResource".equals(discriminatorValue)) {
+                    return SapTableResourceDataset.fromJson(readerToUse.reset());
+                } else if ("SapOdpResource".equals(discriminatorValue)) {
+                    return SapOdpResourceDataset.fromJson(readerToUse.reset());
+                } else if ("WebTable".equals(discriminatorValue)) {
+                    return WebTableDataset.fromJson(readerToUse.reset());
+                } else if ("AzureSearchIndex".equals(discriminatorValue)) {
+                    return AzureSearchIndexDataset.fromJson(readerToUse.reset());
+                } else if ("HttpFile".equals(discriminatorValue)) {
+                    return HttpDataset.fromJson(readerToUse.reset());
+                } else if ("AmazonMWSObject".equals(discriminatorValue)) {
+                    return AmazonMWSObjectDataset.fromJson(readerToUse.reset());
+                } else if ("AzurePostgreSqlTable".equals(discriminatorValue)) {
+                    return AzurePostgreSqlTableDataset.fromJson(readerToUse.reset());
+                } else if ("ConcurObject".equals(discriminatorValue)) {
+                    return ConcurObjectDataset.fromJson(readerToUse.reset());
+                } else if ("CouchbaseTable".equals(discriminatorValue)) {
+                    return CouchbaseTableDataset.fromJson(readerToUse.reset());
+                } else if ("DrillTable".equals(discriminatorValue)) {
+                    return DrillTableDataset.fromJson(readerToUse.reset());
+                } else if ("EloquaObject".equals(discriminatorValue)) {
+                    return EloquaObjectDataset.fromJson(readerToUse.reset());
+                } else if ("GoogleBigQueryObject".equals(discriminatorValue)) {
+                    return GoogleBigQueryObjectDataset.fromJson(readerToUse.reset());
+                } else if ("GoogleBigQueryV2Object".equals(discriminatorValue)) {
+                    return GoogleBigQueryV2ObjectDataset.fromJson(readerToUse.reset());
+                } else if ("GreenplumTable".equals(discriminatorValue)) {
+                    return GreenplumTableDataset.fromJson(readerToUse.reset());
+                } else if ("HBaseObject".equals(discriminatorValue)) {
+                    return HBaseObjectDataset.fromJson(readerToUse.reset());
+                } else if ("HiveObject".equals(discriminatorValue)) {
+                    return HiveObjectDataset.fromJson(readerToUse.reset());
+                } else if ("HubspotObject".equals(discriminatorValue)) {
+                    return HubspotObjectDataset.fromJson(readerToUse.reset());
+                } else if ("ImpalaObject".equals(discriminatorValue)) {
+                    return ImpalaObjectDataset.fromJson(readerToUse.reset());
+                } else if ("JiraObject".equals(discriminatorValue)) {
+                    return JiraObjectDataset.fromJson(readerToUse.reset());
+                } else if ("MagentoObject".equals(discriminatorValue)) {
+                    return MagentoObjectDataset.fromJson(readerToUse.reset());
+                } else if ("MariaDBTable".equals(discriminatorValue)) {
+                    return MariaDBTableDataset.fromJson(readerToUse.reset());
+                } else if ("AzureMariaDBTable".equals(discriminatorValue)) {
+                    return AzureMariaDBTableDataset.fromJson(readerToUse.reset());
+                } else if ("MarketoObject".equals(discriminatorValue)) {
+                    return MarketoObjectDataset.fromJson(readerToUse.reset());
+                } else if ("PaypalObject".equals(discriminatorValue)) {
+                    return PaypalObjectDataset.fromJson(readerToUse.reset());
+                } else if ("PhoenixObject".equals(discriminatorValue)) {
+                    return PhoenixObjectDataset.fromJson(readerToUse.reset());
+                } else if ("PrestoObject".equals(discriminatorValue)) {
+                    return PrestoObjectDataset.fromJson(readerToUse.reset());
+                } else if ("QuickBooksObject".equals(discriminatorValue)) {
+                    return QuickBooksObjectDataset.fromJson(readerToUse.reset());
+                } else if ("ServiceNowObject".equals(discriminatorValue)) {
+                    return ServiceNowObjectDataset.fromJson(readerToUse.reset());
+                } else if ("ShopifyObject".equals(discriminatorValue)) {
+                    return ShopifyObjectDataset.fromJson(readerToUse.reset());
+                } else if ("SparkObject".equals(discriminatorValue)) {
+                    return SparkObjectDataset.fromJson(readerToUse.reset());
+                } else if ("SquareObject".equals(discriminatorValue)) {
+                    return SquareObjectDataset.fromJson(readerToUse.reset());
+                } else if ("XeroObject".equals(discriminatorValue)) {
+                    return XeroObjectDataset.fromJson(readerToUse.reset());
+                } else if ("ZohoObject".equals(discriminatorValue)) {
+                    return ZohoObjectDataset.fromJson(readerToUse.reset());
+                } else if ("NetezzaTable".equals(discriminatorValue)) {
+                    return NetezzaTableDataset.fromJson(readerToUse.reset());
+                } else if ("VerticaTable".equals(discriminatorValue)) {
+                    return VerticaTableDataset.fromJson(readerToUse.reset());
+                } else if ("SalesforceMarketingCloudObject".equals(discriminatorValue)) {
+                    return SalesforceMarketingCloudObjectDataset.fromJson(readerToUse.reset());
+                } else if ("ResponsysObject".equals(discriminatorValue)) {
+                    return ResponsysObjectDataset.fromJson(readerToUse.reset());
+                } else if ("DynamicsAXResource".equals(discriminatorValue)) {
+                    return DynamicsAXResourceDataset.fromJson(readerToUse.reset());
+                } else if ("OracleServiceCloudObject".equals(discriminatorValue)) {
+                    return OracleServiceCloudObjectDataset.fromJson(readerToUse.reset());
+                } else if ("AzureDataExplorerTable".equals(discriminatorValue)) {
+                    return AzureDataExplorerTableDataset.fromJson(readerToUse.reset());
+                } else if ("GoogleAdWordsObject".equals(discriminatorValue)) {
+                    return GoogleAdWordsObjectDataset.fromJson(readerToUse.reset());
+                } else if ("SnowflakeTable".equals(discriminatorValue)) {
+                    return SnowflakeDataset.fromJson(readerToUse.reset());
+                } else if ("SnowflakeV2Table".equals(discriminatorValue)) {
+                    return SnowflakeV2Dataset.fromJson(readerToUse.reset());
+                } else if ("SharePointOnlineListResource".equals(discriminatorValue)) {
+                    return SharePointOnlineListResourceDataset.fromJson(readerToUse.reset());
+                } else if ("AzureDatabricksDeltaLakeDataset".equals(discriminatorValue)) {
+                    return AzureDatabricksDeltaLakeDataset.fromJson(readerToUse.reset());
+                } else if ("LakeHouseTable".equals(discriminatorValue)) {
+                    return LakeHouseTableDataset.fromJson(readerToUse.reset());
+                } else if ("SalesforceV2Object".equals(discriminatorValue)) {
+                    return SalesforceV2ObjectDataset.fromJson(readerToUse.reset());
+                } else if ("SalesforceServiceCloudV2Object".equals(discriminatorValue)) {
+                    return SalesforceServiceCloudV2ObjectDataset.fromJson(readerToUse.reset());
+                } else if ("WarehouseTable".equals(discriminatorValue)) {
+                    return WarehouseTableDataset.fromJson(readerToUse.reset());
+                } else if ("ServiceNowV2Object".equals(discriminatorValue)) {
+                    return ServiceNowV2ObjectDataset.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static Dataset fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Dataset deserializedDataset = new Dataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedDataset.linkedServiceName = LinkedServiceReference.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataset.type = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDataset.description = reader.getString();
+                } else if ("structure".equals(fieldName)) {
+                    deserializedDataset.structure = reader.readUntyped();
+                } else if ("schema".equals(fieldName)) {
+                    deserializedDataset.schema = reader.readUntyped();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedDataset.parameters = parameters;
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedDataset.annotations = annotations;
+                } else if ("folder".equals(fieldName)) {
+                    deserializedDataset.folder = DatasetFolder.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDataset.additionalProperties = additionalProperties;
+
+            return deserializedDataset;
+        });
     }
 }
