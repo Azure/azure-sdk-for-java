@@ -16,7 +16,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.data.appconfiguration.implementation.Utility;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
@@ -38,13 +37,12 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -1563,18 +1561,23 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 .stream()
                 .forEach(configurationSetting -> client.deleteConfigurationSetting(configurationSetting));
         // Prepare two settings with different labels
-        String key = getKey();
-        String label = getLabel();
-        String label2 = getLabel();
-        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label);
-        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label2);
-        assertConfigurationEquals(setting, client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue());
-        assertConfigurationEquals(setting2, client.addConfigurationSettingWithResponse(setting2, Context.NONE).getValue());
-        // Listing settings with label filter
-        PagedIterable<String> labels = client.listLabels(new LabelSelector().setLabelFilter(label));
+        List<ConfigurationSetting> preparedSettings = listLabelsRunner(setting -> assertConfigurationEquals(setting,
+                client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue()));
+        ConfigurationSetting setting = preparedSettings.get(0);
+        ConfigurationSetting setting2 = preparedSettings.get(1);
+
+        // List only the first label var, 'label'
+        String label = setting.getLabel();
+        PagedIterable<String> labels = client.listLabels(new LabelSelector().setLabelFilter(setting.getLabel()));
         assertEquals(1, labels.stream().count());
         assertEquals(label, labels.iterator().next());
-        // Listing all labels
+        // List labels with wildcard label filter
+        String label2 = setting2.getLabel();
+        PagedIterable<String> wildCardLabels = client.listLabels(new LabelSelector().setLabelFilter("label*"));
+        List<String> collect = wildCardLabels.stream().collect(Collectors.toList());
+        assertTrue(collect.contains(label));
+        assertTrue(collect.contains(label2));
+        // List all labels
         PagedIterable<String> allLabels = client.listLabels(null);
         assertTrue(allLabels.stream().count() >= 2);
     }
@@ -1588,27 +1591,21 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 .stream()
                 .forEach(configurationSetting -> client.deleteConfigurationSetting(configurationSetting));
         // Prepare two settings with different tags
-        String key = getKey();
-        String key2 = getKey();
-        Map<String, String> tags = new HashMap<>();
-        tags.put(key, "tagValue");
-        Map<String, String> tags2 = new HashMap<>();
-        tags2.put(key, "tagValue");
-        tags2.put(key2, "tagValue");
-        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setTags(tags);
-        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key2).setValue("value").setTags(tags2);
-        assertConfigurationEquals(setting, client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue());
-        assertConfigurationEquals(setting2, client.addConfigurationSettingWithResponse(setting2, Context.NONE).getValue());
+        List<ConfigurationSetting> preparedSettings = listSettingByTagsFilterRunner(setting ->
+                assertConfigurationEquals(setting,
+                        client.addConfigurationSettingWithResponse(setting, Context.NONE).getValue()));
+        ConfigurationSetting setting = preparedSettings.get(0);
+        ConfigurationSetting setting2 = preparedSettings.get(1);
 
-        // Test list setting by first tags filter
-        List<String> tagsFilterInString1 = Utility.getTagsFilterInString(tags);
-        PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(new SettingSelector().setTagsFilter(tagsFilterInString1));
+        // List setting by first tags filter, it should return all settings
+        PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(
+                new SettingSelector().setTagsFilter(getTagsFilterInString(setting.getTags())));
         Iterator<ConfigurationSetting> iterator = configurationSettings.iterator();
         assertConfigurationEquals(setting, iterator.next());
         assertConfigurationEquals(setting2, iterator.next());
-        // Test list setting by second tags filter
-        List<String> tagsFilterInString2 = Utility.getTagsFilterInString(tags2);
-        PagedIterable<ConfigurationSetting> configurationSettings2 = client.listConfigurationSettings(new SettingSelector().setTagsFilter(tagsFilterInString2));
+        // List setting by second tags filter, it should return only one setting
+        PagedIterable<ConfigurationSetting> configurationSettings2 = client.listConfigurationSettings(
+                new SettingSelector().setTagsFilter(getTagsFilterInString(setting2.getTags())));
         assertEquals(1, configurationSettings2.stream().count());
         assertConfigurationEquals(setting2, configurationSettings2.iterator().next());
     }
@@ -1617,23 +1614,16 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listRevisionsWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
-        final String keyName = getKey();
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("MyTag", "TagValue");
-        tags.put("AnotherTag", "AnotherTagValue");
-
-        final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue").setTags(tags);
-        final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
-
         // Create 3 revisions of the same key.
-        assertConfigurationEquals(original, client.setConfigurationSettingWithResponse(original, false, Context.NONE).getValue());
-        assertConfigurationEquals(updated, client.setConfigurationSettingWithResponse(updated, false, Context.NONE).getValue());
-        assertConfigurationEquals(updated2, client.setConfigurationSettingWithResponse(updated2, false, Context.NONE).getValue());
-
+        List<ConfigurationSetting> configurationSettings = listRevisionsWithTagsFilterRunner(setting -> {
+            assertConfigurationEquals(setting, client.setConfigurationSettingWithResponse(setting, false, Context.NONE).getValue());
+        });
+        ConfigurationSetting original = configurationSettings.get(0);
         // Get all revisions for a key with tags filter, they are listed in descending order.
-        List<String> tagsFilterInString = Utility.getTagsFilterInString(tags);
-        List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName).setTagsFilter(tagsFilterInString))
+        List<ConfigurationSetting> revisions = client.listRevisions(
+                new SettingSelector()
+                        .setKeyFilter(original.getKey())
+                        .setTagsFilter(getTagsFilterInString(original.getTags())))
                 .stream().collect(Collectors.toList());
         assertEquals(1, revisions.size());
         assertConfigurationEquals(original, revisions.get(0));
@@ -1643,25 +1633,19 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void createSnapshotWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
-        // Prepare a setting before creating a snapshot
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("MyTag", "TagValue");
-        tags.put("AnotherTag", "AnotherTagValue");
-        String key = getKey();
-        String key2 = getKey();
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting()
-                .setKey(key)
-                .setValue("myNewValue");
-        final ConfigurationSetting newConfigurationWithTag = new ConfigurationSetting()
-                .setKey(key2)
-                .setValue("myNewValue")
-                .setTags(tags); // Only this setting has tags
-        ConfigurationSetting setting = client.addConfigurationSetting(newConfiguration);
-        ConfigurationSetting settingWithTag = client.addConfigurationSetting(newConfigurationWithTag);
+        // Clean all existing settings before this test purpose
+        client.listConfigurationSettings(null)
+                .stream()
+                .forEach(configurationSetting -> client.deleteConfigurationSetting(configurationSetting));
+        // Prepare settings before creating a snapshot
+        List<ConfigurationSetting> settings = createSnapshotWithTagsFilterPrepareRunner(setting ->
+                assertConfigurationEquals(setting, client.addConfigurationSetting(setting)));
+        ConfigurationSetting setting = settings.get(0);
+        ConfigurationSetting settingWithTag = settings.get(1);
         assertTrue(setting.getTags().isEmpty());
         assertFalse(settingWithTag.getTags().isEmpty());
 
-        createSnapshotWithTagsRunner((name, filters) -> {
+        createSnapshotWithTagsFilterRunner((name, filters) -> {
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                     .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
             SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
@@ -1669,13 +1653,13 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
             poller.waitForCompletion();
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
-
             assertEquals(name, snapshotResult.getName());
-
+            // The snapshot should only contain the setting with tags
             PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettingsForSnapshot(
                     name, null, Context.NONE);
             List<ConfigurationSetting> list = configurationSettings.stream().collect(Collectors.toList());
-            assertEquals(newConfigurationWithTag.getTags(), list.get(0).getTags());
+            assertEquals(settingWithTag.getTags(), list.get(0).getTags());
+
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             assertEquals(ConfigurationSnapshotStatus.ARCHIVED, client.archiveSnapshot(name).getStatus());
         });

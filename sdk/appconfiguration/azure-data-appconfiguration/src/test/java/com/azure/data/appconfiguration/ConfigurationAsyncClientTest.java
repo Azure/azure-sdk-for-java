@@ -16,7 +16,6 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.data.appconfiguration.implementation.Utility;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
@@ -41,11 +40,10 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -1943,22 +1941,24 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                         .then())
                 .verifyComplete();
         // Prepare two settings with different labels
-        String key = getKey();
-        String label = getLabel();
-        String label2 = getLabel();
-        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label);
-        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label2);
-        StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
-                .assertNext(response -> assertConfigurationEquals(setting, response))
-                .verifyComplete();
-        StepVerifier.create(client.addConfigurationSettingWithResponse(setting2))
-                .assertNext(response -> assertConfigurationEquals(setting2, response))
-                .verifyComplete();
-        // Listing settings with label filter
+        List<ConfigurationSetting> preparedSettings = listLabelsRunner(setting ->
+                StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                        .assertNext(response -> assertConfigurationEquals(setting, response))
+                        .verifyComplete());
+        ConfigurationSetting setting = preparedSettings.get(0);
+        ConfigurationSetting setting2 = preparedSettings.get(1);
+        // List only the first label var, 'label'
+        String label = setting.getLabel();
         StepVerifier.create(client.listLabels(new LabelSelector().setLabelFilter(label)))
-                .assertNext(l -> assertEquals(label, l))
+                .assertNext(actual -> assertEquals(label, actual))
                 .verifyComplete();
-        // Listing all labels
+        // List labels with wildcard label filter
+        String label2 = setting2.getLabel();
+        StepVerifier.create(client.listLabels(new LabelSelector().setLabelFilter("label*")))
+                .assertNext(actual -> assertEquals(label, actual))
+                .assertNext(actual -> assertEquals(label2, actual))
+                .verifyComplete();
+        // List all labels
         List<String> selected = new ArrayList<>();
         StepVerifier.create(client.listLabels(null))
                 .consumeNextWith(selected::add)
@@ -1976,38 +1976,24 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                         .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
                         .then())
                 .verifyComplete();
+
         // Prepare two settings with different tags
-        String key = getKey();
-        String key2 = getKey();
-        Map<String, String> tags = new HashMap<>();
-        tags.put(key, "tagValue");
-        Map<String, String> tags2 = new HashMap<>();
-        tags2.put(key, "tagValue");
-        tags2.put(key2, "tagValue");
-        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setTags(tags);
-        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key2).setValue("value").setTags(tags2);
-        StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+        List<ConfigurationSetting> preparedSettings = listSettingByTagsFilterRunner(setting -> {
+            StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                    .assertNext(response -> assertConfigurationEquals(setting, response))
+                    .verifyComplete();
+        });
+        ConfigurationSetting setting = preparedSettings.get(0);
+        ConfigurationSetting setting2 = preparedSettings.get(1);
+
+        // List setting by first tags filter, it should return all settings
+        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setTagsFilter(getTagsFilterInString(setting.getTags()))))
                 .assertNext(response -> assertConfigurationEquals(setting, response))
-                .verifyComplete();
-        StepVerifier.create(client.addConfigurationSettingWithResponse(setting2))
                 .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
-
-        // Test list setting by first tags filter
-        List<ConfigurationSetting> selected = new ArrayList<>();
-        List<String> tagsFilterInString1 = Utility.getTagsFilterInString(tags);
-        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setTagsFilter(tagsFilterInString1)))
-                .consumeNextWith(selected::add)
-                .consumeNextWith(selected::add)
-                .verifyComplete();
-        assertEquals(2, selected.size());
-        assertConfigurationEquals(setting, selected.get(0));
-        assertConfigurationEquals(setting2, selected.get(1));
-
-        List<String> tagsFilterInString2 = Utility.getTagsFilterInString(tags2);
-        // Test list setting by second tags filter
-        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setTagsFilter(tagsFilterInString2)))
-                        .assertNext(response -> assertConfigurationEquals(setting2, response))
+        // List setting by second tags filter, it should return only one setting
+        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setTagsFilter(getTagsFilterInString(setting2.getTags()))))
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
                 .verifyComplete();
     }
 
@@ -2015,29 +2001,20 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void listRevisionsWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        final String keyName = testResourceNamer.randomName(keyPrefix, 16);
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("MyTag", "TagValue");
-        tags.put("AnotherTag", "AnotherTagValue");
-
-        final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue").setTags(tags);
-        final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
-        final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
-
         // Create 3 revisions of the same key.
-        StepVerifier.create(client.setConfigurationSettingWithResponse(original, false))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
-        StepVerifier.create(client.setConfigurationSettingWithResponse(updated, false))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
-        StepVerifier.create(client.setConfigurationSettingWithResponse(updated2, false))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+        List<ConfigurationSetting> configurationSettings = listRevisionsWithTagsFilterRunner(setting -> {
+            StepVerifier.create(client.setConfigurationSettingWithResponse(setting, false))
+                    .assertNext(response -> assertConfigurationEquals(setting, response))
+                    .verifyComplete();
+        });
 
-        // Get all revisions for a key, they are listed in descending order.
-        List<String> tagsFilterInString = Utility.getTagsFilterInString(tags);
-        StepVerifier.create(client.listRevisions(new SettingSelector().setKeyFilter(keyName).setTagsFilter(tagsFilterInString)))
+        ConfigurationSetting original = configurationSettings.get(0);
+
+        // Get all revisions for a key with tags filter, they are listed in descending order.
+        StepVerifier.create(client.listRevisions(
+                new SettingSelector()
+                        .setKeyFilter(original.getKey())
+                        .setTagsFilter(getTagsFilterInString(original.getTags()))))
                 .assertNext(response -> assertConfigurationEquals(original, response))
                 .verifyComplete();
     }
@@ -2046,29 +2023,24 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void createSnapshotWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
-        // Prepare a setting before creating a snapshot
-        final Map<String, String> tags = new HashMap<>();
-        tags.put("MyTag", "TagValue");
-        tags.put("AnotherTag", "AnotherTagValue");
-        String key = getKey();
-        String key2 = getKey();
-        final ConfigurationSetting newConfiguration = new ConfigurationSetting()
-                .setKey(key)
-                .setValue("myNewValue");
-        final ConfigurationSetting newConfigurationWithTag = new ConfigurationSetting()
-                .setKey(key2)
-                .setValue("myNewValue")
-                .setTags(tags); // Only this setting has tags
-
-        StepVerifier.create(client.addConfigurationSettingWithResponse(newConfiguration))
-                .assertNext(response -> assertConfigurationEquals(newConfiguration, response))
+        // Clean all existing settings before this test purpose
+        StepVerifier.create(client.listConfigurationSettings(null)
+                        .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+                        .then())
                 .verifyComplete();
 
-        StepVerifier.create(client.addConfigurationSettingWithResponse(newConfigurationWithTag))
-                .assertNext(response -> assertConfigurationEquals(newConfigurationWithTag, response))
-                .verifyComplete();
+        // Prepare settings before creating a snapshot
+        List<ConfigurationSetting> settings = createSnapshotWithTagsFilterPrepareRunner(setting -> {
+            StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                    .assertNext(response -> assertConfigurationEquals(setting, response))
+                    .verifyComplete();
+        });
+        ConfigurationSetting setting = settings.get(0);
+        ConfigurationSetting settingWithTag = settings.get(1);
+        assertTrue(setting.getTags().isEmpty());
+        assertFalse(settingWithTag.getTags().isEmpty());
 
-        createSnapshotWithTagsRunner((name, filters) -> {
+        createSnapshotWithTagsFilterRunner((name, filters) -> {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                     .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
@@ -2079,10 +2051,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             ConfigurationSnapshot snapshotResult = poller.getFinalResult();
             assertEquals(name, snapshotResult.getName());
 
+            // The snapshot should only contain the setting with tags
             StepVerifier.create(client.listConfigurationSettingsForSnapshot(name))
-                    .assertNext(setting -> assertEquals(newConfigurationWithTag.getTags(), setting.getTags()))
+                    .assertNext(actual -> assertEquals(settingWithTag.getTags(), actual.getTags()))
                     .verifyComplete();
-
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
                     .assertNext(response -> assertEquals(ConfigurationSnapshotStatus.ARCHIVED, response.getStatus()))
