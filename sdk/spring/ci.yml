@@ -115,6 +115,10 @@ parameters:
   displayName: 'spring-cloud-azure-starter-data-cosmos'
   type: boolean
   default: true
+- name: release_springcloudazurestarterdataredislettuce
+  displayName: 'spring-cloud-azure-starter-data-redis-lettuce'
+  type: boolean
+  default: true
 - name: release_springcloudazurestartereventhubs
   displayName: 'spring-cloud-azure-starter-eventhubs'
   type: boolean
@@ -376,6 +380,14 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterdatacosmos }}
+      - name: spring-cloud-azure-starter-data-redis-lettuce
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterdataredislettuce
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterdataredislettuce }}
       - name: spring-cloud-azure-starter-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestartereventhubs
