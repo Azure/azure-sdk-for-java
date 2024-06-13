@@ -44,7 +44,7 @@ stages:
         templateContext:
           sdl:
             credscan:
-              suppressionsFile: ""
+              suppressionsFile: "/fake/path/is/this/honored?"
 
         strategy:
           runOnce:
