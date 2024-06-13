@@ -8,7 +8,7 @@ import com.azure.core.test.utils.TestResourceNamer;
 /**
  * Class helps generate unique identifier.
  */
-public class TestIdentifierProvider implements IdentifierProvider {
+public final class TestIdentifierProvider implements IdentifierProvider {
 
     private final TestResourceNamer testResourceNamer;
 

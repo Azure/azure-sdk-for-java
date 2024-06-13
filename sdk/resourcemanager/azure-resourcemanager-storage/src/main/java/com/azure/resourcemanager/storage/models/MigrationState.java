@@ -6,14 +6,21 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** This property denotes the container level immutability to object level immutability migration state. */
+/**
+ * This property denotes the container level immutability to object level immutability migration state.
+ */
 public final class MigrationState extends ExpandableStringEnum<MigrationState> {
-    /** Static value InProgress for MigrationState. */
+    /**
+     * Static value InProgress for MigrationState.
+     */
     public static final MigrationState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Completed for MigrationState. */
+    /**
+     * Static value Completed for MigrationState.
+     */
     public static final MigrationState COMPLETED = fromString("Completed");
 
     /**

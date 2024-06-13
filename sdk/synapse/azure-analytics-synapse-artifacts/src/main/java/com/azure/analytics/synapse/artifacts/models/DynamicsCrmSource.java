@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A copy activity Dynamics CRM source.
- */
+/** A copy activity Dynamics CRM source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DynamicsCrmSource")
 @Fluent
@@ -30,16 +28,13 @@ public final class DynamicsCrmSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /**
-     * Creates an instance of DynamicsCrmSource class.
-     */
-    public DynamicsCrmSource() {
-    }
+    /** Creates an instance of DynamicsCrmSource class. */
+    public DynamicsCrmSource() {}
 
     /**
      * Get the query property: FetchXML is a proprietary query language that is used in Microsoft Dynamics CRM (online
      * &amp; on-premises). Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the query value.
      */
     public Object getQuery() {
@@ -49,7 +44,7 @@ public final class DynamicsCrmSource extends CopySource {
     /**
      * Set the query property: FetchXML is a proprietary query language that is used in Microsoft Dynamics CRM (online
      * &amp; on-premises). Type: string (or Expression with resultType string).
-     * 
+     *
      * @param query the query value to set.
      * @return the DynamicsCrmSource object itself.
      */
@@ -61,7 +56,7 @@ public final class DynamicsCrmSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -71,7 +66,7 @@ public final class DynamicsCrmSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     * 
+     *
      * @param additionalColumns the additionalColumns value to set.
      * @return the DynamicsCrmSource object itself.
      */
@@ -80,27 +75,21 @@ public final class DynamicsCrmSource extends CopySource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsCrmSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsCrmSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DynamicsCrmSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

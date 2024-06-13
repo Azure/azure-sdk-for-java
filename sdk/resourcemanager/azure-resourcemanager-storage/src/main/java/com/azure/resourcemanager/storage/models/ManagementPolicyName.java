@@ -6,11 +6,16 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Defines values for ManagementPolicyName. */
+/**
+ * Defines values for ManagementPolicyName.
+ */
 public final class ManagementPolicyName extends ExpandableStringEnum<ManagementPolicyName> {
-    /** Static value default for ManagementPolicyName. */
+    /**
+     * Static value default for ManagementPolicyName.
+     */
     public static final ManagementPolicyName DEFAULT = fromString("default");
 
     /**

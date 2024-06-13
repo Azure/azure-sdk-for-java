@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Client secret information for factory's bring your own app repository configuration.
- */
+/** Client secret information for factory's bring your own app repository configuration. */
 @Fluent
 public final class GitHubClientSecret {
     /*
@@ -24,15 +22,12 @@ public final class GitHubClientSecret {
     @JsonProperty(value = "byoaSecretName")
     private String byoaSecretName;
 
-    /**
-     * Creates an instance of GitHubClientSecret class.
-     */
-    public GitHubClientSecret() {
-    }
+    /** Creates an instance of GitHubClientSecret class. */
+    public GitHubClientSecret() {}
 
     /**
      * Get the byoaSecretAkvUrl property: Bring your own app client secret AKV URL.
-     * 
+     *
      * @return the byoaSecretAkvUrl value.
      */
     public String getByoaSecretAkvUrl() {
@@ -41,7 +36,7 @@ public final class GitHubClientSecret {
 
     /**
      * Set the byoaSecretAkvUrl property: Bring your own app client secret AKV URL.
-     * 
+     *
      * @param byoaSecretAkvUrl the byoaSecretAkvUrl value to set.
      * @return the GitHubClientSecret object itself.
      */
@@ -52,7 +47,7 @@ public final class GitHubClientSecret {
 
     /**
      * Get the byoaSecretName property: Bring your own app client secret name in AKV.
-     * 
+     *
      * @return the byoaSecretName value.
      */
     public String getByoaSecretName() {
@@ -61,7 +56,7 @@ public final class GitHubClientSecret {
 
     /**
      * Set the byoaSecretName property: Bring your own app client secret name in AKV.
-     * 
+     *
      * @param byoaSecretName the byoaSecretName value to set.
      * @return the GitHubClientSecret object itself.
      */

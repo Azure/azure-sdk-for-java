@@ -50,13 +50,13 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.61.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.62.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.beust</groupId>
       <artifactId>jcommander</artifactId>
-      <version>1.78</version> <!-- {x-version-update;com.beust:jcommander;external_dependency} -->
+      <version>1.82</version> <!-- {x-version-update;com.beust:jcommander;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -185,7 +185,7 @@ Licensed under the MIT License.
             <bannedDependencies>
               <includes>
                 <!-- The benchmarking tool is allowed additional dependencies as it is not a library -->
-                <include>com.beust:jcommander:[1.78]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
+                <include>com.beust:jcommander:[1.82]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-graphite:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-graphite;external_dependency} -->

@@ -36,9 +36,19 @@ public final class FileDetails {
      *
      * @param content the content value to set.
      */
-    @Generated
-    public FileDetails(BinaryData content) {
+    FileDetails(BinaryData content) {
         this.content = content;
+    }
+
+    /**
+     * Creates an instance of FileDetails class.
+     *
+     * @param content the content value to set.
+     * @param filename the filename of the file.
+     */
+    public FileDetails(BinaryData content, String filename) {
+        this.content = content;
+        this.filename = filename;
     }
 
     /**

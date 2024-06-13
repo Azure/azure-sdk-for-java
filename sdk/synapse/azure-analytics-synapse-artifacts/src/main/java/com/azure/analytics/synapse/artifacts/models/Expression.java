@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Azure Synapse expression definition.
- */
+/** Azure Synapse expression definition. */
 @Fluent
 public final class Expression {
     /*
@@ -24,15 +22,12 @@ public final class Expression {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /**
-     * Creates an instance of Expression class.
-     */
-    public Expression() {
-    }
+    /** Creates an instance of Expression class. */
+    public Expression() {}
 
     /**
      * Get the type property: Expression type.
-     * 
+     *
      * @return the type value.
      */
     public ExpressionType getType() {
@@ -41,7 +36,7 @@ public final class Expression {
 
     /**
      * Set the type property: Expression type.
-     * 
+     *
      * @param type the type value to set.
      * @return the Expression object itself.
      */
@@ -52,7 +47,7 @@ public final class Expression {
 
     /**
      * Get the value property: Expression value.
-     * 
+     *
      * @return the value value.
      */
     public String getValue() {
@@ -61,7 +56,7 @@ public final class Expression {
 
     /**
      * Set the value property: Expression value.
-     * 
+     *
      * @param value the value value to set.
      * @return the Expression object itself.
      */

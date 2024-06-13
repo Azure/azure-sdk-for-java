@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An item of the notebook cell execution output.
- */
+/** An item of the notebook cell execution output. */
 @Fluent
 public final class NotebookCellOutputItem {
     /*
@@ -48,15 +46,12 @@ public final class NotebookCellOutputItem {
     @JsonProperty(value = "metadata")
     private Object metadata;
 
-    /**
-     * Creates an instance of NotebookCellOutputItem class.
-     */
-    public NotebookCellOutputItem() {
-    }
+    /** Creates an instance of NotebookCellOutputItem class. */
+    public NotebookCellOutputItem() {}
 
     /**
      * Get the name property: For output_type=stream, determines the name of stream (stdout / stderr).
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -65,7 +60,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Set the name property: For output_type=stream, determines the name of stream (stdout / stderr).
-     * 
+     *
      * @param name the name value to set.
      * @return the NotebookCellOutputItem object itself.
      */
@@ -76,7 +71,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Get the executionCount property: Execution sequence number.
-     * 
+     *
      * @return the executionCount value.
      */
     public Integer getExecutionCount() {
@@ -85,7 +80,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Set the executionCount property: Execution sequence number.
-     * 
+     *
      * @param executionCount the executionCount value to set.
      * @return the NotebookCellOutputItem object itself.
      */
@@ -96,7 +91,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Get the outputType property: Execution, display, or stream outputs.
-     * 
+     *
      * @return the outputType value.
      */
     public CellOutputType getOutputType() {
@@ -105,7 +100,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Set the outputType property: Execution, display, or stream outputs.
-     * 
+     *
      * @param outputType the outputType value to set.
      * @return the NotebookCellOutputItem object itself.
      */
@@ -117,7 +112,7 @@ public final class NotebookCellOutputItem {
     /**
      * Get the text property: For output_type=stream, the stream's text output, represented as a string or an array of
      * strings.
-     * 
+     *
      * @return the text value.
      */
     public Object getText() {
@@ -127,7 +122,7 @@ public final class NotebookCellOutputItem {
     /**
      * Set the text property: For output_type=stream, the stream's text output, represented as a string or an array of
      * strings.
-     * 
+     *
      * @param text the text value to set.
      * @return the NotebookCellOutputItem object itself.
      */
@@ -138,7 +133,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Get the data property: Output data. Use MIME type as key, and content as value.
-     * 
+     *
      * @return the data value.
      */
     public Object getData() {
@@ -147,7 +142,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Set the data property: Output data. Use MIME type as key, and content as value.
-     * 
+     *
      * @param data the data value to set.
      * @return the NotebookCellOutputItem object itself.
      */
@@ -158,7 +153,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Get the metadata property: Metadata for the output item.
-     * 
+     *
      * @return the metadata value.
      */
     public Object getMetadata() {
@@ -167,7 +162,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Set the metadata property: Metadata for the output item.
-     * 
+     *
      * @param metadata the metadata value to set.
      * @return the NotebookCellOutputItem object itself.
      */

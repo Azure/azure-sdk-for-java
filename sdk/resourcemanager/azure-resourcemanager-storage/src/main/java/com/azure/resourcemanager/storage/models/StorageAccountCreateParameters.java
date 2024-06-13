@@ -9,9 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesCreateParameters;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
-/** The parameters used when creating a storage account. */
+/**
+ * The parameters used when creating a storage account.
+ */
 @Fluent
 public final class StorageAccountCreateParameters {
     /*
@@ -27,25 +30,19 @@ public final class StorageAccountCreateParameters {
     private Kind kind;
 
     /*
-     * Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo
-     * Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is
-     * created, but if an identical geo region is specified on update, the request will succeed.
+     * Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
      */
     @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
-     * Optional. Set the extended location of the resource. If not set, the storage account will be created in Azure
-     * main region. Otherwise it will be created in the specified extended location
+     * Optional. Set the extended location of the resource. If not set, the storage account will be created in Azure main region. Otherwise it will be created in the specified extended location
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
-     * Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and
-     * grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag
-     * must have a key with a length no greater than 128 characters and a value with a length no greater than 256
-     * characters.
+     * Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than 256 characters.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -63,7 +60,9 @@ public final class StorageAccountCreateParameters {
     @JsonProperty(value = "properties")
     private StorageAccountPropertiesCreateParameters innerProperties;
 
-    /** Creates an instance of StorageAccountCreateParameters class. */
+    /**
+     * Creates an instance of StorageAccountCreateParameters class.
+     */
     public StorageAccountCreateParameters() {
     }
 
@@ -236,8 +235,9 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * Get the publicNetworkAccess property: Allow, disallow, or let Network Security Perimeter configuration to
+     * evaluate public network access to Storage Account. Value is optional but if passed in, must be 'Enabled',
+     * 'Disabled' or 'SecuredByPerimeter'.
      *
      * @return the publicNetworkAccess value.
      */
@@ -246,8 +246,9 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     * Set the publicNetworkAccess property: Allow, disallow, or let Network Security Perimeter configuration to
+     * evaluate public network access to Storage Account. Value is optional but if passed in, must be 'Enabled',
+     * 'Disabled' or 'SecuredByPerimeter'.
      *
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the StorageAccountCreateParameters object itself.
@@ -504,6 +505,29 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
+     * Get the enableExtendedGroups property: Enables extended group support with local users feature, if set to true.
+     *
+     * @return the enableExtendedGroups value.
+     */
+    public Boolean enableExtendedGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableExtendedGroups();
+    }
+
+    /**
+     * Set the enableExtendedGroups property: Enables extended group support with local users feature, if set to true.
+     *
+     * @param enableExtendedGroups the enableExtendedGroups value to set.
+     * @return the StorageAccountCreateParameters object itself.
+     */
+    public StorageAccountCreateParameters withEnableExtendedGroups(Boolean enableExtendedGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesCreateParameters();
+        }
+        this.innerProperties().withEnableExtendedGroups(enableExtendedGroups);
+        return this;
+    }
+
+    /**
      * Get the isHnsEnabled property: Account HierarchicalNamespace enabled if sets to true.
      *
      * @return the isHnsEnabled value.
@@ -749,8 +773,8 @@ public final class StorageAccountCreateParameters {
      * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters withImmutableStorageWithVersioning(
-        ImmutableStorageAccount immutableStorageWithVersioning) {
+    public StorageAccountCreateParameters
+        withImmutableStorageWithVersioning(ImmutableStorageAccount immutableStorageWithVersioning) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StorageAccountPropertiesCreateParameters();
         }
@@ -792,24 +816,21 @@ public final class StorageAccountCreateParameters {
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sku in model StorageAccountCreateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sku in model StorageAccountCreateParameters"));
         } else {
             sku().validate();
         }
         if (kind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property kind in model StorageAccountCreateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property kind in model StorageAccountCreateParameters"));
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model StorageAccountCreateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model StorageAccountCreateParameters"));
         }
         if (extendedLocation() != null) {
             extendedLocation().validate();

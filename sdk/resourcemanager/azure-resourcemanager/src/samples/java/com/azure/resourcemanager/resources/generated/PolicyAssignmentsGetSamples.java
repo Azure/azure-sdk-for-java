@@ -4,25 +4,24 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-/** Samples for PolicyAssignments Get. */
+/**
+ * Samples for PolicyAssignments Get.
+ */
 public final class PolicyAssignmentsGetSamples {
     /*
      * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/getPolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Retrieve a policy assignment with overrides.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void retrieveAPolicyAssignmentWithOverrides(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .getWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "CostManagement",
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 com.azure.core.util.Context.NONE);
     }
 
@@ -31,19 +30,16 @@ public final class PolicyAssignmentsGetSamples {
      */
     /**
      * Sample code: Retrieve a policy assignment with a user assigned identity.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void retrieveAPolicyAssignmentWithAUserAssignedIdentity(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+    public static void
+        retrieveAPolicyAssignmentWithAUserAssignedIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .getWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "EnforceNaming",
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 com.azure.core.util.Context.NONE);
     }
 
@@ -52,19 +48,16 @@ public final class PolicyAssignmentsGetSamples {
      */
     /**
      * Sample code: Retrieve a policy assignment with resource selectors.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void retrieveAPolicyAssignmentWithResourceSelectors(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+    public static void
+        retrieveAPolicyAssignmentWithResourceSelectors(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .getWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "CostManagement",
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 com.azure.core.util.Context.NONE);
     }
 
@@ -73,18 +66,15 @@ public final class PolicyAssignmentsGetSamples {
      */
     /**
      * Sample code: Retrieve a policy assignment.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void retrieveAPolicyAssignment(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .getWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "EnforceNaming",
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 com.azure.core.util.Context.NONE);
     }
 
@@ -93,19 +83,16 @@ public final class PolicyAssignmentsGetSamples {
      */
     /**
      * Sample code: Retrieve a policy assignment with a system assigned identity.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void retrieveAPolicyAssignmentWithASystemAssignedIdentity(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+    public static void
+        retrieveAPolicyAssignmentWithASystemAssignedIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .getWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "EnforceNaming",
+            .getWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
                 com.azure.core.util.Context.NONE);
     }
 }

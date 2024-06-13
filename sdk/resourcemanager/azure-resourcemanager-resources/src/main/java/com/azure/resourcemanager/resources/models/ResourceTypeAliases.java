@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The resource type aliases definition. */
+/**
+ * The resource type aliases definition.
+ */
 @Fluent
 public final class ResourceTypeAliases {
     /*
@@ -23,13 +25,15 @@ public final class ResourceTypeAliases {
     @JsonProperty(value = "aliases")
     private List<Alias> aliases;
 
-    /** Creates an instance of ResourceTypeAliases class. */
+    /**
+     * Creates an instance of ResourceTypeAliases class.
+     */
     public ResourceTypeAliases() {
     }
 
     /**
      * Get the resourceType property: The resource type name.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -38,7 +42,7 @@ public final class ResourceTypeAliases {
 
     /**
      * Set the resourceType property: The resource type name.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the ResourceTypeAliases object itself.
      */
@@ -49,7 +53,7 @@ public final class ResourceTypeAliases {
 
     /**
      * Get the aliases property: The aliases for property names.
-     *
+     * 
      * @return the aliases value.
      */
     public List<Alias> aliases() {
@@ -58,7 +62,7 @@ public final class ResourceTypeAliases {
 
     /**
      * Set the aliases property: The aliases for property names.
-     *
+     * 
      * @param aliases the aliases value to set.
      * @return the ResourceTypeAliases object itself.
      */
@@ -69,7 +73,7 @@ public final class ResourceTypeAliases {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

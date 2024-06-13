@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.DatabaseConnectionInne
  */
 public final class StaticSitesCreateOrUpdateDatabaseConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * CreateOrUpdateStaticSiteDatabaseConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateStaticSiteDatabaseConnection.json
      */
     /**
      * Sample code: Create or update a database connection for a static site.
@@ -21,14 +20,17 @@ public final class StaticSitesCreateOrUpdateDatabaseConnectionSamples {
      */
     public static void
         createOrUpdateADatabaseConnectionForAStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().createOrUpdateDatabaseConnectionWithResponse("rg",
-            "testStaticSite0", "default",
-            new DatabaseConnectionInner().withResourceId(
-                "/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName")
-                .withConnectionIdentity("SystemAssigned")
-                .withConnectionString(
-                    "AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;")
-                .withRegion("West US 2"),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .createOrUpdateDatabaseConnectionWithResponse("rg", "testStaticSite0", "default",
+                new DatabaseConnectionInner().withResourceId(
+                    "/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName")
+                    .withConnectionIdentity("SystemAssigned")
+                    .withConnectionString(
+                        "AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;")
+                    .withRegion("West US 2"),
+                com.azure.core.util.Context.NONE);
     }
 }

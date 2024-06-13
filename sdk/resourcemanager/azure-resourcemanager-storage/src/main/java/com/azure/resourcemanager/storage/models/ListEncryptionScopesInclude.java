@@ -6,17 +6,26 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Defines values for ListEncryptionScopesInclude. */
+/**
+ * Defines values for ListEncryptionScopesInclude.
+ */
 public final class ListEncryptionScopesInclude extends ExpandableStringEnum<ListEncryptionScopesInclude> {
-    /** Static value All for ListEncryptionScopesInclude. */
+    /**
+     * Static value All for ListEncryptionScopesInclude.
+     */
     public static final ListEncryptionScopesInclude ALL = fromString("All");
 
-    /** Static value Enabled for ListEncryptionScopesInclude. */
+    /**
+     * Static value Enabled for ListEncryptionScopesInclude.
+     */
     public static final ListEncryptionScopesInclude ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for ListEncryptionScopesInclude. */
+    /**
+     * Static value Disabled for ListEncryptionScopesInclude.
+     */
     public static final ListEncryptionScopesInclude DISABLED = fromString("Disabled");
 
     /**

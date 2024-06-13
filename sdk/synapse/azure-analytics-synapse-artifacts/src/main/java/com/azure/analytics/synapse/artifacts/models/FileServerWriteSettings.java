@@ -7,35 +7,34 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
-/**
- * File server write settings.
- */
+/** File server write settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileServerWriteSettings")
 @Fluent
 public final class FileServerWriteSettings extends StoreWriteSettings {
-    /**
-     * Creates an instance of FileServerWriteSettings class.
-     */
-    public FileServerWriteSettings() {
-    }
+    /** Creates an instance of FileServerWriteSettings class. */
+    public FileServerWriteSettings() {}
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public FileServerWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public FileServerWriteSettings setCopyBehavior(Object copyBehavior) {
         super.setCopyBehavior(copyBehavior);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FileServerWriteSettings setMetadata(List<MetadataItem> metadata) {
+        super.setMetadata(metadata);
         return this;
     }
 }

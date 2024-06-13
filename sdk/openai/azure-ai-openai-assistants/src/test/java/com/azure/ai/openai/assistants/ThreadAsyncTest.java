@@ -5,6 +5,7 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
+import com.azure.ai.openai.assistants.models.UpdateAssistantThreadOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -55,7 +56,7 @@ public class ThreadAsyncTest extends AssistantsClientTestBase {
             metadata.put("role", "user");
             metadata.put("name", "John Doe");
             metadata.put("content", "Hello, I'm John Doe.");
-            StepVerifier.create(client.updateThread(threadId, metadata))
+            StepVerifier.create(client.updateThread(threadId, new UpdateAssistantThreadOptions().setMetadata(metadata)))
                     .assertNext(assistantThread -> {
                         assertEquals(threadId, assistantThread.getId());
                         assertEquals("user", assistantThread.getMetadata().get("role"));

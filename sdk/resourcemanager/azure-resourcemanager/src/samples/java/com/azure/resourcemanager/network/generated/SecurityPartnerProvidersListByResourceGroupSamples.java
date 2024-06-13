@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SecurityPartnerProvidersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * SecurityPartnerProviderListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/SecurityPartnerProviderListByResourceGroup.json
      */
     /**
      * Sample code: List all Security Partner Providers for a given resource group.
@@ -19,7 +18,10 @@ public final class SecurityPartnerProvidersListByResourceGroupSamples {
      */
     public static void
         listAllSecurityPartnerProvidersForAGivenResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSecurityPartnerProviders().listByResourceGroup("rg1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSecurityPartnerProviders()
+            .listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequest
  */
 public final class StaticSitesValidateCustomDomainCanBeAddedToStaticSiteSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/ValidateStaticSiteCustomDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ValidateStaticSiteCustomDomain.json
      */
     /**
      * Sample code: Validate a custom domain for a static site.
@@ -20,8 +19,11 @@ public final class StaticSitesValidateCustomDomainCanBeAddedToStaticSiteSamples 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void validateACustomDomainForAStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().validateCustomDomainCanBeAddedToStaticSite("rg",
-            "testStaticSite0", "custom.domain.net", new StaticSiteCustomDomainRequestPropertiesArmResource(),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .validateCustomDomainCanBeAddedToStaticSite("rg", "testStaticSite0", "custom.domain.net",
+                new StaticSiteCustomDomainRequestPropertiesArmResource(), com.azure.core.util.Context.NONE);
     }
 }

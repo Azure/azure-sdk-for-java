@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Defines the response of a trigger subscription operation.
- */
+/** Defines the response of a trigger subscription operation. */
 @Immutable
 public final class TriggerSubscriptionOperationStatus {
     /*
@@ -24,15 +22,12 @@ public final class TriggerSubscriptionOperationStatus {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private EventSubscriptionStatus status;
 
-    /**
-     * Creates an instance of TriggerSubscriptionOperationStatus class.
-     */
-    public TriggerSubscriptionOperationStatus() {
-    }
+    /** Creates an instance of TriggerSubscriptionOperationStatus class. */
+    public TriggerSubscriptionOperationStatus() {}
 
     /**
      * Get the triggerName property: Trigger name.
-     * 
+     *
      * @return the triggerName value.
      */
     public String getTriggerName() {
@@ -41,7 +36,7 @@ public final class TriggerSubscriptionOperationStatus {
 
     /**
      * Get the status property: Event Subscription Status.
-     * 
+     *
      * @return the status value.
      */
     public EventSubscriptionStatus getStatus() {

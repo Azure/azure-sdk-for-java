@@ -7,9 +7,12 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.fluent.models.TableInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Response schema. Contains list of tables returned. */
+/**
+ * Response schema. Contains list of tables returned.
+ */
 @Immutable
 public final class ListTableResource {
     /*
@@ -24,7 +27,9 @@ public final class ListTableResource {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ListTableResource class. */
+    /**
+     * Creates an instance of ListTableResource class.
+     */
     public ListTableResource() {
     }
 

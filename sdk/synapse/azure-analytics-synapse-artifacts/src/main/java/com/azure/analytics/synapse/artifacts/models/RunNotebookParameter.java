@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Run notebook parameter.
- */
+/** Run notebook parameter. */
 @Fluent
 public final class RunNotebookParameter {
     /*
@@ -24,15 +22,12 @@ public final class RunNotebookParameter {
     @JsonProperty(value = "value")
     private Object value;
 
-    /**
-     * Creates an instance of RunNotebookParameter class.
-     */
-    public RunNotebookParameter() {
-    }
+    /** Creates an instance of RunNotebookParameter class. */
+    public RunNotebookParameter() {}
 
     /**
      * Get the type property: Parameter type.
-     * 
+     *
      * @return the type value.
      */
     public String getType() {
@@ -41,7 +36,7 @@ public final class RunNotebookParameter {
 
     /**
      * Set the type property: Parameter type.
-     * 
+     *
      * @param type the type value to set.
      * @return the RunNotebookParameter object itself.
      */
@@ -52,7 +47,7 @@ public final class RunNotebookParameter {
 
     /**
      * Get the value property: Parameter value.
-     * 
+     *
      * @return the value value.
      */
     public Object getValue() {
@@ -61,7 +56,7 @@ public final class RunNotebookParameter {
 
     /**
      * Set the value property: Parameter value.
-     * 
+     *
      * @param value the value value to set.
      * @return the RunNotebookParameter object itself.
      */

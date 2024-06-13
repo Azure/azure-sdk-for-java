@@ -7,15 +7,16 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The LegalHold property of a blob container. */
+/**
+ * The LegalHold property of a blob container.
+ */
 @Fluent
 public final class LegalHoldInner {
     /*
-     * The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold
-     * public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum
-     * of 1000 blob containers with hasLegalHold=true for a given account.
+     * The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
      */
     @JsonProperty(value = "hasLegalHold", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasLegalHold;
@@ -27,13 +28,14 @@ public final class LegalHoldInner {
     private List<String> tags;
 
     /*
-     * When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining legal hold protection
-     * and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted.
+     * When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining legal hold protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted.
      */
     @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;
 
-    /** Creates an instance of LegalHoldInner class. */
+    /**
+     * Creates an instance of LegalHoldInner class.
+     */
     public LegalHoldInner() {
     }
 
@@ -99,9 +101,8 @@ public final class LegalHoldInner {
      */
     public void validate() {
         if (tags() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tags in model LegalHoldInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property tags in model LegalHoldInner"));
         }
     }
 

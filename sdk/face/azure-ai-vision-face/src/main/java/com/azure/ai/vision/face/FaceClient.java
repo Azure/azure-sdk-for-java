@@ -94,7 +94,7 @@ public final class FaceClient {
      * ]
      * }</pre>
      *
-     * @param request The request parameter.
+     * @param findSimilarRequest The findSimilarRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -104,8 +104,8 @@ public final class FaceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> findSimilarWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.findSimilarWithResponse(request, requestOptions);
+    public Response<BinaryData> findSimilarWithResponse(BinaryData findSimilarRequest, RequestOptions requestOptions) {
+        return this.serviceClient.findSimilarWithResponse(findSimilarRequest, requestOptions);
     }
 
     /**
@@ -136,7 +136,7 @@ public final class FaceClient {
      * }
      * }</pre>
      *
-     * @param request The request parameter.
+     * @param verifyFaceToFaceRequest The verifyFaceToFaceRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -146,8 +146,9 @@ public final class FaceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> verifyFaceToFaceWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.verifyFaceToFaceWithResponse(request, requestOptions);
+    public Response<BinaryData> verifyFaceToFaceWithResponse(BinaryData verifyFaceToFaceRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.verifyFaceToFaceWithResponse(verifyFaceToFaceRequest, requestOptions);
     }
 
     /**
@@ -188,7 +189,7 @@ public final class FaceClient {
      * }
      * }</pre>
      *
-     * @param request The request parameter.
+     * @param groupRequest The groupRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -198,8 +199,8 @@ public final class FaceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> groupWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.groupWithResponse(request, requestOptions);
+    public Response<BinaryData> groupWithResponse(BinaryData groupRequest, RequestOptions requestOptions) {
+        return this.serviceClient.groupWithResponse(groupRequest, requestOptions);
     }
 
     /**
@@ -238,11 +239,11 @@ public final class FaceClient {
         Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
         // Generated convenience method for findSimilarWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        FindSimilarRequest requestObj
+        FindSimilarRequest findSimilarRequestObj
             = new FindSimilarRequest(faceId, faceIds).setMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned)
                 .setMode(mode);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return findSimilarWithResponse(request, requestOptions).getValue()
+        BinaryData findSimilarRequest = BinaryData.fromObject(findSimilarRequestObj);
+        return findSimilarWithResponse(findSimilarRequest, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT);
     }
 
@@ -278,9 +279,9 @@ public final class FaceClient {
     public List<FaceFindSimilarResult> findSimilar(String faceId, List<String> faceIds) {
         // Generated convenience method for findSimilarWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        FindSimilarRequest requestObj = new FindSimilarRequest(faceId, faceIds);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return findSimilarWithResponse(request, requestOptions).getValue()
+        FindSimilarRequest findSimilarRequestObj = new FindSimilarRequest(faceId, faceIds);
+        BinaryData findSimilarRequest = BinaryData.fromObject(findSimilarRequestObj);
+        return findSimilarWithResponse(findSimilarRequest, requestOptions).getValue()
             .toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT);
     }
 
@@ -310,9 +311,10 @@ public final class FaceClient {
     public FaceVerificationResult verifyFaceToFace(String faceId1, String faceId2) {
         // Generated convenience method for verifyFaceToFaceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        VerifyFaceToFaceRequest requestObj = new VerifyFaceToFaceRequest(faceId1, faceId2);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return verifyFaceToFaceWithResponse(request, requestOptions).getValue().toObject(FaceVerificationResult.class);
+        VerifyFaceToFaceRequest verifyFaceToFaceRequestObj = new VerifyFaceToFaceRequest(faceId1, faceId2);
+        BinaryData verifyFaceToFaceRequest = BinaryData.fromObject(verifyFaceToFaceRequestObj);
+        return verifyFaceToFaceWithResponse(verifyFaceToFaceRequest, requestOptions).getValue()
+            .toObject(FaceVerificationResult.class);
     }
 
     /**
@@ -343,9 +345,9 @@ public final class FaceClient {
     public FaceGroupingResult group(List<String> faceIds) {
         // Generated convenience method for groupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        GroupRequest requestObj = new GroupRequest(faceIds);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return groupWithResponse(request, requestOptions).getValue().toObject(FaceGroupingResult.class);
+        GroupRequest groupRequestObj = new GroupRequest(faceIds);
+        BinaryData groupRequest = BinaryData.fromObject(groupRequestObj);
+        return groupWithResponse(groupRequest, requestOptions).getValue().toObject(FaceGroupingResult.class);
     }
 
     @Generated

@@ -30,7 +30,7 @@ class MergeAzureCommonPropertiesTest {
         AzureRedisPasswordlessProperties result = new AzureRedisPasswordlessProperties();
         AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(globalProperties, passwordlessProperties, result);
 
-        assertEquals("https://*.cacheinfra.windows.net:10225/appid/.default", result.getScopes());
+        assertEquals("https://redis.azure.com/.default", result.getScopes());
         assertEquals("global-client-id", result.getCredential().getClientId());
         assertEquals("global-client-secret", result.getCredential().getClientSecret());
         assertEquals("global-password", result.getCredential().getPassword());

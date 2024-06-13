@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-spring-data-cosmos</artifactId>
-  <version>3.46.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+  <version>3.47.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
   <packaging>jar</packaging>
   <name>Spring Data for Azure Cosmos DB SQL API</name>
   <description>Spring Data for Azure Cosmos DB SQL API</description>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.60.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.61.1</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
@@ -168,7 +168,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.36</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.38</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

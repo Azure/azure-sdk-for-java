@@ -140,14 +140,16 @@ public final class NetworkManagerProperties {
      */
     public void validate() {
         if (networkManagerScopes() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkManagerScopes in model NetworkManagerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkManagerScopes in model NetworkManagerProperties"));
         } else {
             networkManagerScopes().validate();
         }
         if (networkManagerScopeAccesses() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkManagerScopeAccesses in model NetworkManagerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkManagerScopeAccesses in model NetworkManagerProperties"));
         }
     }
 

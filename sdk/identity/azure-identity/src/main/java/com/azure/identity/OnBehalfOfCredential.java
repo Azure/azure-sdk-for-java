@@ -14,6 +14,8 @@ import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
+import java.util.function.Supplier;
+
 /**
  * <p>On Behalf of authentication in Azure is a way for a user or application to authenticate to a service or resource
  * using credentials from another identity provider. This type of authentication is typically used when a user or
@@ -64,12 +66,14 @@ public class OnBehalfOfCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     OnBehalfOfCredential(String clientId, String tenantId, String clientSecret, String certificatePath,
-                                String certificatePassword, IdentityClientOptions identityClientOptions) {
+                                String certificatePassword, Supplier<String> clientAssertionSupplier,
+                                IdentityClientOptions identityClientOptions) {
         IdentityClientBuilder builder = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
             .clientSecret(clientSecret)
             .certificatePath(certificatePath)
+            .clientAssertionSupplier(clientAssertionSupplier)
             .certificatePassword(certificatePassword)
             .identityClientOptions(identityClientOptions);
 

@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A copy activity Azure Databricks Delta Lake sink.
- */
+/** A copy activity Azure Databricks Delta Lake sink. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDatabricksDeltaLakeSink")
 @Fluent
@@ -28,15 +26,12 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
     @JsonProperty(value = "importSettings")
     private AzureDatabricksDeltaLakeImportCommand importSettings;
 
-    /**
-     * Creates an instance of AzureDatabricksDeltaLakeSink class.
-     */
-    public AzureDatabricksDeltaLakeSink() {
-    }
+    /** Creates an instance of AzureDatabricksDeltaLakeSink class. */
+    public AzureDatabricksDeltaLakeSink() {}
 
     /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the preCopyScript value.
      */
     public Object getPreCopyScript() {
@@ -45,7 +40,7 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
 
     /**
      * Set the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param preCopyScript the preCopyScript value to set.
      * @return the AzureDatabricksDeltaLakeSink object itself.
      */
@@ -56,7 +51,7 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
 
     /**
      * Get the importSettings property: Azure Databricks Delta Lake import settings.
-     * 
+     *
      * @return the importSettings value.
      */
     public AzureDatabricksDeltaLakeImportCommand getImportSettings() {
@@ -65,7 +60,7 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
 
     /**
      * Set the importSettings property: Azure Databricks Delta Lake import settings.
-     * 
+     *
      * @param importSettings the importSettings value to set.
      * @return the AzureDatabricksDeltaLakeSink object itself.
      */
@@ -74,45 +69,35 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDatabricksDeltaLakeSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDatabricksDeltaLakeSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDatabricksDeltaLakeSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDatabricksDeltaLakeSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureDatabricksDeltaLakeSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Details of the encryption associated with the workspace.
- */
+/** Details of the encryption associated with the workspace. */
 @Fluent
 public final class EncryptionDetails {
     /*
@@ -24,15 +22,12 @@ public final class EncryptionDetails {
     @JsonProperty(value = "cmk")
     private CustomerManagedKeyDetails cmk;
 
-    /**
-     * Creates an instance of EncryptionDetails class.
-     */
-    public EncryptionDetails() {
-    }
+    /** Creates an instance of EncryptionDetails class. */
+    public EncryptionDetails() {}
 
     /**
      * Get the doubleEncryptionEnabled property: Double Encryption enabled.
-     * 
+     *
      * @return the doubleEncryptionEnabled value.
      */
     public Boolean isDoubleEncryptionEnabled() {
@@ -41,7 +36,7 @@ public final class EncryptionDetails {
 
     /**
      * Get the cmk property: Customer Managed Key Details.
-     * 
+     *
      * @return the cmk value.
      */
     public CustomerManagedKeyDetails getCmk() {
@@ -50,7 +45,7 @@ public final class EncryptionDetails {
 
     /**
      * Set the cmk property: Customer Managed Key Details.
-     * 
+     *
      * @param cmk the cmk value to set.
      * @return the EncryptionDetails object itself.
      */

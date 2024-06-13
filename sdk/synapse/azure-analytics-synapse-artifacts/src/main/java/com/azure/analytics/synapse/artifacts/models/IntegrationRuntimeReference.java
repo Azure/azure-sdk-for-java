@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Integration runtime reference type.
- */
+/** Integration runtime reference type. */
 @Fluent
 public final class IntegrationRuntimeReference {
     /*
@@ -31,15 +29,12 @@ public final class IntegrationRuntimeReference {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
-    /**
-     * Creates an instance of IntegrationRuntimeReference class.
-     */
-    public IntegrationRuntimeReference() {
-    }
+    /** Creates an instance of IntegrationRuntimeReference class. */
+    public IntegrationRuntimeReference() {}
 
     /**
      * Get the type property: Type of integration runtime.
-     * 
+     *
      * @return the type value.
      */
     public IntegrationRuntimeReferenceType getType() {
@@ -48,7 +43,7 @@ public final class IntegrationRuntimeReference {
 
     /**
      * Set the type property: Type of integration runtime.
-     * 
+     *
      * @param type the type value to set.
      * @return the IntegrationRuntimeReference object itself.
      */
@@ -59,7 +54,7 @@ public final class IntegrationRuntimeReference {
 
     /**
      * Get the referenceName property: Reference integration runtime name.
-     * 
+     *
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -68,7 +63,7 @@ public final class IntegrationRuntimeReference {
 
     /**
      * Set the referenceName property: Reference integration runtime name.
-     * 
+     *
      * @param referenceName the referenceName value to set.
      * @return the IntegrationRuntimeReference object itself.
      */
@@ -79,7 +74,7 @@ public final class IntegrationRuntimeReference {
 
     /**
      * Get the parameters property: Arguments for integration runtime.
-     * 
+     *
      * @return the parameters value.
      */
     public Map<String, Object> getParameters() {
@@ -88,7 +83,7 @@ public final class IntegrationRuntimeReference {
 
     /**
      * Set the parameters property: Arguments for integration runtime.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the IntegrationRuntimeReference object itself.
      */

@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Catalog information for managed dedicated integration runtime.
- */
+/** Catalog information for managed dedicated integration runtime. */
 @Fluent
 public final class IntegrationRuntimeSsisCatalogInfo {
     /*
@@ -45,18 +43,14 @@ public final class IntegrationRuntimeSsisCatalogInfo {
     /*
      * Catalog information for managed dedicated integration runtime.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of IntegrationRuntimeSsisCatalogInfo class.
-     */
-    public IntegrationRuntimeSsisCatalogInfo() {
-    }
+    /** Creates an instance of IntegrationRuntimeSsisCatalogInfo class. */
+    public IntegrationRuntimeSsisCatalogInfo() {}
 
     /**
      * Get the catalogServerEndpoint property: The catalog database server URL.
-     * 
+     *
      * @return the catalogServerEndpoint value.
      */
     public String getCatalogServerEndpoint() {
@@ -65,7 +59,7 @@ public final class IntegrationRuntimeSsisCatalogInfo {
 
     /**
      * Set the catalogServerEndpoint property: The catalog database server URL.
-     * 
+     *
      * @param catalogServerEndpoint the catalogServerEndpoint value to set.
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */
@@ -76,7 +70,7 @@ public final class IntegrationRuntimeSsisCatalogInfo {
 
     /**
      * Get the catalogAdminUserName property: The administrator user name of catalog database.
-     * 
+     *
      * @return the catalogAdminUserName value.
      */
     public String getCatalogAdminUserName() {
@@ -85,7 +79,7 @@ public final class IntegrationRuntimeSsisCatalogInfo {
 
     /**
      * Set the catalogAdminUserName property: The administrator user name of catalog database.
-     * 
+     *
      * @param catalogAdminUserName the catalogAdminUserName value to set.
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */
@@ -96,7 +90,7 @@ public final class IntegrationRuntimeSsisCatalogInfo {
 
     /**
      * Get the catalogAdminPassword property: The password of the administrator user account of the catalog database.
-     * 
+     *
      * @return the catalogAdminPassword value.
      */
     public SecureString getCatalogAdminPassword() {
@@ -105,7 +99,7 @@ public final class IntegrationRuntimeSsisCatalogInfo {
 
     /**
      * Set the catalogAdminPassword property: The password of the administrator user account of the catalog database.
-     * 
+     *
      * @param catalogAdminPassword the catalogAdminPassword value to set.
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */
@@ -117,7 +111,7 @@ public final class IntegrationRuntimeSsisCatalogInfo {
     /**
      * Get the catalogPricingTier property: The pricing tier for the catalog database. The valid values could be found
      * in https://azure.microsoft.com/en-us/pricing/details/sql-database/.
-     * 
+     *
      * @return the catalogPricingTier value.
      */
     public IntegrationRuntimeSsisCatalogPricingTier getCatalogPricingTier() {
@@ -127,19 +121,19 @@ public final class IntegrationRuntimeSsisCatalogInfo {
     /**
      * Set the catalogPricingTier property: The pricing tier for the catalog database. The valid values could be found
      * in https://azure.microsoft.com/en-us/pricing/details/sql-database/.
-     * 
+     *
      * @param catalogPricingTier the catalogPricingTier value to set.
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */
-    public IntegrationRuntimeSsisCatalogInfo
-        setCatalogPricingTier(IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier) {
+    public IntegrationRuntimeSsisCatalogInfo setCatalogPricingTier(
+            IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier) {
         this.catalogPricingTier = catalogPricingTier;
         return this;
     }
 
     /**
      * Get the additionalProperties property: Catalog information for managed dedicated integration runtime.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -149,7 +143,7 @@ public final class IntegrationRuntimeSsisCatalogInfo {
 
     /**
      * Set the additionalProperties property: Catalog information for managed dedicated integration runtime.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */

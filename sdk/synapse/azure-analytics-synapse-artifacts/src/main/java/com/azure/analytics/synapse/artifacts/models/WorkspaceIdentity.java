@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Identity properties of the workspace resource.
- */
+/** Identity properties of the workspace resource. */
 @Fluent
 public final class WorkspaceIdentity {
     /*
@@ -30,15 +28,14 @@ public final class WorkspaceIdentity {
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /**
-     * Creates an instance of WorkspaceIdentity class.
-     */
+    /** Creates an instance of WorkspaceIdentity class. */
     public WorkspaceIdentity() {
+        type = "SystemAssigned";
     }
 
     /**
      * Get the type property: The identity type. Currently the only supported type is 'SystemAssigned'.
-     * 
+     *
      * @return the type value.
      */
     public String getType() {
@@ -47,7 +44,7 @@ public final class WorkspaceIdentity {
 
     /**
      * Set the type property: The identity type. Currently the only supported type is 'SystemAssigned'.
-     * 
+     *
      * @param type the type value to set.
      * @return the WorkspaceIdentity object itself.
      */
@@ -58,7 +55,7 @@ public final class WorkspaceIdentity {
 
     /**
      * Get the principalId property: The principal id of the identity.
-     * 
+     *
      * @return the principalId value.
      */
     public String getPrincipalId() {
@@ -67,7 +64,7 @@ public final class WorkspaceIdentity {
 
     /**
      * Get the tenantId property: The client tenant id of the identity.
-     * 
+     *
      * @return the tenantId value.
      */
     public String getTenantId() {

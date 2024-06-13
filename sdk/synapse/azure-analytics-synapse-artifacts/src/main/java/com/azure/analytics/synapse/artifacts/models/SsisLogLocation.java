@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * SSIS package execution log location.
- */
+/** SSIS package execution log location. */
 @JsonFlatten
 @Fluent
 public class SsisLogLocation {
@@ -39,16 +37,13 @@ public class SsisLogLocation {
     @JsonProperty(value = "typeProperties.logRefreshInterval")
     private Object logRefreshInterval;
 
-    /**
-     * Creates an instance of SsisLogLocation class.
-     */
-    public SsisLogLocation() {
-    }
+    /** Creates an instance of SsisLogLocation class. */
+    public SsisLogLocation() {}
 
     /**
      * Get the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @return the logPath value.
      */
     public Object getLogPath() {
@@ -58,7 +53,7 @@ public class SsisLogLocation {
     /**
      * Set the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
      * string).
-     * 
+     *
      * @param logPath the logPath value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -69,7 +64,7 @@ public class SsisLogLocation {
 
     /**
      * Get the type property: The type of SSIS log location.
-     * 
+     *
      * @return the type value.
      */
     public SsisLogLocationType getType() {
@@ -78,7 +73,7 @@ public class SsisLogLocation {
 
     /**
      * Set the type property: The type of SSIS log location.
-     * 
+     *
      * @param type the type value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -89,7 +84,7 @@ public class SsisLogLocation {
 
     /**
      * Get the accessCredential property: The package execution log access credential.
-     * 
+     *
      * @return the accessCredential value.
      */
     public SsisAccessCredential getAccessCredential() {
@@ -98,7 +93,7 @@ public class SsisLogLocation {
 
     /**
      * Set the accessCredential property: The package execution log access credential.
-     * 
+     *
      * @param accessCredential the accessCredential value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -111,7 +106,7 @@ public class SsisLogLocation {
      * Get the logRefreshInterval property: Specifies the interval to refresh log. The default interval is 5 minutes.
      * Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     * 
+     *
      * @return the logRefreshInterval value.
      */
     public Object getLogRefreshInterval() {
@@ -122,7 +117,7 @@ public class SsisLogLocation {
      * Set the logRefreshInterval property: Specifies the interval to refresh log. The default interval is 5 minutes.
      * Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     * 
+     *
      * @param logRefreshInterval the logRefreshInterval value to set.
      * @return the SsisLogLocation object itself.
      */

@@ -7,9 +7,12 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
-/** The ListQueueProperties model. */
+/**
+ * The ListQueueProperties model.
+ */
 @Fluent
 public final class ListQueueProperties {
     /*
@@ -19,7 +22,9 @@ public final class ListQueueProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
-    /** Creates an instance of ListQueueProperties class. */
+    /**
+     * Creates an instance of ListQueueProperties class.
+     */
     public ListQueueProperties() {
     }
 

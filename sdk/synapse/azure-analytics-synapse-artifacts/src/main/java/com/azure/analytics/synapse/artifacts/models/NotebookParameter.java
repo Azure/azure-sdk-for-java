@@ -7,9 +7,7 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Notebook parameter.
- */
+/** Notebook parameter. */
 @Fluent
 public final class NotebookParameter {
     /*
@@ -24,15 +22,12 @@ public final class NotebookParameter {
     @JsonProperty(value = "type")
     private NotebookParameterType type;
 
-    /**
-     * Creates an instance of NotebookParameter class.
-     */
-    public NotebookParameter() {
-    }
+    /** Creates an instance of NotebookParameter class. */
+    public NotebookParameter() {}
 
     /**
      * Get the value property: Notebook parameter value. Type: string (or Expression with resultType string).
-     * 
+     *
      * @return the value value.
      */
     public Object getValue() {
@@ -41,7 +36,7 @@ public final class NotebookParameter {
 
     /**
      * Set the value property: Notebook parameter value. Type: string (or Expression with resultType string).
-     * 
+     *
      * @param value the value value to set.
      * @return the NotebookParameter object itself.
      */
@@ -52,7 +47,7 @@ public final class NotebookParameter {
 
     /**
      * Get the type property: Notebook parameter type.
-     * 
+     *
      * @return the type value.
      */
     public NotebookParameterType getType() {
@@ -61,7 +56,7 @@ public final class NotebookParameter {
 
     /**
      * Set the type property: Notebook parameter type.
-     * 
+     *
      * @param type the type value to set.
      * @return the NotebookParameter object itself.
      */

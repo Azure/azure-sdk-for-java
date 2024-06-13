@@ -411,7 +411,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .withNewDatabaseId(db.id())
             .apply();
         Assertions.assertEquals(1, failoverGroup.databases().size());
-        Assertions.assertEquals(db.id(), failoverGroup.databases().get(0));
+        assertResourceIdEquals(db.id(), failoverGroup.databases().get(0));
         Assertions.assertEquals(0, failoverGroup.readWriteEndpointDataLossGracePeriodMinutes());
         Assertions.assertEquals(ReadWriteEndpointFailoverPolicy.MANUAL, failoverGroup.readWriteEndpointPolicy());
         Assertions.assertEquals(ReadOnlyEndpointFailoverPolicy.DISABLED, failoverGroup.readOnlyEndpointPolicy());
