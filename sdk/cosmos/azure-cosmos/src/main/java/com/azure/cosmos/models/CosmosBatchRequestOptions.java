@@ -45,17 +45,6 @@ public final class CosmosBatchRequestOptions {
             this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
         }
     }
-    CosmosBatchRequestOptions(RequestOptions requestOptions) {
-        this.consistencyLevel = requestOptions.getConsistencyLevel();
-        this.sessionToken = requestOptions.getSessionToken();
-        this.customOptions = requestOptions.getHeaders();
-        this.thresholds = requestOptions.getDiagnosticsThresholds();
-        this.customSerializer = requestOptions.getEffectiveItemSerializer();
-
-        if (requestOptions.getExcludedRegions() != null) {
-            this.excludeRegions = new ArrayList<>(requestOptions.getExcludedRegions());
-        }
-    }
 
     /**
      * Gets the consistency level required for the request.
@@ -244,10 +233,6 @@ public final class CosmosBatchRequestOptions {
                     return new CosmosBatchRequestOptions(toBeCloned);
                 }
 
-                @Override
-                public CosmosBatchRequestOptions fromRequestOptions(RequestOptions requestOptions) {
-                    return new CosmosBatchRequestOptions(requestOptions);
-                }
             }
         );
     }

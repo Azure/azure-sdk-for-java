@@ -9,23 +9,21 @@ import java.util.List;
 
 public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
-
     private ConsistencyLevel consistencyLevel;
-    private String sessionToken;
     private Boolean contentResponseOnWriteEnabled;
-    private boolean nonIdempotentWriteRetriesEnabled = false;
+    private Boolean nonIdempotentWriteRetriesEnabled;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private String throughputControlGroupName;
     private CosmosDiagnosticsThresholds thresholds;
     private Boolean scanInQueryEnabled;
     private List<String> excludeRegions;
-    private int maxDegreeOfParallelism;
-    private int maxBufferedItemCount;
-    private int responseContinuationTokenLimitInKb;
-    private int maxItemCount;
-    private boolean queryMetricsEnabled;
-    private boolean indexMetricsEnabled;
-    private int maxPrefetchPageCount;
+    private Integer maxDegreeOfParallelism;
+    private Integer maxBufferedItemCount;
+    private Integer responseContinuationTokenLimitInKb;
+    private Integer maxItemCount;
+    private Boolean queryMetricsEnabled;
+    private Boolean indexMetricsEnabled;
+    private Integer maxPrefetchPageCount;
     private String queryName;
 
     /**
@@ -47,17 +45,6 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
      */
     public CosmosCommonRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
-        return this;
-    }
-
-    /**
-     * Sets the session token.
-     *
-     * @param sessionToken the session token.
-     * @return current CosmosCommonRequestOptions.
-     */
-    public CosmosCommonRequestOptions setSessionToken(String sessionToken) {
-        this.sessionToken = sessionToken;
         return this;
     }
 
@@ -96,6 +83,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the exclude regions.
+     *
      * @param excludeRegions the ExcludeRegions.
      * @return current CosmosCommonRequestOptions.
      */
@@ -106,6 +94,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the throughput control group name.
+     *
      * @param throughputControlGroupName the ThroughputControlGroupName.
      * @return current CosmosCommonRequestOptions.
      */
@@ -116,6 +105,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the CosmosDiagnosticsThresholds.
+     *
      * @param thresholds the CosmosDiagnosticsThresholds.
      * @return current CosmosCommonRequestOptions.
      */
@@ -126,6 +116,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the ScanInQueryEnabled.
+     *
      * @param scanInQueryEnabled the ScanInQueryEnabled.
      * @return current CosmosCommonRequestOptions.
      */
@@ -136,6 +127,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the MaxDegreeOfParallelism.
+     *
      * @param maxDegreeOfParallelism the MaxDegreeOfParallelism.
      * @return current CosmosCommonRequestOptions.
      */
@@ -146,6 +138,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the MaxBufferedItemCount.
+     *
      * @param maxBufferedItemCount the MaxBufferedItemCount.
      * @return current CosmosCommonRequestOptions.
      */
@@ -156,6 +149,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the ResponseContinuationTokenLimitInKb.
+     *
      * @param responseContinuationTokenLimitInKb the ResponseContinuationTokenLimitInKb.
      * @return current CosmosCommonRequestOptions.
      */
@@ -166,6 +160,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the MaxItemCount.
+     *
      * @param maxItemCount the MaxItemCount.
      * @return current CosmosCommonRequestOptions.
      */
@@ -176,6 +171,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the QueryMetricsEnabled.
+     *
      * @param queryMetricsEnabled the QueryMetricsEnabled.
      * @return current CosmosCommonRequestOptions.
      */
@@ -186,6 +182,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the IndexMetricsEnabled.
+     *
      * @param indexMetricsEnabled the IndexMetricsEnabled.
      * @return current CosmosCommonRequestOptions.
      */
@@ -196,6 +193,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the MaxPrefetchPageCount.
+     *
      * @param maxPrefetchPageCount the MaxPrefetchPageCount.
      * @return current CosmosCommonRequestOptions.
      */
@@ -206,6 +204,7 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     /**
      * Sets the QueryName.
+     *
      * @param queryName the QueryName.
      * @return current CosmosCommonRequestOptions.
      */
@@ -284,18 +283,13 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
     }
 
     @Override
-    public boolean getNonIdempotentWriteRetriesEnabled() {
+    public Boolean getNonIdempotentWriteRetriesEnabled() {
         return this.nonIdempotentWriteRetriesEnabled;
     }
 
     @Override
     public Boolean isContentResponseOnWriteEnabled() {
         return this.contentResponseOnWriteEnabled;
-    }
-
-    @Override
-    public String getSessionToken() {
-        return this.sessionToken;
     }
 
     @Override

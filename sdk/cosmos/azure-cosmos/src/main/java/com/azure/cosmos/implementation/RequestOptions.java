@@ -148,7 +148,7 @@ public class RequestOptions implements OverridableRequestOptions {
     }
 
     @Override
-    public boolean getNonIdempotentWriteRetriesEnabled() {
+    public Boolean getNonIdempotentWriteRetriesEnabled() {
         return this.nonIdempotentWriteRetriesEnabled;
     }
 
@@ -274,7 +274,6 @@ public class RequestOptions implements OverridableRequestOptions {
      *
      * @return the session token.
      */
-    @Override
     public String getSessionToken() {
         return this.sessionToken;
     }
@@ -553,15 +552,14 @@ public class RequestOptions implements OverridableRequestOptions {
 
     @Override
     public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
-        overrideOption(cosmosCommonRequestOptions.getSessionToken(), this.sessionToken);
-        overrideOption(cosmosCommonRequestOptions.isContentResponseOnWriteEnabled(), this.contentResponseOnWriteEnabled);
-        overrideOption(cosmosCommonRequestOptions.getNonIdempotentWriteRetriesEnabled(), this.nonIdempotentWriteRetriesEnabled);
-        overrideOption(cosmosCommonRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
-        overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
-        overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
-        overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
-        overrideOption(cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.endToEndOperationLatencyConfig);
+        this.consistencyLevel = overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
+        this.contentResponseOnWriteEnabled = overrideOption(cosmosCommonRequestOptions.isContentResponseOnWriteEnabled(), this.contentResponseOnWriteEnabled);
+        this.nonIdempotentWriteRetriesEnabled = overrideOption(cosmosCommonRequestOptions.getNonIdempotentWriteRetriesEnabled(), this.nonIdempotentWriteRetriesEnabled);
+        this.dedicatedGatewayRequestOptions = overrideOption(cosmosCommonRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
+        this.excludeRegions = overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.thresholds = overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        this.endToEndOperationLatencyConfig = overrideOption(cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.endToEndOperationLatencyConfig);
     }
 
     public CosmosItemSerializer getEffectiveItemSerializer() {

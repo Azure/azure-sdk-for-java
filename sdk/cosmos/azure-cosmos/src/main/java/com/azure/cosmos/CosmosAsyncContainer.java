@@ -113,8 +113,6 @@ public class CosmosAsyncContainer {
         ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
     private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
         ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
-    private static final ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor batchRequestOptionsAccessor =
-        ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
     private static final ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.CosmosBulkExecutionOptionsAccessor bulkExecutionOptionsAccessor =
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper.getCosmosBulkExecutionOptionsAccessor();
     private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor =
@@ -143,6 +141,7 @@ public class CosmosAsyncContainer {
     private final String readAllConflictsSpanName;
     private final String queryConflictsSpanName;
     private final String batchSpanName;
+    private final String bulkSpanName;
     private final AtomicBoolean isInitialized;
     private CosmosAsyncScripts scripts;
     private IFaultInjectorProvider faultInjectorProvider;
@@ -171,6 +170,7 @@ public class CosmosAsyncContainer {
         this.readAllConflictsSpanName = "readAllConflicts." + this.id;
         this.queryConflictsSpanName = "queryConflicts." + this.id;
         this.batchSpanName = "transactionalBatch." + this.id;
+        this.bulkSpanName = "nonTransactionalBatch." + this.id;
         this.isInitialized = new AtomicBoolean(false);
     }
 
@@ -587,11 +587,11 @@ public class CosmosAsyncContainer {
             clientAccessor.getConnectionMode(client),
             clientAccessor.getUserAgent(client),
             null,
-            null);
+            null,
+            requestOptions);
 
         CosmosOperationDetails operationDetails = operationDetailsAccessor.create(requestOptions, cosmosCtx);
         clientAccessor.getPolicies(client).forEach(policy -> policy.process(operationDetails));
-
     }
 
 
@@ -1261,13 +1261,11 @@ public class CosmosAsyncContainer {
             requestOptions = new CosmosBatchRequestOptions();
         }
 
-        CosmosBatchRequestOptions options = batchRequestOptionsAccessor.clone(requestOptions);
-        RequestOptions requestOptionsInternal = ModelBridgeInternal.toRequestOptions(options);
+        RequestOptions requestOptionsInternal = ModelBridgeInternal.toRequestOptions(requestOptions);
         applyPolicies(OperationType.Batch, ResourceType.Document, requestOptionsInternal, this.batchSpanName);
-        final CosmosBatchRequestOptions cosmosBatchRequestOptions = batchRequestOptionsAccessor.fromRequestOptions(requestOptionsInternal);
 
         return withContext(context -> {
-            final BatchExecutor executor = new BatchExecutor(this, cosmosBatch, cosmosBatchRequestOptions);
+            final BatchExecutor executor = new BatchExecutor(this, cosmosBatch, requestOptionsInternal);
             final Mono<CosmosBatchResponse> responseMono = executor.executeAsync();
 
             CosmosAsyncClient client = database
@@ -1282,10 +1280,7 @@ public class CosmosAsyncContainer {
                     database.getId(),
                     this.id,
                     client,
-                    ImplementationBridgeHelpers
-                        .CosmosBatchRequestOptionsHelper
-                        .getCosmosBatchRequestOptionsAccessor()
-                        .getConsistencyLevel(cosmosBatchRequestOptions),
+                    requestOptionsInternal.getConsistencyLevel(),
                     OperationType.Batch,
                     ResourceType.Document,
                     requestOptionsInternal,
@@ -1349,13 +1344,18 @@ public class CosmosAsyncContainer {
         if (bulkOptions == null) {
             bulkOptions = new CosmosBulkExecutionOptions();
         }
+        /*
+        operations.map(operation -> {
+            ((ItemBulkOperation) operation).getRequestOptions();
+            return operation;
+        });*/
 
-        CosmosBulkExecutionOptions options = bulkExecutionOptionsAccessor.clone(bulkOptions);
-        CosmosBulkExecutionOptionsImpl requestOptionsInternal = bulkExecutionOptionsAccessor.getImpl(options);
-        applyPolicies(OperationType.Batch, ResourceType.Document, requestOptionsInternal, this.batchSpanName);
+        CosmosBulkExecutionOptions clonedOptions = bulkExecutionOptionsAccessor.clone(bulkOptions);
+        CosmosBulkExecutionOptionsImpl requestOptionsInternal = bulkExecutionOptionsAccessor.getImpl(clonedOptions);
+        applyPolicies(OperationType.Batch, ResourceType.Document, requestOptionsInternal, this.bulkSpanName);
 
         return Flux.deferContextual(context -> {
-            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, options);
+            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, clonedOptions);
 
             return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
         });
@@ -2435,7 +2435,7 @@ public class CosmosAsyncContainer {
                 this.id,
                 client,
                 null,
-                OperationType.Replace,
+                OperationType.Delete,
                 ResourceType.DocumentCollection,
                 requestOptions);
     }

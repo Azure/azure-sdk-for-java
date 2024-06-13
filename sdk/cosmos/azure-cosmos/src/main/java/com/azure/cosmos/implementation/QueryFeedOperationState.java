@@ -49,7 +49,8 @@ public final class QueryFeedOperationState extends FeedOperationState {
                     checkNotNull(queryRequestOptions, "Argument 'queryRequestOptions' must not be null.")
                 ).getDiagnosticsThresholds()),
             fluxOptions,
-            getEffectiveMaxItemCount(fluxOptions, queryRequestOptions)
+            getEffectiveMaxItemCount(fluxOptions, queryRequestOptions),
+            qryOptAccessor.getImpl(checkNotNull(queryRequestOptions, "Argument 'queryRequestOptions' must not be null."))
         );
 
         String requestOptionsContinuation = qryOptAccessor.getRequestContinuation(queryRequestOptions);

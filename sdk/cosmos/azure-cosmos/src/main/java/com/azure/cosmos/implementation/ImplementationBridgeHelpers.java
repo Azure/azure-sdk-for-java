@@ -872,7 +872,12 @@ public class ImplementationBridgeHelpers {
                 String connectionMode,
                 String userAgent,
                 Integer sequenceNumber,
-                String queryStatement);
+                String queryStatement,
+                OverridableRequestOptions requestOptions);
+
+            OverridableRequestOptions getRequestOptions(CosmosDiagnosticsContext ctx);
+
+            void setRequestOptions(CosmosDiagnosticsContext ctx, OverridableRequestOptions requestOptions);
 
             CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
                 String cpu,
@@ -1097,7 +1102,6 @@ public class ImplementationBridgeHelpers {
             Map<String, String> getHeader(CosmosBatchRequestOptions cosmosItemRequestOptions);
             List<String> getExcludeRegions(CosmosBatchRequestOptions cosmosBatchRequestOptions);
             CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned);
-            CosmosBatchRequestOptions fromRequestOptions(RequestOptions requestOptions);
         }
     }
 

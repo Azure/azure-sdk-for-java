@@ -742,9 +742,9 @@ public interface AsyncDocumentClient {
      * The {@link Flux} will contain one or several feed response pages of the obtained documents.
      * In case of failure the {@link Flux} will error.
      *
-     * @param collection    the parent document collection.
+     * @param <T>            the type parameter
+     * @param collection     the parent document collection.
      * @param requestOptions the change feed request options.
-     * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
     <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(

@@ -264,10 +264,11 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
 
     @Override
     public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        overrideOption(cosmosCommonRequestOptions.getMaxItemCount(), this.maxItemCount);
-        overrideOption(cosmosCommonRequestOptions.getMaxPrefetchPageCount(), this.maxPrefetchPageCount);
-        overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
-        overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.maxItemCount = overrideOption(cosmosCommonRequestOptions.getMaxItemCount(), this.maxItemCount);
+        this.maxPrefetchPageCount = overrideOption(cosmosCommonRequestOptions.getMaxPrefetchPageCount(), this.maxPrefetchPageCount);
+        this.excludeRegions = overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.thresholds = overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
     }
 
 }

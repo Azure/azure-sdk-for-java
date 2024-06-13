@@ -458,17 +458,15 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
 
     @Override
     public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
-        overrideOption(cosmosCommonRequestOptions.getSessionToken(), this.sessionToken);
-        overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
-        overrideOption(cosmosCommonRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
-        overrideOption(cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.cosmosEndToEndOperationLatencyPolicyConfig);
-        overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
-        overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
-        overrideOption(cosmosCommonRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
-        overrideOption(cosmosCommonRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
-        overrideOption(cosmosCommonRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
-        overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.consistencyLevel = overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
+        this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.dedicatedGatewayRequestOptions = overrideOption(cosmosCommonRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
+        this.cosmosEndToEndOperationLatencyPolicyConfig = overrideOption(cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.cosmosEndToEndOperationLatencyPolicyConfig);
+        this.excludeRegions = overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.thresholds = overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        this.indexMetricsEnabled = overrideOption(cosmosCommonRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
+        this.queryMetricsEnabled = overrideOption(cosmosCommonRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
+        this.responseContinuationTokenLimitInKb = overrideOption(cosmosCommonRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
     }
 
     public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {

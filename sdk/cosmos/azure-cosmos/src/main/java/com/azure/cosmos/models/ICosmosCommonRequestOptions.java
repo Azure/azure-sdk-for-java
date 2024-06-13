@@ -35,16 +35,6 @@ public interface ICosmosCommonRequestOptions {
     }
 
     /**
-     * Gets the session token.
-     *
-     * @return the session token.
-     */
-    default String getSessionToken() {
-        logger.info("This is not the correct class to get the session token.");
-        return null;
-    }
-
-    /**
      * Gets the content response on write enabled.
      *
      * @return the content response on write enabled.
@@ -59,9 +49,9 @@ public interface ICosmosCommonRequestOptions {
      *
      * @return the non idempotent write retries enabled.
      */
-    default boolean getNonIdempotentWriteRetriesEnabled() {
+    default Boolean getNonIdempotentWriteRetriesEnabled() {
         logger.info("This is not the correct class to get the non idempotent write retries enabled.");
-        return false;
+        return null;
     }
 
     /**

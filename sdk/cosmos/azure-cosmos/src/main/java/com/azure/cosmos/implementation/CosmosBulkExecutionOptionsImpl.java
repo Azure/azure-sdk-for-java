@@ -221,8 +221,8 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
 
     @Override
     public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
-        overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.excludeRegions = overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
     }
 
 }

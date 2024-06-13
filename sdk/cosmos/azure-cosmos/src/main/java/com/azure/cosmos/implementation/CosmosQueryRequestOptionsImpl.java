@@ -366,10 +366,10 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     @Override
     public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
         super.override(cosmosCommonRequestOptions);
-        overrideOption(cosmosCommonRequestOptions.isScanInQueryEnabled(), this.scanInQueryEnabled);
-        overrideOption(cosmosCommonRequestOptions.getMaxDegreeOfParallelism(), this.maxDegreeOfParallelism);
-        overrideOption(cosmosCommonRequestOptions.getMaxBufferedItemCount(), this.maxBufferedItemCount);
-        overrideOption(cosmosCommonRequestOptions.getMaxItemCount(), this.maxItemCount);
-        overrideOption(cosmosCommonRequestOptions.getQueryNameOrDefault(""), this.queryName);
+        this.scanInQueryEnabled = overrideOption(cosmosCommonRequestOptions.isScanInQueryEnabled(), this.scanInQueryEnabled);
+        this.maxDegreeOfParallelism = overrideOption(cosmosCommonRequestOptions.getMaxDegreeOfParallelism(), this.maxDegreeOfParallelism);
+        this.maxBufferedItemCount = overrideOption(cosmosCommonRequestOptions.getMaxBufferedItemCount(), this.maxBufferedItemCount);
+        this.maxItemCount = overrideOption(cosmosCommonRequestOptions.getMaxItemCount(), this.maxItemCount);
+        this.queryName = overrideOption(cosmosCommonRequestOptions.getQueryNameOrDefault(""), this.queryName);
     }
 }

@@ -172,6 +172,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
         ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
 
+    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
+
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -3590,34 +3593,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         final DocumentCollection collection,
-        final CosmosChangeFeedRequestOptions changeFeedOptions,
+        final CosmosChangeFeedRequestOptions requestOptions,
         Class<T> classOfT) {
 
         checkNotNull(collection, "Argument 'collection' must not be null.");
 
-        CosmosChangeFeedRequestOptions clonedOptions = changeFeedOptionsAccessor.clone(changeFeedOptions);
-
-        CosmosChangeFeedRequestOptionsImpl optionsImpl = changeFeedOptionsAccessor.getImpl(clonedOptions);
-        CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
-            null,
-            null,
-            null,
-            null,
-            null,
-            ResourceType.Document,
-            OperationType.ReadFeed,
-            null,
-            consistencyLevel,
-            null,
-            null,
-            null,
-            connectionPolicy.getConnectionMode().toString(),
-            getUserAgent(),
-            null,
-            null);
-
-        CosmosOperationDetails operationDetails = operationDetailsAccessor.create(optionsImpl, cosmosCtx);
-        this.operationPolicies.forEach(policy -> policy.process(operationDetails));
 
         ChangeFeedQueryImpl<T> changeFeedQueryImpl = new ChangeFeedQueryImpl<>(
             this,
@@ -3625,7 +3605,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             classOfT,
             collection.getAltLink(),
             collection.getResourceId(),
-            clonedOptions);
+            requestOptions);
 
 
         return changeFeedQueryImpl.executeAsync();
@@ -3633,7 +3613,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public <T> Flux<FeedResponse<T>> queryDocumentChangeFeedFromPagedFlux(DocumentCollection collection, ChangeFeedOperationState state, Class<T> classOfT) {
-        return queryDocumentChangeFeed(collection, state.getChangeFeedOptions(), classOfT);
+
+        CosmosChangeFeedRequestOptions clonedOptions = changeFeedOptionsAccessor.clone(state.getChangeFeedOptions());
+
+        CosmosChangeFeedRequestOptionsImpl optionsImpl = changeFeedOptionsAccessor.getImpl(clonedOptions);
+
+        CosmosOperationDetails operationDetails = operationDetailsAccessor.create(optionsImpl, state.getDiagnosticsContextSnapshot());
+        this.operationPolicies.forEach(policy -> policy.process(operationDetails));
+        ctxAccessor.setRequestOptions(state.getDiagnosticsContextSnapshot(), optionsImpl);
+        return queryDocumentChangeFeed(collection, clonedOptions, classOfT);
     }
 
     @Override
