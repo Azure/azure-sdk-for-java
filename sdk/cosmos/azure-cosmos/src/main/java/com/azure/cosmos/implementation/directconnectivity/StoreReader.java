@@ -418,10 +418,13 @@ public class StoreReader {
             requestedCollectionId = entity.requestContext.resolvedCollectionRid;
         }
 
-        Mono<List<List<Uri>>> resolveApiResultsObs = this.addressSelector.resolveAndStoreAllUriAsync(
+        List<Uri> allApiResults = new ArrayList<>();
+
+        Mono<List<Uri>> resolveApiResultsObs = this.addressSelector.resolveAllUriAsync(
                 entity,
                 includePrimary,
-                entity.requestContext.forceRefreshAddressCache);
+                entity.requestContext.forceRefreshAddressCache,
+                allApiResults);
 
         if (!StringUtils.isEmpty(requestedCollectionId) && !StringUtils.isEmpty(entity.requestContext.resolvedCollectionRid)) {
             if (!requestedCollectionId.equals(entity.requestContext.resolvedCollectionRid)) {
@@ -432,10 +435,8 @@ public class StoreReader {
         return resolveApiResultsObs.flux()
                 .map(list -> Collections.synchronizedList(new ArrayList<>(list)))
                 .flatMap(
-                resolveApiResultsTuple -> {
+                resolveApiResults -> {
                     try {
-                        List<Uri> resolveApiResults = resolveApiResultsTuple.get(0);
-                        List<Uri> allApiResults = resolveApiResultsTuple.get(1);
                         MutableVolatile<ISessionToken> requestSessionToken = new MutableVolatile<>();
                         if (useSessionToken) {
                             SessionTokenHelper.setPartitionLocalSessionToken(entity, this.sessionContainer);

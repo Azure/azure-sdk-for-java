@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added diagnostic fields for `quorumAckedLSN` and `currentReplicaSetSize`. Changed `replicaStatusList` to include all replicas and more information. - See [PR 39844](https://github.com/Azure/azure-sdk-for-java/pull/39844)
 
 ### 4.61.1 (2024-05-31)
 
@@ -46,7 +47,6 @@
 
 #### Other Changes
 * Load Blackbird or Afterburner into the ObjectMapper depending upon Java version and presence of modules in classpath. Make Afterburner and Blackbird optional maven dependencies. See - [PR 39689](https://github.com/Azure/azure-sdk-for-java/pull/39689)
-* Added diagnostic fields for `quorumAckedLSN` and `currentReplicaSetSize`. Changed `replicaStatusList` to include all replicas and more information. - See [PR 39844](https://github.com/Azure/azure-sdk-for-java/pull/39844)
 
 ### 4.53.5-hotfix (2024-04-25)
 

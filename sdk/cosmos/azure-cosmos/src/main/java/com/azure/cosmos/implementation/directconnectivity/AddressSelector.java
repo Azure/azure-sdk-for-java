@@ -4,21 +4,16 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class AddressSelector {
@@ -39,26 +34,17 @@ public class AddressSelector {
             .map(a -> a.getPhysicalUri()).collect(Collectors.toList()));
     }
 
-    public Mono<List<List<Uri>>> resolveAndStoreAllUriAsync(
+    public Mono<List<Uri>> resolveAllUriAsync(
         RxDocumentServiceRequest request,
         boolean includePrimary,
-        boolean forceRefresh) {
+        boolean forceRefresh,
+        List<Uri> allReplicas) {
         Mono<List<AddressInformation>> allReplicaAddressesObs = this.resolveAddressesAsync(request, forceRefresh);
-        return allReplicaAddressesObs.map(allReplicaAddresses -> {
-            List<Uri> readReplicas = new ArrayList<>();
-            List<Uri> allReplicas = new ArrayList<>();
-            allReplicaAddresses.forEach(a -> {
-                if (!a.isPrimary() || includePrimary) {
-                    readReplicas.add(a.getPhysicalUri());
-                }
-                allReplicas.add(a.getPhysicalUri());
-            });
-            List<List<Uri>> replicasTuple = new ArrayList<>();
-            replicasTuple.add(readReplicas);
-            replicasTuple.add(allReplicas);
-
-            return replicasTuple;
-        });
+        return allReplicaAddressesObs.map(allReplicaAddresses -> allReplicaAddresses.stream().map(a -> {
+            allReplicas.add(a.getPhysicalUri());
+            return a;
+            }).filter(a -> includePrimary || !a.isPrimary())
+            .map(a -> a.getPhysicalUri()).collect(Collectors.toList()));
     }
 
     public Mono<Uri> resolvePrimaryUriAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh) {
