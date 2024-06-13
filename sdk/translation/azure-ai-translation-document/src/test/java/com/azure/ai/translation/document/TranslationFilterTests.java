@@ -14,16 +14,12 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
-import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.core.util.polling.SyncPoller;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,24 +36,16 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
 
         // list translations with filter
         List<String> cancelledStatusList = Arrays.asList(Status.CANCELLED.toString(),
-                Status.CANCELLING.toString());
-
-        LocalDateTime testStartTime = LocalDateTime.now(ZoneOffset.UTC);
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("createdDateTimeUtcStart", String.valueOf(testStartTime), false);
-        requestOptions.addQueryParam("statuses",
-                cancelledStatusList.stream()
-                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                        .collect(Collectors.joining(",")),
-                false);
+                Status.CANCELLING.toString());         
+        OffsetDateTime  testStartTime = LocalDateTime.now(ZoneOffset.UTC).atOffset(ZoneOffset.UTC);
 
         try {
-            PagedIterable<BinaryData> translationStatusResult = documentTranslationClient
-                    .getTranslationsStatus(requestOptions);
-            for (BinaryData d : translationStatusResult) {
-                String status = new ObjectMapper().readTree(d.toBytes()).get("status").asText();
+            PagedIterable<TranslationStatus> translationStatusResult = documentTranslationClient
+                    .getTranslationsStatus(null, null, null, cancelledStatusList, testStartTime, null, null);
+            for (TranslationStatus d : translationStatusResult) {
+                String status = d.getStatus().toString();
                 assertTrue(cancelledStatusList.contains(status));
-                String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
+                String id = d.getId();
                 assertTrue(cancelledIds.contains(id));
             }
         } catch (Exception e) {
@@ -73,21 +61,14 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         List<String> allIds = createTranslationJobs(2, 1, Status.SUCCEEDED);
         List<String> targetIds = new ArrayList<>();
         targetIds.add(allIds.get(0));
-
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("ids",
-                targetIds.stream()
-                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                        .collect(Collectors.joining(",")),
-                false);
-
+        
         try {
-            PagedIterable<BinaryData> translationStatusResult = documentTranslationClient
-                    .getTranslationsStatus(requestOptions);
-            for (BinaryData d : translationStatusResult) {
-                String status = new ObjectMapper().readTree(d.toBytes()).get("status").asText();
+            PagedIterable<TranslationStatus> translationStatusResult = documentTranslationClient
+                    .getTranslationsStatus(null, null, targetIds, null, null, null, null);
+            for (TranslationStatus d : translationStatusResult) {
+                String status = d.getStatus().toString();
                 assertTrue(status.equalsIgnoreCase(Status.SUCCEEDED.toString()));
-                String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
+                String id = d.getId();
                 assertTrue(targetIds.contains(id));
             }
         } catch (Exception e) {
@@ -101,26 +82,23 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     public void testGetTranslationStatusesFilterByCreatedAfter() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // timestamp before creating a translation job
-        LocalDateTime testStartTime = LocalDateTime.now(ZoneOffset.UTC);
+        LocalDateTime localTime = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime testStartTime = localTime.atOffset(ZoneOffset.UTC);
 
         // create test job
         List<String> targetIds = createTranslationJobs(1, 1, Status.SUCCEEDED);
 
         // list translations with filter
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("createdDateTimeUtcStart", String.valueOf(testStartTime), false);
-
         try {
-            PagedIterable<BinaryData> translationStatusResult = documentTranslationClient
-                    .getTranslationsStatus(requestOptions);
-            for (BinaryData d : translationStatusResult) {
-                String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
+            PagedIterable<TranslationStatus> translationStatusResult = documentTranslationClient
+                    .getTranslationsStatus(null, null, null, null, testStartTime, null, null);
+            for (TranslationStatus d : translationStatusResult) {
+                String id = d.getId();
                 assertTrue(targetIds.contains(id));
-                String createdDateTimeString = new ObjectMapper().readTree(d.toBytes()).get("createdDateTimeUtc")
-                        .asText();
+                String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
                 LocalDateTime createdDateTimeUtc = LocalDateTime.parse(createdDateTimeString,
                         DateTimeFormatter.ISO_DATE_TIME);
-                assertTrue(createdDateTimeUtc.isAfter(testStartTime));
+                assertTrue(createdDateTimeUtc.isAfter(localTime));
             }
         } catch (Exception e) {
             System.err.println("An exception occurred: " + e.getMessage());
@@ -135,26 +113,24 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         // create some translations
         List<String> targetIds = createTranslationJobs(1, 1, Status.SUCCEEDED);
         LocalDateTime timeStamp = LocalDateTime.now(ZoneOffset.UTC);
+        OffsetDateTime endDateTime = timeStamp.atOffset(ZoneOffset.UTC);
         createTranslationJobs(1, 1, Status.SUCCEEDED);
 
         // getting only translations from the last hour
         LocalDateTime recentTimestamp = LocalDateTime.now(ZoneOffset.UTC).minusHours(1);
+        OffsetDateTime startDateTime = recentTimestamp.atOffset(ZoneOffset.UTC);
 
         // add translations with filter
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("createdDateTimeUtcStart", String.valueOf(recentTimestamp), false);
-        requestOptions.addQueryParam("createdDateTimeUtcEnd", String.valueOf(timeStamp), false);
         try {
-            PagedIterable<BinaryData> translationStatusResult = documentTranslationClient
-                    .getTranslationsStatus(requestOptions);
+            PagedIterable<TranslationStatus> translationStatusResult = documentTranslationClient
+                    .getTranslationsStatus(null, null, null, null, startDateTime, endDateTime, null);
             boolean idExists = false;
-            for (BinaryData d : translationStatusResult) {
-                String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
+            for (TranslationStatus d : translationStatusResult) {
+                String id = d.getId();
                 if (targetIds.contains(id)) {
                     idExists = true;
                 }
-                String createdDateTimeString = new ObjectMapper().readTree(d.toBytes()).get("createdDateTimeUtc")
-                        .asText();
+                String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
                 LocalDateTime createdDateTimeUtc = LocalDateTime.parse(createdDateTimeString,
                         DateTimeFormatter.ISO_DATE_TIME);
                 assertTrue(createdDateTimeUtc.isBefore(timeStamp));
@@ -174,24 +150,16 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         createTranslationJobs(3, 1, Status.SUCCEEDED);
         // getting only translations from the last few hours
         LocalDateTime recentTimestamp = LocalDateTime.now(ZoneOffset.UTC).minusHours(2);
+        OffsetDateTime startDateTime = recentTimestamp.atOffset(ZoneOffset.UTC);
 
         // add translations with filter
         List<String> orderBy = Arrays.asList("createdDateTimeUtc asc");
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("orderby",
-                orderBy.stream()
-                        .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                        .collect(Collectors.joining(",")),
-                false);
-        requestOptions.addQueryParam("createdDateTimeUtcStart", String.valueOf(recentTimestamp), false);
-
         try {
-            PagedIterable<BinaryData> translationStatusResult = documentTranslationClient
-                    .getTranslationsStatus(requestOptions);
+            PagedIterable<TranslationStatus> translationStatusResult = documentTranslationClient
+                    .getTranslationsStatus(null, null, null, null, startDateTime, null, orderBy);
             LocalDateTime timestamp = LocalDateTime.MIN;
-            for (BinaryData d : translationStatusResult) {
-                String createdDateTimeString = new ObjectMapper().readTree(d.toBytes()).get("createdDateTimeUtc")
-                        .asText();
+            for (TranslationStatus d : translationStatusResult) {
+                String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
                 LocalDateTime createdDateTimeUtc = LocalDateTime.parse(createdDateTimeString,
                         DateTimeFormatter.ISO_DATE_TIME);
                 assertTrue(createdDateTimeUtc.compareTo(timestamp) > 0 || createdDateTimeUtc.compareTo(timestamp) == 0);

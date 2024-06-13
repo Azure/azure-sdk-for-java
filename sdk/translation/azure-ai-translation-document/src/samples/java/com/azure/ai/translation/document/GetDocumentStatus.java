@@ -17,13 +17,8 @@ import com.azure.ai.translation.document.models.Status;
 import com.azure.core.credential.AzureKeyCredential;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Sample for getting documents status
@@ -64,18 +59,11 @@ public class GetDocumentStatus {
         String translationId = response.poll().getValue().getId(); 
         
         // Add Status filter
-        List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("statuses",
-                succeededStatusList.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false); 
-        
+        List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());        
         try {
-            PagedIterable<BinaryData> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, requestOptions);
-            for (BinaryData d: documentStatusResponse) {
-                String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
+            PagedIterable<DocumentStatus> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, null, null, null, succeededStatusList, null, null, null);
+            for (DocumentStatus d: documentStatusResponse) {
+                String id = d.getId();
                 System.out.println("Document Translation ID is: " + id);
                 DocumentStatus documentStatus = documentTranslationClient.getDocumentStatus(translationId, id);
                 System.out.println("Document ID is: " + documentStatus.getId());

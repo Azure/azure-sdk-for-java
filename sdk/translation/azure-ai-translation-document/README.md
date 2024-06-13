@@ -298,20 +298,13 @@ SyncPoller<TranslationStatus, Void> response
 String translationId = response.poll().getValue().getId(); 
 
 // Add Status filter
-List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());
-RequestOptions requestOptions = new RequestOptions();
-requestOptions.addQueryParam("statuses",
-        succeededStatusList.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.joining(",")),
-        false); 
-
+List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());        
 try {
-    PagedIterable<BinaryData> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, requestOptions);
-    for (BinaryData d: documentStatusResponse) {
-        String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
+    PagedIterable<DocumentStatus> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, null, null, null, succeededStatusList, null, null, null);
+    for (DocumentStatus d: documentStatusResponse) {
+        String id = d.getId();
         System.out.println("Document Translation ID is: " + id);
-        String status = new ObjectMapper().readTree(d.toBytes()).get("status").asText();
+        String status = d.getStatus().toString();
         System.out.println("Document Translation status is: " + status);                
     }           
 } catch (Exception e) {
@@ -349,18 +342,11 @@ SyncPoller<TranslationStatus, Void> response
 String translationId = response.poll().getValue().getId(); 
 
 // Add Status filter
-List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());
-RequestOptions requestOptions = new RequestOptions();
-requestOptions.addQueryParam("statuses",
-        succeededStatusList.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.joining(",")),
-        false); 
-
+List<String> succeededStatusList = Arrays.asList(Status.SUCCEEDED.toString());        
 try {
-    PagedIterable<BinaryData> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, requestOptions);
-    for (BinaryData d: documentStatusResponse) {
-        String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
+    PagedIterable<DocumentStatus> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, null, null, null, succeededStatusList, null, null, null);
+    for (DocumentStatus d: documentStatusResponse) {
+        String id = d.getId();
         System.out.println("Document Translation ID is: " + id);
         DocumentStatus documentStatus = documentTranslationClient.getDocumentStatus(translationId, id);
         System.out.println("Document ID is: " + documentStatus.getId());
