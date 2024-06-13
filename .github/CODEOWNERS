@@ -29,7 +29,7 @@
 # AzureSdkOwners:                                    @vcolin7 @alzimmermsft
 
 # PRLabel: %azure-spring
-/sdk/boms/spring-cloud-azure-dependencies/           @saragluna @chenrujun @netyyyy @moarychan
+/sdk/boms/spring-cloud-azure-dependencies/           @saragluna @rujche @netyyyy @moarychan
 
 # ######## Core Libraries ########
 
@@ -784,22 +784,22 @@
 # ######## Spring ########
 
 # ServiceLabel: %azure-spring
-# AzureSdkOwners:                                    @saragluna @chenrujun @netyyyy @moarychan
+# AzureSdkOwners:                                    @saragluna @rujche @netyyyy @moarychan
 
 # ServiceLabel: %Azure.Spring - Cosmos
 # ServiceOwners:                                     @kushagraThapar
 
 # PRLabel: %azure-spring
-/sdk/identity/azure-identity-extensions/             @chenrujun @netyyyy @saragluna @moarychan
+/sdk/identity/azure-identity-extensions/             @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/keyvault/azure-security-keyvault-jca/           @chenrujun @netyyyy @saragluna @moarychan
+/sdk/keyvault/azure-security-keyvault-jca/           @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/                                         @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring/                                         @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring-experimental/                            @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring-experimental/                            @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
 /sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams @harsimar
@@ -811,16 +811,16 @@
 # AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams @harsimar
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/        @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/        @mrm9084 @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-feature-management*/             @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-feature-management*/             @mrm9084 @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @trande4884 @TheovanKraay @xinlian12 @chenrujun @netyyyy @saragluna @moarychan @aayush3011 @simorenoh @jeet1995 @Pilchie
+/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @trande4884 @TheovanKraay @xinlian12 @rujche @netyyyy @saragluna @moarychan @aayush3011 @simorenoh @jeet1995 @Pilchie
 
 # ######## End-to-end tests ########
 
@@ -856,7 +856,7 @@
 /eng/mgmt/                                           @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
 /eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
-/eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @chenrujun @netyyyy @saragluna @moarychan
+/eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles
