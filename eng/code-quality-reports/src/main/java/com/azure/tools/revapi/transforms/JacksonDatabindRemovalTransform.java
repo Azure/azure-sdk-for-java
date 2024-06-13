@@ -50,7 +50,7 @@ public final class JacksonDatabindRemovalTransform<E extends Element<E>> extends
             return TransformationResult.keep();
         }
 
-        if (!annotationType.contains("fasterxml.jackson.annotation")) {
+        if (!annotationType.contains("fasterxml.jackson") || !annotationType.contains("annotation")) {
             // The annotation isn't from Jackson Databind, keep the current result.
             return TransformationResult.keep();
         }
