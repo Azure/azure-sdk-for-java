@@ -180,11 +180,15 @@ def update_version(sdk_root: str, output_folder: str):
     # find the python command
     python_cmd = "python"
     try:
+        logging.info("start check_call, python --version")
         subprocess.check_call([python_cmd, "--version"], shell=True)
+        logging.info("finish check_call, python --version")
     except subprocess.CalledProcessError:
         python_cmd = "python3"
         try:
+            logging.info("start check_call, python3 --version")
             subprocess.check_call([python_cmd, "--version"], shell=True)
+            logging.info("start check_call, python3 --version")
         except subprocess.CalledProcessError:
             raise Exception("python or python3 not found")
 
@@ -192,12 +196,16 @@ def update_version(sdk_root: str, output_folder: str):
     try:
         os.chdir(sdk_root)
         print(os.getcwd())
+        logging.info("start update pom.xml")
         subprocess.run(
             "{0} eng/versioning/update_versions.py --ut library --bt client --sr".format(python_cmd),
             stdout=subprocess.DEVNULL,
             stderr=sys.stderr,
             shell=True,
         )
+        logging.info("finish update pom.xml")
+
+        logging.info("start update readme.md")
         subprocess.run(
             "{0} eng/versioning/update_versions.py --ut library --bt client --tf {1}/README.md".format(
                 python_cmd, output_folder
@@ -206,6 +214,7 @@ def update_version(sdk_root: str, output_folder: str):
             stderr=sys.stderr,
             shell=True,
         )
+        logging.info("start update readme.md")
     finally:
         os.chdir(pwd)
 
