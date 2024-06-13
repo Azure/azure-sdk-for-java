@@ -208,10 +208,6 @@
     <graalvm.disable>true</graalvm.disable>
     <nativeImage.buildArgs></nativeImage.buildArgs>
 
-    <!-- The following properties configure the revapi-maven-plugin. -->
-    <!-- This property configures whether the revapi-maven-plugin should run. -->
-    <revapi.skip>false</revapi.skip>
-
     <!-- This property configures whether the revapi-maven-plugin should fail on errors. -->
     <revapi.failBuildOnProblemsFound>true</revapi.failBuildOnProblemsFound>
 
