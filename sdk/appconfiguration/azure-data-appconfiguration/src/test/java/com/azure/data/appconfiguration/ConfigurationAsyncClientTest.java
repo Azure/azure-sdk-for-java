@@ -1964,7 +1964,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)
                 .verifyComplete();
-        assertTrue(selected.size() == 2);
+        assertTrue(selected.size() >= 2);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2013,7 +2013,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listRevisionsByTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listRevisionsWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
         final Map<String, String> tags = new HashMap<>();

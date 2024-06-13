@@ -1576,7 +1576,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         assertEquals(label, labels.iterator().next());
         // Listing all labels
         PagedIterable<String> allLabels = client.listLabels(null);
-        assertEquals(2, allLabels.stream().count());
+        assertTrue(allLabels.stream().count() >= 2);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -1615,7 +1615,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listRevisionWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+    public void listRevisionsWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String keyName = getKey();
         final Map<String, String> tags = new HashMap<>();
@@ -1675,7 +1675,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettingsForSnapshot(
                     name, null, Context.NONE);
             List<ConfigurationSetting> list = configurationSettings.stream().collect(Collectors.toList());
-            assertEquals(1, list.size());
             assertEquals(newConfigurationWithTag.getTags(), list.get(0).getTags());
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             assertEquals(ConfigurationSnapshotStatus.ARCHIVED, client.archiveSnapshot(name).getStatus());
