@@ -128,9 +128,7 @@ public final class AzureSdkTreeFilterProvider implements TreeFilterProvider {
                     // Exclude com.azure.data.cosmos*
                     return true;
                 } else if (packageName.indexOf("implementation", 10) != -1
-                    || "json".regionMatches(0, packageName, 10, 4)
-                    || packageName.indexOf("samples", 10) != -1
-                    || "xml".regionMatches(0, packageName, 10, 3)) {
+                    || packageName.indexOf("samples", 10) != -1) {
                     // Exclude com.azure*.implementation*, com.azure.json*, com.azure*.samples*, and com.azure.xml*
                     return true;
                 } else if ("resourcemanager".regionMatches(0, packageName, 10, 15)) {

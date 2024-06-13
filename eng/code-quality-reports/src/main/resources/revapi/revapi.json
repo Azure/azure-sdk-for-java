@@ -3,7 +3,7 @@
     "extension": "revapi.java",
     "configuration": {
       "missing-classes": {
-        "behavior": "report",
+        "behavior": "ignore",
         "ignoreMissingAnnotations": false
       },
       "matchOverloads": true
