@@ -181,13 +181,13 @@ def update_version(sdk_root: str, output_folder: str):
     python_cmd = "python"
     try:
         logging.info("start check_call, python --version")
-        subprocess.check_call([python_cmd, "--version"], shell=True)
+        subprocess.check_call([python_cmd, "--version"])
         logging.info("finish check_call, python --version")
     except subprocess.CalledProcessError:
         python_cmd = "python3"
         try:
             logging.info("start check_call, python3 --version")
-            subprocess.check_call([python_cmd, "--version"], shell=True)
+            subprocess.check_call([python_cmd, "--version"])
             logging.info("start check_call, python3 --version")
         except subprocess.CalledProcessError:
             raise Exception("python or python3 not found")
