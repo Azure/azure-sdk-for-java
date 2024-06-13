@@ -136,7 +136,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
     }
 
     private void addServerSideFeature(Map<? extends String, ? extends Object> features, String key) {
-        Object featureValue = features.get(key);
+        Object featureValue = null;
         if (key != null) {
             featureValue = features.get(key);
         } else {
