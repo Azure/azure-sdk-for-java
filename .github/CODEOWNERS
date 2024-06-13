@@ -53,7 +53,7 @@
 # ServiceOwners:                                     @cijothomas @reyang @rajkumar-rangaraj @TimothyMothra @vishweshbankwar @ramthi
 
 # PRLabel: %Azure.Core
-/sdk/parents/                                        @alzimmermsft
+/sdk/parents/                                        @alzimmermsft @srnagar @jonathangiles @samvaity
 
 # PRLabel: %Azure.Core
 /sdk/serialization/                                  @alzimmermsft @srnagar
@@ -848,7 +848,7 @@
 
 /eng/                                                @hallipr @weshaggard @benbp @JimSuplizio
 /eng/bomgenerator/                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
-/eng/code-quality-reports/                           @mssfang @JonathanGiles
+/eng/code-quality-reports/                           @mssfang @JonathanGiles @alzimmermsft @srnagar
 /eng/common/                                         @Azure/azure-sdk-eng
 /eng/mgmt/                                           @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
