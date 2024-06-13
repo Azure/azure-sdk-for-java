@@ -177,8 +177,11 @@ public class ShareApiTests extends FileShareTestBase {
     }
 
     private static Stream<Arguments> createShareWithArgsSupplier() {
-        return Stream.of(Arguments.of(null, null, null), Arguments.of(null, 1, null),
-            Arguments.of(testMetadata, null, null), Arguments.of(null, null, ShareAccessTier.HOT),
+        return Stream.of(
+            Arguments.of(null, null, null),
+            Arguments.of(null, 1, null),
+            Arguments.of(testMetadata, null, null),
+            Arguments.of(null, null, ShareAccessTier.HOT),
             Arguments.of(testMetadata, 1, ShareAccessTier.HOT),
             Arguments.of(testMetadata, 6000, null));
     }
