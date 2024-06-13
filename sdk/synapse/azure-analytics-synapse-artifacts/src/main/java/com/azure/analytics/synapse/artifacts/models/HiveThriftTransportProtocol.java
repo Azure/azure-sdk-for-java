@@ -5,42 +5,49 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The transport protocol to use in the Thrift layer. */
+/**
+ * The transport protocol to use in the Thrift layer.
+ */
 public final class HiveThriftTransportProtocol extends ExpandableStringEnum<HiveThriftTransportProtocol> {
-    /** Static value Binary for HiveThriftTransportProtocol. */
+    /**
+     * Static value Binary for HiveThriftTransportProtocol.
+     */
     public static final HiveThriftTransportProtocol BINARY = fromString("Binary");
 
-    /** Static value SASL for HiveThriftTransportProtocol. */
+    /**
+     * Static value SASL for HiveThriftTransportProtocol.
+     */
     public static final HiveThriftTransportProtocol SASL = fromString("SASL");
 
-    /** Static value HTTP for HiveThriftTransportProtocol. */
+    /**
+     * Static value HTTP for HiveThriftTransportProtocol.
+     */
     public static final HiveThriftTransportProtocol HTTP = fromString("HTTP ");
 
     /**
      * Creates a new instance of HiveThriftTransportProtocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public HiveThriftTransportProtocol() {}
+    public HiveThriftTransportProtocol() {
+    }
 
     /**
      * Creates or finds a HiveThriftTransportProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HiveThriftTransportProtocol.
      */
-    @JsonCreator
     public static HiveThriftTransportProtocol fromString(String name) {
         return fromString(name, HiveThriftTransportProtocol.class);
     }
 
     /**
      * Gets known HiveThriftTransportProtocol values.
-     *
+     * 
      * @return known HiveThriftTransportProtocol values.
      */
     public static Collection<HiveThriftTransportProtocol> values() {

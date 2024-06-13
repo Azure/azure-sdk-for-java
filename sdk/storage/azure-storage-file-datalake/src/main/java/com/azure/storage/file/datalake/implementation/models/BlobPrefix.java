@@ -5,25 +5,33 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** The BlobPrefix model. */
-@JacksonXmlRootElement(localName = "BlobPrefix")
+/**
+ * The BlobPrefix model.
+ */
 @Fluent
-public final class BlobPrefix {
+public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
     /*
      * The Name property.
      */
-    @JsonProperty(value = "Name", required = true)
     private String name;
 
-    /** Creates an instance of BlobPrefix class. */
-    public BlobPrefix() {}
+    /**
+     * Creates an instance of BlobPrefix class.
+     */
+    public BlobPrefix() {
+    }
 
     /**
      * Get the name property: The Name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -32,12 +40,67 @@ public final class BlobPrefix {
 
     /**
      * Set the name property: The Name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the BlobPrefix object itself.
      */
     public BlobPrefix setName(String name) {
         this.name = name;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobPrefix" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("Name", this.name);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of BlobPrefix from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of BlobPrefix if the XmlReader was pointing to an instance of it, or null if it was pointing
+     * to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the BlobPrefix.
+     */
+    public static BlobPrefix fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of BlobPrefix from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of BlobPrefix if the XmlReader was pointing to an instance of it, or null if it was pointing
+     * to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the BlobPrefix.
+     */
+    public static BlobPrefix fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobPrefix" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            BlobPrefix deserializedBlobPrefix = new BlobPrefix();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Name".equals(elementName.getLocalPart())) {
+                    deserializedBlobPrefix.name = reader.getStringElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedBlobPrefix;
+        });
     }
 }

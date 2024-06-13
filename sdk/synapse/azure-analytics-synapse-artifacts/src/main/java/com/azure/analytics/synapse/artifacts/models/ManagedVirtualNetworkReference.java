@@ -5,31 +5,36 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Managed Virtual Network reference type. */
+/**
+ * Managed Virtual Network reference type.
+ */
 @Fluent
-public final class ManagedVirtualNetworkReference {
+public final class ManagedVirtualNetworkReference implements JsonSerializable<ManagedVirtualNetworkReference> {
     /*
      * Managed Virtual Network reference type.
      */
-    @JsonProperty(value = "type", required = true)
     private String type = "ManagedVirtualNetworkReference";
 
     /*
      * Reference ManagedVirtualNetwork name.
      */
-    @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
-    /** Creates an instance of ManagedVirtualNetworkReference class. */
+    /**
+     * Creates an instance of ManagedVirtualNetworkReference class.
+     */
     public ManagedVirtualNetworkReference() {
-        type = "ManagedVirtualNetworkReference";
     }
 
     /**
      * Get the type property: Managed Virtual Network reference type.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -38,7 +43,7 @@ public final class ManagedVirtualNetworkReference {
 
     /**
      * Set the type property: Managed Virtual Network reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ManagedVirtualNetworkReference object itself.
      */
@@ -49,7 +54,7 @@ public final class ManagedVirtualNetworkReference {
 
     /**
      * Get the referenceName property: Reference ManagedVirtualNetwork name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -58,12 +63,51 @@ public final class ManagedVirtualNetworkReference {
 
     /**
      * Set the referenceName property: Reference ManagedVirtualNetwork name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the ManagedVirtualNetworkReference object itself.
      */
     public ManagedVirtualNetworkReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedVirtualNetworkReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedVirtualNetworkReference if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedVirtualNetworkReference.
+     */
+    public static ManagedVirtualNetworkReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedVirtualNetworkReference deserializedManagedVirtualNetworkReference
+                = new ManagedVirtualNetworkReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("referenceName".equals(fieldName)) {
+                    deserializedManagedVirtualNetworkReference.referenceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedVirtualNetworkReference;
+        });
     }
 }

@@ -5,43 +5,50 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The authentication mechanism used to connect to the Phoenix server. */
+/**
+ * The authentication mechanism used to connect to the Phoenix server.
+ */
 public final class PhoenixAuthenticationType extends ExpandableStringEnum<PhoenixAuthenticationType> {
-    /** Static value Anonymous for PhoenixAuthenticationType. */
+    /**
+     * Static value Anonymous for PhoenixAuthenticationType.
+     */
     public static final PhoenixAuthenticationType ANONYMOUS = fromString("Anonymous");
 
-    /** Static value UsernameAndPassword for PhoenixAuthenticationType. */
+    /**
+     * Static value UsernameAndPassword for PhoenixAuthenticationType.
+     */
     public static final PhoenixAuthenticationType USERNAME_AND_PASSWORD = fromString("UsernameAndPassword");
 
-    /** Static value WindowsAzureHDInsightService for PhoenixAuthenticationType. */
-    public static final PhoenixAuthenticationType WINDOWS_AZURE_HDINSIGHT_SERVICE =
-            fromString("WindowsAzureHDInsightService");
+    /**
+     * Static value WindowsAzureHDInsightService for PhoenixAuthenticationType.
+     */
+    public static final PhoenixAuthenticationType WINDOWS_AZURE_HDINSIGHT_SERVICE
+        = fromString("WindowsAzureHDInsightService");
 
     /**
      * Creates a new instance of PhoenixAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public PhoenixAuthenticationType() {}
+    public PhoenixAuthenticationType() {
+    }
 
     /**
      * Creates or finds a PhoenixAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PhoenixAuthenticationType.
      */
-    @JsonCreator
     public static PhoenixAuthenticationType fromString(String name) {
         return fromString(name, PhoenixAuthenticationType.class);
     }
 
     /**
      * Gets known PhoenixAuthenticationType values.
-     *
+     * 
      * @return known PhoenixAuthenticationType values.
      */
     public static Collection<PhoenixAuthenticationType> values() {

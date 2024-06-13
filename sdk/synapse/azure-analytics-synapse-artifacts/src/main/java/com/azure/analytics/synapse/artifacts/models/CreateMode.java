@@ -5,59 +5,65 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * Specifies the mode of sql pool creation.
- *
- * <p>Default: regular sql pool creation.
- *
- * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
- * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
- * specified.
- *
- * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+ * 
+ * Default: regular sql pool creation.
+ * 
+ * PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool. sourceDatabaseId
+ * must be specified as the resource ID of the existing sql pool, and restorePointInTime must be specified.
+ * 
+ * Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
  * recoverableDatabaseId to restore.
- *
- * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql pool's
+ * 
+ * Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql pool's
  * original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
  */
 public final class CreateMode extends ExpandableStringEnum<CreateMode> {
-    /** Static value Default for CreateMode. */
+    /**
+     * Static value Default for CreateMode.
+     */
     public static final CreateMode DEFAULT = fromString("Default");
 
-    /** Static value PointInTimeRestore for CreateMode. */
+    /**
+     * Static value PointInTimeRestore for CreateMode.
+     */
     public static final CreateMode POINT_IN_TIME_RESTORE = fromString("PointInTimeRestore");
 
-    /** Static value Recovery for CreateMode. */
+    /**
+     * Static value Recovery for CreateMode.
+     */
     public static final CreateMode RECOVERY = fromString("Recovery");
 
-    /** Static value Restore for CreateMode. */
+    /**
+     * Static value Restore for CreateMode.
+     */
     public static final CreateMode RESTORE = fromString("Restore");
 
     /**
      * Creates a new instance of CreateMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CreateMode() {}
+    public CreateMode() {
+    }
 
     /**
      * Creates or finds a CreateMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CreateMode.
      */
-    @JsonCreator
     public static CreateMode fromString(String name) {
         return fromString(name, CreateMode.class);
     }
 
     /**
      * Gets known CreateMode values.
-     *
+     * 
      * @return known CreateMode values.
      */
     public static Collection<CreateMode> values() {

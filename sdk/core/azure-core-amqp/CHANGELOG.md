@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 2.9.6 (2024-06-11)
+
+### Features Added
+
+- Added feature to enable/disable SSL when initially creating connection to support amqp calls on port 5672.
+
 ## 2.9.5 (2024-06-06)
 
 ### Bugs Fixed

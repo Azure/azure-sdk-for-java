@@ -122,7 +122,7 @@ public class TablesJacksonSerializer extends JacksonAdapter {
     }
 
     @SuppressWarnings("unchecked")
-    private static <U> U deserializeTableEntityQueryResponse(JsonReader jsonReader) throws IOException {
+    public static <U> U deserializeTableEntityQueryResponse(JsonReader jsonReader) throws IOException {
         return (U) jsonReader.readObject(reader -> {
             TableEntityQueryResponse deserializedTableEntityQueryResponse = new TableEntityQueryResponse();
             while (reader.nextToken() != JsonToken.END_OBJECT) {

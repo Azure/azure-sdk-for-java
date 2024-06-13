@@ -5,40 +5,57 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity Xml source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("XmlSource")
+/**
+ * A copy activity Xml source.
+ */
 @Fluent
 public final class XmlSource extends CopySource {
     /*
+     * Copy source type.
+     */
+    private String type = "XmlSource";
+
+    /*
      * Xml store settings.
      */
-    @JsonProperty(value = "storeSettings")
     private StoreReadSettings storeSettings;
 
     /*
      * Xml format settings.
      */
-    @JsonProperty(value = "formatSettings")
     private XmlReadSettings formatSettings;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
-     * Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of XmlSource class. */
-    public XmlSource() {}
+    /**
+     * Creates an instance of XmlSource class.
+     */
+    public XmlSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the storeSettings property: Xml store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreReadSettings getStoreSettings() {
@@ -47,7 +64,7 @@ public final class XmlSource extends CopySource {
 
     /**
      * Set the storeSettings property: Xml store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the XmlSource object itself.
      */
@@ -58,7 +75,7 @@ public final class XmlSource extends CopySource {
 
     /**
      * Get the formatSettings property: Xml format settings.
-     *
+     * 
      * @return the formatSettings value.
      */
     public XmlReadSettings getFormatSettings() {
@@ -67,7 +84,7 @@ public final class XmlSource extends CopySource {
 
     /**
      * Set the formatSettings property: Xml format settings.
-     *
+     * 
      * @param formatSettings the formatSettings value to set.
      * @return the XmlSource object itself.
      */
@@ -79,7 +96,7 @@ public final class XmlSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -89,7 +106,7 @@ public final class XmlSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the XmlSource object itself.
      */
@@ -98,24 +115,95 @@ public final class XmlSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public XmlSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public XmlSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public XmlSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("storeSettings", this.storeSettings);
+        jsonWriter.writeJsonField("formatSettings", this.formatSettings);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of XmlSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of XmlSource if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the XmlSource.
+     */
+    public static XmlSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            XmlSource deserializedXmlSource = new XmlSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedXmlSource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedXmlSource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedXmlSource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedXmlSource.type = reader.getString();
+                } else if ("storeSettings".equals(fieldName)) {
+                    deserializedXmlSource.storeSettings = StoreReadSettings.fromJson(reader);
+                } else if ("formatSettings".equals(fieldName)) {
+                    deserializedXmlSource.formatSettings = XmlReadSettings.fromJson(reader);
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedXmlSource.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedXmlSource.setAdditionalProperties(additionalProperties);
+
+            return deserializedXmlSource;
+        });
     }
 }

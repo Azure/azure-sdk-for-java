@@ -5,51 +5,53 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** SQL script. */
+/**
+ * SQL script.
+ */
 @Fluent
-public final class SqlScript {
+public final class SqlScript implements JsonSerializable<SqlScript> {
     /*
      * The description of the SQL script.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The type of the SQL script.
      */
-    @JsonProperty(value = "type")
     private SqlScriptType type;
 
     /*
      * The content of the SQL script.
      */
-    @JsonProperty(value = "content", required = true)
     private SqlScriptContent content;
 
     /*
      * The folder that this SQL script is in. If not specified, this SQL script will appear at the root level.
      */
-    @JsonProperty(value = "folder")
     private SqlScriptFolder folder;
 
     /*
      * SQL script.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SqlScript class. */
-    public SqlScript() {}
+    /**
+     * Creates an instance of SqlScript class.
+     */
+    public SqlScript() {
+    }
 
     /**
      * Get the description property: The description of the SQL script.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -58,7 +60,7 @@ public final class SqlScript {
 
     /**
      * Set the description property: The description of the SQL script.
-     *
+     * 
      * @param description the description value to set.
      * @return the SqlScript object itself.
      */
@@ -69,7 +71,7 @@ public final class SqlScript {
 
     /**
      * Get the type property: The type of the SQL script.
-     *
+     * 
      * @return the type value.
      */
     public SqlScriptType getType() {
@@ -78,7 +80,7 @@ public final class SqlScript {
 
     /**
      * Set the type property: The type of the SQL script.
-     *
+     * 
      * @param type the type value to set.
      * @return the SqlScript object itself.
      */
@@ -89,7 +91,7 @@ public final class SqlScript {
 
     /**
      * Get the content property: The content of the SQL script.
-     *
+     * 
      * @return the content value.
      */
     public SqlScriptContent getContent() {
@@ -98,7 +100,7 @@ public final class SqlScript {
 
     /**
      * Set the content property: The content of the SQL script.
-     *
+     * 
      * @param content the content value to set.
      * @return the SqlScript object itself.
      */
@@ -110,7 +112,7 @@ public final class SqlScript {
     /**
      * Get the folder property: The folder that this SQL script is in. If not specified, this SQL script will appear at
      * the root level.
-     *
+     * 
      * @return the folder value.
      */
     public SqlScriptFolder getFolder() {
@@ -120,7 +122,7 @@ public final class SqlScript {
     /**
      * Set the folder property: The folder that this SQL script is in. If not specified, this SQL script will appear at
      * the root level.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the SqlScript object itself.
      */
@@ -131,17 +133,16 @@ public final class SqlScript {
 
     /**
      * Get the additionalProperties property: SQL script.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: SQL script.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SqlScript object itself.
      */
@@ -150,11 +151,60 @@ public final class SqlScript {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("content", this.content);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("folder", this.folder);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlScript from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlScript if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlScript.
+     */
+    public static SqlScript fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlScript deserializedSqlScript = new SqlScript();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("content".equals(fieldName)) {
+                    deserializedSqlScript.content = SqlScriptContent.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedSqlScript.description = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlScript.type = SqlScriptType.fromString(reader.getString());
+                } else if ("folder".equals(fieldName)) {
+                    deserializedSqlScript.folder = SqlScriptFolder.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSqlScript.additionalProperties = additionalProperties;
+
+            return deserializedSqlScript;
+        });
     }
 }

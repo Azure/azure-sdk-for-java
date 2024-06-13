@@ -5,144 +5,138 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for PostgreSQLV2 data source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("PostgreSqlV2")
-@JsonFlatten
+/**
+ * Linked service for PostgreSQLV2 data source.
+ */
 @Fluent
 public class PostgreSqlV2LinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "PostgreSqlV2";
+
+    /*
      * Server name for connection. Type: string.
      */
-    @JsonProperty(value = "typeProperties.server", required = true)
     private Object server;
 
     /*
      * The port for the connection. Type: integer.
      */
-    @JsonProperty(value = "typeProperties.port")
     private Object port;
 
     /*
      * Username for authentication. Type: string.
      */
-    @JsonProperty(value = "typeProperties.username", required = true)
     private Object username;
 
     /*
      * Database name for connection. Type: string.
      */
-    @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
     /*
-     * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5:
-     * verify-full. Type: integer.
+     * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full. Type: integer.
      */
-    @JsonProperty(value = "typeProperties.sslMode", required = true)
     private Object sslMode;
 
     /*
      * Sets the schema search path. Type: string.
      */
-    @JsonProperty(value = "typeProperties.schema")
     private Object schema;
 
     /*
      * Whether connection pooling should be used. Type: boolean.
      */
-    @JsonProperty(value = "typeProperties.pooling")
     private Object pooling;
 
     /*
-     * The time to wait (in seconds) while trying to establish a connection before terminating the attempt and
-     * generating an error. Type: integer.
+     * The time to wait (in seconds) while trying to establish a connection before terminating the attempt and generating an error. Type: integer.
      */
-    @JsonProperty(value = "typeProperties.connectionTimeout")
     private Object connectionTimeout;
 
     /*
-     * The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an
-     * error. Set to zero for infinity. Type: integer.
+     * The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an error. Set to zero for infinity. Type: integer.
      */
-    @JsonProperty(value = "typeProperties.commandTimeout")
     private Object commandTimeout;
 
     /*
      * Whether to trust the server certificate without validating it. Type: boolean.
      */
-    @JsonProperty(value = "typeProperties.trustServerCertificate")
     private Object trustServerCertificate;
 
     /*
      * Location of a client certificate to be sent to the server. Type: string.
      */
-    @JsonProperty(value = "typeProperties.sslCertificate")
     private Object sslCertificate;
 
     /*
      * Location of a client key for a client certificate to be sent to the server. Type: string.
      */
-    @JsonProperty(value = "typeProperties.sslKey")
     private Object sslKey;
 
     /*
      * Password for a key for a client certificate. Type: string.
      */
-    @JsonProperty(value = "typeProperties.sslPassword")
     private Object sslPassword;
 
     /*
-     * Determines the size of the internal buffer uses when reading. Increasing may improve performance if transferring
-     * large values from the database. Type: integer.
+     * Determines the size of the internal buffer uses when reading. Increasing may improve performance if transferring large values from the database. Type: integer.
      */
-    @JsonProperty(value = "typeProperties.readBufferSize")
     private Object readBufferSize;
 
     /*
      * When enabled, parameter values are logged when commands are executed. Type: boolean.
      */
-    @JsonProperty(value = "typeProperties.logParameters")
     private Object logParameters;
 
     /*
      * Gets or sets the session timezone. Type: string.
      */
-    @JsonProperty(value = "typeProperties.timezone")
     private Object timezone;
 
     /*
      * Gets or sets the .NET encoding that will be used to encode/decode PostgreSQL string data. Type: string
      */
-    @JsonProperty(value = "typeProperties.encoding")
     private Object encoding;
 
     /*
      * The Azure key vault secret reference of password in connection string. Type: string.
      */
-    @JsonProperty(value = "typeProperties.password")
     private AzureKeyVaultSecretReference password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of PostgreSqlV2LinkedService class. */
-    public PostgreSqlV2LinkedService() {}
+    /**
+     * Creates an instance of PostgreSqlV2LinkedService class.
+     */
+    public PostgreSqlV2LinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the server property: Server name for connection. Type: string.
-     *
+     * 
      * @return the server value.
      */
     public Object getServer() {
@@ -151,7 +145,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Set the server property: Server name for connection. Type: string.
-     *
+     * 
      * @param server the server value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -162,7 +156,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Get the port property: The port for the connection. Type: integer.
-     *
+     * 
      * @return the port value.
      */
     public Object getPort() {
@@ -171,7 +165,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Set the port property: The port for the connection. Type: integer.
-     *
+     * 
      * @param port the port value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -182,7 +176,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Get the username property: Username for authentication. Type: string.
-     *
+     * 
      * @return the username value.
      */
     public Object getUsername() {
@@ -191,7 +185,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Set the username property: Username for authentication. Type: string.
-     *
+     * 
      * @param username the username value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -202,7 +196,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Get the database property: Database name for connection. Type: string.
-     *
+     * 
      * @return the database value.
      */
     public Object getDatabase() {
@@ -211,7 +205,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Set the database property: Database name for connection. Type: string.
-     *
+     * 
      * @param database the database value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -223,7 +217,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Get the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4:
      * verify-ca, 5: verify-full. Type: integer.
-     *
+     * 
      * @return the sslMode value.
      */
     public Object getSslMode() {
@@ -233,7 +227,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Set the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4:
      * verify-ca, 5: verify-full. Type: integer.
-     *
+     * 
      * @param sslMode the sslMode value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -244,7 +238,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Get the schema property: Sets the schema search path. Type: string.
-     *
+     * 
      * @return the schema value.
      */
     public Object getSchema() {
@@ -253,7 +247,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Set the schema property: Sets the schema search path. Type: string.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -264,7 +258,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Get the pooling property: Whether connection pooling should be used. Type: boolean.
-     *
+     * 
      * @return the pooling value.
      */
     public Object getPooling() {
@@ -273,7 +267,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Set the pooling property: Whether connection pooling should be used. Type: boolean.
-     *
+     * 
      * @param pooling the pooling value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -285,7 +279,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Get the connectionTimeout property: The time to wait (in seconds) while trying to establish a connection before
      * terminating the attempt and generating an error. Type: integer.
-     *
+     * 
      * @return the connectionTimeout value.
      */
     public Object getConnectionTimeout() {
@@ -295,7 +289,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Set the connectionTimeout property: The time to wait (in seconds) while trying to establish a connection before
      * terminating the attempt and generating an error. Type: integer.
-     *
+     * 
      * @param connectionTimeout the connectionTimeout value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -307,7 +301,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Get the commandTimeout property: The time to wait (in seconds) while trying to execute a command before
      * terminating the attempt and generating an error. Set to zero for infinity. Type: integer.
-     *
+     * 
      * @return the commandTimeout value.
      */
     public Object getCommandTimeout() {
@@ -317,7 +311,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Set the commandTimeout property: The time to wait (in seconds) while trying to execute a command before
      * terminating the attempt and generating an error. Set to zero for infinity. Type: integer.
-     *
+     * 
      * @param commandTimeout the commandTimeout value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -329,7 +323,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Get the trustServerCertificate property: Whether to trust the server certificate without validating it. Type:
      * boolean.
-     *
+     * 
      * @return the trustServerCertificate value.
      */
     public Object getTrustServerCertificate() {
@@ -339,7 +333,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Set the trustServerCertificate property: Whether to trust the server certificate without validating it. Type:
      * boolean.
-     *
+     * 
      * @param trustServerCertificate the trustServerCertificate value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -350,7 +344,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Get the sslCertificate property: Location of a client certificate to be sent to the server. Type: string.
-     *
+     * 
      * @return the sslCertificate value.
      */
     public Object getSslCertificate() {
@@ -359,7 +353,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Set the sslCertificate property: Location of a client certificate to be sent to the server. Type: string.
-     *
+     * 
      * @param sslCertificate the sslCertificate value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -371,7 +365,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Get the sslKey property: Location of a client key for a client certificate to be sent to the server. Type:
      * string.
-     *
+     * 
      * @return the sslKey value.
      */
     public Object getSslKey() {
@@ -381,7 +375,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Set the sslKey property: Location of a client key for a client certificate to be sent to the server. Type:
      * string.
-     *
+     * 
      * @param sslKey the sslKey value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -392,7 +386,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Get the sslPassword property: Password for a key for a client certificate. Type: string.
-     *
+     * 
      * @return the sslPassword value.
      */
     public Object getSslPassword() {
@@ -401,7 +395,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Set the sslPassword property: Password for a key for a client certificate. Type: string.
-     *
+     * 
      * @param sslPassword the sslPassword value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -413,7 +407,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Get the readBufferSize property: Determines the size of the internal buffer uses when reading. Increasing may
      * improve performance if transferring large values from the database. Type: integer.
-     *
+     * 
      * @return the readBufferSize value.
      */
     public Object getReadBufferSize() {
@@ -423,7 +417,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Set the readBufferSize property: Determines the size of the internal buffer uses when reading. Increasing may
      * improve performance if transferring large values from the database. Type: integer.
-     *
+     * 
      * @param readBufferSize the readBufferSize value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -435,7 +429,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Get the logParameters property: When enabled, parameter values are logged when commands are executed. Type:
      * boolean.
-     *
+     * 
      * @return the logParameters value.
      */
     public Object getLogParameters() {
@@ -445,7 +439,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Set the logParameters property: When enabled, parameter values are logged when commands are executed. Type:
      * boolean.
-     *
+     * 
      * @param logParameters the logParameters value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -456,7 +450,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Get the timezone property: Gets or sets the session timezone. Type: string.
-     *
+     * 
      * @return the timezone value.
      */
     public Object getTimezone() {
@@ -465,7 +459,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Set the timezone property: Gets or sets the session timezone. Type: string.
-     *
+     * 
      * @param timezone the timezone value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -477,7 +471,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Get the encoding property: Gets or sets the .NET encoding that will be used to encode/decode PostgreSQL string
      * data. Type: string.
-     *
+     * 
      * @return the encoding value.
      */
     public Object getEncoding() {
@@ -487,7 +481,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Set the encoding property: Gets or sets the .NET encoding that will be used to encode/decode PostgreSQL string
      * data. Type: string.
-     *
+     * 
      * @param encoding the encoding value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -498,7 +492,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Get the password property: The Azure key vault secret reference of password in connection string. Type: string.
-     *
+     * 
      * @return the password value.
      */
     public AzureKeyVaultSecretReference getPassword() {
@@ -507,7 +501,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string. Type: string.
-     *
+     * 
      * @param password the password value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -519,7 +513,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -529,7 +523,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PostgreSqlV2LinkedService object itself.
      */
@@ -538,31 +532,191 @@ public class PostgreSqlV2LinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgreSqlV2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgreSqlV2LinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgreSqlV2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgreSqlV2LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (server != null
+            || port != null
+            || username != null
+            || database != null
+            || sslMode != null
+            || schema != null
+            || pooling != null
+            || connectionTimeout != null
+            || commandTimeout != null
+            || trustServerCertificate != null
+            || sslCertificate != null
+            || sslKey != null
+            || sslPassword != null
+            || readBufferSize != null
+            || logParameters != null
+            || timezone != null
+            || encoding != null
+            || password != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("server", this.server);
+            jsonWriter.writeUntypedField("port", this.port);
+            jsonWriter.writeUntypedField("username", this.username);
+            jsonWriter.writeUntypedField("database", this.database);
+            jsonWriter.writeUntypedField("sslMode", this.sslMode);
+            jsonWriter.writeUntypedField("schema", this.schema);
+            jsonWriter.writeUntypedField("pooling", this.pooling);
+            jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
+            jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+            jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
+            jsonWriter.writeUntypedField("sslCertificate", this.sslCertificate);
+            jsonWriter.writeUntypedField("sslKey", this.sslKey);
+            jsonWriter.writeUntypedField("sslPassword", this.sslPassword);
+            jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
+            jsonWriter.writeUntypedField("logParameters", this.logParameters);
+            jsonWriter.writeUntypedField("timezone", this.timezone);
+            jsonWriter.writeUntypedField("encoding", this.encoding);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PostgreSqlV2LinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PostgreSqlV2LinkedService if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PostgreSqlV2LinkedService.
+     */
+    public static PostgreSqlV2LinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PostgreSqlV2LinkedService deserializedPostgreSqlV2LinkedService = new PostgreSqlV2LinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedPostgreSqlV2LinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedPostgreSqlV2LinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("server".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.server = reader.readUntyped();
+                        } else if ("port".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.port = reader.readUntyped();
+                        } else if ("username".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.username = reader.readUntyped();
+                        } else if ("database".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.database = reader.readUntyped();
+                        } else if ("sslMode".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.sslMode = reader.readUntyped();
+                        } else if ("schema".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.schema = reader.readUntyped();
+                        } else if ("pooling".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.pooling = reader.readUntyped();
+                        } else if ("connectionTimeout".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.connectionTimeout = reader.readUntyped();
+                        } else if ("commandTimeout".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.commandTimeout = reader.readUntyped();
+                        } else if ("trustServerCertificate".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.trustServerCertificate = reader.readUntyped();
+                        } else if ("sslCertificate".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.sslCertificate = reader.readUntyped();
+                        } else if ("sslKey".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.sslKey = reader.readUntyped();
+                        } else if ("sslPassword".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.sslPassword = reader.readUntyped();
+                        } else if ("readBufferSize".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.readBufferSize = reader.readUntyped();
+                        } else if ("logParameters".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.logParameters = reader.readUntyped();
+                        } else if ("timezone".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.timezone = reader.readUntyped();
+                        } else if ("encoding".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.encoding = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.password
+                                = AzureKeyVaultSecretReference.fromJson(reader);
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.encryptedCredential = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedPostgreSqlV2LinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedPostgreSqlV2LinkedService;
+        });
     }
 }

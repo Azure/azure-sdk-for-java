@@ -5,65 +5,73 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Dynamics AX linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("DynamicsAX")
-@JsonFlatten
+/**
+ * Dynamics AX linked service.
+ */
 @Fluent
 public class DynamicsAXLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "DynamicsAX";
+
+    /*
      * The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
      */
-    @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
 
     /*
      * Specify the application's client ID. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.servicePrincipalId", required = true)
     private Object servicePrincipalId;
 
     /*
-     * Specify the application's key. Mark this field as a SecureString to store it securely in Data Factory, or
-     * reference a secret stored in Azure Key Vault. Type: string (or Expression with resultType string).
+     * Specify the application's key. Mark this field as a SecureString to store it securely in Data Factory, or reference a secret stored in Azure Key Vault. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.servicePrincipalKey", required = true)
     private SecretBase servicePrincipalKey;
 
     /*
-     * Specify the tenant information (domain name or tenant ID) under which your application resides. Retrieve it by
-     * hovering the mouse in the top-right corner of the Azure portal. Type: string (or Expression with resultType
-     * string).
+     * Specify the tenant information (domain name or tenant ID) under which your application resides. Retrieve it by hovering the mouse in the top-right corner of the Azure portal. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.tenant", required = true)
     private Object tenant;
 
     /*
      * Specify the resource you are requesting authorization. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.aadResourceId", required = true)
     private Object aadResourceId;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of DynamicsAXLinkedService class. */
-    public DynamicsAXLinkedService() {}
+    /**
+     * Creates an instance of DynamicsAXLinkedService class.
+     */
+    public DynamicsAXLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the url property: The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
-     *
+     * 
      * @return the url value.
      */
     public Object getUrl() {
@@ -72,7 +80,7 @@ public class DynamicsAXLinkedService extends LinkedService {
 
     /**
      * Set the url property: The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
-     *
+     * 
      * @param url the url value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
@@ -84,7 +92,7 @@ public class DynamicsAXLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: Specify the application's client ID. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object getServicePrincipalId() {
@@ -94,7 +102,7 @@ public class DynamicsAXLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: Specify the application's client ID. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
@@ -107,7 +115,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * Get the servicePrincipalKey property: Specify the application's key. Mark this field as a SecureString to store
      * it securely in Data Factory, or reference a secret stored in Azure Key Vault. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase getServicePrincipalKey() {
@@ -118,7 +126,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * Set the servicePrincipalKey property: Specify the application's key. Mark this field as a SecureString to store
      * it securely in Data Factory, or reference a secret stored in Azure Key Vault. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
@@ -131,7 +139,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * Get the tenant property: Specify the tenant information (domain name or tenant ID) under which your application
      * resides. Retrieve it by hovering the mouse in the top-right corner of the Azure portal. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object getTenant() {
@@ -142,7 +150,7 @@ public class DynamicsAXLinkedService extends LinkedService {
      * Set the tenant property: Specify the tenant information (domain name or tenant ID) under which your application
      * resides. Retrieve it by hovering the mouse in the top-right corner of the Azure portal. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
@@ -154,7 +162,7 @@ public class DynamicsAXLinkedService extends LinkedService {
     /**
      * Get the aadResourceId property: Specify the resource you are requesting authorization. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the aadResourceId value.
      */
     public Object getAadResourceId() {
@@ -164,7 +172,7 @@ public class DynamicsAXLinkedService extends LinkedService {
     /**
      * Set the aadResourceId property: Specify the resource you are requesting authorization. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param aadResourceId the aadResourceId value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
@@ -176,7 +184,7 @@ public class DynamicsAXLinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -186,7 +194,7 @@ public class DynamicsAXLinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DynamicsAXLinkedService object itself.
      */
@@ -195,31 +203,138 @@ public class DynamicsAXLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsAXLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsAXLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsAXLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsAXLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (url != null
+            || servicePrincipalId != null
+            || servicePrincipalKey != null
+            || tenant != null
+            || aadResourceId != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("url", this.url);
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+            jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+            jsonWriter.writeUntypedField("aadResourceId", this.aadResourceId);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynamicsAXLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynamicsAXLinkedService if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DynamicsAXLinkedService.
+     */
+    public static DynamicsAXLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynamicsAXLinkedService deserializedDynamicsAXLinkedService = new DynamicsAXLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedDynamicsAXLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedDynamicsAXLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedDynamicsAXLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedDynamicsAXLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedDynamicsAXLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("url".equals(fieldName)) {
+                            deserializedDynamicsAXLinkedService.url = reader.readUntyped();
+                        } else if ("servicePrincipalId".equals(fieldName)) {
+                            deserializedDynamicsAXLinkedService.servicePrincipalId = reader.readUntyped();
+                        } else if ("servicePrincipalKey".equals(fieldName)) {
+                            deserializedDynamicsAXLinkedService.servicePrincipalKey = SecretBase.fromJson(reader);
+                        } else if ("tenant".equals(fieldName)) {
+                            deserializedDynamicsAXLinkedService.tenant = reader.readUntyped();
+                        } else if ("aadResourceId".equals(fieldName)) {
+                            deserializedDynamicsAXLinkedService.aadResourceId = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedDynamicsAXLinkedService.encryptedCredential = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDynamicsAXLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedDynamicsAXLinkedService;
+        });
     }
 }

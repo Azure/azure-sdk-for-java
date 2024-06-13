@@ -21,14 +21,17 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the synchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class LinkConnectionClient {
-    @Generated private final LinkConnectionsImpl serviceClient;
+    @Generated
+    private final LinkConnectionsImpl serviceClient;
 
     /**
      * Initializes an instance of LinkConnectionClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -38,7 +41,7 @@ public final class LinkConnectionClient {
 
     /**
      * List link connections.
-     *
+     * 
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
@@ -51,7 +54,7 @@ public final class LinkConnectionClient {
 
     /**
      * List link connections.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -66,7 +69,7 @@ public final class LinkConnectionClient {
 
     /**
      * Creates or updates a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param linkConnection Link connection resource definition.
      * @param context The context to associate with this operation.
@@ -77,14 +80,14 @@ public final class LinkConnectionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkConnectionResource> createOrUpdateWithResponse(
-            String linkConnectionName, LinkConnectionResource linkConnection, Context context) {
+    public Response<LinkConnectionResource> createOrUpdateWithResponse(String linkConnectionName,
+        LinkConnectionResource linkConnection, Context context) {
         return this.serviceClient.createOrUpdateWithResponse(linkConnectionName, linkConnection, context);
     }
 
     /**
      * Creates or updates a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param linkConnection Link connection resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,7 +103,7 @@ public final class LinkConnectionClient {
 
     /**
      * Get a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,7 +119,7 @@ public final class LinkConnectionClient {
 
     /**
      * Get a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -131,7 +134,7 @@ public final class LinkConnectionClient {
 
     /**
      * Delete a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +150,7 @@ public final class LinkConnectionClient {
 
     /**
      * Delete a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -161,7 +164,7 @@ public final class LinkConnectionClient {
 
     /**
      * Edit tables for a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param editTablesRequest Edit tables request.
      * @param context The context to associate with this operation.
@@ -172,14 +175,14 @@ public final class LinkConnectionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> editTablesWithResponse(
-            String linkConnectionName, EditTablesRequest editTablesRequest, Context context) {
+    public Response<Void> editTablesWithResponse(String linkConnectionName, EditTablesRequest editTablesRequest,
+        Context context) {
         return this.serviceClient.editTablesWithResponse(linkConnectionName, editTablesRequest, context);
     }
 
     /**
      * Edit tables for a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param editTablesRequest Edit tables request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,7 +198,7 @@ public final class LinkConnectionClient {
     /**
      * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -212,7 +215,7 @@ public final class LinkConnectionClient {
     /**
      * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -227,7 +230,7 @@ public final class LinkConnectionClient {
     /**
      * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,7 +247,7 @@ public final class LinkConnectionClient {
     /**
      * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -258,7 +261,7 @@ public final class LinkConnectionClient {
 
     /**
      * Get the detailed status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,14 +271,14 @@ public final class LinkConnectionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkConnectionDetailedStatus> getDetailedStatusWithResponse(
-            String linkConnectionName, Context context) {
+    public Response<LinkConnectionDetailedStatus> getDetailedStatusWithResponse(String linkConnectionName,
+        Context context) {
         return this.serviceClient.getDetailedStatusWithResponse(linkConnectionName, context);
     }
 
     /**
      * Get the detailed status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -290,7 +293,7 @@ public final class LinkConnectionClient {
 
     /**
      * List the link tables of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,7 +309,7 @@ public final class LinkConnectionClient {
 
     /**
      * List the link tables of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -321,7 +324,7 @@ public final class LinkConnectionClient {
 
     /**
      * Query the link table status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param queryTableStatusRequest Query table status request.
      * @param context The context to associate with this operation.
@@ -332,14 +335,14 @@ public final class LinkConnectionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkConnectionQueryTableStatus> queryTableStatusWithResponse(
-            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest, Context context) {
+    public Response<LinkConnectionQueryTableStatus> queryTableStatusWithResponse(String linkConnectionName,
+        QueryTableStatusRequest queryTableStatusRequest, Context context) {
         return this.serviceClient.queryTableStatusWithResponse(linkConnectionName, queryTableStatusRequest, context);
     }
 
     /**
      * Query the link table status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param queryTableStatusRequest Query table status request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,14 +352,14 @@ public final class LinkConnectionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkConnectionQueryTableStatus queryTableStatus(
-            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest) {
+    public LinkConnectionQueryTableStatus queryTableStatus(String linkConnectionName,
+        QueryTableStatusRequest queryTableStatusRequest) {
         return this.serviceClient.queryTableStatus(linkConnectionName, queryTableStatusRequest);
     }
 
     /**
      * Update landing zone credential of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param updateLandingZoneCredentialRequest update landing zone credential request.
      * @param context The context to associate with this operation.
@@ -367,17 +370,15 @@ public final class LinkConnectionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateLandingZoneCredentialWithResponse(
-            String linkConnectionName,
-            UpdateLandingZoneCredential updateLandingZoneCredentialRequest,
-            Context context) {
-        return this.serviceClient.updateLandingZoneCredentialWithResponse(
-                linkConnectionName, updateLandingZoneCredentialRequest, context);
+    public Response<Void> updateLandingZoneCredentialWithResponse(String linkConnectionName,
+        UpdateLandingZoneCredential updateLandingZoneCredentialRequest, Context context) {
+        return this.serviceClient.updateLandingZoneCredentialWithResponse(linkConnectionName,
+            updateLandingZoneCredentialRequest, context);
     }
 
     /**
      * Update landing zone credential of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param updateLandingZoneCredentialRequest update landing zone credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -386,15 +387,15 @@ public final class LinkConnectionClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateLandingZoneCredential(
-            String linkConnectionName, UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
+    public void updateLandingZoneCredential(String linkConnectionName,
+        UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
         this.serviceClient.updateLandingZoneCredential(linkConnectionName, updateLandingZoneCredentialRequest);
     }
 
     /**
      * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -411,7 +412,7 @@ public final class LinkConnectionClient {
     /**
      * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -426,7 +427,7 @@ public final class LinkConnectionClient {
     /**
      * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -443,7 +444,7 @@ public final class LinkConnectionClient {
     /**
      * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
