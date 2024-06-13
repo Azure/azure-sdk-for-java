@@ -193,10 +193,10 @@
 # AzureSdkOwners:                                    @samvaity
 # ServiceOwners:                                     @bowgong
 
-# PRLabel: %Cognitive - Document Intelligence
+# PRLabel: %Document Intelligence
 /sdk/documentintelligence/                           @samvaity @mssfang
 
-# ServiceLabel: %Cognitive - Document Intelligence
+# ServiceLabel: %Document Intelligence
 # AzureSdkOwners:                                    @samvaity
 # ServiceOwners:                                     @vkurpad
 
