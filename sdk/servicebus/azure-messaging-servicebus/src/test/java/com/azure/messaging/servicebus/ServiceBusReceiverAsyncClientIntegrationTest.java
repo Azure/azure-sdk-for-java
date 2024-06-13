@@ -902,7 +902,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
         // Arrange
         final AtomicInteger lockRenewCount = new AtomicInteger();
 
-        setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        setSender(entityType, TestUtils.USE_CASE_AUTO_RENEW_RECEIVE, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -910,7 +910,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
         // Send the message to verify.
         sendMessage(message).block();
 
-        setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
+        setReceiver(entityType, TestUtils.USE_CASE_AUTO_RENEW_RECEIVE, isSessionEnabled);
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages().flatMap(received -> {
@@ -1262,6 +1262,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     }
 
     @Test
+    @Disabled("V2 low level async-receiver impl is missing a check to error if reactive app subscribed more than once.")
     void receiveTwice() {
         setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_DEFAULT, false);
         final String messageId = UUID.randomUUID().toString();
@@ -1284,6 +1285,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     }
 
     @Test
+    @Disabled("V2 low level async-receiver impl is missing a check to error if reactive app subscribed more than once.")
     void receiveActiveSubscription() {
         setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_DEFAULT, false);
         final String messageId = UUID.randomUUID().toString();

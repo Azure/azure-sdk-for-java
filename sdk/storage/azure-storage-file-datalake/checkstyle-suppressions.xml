@@ -16,7 +16,6 @@
   <suppress files="com.azure.storage.file.datalake.implementation.util.ModelHelper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.file.datalake.implementation.util.TransformUtils.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.file.datalake.implementation.models.InternalDataLakeFileOpenInputStreamResult.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.storage.file.datalake.implementation.util.CustomHierarchicalListingDeserializer.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.storage.file.datalake.implementation.util.TransformUtils.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.storage.file.datalake.implementation.AzureDataLakeStorageRestAPIImpl.java" checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" />

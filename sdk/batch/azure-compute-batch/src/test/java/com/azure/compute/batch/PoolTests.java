@@ -5,9 +5,14 @@ package com.azure.compute.batch;
 import com.azure.compute.batch.models.*;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 public class PoolTests extends BatchClientTestBase {
@@ -260,6 +265,49 @@ public class PoolTests extends BatchClientTestBase {
             } catch (Exception e) {
                 // Ignore exception
             }
+        }
+    }
+
+    @Test
+    public void testDeserializationOfBatchPoolResourceStatistics() throws IOException {
+        // Simulated JSON response with numbers as strings
+        String jsonResponse = "{"
+            + "\"startTime\":\"2022-01-01T00:00:00Z\","
+            + "\"lastUpdateTime\":\"2022-01-01T01:00:00Z\","
+            + "\"avgCPUPercentage\":50.5,"
+            + "\"avgMemoryGiB\":2.5,"
+            + "\"peakMemoryGiB\":3.0,"
+            + "\"avgDiskGiB\":1.5,"
+            + "\"peakDiskGiB\":2.0,"
+            + "\"diskReadIOps\":\"1000\","
+            + "\"diskWriteIOps\":\"500\","
+            + "\"diskReadGiB\":0.5,"
+            + "\"diskWriteGiB\":0.25,"
+            + "\"networkReadGiB\":1.0,"
+            + "\"networkWriteGiB\":0.75"
+            + "}";
+
+        // Deserialize JSON response using JsonReader from JsonProviders
+        try (JsonReader jsonReader = JsonProviders.createReader(new StringReader(jsonResponse))) {
+            BatchPoolResourceStatistics stats = BatchPoolResourceStatistics.fromJson(jsonReader);
+
+            // Assertions
+            Assertions.assertNotNull(stats);
+            Assertions.assertEquals(OffsetDateTime.parse("2022-01-01T00:00:00Z"), stats.getStartTime());
+            Assertions.assertEquals(OffsetDateTime.parse("2022-01-01T01:00:00Z"), stats.getLastUpdateTime());
+            Assertions.assertEquals(50.5, stats.getAvgCpuPercentage());
+            Assertions.assertEquals(2.5, stats.getAvgMemoryGiB());
+            Assertions.assertEquals(3.0, stats.getPeakMemoryGiB());
+            Assertions.assertEquals(1.5, stats.getAvgDiskGiB());
+            Assertions.assertEquals(2.0, stats.getPeakDiskGiB());
+            Assertions.assertEquals(1000, stats.getDiskReadIOps());
+            Assertions.assertEquals(500, stats.getDiskWriteIOps());
+            Assertions.assertEquals(0.5, stats.getDiskReadGiB());
+            Assertions.assertEquals(0.25, stats.getDiskWriteGiB());
+            Assertions.assertEquals(1.0, stats.getNetworkReadGiB());
+            Assertions.assertEquals(0.75, stats.getNetworkWriteGiB());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

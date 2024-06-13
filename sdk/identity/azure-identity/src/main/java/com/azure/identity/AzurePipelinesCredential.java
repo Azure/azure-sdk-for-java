@@ -21,6 +21,7 @@ import com.azure.identity.implementation.IdentityClientBase;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.models.OidcTokenResponse;
 import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -74,14 +75,16 @@ public class AzurePipelinesCredential implements TokenCredential {
                 request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + systemAccessToken);
                 request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
                 try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
-                    if (response.getStatusCode() < 200 || response.getStatusCode() >= 400) {
+                    String responseBody = response.getBodyAsBinaryData().toString();
+                    if (response.getStatusCode() != 200) {
                         throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token "
-                            + response.getBodyAsString().block()
+                            + responseBody
                             + System.lineSeparator()
                             + "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.", response));
                     }
-                    OidcTokenResponse tokenResponse = OidcTokenResponse.fromJson(JsonProviders.createReader(response.getBodyAsString().block()));
-                    return tokenResponse.getOidcToken();
+                    try (JsonReader reader = JsonProviders.createReader(responseBody)) {
+                        return OidcTokenResponse.fromJson(reader).getOidcToken();
+                    }
                 }
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token", null, e));

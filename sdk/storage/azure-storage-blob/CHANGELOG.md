@@ -1,6 +1,6 @@
 # Release History
 
-## 12.27.0-beta.1 (Unreleased)
+## 12.27.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.27.0-beta.1 (2024-06-11)
+
+### Features Added
+- Added support for getting account info on blob container clients and the blob base client.
+- Added support for bearer token challenges.
+- Added support for service version 2024-08-04.
+
+## 12.26.1 (2024-06-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+- Upgraded `azure-storage-common` from `12.25.0` to version `12.25.1`.
+- Upgraded `azure-storage-internal-avro` from `12.11.0` to version `12.11.1`.
 
 ## 12.26.0 (2024-05-15)
 

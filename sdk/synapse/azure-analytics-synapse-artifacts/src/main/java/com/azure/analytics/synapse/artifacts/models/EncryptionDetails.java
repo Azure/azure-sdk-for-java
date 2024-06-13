@@ -5,29 +5,36 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the encryption associated with the workspace. */
+/**
+ * Details of the encryption associated with the workspace.
+ */
 @Fluent
-public final class EncryptionDetails {
+public final class EncryptionDetails implements JsonSerializable<EncryptionDetails> {
     /*
      * Double Encryption enabled
      */
-    @JsonProperty(value = "doubleEncryptionEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean doubleEncryptionEnabled;
 
     /*
      * Customer Managed Key Details
      */
-    @JsonProperty(value = "cmk")
     private CustomerManagedKeyDetails cmk;
 
-    /** Creates an instance of EncryptionDetails class. */
-    public EncryptionDetails() {}
+    /**
+     * Creates an instance of EncryptionDetails class.
+     */
+    public EncryptionDetails() {
+    }
 
     /**
      * Get the doubleEncryptionEnabled property: Double Encryption enabled.
-     *
+     * 
      * @return the doubleEncryptionEnabled value.
      */
     public Boolean isDoubleEncryptionEnabled() {
@@ -36,7 +43,7 @@ public final class EncryptionDetails {
 
     /**
      * Get the cmk property: Customer Managed Key Details.
-     *
+     * 
      * @return the cmk value.
      */
     public CustomerManagedKeyDetails getCmk() {
@@ -45,12 +52,50 @@ public final class EncryptionDetails {
 
     /**
      * Set the cmk property: Customer Managed Key Details.
-     *
+     * 
      * @param cmk the cmk value to set.
      * @return the EncryptionDetails object itself.
      */
     public EncryptionDetails setCmk(CustomerManagedKeyDetails cmk) {
         this.cmk = cmk;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("cmk", this.cmk);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionDetails.
+     */
+    public static EncryptionDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionDetails deserializedEncryptionDetails = new EncryptionDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("doubleEncryptionEnabled".equals(fieldName)) {
+                    deserializedEncryptionDetails.doubleEncryptionEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cmk".equals(fieldName)) {
+                    deserializedEncryptionDetails.cmk = CustomerManagedKeyDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionDetails;
+        });
     }
 }

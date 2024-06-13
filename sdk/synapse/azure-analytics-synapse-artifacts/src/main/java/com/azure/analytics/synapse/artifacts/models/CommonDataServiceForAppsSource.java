@@ -5,36 +5,53 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity Common Data Service for Apps source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("CommonDataServiceForAppsSource")
+/**
+ * A copy activity Common Data Service for Apps source.
+ */
 @Fluent
 public final class CommonDataServiceForAppsSource extends CopySource {
     /*
-     * FetchXML is a proprietary query language that is used in Microsoft Common Data Service for Apps (online &
-     * on-premises). Type: string (or Expression with resultType string).
+     * Copy source type.
      */
-    @JsonProperty(value = "query")
+    private String type = "CommonDataServiceForAppsSource";
+
+    /*
+     * FetchXML is a proprietary query language that is used in Microsoft Common Data Service for Apps (online & on-premises). Type: string (or Expression with resultType string).
+     */
     private Object query;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
-     * Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of CommonDataServiceForAppsSource class. */
-    public CommonDataServiceForAppsSource() {}
+    /**
+     * Creates an instance of CommonDataServiceForAppsSource class.
+     */
+    public CommonDataServiceForAppsSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the query property: FetchXML is a proprietary query language that is used in Microsoft Common Data Service
      * for Apps (online &amp; on-premises). Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -44,7 +61,7 @@ public final class CommonDataServiceForAppsSource extends CopySource {
     /**
      * Set the query property: FetchXML is a proprietary query language that is used in Microsoft Common Data Service
      * for Apps (online &amp; on-premises). Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the CommonDataServiceForAppsSource object itself.
      */
@@ -56,7 +73,7 @@ public final class CommonDataServiceForAppsSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -66,7 +83,7 @@ public final class CommonDataServiceForAppsSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the CommonDataServiceForAppsSource object itself.
      */
@@ -75,24 +92,93 @@ public final class CommonDataServiceForAppsSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("query", this.query);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonDataServiceForAppsSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonDataServiceForAppsSource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommonDataServiceForAppsSource.
+     */
+    public static CommonDataServiceForAppsSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommonDataServiceForAppsSource deserializedCommonDataServiceForAppsSource
+                = new CommonDataServiceForAppsSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSource.type = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSource.query = reader.readUntyped();
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSource.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCommonDataServiceForAppsSource.setAdditionalProperties(additionalProperties);
+
+            return deserializedCommonDataServiceForAppsSource;
+        });
     }
 }

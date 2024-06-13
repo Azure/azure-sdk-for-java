@@ -47,7 +47,7 @@ public final class ProxyAuthenticator implements Authenticator {
     /*
      * Digest authentication to a proxy uses the 'CONNECT' method, these can't have a request body.
      */
-    private static final Supplier<BinaryData> NO_BODY = () -> BinaryData.EMPTY;
+    private static final Supplier<BinaryData> NO_BODY = BinaryData::empty;
 
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";

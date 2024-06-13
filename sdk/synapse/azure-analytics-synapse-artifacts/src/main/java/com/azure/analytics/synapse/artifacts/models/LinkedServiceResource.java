@@ -5,23 +5,30 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Linked service resource type. */
+/**
+ * Linked service resource type.
+ */
 @Fluent
 public final class LinkedServiceResource extends SubResource {
     /*
      * Properties of linked service.
      */
-    @JsonProperty(value = "properties", required = true)
     private LinkedService properties;
 
-    /** Creates an instance of LinkedServiceResource class. */
-    public LinkedServiceResource() {}
+    /**
+     * Creates an instance of LinkedServiceResource class.
+     */
+    public LinkedServiceResource() {
+    }
 
     /**
      * Get the properties property: Properties of linked service.
-     *
+     * 
      * @return the properties value.
      */
     public LinkedService getProperties() {
@@ -30,12 +37,57 @@ public final class LinkedServiceResource extends SubResource {
 
     /**
      * Set the properties property: Properties of linked service.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LinkedServiceResource object itself.
      */
     public LinkedServiceResource setProperties(LinkedService properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkedServiceResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkedServiceResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LinkedServiceResource.
+     */
+    public static LinkedServiceResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkedServiceResource deserializedLinkedServiceResource = new LinkedServiceResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLinkedServiceResource.setId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedLinkedServiceResource.setName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedLinkedServiceResource.setType(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedLinkedServiceResource.setEtag(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLinkedServiceResource.properties = LinkedService.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkedServiceResource;
+        });
     }
 }

@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Setting the v2 stack as the default for "Synchronous Receiver Client".
+
 ### Breaking Changes
 
 ### Bugs Fixed

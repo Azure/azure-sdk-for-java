@@ -19,6 +19,7 @@ from parameters import *
 from utils import update_service_ci_and_pom
 from utils import update_root_pom
 from utils import update_version
+from utils import is_windows
 
 os.chdir(pwd)
 
@@ -71,7 +72,15 @@ def generate(
             os.path.abspath(sdk_root),
             os.path.abspath(output_dir),
             namespace,
-            " ".join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
+            " ".join(
+                (
+                    tag_option,
+                    version_option,
+                    FLUENTLITE_ARGUMENTS,
+                    autorest_options,
+                    readme,
+                )
+            ),
         )
     )
     logging.info(command)
@@ -193,7 +202,8 @@ def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
         if beta_version_int > 1:
             previous_beta_version_int = beta_version_int - 1
             previous_beta_version = current_version.replace(
-                "-beta." + str(beta_version_int), "-beta." + str(previous_beta_version_int)
+                "-beta." + str(beta_version_int),
+                "-beta." + str(previous_beta_version_int),
             )
             stable_version = previous_beta_version
 
@@ -201,14 +211,21 @@ def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
         "[Changelog] Compare stable version {0} with current version {1}".format(stable_version, current_version)
     )
 
-    r = requests.get(MAVEN_URL.format(group_id=GROUP_ID.replace(".", "/"), artifact_id=module, version=stable_version))
+    r = requests.get(
+        MAVEN_URL.format(
+            group_id=GROUP_ID.replace(".", "/"),
+            artifact_id=module,
+            version=stable_version,
+        )
+    )
     r.raise_for_status()
     old_jar_fd, old_jar = tempfile.mkstemp(".jar")
     try:
         with os.fdopen(old_jar_fd, "wb") as tmp:
             tmp.write(r.content)
         new_jar = os.path.join(
-            sdk_root, JAR_FORMAT.format(service=service, artifact_id=module, version=current_version)
+            sdk_root,
+            JAR_FORMAT.format(service=service, artifact_id=module, version=current_version),
         )
         if not os.path.exists(new_jar):
             raise Exception("Cannot found built jar in {0}".format(new_jar))
@@ -345,14 +362,21 @@ def generate_typespec_project(
         tspconfig_valid = True
         if url_match:
             # generate from remote url
-            tsp_cmd = ["npx", "tsp-client", "init", "--debug", "--tsp-config", tsp_project]
+            tsp_cmd = [
+                "npx" + (".cmd" if is_windows() else ""),
+                "tsp-client",
+                "init",
+                "--debug",
+                "--tsp-config",
+                tsp_project,
+            ]
         else:
             # sdk automation
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
             tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd = [
-                "npx",
+                "npx" + (".cmd" if is_windows() else ""),
                 "tsp-client",
                 "init",
                 "--debug",
@@ -367,7 +391,7 @@ def generate_typespec_project(
             ]
 
         if tspconfig_valid:
-            check_call(tsp_cmd, sdk_root, shell=True)
+            check_call(tsp_cmd, sdk_root)
 
             sdk_folder = find_sdk_folder(sdk_root)
             logging.info("SDK folder: " + sdk_folder)
@@ -379,7 +403,12 @@ def generate_typespec_project(
                 # check require_sdk_integration
                 cmd = ["git", "add", "."]
                 check_call(cmd, sdk_root)
-                cmd = ["git", "status", "--porcelain", os.path.join(sdk_folder, "pom.xml")]
+                cmd = [
+                    "git",
+                    "status",
+                    "--porcelain",
+                    os.path.join(sdk_folder, "pom.xml"),
+                ]
                 logging.info("Command line: " + " ".join(cmd))
                 output = subprocess.check_output(cmd, cwd=sdk_root)
                 output_str = str(output, "utf-8")
@@ -393,7 +422,7 @@ def generate_typespec_project(
                     drop_changes(sdk_root)
                     remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
                     # regenerate
-                    check_call(tsp_cmd, sdk_root, shell=True)
+                    check_call(tsp_cmd, sdk_root)
                 succeeded = True
     except subprocess.CalledProcessError as error:
         error_message = (

@@ -5,42 +5,49 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The direction of the parameter. */
+/**
+ * The direction of the parameter.
+ */
 public final class ScriptActivityParameterDirection extends ExpandableStringEnum<ScriptActivityParameterDirection> {
-    /** Static value Input for ScriptActivityParameterDirection. */
+    /**
+     * Static value Input for ScriptActivityParameterDirection.
+     */
     public static final ScriptActivityParameterDirection INPUT = fromString("Input");
 
-    /** Static value Output for ScriptActivityParameterDirection. */
+    /**
+     * Static value Output for ScriptActivityParameterDirection.
+     */
     public static final ScriptActivityParameterDirection OUTPUT = fromString("Output");
 
-    /** Static value InputOutput for ScriptActivityParameterDirection. */
+    /**
+     * Static value InputOutput for ScriptActivityParameterDirection.
+     */
     public static final ScriptActivityParameterDirection INPUT_OUTPUT = fromString("InputOutput");
 
     /**
      * Creates a new instance of ScriptActivityParameterDirection value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ScriptActivityParameterDirection() {}
+    public ScriptActivityParameterDirection() {
+    }
 
     /**
      * Creates or finds a ScriptActivityParameterDirection from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScriptActivityParameterDirection.
      */
-    @JsonCreator
     public static ScriptActivityParameterDirection fromString(String name) {
         return fromString(name, ScriptActivityParameterDirection.class);
     }
 
     /**
      * Gets known ScriptActivityParameterDirection values.
-     *
+     * 
      * @return known ScriptActivityParameterDirection values.
      */
     public static Collection<ScriptActivityParameterDirection> values() {

@@ -28,6 +28,7 @@ public class ConnectionStringProperties {
     private static final String SHARED_ACCESS_SIGNATURE = "SharedAccessSignature";
     private static final String SAS_VALUE_PREFIX = "sharedaccesssignature ";
     private static final String ENTITY_PATH = "EntityPath";
+    private static final String USE_DEVELOPMENT_EMULATOR = "UseDevelopmentEmulator";
     private static final String CONNECTION_STRING_WITH_ACCESS_KEY = "Endpoint={endpoint};"
         + "SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={entityPath}";
     private static final String CONNECTION_STRING_WITH_SAS = "Endpoint={endpoint};SharedAccessSignature="
@@ -41,6 +42,7 @@ public class ConnectionStringProperties {
     private final String sharedAccessKeyName;
     private final String sharedAccessKey;
     private final String sharedAccessSignature;
+    private final boolean useDevelopmentEmulator;
 
     /**
      * Creates a new instance by parsing the {@code connectionString} into its components.
@@ -62,6 +64,7 @@ public class ConnectionStringProperties {
         String sharedAccessKeyName = null;
         String sharedAccessKeyValue = null;
         String sharedAccessSignature = null;
+        Boolean useDevelopmentEmulator = null;
 
         for (String tokenValuePair : tokenValuePairs) {
             final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPARATOR, 2);
@@ -87,6 +90,8 @@ public class ConnectionStringProperties {
                 sharedAccessKeyValue = value;
             } else if (key.equalsIgnoreCase(ENTITY_PATH)) {
                 entityPath = value;
+            } else if (key.equalsIgnoreCase(USE_DEVELOPMENT_EMULATOR)) {
+                useDevelopmentEmulator = Boolean.valueOf(value);
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_SIGNATURE)
                 && value.toLowerCase(Locale.ROOT).startsWith(SAS_VALUE_PREFIX)) {
                 sharedAccessSignature = value;
@@ -112,6 +117,8 @@ public class ConnectionStringProperties {
         this.sharedAccessKeyName = sharedAccessKeyName;
         this.sharedAccessKey = sharedAccessKeyValue;
         this.sharedAccessSignature = sharedAccessSignature;
+
+        this.useDevelopmentEmulator = useDevelopmentEmulator != null ? useDevelopmentEmulator : false;
     }
 
     /**
@@ -153,6 +160,15 @@ public class ConnectionStringProperties {
      */
     public String getSharedAccessSignature() {
         return sharedAccessSignature;
+    }
+
+    /**
+     * Gets whether the connection string points to a development emulator.
+     *
+     * @return true if the connection string's endpoint is a development emulator.
+     */
+    public boolean useDevelopmentEmulator() {
+        return useDevelopmentEmulator;
     }
 
     /*

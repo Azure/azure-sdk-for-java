@@ -2,6 +2,10 @@
 
 ## 2.40.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Behavior changed on `StorageAccount`, as default, disallows cross-tenant replication. Supported `allowCrossTenantReplication` in `Create` mode.
+
 ### Other Changes
 
 #### Dependency Updates

@@ -713,7 +713,7 @@ class ReactorConnectionTest {
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP,
             new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
-            CLIENT_VERSION, hostname, port);
+            CLIENT_VERSION, hostname, port, true);
 
         final ConnectionHandler connectionHandler
             = new ConnectionHandler(connectionId, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
