@@ -35,21 +35,19 @@ extends:
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools
 
-          - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
-
           - task: AzurePowerShell@5
             displayName: 'Copy from azuresdkpartnerdrops'
             condition: and(succeeded(), ne(variables['SkipCopyFromPartnerDrops'], 'true'))
             inputs:
               azureSubscription: 'azuresdkpartnerdrops - Storage Partner Drops'
               ScriptType: 'InlineScript'
-              azurePowerShellVersion: LatestVersion 
+              azurePowerShellVersion: LatestVersion
               pwsh: true
               Inline: |
                 azcopy copy 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}/*' '$(Artifacts)' --recursive=true
                 echo "Copied files:"
                 dir '$(Artifacts)' -r | % { $_.FullName }
-            env: 
+            env:
               AZCOPY_AUTO_LOGIN_TYPE: 'PSCRED'
 
           - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
@@ -73,8 +71,6 @@ extends:
 
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools
-
-          - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
           - download: current
             displayName: Download Signed Artifacts
