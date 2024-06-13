@@ -236,6 +236,7 @@ com.azure.spring:spring-cloud-azure-starter-actuator;5.13.0;5.14.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-appconfiguration;5.13.0;5.14.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-cosmos;5.13.0;5.14.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-data-cosmos;5.13.0;5.14.0-beta.1
+com.azure.spring:spring-cloud-azure-starter-data-redis-lettuce;5.13.0;5.14.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-eventhubs;5.13.0;5.14.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-eventgrid;5.13.0;5.14.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-jdbc-mysql;5.13.0;5.14.0-beta.1
