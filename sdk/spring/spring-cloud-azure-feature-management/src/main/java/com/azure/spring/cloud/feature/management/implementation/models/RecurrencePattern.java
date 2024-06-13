@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -48,8 +49,12 @@ public class RecurrencePattern {
      * @throws IllegalArgumentException if type is invalid
      * */
     public void setType(String type) throws IllegalArgumentException {
-        // `RecurrencePatternType.valueOf` may throw IllegalArgumentException if value is invalid
-        this.type = RecurrencePatternType.valueOf(type.toUpperCase());
+        try {
+            this.type = RecurrencePatternType.valueOf(type.toUpperCase());
+        } catch (final IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.Type", Arrays.toString(RecurrencePatternType.values())));
+        }
     }
 
     /**
@@ -88,9 +93,13 @@ public class RecurrencePattern {
                 String.format(RecurrenceConstants.REQUIRED_PARAMETER, "Recurrence.Pattern.DaysOfWeek"));
         }
 
-        for (String dayOfWeek : daysOfWeek) {
-            // `DayOfWeek.valueOf` may throw IllegalArgumentException if value is invalid
-            this.daysOfWeek.add(DayOfWeek.valueOf(dayOfWeek.toUpperCase()));
+        try {
+            for (String dayOfWeek : daysOfWeek) {
+                this.daysOfWeek.add(DayOfWeek.valueOf(dayOfWeek.toUpperCase()));
+            }
+        } catch (final IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.DaysOfWeek", Arrays.toString(DayOfWeek.values())));
         }
     }
 
@@ -111,7 +120,11 @@ public class RecurrencePattern {
                 String.format(RecurrenceConstants.REQUIRED_PARAMETER, "Recurrence.Pattern.FirstDayOfWeek"));
         }
 
-        // `DayOfWeek.valueOf` may throw IllegalArgumentException if value is invalid
-        this.firstDayOfWeek = DayOfWeek.valueOf(firstDayOfWeek.toUpperCase());
+        try {
+            this.firstDayOfWeek = DayOfWeek.valueOf(firstDayOfWeek.toUpperCase());
+        } catch (final IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.FirstDayOfWeek", Arrays.toString(DayOfWeek.values())));
+        }
     }
 }

@@ -76,7 +76,7 @@ public class RecurrenceValidatorTest {
         parameters.put("End", "2023-09-01T02:00:00+08:00");
         parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters, "No enum constant");
+        consumeValidationTestData(parameters, "Recurrence.Pattern.Type");
     }
 
     @Test
@@ -119,7 +119,7 @@ public class RecurrenceValidatorTest {
         parameters.put("End", "2023-09-01T02:00:00+08:00");
         parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters, "No enum constant");
+        consumeValidationTestData(parameters, "Recurrence.Pattern.FirstDayOfWeek");
     }
 
     @Test
@@ -140,7 +140,7 @@ public class RecurrenceValidatorTest {
         parameters.put("End", "2023-09-01T02:00:00+08:00");
         parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters, "No enum constant");
+        consumeValidationTestData(parameters, "Recurrence.Pattern.DaysOfWeek");
     }
 
     @Test
@@ -160,7 +160,7 @@ public class RecurrenceValidatorTest {
         parameters.put("End", "2023-09-01T02:00:00+08:00");
         parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters, "No enum constant");
+        consumeValidationTestData(parameters, "Recurrence.Range.Type");
     }
 
     @Test

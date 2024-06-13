@@ -8,6 +8,7 @@ import com.azure.spring.cloud.feature.management.implementation.timewindow.recur
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 
 /**
  * The recurrence range specifying how long the recurrence pattern repeats
@@ -41,8 +42,12 @@ public class RecurrenceRange {
      * @throws IllegalArgumentException if type is invalid
      * */
     public void setType(String type) throws IllegalArgumentException {
-        // `RecurrenceRangeType.valueOf` may throw IllegalArgumentException if value is invalid
-        this.type = RecurrenceRangeType.valueOf(type.toUpperCase());
+        try {
+            this.type = RecurrenceRangeType.valueOf(type.toUpperCase());
+        } catch (final IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Range.Type", Arrays.toString(RecurrenceRangeType.values())));
+        }
     }
 
     /**
