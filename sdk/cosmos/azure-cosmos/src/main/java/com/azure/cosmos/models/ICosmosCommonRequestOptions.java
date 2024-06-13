@@ -3,7 +3,6 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
  * Getters for the common request options for operations in CosmosDB.
  */
 public interface ICosmosCommonRequestOptions {
-    Logger logger = LoggerFactory.getLogger(ICosmosCommonRequestOptions.class);
 
     /**
      * Gets the CosmosEndToEndLatencyPolicyConfig.
@@ -20,7 +18,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the CosmosEndToEndLatencyPolicyConfig.
      */
     default CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig() {
-        logger.info("This is not the correct class to get the CosmosEndToEndLatencyPolicyConfig.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the CosmosEndToEndLatencyPolicyConfig.");
         return null;
     }
 
@@ -30,7 +28,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the consistency level.
      */
     default ConsistencyLevel getConsistencyLevel() {
-        logger.info("This is not the correct class to get the consistency level.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the consistency level.");
         return null;
     }
 
@@ -40,7 +38,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the content response on write enabled.
      */
     default Boolean isContentResponseOnWriteEnabled() {
-        logger.info("This is not the correct class to get the content response on write enabled.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the content response on write enabled.");
         return null;
     }
 
@@ -50,7 +48,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the non idempotent write retries enabled.
      */
     default Boolean getNonIdempotentWriteRetriesEnabled() {
-        logger.info("This is not the correct class to get the non idempotent write retries enabled.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the non idempotent write retries enabled.");
         return null;
     }
 
@@ -60,7 +58,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the dedicated gateway request options.
      */
     default DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
-        logger.info("This is not the correct class to get the dedicated gateway request options.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the dedicated gateway request options.");
         return null;
     }
 
@@ -84,7 +82,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the diagnostics thresholds.
      */
     default CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
-        logger.info("This is not the correct class to get the diagnostics thresholds.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the diagnostics thresholds.");
         return null;
     }
 
@@ -94,7 +92,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the scan in query enabled.
      */
     default Boolean isScanInQueryEnabled() {
-        logger.info("This is not the correct class to get the scan in query enabled.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the scan in query enabled.");
         return null;
     }
 
@@ -104,7 +102,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the max degree of parallelism.
      */
     default Integer getMaxDegreeOfParallelism() {
-        logger.info("This is not the correct class to get the max degree of parallelism.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the max degree of parallelism.");
         return null;
     }
 
@@ -114,7 +112,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the max buffered item count.
      */
     default Integer getMaxBufferedItemCount() {
-        logger.info("This is not the correct class to get the max buffered item count.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the max buffered item count.");
         return null;
     }
 
@@ -124,7 +122,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the response continuation token limit in KB.
      */
     default Integer getResponseContinuationTokenLimitInKb() {
-        logger.info("This is not the correct class to get the response continuation token limit in KB.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the response continuation token limit in KB.");
         return null;
     }
 
@@ -134,7 +132,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the max item count.
      */
     default Integer getMaxItemCount() {
-        logger.info("This is not the correct class to get the max item count.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the max item count.");
         return null;
     }
 
@@ -144,7 +142,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the query metrics enabled.
      */
     default Boolean isQueryMetricsEnabled() {
-        logger.info("This is not the correct class to get the query metrics enabled.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the query metrics enabled.");
         return null;
     }
 
@@ -154,7 +152,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the index metrics enabled.
      */
     default Boolean isIndexMetricsEnabled() {
-        logger.info("This is not the correct class to get the index metrics enabled.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the index metrics enabled.");
         return null;
     }
 
@@ -164,7 +162,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the query name.
      */
     default Integer getMaxPrefetchPageCount() {
-        logger.info("This is not the correct class to get the max prefetch page count.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the max prefetch page count.");
         return null;
     }
 
@@ -175,7 +173,7 @@ public interface ICosmosCommonRequestOptions {
      * @return the query name.
      */
     default String getQueryNameOrDefault(String defaultQueryName) {
-        logger.info("This is not the correct class to get the query name.");
+        LoggerFactory.getLogger(ICosmosCommonRequestOptions.class).info("This is not the correct class to get the query name.");
         return null;
     }
 }
