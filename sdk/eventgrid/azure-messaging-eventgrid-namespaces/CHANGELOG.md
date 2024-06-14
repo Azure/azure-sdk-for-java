@@ -1,6 +1,8 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.1 (Unreleased)
+
+- Azure EventGrid client library for Java. This package contains Microsoft Azure EventGrid client library.
 
 ### Features Added
 
@@ -9,8 +11,3 @@
 ### Bugs Fixed
 
 ### Other Changes
-
-## 1.0.0-beta.1 (2024-04-18)
-
-- Initial beta release of Azure EventGrid Namespaces client library for Java.
-

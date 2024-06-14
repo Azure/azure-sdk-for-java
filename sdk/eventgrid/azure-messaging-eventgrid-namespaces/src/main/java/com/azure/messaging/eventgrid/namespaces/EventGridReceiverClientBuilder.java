@@ -13,6 +13,7 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -36,19 +37,19 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.messaging.eventgrid.namespaces.implementation.EventGridClientImpl;
+import com.azure.messaging.eventgrid.namespaces.implementation.EventGridReceiverClientImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 /**
- * A builder for creating a new instance of the EventGridClient type.
+ * A builder for creating a new instance of the EventGridReceiverClient type.
  */
-@ServiceClientBuilder(serviceClients = { EventGridClient.class, EventGridAsyncClient.class })
-public final class EventGridClientBuilder implements HttpTrait<EventGridClientBuilder>,
-    ConfigurationTrait<EventGridClientBuilder>, TokenCredentialTrait<EventGridClientBuilder>,
-    KeyCredentialTrait<EventGridClientBuilder>, EndpointTrait<EventGridClientBuilder> {
+@ServiceClientBuilder(serviceClients = { EventGridReceiverClient.class, EventGridReceiverAsyncClient.class })
+public final class EventGridReceiverClientBuilder implements HttpTrait<EventGridReceiverClientBuilder>,
+    ConfigurationTrait<EventGridReceiverClientBuilder>, TokenCredentialTrait<EventGridReceiverClientBuilder>,
+    KeyCredentialTrait<EventGridReceiverClientBuilder>, EndpointTrait<EventGridReceiverClientBuilder> {
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -67,10 +68,10 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
-     * Create an instance of the EventGridClientBuilder.
+     * Create an instance of the EventGridReceiverClientBuilder.
      */
     @Generated
-    public EventGridClientBuilder() {
+    public EventGridReceiverClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
@@ -85,7 +86,7 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      */
     @Generated
     @Override
-    public EventGridClientBuilder pipeline(HttpPipeline pipeline) {
+    public EventGridReceiverClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
             LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -104,7 +105,7 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      */
     @Generated
     @Override
-    public EventGridClientBuilder httpClient(HttpClient httpClient) {
+    public EventGridReceiverClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -120,7 +121,7 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      */
     @Generated
     @Override
-    public EventGridClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public EventGridReceiverClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -136,7 +137,7 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      */
     @Generated
     @Override
-    public EventGridClientBuilder clientOptions(ClientOptions clientOptions) {
+    public EventGridReceiverClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
     }
@@ -152,7 +153,7 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      */
     @Generated
     @Override
-    public EventGridClientBuilder retryOptions(RetryOptions retryOptions) {
+    public EventGridReceiverClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
         return this;
     }
@@ -162,7 +163,7 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      */
     @Generated
     @Override
-    public EventGridClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public EventGridReceiverClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
@@ -179,7 +180,7 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      */
     @Generated
     @Override
-    public EventGridClientBuilder configuration(Configuration configuration) {
+    public EventGridReceiverClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -195,7 +196,7 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      */
     @Generated
     @Override
-    public EventGridClientBuilder credential(TokenCredential tokenCredential) {
+    public EventGridReceiverClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
         return this;
     }
@@ -211,7 +212,7 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      */
     @Generated
     @Override
-    public EventGridClientBuilder credential(KeyCredential keyCredential) {
+    public EventGridReceiverClientBuilder credential(KeyCredential keyCredential) {
         this.keyCredential = keyCredential;
         return this;
     }
@@ -227,7 +228,7 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      */
     @Generated
     @Override
-    public EventGridClientBuilder endpoint(String endpoint) {
+    public EventGridReceiverClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -242,10 +243,10 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      * Sets Service version.
      *
      * @param serviceVersion the serviceVersion value.
-     * @return the EventGridClientBuilder.
+     * @return the EventGridReceiverClientBuilder.
      */
     @Generated
-    public EventGridClientBuilder serviceVersion(EventGridServiceVersion serviceVersion) {
+    public EventGridReceiverClientBuilder serviceVersion(EventGridServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -260,26 +261,25 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      *
      * @param retryPolicy the retryPolicy value.
-     * @return the EventGridClientBuilder.
+     * @return the EventGridReceiverClientBuilder.
      */
     @Generated
-    public EventGridClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public EventGridReceiverClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
 
     /**
-     * Builds an instance of EventGridClientImpl with the provided parameters.
+     * Builds an instance of EventGridReceiverClientImpl with the provided parameters.
      *
-     * @return an instance of EventGridClientImpl.
+     * @return an instance of EventGridReceiverClientImpl.
      */
     @Generated
-    private EventGridClientImpl buildInnerClient() {
-        this.validateClient();
+    private EventGridReceiverClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         EventGridServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : EventGridServiceVersion.getLatest();
-        EventGridClientImpl client = new EventGridClientImpl(localPipeline,
+        EventGridReceiverClientImpl client = new EventGridReceiverClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
@@ -297,8 +297,10 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
-        if (headers != null) {
+        HttpHeaders headers = new HttpHeaders();
+        localClientOptions.getHeaders()
+            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
+        if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
@@ -326,31 +328,24 @@ public final class EventGridClientBuilder implements HttpTrait<EventGridClientBu
     }
 
     /**
-     * Builds an instance of EventGridAsyncClient class.
+     * Builds an instance of EventGridReceiverAsyncClient class.
      *
-     * @return an instance of EventGridAsyncClient.
+     * @return an instance of EventGridReceiverAsyncClient.
      */
     @Generated
-    public EventGridAsyncClient buildAsyncClient() {
-        return new EventGridAsyncClient(buildInnerClient());
+    public EventGridReceiverAsyncClient buildAsyncClient() {
+        return new EventGridReceiverAsyncClient(buildInnerClient());
     }
 
     /**
-     * Builds an instance of EventGridClient class.
+     * Builds an instance of EventGridReceiverClient class.
      *
-     * @return an instance of EventGridClient.
+     * @return an instance of EventGridReceiverClient.
      */
     @Generated
-    public EventGridClient buildClient() {
-        return new EventGridClient(buildInnerClient());
+    public EventGridReceiverClient buildClient() {
+        return new EventGridReceiverClient(buildInnerClient());
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(EventGridClientBuilder.class);
-
-    @Generated
-    private void validateClient() {
-        // This method is invoked from 'buildInnerClient'/'buildClient' method.
-        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-    }
+    private static final ClientLogger LOGGER = new ClientLogger(EventGridReceiverClientBuilder.class);
 }

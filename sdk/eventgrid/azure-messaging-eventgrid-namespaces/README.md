@@ -1,4 +1,4 @@
-# Azure EventGrid Namespaces client library for Java
+# Azure EventGrid client library for Java
 
 Azure EventGrid client library for Java.
 
@@ -38,7 +38,7 @@ Various documentation is available to help you get started
 
 ## Examples
 
-```java com.azure.messaging.eventgrid.standard.http.readme
+```java com.azure.messaging.eventgrid.namespaces.readme
 ```
 
 ## Troubleshooting
