@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added log level checking in `RntbdRequestManager` - See [PR 40632](https://github.com/Azure/azure-sdk-for-java/pull/40632)
 
 ### 4.61.1 (2024-05-31)
 
