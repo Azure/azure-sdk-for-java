@@ -46,7 +46,7 @@ import java.util.List;
 public class RadiologyInsightsInference {
 
     /*
-     * The kind property.
+     * Discriminator property for RadiologyInsightsInference.
      */
     @Generated
     @JsonTypeId
@@ -69,7 +69,7 @@ public class RadiologyInsightsInference {
     }
 
     /**
-     * Get the kind property: The kind property.
+     * Get the kind property: Discriminator property for RadiologyInsightsInference.
      *
      * @return the kind value.
      */
