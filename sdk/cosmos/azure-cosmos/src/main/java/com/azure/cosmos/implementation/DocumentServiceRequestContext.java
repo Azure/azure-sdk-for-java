@@ -146,6 +146,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
         context.endToEndOperationLatencyPolicyConfig = this.endToEndOperationLatencyPolicyConfig;
         context.unavailableRegionsForPartition = this.unavailableRegionsForPartition;
+        context.feedOperationContextForCircuitBreaker = this.feedOperationContextForCircuitBreaker;
         return context;
     }
 
@@ -189,7 +190,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.unavailableRegionsForPartition = unavailableRegionsForPartition;
     }
 
-    public PointOperationContextForCircuitBreaker getPointOperationContext() {
+    public PointOperationContextForCircuitBreaker getPointOperationContextForCircuitBreaker() {
         return pointOperationContextForCircuitBreaker;
     }
 
@@ -197,7 +198,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.pointOperationContextForCircuitBreaker = pointOperationContextForCircuitBreaker;
     }
 
-    public FeedOperationContextForCircuitBreaker getFeedOperationContext() {
+    public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
         return feedOperationContextForCircuitBreaker;
     }
 

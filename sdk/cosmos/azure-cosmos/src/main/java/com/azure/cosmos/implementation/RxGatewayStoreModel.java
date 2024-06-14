@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
@@ -549,11 +550,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
 
-        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single().doOnSuccess(ignore -> {
-            if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
-                this.globalPartitionEndpointManager.handleLocationSuccessForPartitionKeyRange(request);
-            }
-        });
+        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
 
         MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(this.globalEndpointManager);
         metadataRequestRetryPolicy.onBeforeSendRequest(request);

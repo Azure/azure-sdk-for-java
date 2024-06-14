@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -175,12 +175,14 @@ abstract class Fetcher<T> {
                 if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
 
                     checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
-
-                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContext();
+                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContextForCircuitBreaker();
 
                     checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' must not be null!");
 
-                    feedOperationContextForCircuitBreaker.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId());
+                    if (!feedOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
+                        this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
+                        feedOperationContextForCircuitBreaker.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId());
+                    }
                 }
             })
             .doOnError(throwable -> completed.set(true))
@@ -201,19 +203,13 @@ abstract class Fetcher<T> {
 
                     checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
 
-                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContext();
-
+                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContextForCircuitBreaker();
                     checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' must not be null!");
 
-                    if (feedOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
-                        if (!feedOperationContextForCircuitBreaker.getIsRequestHedged() && feedOperationContextForCircuitBreaker.hasPartitionKeyRangeSeenSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId())) {
-
-                            if (this.globalEndpointManager != null && this.globalPartitionEndpointManagerForCircuitBreaker != null) {
-                                this.handleLocationExceptionForPartitionKeyRange(request);
-                            }
+                    if (!feedOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
+                        if (this.globalEndpointManager != null) {
+                            this.handleCancellationExceptionForPartitionKeyRange(request);
                         }
-                    } else {
-                        this.handleLocationExceptionForPartitionKeyRange(request);
                     }
                 }
 
@@ -223,7 +219,7 @@ abstract class Fetcher<T> {
             });
     }
 
-    private void handleLocationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
+    private void handleCancellationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
         URI firstContactedLocationEndpoint = diagnosticsAccessor.getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {

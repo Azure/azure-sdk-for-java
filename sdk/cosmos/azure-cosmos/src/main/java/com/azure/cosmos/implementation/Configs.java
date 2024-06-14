@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -202,9 +203,8 @@ public class Configs {
     //                + "\"applyDiagnosticThresholdsForTransportLevelMeters\":true}");
     public static final String METRICS_CONFIG = "COSMOS.METRICS_CONFIG";
     public static final String DEFAULT_METRICS_CONFIG = CosmosMicrometerMetricsConfig.DEFAULT.toJson();
-
-    private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED";
-    private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED = false;
+    private static final String DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG = PartitionLevelCircuitBreakerConfig.DEFAULT.toJson();
+    private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG";
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -598,9 +598,14 @@ public class Configs {
         return CosmosMicrometerMetricsConfig.fromJsonString(metricsConfig);
     }
 
-    public static boolean isPartitionLevelCircuitBreakerEnabled() {
-        return getJVMConfigAsBoolean(
-            PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED,
-            DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED);
+    public static PartitionLevelCircuitBreakerConfig getPartitionLevelCircuitBreakerConfig() {
+        String partitionLevelCircuitBreakerConfig =
+            System.getProperty(
+                PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG)),
+                    DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG));
+
+        return PartitionLevelCircuitBreakerConfig.fromJsonString(partitionLevelCircuitBreakerConfig);
     }
 }

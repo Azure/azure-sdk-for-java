@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.ChannelAcquisitionException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;

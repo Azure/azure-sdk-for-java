@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;

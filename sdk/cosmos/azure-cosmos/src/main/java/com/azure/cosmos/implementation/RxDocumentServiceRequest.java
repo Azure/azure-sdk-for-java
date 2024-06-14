@@ -1068,6 +1068,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.feedRange = this.feedRange;
         rxDocumentServiceRequest.effectiveRange = this.effectiveRange;
         rxDocumentServiceRequest.isFeed = this.isFeed;
+        rxDocumentServiceRequest.resourceId = this.resourceId;
         return rxDocumentServiceRequest;
     }
 

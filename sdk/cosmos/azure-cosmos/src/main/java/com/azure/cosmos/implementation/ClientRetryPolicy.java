@@ -9,6 +9,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import org.slf4j.Logger;

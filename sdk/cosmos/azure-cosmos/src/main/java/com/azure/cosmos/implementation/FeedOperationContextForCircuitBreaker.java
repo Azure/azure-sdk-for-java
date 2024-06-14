@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+
 import java.util.Map;
 
 public class FeedOperationContextForCircuitBreaker {

@@ -9,8 +9,6 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
-import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;

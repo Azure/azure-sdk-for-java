@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 
 /**
  * While this class is public, but it is not part of our published public APIs.

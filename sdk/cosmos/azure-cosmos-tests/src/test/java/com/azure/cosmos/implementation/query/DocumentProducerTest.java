@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.PartitionKeyRange;

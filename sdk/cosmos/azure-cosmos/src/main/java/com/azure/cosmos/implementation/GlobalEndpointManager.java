@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import org.slf4j.Logger;
@@ -17,10 +18,8 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**

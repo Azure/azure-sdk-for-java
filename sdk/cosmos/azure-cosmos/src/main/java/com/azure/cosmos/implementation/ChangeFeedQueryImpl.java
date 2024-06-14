@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.spark.OperationContext;

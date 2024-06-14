@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
-import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
 import com.azure.cosmos.implementation.InternalServerErrorException;

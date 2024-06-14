@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
 import com.azure.cosmos.implementation.InvalidPartitionException;
