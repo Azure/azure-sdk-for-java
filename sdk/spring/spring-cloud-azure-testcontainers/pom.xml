@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-testcontainers</artifactId>
-  <version>5.13.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-testcontainers;current} -->
+  <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-testcontainers;current} -->
 
   <name>Spring Cloud Azure Testcontainers</name>
   <description>Spring Cloud Azure Testcontainers</description>
