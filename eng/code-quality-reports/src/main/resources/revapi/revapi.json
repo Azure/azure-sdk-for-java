@@ -459,23 +459,10 @@
           "justification": "The property flatten disabled due to model changed to polymorphic."
         },
         {
-          "code" : "java.annotation.removed",
-          "old" : ".*? com.azure.communication.phonenumbers.models.*",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "code" : "java.annotation.removed",
-          "old" : ".*? com.azure.communication.phonenumbers.implementation.models.*",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "code" : "java.annotation.removed",
-          "old" : ".*? com.azure.communication.phonenumbers.siprouting.models.*",
-          "justification": "Migration to azure-json"
-        },
-        {
-          "code" : "java.annotation.removed",
-          "old" : ".*? com.azure.communication.phonenumbers.siprouting.implementation.models.*",
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.communication\\.phonenumbers\\.models.*",
+          "new" : ".*? com\\.azure\\.communication\\.phonenumbers\\.models.*",
           "justification": "Migration to azure-json"
         }
       ]
