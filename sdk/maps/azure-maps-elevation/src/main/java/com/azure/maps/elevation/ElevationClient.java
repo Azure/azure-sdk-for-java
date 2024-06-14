@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
-import com.azure.maps.elevation.models.ElevationResult;
 import com.azure.maps.elevation.implementation.models.ErrorResponseException;
+import com.azure.maps.elevation.models.ElevationResult;
+
 import java.util.List;
 
-/** * {@link ElevationClient} instances are created via the {@link ElevationClientBuilder}, as shown below.
+/**
+ * {@link ElevationClient} instances are created via the {@link ElevationClientBuilder}, as shown below.
  * Creating a sync client using a {@link AzureKeyCredential}:
  * <!-- src_embed com.azure.maps.elevation.sync.builder.key.instantiation -->
  * <pre>
@@ -37,7 +39,7 @@ public final class ElevationClient {
     /**
      * Initializes an instance of ElevationClient client.
      *
-     * @param serviceClient the service client implementation.
+     * @param asyncClient the service client implementation.
      */
     ElevationClient(ElevationAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
@@ -65,14 +67,14 @@ public final class ElevationClient {
      * <p>The result will be in the same sequence of points listed in the request.
      *
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. If multiple points are requested, each of the points in a list should be separated
-     *     by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
-     *     The resolution of the elevation data will be the highest for a single point and will decrease if multiple
-     *     points are spread further apart.
+     * reference system format. If multiple points are requested, each of the points in a list should be separated
+     * by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
+     * The resolution of the elevation data will be the highest for a single point and will decrease if multiple
+     * points are spread further apart.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElevationResult getDataForPoints(List<GeoPosition> points) {
@@ -101,15 +103,15 @@ public final class ElevationClient {
      * <p>The result will be in the same sequence of points listed in the request.
      *
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. If multiple points are requested, each of the points in a list should be separated
-     *     by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
-     *     The resolution of the elevation data will be the highest for a single point and will decrease if multiple
-     *     points are spread further apart.
+     * reference system format. If multiple points are requested, each of the points in a list should be separated
+     * by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
+     * The resolution of the elevation data will be the highest for a single point and will decrease if multiple
+     * points are spread further apart.
      * @param context The context to associate with this operation.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ElevationResult> getDataForPointsWithResponse(List<GeoPosition> points, Context context) {
@@ -141,18 +143,18 @@ public final class ElevationClient {
      * geodesic path along the curved surface of the reference ellipsoid.
      *
      * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`.
-     *     <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
-     *     The resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`.
+     * <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
+     * The resolution of the data used to compute the elevation depends on the distance between the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
+     * is 10.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElevationResult getDataForPolyline(List<GeoPosition> lines, Integer samples) {
@@ -184,22 +186,23 @@ public final class ElevationClient {
      * geodesic path along the curved surface of the reference ellipsoid.
      *
      * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`.
-     *     <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
-     *     The resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`.
+     * <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
+     * The resolution of the data used to compute the elevation depends on the distance between the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
+     * is 10.
      * @param context The context to associate with this operation.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ElevationResult> getDataForPolylineWithResponse(List<GeoPosition> lines, Integer samples, Context context) {
+    public Response<ElevationResult> getDataForPolylineWithResponse(List<GeoPosition> lines, Integer samples,
+        Context context) {
         return this.asyncClient.getDataForPolylineWithResponse(lines, samples, context).block();
     }
 
@@ -224,17 +227,17 @@ public final class ElevationClient {
      * repeats the process until it reaches the far northeast corner.
      *
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
-     *     by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
-     *     WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
-     *     `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
+     * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
+     * WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
+     * `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
      * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
      * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElevationResult getDataForBoundingBox(GeoBoundingBox bounds, Integer rows, Integer columns) {
@@ -262,21 +265,22 @@ public final class ElevationClient {
      * repeats the process until it reaches the far northeast corner.
      *
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
-     *     by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
-     *     WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
-     *     `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
+     * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
+     * WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
+     * `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
      * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
      * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
      * @param context The context to associate with this operation.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ElevationResult> getDataForBoundingBoxWithResponse(GeoBoundingBox bounds, Integer rows, Integer columns, Context context) {
+    public Response<ElevationResult> getDataForBoundingBoxWithResponse(GeoBoundingBox bounds, Integer rows,
+        Integer columns, Context context) {
         return this.asyncClient.getDataForBoundingBoxWithResponse(bounds, rows, columns, context).block();
     }
 }

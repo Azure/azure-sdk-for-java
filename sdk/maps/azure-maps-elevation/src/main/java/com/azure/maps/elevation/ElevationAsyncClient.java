@@ -3,8 +3,6 @@
 
 package com.azure.maps.elevation;
 
-import java.util.List;
-
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -13,36 +11,38 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.maps.elevation.implementation.ElevationsImpl;
 import com.azure.maps.elevation.implementation.helpers.Utility;
-import com.azure.maps.elevation.models.ElevationResult;
-import com.azure.maps.elevation.implementation.models.JsonFormat;
 import com.azure.maps.elevation.implementation.models.ErrorResponseException;
-
+import com.azure.maps.elevation.implementation.models.JsonFormat;
+import com.azure.maps.elevation.models.ElevationResult;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ElevationClient type.
-* Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
-* <!-- src_embed com.azure.maps.elevation.async.builder.key.instantiation -->
-* <pre>
-* &#47;&#47; Authenticates using subscription key
-* AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
-*
-* &#47;&#47; Creates a client
-* ElevationAsyncClient asyncClient = new ElevationClientBuilder&#40;&#41;
-*     .credential&#40;keyCredential&#41;
-*     .elevationClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
-*     .buildAsyncClient&#40;&#41;;
-* </pre>
-* <!-- end com.azure.maps.elevation.async.builder.key.instantiation -->
-*/
+import java.util.List;
+
+/**
+ * Initializes a new instance of the asynchronous ElevationClient type.
+ * Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
+ * <!-- src_embed com.azure.maps.elevation.async.builder.key.instantiation -->
+ * <pre>
+ * &#47;&#47; Authenticates using subscription key
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Creates a client
+ * ElevationAsyncClient asyncClient = new ElevationClientBuilder&#40;&#41;
+ *     .credential&#40;keyCredential&#41;
+ *     .elevationClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.maps.elevation.async.builder.key.instantiation -->
+ */
 @ServiceClient(builder = ElevationClientBuilder.class, isAsync = true)
 public final class ElevationAsyncClient {
     private final ElevationsImpl serviceClient;
     private static final int ELEVATION_DATA_SMALL_SIZE = 100;
 
     /**
-     *
      * Initializes an instance of ElevationClient client.
      *
      * @param serviceClient the service client implementation.
@@ -73,21 +73,19 @@ public final class ElevationAsyncClient {
      * <p>The result will be in the same sequence of points listed in the request.
      *
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. If multiple points are requested, each of the points in a list should be separated
-     *     by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
-     *     The resolution of the elevation data will be the highest for a single point and will decrease if multiple
-     *     points are spread further apart.
+     * reference system format. If multiple points are requested, each of the points in a list should be separated
+     * by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
+     * The resolution of the elevation data will be the highest for a single point and will decrease if multiple
+     * points are spread further apart.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ElevationResult> getDataForPoints(List<GeoPosition> points) {
         Mono<Response<ElevationResult>> result = this.getDataForPointsWithResponse(points);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return result.flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -112,14 +110,14 @@ public final class ElevationAsyncClient {
      * <p>The result will be in the same sequence of points listed in the request.
      *
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. If multiple points are requested, each of the points in a list should be separated
-     *     by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
-     *     The resolution of the elevation data will be the highest for a single point and will decrease if multiple
-     *     points are spread further apart.
+     * reference system format. If multiple points are requested, each of the points in a list should be separated
+     * by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
+     * The resolution of the elevation data will be the highest for a single point and will decrease if multiple
+     * points are spread further apart.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ElevationResult>> getDataForPointsWithResponse(List<GeoPosition> points) {
@@ -147,29 +145,31 @@ public final class ElevationAsyncClient {
      *
      * <p>The result will be in the same sequence of points listed in the request.
      *
-     * @param format Desired format of the response. Only `json` format is supported.
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. If multiple points are requested, each of the points in a list should be separated
-     *     by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
-     *     The resolution of the elevation data will be the highest for a single point and will decrease if multiple
-     *     points are spread further apart.
+     * reference system format. If multiple points are requested, each of the points in a list should be separated
+     * by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
+     * The resolution of the elevation data will be the highest for a single point and will decrease if multiple
+     * points are spread further apart.
      * @param context The context to associate with this operation.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     Mono<Response<ElevationResult>> getDataForPointsWithResponse(List<GeoPosition> points, Context context) {
         if (points.size() < ELEVATION_DATA_SMALL_SIZE) {
-            return this.serviceClient.getDataForPointsWithResponseAsync(JsonFormat.JSON, Utility.geoPositionToString(points), context);
+            return this.serviceClient.getDataForPointsWithResponseAsync(JsonFormat.JSON,
+                Utility.geoPositionToString(points), context);
         }
-        return this.serviceClient.postDataForPointsWithResponseAsync(JsonFormat.JSON, Utility.toLatLongPairAbbreviated(points), context).onErrorMap(throwable -> {
-            if (!(throwable instanceof ErrorResponseException)) {
-                return throwable;
-            }
-            ErrorResponseException exception = (ErrorResponseException) throwable;
-            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-        });
+        return this.serviceClient.postDataForPointsWithResponseAsync(JsonFormat.JSON,
+            Utility.toLatLongPairAbbreviated(points), context)
+            .onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
@@ -197,25 +197,23 @@ public final class ElevationAsyncClient {
      * geodesic path along the curved surface of the reference ellipsoid.
      *
      * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`.
-     *     <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
-     *     The resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`.
+     * <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
+     * The resolution of the data used to compute the elevation depends on the distance between the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
+     * is 10.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ElevationResult> getDataForPolyline(List<GeoPosition> lines, Integer samples) {
         Mono<Response<ElevationResult>> result = this.getDataForPolylineWithResponse(lines, samples);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return result.flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -243,18 +241,18 @@ public final class ElevationAsyncClient {
      * geodesic path along the curved surface of the reference ellipsoid.
      *
      * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`.
-     *     <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
-     *     The resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`.
+     * <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
+     * The resolution of the data used to compute the elevation depends on the distance between the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
+     * is 10.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ElevationResult>> getDataForPolylineWithResponse(List<GeoPosition> lines, Integer samples) {
@@ -285,33 +283,36 @@ public final class ElevationAsyncClient {
      * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
      * geodesic path along the curved surface of the reference ellipsoid.
      *
-     * @param format Desired format of the response. Only `json` format is supported.
      * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`.
-     *     <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
-     *     The resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`.
+     * <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
+     * The resolution of the data used to compute the elevation depends on the distance between the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
+     * is 10.
      * @param context The context to associate with this operation.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
-    Mono<Response<ElevationResult>> getDataForPolylineWithResponse(List<GeoPosition> lines, Integer samples, Context context) {
+    Mono<Response<ElevationResult>> getDataForPolylineWithResponse(List<GeoPosition> lines, Integer samples,
+        Context context) {
         if (lines.size() < ELEVATION_DATA_SMALL_SIZE) {
-            return this.serviceClient.getDataForPolylineWithResponseAsync(JsonFormat.JSON, Utility.geoPositionToString(lines), samples, context);
+            return this.serviceClient.getDataForPolylineWithResponseAsync(JsonFormat.JSON,
+                Utility.geoPositionToString(lines), samples, context);
         }
-        return this.serviceClient.postDataForPolylineWithResponseAsync(JsonFormat.JSON, Utility.toLatLongPairAbbreviated(lines), samples, context).onErrorMap(throwable -> {
-            if (!(throwable instanceof ErrorResponseException)) {
-                return throwable;
-            }
-            ErrorResponseException exception = (ErrorResponseException) throwable;
-            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-        });
+        return this.serviceClient.postDataForPolylineWithResponseAsync(JsonFormat.JSON,
+            Utility.toLatLongPairAbbreviated(lines), samples, context)
+            .onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 
     /**
@@ -335,24 +336,22 @@ public final class ElevationAsyncClient {
      * repeats the process until it reaches the far northeast corner.
      *
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
-     *     by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
-     *     WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
-     *     `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
+     * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
+     * WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
+     * `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
      * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
      * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ElevationResult> getDataForBoundingBox(GeoBoundingBox bounds, Integer rows, Integer columns) {
         Mono<Response<ElevationResult>> result = this.getDataForBoundingBoxWithResponse(bounds, rows, columns);
-        return result.flatMap(response -> {
-            return Mono.just(response.getValue());
-        });
+        return result.flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -376,20 +375,21 @@ public final class ElevationAsyncClient {
      * repeats the process until it reaches the far northeast corner.
      *
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
-     *     by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
-     *     WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
-     *     `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
+     * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
+     * WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
+     * `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
      * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
      * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ElevationResult>> getDataForBoundingBoxWithResponse(GeoBoundingBox bounds, Integer rows, Integer columns) {
+    public Mono<Response<ElevationResult>> getDataForBoundingBoxWithResponse(GeoBoundingBox bounds, Integer rows,
+        Integer columns) {
         return this.getDataForBoundingBoxWithResponse(bounds, rows, columns, null);
     }
 
@@ -413,28 +413,30 @@ public final class ElevationAsyncClient {
      * and then proceeding west to east along the row. At the end of the row, it moves north to the next row, and
      * repeats the process until it reaches the far northeast corner.
      *
-     * @param format Desired format of the response. Only `json` format is supported.
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
-     *     by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
-     *     WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
-     *     `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
+     * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
+     * WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
+     * `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
      * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
      * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
      * @param context The context to associate with this operation.
+     * @return the response from a successful Get Data for Bounding Box API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
      */
-    Mono<Response<ElevationResult>> getDataForBoundingBoxWithResponse(GeoBoundingBox bounds, Integer rows, Integer columns, Context context) {
-        return this.serviceClient.getDataForBoundingBoxWithResponseAsync(JsonFormat.JSON, Utility.geoBoundingBoxAsList(bounds), rows, columns, context).onErrorMap(throwable -> {
-            if (!(throwable instanceof ErrorResponseException)) {
-                return throwable;
-            }
-            ErrorResponseException exception = (ErrorResponseException) throwable;
-            return new HttpResponseException(exception.getMessage(), exception.getResponse());
-        });
+    Mono<Response<ElevationResult>> getDataForBoundingBoxWithResponse(GeoBoundingBox bounds, Integer rows,
+        Integer columns, Context context) {
+        return this.serviceClient.getDataForBoundingBoxWithResponseAsync(JsonFormat.JSON,
+            Utility.geoBoundingBoxAsList(bounds), rows, columns, context)
+            .onErrorMap(throwable -> {
+                if (!(throwable instanceof ErrorResponseException)) {
+                    return throwable;
+                }
+                ErrorResponseException exception = (ErrorResponseException) throwable;
+                return new HttpResponseException(exception.getMessage(), exception.getResponse());
+            });
     }
 }
