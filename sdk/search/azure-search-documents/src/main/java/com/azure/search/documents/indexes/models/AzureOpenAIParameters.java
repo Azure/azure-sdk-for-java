@@ -26,7 +26,7 @@ public class AzureOpenAIParameters implements JsonSerializable<AzureOpenAIParame
     /*
      * ID of the Azure OpenAI model deployment on the designated resource.
      */
-    private String deploymentId;
+    private String deploymentName;
 
     /*
      * API key of the designated Azure OpenAI resource.
@@ -70,22 +70,22 @@ public class AzureOpenAIParameters implements JsonSerializable<AzureOpenAIParame
     }
 
     /**
-     * Get the deploymentId property: ID of the Azure OpenAI model deployment on the designated resource.
+     * Get the deploymentName property: ID of the Azure OpenAI model deployment on the designated resource.
      * 
-     * @return the deploymentId value.
+     * @return the deploymentName value.
      */
-    public String getDeploymentId() {
-        return this.deploymentId;
+    public String getDeploymentName() {
+        return this.deploymentName;
     }
 
     /**
-     * Set the deploymentId property: ID of the Azure OpenAI model deployment on the designated resource.
+     * Set the deploymentName property: ID of the Azure OpenAI model deployment on the designated resource.
      * 
-     * @param deploymentId the deploymentId value to set.
+     * @param deploymentName the deploymentName value to set.
      * @return the AzureOpenAIParameters object itself.
      */
-    public AzureOpenAIParameters setDeploymentId(String deploymentId) {
-        this.deploymentId = deploymentId;
+    public AzureOpenAIParameters setDeploymentName(String deploymentName) {
+        this.deploymentName = deploymentName;
         return this;
     }
 
@@ -153,7 +153,7 @@ public class AzureOpenAIParameters implements JsonSerializable<AzureOpenAIParame
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("resourceUri", this.resourceUri);
-        jsonWriter.writeStringField("deploymentId", this.deploymentId);
+        jsonWriter.writeStringField("deploymentId", this.deploymentName);
         jsonWriter.writeStringField("apiKey", this.apiKey);
         jsonWriter.writeJsonField("authIdentity", this.authIdentity);
         jsonWriter.writeStringField("modelName", this.modelName == null ? null : this.modelName.toString());
@@ -178,7 +178,7 @@ public class AzureOpenAIParameters implements JsonSerializable<AzureOpenAIParame
                 if ("resourceUri".equals(fieldName)) {
                     deserializedAzureOpenAIParameters.resourceUri = reader.getString();
                 } else if ("deploymentId".equals(fieldName)) {
-                    deserializedAzureOpenAIParameters.deploymentId = reader.getString();
+                    deserializedAzureOpenAIParameters.deploymentName = reader.getString();
                 } else if ("apiKey".equals(fieldName)) {
                     deserializedAzureOpenAIParameters.apiKey = reader.getString();
                 } else if ("authIdentity".equals(fieldName)) {

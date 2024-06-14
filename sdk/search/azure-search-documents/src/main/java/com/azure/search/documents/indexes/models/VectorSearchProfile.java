@@ -31,9 +31,9 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     private final String algorithmConfigurationName;
 
     /*
-     * The name of the kind of vectorization method being configured for use with vector search.
+     * The name of the vectorization being configured for use with vector search.
      */
-    private String vectorizer;
+    private String vectorizerName;
 
     /*
      * The name of the compression method configuration that specifies the compression method and optional parameters.
@@ -71,24 +71,22 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     }
 
     /**
-     * Get the vectorizer property: The name of the kind of vectorization method being configured for use with vector
-     * search.
+     * Get the vectorizerName property: The name of the vectorization being configured for use with vector search.
      * 
-     * @return the vectorizer value.
+     * @return the vectorizerName value.
      */
-    public String getVectorizer() {
-        return this.vectorizer;
+    public String getVectorizerName() {
+        return this.vectorizerName;
     }
 
     /**
-     * Set the vectorizer property: The name of the kind of vectorization method being configured for use with vector
-     * search.
+     * Set the vectorizerName property: The name of the vectorization being configured for use with vector search.
      * 
-     * @param vectorizer the vectorizer value to set.
+     * @param vectorizerName the vectorizerName value to set.
      * @return the VectorSearchProfile object itself.
      */
-    public VectorSearchProfile setVectorizer(String vectorizer) {
-        this.vectorizer = vectorizer;
+    public VectorSearchProfile setVectorizerName(String vectorizerName) {
+        this.vectorizerName = vectorizerName;
         return this;
     }
 
@@ -119,7 +117,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("algorithm", this.algorithmConfigurationName);
-        jsonWriter.writeStringField("vectorizer", this.vectorizer);
+        jsonWriter.writeStringField("vectorizer", this.vectorizerName);
         jsonWriter.writeStringField("compression", this.compressionConfigurationName);
         return jsonWriter.writeEndObject();
     }
@@ -139,7 +137,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
             String name = null;
             boolean algorithmConfigurationNameFound = false;
             String algorithmConfigurationName = null;
-            String vectorizer = null;
+            String vectorizerName = null;
             String compressionConfigurationName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -152,7 +150,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
                     algorithmConfigurationName = reader.getString();
                     algorithmConfigurationNameFound = true;
                 } else if ("vectorizer".equals(fieldName)) {
-                    vectorizer = reader.getString();
+                    vectorizerName = reader.getString();
                 } else if ("compression".equals(fieldName)) {
                     compressionConfigurationName = reader.getString();
                 } else {
@@ -162,7 +160,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
             if (nameFound && algorithmConfigurationNameFound) {
                 VectorSearchProfile deserializedVectorSearchProfile
                     = new VectorSearchProfile(name, algorithmConfigurationName);
-                deserializedVectorSearchProfile.vectorizer = vectorizer;
+                deserializedVectorSearchProfile.vectorizerName = vectorizerName;
                 deserializedVectorSearchProfile.compressionConfigurationName = compressionConfigurationName;
 
                 return deserializedVectorSearchProfile;

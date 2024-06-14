@@ -29,11 +29,6 @@ public final class AzureOpenAIModelName extends ExpandableStringEnum<AzureOpenAI
     public static final AzureOpenAIModelName TEXT_EMBEDDING3SMALL = fromString("text-embedding-3-small");
 
     /**
-     * Static value experimental for AzureOpenAIModelName.
-     */
-    public static final AzureOpenAIModelName EXPERIMENTAL = fromString("experimental");
-
-    /**
      * Creates a new instance of AzureOpenAIModelName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

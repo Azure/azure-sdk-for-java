@@ -21,6 +21,13 @@ public final class VectorSearchCompressionKind extends ExpandableStringEnum<Vect
     public static final VectorSearchCompressionKind SCALAR_QUANTIZATION = fromString("scalarQuantization");
 
     /**
+     * Binary Quantization, a type of compression method. In binary quantization, the original vectors values are
+     * compressed to the narrower binary type by discretizing and representing each component of a vector using binary
+     * values, thereby reducing the overall data size.
+     */
+    public static final VectorSearchCompressionKind BINARY_QUANTIZATION = fromString("binaryQuantization");
+
+    /**
      * Creates a new instance of VectorSearchCompressionKind value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
