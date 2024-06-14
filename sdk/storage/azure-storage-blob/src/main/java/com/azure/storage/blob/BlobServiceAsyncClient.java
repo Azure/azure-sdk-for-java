@@ -859,8 +859,8 @@ public final class BlobServiceAsyncClient {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.getServices().setPropertiesWithResponseAsync(finalProperties, null, null, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return this.azureBlobStorage.getServices()
+            .setPropertiesNoCustomHeadersWithResponseAsync(finalProperties, null, null, context);
     }
 
     /**
@@ -1071,7 +1071,7 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.getServices().getAccountInfoWithResponseAsync(context)
+        return this.azureBlobStorage.getServices().getAccountInfoWithResponseAsync(null, null, context)
             .map(rb -> {
                 ServicesGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind(),

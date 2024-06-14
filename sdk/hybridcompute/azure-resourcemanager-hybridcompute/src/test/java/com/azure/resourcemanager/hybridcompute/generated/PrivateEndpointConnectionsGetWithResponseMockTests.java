@@ -21,7 +21,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"z\"},\"privateLinkServiceConnectionState\":{\"status\":\"xcoxpelnjet\",\"description\":\"gltsxoat\",\"actionsRequired\":\"g\"},\"provisioningState\":\"npbs\",\"groupIds\":[\"floccsrmozih\"]},\"id\":\"pgawtxxpkyjcxcjx\",\"name\":\"rytfmpcycil\",\"type\":\"mcayk\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"rueqthwm\"},\"privateLinkServiceConnectionState\":{\"status\":\"mbscbbx\",\"description\":\"gdhxi\",\"actionsRequired\":\"lopedbwdpyqyyb\"},\"provisioningState\":\"bmdnafcbqwre\",\"groupIds\":[\"laqacigele\"]},\"id\":\"d\",\"name\":\"vqvwzkjopwbe\",\"type\":\"nrlkwzdqy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("jsxjwwix", "vumwmxqh", "dvnoamldsehaohdj", com.azure.core.util.Context.NONE)
+            .getWithResponse("rrczezkhhltnj", "dhqoawj", "oyueayfbpcmsp", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("z", response.properties().privateEndpoint().id());
-        Assertions.assertEquals("xcoxpelnjet", response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("gltsxoat", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("rueqthwm", response.properties().privateEndpoint().id());
+        Assertions.assertEquals("mbscbbx", response.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("gdhxi", response.properties().privateLinkServiceConnectionState().description());
     }
 }

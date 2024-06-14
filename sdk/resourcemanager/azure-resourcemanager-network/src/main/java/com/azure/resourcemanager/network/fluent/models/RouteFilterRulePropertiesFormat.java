@@ -125,16 +125,19 @@ public final class RouteFilterRulePropertiesFormat {
      */
     public void validate() {
         if (access() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property access in model RouteFilterRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property access in model RouteFilterRulePropertiesFormat"));
         }
         if (routeFilterRuleType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property routeFilterRuleType in model RouteFilterRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property routeFilterRuleType in model RouteFilterRulePropertiesFormat"));
         }
         if (communities() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property communities in model RouteFilterRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property communities in model RouteFilterRulePropertiesFormat"));
         }
     }
 

@@ -80,6 +80,10 @@ public class RemoteRenderingTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `operation-location`, `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2030", "AZSDK3430");
+        }
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)

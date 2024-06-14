@@ -548,7 +548,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
             Assertions.assertTrue(pairing.name().equalsIgnoreCase(geodrName));
             Assertions.assertTrue(pairing.primaryNamespaceResourceGroupName().equalsIgnoreCase(rgName));
             Assertions.assertTrue(pairing.primaryNamespaceName().equalsIgnoreCase(primaryNamespace.name()));
-            Assertions.assertTrue(pairing.secondaryNamespaceId().equalsIgnoreCase(secondaryNamespace.id()));
+            assertResourceIdEquals(pairing.secondaryNamespaceId(), secondaryNamespace.id());
 
             PagedIterable<DisasterRecoveryPairingAuthorizationRule> rules = pairing.listAuthorizationRules();
             Assertions.assertTrue(TestUtilities.getSize(rules) > 0);
@@ -572,7 +572,7 @@ public class EventHubTests extends ResourceManagerTestProxyTestBase {
                     found = true;
                     Assertions.assertTrue(pairing1.primaryNamespaceResourceGroupName().equalsIgnoreCase(rgName));
                     Assertions.assertTrue(pairing1.primaryNamespaceName().equalsIgnoreCase(primaryNamespace.name()));
-                    Assertions.assertTrue(pairing1.secondaryNamespaceId().equalsIgnoreCase(secondaryNamespace.id()));
+                    assertResourceIdEquals(pairing.secondaryNamespaceId(), secondaryNamespace.id());
                 }
             }
             Assertions.assertTrue(found);

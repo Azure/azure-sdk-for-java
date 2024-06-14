@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AzureFirewallsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * AzureFirewallGetWithAdditionalProperties.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallGetWithAdditionalProperties.json
      */
     /**
      * Sample code: Get Azure Firewall With Additional Properties.
@@ -18,14 +17,15 @@ public final class AzureFirewallsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAzureFirewallWithAdditionalProperties(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAzureFirewalls().getByResourceGroupWithResponse("rg1",
-            "azurefirewall", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getAzureFirewalls()
+            .getByResourceGroupWithResponse("rg1", "azurefirewall", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AzureFirewallGetWithIpGroups.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallGetWithIpGroups.json
      */
     /**
      * Sample code: Get Azure Firewall With IpGroups.
@@ -33,14 +33,15 @@ public final class AzureFirewallsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAzureFirewallWithIpGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAzureFirewalls().getByResourceGroupWithResponse("rg1",
-            "azurefirewall", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getAzureFirewalls()
+            .getByResourceGroupWithResponse("rg1", "azurefirewall", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AzureFirewallGetWithZones.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallGetWithZones.json
      */
     /**
      * Sample code: Get Azure Firewall With Zones.
@@ -48,13 +49,15 @@ public final class AzureFirewallsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAzureFirewallWithZones(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAzureFirewalls().getByResourceGroupWithResponse("rg1",
-            "azurefirewall", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getAzureFirewalls()
+            .getByResourceGroupWithResponse("rg1", "azurefirewall", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * AzureFirewallGetWithMgmtSubnet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallGetWithMgmtSubnet.json
      */
     /**
      * Sample code: Get Azure Firewall With management subnet.
@@ -62,13 +65,15 @@ public final class AzureFirewallsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAzureFirewallWithManagementSubnet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAzureFirewalls().getByResourceGroupWithResponse("rg1",
-            "azurefirewall", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getAzureFirewalls()
+            .getByResourceGroupWithResponse("rg1", "azurefirewall", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AzureFirewallGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallGet.json
      */
     /**
      * Sample code: Get Azure Firewall.
@@ -76,7 +81,10 @@ public final class AzureFirewallsGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAzureFirewall(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAzureFirewalls().getByResourceGroupWithResponse("rg1",
-            "azurefirewall", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getAzureFirewalls()
+            .getByResourceGroupWithResponse("rg1", "azurefirewall", com.azure.core.util.Context.NONE);
     }
 }

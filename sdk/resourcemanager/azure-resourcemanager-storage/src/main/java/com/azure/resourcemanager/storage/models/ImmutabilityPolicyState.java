@@ -6,14 +6,21 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked. */
+/**
+ * The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked.
+ */
 public final class ImmutabilityPolicyState extends ExpandableStringEnum<ImmutabilityPolicyState> {
-    /** Static value Locked for ImmutabilityPolicyState. */
+    /**
+     * Static value Locked for ImmutabilityPolicyState.
+     */
     public static final ImmutabilityPolicyState LOCKED = fromString("Locked");
 
-    /** Static value Unlocked for ImmutabilityPolicyState. */
+    /**
+     * Static value Unlocked for ImmutabilityPolicyState.
+     */
     public static final ImmutabilityPolicyState UNLOCKED = fromString("Unlocked");
 
     /**

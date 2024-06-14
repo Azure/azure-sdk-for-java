@@ -5,42 +5,42 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The SparkScheduler model.
  */
 @Fluent
-public final class SparkScheduler {
+public final class SparkScheduler implements JsonSerializable<SparkScheduler> {
     /*
      * The submittedAt property.
      */
-    @JsonProperty(value = "submittedAt")
     private OffsetDateTime submittedAt;
 
     /*
      * The scheduledAt property.
      */
-    @JsonProperty(value = "scheduledAt")
     private OffsetDateTime scheduledAt;
 
     /*
      * The endedAt property.
      */
-    @JsonProperty(value = "endedAt")
     private OffsetDateTime endedAt;
 
     /*
      * The cancellationRequestedAt property.
      */
-    @JsonProperty(value = "cancellationRequestedAt")
     private OffsetDateTime cancellationRequestedAt;
 
     /*
      * The currentState property.
      */
-    @JsonProperty(value = "currentState")
     private SchedulerCurrentState currentState;
 
     /**
@@ -147,5 +147,63 @@ public final class SparkScheduler {
     public SparkScheduler setCurrentState(SchedulerCurrentState currentState) {
         this.currentState = currentState;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("submittedAt",
+            this.submittedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.submittedAt));
+        jsonWriter.writeStringField("scheduledAt",
+            this.scheduledAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduledAt));
+        jsonWriter.writeStringField("endedAt",
+            this.endedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endedAt));
+        jsonWriter.writeStringField("cancellationRequestedAt",
+            this.cancellationRequestedAt == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.cancellationRequestedAt));
+        jsonWriter.writeStringField("currentState", this.currentState == null ? null : this.currentState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkScheduler from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkScheduler if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SparkScheduler.
+     */
+    public static SparkScheduler fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkScheduler deserializedSparkScheduler = new SparkScheduler();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("submittedAt".equals(fieldName)) {
+                    deserializedSparkScheduler.submittedAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("scheduledAt".equals(fieldName)) {
+                    deserializedSparkScheduler.scheduledAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endedAt".equals(fieldName)) {
+                    deserializedSparkScheduler.endedAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("cancellationRequestedAt".equals(fieldName)) {
+                    deserializedSparkScheduler.cancellationRequestedAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("currentState".equals(fieldName)) {
+                    deserializedSparkScheduler.currentState = SchedulerCurrentState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkScheduler;
+        });
     }
 }

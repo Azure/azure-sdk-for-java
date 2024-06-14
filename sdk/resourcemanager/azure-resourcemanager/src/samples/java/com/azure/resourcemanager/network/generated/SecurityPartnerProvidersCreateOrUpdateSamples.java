@@ -15,9 +15,7 @@ import java.util.Map;
  */
 public final class SecurityPartnerProvidersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/SecurityPartnerProviderPut.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/SecurityPartnerProviderPut.json
      */
     /**
      * Sample code: Create Security Partner Provider.
@@ -25,11 +23,16 @@ public final class SecurityPartnerProvidersCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSecurityPartnerProvider(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSecurityPartnerProviders()
-            .createOrUpdate("rg1", "securityPartnerProvider", new SecurityPartnerProviderInner().withLocation("West US")
-                .withTags(mapOf("key1", "fakeTokenPlaceholder")).withSecurityProviderName(SecurityProviderName.ZSCALER)
-                .withVirtualHub(new SubResource()
-                    .withId("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1")),
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSecurityPartnerProviders()
+            .createOrUpdate("rg1", "securityPartnerProvider",
+                new SecurityPartnerProviderInner().withLocation("West US")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                    .withSecurityProviderName(SecurityProviderName.ZSCALER)
+                    .withVirtualHub(new SubResource().withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1")),
                 com.azure.core.util.Context.NONE);
     }
 

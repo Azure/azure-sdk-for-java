@@ -5,46 +5,53 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Json dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Json")
-@JsonFlatten
 @Fluent
 public class JsonDataset extends Dataset {
     /*
+     * Type of dataset.
+     */
+    private String type = "Json";
+
+    /*
      * The location of the json data storage.
      */
-    @JsonProperty(value = "typeProperties.location")
     private DatasetLocation location;
 
     /*
-     * The code page name of the preferred encoding. If not specified, the default value is UTF-8, unless BOM denotes
-     * another Unicode encoding. Refer to the name column of the table in the following link to set supported values:
-     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
-     * string).
+     * The code page name of the preferred encoding. If not specified, the default value is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encodingName")
     private Object encodingName;
 
     /*
      * The data compression method used for the json dataset.
      */
-    @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
     /**
      * Creates an instance of JsonDataset class.
      */
     public JsonDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -174,5 +181,99 @@ public class JsonDataset extends Dataset {
     public JsonDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeUntypedField("structure", getStructure());
+        jsonWriter.writeUntypedField("schema", getSchema());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", getFolder());
+        jsonWriter.writeStringField("type", this.type);
+        if (location != null || encodingName != null || compression != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeJsonField("location", this.location);
+            jsonWriter.writeUntypedField("encodingName", this.encodingName);
+            jsonWriter.writeJsonField("compression", this.compression);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JsonDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JsonDataset if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JsonDataset.
+     */
+    public static JsonDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonDataset deserializedJsonDataset = new JsonDataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedJsonDataset.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedJsonDataset.setDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedJsonDataset.setStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedJsonDataset.setSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedJsonDataset.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedJsonDataset.setAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedJsonDataset.setFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedJsonDataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("location".equals(fieldName)) {
+                            deserializedJsonDataset.location = DatasetLocation.fromJson(reader);
+                        } else if ("encodingName".equals(fieldName)) {
+                            deserializedJsonDataset.encodingName = reader.readUntyped();
+                        } else if ("compression".equals(fieldName)) {
+                            deserializedJsonDataset.compression = DatasetCompression.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedJsonDataset.setAdditionalProperties(additionalProperties);
+
+            return deserializedJsonDataset;
+        });
     }
 }

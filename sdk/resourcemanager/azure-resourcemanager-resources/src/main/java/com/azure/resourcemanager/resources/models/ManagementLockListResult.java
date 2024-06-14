@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.fluent.models.ManagementLockObjectInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of locks. */
+/**
+ * The list of locks.
+ */
 @Fluent
 public final class ManagementLockListResult {
     /*
@@ -24,13 +26,15 @@ public final class ManagementLockListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ManagementLockListResult class. */
+    /**
+     * Creates an instance of ManagementLockListResult class.
+     */
     public ManagementLockListResult() {
     }
 
     /**
      * Get the value property: The list of locks.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagementLockObjectInner> value() {
@@ -39,7 +43,7 @@ public final class ManagementLockListResult {
 
     /**
      * Set the value property: The list of locks.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagementLockListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ManagementLockListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ManagementLockListResult {
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ManagementLockListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ManagementLockListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

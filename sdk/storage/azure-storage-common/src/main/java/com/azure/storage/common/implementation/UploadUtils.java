@@ -11,6 +11,7 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -210,7 +211,7 @@ public class UploadUtils {
         if (data == null && optionalLength == null) {
             // We can only buffer up to max int due to restrictions in ByteBuffer.
             int chunkSize = (int) Math.min(Constants.MAX_INPUT_STREAM_CONVERTER_BUFFER_LENGTH, blockSize);
-            data = FluxUtil.toFluxByteBuffer(dataStream, chunkSize);
+            data = FluxUtil.toFluxByteBuffer(dataStream, chunkSize).subscribeOn(Schedulers.boundedElastic());
             // specified length (legacy requirement): use custom converter. no marking because we buffer anyway.
         } else if (data == null) {
             // We can only buffer up to max int due to restrictions in ByteBuffer.

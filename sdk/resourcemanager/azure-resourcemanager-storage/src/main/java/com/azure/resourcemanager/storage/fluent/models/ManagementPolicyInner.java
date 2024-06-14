@@ -8,9 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** The Get Storage Account ManagementPolicies operation response. */
+/**
+ * The Get Storage Account ManagementPolicies operation response.
+ */
 @Fluent
 public final class ManagementPolicyInner extends ProxyResource {
     /*
@@ -19,7 +22,9 @@ public final class ManagementPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ManagementPolicyProperties innerProperties;
 
-    /** Creates an instance of ManagementPolicyInner class. */
+    /**
+     * Creates an instance of ManagementPolicyInner class.
+     */
     public ManagementPolicyInner() {
     }
 

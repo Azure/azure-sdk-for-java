@@ -13,6 +13,7 @@ import com.azure.resourcemanager.network.models.Hub;
 import com.azure.resourcemanager.network.models.IsGlobal;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -76,7 +77,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Get the description property: A description of the connectivity configuration.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -85,7 +86,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Set the description property: A description of the connectivity configuration.
-     * 
+     *
      * @param description the description value to set.
      * @return the ConnectivityConfigurationProperties object itself.
      */
@@ -96,7 +97,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Get the connectivityTopology property: Connectivity topology type.
-     * 
+     *
      * @return the connectivityTopology value.
      */
     public ConnectivityTopology connectivityTopology() {
@@ -105,7 +106,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Set the connectivityTopology property: Connectivity topology type.
-     * 
+     *
      * @param connectivityTopology the connectivityTopology value to set.
      * @return the ConnectivityConfigurationProperties object itself.
      */
@@ -116,7 +117,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Get the hubs property: List of hubItems.
-     * 
+     *
      * @return the hubs value.
      */
     public List<Hub> hubs() {
@@ -125,7 +126,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Set the hubs property: List of hubItems.
-     * 
+     *
      * @param hubs the hubs value to set.
      * @return the ConnectivityConfigurationProperties object itself.
      */
@@ -136,7 +137,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Get the isGlobal property: Flag if global mesh is supported.
-     * 
+     *
      * @return the isGlobal value.
      */
     public IsGlobal isGlobal() {
@@ -145,7 +146,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Set the isGlobal property: Flag if global mesh is supported.
-     * 
+     *
      * @param isGlobal the isGlobal value to set.
      * @return the ConnectivityConfigurationProperties object itself.
      */
@@ -156,7 +157,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Get the appliesToGroups property: Groups for configuration.
-     * 
+     *
      * @return the appliesToGroups value.
      */
     public List<ConnectivityGroupItem> appliesToGroups() {
@@ -165,7 +166,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Set the appliesToGroups property: Groups for configuration.
-     * 
+     *
      * @param appliesToGroups the appliesToGroups value to set.
      * @return the ConnectivityConfigurationProperties object itself.
      */
@@ -176,7 +177,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the connectivity configuration resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -185,7 +186,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Get the deleteExistingPeering property: Flag if need to remove current existing peerings.
-     * 
+     *
      * @return the deleteExistingPeering value.
      */
     public DeleteExistingPeering deleteExistingPeering() {
@@ -194,7 +195,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Set the deleteExistingPeering property: Flag if need to remove current existing peerings.
-     * 
+     *
      * @param deleteExistingPeering the deleteExistingPeering value to set.
      * @return the ConnectivityConfigurationProperties object itself.
      */
@@ -205,7 +206,7 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -214,20 +215,22 @@ public final class ConnectivityConfigurationProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectivityTopology() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectivityTopology in model ConnectivityConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectivityTopology in model ConnectivityConfigurationProperties"));
         }
         if (hubs() != null) {
             hubs().forEach(e -> e.validate());
         }
         if (appliesToGroups() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property appliesToGroups in model ConnectivityConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property appliesToGroups in model ConnectivityConfigurationProperties"));
         } else {
             appliesToGroups().forEach(e -> e.validate());
         }

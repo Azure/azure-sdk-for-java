@@ -22,9 +22,10 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ExpressRouteCircuitsClient.
@@ -33,7 +34,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
     InnerSupportsListing<ExpressRouteCircuitInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +47,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Deletes the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,7 +60,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Deletes the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,7 +73,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Deletes the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param context The context to associate with this operation.
@@ -86,7 +87,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Deletes the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +100,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Deletes the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -111,7 +112,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Deletes the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param context The context to associate with this operation.
@@ -124,7 +125,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets information about the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +140,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets information about the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +153,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets information about the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of express route circuit.
      * @param context The context to associate with this operation.
@@ -167,7 +168,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets information about the specified express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +181,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Creates or updates an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -195,7 +196,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Creates or updates an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -210,7 +211,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Creates or updates an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -225,7 +226,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Creates or updates an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -241,7 +242,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Creates or updates an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -256,7 +257,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Creates or updates an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -271,7 +272,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Creates or updates an express route circuit.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -287,7 +288,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Updates an express route circuit tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to update express route circuit tags.
@@ -302,7 +303,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Updates an express route circuit tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to update express route circuit tags.
@@ -316,7 +317,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Updates an express route circuit tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to update express route circuit tags.
@@ -332,7 +333,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Updates an express route circuit tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to update express route circuit tags.
@@ -346,7 +347,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -363,7 +364,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -380,7 +381,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -397,7 +398,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -416,7 +417,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -433,7 +434,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -449,7 +450,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -466,7 +467,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -483,7 +484,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -500,7 +501,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -517,7 +518,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -536,7 +537,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -553,7 +554,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -569,7 +570,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -586,7 +587,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -603,7 +604,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -621,7 +622,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -639,7 +640,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -658,7 +659,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -675,7 +676,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -692,7 +693,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -710,7 +711,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all the stats from an express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -725,7 +726,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all the stats from an express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -738,7 +739,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all the stats from an express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param context The context to associate with this operation.
@@ -753,7 +754,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all the stats from an express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -766,7 +767,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all stats from an express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -782,7 +783,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all stats from an express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -797,7 +798,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all stats from an express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -813,7 +814,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all stats from an express route circuit in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -827,7 +828,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all the express route circuits in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -839,7 +840,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all the express route circuits in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -851,7 +852,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all the express route circuits in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -864,7 +865,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all the express route circuits in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the express route circuits in a subscription as paginated response with {@link PagedFlux}.
@@ -874,7 +875,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all the express route circuits in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the express route circuits in a subscription as paginated response with {@link PagedIterable}.
@@ -884,7 +885,7 @@ public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Gets all the express route circuits in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

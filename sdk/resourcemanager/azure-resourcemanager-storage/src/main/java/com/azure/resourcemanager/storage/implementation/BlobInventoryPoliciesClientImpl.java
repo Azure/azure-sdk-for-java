@@ -34,23 +34,28 @@ import com.azure.resourcemanager.storage.models.BlobInventoryPolicyName;
 import com.azure.resourcemanager.storage.models.ListBlobInventoryPolicy;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BlobInventoryPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BlobInventoryPoliciesClient.
+ */
 public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BlobInventoryPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StorageManagementClientImpl client;
 
     /**
      * Initializes an instance of BlobInventoryPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BlobInventoryPoliciesClientImpl(StorageManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(BlobInventoryPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(BlobInventoryPoliciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,90 +66,68 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
     public interface BlobInventoryPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BlobInventoryPolicyInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<BlobInventoryPolicyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("blobInventoryPolicyName") BlobInventoryPolicyName blobInventoryPolicyName,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BlobInventoryPolicyInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("blobInventoryPolicyName") BlobInventoryPolicyName blobInventoryPolicyName,
+            @BodyParam("application/json") BlobInventoryPolicyInner properties, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BlobInventoryPolicyInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("blobInventoryPolicyName") BlobInventoryPolicyName blobInventoryPolicyName,
-            @BodyParam("application/json") BlobInventoryPolicyInner properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies/{blobInventoryPolicyName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("blobInventoryPolicyName") BlobInventoryPolicyName blobInventoryPolicyName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/inventoryPolicies")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListBlobInventoryPolicy>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ListBlobInventoryPolicy>> list(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the blob inventory policy associated with the specified storage account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BlobInventoryPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, BlobInventoryPolicyName blobInventoryPolicyName) {
+    public Mono<Response<BlobInventoryPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -154,60 +137,42 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (blobInventoryPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            blobInventoryPolicyName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), blobInventoryPolicyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the blob inventory policy associated with the specified storage account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BlobInventoryPolicyInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        BlobInventoryPolicyName blobInventoryPolicyName,
-        Context context) {
+    private Mono<Response<BlobInventoryPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -217,61 +182,50 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (blobInventoryPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                blobInventoryPolicyName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), blobInventoryPolicyName, accept, context);
     }
 
     /**
      * Gets the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the blob inventory policy associated with the specified storage account on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobInventoryPolicyInner> getAsync(
-        String resourceGroupName, String accountName, BlobInventoryPolicyName blobInventoryPolicyName) {
+    public Mono<BlobInventoryPolicyInner> getAsync(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName) {
         return getWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -279,61 +233,53 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      * @return the blob inventory policy associated with the specified storage account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BlobInventoryPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        BlobInventoryPolicyName blobInventoryPolicyName,
-        Context context) {
+    public Response<BlobInventoryPolicyInner> getWithResponse(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName, context).block();
     }
 
     /**
      * Gets the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the blob inventory policy associated with the specified storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobInventoryPolicyInner get(
-        String resourceGroupName, String accountName, BlobInventoryPolicyName blobInventoryPolicyName) {
+    public BlobInventoryPolicyInner get(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName) {
         return getWithResponse(resourceGroupName, accountName, blobInventoryPolicyName, Context.NONE).getValue();
     }
 
     /**
      * Sets the blob inventory policy to the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @param properties The blob inventory policy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account blob inventory policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the storage account blob inventory policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BlobInventoryPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        BlobInventoryPolicyName blobInventoryPolicyName,
-        BlobInventoryPolicyInner properties) {
+    public Mono<Response<BlobInventoryPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, BlobInventoryPolicyName blobInventoryPolicyName, BlobInventoryPolicyInner properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -343,15 +289,12 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (blobInventoryPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
         }
         if (properties == null) {
             return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
@@ -360,51 +303,36 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            blobInventoryPolicyName,
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), blobInventoryPolicyName, properties,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Sets the blob inventory policy to the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @param properties The blob inventory policy set to a storage account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account blob inventory policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the storage account blob inventory policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BlobInventoryPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        BlobInventoryPolicyName blobInventoryPolicyName,
-        BlobInventoryPolicyInner properties,
+    private Mono<Response<BlobInventoryPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, BlobInventoryPolicyName blobInventoryPolicyName, BlobInventoryPolicyInner properties,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -414,15 +342,12 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (blobInventoryPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
         }
         if (properties == null) {
             return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
@@ -431,28 +356,20 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                blobInventoryPolicyName,
-                properties,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), blobInventoryPolicyName, properties, accept,
+            context);
     }
 
     /**
      * Sets the blob inventory policy to the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @param properties The blob inventory policy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -460,24 +377,21 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      * @return the storage account blob inventory policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobInventoryPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        BlobInventoryPolicyName blobInventoryPolicyName,
-        BlobInventoryPolicyInner properties) {
+    public Mono<BlobInventoryPolicyInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName, BlobInventoryPolicyInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Sets the blob inventory policy to the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @param properties The blob inventory policy set to a storage account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -486,26 +400,21 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      * @return the storage account blob inventory policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BlobInventoryPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        BlobInventoryPolicyName blobInventoryPolicyName,
-        BlobInventoryPolicyInner properties,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, accountName, blobInventoryPolicyName, properties, context)
-            .block();
+    public Response<BlobInventoryPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName, BlobInventoryPolicyInner properties, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName, properties,
+            context).block();
     }
 
     /**
      * Sets the blob inventory policy to the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @param properties The blob inventory policy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -513,38 +422,32 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      * @return the storage account blob inventory policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobInventoryPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        BlobInventoryPolicyName blobInventoryPolicyName,
-        BlobInventoryPolicyInner properties) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, accountName, blobInventoryPolicyName, properties, Context.NONE)
-            .getValue();
+    public BlobInventoryPolicyInner createOrUpdate(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName, BlobInventoryPolicyInner properties) {
+        return createOrUpdateWithResponse(resourceGroupName, accountName, blobInventoryPolicyName, properties,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, BlobInventoryPolicyName blobInventoryPolicyName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -554,42 +457,29 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (blobInventoryPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            blobInventoryPolicyName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), blobInventoryPolicyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -597,16 +487,11 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        BlobInventoryPolicyName blobInventoryPolicyName,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -616,60 +501,49 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (blobInventoryPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                blobInventoryPolicyName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), blobInventoryPolicyName, accept, context);
     }
 
     /**
      * Deletes the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, BlobInventoryPolicyName blobInventoryPolicyName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName) {
         return deleteWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -677,23 +551,20 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String accountName,
-        BlobInventoryPolicyName blobInventoryPolicyName,
-        Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName, context).block();
     }
 
     /**
      * Deletes the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * 'default'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -705,25 +576,23 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
 
     /**
      * Gets the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the blob inventory policy associated with the specified storage account along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BlobInventoryPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<BlobInventoryPolicyInner>> listSinglePageAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -733,53 +602,38 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<BlobInventoryPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<BlobInventoryPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the blob inventory policy associated with the specified storage account along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BlobInventoryPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<BlobInventoryPolicyInner>> listSinglePageAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -789,40 +643,30 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Gets the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the blob inventory policy associated with the specified storage account as paginated response with {@link
-     *     PagedFlux}.
+     * @return the blob inventory policy associated with the specified storage account as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BlobInventoryPolicyInner> listAsync(String resourceGroupName, String accountName) {
@@ -831,36 +675,36 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
 
     /**
      * Gets the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the blob inventory policy associated with the specified storage account as paginated response with {@link
-     *     PagedFlux}.
+     * @return the blob inventory policy associated with the specified storage account as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BlobInventoryPolicyInner> listAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private PagedFlux<BlobInventoryPolicyInner> listAsync(String resourceGroupName, String accountName,
+        Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, context));
     }
 
     /**
      * Gets the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the blob inventory policy associated with the specified storage account as paginated response with {@link
-     *     PagedIterable}.
+     * @return the blob inventory policy associated with the specified storage account as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BlobInventoryPolicyInner> list(String resourceGroupName, String accountName) {
@@ -869,17 +713,17 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
 
     /**
      * Gets the blob inventory policy associated with the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the blob inventory policy associated with the specified storage account as paginated response with {@link
-     *     PagedIterable}.
+     * @return the blob inventory policy associated with the specified storage account as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BlobInventoryPolicyInner> list(String resourceGroupName, String accountName, Context context) {

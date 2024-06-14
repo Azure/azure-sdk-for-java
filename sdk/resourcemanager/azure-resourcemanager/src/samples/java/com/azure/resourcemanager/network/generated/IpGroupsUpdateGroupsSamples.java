@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.models.TagsObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,19 +14,21 @@ import java.util.Map;
  */
 public final class IpGroupsUpdateGroupsSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/IpGroupsUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/IpGroupsUpdateTags.json
      */
     /**
      * Sample code: Update_IpGroups.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateIpGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getIpGroups().updateGroupsWithResponse("myResourceGroup",
-            "ipGroups1",
-            new TagsObject().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getIpGroups()
+            .updateGroupsWithResponse("myResourceGroup", "ipGroups1",
+                new TagsObject().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -5,6 +5,7 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -69,12 +70,6 @@ public final class Assistant implements JsonSerializable<Assistant> {
      */
     @Generated
     private final List<ToolDefinition> tools;
-
-    /*
-     * A list of attached file IDs, ordered by creation date in ascending order.
-     */
-    @Generated
-    private final List<String> fileIds;
 
     /*
      * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
@@ -165,16 +160,6 @@ public final class Assistant implements JsonSerializable<Assistant> {
     }
 
     /**
-     * Get the fileIds property: A list of attached file IDs, ordered by creation date in ascending order.
-     *
-     * @return the fileIds value.
-     */
-    @Generated
-    public List<String> getFileIds() {
-        return this.fileIds;
-    }
-
-    /**
      * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
      * additional information about that object in a structured format. Keys may be up to 64 characters in length and
      * values may be up to 512 characters in length.
@@ -184,37 +169,6 @@ public final class Assistant implements JsonSerializable<Assistant> {
     @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
-    }
-
-    /**
-     * Creates an instance of Assistant class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param name the name value to set.
-     * @param description the description value to set.
-     * @param model the model value to set.
-     * @param instructions the instructions value to set.
-     * @param tools the tools value to set.
-     * @param fileIds the fileIds value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    private Assistant(String id, OffsetDateTime createdAt, String name, String description, String model,
-        String instructions, List<ToolDefinition> tools, List<String> fileIds, Map<String, String> metadata) {
-        this.id = id;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.name = name;
-        this.description = description;
-        this.model = model;
-        this.instructions = instructions;
-        this.tools = tools;
-        this.fileIds = fileIds;
-        this.metadata = metadata;
     }
 
     /**
@@ -232,8 +186,13 @@ public final class Assistant implements JsonSerializable<Assistant> {
         jsonWriter.writeStringField("model", this.model);
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("tool_resources", this.toolResources);
+        jsonWriter.writeNumberField("temperature", this.temperature);
+        jsonWriter.writeNumberField("top_p", this.topP);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        if (this.responseFormat != null) {
+            jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -256,8 +215,11 @@ public final class Assistant implements JsonSerializable<Assistant> {
             String model = null;
             String instructions = null;
             List<ToolDefinition> tools = null;
-            List<String> fileIds = null;
+            ToolResources toolResources = null;
+            Double temperature = null;
+            Double topP = null;
             Map<String, String> metadata = null;
+            BinaryData responseFormat = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -275,15 +237,139 @@ public final class Assistant implements JsonSerializable<Assistant> {
                     instructions = reader.getString();
                 } else if ("tools".equals(fieldName)) {
                     tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
-                } else if ("file_ids".equals(fieldName)) {
-                    fileIds = reader.readArray(reader1 -> reader1.getString());
+                } else if ("tool_resources".equals(fieldName)) {
+                    toolResources = ToolResources.fromJson(reader);
+                } else if ("temperature".equals(fieldName)) {
+                    temperature = reader.getNullable(JsonReader::getDouble);
+                } else if ("top_p".equals(fieldName)) {
+                    topP = reader.getNullable(JsonReader::getDouble);
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
+                } else if ("response_format".equals(fieldName)) {
+                    responseFormat
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new Assistant(id, createdAt, name, description, model, instructions, tools, fileIds, metadata);
+            Assistant deserializedAssistant = new Assistant(id, createdAt, name, description, model, instructions,
+                tools, toolResources, temperature, topP, metadata);
+            deserializedAssistant.responseFormat = responseFormat;
+            return deserializedAssistant;
         });
+    }
+
+    /*
+     * A set of resources that are used by the assistant's tools. The resources are specific to the type of tool. For
+     * example, the `code_interpreter`
+     * tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
+     */
+    @Generated
+    private final ToolResources toolResources;
+
+    /*
+     * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random,
+     * while lower values like 0.2 will make it more focused and deterministic.
+     */
+    @Generated
+    private final Double temperature;
+
+    /*
+     * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of
+     * the tokens with top_p probability mass.
+     * So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+     * 
+     * We generally recommend altering this or temperature but not both.
+     */
+    @Generated
+    private final Double topP;
+
+    /*
+     * The response format of the tool calls used by this assistant.
+     */
+    @Generated
+    private BinaryData responseFormat;
+
+    /**
+     * Creates an instance of Assistant class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param name the name value to set.
+     * @param description the description value to set.
+     * @param model the model value to set.
+     * @param instructions the instructions value to set.
+     * @param tools the tools value to set.
+     * @param toolResources the toolResources value to set.
+     * @param temperature the temperature value to set.
+     * @param topP the topP value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    private Assistant(String id, OffsetDateTime createdAt, String name, String description, String model,
+        String instructions, List<ToolDefinition> tools, ToolResources toolResources, Double temperature, Double topP,
+        Map<String, String> metadata) {
+        this.id = id;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.name = name;
+        this.description = description;
+        this.model = model;
+        this.instructions = instructions;
+        this.tools = tools;
+        this.toolResources = toolResources;
+        this.temperature = temperature;
+        this.topP = topP;
+        this.metadata = metadata;
+    }
+
+    /**
+     * Get the toolResources property: A set of resources that are used by the assistant's tools. The resources are
+     * specific to the type of tool. For example, the `code_interpreter`
+     * tool requires a list of file IDs, while the `file_search` tool requires a list of vector store IDs.
+     *
+     * @return the toolResources value.
+     */
+    @Generated
+    public ToolResources getToolResources() {
+        return this.toolResources;
+    }
+
+    /**
+     * Get the temperature property: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make
+     * the output more random,
+     * while lower values like 0.2 will make it more focused and deterministic.
+     *
+     * @return the temperature value.
+     */
+    @Generated
+    public Double getTemperature() {
+        return this.temperature;
+    }
+
+    /**
+     * Get the topP property: An alternative to sampling with temperature, called nucleus sampling, where the model
+     * considers the results of the tokens with top_p probability mass.
+     * So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+     *
+     * We generally recommend altering this or temperature but not both.
+     *
+     * @return the topP value.
+     */
+    @Generated
+    public Double getTopP() {
+        return this.topP;
+    }
+
+    /**
+     * Get the responseFormat property: The response format of the tool calls used by this assistant.
+     *
+     * @return the responseFormat value.
+     */
+    public AssistantsApiResponseFormatOption getResponseFormat() {
+        return AssistantsApiResponseFormatOption.fromBinaryData(this.responseFormat);
     }
 }

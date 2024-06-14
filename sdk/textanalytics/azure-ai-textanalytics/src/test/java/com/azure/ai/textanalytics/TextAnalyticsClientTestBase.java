@@ -1334,6 +1334,10 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `operation-location, `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493", "AZSDK2030");
+        }
         return builder;
     }
 

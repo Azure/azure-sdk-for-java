@@ -6,9 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** Object level immutability properties of the container. */
+/**
+ * Object level immutability properties of the container.
+ */
 @Fluent
 public final class ImmutableStorageWithVersioning {
     /*
@@ -29,7 +32,9 @@ public final class ImmutableStorageWithVersioning {
     @JsonProperty(value = "migrationState", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState migrationState;
 
-    /** Creates an instance of ImmutableStorageWithVersioning class. */
+    /**
+     * Creates an instance of ImmutableStorageWithVersioning class.
+     */
     public ImmutableStorageWithVersioning() {
     }
 

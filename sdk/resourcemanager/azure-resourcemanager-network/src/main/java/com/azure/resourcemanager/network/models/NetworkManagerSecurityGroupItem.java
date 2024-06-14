@@ -52,8 +52,9 @@ public final class NetworkManagerSecurityGroupItem {
      */
     public void validate() {
         if (networkGroupId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkGroupId in model NetworkManagerSecurityGroupItem"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkGroupId in model NetworkManagerSecurityGroupItem"));
         }
     }
 

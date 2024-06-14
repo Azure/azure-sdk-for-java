@@ -6,17 +6,26 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** This property indicates the current sku conversion status. */
+/**
+ * This property indicates the current sku conversion status.
+ */
 public final class SkuConversionStatus extends ExpandableStringEnum<SkuConversionStatus> {
-    /** Static value InProgress for SkuConversionStatus. */
+    /**
+     * Static value InProgress for SkuConversionStatus.
+     */
     public static final SkuConversionStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Succeeded for SkuConversionStatus. */
+    /**
+     * Static value Succeeded for SkuConversionStatus.
+     */
     public static final SkuConversionStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for SkuConversionStatus. */
+    /**
+     * Static value Failed for SkuConversionStatus.
+     */
     public static final SkuConversionStatus FAILED = fromString("Failed");
 
     /**

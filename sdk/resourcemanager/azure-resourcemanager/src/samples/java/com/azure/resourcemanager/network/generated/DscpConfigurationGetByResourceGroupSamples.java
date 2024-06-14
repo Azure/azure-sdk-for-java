@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class DscpConfigurationGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/DscpConfigurationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/DscpConfigurationGet.json
      */
     /**
      * Sample code: Get Dscp Configuration.
@@ -18,7 +17,10 @@ public final class DscpConfigurationGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getDscpConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getDscpConfigurations().getByResourceGroupWithResponse("rg1",
-            "mydscpConfig", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getDscpConfigurations()
+            .getByResourceGroupWithResponse("rg1", "mydscpConfig", com.azure.core.util.Context.NONE);
     }
 }

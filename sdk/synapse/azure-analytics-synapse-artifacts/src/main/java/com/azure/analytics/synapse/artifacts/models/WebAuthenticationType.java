@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class WebAuthenticationType extends ExpandableStringEnum<WebAuthent
      * @param name a name to look for.
      * @return the corresponding WebAuthenticationType.
      */
-    @JsonCreator
     public static WebAuthenticationType fromString(String name) {
         return fromString(name, WebAuthenticationType.class);
     }

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class ContainerAppsRevisionsRestartRevisionSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/RestartRevision.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/RestartRevision.json
      */
     /**
      * Sample code: Restart Container App's revision.
@@ -18,7 +17,11 @@ public final class ContainerAppsRevisionsRestartRevisionSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restartContainerAppSRevision(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getContainerAppsRevisions().restartRevisionWithResponse("rg",
-            "testStaticSite0", "testcontainerApp0-pjxhsye", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getContainerAppsRevisions()
+            .restartRevisionWithResponse("rg", "testStaticSite0", "testcontainerApp0-pjxhsye",
+                com.azure.core.util.Context.NONE);
     }
 }

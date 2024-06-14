@@ -5,43 +5,53 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * The Amazon Redshift table dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AmazonRedshiftTable")
-@JsonFlatten
 @Fluent
 public class AmazonRedshiftTableDataset extends Dataset {
     /*
+     * Type of dataset.
+     */
+    private String type = "AmazonRedshiftTable";
+
+    /*
      * This property will be retired. Please consider using schema + table properties instead.
      */
-    @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
      * The Amazon Redshift table name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.table")
     private Object table;
 
     /*
      * The Amazon Redshift schema name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
     /**
      * Creates an instance of AmazonRedshiftTableDataset class.
      */
     public AmazonRedshiftTableDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -169,5 +179,100 @@ public class AmazonRedshiftTableDataset extends Dataset {
     public AmazonRedshiftTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeUntypedField("structure", getStructure());
+        jsonWriter.writeUntypedField("schema", getSchema());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", getFolder());
+        jsonWriter.writeStringField("type", this.type);
+        if (tableName != null || table != null || schemaTypePropertiesSchema != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("tableName", this.tableName);
+            jsonWriter.writeUntypedField("table", this.table);
+            jsonWriter.writeUntypedField("schema", this.schemaTypePropertiesSchema);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonRedshiftTableDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonRedshiftTableDataset if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AmazonRedshiftTableDataset.
+     */
+    public static AmazonRedshiftTableDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonRedshiftTableDataset deserializedAmazonRedshiftTableDataset = new AmazonRedshiftTableDataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAmazonRedshiftTableDataset
+                        .setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAmazonRedshiftTableDataset.setDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedAmazonRedshiftTableDataset.setStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedAmazonRedshiftTableDataset.setSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAmazonRedshiftTableDataset.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAmazonRedshiftTableDataset.setAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedAmazonRedshiftTableDataset.setFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAmazonRedshiftTableDataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("tableName".equals(fieldName)) {
+                            deserializedAmazonRedshiftTableDataset.tableName = reader.readUntyped();
+                        } else if ("table".equals(fieldName)) {
+                            deserializedAmazonRedshiftTableDataset.table = reader.readUntyped();
+                        } else if ("schema".equals(fieldName)) {
+                            deserializedAmazonRedshiftTableDataset.schemaTypePropertiesSchema = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAmazonRedshiftTableDataset.setAdditionalProperties(additionalProperties);
+
+            return deserializedAmazonRedshiftTableDataset;
+        });
     }
 }

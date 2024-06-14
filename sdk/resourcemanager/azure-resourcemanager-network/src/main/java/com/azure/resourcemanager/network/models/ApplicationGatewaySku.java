@@ -30,6 +30,12 @@ public final class ApplicationGatewaySku {
     @JsonProperty(value = "capacity")
     private Integer capacity;
 
+    /*
+     * Family of an application gateway SKU.
+     */
+    @JsonProperty(value = "family")
+    private ApplicationGatewaySkuFamily family;
+
     /**
      * Creates an instance of ApplicationGatewaySku class.
      */
@@ -93,6 +99,26 @@ public final class ApplicationGatewaySku {
      */
     public ApplicationGatewaySku withCapacity(Integer capacity) {
         this.capacity = capacity;
+        return this;
+    }
+
+    /**
+     * Get the family property: Family of an application gateway SKU.
+     * 
+     * @return the family value.
+     */
+    public ApplicationGatewaySkuFamily family() {
+        return this.family;
+    }
+
+    /**
+     * Set the family property: Family of an application gateway SKU.
+     * 
+     * @param family the family value to set.
+     * @return the ApplicationGatewaySku object itself.
+     */
+    public ApplicationGatewaySku withFamily(ApplicationGatewaySkuFamily family) {
+        this.family = family;
         return this;
     }
 

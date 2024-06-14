@@ -19,6 +19,7 @@ from parameters import *
 from utils import update_service_ci_and_pom
 from utils import update_root_pom
 from utils import update_version
+from utils import is_windows
 
 os.chdir(pwd)
 
@@ -71,7 +72,15 @@ def generate(
             os.path.abspath(sdk_root),
             os.path.abspath(output_dir),
             namespace,
-            " ".join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
+            " ".join(
+                (
+                    tag_option,
+                    version_option,
+                    FLUENTLITE_ARGUMENTS,
+                    autorest_options,
+                    readme,
+                )
+            ),
         )
     )
     logging.info(command)
@@ -96,13 +105,18 @@ def generate(
 
 
 def remove_generated_source_code(sdk_folder: str, namespace: str):
-    shutil.rmtree(os.path.join(sdk_folder, "src/main"), ignore_errors=True)
-    shutil.rmtree(
-        os.path.join(sdk_folder, "src/test/java", namespace.replace(".", "/"), "generated"), ignore_errors=True
-    )
-    shutil.rmtree(
-        os.path.join(sdk_folder, "src/samples/java", namespace.replace(".", "/"), "generated"), ignore_errors=True
-    )
+    main_folder = os.path.join(sdk_folder, "src/main")
+    test_folder = os.path.join(sdk_folder, "src/test/java", namespace.replace(".", "/"), "generated")
+    sample_folder = os.path.join(sdk_folder, "src/samples/java", namespace.replace(".", "/"), "generated")
+
+    logging.info(f"Removing main source folder: {main_folder}")
+    shutil.rmtree(main_folder, ignore_errors=True)
+
+    logging.info(f"Removing generated test folder: {test_folder}")
+    shutil.rmtree(test_folder, ignore_errors=True)
+
+    logging.info(f"Removing generated samples folder: {sample_folder}")
+    shutil.rmtree(sample_folder, ignore_errors=True)
 
 
 def compile_arm_package(sdk_root: str, module: str) -> bool:
@@ -188,7 +202,8 @@ def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
         if beta_version_int > 1:
             previous_beta_version_int = beta_version_int - 1
             previous_beta_version = current_version.replace(
-                "-beta." + str(beta_version_int), "-beta." + str(previous_beta_version_int)
+                "-beta." + str(beta_version_int),
+                "-beta." + str(previous_beta_version_int),
             )
             stable_version = previous_beta_version
 
@@ -196,14 +211,21 @@ def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
         "[Changelog] Compare stable version {0} with current version {1}".format(stable_version, current_version)
     )
 
-    r = requests.get(MAVEN_URL.format(group_id=GROUP_ID.replace(".", "/"), artifact_id=module, version=stable_version))
+    r = requests.get(
+        MAVEN_URL.format(
+            group_id=GROUP_ID.replace(".", "/"),
+            artifact_id=module,
+            version=stable_version,
+        )
+    )
     r.raise_for_status()
     old_jar_fd, old_jar = tempfile.mkstemp(".jar")
     try:
         with os.fdopen(old_jar_fd, "wb") as tmp:
             tmp.write(r.content)
         new_jar = os.path.join(
-            sdk_root, JAR_FORMAT.format(service=service, artifact_id=module, version=current_version)
+            sdk_root,
+            JAR_FORMAT.format(service=service, artifact_id=module, version=current_version),
         )
         if not os.path.exists(new_jar):
             raise Exception("Cannot found built jar in {0}".format(new_jar))
@@ -340,14 +362,21 @@ def generate_typespec_project(
         tspconfig_valid = True
         if url_match:
             # generate from remote url
-            tsp_cmd = ["npx", "tsp-client", "init", "--debug", "--tsp-config", tsp_project]
+            tsp_cmd = [
+                "npx" + (".cmd" if is_windows() else ""),
+                "tsp-client",
+                "init",
+                "--debug",
+                "--tsp-config",
+                tsp_project,
+            ]
         else:
             # sdk automation
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
             tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd = [
-                "npx",
+                "npx" + (".cmd" if is_windows() else ""),
                 "tsp-client",
                 "init",
                 "--debug",
@@ -374,7 +403,12 @@ def generate_typespec_project(
                 # check require_sdk_integration
                 cmd = ["git", "add", "."]
                 check_call(cmd, sdk_root)
-                cmd = ["git", "status", "--porcelain", os.path.join(sdk_folder, "pom.xml")]
+                cmd = [
+                    "git",
+                    "status",
+                    "--porcelain",
+                    os.path.join(sdk_folder, "pom.xml"),
+                ]
                 logging.info("Command line: " + " ".join(cmd))
                 output = subprocess.check_output(cmd, cwd=sdk_root)
                 output_str = str(output, "utf-8")
@@ -383,10 +417,10 @@ def generate_typespec_project(
                     git_pom_item = git_items[0]
                     # new pom.xml implies new SDK
                     require_sdk_integration = git_pom_item.startswith("A ")
-                if not require_sdk_integration and remove_before_regen and group_id:
+                if remove_before_regen and group_id:
                     # clear existing generated source code, and regenerate
                     drop_changes(sdk_root)
-                    remove_generated_source_code(sdk_folder, f"${group_id}.${module}")
+                    remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
                     # regenerate
                     check_call(tsp_cmd, sdk_root)
                 succeeded = True
@@ -401,14 +435,14 @@ def generate_typespec_project(
     return succeeded, require_sdk_integration, sdk_folder, service, module
 
 
-def check_call(cmd: List[str], work_dir: str):
+def check_call(cmd: List[str], work_dir: str, shell: bool = False):
     logging.info("Command line: " + " ".join(cmd))
-    subprocess.check_call(cmd, cwd=work_dir)
+    subprocess.check_call(cmd, cwd=work_dir, shell=shell)
 
 
 def drop_changes(work_dir: str):
     check_call(["git", "checkout", "--", "."], work_dir)
-    check_call(["git", "clean", "-qf"], work_dir)
+    check_call(["git", "clean", "-qf", "."], work_dir)
 
 
 def remove_prefix(text, prefix):

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class MongoDBResourcesMigrateMongoDBCollectionToManualThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBMongoDBCollectionMigrateToManualThroughput.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBMongoDBCollectionMigrateToManualThroughput.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionMigrateToManualThroughput.
@@ -19,7 +18,10 @@ public final class MongoDBResourcesMigrateMongoDBCollectionToManualThroughputSam
      */
     public static void
         cosmosDBMongoDBCollectionMigrateToManualThroughput(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getMongoDBResources()
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getMongoDBResources()
             .migrateMongoDBCollectionToManualThroughput("rg1", "ddb1", "databaseName", "collectionName",
                 com.azure.core.util.Context.NONE);
     }

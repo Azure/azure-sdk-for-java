@@ -7,9 +7,12 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.fluent.models.DeletedAccountInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The response from the List Deleted Accounts operation. */
+/**
+ * The response from the List Deleted Accounts operation.
+ */
 @Immutable
 public final class DeletedAccountListResult {
     /*
@@ -19,13 +22,14 @@ public final class DeletedAccountListResult {
     private List<DeletedAccountInner> value;
 
     /*
-     * Request URL that can be used to query next page of deleted accounts. Returned when total number of requested
-     * deleted accounts exceed maximum page size.
+     * Request URL that can be used to query next page of deleted accounts. Returned when total number of requested deleted accounts exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DeletedAccountListResult class. */
+    /**
+     * Creates an instance of DeletedAccountListResult class.
+     */
     public DeletedAccountListResult() {
     }
 

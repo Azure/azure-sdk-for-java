@@ -23,7 +23,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,13 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ExceptionPolicyLiveTests extends JobRouterTestBase {
-    private JobRouterAdministrationClient routerAdminClient;
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createExceptionPolicy(HttpClient httpClient) {
         // Setup
-        routerAdminClient = getRouterAdministrationClient(httpClient);
+        JobRouterAdministrationClient routerAdminClient = getRouterAdministrationClient(httpClient);
         String exceptionPolicyId = String.format("%s-CreateExceptionPolicy-ExceptionPolicy", JAVA_LIVE_TESTS);
         String exceptionPolicyName = String.format("%s-Name", exceptionPolicyId);
 
@@ -45,33 +45,16 @@ public class ExceptionPolicyLiveTests extends JobRouterTestBase {
             .setDispositionCode("CancelledDueToMaxQueueLengthReached")
             .setNote("Job Cancelled as maximum queue length is reached.");
 
-        List<ExceptionAction> exceptionActions = new ArrayList<ExceptionAction>() {
-            {
-                add(exceptionAction);
-                add(new ManualReclassifyExceptionAction().setPriority(5).setWorkerSelectors(new ArrayList<RouterWorkerSelector>() {
-                    {
-                        add(new RouterWorkerSelector("IntValue", LabelOperator.EQUAL, new RouterValue(5)));
-                    }
-                }));
-            }
-        };
+        List<ExceptionAction> exceptionActions = Arrays.asList(exceptionAction, new ManualReclassifyExceptionAction()
+            .setPriority(5)
+            .setWorkerSelectors(Collections.singletonList(new RouterWorkerSelector("IntValue", LabelOperator.EQUAL, new RouterValue(5)))));
 
         ExceptionRule exceptionRule = new ExceptionRule("CancelledDueToMaxQueueLengthReached", new QueueLengthExceptionTrigger(1), exceptionActions);
 
-        List<ExceptionRule> exceptionRules = new ArrayList<ExceptionRule>() {
-            {
-                add(exceptionRule);
-                add(new ExceptionRule("rule2", new WaitTimeExceptionTrigger(Duration.ofSeconds(100)), new ArrayList<ExceptionAction>() {
-                    {
-                        add(new ReclassifyExceptionAction().setLabelsToUpsert(new HashMap<String, RouterValue>() {
-                            {
-                                put("Label1", new RouterValue(true));
-                            }
-                        }));
-                    }
-                }));
-            }
-        };
+        List<ExceptionRule> exceptionRules = Arrays.asList(exceptionRule,
+            new ExceptionRule("rule2", new WaitTimeExceptionTrigger(Duration.ofSeconds(100)),
+                Collections.singletonList(new ReclassifyExceptionAction()
+                    .setLabelsToUpsert(Collections.singletonMap("Label1", new RouterValue(true))))));
 
         CreateExceptionPolicyOptions createExceptionPolicyOptions = new CreateExceptionPolicyOptions(
             exceptionPolicyId, exceptionRules).setName(exceptionPolicyName);

@@ -6,9 +6,12 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The ListQueueServices model. */
+/**
+ * The ListQueueServices model.
+ */
 @Immutable
 public final class ListQueueServicesInner {
     /*
@@ -17,7 +20,9 @@ public final class ListQueueServicesInner {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<QueueServicePropertiesInner> value;
 
-    /** Creates an instance of ListQueueServicesInner class. */
+    /**
+     * Creates an instance of ListQueueServicesInner class.
+     */
     public ListQueueServicesInner() {
     }
 
