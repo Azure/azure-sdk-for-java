@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -13,14 +14,25 @@ import java.util.Collection;
  * property.
  */
 public final class MinimumTlsVersion extends ExpandableStringEnum<MinimumTlsVersion> {
-    /** Static value TLS1_0 for MinimumTlsVersion. */
+    /**
+     * Static value TLS1_0 for MinimumTlsVersion.
+     */
     public static final MinimumTlsVersion TLS1_0 = fromString("TLS1_0");
 
-    /** Static value TLS1_1 for MinimumTlsVersion. */
+    /**
+     * Static value TLS1_1 for MinimumTlsVersion.
+     */
     public static final MinimumTlsVersion TLS1_1 = fromString("TLS1_1");
 
-    /** Static value TLS1_2 for MinimumTlsVersion. */
+    /**
+     * Static value TLS1_2 for MinimumTlsVersion.
+     */
     public static final MinimumTlsVersion TLS1_2 = fromString("TLS1_2");
+
+    /**
+     * Static value TLS1_3 for MinimumTlsVersion.
+     */
+    public static final MinimumTlsVersion TLS1_3 = fromString("TLS1_3");
 
     /**
      * Creates a new instance of MinimumTlsVersion value.

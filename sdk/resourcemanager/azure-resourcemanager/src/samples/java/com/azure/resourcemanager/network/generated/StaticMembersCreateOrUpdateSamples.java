@@ -11,9 +11,7 @@ import com.azure.resourcemanager.network.fluent.models.StaticMemberInner;
  */
 public final class StaticMembersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkManagerStaticMemberPut
-     * .json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerStaticMemberPut.json
      */
     /**
      * Sample code: StaticMemberPut.
@@ -21,10 +19,13 @@ public final class StaticMembersCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void staticMemberPut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getStaticMembers().createOrUpdateWithResponse("rg1",
-            "testNetworkManager", "testNetworkGroup", "testStaticMember",
-            new StaticMemberInner().withResourceId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroup/rg1/providers/Microsoft.Network/virtualnetworks/vnet1"),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getStaticMembers()
+            .createOrUpdateWithResponse("rg1", "testNetworkManager", "testNetworkGroup", "testStaticMember",
+                new StaticMemberInner().withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroup/rg1/providers/Microsoft.Network/virtualnetworks/vnet1"),
+                com.azure.core.util.Context.NONE);
     }
 }

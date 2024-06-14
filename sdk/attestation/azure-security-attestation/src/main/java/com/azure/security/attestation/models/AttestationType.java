@@ -5,40 +5,50 @@
 package com.azure.security.attestation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AttestationType. */
+/**
+ * Defines values for AttestationType.
+ */
 public final class AttestationType extends ExpandableStringEnum<AttestationType> {
-    /** Static value SgxEnclave for AttestationType. */
+    /**
+     * Intel Software Guard eXtensions.
+     */
     public static final AttestationType SGX_ENCLAVE = fromString("SgxEnclave");
 
-    /** Static value OpenEnclave for AttestationType. */
+    /**
+     * OpenEnclave extensions to SGX.
+     */
     public static final AttestationType OPEN_ENCLAVE = fromString("OpenEnclave");
 
-    /** Static value Tpm for AttestationType. */
+    /**
+     * Edge TPM Virtualization Based Security.
+     */
     public static final AttestationType TPM = fromString("Tpm");
 
     /**
-     * Creates an instance of {@link AttestationType}
+     * Creates a new instance of AttestationType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public AttestationType() { }
+    @Deprecated
+    public AttestationType() {
+    }
 
     /**
      * Creates or finds a AttestationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AttestationType.
      */
-    @JsonCreator
     public static AttestationType fromString(String name) {
         return fromString(name, AttestationType.class);
     }
 
     /**
-     * Returns the collection of {@link AttestationType} as values.
-     *
-     * @return the known AttestationType values.
+     * Gets known AttestationType values.
+     * 
+     * @return known AttestationType values.
      */
     public static Collection<AttestationType> values() {
         return values(AttestationType.class);

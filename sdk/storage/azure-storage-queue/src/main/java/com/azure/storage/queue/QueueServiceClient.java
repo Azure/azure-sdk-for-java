@@ -526,8 +526,8 @@ public final class QueueServiceClient {
     public Response<Void> setPropertiesWithResponse(QueueServiceProperties properties, Duration timeout,
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<Void>> operation = () ->
-            this.azureQueueStorage.getServices().setPropertiesWithResponse(properties, null, null, finalContext);
+        Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getServices()
+            .setPropertiesNoCustomHeadersWithResponse(properties, null, null, finalContext);
 
         return submitThreadPool(operation, LOGGER, timeout);
     }

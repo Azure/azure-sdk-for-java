@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PublicIpAddressesGetVirtualMachineScaleSetPublicIpAddressSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VmssPublicIpGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VmssPublicIpGet.json
      */
     /**
      * Sample code: GetVMSSPublicIP.
@@ -18,7 +17,10 @@ public final class PublicIpAddressesGetVirtualMachineScaleSetPublicIpAddressSamp
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVMSSPublicIP(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPublicIpAddresses()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPublicIpAddresses()
             .getVirtualMachineScaleSetPublicIpAddressWithResponse("vmss-tester", "vmss1", "1", "nic1", "ip1", "pub1",
                 null, com.azure.core.util.Context.NONE);
     }

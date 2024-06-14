@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The deployment export result. */
+/**
+ * The deployment export result.
+ */
 @Fluent
 public final class DeploymentExportResultInner {
     /*
@@ -16,13 +18,15 @@ public final class DeploymentExportResultInner {
     @JsonProperty(value = "template")
     private Object template;
 
-    /** Creates an instance of DeploymentExportResultInner class. */
+    /**
+     * Creates an instance of DeploymentExportResultInner class.
+     */
     public DeploymentExportResultInner() {
     }
 
     /**
      * Get the template property: The template content.
-     *
+     * 
      * @return the template value.
      */
     public Object template() {
@@ -31,7 +35,7 @@ public final class DeploymentExportResultInner {
 
     /**
      * Set the template property: The template content.
-     *
+     * 
      * @param template the template value to set.
      * @return the DeploymentExportResultInner object itself.
      */
@@ -42,7 +46,7 @@ public final class DeploymentExportResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

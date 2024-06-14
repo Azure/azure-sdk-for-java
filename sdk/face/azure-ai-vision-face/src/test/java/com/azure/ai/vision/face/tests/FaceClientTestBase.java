@@ -3,9 +3,6 @@
 
 package com.azure.ai.vision.face.tests;
 
-import com.azure.ai.vision.face.FaceAdministrationAsyncClient;
-import com.azure.ai.vision.face.FaceAdministrationClient;
-import com.azure.ai.vision.face.FaceAdministrationClientBuilder;
 import com.azure.ai.vision.face.FaceAsyncClient;
 import com.azure.ai.vision.face.FaceClient;
 import com.azure.ai.vision.face.FaceClientBuilder;
@@ -45,10 +42,6 @@ public class FaceClientTestBase extends TestProxyTestBase {
                 testBase.getFaceClientBuilder(serviceVersion, httpClient, true).buildClient());
             put(FaceAsyncClient.class, (testBase, httpClient, serviceVersion) ->
                 testBase.getFaceClientBuilder(serviceVersion, httpClient, false).buildAsyncClient());
-            put(FaceAdministrationClient.class, (testBase, httpClient, serviceVersion) ->
-                testBase.getFaceAdministrationClientBuilder(serviceVersion, httpClient, true).buildClient());
-            put(FaceAdministrationAsyncClient.class, (testBase, httpClient, serviceVersion) ->
-                testBase.getFaceAdministrationClientBuilder(serviceVersion, httpClient, false).buildAsyncClient());
             put(FaceSessionClient.class, (testBase, httpClient, serviceVersion) ->
                 testBase.getFaceSessionClientBuilder(serviceVersion, httpClient, true).buildClient());
             put(FaceSessionAsyncClient.class, (testBase, httpClient, serviceVersion) ->
@@ -83,11 +76,6 @@ public class FaceClientTestBase extends TestProxyTestBase {
     private FaceClientBuilder getFaceClientBuilder(
             FaceServiceVersion serviceVersion, HttpClient httpClient, boolean isSync) {
         return this.configureBuilder(new FaceClientBuilder().serviceVersion(serviceVersion), httpClient, isSync);
-    }
-
-    private FaceAdministrationClientBuilder getFaceAdministrationClientBuilder(
-            FaceServiceVersion serviceVersion, HttpClient httpClient, boolean isSync) {
-        return this.configureBuilder(new FaceAdministrationClientBuilder().serviceVersion(serviceVersion), httpClient, isSync);
     }
 
     private FaceSessionClientBuilder getFaceSessionClientBuilder(

@@ -1576,12 +1576,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1600,12 +1600,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1656,12 +1656,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1680,12 +1680,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1724,12 +1724,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1767,12 +1767,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1816,12 +1816,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1867,12 +1867,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1936,12 +1936,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1985,12 +1985,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -2518,9 +2518,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2561,9 +2559,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2609,9 +2605,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2659,9 +2653,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2692,12 +2684,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -2707,9 +2699,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2741,12 +2731,12 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -2756,9 +2746,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2795,9 +2783,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2836,9 +2822,7 @@ public final class JobRouterAdministrationClientImpl {
      * }
      * }</pre>
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

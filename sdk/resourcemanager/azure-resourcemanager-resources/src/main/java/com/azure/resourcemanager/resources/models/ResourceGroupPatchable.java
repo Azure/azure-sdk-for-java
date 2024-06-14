@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Resource group information. */
+/**
+ * Resource group information.
+ */
 @Fluent
 public final class ResourceGroupPatchable {
     /*
@@ -37,13 +39,15 @@ public final class ResourceGroupPatchable {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ResourceGroupPatchable class. */
+    /**
+     * Creates an instance of ResourceGroupPatchable class.
+     */
     public ResourceGroupPatchable() {
     }
 
     /**
      * Get the name property: The name of the resource group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +56,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Set the name property: The name of the resource group.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceGroupPatchable object itself.
      */
@@ -63,7 +67,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Get the properties property: The resource group properties.
-     *
+     * 
      * @return the properties value.
      */
     public ResourceGroupProperties properties() {
@@ -72,7 +76,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Set the properties property: The resource group properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResourceGroupPatchable object itself.
      */
@@ -83,7 +87,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Get the managedBy property: The ID of the resource that manages this resource group.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -92,7 +96,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Set the managedBy property: The ID of the resource that manages this resource group.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the ResourceGroupPatchable object itself.
      */
@@ -103,7 +107,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Get the tags property: The tags attached to the resource group.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -112,7 +116,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Set the tags property: The tags attached to the resource group.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ResourceGroupPatchable object itself.
      */
@@ -123,7 +127,7 @@ public final class ResourceGroupPatchable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -29,7 +29,9 @@ public final class RadiologyInsightsModelConfiguration {
     private Boolean includeEvidence;
 
     /*
-     * This is a list of inference types to be inferred for the current request. It could be used if only part of the Radiology Insights inferences are required. If this list is omitted or empty, the model will return all the inference types.
+     * This is a list of inference types to be inferred for the current request. It could be used if only part of the
+     * Radiology Insights inferences are required. If this list is omitted or empty, the model will return all the
+     * inference types.
      */
     @Generated
     @JsonProperty(value = "inferenceTypes")

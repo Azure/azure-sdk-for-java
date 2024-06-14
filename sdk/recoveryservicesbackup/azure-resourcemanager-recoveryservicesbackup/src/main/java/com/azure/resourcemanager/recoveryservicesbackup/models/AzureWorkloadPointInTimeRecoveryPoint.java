@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -18,9 +19,9 @@ import java.util.Map;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = AzureWorkloadPointInTimeRecoveryPoint.class)
+    defaultImpl = AzureWorkloadPointInTimeRecoveryPoint.class,
+    visible = true)
 @JsonTypeName("AzureWorkloadPointInTimeRecoveryPoint")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -28,6 +29,13 @@ import java.util.Map;
         value = AzureWorkloadSapHanaPointInTimeRecoveryPoint.class) })
 @Fluent
 public class AzureWorkloadPointInTimeRecoveryPoint extends AzureWorkloadRecoveryPoint {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "AzureWorkloadPointInTimeRecoveryPoint";
+
     /*
      * List of log ranges
      */
@@ -38,6 +46,17 @@ public class AzureWorkloadPointInTimeRecoveryPoint extends AzureWorkloadRecovery
      * Creates an instance of AzureWorkloadPointInTimeRecoveryPoint class.
      */
     public AzureWorkloadPointInTimeRecoveryPoint() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

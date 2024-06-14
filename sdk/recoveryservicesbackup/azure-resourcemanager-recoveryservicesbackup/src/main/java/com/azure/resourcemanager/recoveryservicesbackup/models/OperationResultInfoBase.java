@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,19 +16,37 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = OperationResultInfoBase.class)
+    defaultImpl = OperationResultInfoBase.class,
+    visible = true)
 @JsonTypeName("OperationResultInfoBase")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ExportJobsOperationResultInfo", value = ExportJobsOperationResultInfo.class),
     @JsonSubTypes.Type(name = "OperationResultInfo", value = OperationResultInfo.class) })
 @Immutable
 public class OperationResultInfoBase {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType;
+
     /**
      * Creates an instance of OperationResultInfoBase class.
      */
     public OperationResultInfoBase() {
+        this.objectType = "OperationResultInfoBase";
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

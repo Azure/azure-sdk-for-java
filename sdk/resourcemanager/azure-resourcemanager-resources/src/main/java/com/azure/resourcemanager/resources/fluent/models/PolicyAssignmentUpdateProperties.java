@@ -10,7 +10,9 @@ import com.azure.resourcemanager.resources.models.ResourceSelector;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The policy assignment properties for Patch request. */
+/**
+ * The policy assignment properties for Patch request.
+ */
 @Fluent
 public final class PolicyAssignmentUpdateProperties {
     /*
@@ -25,13 +27,15 @@ public final class PolicyAssignmentUpdateProperties {
     @JsonProperty(value = "overrides")
     private List<OverrideModel> overrides;
 
-    /** Creates an instance of PolicyAssignmentUpdateProperties class. */
+    /**
+     * Creates an instance of PolicyAssignmentUpdateProperties class.
+     */
     public PolicyAssignmentUpdateProperties() {
     }
 
     /**
      * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @return the resourceSelectors value.
      */
     public List<ResourceSelector> resourceSelectors() {
@@ -40,7 +44,7 @@ public final class PolicyAssignmentUpdateProperties {
 
     /**
      * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @param resourceSelectors the resourceSelectors value to set.
      * @return the PolicyAssignmentUpdateProperties object itself.
      */
@@ -51,7 +55,7 @@ public final class PolicyAssignmentUpdateProperties {
 
     /**
      * Get the overrides property: The policy property value override.
-     *
+     * 
      * @return the overrides value.
      */
     public List<OverrideModel> overrides() {
@@ -60,7 +64,7 @@ public final class PolicyAssignmentUpdateProperties {
 
     /**
      * Set the overrides property: The policy property value override.
-     *
+     * 
      * @param overrides the overrides value to set.
      * @return the PolicyAssignmentUpdateProperties object itself.
      */
@@ -71,7 +75,7 @@ public final class PolicyAssignmentUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -41,9 +41,10 @@ import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionListR
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ExpressRouteCrossConnectionsClient.
@@ -62,7 +63,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Initializes an instance of ExpressRouteCrossConnectionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ExpressRouteCrossConnectionsClientImpl(NetworkManagementClientImpl client) {
@@ -72,8 +73,8 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientExpressRouteCrossConnections to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientExpressRouteCrossConnections to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
@@ -174,7 +175,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListExpressRouteCrossConnection API service call along with {@link PagedResponse} on
@@ -190,7 +191,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -202,7 +203,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -220,7 +221,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -230,7 +231,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListExpressRouteCrossConnection API service call as paginated response with
@@ -243,7 +244,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -259,7 +260,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListExpressRouteCrossConnection API service call as paginated response with
@@ -272,7 +273,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -287,7 +288,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -310,7 +311,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -322,7 +323,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -346,7 +347,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -358,7 +359,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -374,7 +375,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -392,7 +393,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -407,7 +408,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Retrieves all the ExpressRouteCrossConnections in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,7 +425,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets details about the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group (peering location of the circuit).
      * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -452,7 +453,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -462,7 +463,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets details about the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group (peering location of the circuit).
      * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
      * @param context The context to associate with this operation.
@@ -491,7 +492,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, crossConnectionName, apiVersion,
@@ -500,7 +501,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets details about the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group (peering location of the circuit).
      * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -517,7 +518,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets details about the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group (peering location of the circuit).
      * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
      * @param context The context to associate with this operation.
@@ -534,7 +535,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets details about the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group (peering location of the circuit).
      * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -549,7 +550,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -583,7 +584,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -593,7 +594,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -628,7 +629,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, crossConnectionName, apiVersion,
@@ -637,7 +638,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -659,7 +660,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -683,7 +684,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -701,7 +702,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -721,7 +722,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -739,7 +740,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -758,7 +759,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -775,7 +776,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Update the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param parameters Parameters supplied to the update express route crossConnection operation.
@@ -793,7 +794,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Updates an express route cross connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
      * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
@@ -828,7 +829,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         } else {
             crossConnectionParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -839,7 +840,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Updates an express route cross connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
      * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
@@ -875,7 +876,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
         } else {
             crossConnectionParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, crossConnectionName, apiVersion,
@@ -884,7 +885,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Updates an express route cross connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
      * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
@@ -902,7 +903,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Updates an express route cross connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
      * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
@@ -921,7 +922,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Updates an express route cross connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
      * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
@@ -939,7 +940,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -975,7 +976,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -986,7 +987,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1023,7 +1024,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listArpTable(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName,
@@ -1032,7 +1033,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1058,7 +1059,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1086,7 +1087,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1107,7 +1108,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1130,7 +1131,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1150,7 +1151,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1171,7 +1172,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1190,7 +1191,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1210,7 +1211,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1246,7 +1247,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRoutesTableSummary(this.client.getEndpoint(), resourceGroupName,
@@ -1257,7 +1258,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1294,7 +1295,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTableSummary(this.client.getEndpoint(), resourceGroupName, crossConnectionName,
@@ -1303,7 +1304,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1330,7 +1331,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1359,7 +1360,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1381,7 +1382,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1405,7 +1406,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1425,7 +1426,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1446,7 +1447,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1464,7 +1465,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Gets the route table summary associated with the express route cross connection in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1485,7 +1486,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Gets the currently advertised routes table associated with the express route cross connection in a resource
      * group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1521,7 +1522,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1533,7 +1534,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Gets the currently advertised routes table associated with the express route cross connection in a resource
      * group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1570,7 +1571,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listRoutesTable(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName,
@@ -1580,7 +1581,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Gets the currently advertised routes table associated with the express route cross connection in a resource
      * group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1607,7 +1608,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Gets the currently advertised routes table associated with the express route cross connection in a resource
      * group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1636,7 +1637,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Gets the currently advertised routes table associated with the express route cross connection in a resource
      * group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1659,7 +1660,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Gets the currently advertised routes table associated with the express route cross connection in a resource
      * group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1683,7 +1684,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Gets the currently advertised routes table associated with the express route cross connection in a resource
      * group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1704,7 +1705,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Gets the currently advertised routes table associated with the express route cross connection in a resource
      * group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1720,13 +1721,14 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     private Mono<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(String resourceGroupName,
         String crossConnectionName, String peeringName, String devicePath, Context context) {
         return beginListRoutesTableAsync(resourceGroupName, crossConnectionName, peeringName, devicePath, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Gets the currently advertised routes table associated with the express route cross connection in a resource
      * group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1746,7 +1748,7 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
     /**
      * Gets the currently advertised routes table associated with the express route cross connection in a resource
      * group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -1766,9 +1768,9 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1794,9 +1796,9 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1824,9 +1826,9 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1855,9 +1857,9 @@ public final class ExpressRouteCrossConnectionsClientImpl implements InnerSuppor
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

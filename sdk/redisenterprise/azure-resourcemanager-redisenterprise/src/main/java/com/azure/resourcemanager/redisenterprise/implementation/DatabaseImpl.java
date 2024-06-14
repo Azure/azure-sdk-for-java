@@ -12,9 +12,11 @@ import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.Database;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
 import com.azure.resourcemanager.redisenterprise.models.DatabaseUpdate;
+import com.azure.resourcemanager.redisenterprise.models.DeferUpgradeSetting;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
 import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.FlushParameters;
+import com.azure.resourcemanager.redisenterprise.models.ForceLinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ForceUnlinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ImportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.Module;
@@ -84,6 +86,14 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         return this.innerModel().geoReplication();
     }
 
+    public String redisVersion() {
+        return this.innerModel().redisVersion();
+    }
+
+    public DeferUpgradeSetting deferUpgrade() {
+        return this.innerModel().deferUpgrade();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }
@@ -111,14 +121,16 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public Database create() {
-        this.innerObject = serviceManager.serviceClient().getDatabases().create(resourceGroupName, clusterName,
-            databaseName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .create(resourceGroupName, clusterName, databaseName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Database create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDatabases().create(resourceGroupName, clusterName,
-            databaseName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .create(resourceGroupName, clusterName, databaseName, this.innerModel(), context);
         return this;
     }
 
@@ -134,14 +146,16 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public Database apply() {
-        this.innerObject = serviceManager.serviceClient().getDatabases().update(resourceGroupName, clusterName,
-            databaseName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .update(resourceGroupName, clusterName, databaseName, updateParameters, Context.NONE);
         return this;
     }
 
     public Database apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDatabases().update(resourceGroupName, clusterName,
-            databaseName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .update(resourceGroupName, clusterName, databaseName, updateParameters, context);
         return this;
     }
 
@@ -155,14 +169,18 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public Database refresh() {
-        this.innerObject = serviceManager.serviceClient().getDatabases()
-            .getWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .getWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Database refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDatabases()
-            .getWithResponse(resourceGroupName, clusterName, databaseName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDatabases()
+            .getWithResponse(resourceGroupName, clusterName, databaseName, context)
+            .getValue();
         return this;
     }
 
@@ -179,8 +197,8 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     }
 
     public AccessKeys regenerateKey(RegenerateKeyParameters parameters, Context context) {
-        return serviceManager.databases().regenerateKey(resourceGroupName, clusterName, databaseName, parameters,
-            context);
+        return serviceManager.databases()
+            .regenerateKey(resourceGroupName, clusterName, databaseName, parameters, context);
     }
 
     public void importMethod(ImportClusterParameters parameters) {
@@ -207,12 +225,30 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
         serviceManager.databases().forceUnlink(resourceGroupName, clusterName, databaseName, parameters, context);
     }
 
+    public void forceLinkToReplicationGroup(ForceLinkParameters parameters) {
+        serviceManager.databases()
+            .forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters);
+    }
+
+    public void forceLinkToReplicationGroup(ForceLinkParameters parameters, Context context) {
+        serviceManager.databases()
+            .forceLinkToReplicationGroup(resourceGroupName, clusterName, databaseName, parameters, context);
+    }
+
     public void flush(FlushParameters parameters) {
         serviceManager.databases().flush(resourceGroupName, clusterName, databaseName, parameters);
     }
 
     public void flush(FlushParameters parameters, Context context) {
         serviceManager.databases().flush(resourceGroupName, clusterName, databaseName, parameters, context);
+    }
+
+    public void upgradeDBRedisVersion() {
+        serviceManager.databases().upgradeDBRedisVersion(resourceGroupName, clusterName, databaseName);
+    }
+
+    public void upgradeDBRedisVersion(Context context) {
+        serviceManager.databases().upgradeDBRedisVersion(resourceGroupName, clusterName, databaseName, context);
     }
 
     public DatabaseImpl withClientProtocol(Protocol clientProtocol) {
@@ -263,6 +299,16 @@ public final class DatabaseImpl implements Database, Database.Definition, Databa
     public DatabaseImpl withGeoReplication(DatabasePropertiesGeoReplication geoReplication) {
         this.innerModel().withGeoReplication(geoReplication);
         return this;
+    }
+
+    public DatabaseImpl withDeferUpgrade(DeferUpgradeSetting deferUpgrade) {
+        if (isInCreateMode()) {
+            this.innerModel().withDeferUpgrade(deferUpgrade);
+            return this;
+        } else {
+            this.updateParameters.withDeferUpgrade(deferUpgrade);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

@@ -6,9 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** The AccessPolicy model. */
+/**
+ * The AccessPolicy model.
+ */
 @Fluent
 public final class AccessPolicy {
     /*
@@ -29,7 +32,9 @@ public final class AccessPolicy {
     @JsonProperty(value = "permission")
     private String permission;
 
-    /** Creates an instance of AccessPolicy class. */
+    /**
+     * Creates an instance of AccessPolicy class.
+     */
     public AccessPolicy() {
     }
 

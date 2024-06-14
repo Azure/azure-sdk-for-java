@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -26,7 +27,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
     private final OffsetDateTime startTime;
 
     /*
-     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and lastUpdateTime.
+     * The time at which the statistics were last updated. All statistics are limited to the range between startTime and
+     * lastUpdateTime.
      */
     @Generated
     private final OffsetDateTime lastUpdateTime;
@@ -303,8 +305,8 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchPoolResourceStatistics.
      */
-    @Generated
     public static BatchPoolResourceStatistics fromJson(JsonReader jsonReader) throws IOException {
+        // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
         return jsonReader.readObject(reader -> {
             OffsetDateTime startTime = null;
             OffsetDateTime lastUpdateTime = null;
@@ -323,10 +325,11 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("startTime".equals(fieldName)) {
-                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdateTime".equals(fieldName)) {
-                    lastUpdateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastUpdateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("avgCPUPercentage".equals(fieldName)) {
                     avgCpuPercentage = reader.getDouble();
                 } else if ("avgMemoryGiB".equals(fieldName)) {
@@ -338,9 +341,31 @@ public final class BatchPoolResourceStatistics implements JsonSerializable<Batch
                 } else if ("peakDiskGiB".equals(fieldName)) {
                     peakDiskGiB = reader.getDouble();
                 } else if ("diskReadIOps".equals(fieldName)) {
-                    diskReadIOps = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String diskReadIOpsStr = reader.getString();
+                        try {
+                            diskReadIOps = Long.parseLong(diskReadIOpsStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric diskReadIOps, but found: " + diskReadIOpsStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        diskReadIOps = reader.getLong();
+                    } else {
+                        throw new IOException("Expected diskReadIOps to be a number or string, but found other type");
+                    }
                 } else if ("diskWriteIOps".equals(fieldName)) {
-                    diskWriteIOps = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String diskWriteIOpsStr = reader.getString();
+                        try {
+                            diskWriteIOps = Long.parseLong(diskWriteIOpsStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric diskWriteIOps, but found: " + diskWriteIOpsStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        diskWriteIOps = reader.getLong();
+                    } else {
+                        throw new IOException("Expected diskWriteIOps to be a number or string, but found other type");
+                    }
                 } else if ("diskReadGiB".equals(fieldName)) {
                     diskReadGiB = reader.getDouble();
                 } else if ("diskWriteGiB".equals(fieldName)) {

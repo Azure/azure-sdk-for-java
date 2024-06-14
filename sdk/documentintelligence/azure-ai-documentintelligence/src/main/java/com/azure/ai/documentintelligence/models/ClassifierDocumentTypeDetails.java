@@ -25,7 +25,7 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
 
     /*
      * Azure Blob Storage location containing the training data for a classifier
-     * document type.  Either azureBlobSource or azureBlobFileListSource must be
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
      * specified.
      */
     @Generated
@@ -33,7 +33,7 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
 
     /*
      * Azure Blob Storage file list specifying the training data for a classifier
-     * document type.  Either azureBlobSource or azureBlobFileListSource must be
+     * document type. Either azureBlobSource or azureBlobFileListSource must be
      * specified.
      */
     @Generated

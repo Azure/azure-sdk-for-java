@@ -659,6 +659,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.network.models.HeaderValueMatcher",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.network.models.ApplicationGatewayUrlConfiguration",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -1749,6 +1754,26 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.network.fluent.models.FirewallPolicyDraftInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.fluent.models.FirewallPolicyDraftProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.fluent.models.FirewallPolicyRuleCollectionGroupDraftInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.fluent.models.FirewallPolicyRuleCollectionGroupDraftProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.network.fluent.models.IpAllocationInner",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -2279,6 +2304,31 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.network.models.NetworkVirtualAppliancePropertiesFormatNetworkProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.VirtualApplianceNetworkInterfaceConfiguration",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.VirtualApplianceNetworkInterfaceConfigurationProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.VirtualApplianceIpConfiguration",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.VirtualApplianceIpConfigurationProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -2295,6 +2345,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.network.models.PartnerManagedResourceProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceInstanceIdsInner",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -2470,6 +2525,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.network.models.PacketCaptureFilter",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.PacketCaptureSettings",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -2725,6 +2785,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.network.models.ConnectionMonitorEndpointScopeItem",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.ConnectionMonitorEndpointLocationDetails",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -4274,6 +4339,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.network.models.ApplicationGatewaySkuFamily",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -4405,6 +4475,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.network.models.VirtualNetworkPrivateLinkServiceNetworkPolicies",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.SharingScope",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -4775,6 +4850,21 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.network.models.AdminRuleKind",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.NicTypeInResponse",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.NicTypeInRequest",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.InboundSecurityRuleType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

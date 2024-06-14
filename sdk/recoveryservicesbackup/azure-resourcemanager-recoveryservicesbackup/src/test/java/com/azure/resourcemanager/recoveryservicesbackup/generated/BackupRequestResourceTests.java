@@ -26,7 +26,8 @@ public final class BackupRequestResourceTests {
     public void testSerialize() throws Exception {
         BackupRequestResource model = new BackupRequestResource().withLocation("vinvkj")
             .withTags(mapOf("hmlwpaztzpo", "xrbuukzclew", "fz", "ncckw", "feqztppriol", "whxxbuyqax"))
-            .withProperties(new BackupRequest()).withEtag("pnqi");
+            .withProperties(new BackupRequest())
+            .withEtag("pnqi");
         model = BinaryData.fromObject(model).toObject(BackupRequestResource.class);
         Assertions.assertEquals("vinvkj", model.location());
         Assertions.assertEquals("xrbuukzclew", model.tags().get("hmlwpaztzpo"));

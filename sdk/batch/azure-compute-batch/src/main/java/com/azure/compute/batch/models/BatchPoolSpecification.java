@@ -21,25 +21,32 @@ import java.util.List;
 public final class BatchPoolSpecification implements JsonSerializable<BatchPoolSpecification> {
 
     /*
-     * The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
+     * The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a
+     * maximum length of 1024.
      */
     @Generated
     private String displayName;
 
     /*
-     * The size of the virtual machines in the Pool. All virtual machines in a Pool are the same size. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * The size of the virtual machines in the Pool. All virtual machines in a Pool are the same size. For information
+     * about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
+     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
     private final String vmSize;
 
     /*
-     * The virtual machine configuration for the Pool. This property must be specified if the Pool needs to be created with Azure IaaS VMs. If it is not specified then the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The virtual machine configuration for the Pool. This property must be specified if the Pool needs to be created
+     * with Azure IaaS VMs. If it is not specified then the Batch service returns an error; if you are calling the REST
+     * API directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /*
-     * The number of task slots that can be used to run concurrent tasks on a single compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
+     * The number of task slots that can be used to run concurrent tasks on a single compute node in the pool. The
+     * default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or
+     * 256.
      */
     @Generated
     private Integer taskSlotsPerNode;
@@ -51,43 +58,60 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
     private BatchTaskSchedulingPolicy taskSchedulingPolicy;
 
     /*
-     * The timeout for allocation of Compute Nodes to the Pool. This timeout applies only to manual scaling; it has no effect when enableAutoScale is set to true. The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The timeout for allocation of Compute Nodes to the Pool. This timeout applies only to manual scaling; it has no
+     * effect when enableAutoScale is set to true. The default value is 15 minutes. The minimum value is 5 minutes. If
+     * you specify a value less than 5 minutes, the Batch service rejects the request with an error; if you are calling
+     * the REST API directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
     private Duration resizeTimeout;
 
     /*
-     * The desired number of dedicated Compute Nodes in the Pool. This property must not be specified if enableAutoScale is set to true. If enableAutoScale is set to false, then you must set either targetDedicatedNodes, targetLowPriorityNodes, or both.
+     * The desired number of dedicated Compute Nodes in the Pool. This property must not be specified if enableAutoScale
+     * is set to true. If enableAutoScale is set to false, then you must set either targetDedicatedNodes,
+     * targetLowPriorityNodes, or both.
      */
     @Generated
     private Integer targetDedicatedNodes;
 
     /*
-     * The desired number of Spot/Low-priority Compute Nodes in the Pool. This property must not be specified if enableAutoScale is set to true. If enableAutoScale is set to false, then you must set either targetDedicatedNodes, targetLowPriorityNodes, or both.
+     * The desired number of Spot/Low-priority Compute Nodes in the Pool. This property must not be specified if
+     * enableAutoScale is set to true. If enableAutoScale is set to false, then you must set either
+     * targetDedicatedNodes, targetLowPriorityNodes, or both.
      */
     @Generated
     private Integer targetLowPriorityNodes;
 
     /*
-     * Whether the Pool size should automatically adjust over time. If false, at least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula element is required. The Pool automatically resizes according to the formula. The default value is false.
+     * Whether the Pool size should automatically adjust over time. If false, at least one of targetDedicatedNodes and
+     * targetLowPriorityNodes must be specified. If true, the autoScaleFormula element is required. The Pool
+     * automatically resizes according to the formula. The default value is false.
      */
     @Generated
     private Boolean enableAutoScale;
 
     /*
-     * The formula for the desired number of Compute Nodes in the Pool. This property must not be specified if enableAutoScale is set to false. It is required if enableAutoScale is set to true. The formula is checked for validity before the Pool is created. If the formula is not valid, the Batch service rejects the request with detailed error information.
+     * The formula for the desired number of Compute Nodes in the Pool. This property must not be specified if
+     * enableAutoScale is set to false. It is required if enableAutoScale is set to true. The formula is checked for
+     * validity before the Pool is created. If the formula is not valid, the Batch service rejects the request with
+     * detailed error information.
      */
     @Generated
     private String autoScaleFormula;
 
     /*
-     * The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default value is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than 5 minutes or greater than 168 hours, the Batch service rejects the request with an invalid property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default
+     * value is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a
+     * value less than 5 minutes or greater than 168 hours, the Batch service rejects the request with an invalid
+     * property value error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      */
     @Generated
     private Duration autoScaleEvaluationInterval;
 
     /*
-     * Whether the Pool permits direct communication between Compute Nodes. Enabling inter-node communication limits the maximum size of the Pool due to deployment restrictions on the Compute Nodes of the Pool. This may result in the Pool not reaching its desired size. The default value is false.
+     * Whether the Pool permits direct communication between Compute Nodes. Enabling inter-node communication limits the
+     * maximum size of the Pool due to deployment restrictions on the Compute Nodes of the Pool. This may result in the
+     * Pool not reaching its desired size. The default value is false.
      */
     @Generated
     private Boolean enableInterNodeCommunication;
@@ -99,13 +123,19 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
     private NetworkConfiguration networkConfiguration;
 
     /*
-     * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool or when the Compute Node is restarted.
+     * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool
+     * or when the Compute Node is restarted.
      */
     @Generated
     private BatchStartTask startTask;
 
     /*
-     * The list of Packages to be installed on each Compute Node in the Pool. When creating a pool, the package's application ID must be fully qualified (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}). Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
+     * The list of Packages to be installed on each Compute Node in the Pool. When creating a pool, the package's
+     * application ID must be fully qualified
+     * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{
+     * accountName}/applications/{applicationName}). Changes to Package references affect all new Nodes joining the
+     * Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is
+     * a maximum of 10 Package references on any given Pool.
      */
     @Generated
     private List<BatchApplicationPackageReference> applicationPackageReferences;
@@ -117,7 +147,8 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
     private List<UserAccount> userAccounts;
 
     /*
-     * A list of name-value pairs associated with the Pool as metadata. The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
+     * A list of name-value pairs associated with the Pool as metadata. The Batch service does not assign any meaning to
+     * metadata; it is solely for the use of user code.
      */
     @Generated
     private List<MetadataItem> metadata;
@@ -624,7 +655,10 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
     }
 
     /*
-     * The user-specified tags associated with the pool.The user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
+     * The user-specified tags associated with the pool.The user-defined tags to be associated with the Azure Batch
+     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
+     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
      */
     @Generated
     private String resourceTags;

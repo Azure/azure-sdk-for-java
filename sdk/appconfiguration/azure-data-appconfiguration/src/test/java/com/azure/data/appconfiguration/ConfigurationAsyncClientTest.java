@@ -75,9 +75,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     private ConfigurationAsyncClient getConfigurationAsyncClient(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion) {
-        return clientSetup(credentials -> {
+        return clientSetup((credentials, endpoint) -> {
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
+                .credential(credentials)
+                .endpoint(endpoint)
                 .serviceVersion(serviceVersion);
 
             builder = setHttpClient(httpClient, builder);
@@ -91,7 +92,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Disable `$.key` snanitizer
             if (!interceptorManager.isLiveMode()) {
-                interceptorManager.removeSanitizers(Arrays.asList("AZSDK3447"));
+                interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
             }
             return builder.buildAsyncClient();
         });

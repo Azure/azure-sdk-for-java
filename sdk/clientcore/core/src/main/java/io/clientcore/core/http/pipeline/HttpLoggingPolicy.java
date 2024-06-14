@@ -12,7 +12,6 @@ import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.LoggingKeys;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -28,6 +27,7 @@ import java.util.stream.Collectors;
 import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static io.clientcore.core.http.models.HttpHeaderName.CLIENT_REQUEST_ID;
 import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
  * The pipeline policy that handles logging of HTTP requests and responses.
@@ -198,7 +198,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         private void logContentLength(Response<?> response, ClientLogger.LoggingEventBuilder logBuilder) {
             String contentLengthString = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
 
-            if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
+            if (!isNullOrEmpty(contentLengthString)) {
                 logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
             }
         }
@@ -312,7 +312,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
 
-        if (CoreUtils.isNullOrEmpty(contentLengthString)) {
+        if (isNullOrEmpty(contentLengthString)) {
             return contentLength;
         }
 

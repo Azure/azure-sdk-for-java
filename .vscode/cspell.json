@@ -243,6 +243,7 @@
     "autoscale",
     "autodetection",
     "awps",
+    "azconfig",
     "azsdk",
     "azsynapse",
     "azurecr",
@@ -390,6 +391,9 @@
     "reimaging",
     "Remediations",
     "requireReleaseDeps",
+    "rerank",
+    "Rerank",
+    "RERANK",
     "resourcemanager",
     "Retriable",
     "revapi",
@@ -1170,6 +1174,14 @@
       ],
       "ignoreRegExpList": [
         "/\/\/\\s*(BEGIN:|END:).*/"
+      ]
+    },
+    {
+      "filename": "sdk/tables/azure-data-tables/**",
+      "words": [
+        "upserts",
+        "upserted",
+        "raud"
       ]
     }
   ],

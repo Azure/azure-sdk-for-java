@@ -18,6 +18,10 @@ public final class VaultStorageConfigOperationResultResponseImpl implements Vaul
         this.serviceManager = serviceManager;
     }
 
+    public String objectType() {
+        return this.innerModel().objectType();
+    }
+
     public VaultStorageConfigOperationResultResponseInner innerModel() {
         return this.innerObject;
     }

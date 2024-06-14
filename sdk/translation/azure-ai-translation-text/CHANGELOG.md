@@ -1,6 +1,16 @@
 # Release History
 
-## 1.0.0 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2024-05-21)
 
 ### Features Added
 
@@ -17,9 +27,12 @@
 - `Translation` class renamed to `TranslationText`.
 - `getScore` method renamed to `getConfidence`.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.15.0`.
 
 ## 1.0.0-beta.1 (2023-04-18)
 

@@ -19,7 +19,10 @@ import java.util.List;
 public final class BatchPoolEndpointConfiguration implements JsonSerializable<BatchPoolEndpointConfiguration> {
 
     /*
-     * A list of inbound NAT Pools that can be used to address specific ports on an individual Compute Node externally. The maximum number of inbound NAT Pools per Batch Pool is 5. If the maximum number of inbound NAT Pools is exceeded the request fails with HTTP status code 400. This cannot be specified if the IPAddressProvisioningType is NoPublicIPAddresses.
+     * A list of inbound NAT Pools that can be used to address specific ports on an individual Compute Node externally.
+     * The maximum number of inbound NAT Pools per Batch Pool is 5. If the maximum number of inbound NAT Pools is
+     * exceeded the request fails with HTTP status code 400. This cannot be specified if the IPAddressProvisioningType
+     * is NoPublicIPAddresses.
      */
     @Generated
     private final List<InboundNatPool> inboundNatPools;

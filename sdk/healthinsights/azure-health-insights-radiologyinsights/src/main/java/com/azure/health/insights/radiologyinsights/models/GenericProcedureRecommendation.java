@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class GenericProcedureRecommendation extends ProcedureRecommendation {
 
     /*
-     * Procedure type : generic.
+     * Discriminator property for ProcedureRecommendation.
      */
     @Generated
     @JsonTypeId
@@ -57,7 +57,7 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
-     * Get the kind property: Procedure type : generic.
+     * Get the kind property: Discriminator property for ProcedureRecommendation.
      *
      * @return the kind value.
      */

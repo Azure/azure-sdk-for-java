@@ -15,11 +15,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class TranslatedTextAlignment {
 
     /*
-     * Maps input text to translated text. The alignment information is only provided when the request 
-     * parameter includeAlignment is true. Alignment is returned as a string value of the following 
-     * format: [[SourceTextStartIndex]:[SourceTextEndIndex]–[TgtTextStartIndex]:[TgtTextEndIndex]]. 
-     * The colon separates start and end index, the dash separates the languages, and space separates the words. 
-     * One word may align with zero, one, or multiple words in the other language, and the aligned words may 
+     * Maps input text to translated text. The alignment information is only provided when the request
+     * parameter includeAlignment is true. Alignment is returned as a string value of the following
+     * format: [[SourceTextStartIndex]:[SourceTextEndIndex]–[TgtTextStartIndex]:[TgtTextEndIndex]].
+     * The colon separates start and end index, the dash separates the languages, and space separates the words.
+     * One word may align with zero, one, or multiple words in the other language, and the aligned words may
      * be non-contiguous. When no alignment information is available, the alignment element will be empty.
      */
     @Generated

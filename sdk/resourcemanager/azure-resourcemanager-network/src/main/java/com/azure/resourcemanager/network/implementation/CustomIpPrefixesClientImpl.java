@@ -39,9 +39,10 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in CustomIpPrefixesClient.
@@ -60,7 +61,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Initializes an instance of CustomIpPrefixesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     CustomIpPrefixesClientImpl(NetworkManagementClientImpl client) {
@@ -151,7 +152,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Deletes the specified custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +179,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, customIpPrefixName,
@@ -188,7 +189,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Deletes the specified custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @param context The context to associate with this operation.
@@ -216,7 +217,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, customIpPrefixName, apiVersion,
@@ -225,7 +226,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Deletes the specified custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,7 +243,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Deletes the specified custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @param context The context to associate with this operation.
@@ -262,7 +263,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Deletes the specified custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,7 +278,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Deletes the specified custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @param context The context to associate with this operation.
@@ -294,7 +295,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Deletes the specified custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -310,7 +311,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Deletes the specified custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @param context The context to associate with this operation.
@@ -327,7 +328,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Deletes the specified custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,7 +342,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Deletes the specified custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @param context The context to associate with this operation.
@@ -356,7 +357,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets the specified custom IP prefix in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param expand Expands referenced resources.
@@ -385,7 +386,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -395,7 +396,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets the specified custom IP prefix in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param expand Expands referenced resources.
@@ -425,7 +426,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, customIpPrefixName, apiVersion,
@@ -434,7 +435,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets the specified custom IP prefix in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -451,7 +452,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets the specified custom IP prefix in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param expand Expands referenced resources.
@@ -469,7 +470,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets the specified custom IP prefix in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -485,7 +486,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Creates or updates a custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -518,7 +519,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -528,7 +529,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Creates or updates a custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -562,7 +563,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, customIpPrefixName, apiVersion,
@@ -571,7 +572,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Creates or updates a custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -591,7 +592,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Creates or updates a custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -613,7 +614,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Creates or updates a custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -630,7 +631,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Creates or updates a custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -649,7 +650,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Creates or updates a custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -667,7 +668,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Creates or updates a custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -686,7 +687,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Creates or updates a custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -703,7 +704,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Creates or updates a custom IP prefix.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -721,7 +722,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Updates custom IP prefix tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to update custom IP prefix tags.
@@ -754,7 +755,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, customIpPrefixName,
@@ -764,7 +765,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Updates custom IP prefix tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to update custom IP prefix tags.
@@ -798,7 +799,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, customIpPrefixName, apiVersion,
@@ -807,7 +808,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Updates custom IP prefix tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to update custom IP prefix tags.
@@ -825,7 +826,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Updates custom IP prefix tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to update custom IP prefix tags.
@@ -843,7 +844,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Updates custom IP prefix tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to update custom IP prefix tags.
@@ -859,7 +860,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all the custom IP prefixes in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the custom IP prefixes in a subscription along with {@link PagedResponse} on successful completion of
@@ -875,7 +876,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -887,7 +888,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all the custom IP prefixes in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -905,7 +906,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -915,7 +916,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all the custom IP prefixes in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the custom IP prefixes in a subscription as paginated response with {@link PagedFlux}.
@@ -927,7 +928,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all the custom IP prefixes in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -942,7 +943,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all the custom IP prefixes in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the custom IP prefixes in a subscription as paginated response with {@link PagedIterable}.
@@ -954,7 +955,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all the custom IP prefixes in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -968,7 +969,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all custom IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -990,7 +991,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1002,7 +1003,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all custom IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1026,7 +1027,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1038,7 +1039,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all custom IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1053,7 +1054,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all custom IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1069,7 +1070,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all custom IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1083,7 +1084,7 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Gets all custom IP prefixes in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1098,9 +1099,9 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1127,9 +1128,9 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1156,9 +1157,9 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1184,9 +1185,9 @@ public final class CustomIpPrefixesClientImpl implements InnerSupportsGet<Custom
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

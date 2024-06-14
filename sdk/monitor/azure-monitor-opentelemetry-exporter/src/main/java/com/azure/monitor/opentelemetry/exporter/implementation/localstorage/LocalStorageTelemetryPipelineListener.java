@@ -3,7 +3,10 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.ResponseError;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineRequest;
@@ -12,9 +15,18 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 
 import java.io.File;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.serialize;
+
 public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineListener {
+
+    private static final ClientLogger logger = new ClientLogger(LocalStorageTelemetryPipelineListener.class);
 
     private final LocalFileWriter localFileWriter;
     private final LocalFileSender localFileSender;
@@ -46,16 +58,40 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
 
     @Override
     public void onResponse(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
-        if (StatusCode.isRetryable(response.getStatusCode())) {
+        int statusCode = response.getStatusCode();
+        if (StatusCode.isRetryable(statusCode)) {
             localFileWriter.writeToDisk(
-                request.getConnectionString(), request.getTelemetry(), getOriginalErrorMessage(response));
+                request.getConnectionString(), request.getByteBuffers(), getOriginalErrorMessage(response));
+        } else if (statusCode == 206) {
+            processStatusCode206(request, response);
+        }
+    }
+
+    private void processStatusCode206(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
+        Set<ResponseError> errors = response.getErrors();
+        errors.forEach(error -> logger.verbose("Error in telemetry: {}", error));
+        if (!errors.isEmpty()) {
+            List<TelemetryItem> originalTelemetryItems = new ArrayList<>();
+            for (ByteBuffer byteBuffer : request.getByteBuffers()) {
+                originalTelemetryItems.addAll(deserialize(byteBuffer.array()));
+            }
+            List<TelemetryItem> toBePersisted = new ArrayList<>();
+            for (ResponseError error : errors) {
+                if (StatusCode.isRetryable(error.getStatusCode())) {
+                    toBePersisted.add(originalTelemetryItems.get(error.getIndex()));
+                }
+            }
+            if (!toBePersisted.isEmpty()) {
+                localFileWriter.writeToDisk(
+                    request.getConnectionString(), serialize(toBePersisted), "Received partial response code 206");
+            }
         }
     }
 
     @Override
     public void onException(
         TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
-        localFileWriter.writeToDisk(request.getConnectionString(), request.getTelemetry(), errorMessage);
+        localFileWriter.writeToDisk(request.getConnectionString(), request.getByteBuffers(), errorMessage);
     }
 
     @Override

@@ -1,6 +1,18 @@
 # Release History
 
-## 2.39.0-beta.1 (Unreleased)
+## 2.40.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Supported Deployment Stack. See https://learn.microsoft.com/azure/azure-resource-manager/bicep/deployment-stacks
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of resources to `2024-03-01`.
+
+## 2.39.0 (2024-05-24)
 
 ### Features Added
 

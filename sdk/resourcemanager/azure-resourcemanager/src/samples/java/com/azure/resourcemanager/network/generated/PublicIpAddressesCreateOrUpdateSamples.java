@@ -18,8 +18,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddressSkuTier;
  */
 public final class PublicIpAddressesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PublicIpAddressCreateDns.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PublicIpAddressCreateDns.json
      */
     /**
      * Sample code: Create public IP address DNS.
@@ -27,15 +26,18 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPublicIPAddressDNS(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPublicIpAddresses().createOrUpdate("rg1", "test-ip",
-            new PublicIpAddressInner().withLocation("eastus").withDnsSettings(
-                new PublicIpAddressDnsSettings().withDomainNameLabel("dnslbl")),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPublicIpAddresses()
+            .createOrUpdate("rg1", "test-ip",
+                new PublicIpAddressInner().withLocation("eastus")
+                    .withDnsSettings(new PublicIpAddressDnsSettings().withDomainNameLabel("dnslbl")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * PublicIpAddressCreateCustomizedValues.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PublicIpAddressCreateCustomizedValues.json
      */
     /**
      * Sample code: Create public IP address allocation method.
@@ -43,19 +45,22 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPublicIPAddressAllocationMethod(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPublicIpAddresses().createOrUpdate("rg1", "test-ip",
-            new PublicIpAddressInner().withLocation("eastus")
-                .withSku(new PublicIpAddressSku().withName(PublicIpAddressSkuName.STANDARD)
-                    .withTier(PublicIpAddressSkuTier.GLOBAL))
-                .withPublicIpAllocationMethod(IpAllocationMethod.STATIC).withPublicIpAddressVersion(IpVersion.IPV4)
-                .withIdleTimeoutInMinutes(10),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPublicIpAddresses()
+            .createOrUpdate("rg1", "test-ip",
+                new PublicIpAddressInner().withLocation("eastus")
+                    .withSku(new PublicIpAddressSku().withName(PublicIpAddressSkuName.STANDARD)
+                        .withTier(PublicIpAddressSkuTier.GLOBAL))
+                    .withPublicIpAllocationMethod(IpAllocationMethod.STATIC)
+                    .withPublicIpAddressVersion(IpVersion.IPV4)
+                    .withIdleTimeoutInMinutes(10),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PublicIpAddressCreateDefaults
-     * .json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PublicIpAddressCreateDefaults.json
      */
     /**
      * Sample code: Create public IP address defaults.
@@ -63,13 +68,16 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPublicIPAddressDefaults(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPublicIpAddresses().createOrUpdate("rg1", "test-ip",
-            new PublicIpAddressInner().withLocation("eastus"), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPublicIpAddresses()
+            .createOrUpdate("rg1", "test-ip", new PublicIpAddressInner().withLocation("eastus"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * PublicIpAddressCreateDnsWithDomainNameLabelScope.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PublicIpAddressCreateDnsWithDomainNameLabelScope.json
      */
     /**
      * Sample code: Create public IP address DNS with Domain Name Label Scope.
@@ -78,10 +86,14 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
      */
     public static void
         createPublicIPAddressDNSWithDomainNameLabelScope(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPublicIpAddresses().createOrUpdate("rg1", "test-ip",
-            new PublicIpAddressInner().withLocation("eastus")
-                .withDnsSettings(new PublicIpAddressDnsSettings().withDomainNameLabel("dnslbl")
-                    .withDomainNameLabelScope(PublicIpAddressDnsSettingsDomainNameLabelScope.TENANT_REUSE)),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPublicIpAddresses()
+            .createOrUpdate("rg1", "test-ip",
+                new PublicIpAddressInner().withLocation("eastus")
+                    .withDnsSettings(new PublicIpAddressDnsSettings().withDomainNameLabel("dnslbl")
+                        .withDomainNameLabelScope(PublicIpAddressDnsSettingsDomainNameLabelScope.TENANT_REUSE)),
+                com.azure.core.util.Context.NONE);
     }
 }

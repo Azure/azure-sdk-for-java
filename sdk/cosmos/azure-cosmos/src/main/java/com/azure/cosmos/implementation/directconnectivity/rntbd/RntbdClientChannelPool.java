@@ -697,7 +697,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
             if (this.allowedToOpenNewChannel(this.maxChannels)) {
                 if (this.connecting.compareAndSet(false, true)) {
-
                     // Fulfill this request with a new channel, assuming we can connect one
                     // If our connection attempt fails, notifyChannelConnect will call us again
 
@@ -742,7 +741,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                     if (manager == null) {
                         if (logger.isDebugEnabled()) {
-                            logger.debug("Channel({} --> {}) closed", channel, this.remoteAddress());
+                            logger.debug("Channel({} --> {}) closed due to CPU > 0.90D", channel, this.remoteAddress());
                         }
                     } else {
                         final long pendingRequestCount = manager.pendingRequestCount();
@@ -1116,8 +1115,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.acquisitionAndIdleEndpointDetectionTimeout.set(acquisitionAndIdleEndpointDetectionTimer.newTimeout(
             (Timeout timeout) -> {
                 if (idleEndpointTimeoutInNanos == 0) {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Idle endpoint check is disabled");
+                    // log is too noisy when debug is enabled
+                    if (logger.isTraceEnabled()) {
+                        logger.trace("Idle endpoint check is disabled");
                     }
                 } else {
                     final long elapsedTimeInNanos = System.nanoTime() - endpoint.lastRequestNanoTime();
@@ -1125,10 +1125,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     if (idleEndpointTimeoutInNanos - elapsedTimeInNanos <= 0) {
                         if (logger.isDebugEnabled()) {
                             logger.debug(
-                                "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
-                                endpoint,
-                                Duration.ofNanos(elapsedTimeInNanos),
-                                Duration.ofNanos(idleEndpointTimeoutInNanos));
+                                    "{} closing endpoint due to inactivity (elapsedTime: {} > idleEndpointTimeout: {})",
+                                    endpoint,
+                                    Duration.ofNanos(elapsedTimeInNanos),
+                                    Duration.ofNanos(idleEndpointTimeoutInNanos));
                         }
                         endpoint.close();
                         return;
@@ -1204,7 +1204,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
 
                 if (promise.trySuccess(channel)) {
-
+  
                     if (logger.isDebugEnabled()) {
                         logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
                     }
@@ -1223,9 +1223,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     });
                 } else {
                     if (logger.isDebugEnabled()) {
-                        logger.debug("notifyChannelConnect promise.trySuccess(channel)=false");
+                        logger.debug("notifyChannelConnect local {}, remote {} promise.trySuccess(channel)=false",
+                                channel.localAddress(), channel.remoteAddress());
                     }
-
                     // Promise was completed in the meantime (like cancelled), just close the channel
                     this.closeChannel(channel);
                 }
@@ -1727,8 +1727,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
          */
         @Override
         public final void run() {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
+            // log is too noisy when debug is enabled
+            if (logger.isTraceEnabled()) {
+                logger.trace("Starting the AcquireTimeoutTask to clean for endpoint [{}].", this.pool.remoteAddress());
             }
             long currentNanoTime = System.nanoTime();
 
@@ -1746,6 +1747,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 // * https://docs.oracle.com/javase/7/docs/api/java/lang/System.html#nanoTime()
                 // * https://github.com/netty/netty/issues/3705
                 if (expiryTime - currentNanoTime <= 0) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("clean up for endpoint [{}].", this.pool.remoteAddress());
+                    }
                     this.onTimeout(removedTask);
                 } else {
                     if (!this.pool.pendingAcquisitions.offer(removedTask)) {

@@ -44,8 +44,8 @@ public final class AzureSearchChatExtensionConfiguration extends AzureChatExtens
     }
 
     /*
-     *   The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
-     *   Azure chat extensions are only compatible with Azure OpenAI.
+     * The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
+     * Azure chat extensions are only compatible with Azure OpenAI.
      */
     @Generated
     private AzureChatExtensionType type = AzureChatExtensionType.AZURE_SEARCH;

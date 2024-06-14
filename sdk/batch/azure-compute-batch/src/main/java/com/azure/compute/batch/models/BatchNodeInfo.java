@@ -18,7 +18,8 @@ import java.io.IOException;
 public final class BatchNodeInfo implements JsonSerializable<BatchNodeInfo> {
 
     /*
-     * An identifier for the Node on which the Task ran, which can be passed when adding a Task to request that the Task be scheduled on this Compute Node.
+     * An identifier for the Node on which the Task ran, which can be passed when adding a Task to request that the Task
+     * be scheduled on this Compute Node.
      */
     @Generated
     private String affinityId;

@@ -213,8 +213,8 @@ public final class QueueClient {
     public Response<Void> createWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         try {
-            Supplier<Response<Void>> operation = () ->
-                this.azureQueueStorage.getQueues().createWithResponse(queueName, null, metadata, null, finalContext);
+            Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
+                .createNoCustomHeadersWithResponse(queueName, null, metadata, null, finalContext);
 
             return submitThreadPool(operation, LOGGER, timeout);
         } catch (RuntimeException e) {
@@ -281,8 +281,8 @@ public final class QueueClient {
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         try {
-            Supplier<Response<Void>> operation = () ->
-                this.azureQueueStorage.getQueues().createWithResponse(queueName, null, metadata, null, finalContext);
+            Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
+                .createNoCustomHeadersWithResponse(queueName, null, metadata, null, finalContext);
             Response<Void> response = submitThreadPool(operation, LOGGER, timeout);
             return new SimpleResponse<>(response, true);
         } catch (QueueStorageException e) {
@@ -346,8 +346,8 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<Void>> operation = () ->
-            this.azureQueueStorage.getQueues().deleteWithResponse(queueName, null, null, finalContext);
+        Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
+            .deleteNoCustomHeadersWithResponse(queueName, null, null, finalContext);
         return submitThreadPool(operation, LOGGER, timeout);
     }
 
@@ -406,12 +406,11 @@ public final class QueueClient {
     public Response<Boolean> deleteIfExistsWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         try {
-            Supplier<Response<Void>> operation = () ->
-                this.azureQueueStorage.getQueues().deleteWithResponse(queueName, null, null, finalContext);
+            Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
+                .deleteNoCustomHeadersWithResponse(queueName, null, null, finalContext);
 
             Response<Void> response = submitThreadPool(operation, LOGGER, timeout);
             return new SimpleResponse<>(response, true);
-
         } catch (QueueStorageException e) {
             if (e.getStatusCode() == 404) {
                 HttpResponse res = e.getResponse();
@@ -564,7 +563,7 @@ public final class QueueClient {
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
-            .setMetadataWithResponse(queueName, null, metadata, null, finalContext);
+            .setMetadataNoCustomHeadersWithResponse(queueName, null, metadata, null, finalContext);
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -669,7 +668,7 @@ public final class QueueClient {
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getQueues()
-            .setAccessPolicyWithResponse(queueName, null, null, permissions, finalContext);
+            .setAccessPolicyNoCustomHeadersWithResponse(queueName, null, null, permissions, finalContext);
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -726,7 +725,7 @@ public final class QueueClient {
     public Response<Void> clearMessagesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation = () ->
-            this.azureQueueStorage.getMessages().clearWithResponse(queueName, null, null, finalContext);
+            this.azureQueueStorage.getMessages().clearNoCustomHeadersWithResponse(queueName, null, null, finalContext);
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -1351,7 +1350,7 @@ public final class QueueClient {
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getMessageIds()
-            .deleteWithResponse(queueName, messageId, popReceipt, null, null, finalContext);
+            .deleteNoCustomHeadersWithResponse(queueName, messageId, popReceipt, null, null, finalContext);
 
         return submitThreadPool(operation, LOGGER, timeout);
     }

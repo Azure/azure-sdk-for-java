@@ -32,33 +32,36 @@ public final class WorkloadProtectableItemResourceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadProtectableItemResourceList model
-            = new WorkloadProtectableItemResourceList().withNextLink("hlt")
-                .withValue(Arrays.asList(
-                    new WorkloadProtectableItemResourceInner().withLocation("q")
-                        .withTags(mapOf("vtpuqujmqlgk", "kif", "ongbjcnt", "btndo"))
-                        .withProperties(new WorkloadProtectableItem().withBackupManagementType("hmk")
-                            .withWorkloadType("grauwjuetaebur").withFriendlyName("dmovsm")
-                            .withProtectionState(ProtectionStatus.NOT_PROTECTED))
-                        .withEtag("ab"),
-                    new WorkloadProtectableItemResourceInner().withLocation("zcmrvexztvb")
-                        .withTags(mapOf("wtl", "sfraoyzko", "uximerqfobw", "nguxawqaldsy", "r", "znkbykutwpfhpagm"))
-                        .withProperties(new WorkloadProtectableItem().withBackupManagementType("xarzgszufoxciq")
-                            .withWorkloadType("idoamciodhkha").withFriendlyName("khnzbonlw")
-                            .withProtectionState(ProtectionStatus.PROTECTION_FAILED))
-                        .withEtag("gokdwbwhks"),
-                    new WorkloadProtectableItemResourceInner().withLocation("oyuhhziui")
-                        .withTags(mapOf("smlmzqhoftrm", "zbhd", "hxicslfaoqz", "equi", "kaivwit", "iyylhalnswhccsp"))
-                        .withProperties(new WorkloadProtectableItem().withBackupManagementType("sttwvogvbbe")
-                            .withWorkloadType("cngqqmoakufgmjz").withFriendlyName("rdgrtw")
-                            .withProtectionState(ProtectionStatus.NOT_PROTECTED))
-                        .withEtag("uzkopbminrfd"),
-                    new WorkloadProtectableItemResourceInner().withLocation("eadcygqukyhejhz")
-                        .withTags(mapOf("jzraehtwdwrf", "gfpelolppvksrpqv", "dl", "swibyr", "hfwpracstwit", "h"))
-                        .withProperties(new WorkloadProtectableItem().withBackupManagementType("xggicccnxqhuexmk")
-                            .withWorkloadType("lstvlzywe").withFriendlyName("zrncsdt")
-                            .withProtectionState(ProtectionStatus.PROTECTED))
-                        .withEtag("iypbsfgytgusl")));
+        WorkloadProtectableItemResourceList model = new WorkloadProtectableItemResourceList().withNextLink("hlt")
+            .withValue(Arrays.asList(
+                new WorkloadProtectableItemResourceInner().withLocation("q")
+                    .withTags(mapOf("vtpuqujmqlgk", "kif", "ongbjcnt", "btndo"))
+                    .withProperties(new WorkloadProtectableItem().withBackupManagementType("hmk")
+                        .withWorkloadType("grauwjuetaebur")
+                        .withFriendlyName("dmovsm")
+                        .withProtectionState(ProtectionStatus.NOT_PROTECTED))
+                    .withEtag("ab"),
+                new WorkloadProtectableItemResourceInner().withLocation("zcmrvexztvb")
+                    .withTags(mapOf("wtl", "sfraoyzko", "uximerqfobw", "nguxawqaldsy", "r", "znkbykutwpfhpagm"))
+                    .withProperties(new WorkloadProtectableItem().withBackupManagementType("xarzgszufoxciq")
+                        .withWorkloadType("idoamciodhkha")
+                        .withFriendlyName("khnzbonlw")
+                        .withProtectionState(ProtectionStatus.PROTECTION_FAILED))
+                    .withEtag("gokdwbwhks"),
+                new WorkloadProtectableItemResourceInner().withLocation("oyuhhziui")
+                    .withTags(mapOf("smlmzqhoftrm", "zbhd", "hxicslfaoqz", "equi", "kaivwit", "iyylhalnswhccsp"))
+                    .withProperties(new WorkloadProtectableItem().withBackupManagementType("sttwvogvbbe")
+                        .withWorkloadType("cngqqmoakufgmjz")
+                        .withFriendlyName("rdgrtw")
+                        .withProtectionState(ProtectionStatus.NOT_PROTECTED))
+                    .withEtag("uzkopbminrfd"),
+                new WorkloadProtectableItemResourceInner().withLocation("eadcygqukyhejhz")
+                    .withTags(mapOf("jzraehtwdwrf", "gfpelolppvksrpqv", "dl", "swibyr", "hfwpracstwit", "h"))
+                    .withProperties(new WorkloadProtectableItem().withBackupManagementType("xggicccnxqhuexmk")
+                        .withWorkloadType("lstvlzywe")
+                        .withFriendlyName("zrncsdt")
+                        .withProtectionState(ProtectionStatus.PROTECTED))
+                    .withEtag("iypbsfgytgusl")));
         model = BinaryData.fromObject(model).toObject(WorkloadProtectableItemResourceList.class);
         Assertions.assertEquals("hlt", model.nextLink());
         Assertions.assertEquals("q", model.value().get(0).location());

@@ -998,6 +998,7 @@ public final class TextTranslationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<DictionaryExampleItem>> lookupDictionaryExamples(String sourceLanguage, String targetLanguage,
         List<DictionaryExampleTextItem> body) {
         // Generated convenience method for lookupDictionaryExamplesWithResponse

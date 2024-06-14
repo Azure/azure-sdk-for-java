@@ -15,14 +15,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class FaceDetectionResult {
 
     /*
-     * Unique faceId of the detected face, created by detection API and it will expire 24 hours after the detection call. To return this, it requires 'returnFaceId' parameter to be true.
+     * Unique faceId of the detected face, created by detection API and it will expire 24 hours after the detection
+     * call. To return this, it requires 'returnFaceId' parameter to be true.
      */
     @Generated
     @JsonProperty(value = "faceId")
     private String faceId;
 
     /*
-     * The 'recognitionModel' associated with this faceId. This is only returned when 'returnRecognitionModel' is explicitly set as true.
+     * The 'recognitionModel' associated with this faceId. This is only returned when 'returnRecognitionModel' is
+     * explicitly set as true.
      */
     @Generated
     @JsonProperty(value = "recognitionModel")
@@ -36,7 +38,8 @@ public final class FaceDetectionResult {
     private final FaceRectangle faceRectangle;
 
     /*
-     * An array of 27-point face landmarks pointing to the important positions of face components. To return this, it requires 'returnFaceLandmarks' parameter to be true.
+     * An array of 27-point face landmarks pointing to the important positions of face components. To return this, it
+     * requires 'returnFaceLandmarks' parameter to be true.
      */
     @Generated
     @JsonProperty(value = "faceLandmarks")

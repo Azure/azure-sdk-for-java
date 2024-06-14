@@ -27,7 +27,7 @@ import java.util.List;
 public final class FollowupCommunicationInference extends RadiologyInsightsInference {
 
     /*
-     * Inference type.
+     * Discriminator property for RadiologyInsightsInference.
      */
     @Generated
     @JsonTypeId
@@ -67,7 +67,7 @@ public final class FollowupCommunicationInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Get the kind property: Inference type.
+     * Get the kind property: Discriminator property for RadiologyInsightsInference.
      *
      * @return the kind value.
      */

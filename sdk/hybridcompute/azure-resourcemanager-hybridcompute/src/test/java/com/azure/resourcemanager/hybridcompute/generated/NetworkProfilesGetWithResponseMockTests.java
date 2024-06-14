@@ -21,7 +21,7 @@ public final class NetworkProfilesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"networkInterfaces\":[{\"ipAddresses\":[{\"address\":\"xasicddyvvjskg\",\"ipAddressVersion\":\"ocwah\",\"subnet\":{}},{\"address\":\"atjeaahh\",\"ipAddressVersion\":\"hhnakzybbj\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"syxkyxvxevblb\",\"ipAddressVersion\":\"dnlj\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"aulx\",\"ipAddressVersion\":\"smjbnkppxyn\",\"subnet\":{}},{\"address\":\"svxeizzgwklnsr\",\"ipAddressVersion\":\"feycxcktp\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"teeammxqiekkkzd\",\"ipAddressVersion\":\"tkgdojbmxva\",\"subnet\":{}},{\"address\":\"fdeesvecuijpxtx\",\"ipAddressVersion\":\"wprtu\",\"subnet\":{}},{\"address\":\"awddjibab\",\"ipAddressVersion\":\"ititvtzeexavoxt\",\"subnet\":{}},{\"address\":\"ecdmdqbwpy\",\"ipAddressVersion\":\"tgsfja\",\"subnet\":{}}]}]}";
+            = "{\"networkInterfaces\":[{\"ipAddresses\":[{\"address\":\"fbcunezz\",\"ipAddressVersion\":\"zelfwyfwl\",\"subnet\":{}},{\"address\":\"wetnpsihc\",\"ipAddressVersion\":\"fzvaylptr\",\"subnet\":{}},{\"address\":\"wztcmwqkchc\",\"ipAddressVersion\":\"axfe\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"exfdeqvhpsylk\",\"ipAddressVersion\":\"hkbffmbm\",\"subnet\":{}},{\"address\":\"rgywwp\",\"ipAddressVersion\":\"xs\",\"subnet\":{}},{\"address\":\"fujg\",\"ipAddressVersion\":\"gaao\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"qutdewemxs\",\"ipAddressVersion\":\"ruunzzjgehkf\",\"subnet\":{}},{\"address\":\"rtixokff\",\"ipAddressVersion\":\"inljqepqwhixmo\",\"subnet\":{}},{\"address\":\"shiy\",\"ipAddressVersion\":\"velfcldu\",\"subnet\":{}}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,11 @@ public final class NetworkProfilesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkProfile response = manager.networkProfiles()
-            .getWithResponse("y", "uxakjsqzhzbezk", com.azure.core.util.Context.NONE)
+            .getWithResponse("kiwbuqnyoph", "fy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xasicddyvvjskg", response.networkInterfaces().get(0).ipAddresses().get(0).address());
-        Assertions.assertEquals("ocwah", response.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
+        Assertions.assertEquals("fbcunezz", response.networkInterfaces().get(0).ipAddresses().get(0).address());
+        Assertions.assertEquals("zelfwyfwl",
+            response.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
     }
 }
