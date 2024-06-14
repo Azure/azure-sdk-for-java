@@ -50,6 +50,9 @@ public final class PhoneNumberLocality implements JsonSerializable<PhoneNumberLo
         return this.administrativeDivision;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

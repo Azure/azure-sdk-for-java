@@ -190,6 +190,9 @@ public final class PhoneNumberRawOperation implements JsonSerializable<PhoneNumb
         return this.lastActionDateTime;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

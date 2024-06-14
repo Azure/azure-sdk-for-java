@@ -106,6 +106,9 @@ public final class OperatorInformation implements JsonSerializable<OperatorInfor
         return this.operatorDetails;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

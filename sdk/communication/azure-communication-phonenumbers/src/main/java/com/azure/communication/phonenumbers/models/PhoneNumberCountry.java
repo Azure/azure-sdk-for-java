@@ -50,6 +50,9 @@ public final class PhoneNumberCountry implements JsonSerializable<PhoneNumberCou
         return this.countryCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

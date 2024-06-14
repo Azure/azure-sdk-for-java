@@ -64,6 +64,9 @@ public final class OperatorDetails implements JsonSerializable<OperatorDetails> 
         return this.mobileCountryCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

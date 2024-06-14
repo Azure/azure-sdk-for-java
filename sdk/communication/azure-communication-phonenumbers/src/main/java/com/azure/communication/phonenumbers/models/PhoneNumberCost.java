@@ -64,6 +64,9 @@ public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> 
         return this.billingFrequency;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

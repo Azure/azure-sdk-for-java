@@ -36,6 +36,9 @@ public final class PhoneNumberAreaCode implements JsonSerializable<PhoneNumberAr
         return this.areaCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

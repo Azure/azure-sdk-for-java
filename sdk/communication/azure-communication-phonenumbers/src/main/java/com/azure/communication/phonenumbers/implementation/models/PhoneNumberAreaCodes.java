@@ -52,6 +52,9 @@ public final class PhoneNumberAreaCodes implements JsonSerializable<PhoneNumberA
         return this.nextLink;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

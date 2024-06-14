@@ -115,6 +115,9 @@ public final class CommunicationError implements JsonSerializable<CommunicationE
         return this.innerError;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

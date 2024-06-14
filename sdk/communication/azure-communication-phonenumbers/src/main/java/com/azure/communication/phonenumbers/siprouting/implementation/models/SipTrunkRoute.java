@@ -131,6 +131,9 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

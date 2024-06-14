@@ -17,14 +17,12 @@ import java.io.IOException;
 @Immutable
 public final class PhoneNumberAdministrativeDivision implements JsonSerializable<PhoneNumberAdministrativeDivision> {
     /*
-     * Represents the localized name of the administrative division of the locality. e.g. state or province localized
-     * name.
+     * Represents the localized name of the administrative division of the locality. e.g. state or province localized name.
      */
     private String localizedName;
 
     /*
-     * Represents the abbreviated name of the administrative division of the locality. e.g. state or province
-     * abbreviation such as WA (Washington).
+     * Represents the abbreviated name of the administrative division of the locality. e.g. state or province abbreviation such as WA (Washington).
      */
     private String abbreviatedName;
 
@@ -45,8 +43,8 @@ public final class PhoneNumberAdministrativeDivision implements JsonSerializable
     }
 
     /**
-     * Get the abbreviatedName property: Represents the abbreviated name of the administrative division of the
-     * locality. e.g. state or province abbreviation such as WA (Washington).
+     * Get the abbreviatedName property: Represents the abbreviated name of the administrative division of the locality.
+     * e.g. state or province abbreviation such as WA (Washington).
      * 
      * @return the abbreviatedName value.
      */
@@ -54,6 +52,9 @@ public final class PhoneNumberAdministrativeDivision implements JsonSerializable
         return this.abbreviatedName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -136,6 +136,9 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
         return this.cost;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

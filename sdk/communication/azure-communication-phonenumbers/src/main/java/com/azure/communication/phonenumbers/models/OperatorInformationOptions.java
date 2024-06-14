@@ -17,8 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class OperatorInformationOptions implements JsonSerializable<OperatorInformationOptions> {
     /*
-     * Includes the fields operatorDetails, numberType, and isoCountryCode in the response. Please note: use of this
-     * option will result in additional costs
+     * Includes the fields operatorDetails, numberType, and isoCountryCode in the response.  Please note: use of this option will result in additional costs
      */
     private Boolean includeAdditionalOperatorDetails;
 
@@ -50,6 +49,9 @@ public final class OperatorInformationOptions implements JsonSerializable<Operat
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

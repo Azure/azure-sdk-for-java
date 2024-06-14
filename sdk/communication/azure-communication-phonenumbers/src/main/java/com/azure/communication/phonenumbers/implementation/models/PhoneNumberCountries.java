@@ -52,6 +52,9 @@ public final class PhoneNumberCountries implements JsonSerializable<PhoneNumberC
         return this.nextLink;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -39,6 +39,9 @@ public final class OperatorInformationResult implements JsonSerializable<Operato
         return this.values;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -78,6 +78,9 @@ public final class PhoneNumberOffering implements JsonSerializable<PhoneNumberOf
         return this.cost;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
