@@ -64,7 +64,13 @@ public final class TimeWindowFilter implements FeatureFilter {
         }
         if (settings.getRecurrence() != null) {
             if (settings.getStart() != null && settings.getEnd() != null) {
-                return RecurrenceEvaluator.isMatch(settings, now);
+                try {
+                    return RecurrenceEvaluator.isMatch(settings, now);
+                } catch (final IllegalArgumentException e) {
+                    LOGGER.warn("The {} feature filter is not valid for feature {}. {}",
+                        this.getClass().getSimpleName(), context.getName(), e.getMessage());
+                    throw e;
+                }
             }
             LOGGER.warn("The {} feature filter is not valid for feature {}. It must specify both {} and {} when Recurrence is not null.",
                 this.getClass().getSimpleName(), context.getName(), TIME_WINDOW_FILTER_SETTING_START,
