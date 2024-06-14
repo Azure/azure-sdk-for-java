@@ -98,26 +98,20 @@ public final class DevCenterProject implements JsonSerializable<DevCenterProject
     @Generated
     public static DevCenterProject fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String name = null;
-            String description = null;
-            Integer maxDevBoxesPerUser = null;
+            DevCenterProject deserializedDevCenterProject = new DevCenterProject();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    deserializedDevCenterProject.name = reader.getString();
                 } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
+                    deserializedDevCenterProject.description = reader.getString();
                 } else if ("maxDevBoxesPerUser".equals(fieldName)) {
-                    maxDevBoxesPerUser = reader.getNullable(JsonReader::getInt);
+                    deserializedDevCenterProject.maxDevBoxesPerUser = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
-            DevCenterProject deserializedDevCenterProject = new DevCenterProject();
-            deserializedDevCenterProject.name = name;
-            deserializedDevCenterProject.description = description;
-            deserializedDevCenterProject.maxDevBoxesPerUser = maxDevBoxesPerUser;
             return deserializedDevCenterProject;
         });
     }

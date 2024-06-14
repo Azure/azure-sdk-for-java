@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.models.OperationInner;
-import com.azure.resourcemanager.deviceregistry.implementation.models.PagedOperation;
+import com.azure.resourcemanager.deviceregistry.implementation.models.OperationListResult;
 import reactor.core.publisher.Mono;
 
 /**
@@ -66,14 +66,14 @@ public final class OperationsClientImpl implements OperationsClient {
         @Get("/providers/Microsoft.DeviceRegistry/operations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PagedOperation>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<OperationListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PagedOperation>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<OperationListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, Context context);
     }
 
