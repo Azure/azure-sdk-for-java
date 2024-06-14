@@ -28,24 +28,32 @@ import com.azure.maps.elevation.implementation.models.JsonFormat;
 import com.azure.maps.elevation.implementation.models.LatLongPairAbbreviated;
 import com.azure.maps.elevation.models.ElevationResult;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Elevations. */
+/**
+ * An instance of this class provides access to all the operations defined in Elevations.
+ */
 public final class ElevationsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ElevationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ElevationClientImpl client;
 
     /**
      * Initializes an instance of ElevationsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ElevationsImpl(ElevationClientImpl client) {
-        this.service =
-                RestProxy.create(ElevationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ElevationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,172 +63,167 @@ public final class ElevationsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ElevationClientEleva")
-    private interface ElevationsService {
+    public interface ElevationsService {
         @Get("/elevation/point/{format}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ElevationResult>> getDataForPoints(
-                @HostParam("$host") String host,
-                @HeaderParam("x-ms-client-id") String clientId,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("format") JsonFormat format,
-                @QueryParam("points") String points,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ElevationResult>> getDataForPoints(@HostParam("$host") String host,
+            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
+            @PathParam("format") JsonFormat format, @QueryParam("points") String points,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/elevation/point/{format}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ElevationResult>> postDataForPoints(
-                @HostParam("$host") String host,
-                @HeaderParam("x-ms-client-id") String clientId,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("format") JsonFormat format,
-                @BodyParam("application/json") List<LatLongPairAbbreviated> points,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ElevationResult>> postDataForPoints(@HostParam("$host") String host,
+            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
+            @PathParam("format") JsonFormat format, @BodyParam("application/json") List<LatLongPairAbbreviated> points,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/elevation/line/{format}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ElevationResult>> getDataForPolyline(
-                @HostParam("$host") String host,
-                @HeaderParam("x-ms-client-id") String clientId,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("format") JsonFormat format,
-                @QueryParam("lines") String lines,
-                @QueryParam("samples") Integer samples,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ElevationResult>> getDataForPolyline(@HostParam("$host") String host,
+            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
+            @PathParam("format") JsonFormat format, @QueryParam("lines") String lines,
+            @QueryParam("samples") Integer samples, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/elevation/line/{format}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ElevationResult>> postDataForPolyline(
-                @HostParam("$host") String host,
-                @HeaderParam("x-ms-client-id") String clientId,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("format") JsonFormat format,
-                @QueryParam("samples") Integer samples,
-                @BodyParam("application/json") List<LatLongPairAbbreviated> polyline,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ElevationResult>> postDataForPolyline(@HostParam("$host") String host,
+            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
+            @PathParam("format") JsonFormat format, @QueryParam("samples") Integer samples,
+            @BodyParam("application/json") List<LatLongPairAbbreviated> polyline, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/elevation/lattice/{format}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<ElevationResult>> getDataForBoundingBox(
-                @HostParam("$host") String host,
-                @HeaderParam("x-ms-client-id") String clientId,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("format") JsonFormat format,
-                @QueryParam("bounds") String bounds,
-                @QueryParam("rows") int rows,
-                @QueryParam("columns") int columns,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ElevationResult>> getDataForBoundingBox(@HostParam("$host") String host,
+            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
+            @PathParam("format") JsonFormat format, @QueryParam("bounds") String bounds, @QueryParam("rows") int rows,
+            @QueryParam("columns") int columns, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
+     * Get Elevation Data on One or More Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
+     * 
+     * The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
      * coordinate format.
-     *
-     * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
-     * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use POST Data For Points.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
+     * 
+     * Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a pipeline
+     * delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline delimited
+     * string, use the [POST Data
+     * For Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. If multiple points are requested, each of the points in a list should be separated
-     *     by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
-     *     The resolution of the elevation data will be the highest for a single point and will decrease if multiple
-     *     points are spread further apart.
+     * reference system format. If multiple points are requested, each of the points in a list should be separated by
+     * the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000. The
+     * resolution of the elevation data will be the highest for a single point and will decrease if multiple points are
+     * spread further apart.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ElevationResult>> getDataForPointsWithResponseAsync(JsonFormat format, List<String> points) {
         final String accept = "application/json";
-        String pointsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(points, CollectionFormat.PIPES);
-        return FluxUtil.withContext(
-                context ->
-                        service.getDataForPoints(
-                                this.client.getHost(),
-                                this.client.getClientId(),
-                                this.client.getApiVersion(),
-                                format,
-                                pointsConverted,
-                                accept,
-                                context));
+        String pointsConverted = points.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining("|"));
+        return FluxUtil.withContext(context -> service.getDataForPoints(this.client.getHost(),
+            this.client.getClientId(), this.client.getApiVersion(), format, pointsConverted, accept, context));
     }
 
     /**
+     * Get Elevation Data on One or More Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
+     * 
+     * The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
      * coordinate format.
-     *
-     * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
-     * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use POST Data For Points.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
+     * 
+     * Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a pipeline
+     * delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline delimited
+     * string, use the [POST Data
+     * For Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. If multiple points are requested, each of the points in a list should be separated
-     *     by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
-     *     The resolution of the elevation data will be the highest for a single point and will decrease if multiple
-     *     points are spread further apart.
+     * reference system format. If multiple points are requested, each of the points in a list should be separated by
+     * the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000. The
+     * resolution of the elevation data will be the highest for a single point and will decrease if multiple points are
+     * spread further apart.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ElevationResult>> getDataForPointsWithResponseAsync(
-            JsonFormat format, List<String> points, Context context) {
+    public Mono<Response<ElevationResult>> getDataForPointsWithResponseAsync(JsonFormat format, List<String> points,
+        Context context) {
         final String accept = "application/json";
-        String pointsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(points, CollectionFormat.PIPES);
-        return service.getDataForPoints(
-                this.client.getHost(),
-                this.client.getClientId(),
-                this.client.getApiVersion(),
-                format,
-                pointsConverted,
-                accept,
-                context);
+        String pointsConverted = points.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining("|"));
+        return service.getDataForPoints(this.client.getHost(), this.client.getClientId(), this.client.getApiVersion(),
+            format, pointsConverted, accept, context);
     }
 
     /**
+     * Get Elevation Data on One or More Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
+     * 
+     * The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
      * coordinate format.
-     *
-     * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
-     * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use POST Data For Points.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
+     * 
+     * Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a pipeline
+     * delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline delimited
+     * string, use the [POST Data
+     * For Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. If multiple points are requested, each of the points in a list should be separated
-     *     by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
-     *     The resolution of the elevation data will be the highest for a single point and will decrease if multiple
-     *     points are spread further apart.
+     * reference system format. If multiple points are requested, each of the points in a list should be separated by
+     * the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000. The
+     * resolution of the elevation data will be the highest for a single point and will decrease if multiple points are
+     * spread further apart.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -232,23 +235,33 @@ public final class ElevationsImpl {
     }
 
     /**
+     * Get Elevation Data on One or More Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
+     * 
+     * The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
      * coordinate format.
-     *
-     * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
-     * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use POST Data For Points.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
+     * 
+     * Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a pipeline
+     * delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline delimited
+     * string, use the [POST Data
+     * For Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. If multiple points are requested, each of the points in a list should be separated
-     *     by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
-     *     The resolution of the elevation data will be the highest for a single point and will decrease if multiple
-     *     points are spread further apart.
+     * reference system format. If multiple points are requested, each of the points in a list should be separated by
+     * the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000. The
+     * resolution of the elevation data will be the highest for a single point and will decrease if multiple points are
+     * spread further apart.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -258,55 +271,37 @@ public final class ElevationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ElevationResult> getDataForPointsAsync(JsonFormat format, List<String> points, Context context) {
         return getDataForPointsWithResponseAsync(format, points, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Get Elevation Data on One or More Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
+     * 
+     * The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
      * coordinate format.
-     *
-     * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
-     * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use POST Data For Points.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
+     * 
+     * Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a pipeline
+     * delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline delimited
+     * string, use the [POST Data
+     * For Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. If multiple points are requested, each of the points in a list should be separated
-     *     by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
-     *     The resolution of the elevation data will be the highest for a single point and will decrease if multiple
-     *     points are spread further apart.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ElevationResult getDataForPoints(JsonFormat format, List<String> points) {
-        return getDataForPointsAsync(format, points).block();
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
-     * coordinate format.
-     *
-     * <p>Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a
-     * pipeline delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline
-     * delimited string, use POST Data For Points.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. If multiple points are requested, each of the points in a list should be separated
-     *     by the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000.
-     *     The resolution of the elevation data will be the highest for a single point and will decrease if multiple
-     *     points are spread further apart.
+     * reference system format. If multiple points are requested, each of the points in a list should be separated by
+     * the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000. The
+     * resolution of the elevation data will be the highest for a single point and will decrease if multiple points are
+     * spread further apart.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -314,102 +309,156 @@ public final class ElevationsImpl {
      * @return the response from a successful Get Data for Bounding Box API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ElevationResult> getDataForPointsWithResponse(
-            JsonFormat format, List<String> points, Context context) {
+    public Response<ElevationResult> getDataForPointsWithResponse(JsonFormat format, List<String> points,
+        Context context) {
         return getDataForPointsWithResponseAsync(format, points, context).block();
     }
 
     /**
+     * Get Elevation Data on One or More Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat
+     * 
+     * The Get Data for Points API provides elevation data for one or more points. A point is defined in lat,long
      * coordinate format.
-     *
-     * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use GET Data For Points API.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
+     * 
+     * Due to the URL character length limit of 2048, it's not possible to pass more than 100 coordinates as a pipeline
+     * delimited string in a URL GET request. If you intend to pass more than 100 coordinates as a pipeline delimited
+     * string, use the [POST Data
+     * For Points](https://docs.microsoft.com/rest/api/maps/elevation/postdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
-     *     points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data
-     *     will be the highest for a single point and will decrease if multiple points are spread further apart.
+     * reference system format. If multiple points are requested, each of the points in a list should be separated by
+     * the pipe ('|') character. The maximum number of points that can be requested in a single request is 2,000. The
+     * resolution of the elevation data will be the highest for a single point and will decrease if multiple points are
+     * spread further apart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a successful Get Data for Bounding Box API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ElevationResult getDataForPoints(JsonFormat format, List<String> points) {
+        return getDataForPointsWithResponse(format, points, Context.NONE).getValue();
+    }
+
+    /**
+     * Query Elevation Data for Multiple Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     * 
+     * The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat coordinate
+     * format.
+     * 
+     * Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a single
+     * coordinate into the API, use the [GET Data For Points
+     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
+     * reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
+     * points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data will
+     * be the highest for a single point and will decrease if multiple points are spread further apart.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ElevationResult>> postDataForPointsWithResponseAsync(
-            JsonFormat format, List<LatLongPairAbbreviated> points) {
+    public Mono<Response<ElevationResult>> postDataForPointsWithResponseAsync(JsonFormat format,
+        List<LatLongPairAbbreviated> points) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.postDataForPoints(
-                                this.client.getHost(),
-                                this.client.getClientId(),
-                                this.client.getApiVersion(),
-                                format,
-                                points,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.postDataForPoints(this.client.getHost(),
+            this.client.getClientId(), this.client.getApiVersion(), format, points, accept, context));
     }
 
     /**
+     * Query Elevation Data for Multiple Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat
-     * coordinate format.
-     *
-     * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use GET Data For Points API.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
+     * 
+     * The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat coordinate
+     * format.
+     * 
+     * Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a single
+     * coordinate into the API, use the [GET Data For Points
+     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
-     *     points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data
-     *     will be the highest for a single point and will decrease if multiple points are spread further apart.
+     * reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
+     * points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data will
+     * be the highest for a single point and will decrease if multiple points are spread further apart.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ElevationResult>> postDataForPointsWithResponseAsync(
-            JsonFormat format, List<LatLongPairAbbreviated> points, Context context) {
+    public Mono<Response<ElevationResult>> postDataForPointsWithResponseAsync(JsonFormat format,
+        List<LatLongPairAbbreviated> points, Context context) {
         final String accept = "application/json";
-        return service.postDataForPoints(
-                this.client.getHost(),
-                this.client.getClientId(),
-                this.client.getApiVersion(),
-                format,
-                points,
-                accept,
-                context);
+        return service.postDataForPoints(this.client.getHost(), this.client.getClientId(), this.client.getApiVersion(),
+            format, points, accept, context);
     }
 
     /**
+     * Query Elevation Data for Multiple Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat
-     * coordinate format.
-     *
-     * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use GET Data For Points API.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
+     * 
+     * The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat coordinate
+     * format.
+     * 
+     * Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a single
+     * coordinate into the API, use the [GET Data For Points
+     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
-     *     points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data
-     *     will be the highest for a single point and will decrease if multiple points are spread further apart.
+     * reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
+     * points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data will
+     * be the highest for a single point and will decrease if multiple points are spread further apart.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -421,21 +470,31 @@ public final class ElevationsImpl {
     }
 
     /**
+     * Query Elevation Data for Multiple Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat
-     * coordinate format.
-     *
-     * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use GET Data For Points API.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
+     * 
+     * The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat coordinate
+     * format.
+     * 
+     * Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a single
+     * coordinate into the API, use the [GET Data For Points
+     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
-     *     points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data
-     *     will be the highest for a single point and will decrease if multiple points are spread further apart.
+     * reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
+     * points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data will
+     * be the highest for a single point and will decrease if multiple points are spread further apart.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -443,54 +502,38 @@ public final class ElevationsImpl {
      * @return the response from a successful Get Data for Bounding Box API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ElevationResult> postDataForPointsAsync(
-            JsonFormat format, List<LatLongPairAbbreviated> points, Context context) {
+    public Mono<ElevationResult> postDataForPointsAsync(JsonFormat format, List<LatLongPairAbbreviated> points,
+        Context context) {
         return postDataForPointsWithResponseAsync(format, points, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Query Elevation Data for Multiple Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat
-     * coordinate format.
-     *
-     * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use GET Data For Points API.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
+     * 
+     * The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat coordinate
+     * format.
+     * 
+     * Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a single
+     * coordinate into the API, use the [GET Data For Points
+     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
-     *     points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data
-     *     will be the highest for a single point and will decrease if multiple points are spread further apart.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ElevationResult postDataForPoints(JsonFormat format, List<LatLongPairAbbreviated> points) {
-        return postDataForPointsAsync(format, points).block();
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat
-     * coordinate format.
-     *
-     * <p>Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a
-     * single coordinate into the API, use GET Data For Points API.
-     *
-     * <p>The result will be in the same sequence of points listed in the request.
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
-     *     reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
-     *     points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data
-     *     will be the highest for a single point and will decrease if multiple points are spread further apart.
+     * reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
+     * points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data will
+     * be the highest for a single point and will decrease if multiple points are spread further apart.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -498,135 +541,187 @@ public final class ElevationsImpl {
      * @return the response from a successful Get Data for Bounding Box API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ElevationResult> postDataForPointsWithResponse(
-            JsonFormat format, List<LatLongPairAbbreviated> points, Context context) {
+    public Response<ElevationResult> postDataForPointsWithResponse(JsonFormat format,
+        List<LatLongPairAbbreviated> points, Context context) {
         return postDataForPointsWithResponseAsync(format, points, context).block();
     }
 
     /**
+     * Query Elevation Data for Multiple Points
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be
-     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
-     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
-     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
-     * geodesic path along the curved surface of the reference ellipsoid.
-     *
+     * 
+     * The Post Data for Points API provides elevation data for multiple points. A point is defined lon/lat coordinate
+     * format.
+     * 
+     * Use the POST endpoint only if you intend to pass multiple points in the request. If you intend to pass a single
+     * coordinate into the API, use the [GET Data For Points
+     * API](https://docs.microsoft.com/rest/api/maps/elevation/getdataforpoints).
+     * 
+     * The result will be in the same sequence of points listed in the request.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param points The string representation of a list of points. A point is defined in lon/lat WGS84 coordinate
+     * reference system format. Each points in a list should be separated by the pipe ('|') character. The number of
+     * points that can be requested in a POST request ranges from 2 to 2,000. The resolution of the elevation data will
+     * be the highest for a single point and will decrease if multiple points are spread further apart.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a successful Get Data for Bounding Box API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ElevationResult postDataForPoints(JsonFormat format, List<LatLongPairAbbreviated> points) {
+        return postDataForPointsWithResponse(format, points, Context.NONE).getValue();
+    }
+
+    /**
+     * Get Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     * 
+     * The Get Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be returned.
+     * The results will be listed in the direction from the first endpoint towards the last endpoint. A line between two
+     * endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate reference
+     * system. Note that the point is chosen based on Euclidean distance and may markedly differ from the geodesic path
+     * along the curved surface of the reference ellipsoid.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`.
-     *     <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
-     *     The resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`.
+     * 
+     * The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system. The
+     * resolution of the data used to compute the elevation depends on the distance between the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ElevationResult>> getDataForPolylineWithResponseAsync(
-            JsonFormat format, List<String> lines, Integer samples) {
+    public Mono<Response<ElevationResult>> getDataForPolylineWithResponseAsync(JsonFormat format, List<String> lines,
+        Integer samples) {
         final String accept = "application/json";
-        String linesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(lines, CollectionFormat.PIPES);
-        return FluxUtil.withContext(
-                context ->
-                        service.getDataForPolyline(
-                                this.client.getHost(),
-                                this.client.getClientId(),
-                                this.client.getApiVersion(),
-                                format,
-                                linesConverted,
-                                samples,
-                                accept,
-                                context));
+        String linesConverted = lines.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining("|"));
+        return FluxUtil.withContext(context -> service.getDataForPolyline(this.client.getHost(),
+            this.client.getClientId(), this.client.getApiVersion(), format, linesConverted, samples, accept, context));
     }
 
     /**
+     * Get Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be
-     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
-     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
-     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
-     * geodesic path along the curved surface of the reference ellipsoid.
-     *
+     * 
+     * The Get Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be returned.
+     * The results will be listed in the direction from the first endpoint towards the last endpoint. A line between two
+     * endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate reference
+     * system. Note that the point is chosen based on Euclidean distance and may markedly differ from the geodesic path
+     * along the curved surface of the reference ellipsoid.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`.
-     *     <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
-     *     The resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`.
+     * 
+     * The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system. The
+     * resolution of the data used to compute the elevation depends on the distance between the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ElevationResult>> getDataForPolylineWithResponseAsync(
-            JsonFormat format, List<String> lines, Integer samples, Context context) {
+    public Mono<Response<ElevationResult>> getDataForPolylineWithResponseAsync(JsonFormat format, List<String> lines,
+        Integer samples, Context context) {
         final String accept = "application/json";
-        String linesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(lines, CollectionFormat.PIPES);
-        return service.getDataForPolyline(
-                this.client.getHost(),
-                this.client.getClientId(),
-                this.client.getApiVersion(),
-                format,
-                linesConverted,
-                samples,
-                accept,
-                context);
+        String linesConverted = lines.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining("|"));
+        return service.getDataForPolyline(this.client.getHost(), this.client.getClientId(), this.client.getApiVersion(),
+            format, linesConverted, samples, accept, context);
     }
 
     /**
+     * Get Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be
-     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
-     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
-     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
-     * geodesic path along the curved surface of the reference ellipsoid.
-     *
+     * 
+     * The Get Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be returned.
+     * The results will be listed in the direction from the first endpoint towards the last endpoint. A line between two
+     * endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate reference
+     * system. Note that the point is chosen based on Euclidean distance and may markedly differ from the geodesic path
+     * along the curved surface of the reference ellipsoid.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`.
-     *     <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
-     *     The resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`.
+     * 
+     * The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system. The
+     * resolution of the data used to compute the elevation depends on the distance between the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -635,34 +730,44 @@ public final class ElevationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ElevationResult> getDataForPolylineAsync(JsonFormat format, List<String> lines, Integer samples) {
         return getDataForPolylineWithResponseAsync(format, lines, samples)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Get Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be
-     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
-     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
-     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
-     * geodesic path along the curved surface of the reference ellipsoid.
-     *
+     * 
+     * The Get Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be returned.
+     * The results will be listed in the direction from the first endpoint towards the last endpoint. A line between two
+     * endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate reference
+     * system. Note that the point is chosen based on Euclidean distance and may markedly differ from the geodesic path
+     * along the curved surface of the reference ellipsoid.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`.
-     *     <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
-     *     The resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`.
+     * 
+     * The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system. The
+     * resolution of the data used to compute the elevation depends on the distance between the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -670,37 +775,94 @@ public final class ElevationsImpl {
      * @return the response from a successful Get Data for Bounding Box API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ElevationResult> getDataForPolylineAsync(
-            JsonFormat format, List<String> lines, Integer samples, Context context) {
+    public Mono<ElevationResult> getDataForPolylineAsync(JsonFormat format, List<String> lines, Integer samples,
+        Context context) {
         return getDataForPolylineWithResponseAsync(format, lines, samples, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Get Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be
-     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
-     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
-     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
-     * geodesic path along the curved surface of the reference ellipsoid.
-     *
+     * 
+     * The Get Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be returned.
+     * The results will be listed in the direction from the first endpoint towards the last endpoint. A line between two
+     * endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate reference
+     * system. Note that the point is chosen based on Euclidean distance and may markedly differ from the geodesic path
+     * along the curved surface of the reference ellipsoid.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`.
-     *     <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
-     *     The resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`.
+     * 
+     * The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system. The
+     * resolution of the data used to compute the elevation depends on the distance between the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a successful Get Data for Bounding Box API along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ElevationResult> getDataForPolylineWithResponse(JsonFormat format, List<String> lines,
+        Integer samples, Context context) {
+        return getDataForPolylineWithResponseAsync(format, lines, samples, context).block();
+    }
+
+    /**
+     * Get Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     * 
+     * The Get Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be returned.
+     * The results will be listed in the direction from the first endpoint towards the last endpoint. A line between two
+     * endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate reference
+     * system. Note that the point is chosen based on Euclidean distance and may markedly differ from the geodesic path
+     * along the curved surface of the reference ellipsoid.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`.
+     * 
+     * The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system. The
+     * resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -708,34 +870,233 @@ public final class ElevationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElevationResult getDataForPolyline(JsonFormat format, List<String> lines, Integer samples) {
-        return getDataForPolylineAsync(format, lines, samples).block();
+        return getDataForPolylineWithResponse(format, lines, samples, Context.NONE).getValue();
     }
 
     /**
+     * Query Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and endpoints, as well as equally spaced points along the polyline will be
+     * 
+     * The Post Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and end points, as well as equally spaced points along the polyline will be
      * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
      * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
      * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
      * geodesic path along the curved surface of the reference ellipsoid.
-     *
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
-     * @param lines The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`.
-     *     <p>The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate reference system.
-     *     The resolution of the data used to compute the elevation depends on the distance between the endpoints.
+     * @param polyline The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
+     * reference system. The resolution of the data used to compute the elevation will depend on the distance between
+     * the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ElevationResult>> postDataForPolylineWithResponseAsync(JsonFormat format,
+        List<LatLongPairAbbreviated> polyline, Integer samples) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.postDataForPolyline(this.client.getHost(),
+            this.client.getClientId(), this.client.getApiVersion(), format, samples, polyline, accept, context));
+    }
+
+    /**
+     * Query Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     * 
+     * The Post Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and end points, as well as equally spaced points along the polyline will be
+     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
+     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
+     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
+     * geodesic path along the curved surface of the reference ellipsoid.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param polyline The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
+     * reference system. The resolution of the data used to compute the elevation will depend on the distance between
+     * the endpoints.
+     * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ElevationResult>> postDataForPolylineWithResponseAsync(JsonFormat format,
+        List<LatLongPairAbbreviated> polyline, Integer samples, Context context) {
+        final String accept = "application/json";
+        return service.postDataForPolyline(this.client.getHost(), this.client.getClientId(),
+            this.client.getApiVersion(), format, samples, polyline, accept, context);
+    }
+
+    /**
+     * Query Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     * 
+     * The Post Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and end points, as well as equally spaced points along the polyline will be
+     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
+     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
+     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
+     * geodesic path along the curved surface of the reference ellipsoid.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param polyline The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
+     * reference system. The resolution of the data used to compute the elevation will depend on the distance between
+     * the endpoints.
+     * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a successful Get Data for Bounding Box API on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ElevationResult> postDataForPolylineAsync(JsonFormat format, List<LatLongPairAbbreviated> polyline,
+        Integer samples) {
+        return postDataForPolylineWithResponseAsync(format, polyline, samples)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Query Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     * 
+     * The Post Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and end points, as well as equally spaced points along the polyline will be
+     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
+     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
+     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
+     * geodesic path along the curved surface of the reference ellipsoid.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param polyline The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
+     * reference system. The resolution of the data used to compute the elevation will depend on the distance between
+     * the endpoints.
+     * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a successful Get Data for Bounding Box API on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ElevationResult> postDataForPolylineAsync(JsonFormat format, List<LatLongPairAbbreviated> polyline,
+        Integer samples, Context context) {
+        return postDataForPolylineWithResponseAsync(format, polyline, samples, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Query Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     * 
+     * The Post Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and end points, as well as equally spaced points along the polyline will be
+     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
+     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
+     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
+     * geodesic path along the curved surface of the reference ellipsoid.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param polyline The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
+     * reference system. The resolution of the data used to compute the elevation will depend on the distance between
+     * the endpoints.
+     * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -743,242 +1104,265 @@ public final class ElevationsImpl {
      * @return the response from a successful Get Data for Bounding Box API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ElevationResult> getDataForPolylineWithResponse(
-            JsonFormat format, List<String> lines, Integer samples, Context context) {
-        return getDataForPolylineWithResponseAsync(format, lines, samples, context).block();
+    public Response<ElevationResult> postDataForPolylineWithResponse(JsonFormat format,
+        List<LatLongPairAbbreviated> polyline, Integer samples, Context context) {
+        return postDataForPolylineWithResponseAsync(format, polyline, samples, context).block();
     }
 
     /**
+     * Query Elevation Data Along a Polyline
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and end points, as well as equally spaced points along the polyline will be
+     * 
+     * The Post Data for Polyline API provides elevation data along a polyline.
+     * 
+     * A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character. In
+     * addition to passing in endpoints, customers can specify the number of sample points that will be used to divide
+     * polyline into equally spaced segments.
+     * 
+     * Elevation data at both start and end points, as well as equally spaced points along the polyline will be
      * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
      * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
      * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
      * geodesic path along the curved surface of the reference ellipsoid.
-     *
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param polyline The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
-     *     reference system. The resolution of the data used to compute the elevation will depend on the distance
-     *     between the endpoints.
+     * each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
+     * `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
+     * latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
+     * reference system. The resolution of the data used to compute the elevation will depend on the distance between
+     * the endpoints.
      * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ElevationResult>> postDataForPolylineWithResponseAsync(
-            JsonFormat format, List<LatLongPairAbbreviated> polyline, Integer samples) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.postDataForPolyline(
-                                this.client.getHost(),
-                                this.client.getClientId(),
-                                this.client.getApiVersion(),
-                                format,
-                                samples,
-                                polyline,
-                                accept,
-                                context));
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and end points, as well as equally spaced points along the polyline will be
-     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
-     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
-     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
-     * geodesic path along the curved surface of the reference ellipsoid.
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param polyline The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
-     *     reference system. The resolution of the data used to compute the elevation will depend on the distance
-     *     between the endpoints.
-     * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ElevationResult>> postDataForPolylineWithResponseAsync(
-            JsonFormat format, List<LatLongPairAbbreviated> polyline, Integer samples, Context context) {
-        final String accept = "application/json";
-        return service.postDataForPolyline(
-                this.client.getHost(),
-                this.client.getClientId(),
-                this.client.getApiVersion(),
-                format,
-                samples,
-                polyline,
-                accept,
-                context);
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and end points, as well as equally spaced points along the polyline will be
-     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
-     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
-     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
-     * geodesic path along the curved surface of the reference ellipsoid.
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param polyline The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
-     *     reference system. The resolution of the data used to compute the elevation will depend on the distance
-     *     between the endpoints.
-     * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ElevationResult> postDataForPolylineAsync(
-            JsonFormat format, List<LatLongPairAbbreviated> polyline, Integer samples) {
-        return postDataForPolylineWithResponseAsync(format, polyline, samples)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and end points, as well as equally spaced points along the polyline will be
-     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
-     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
-     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
-     * geodesic path along the curved surface of the reference ellipsoid.
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param polyline The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
-     *     reference system. The resolution of the data used to compute the elevation will depend on the distance
-     *     between the endpoints.
-     * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ElevationResult> postDataForPolylineAsync(
-            JsonFormat format, List<LatLongPairAbbreviated> polyline, Integer samples, Context context) {
-        return postDataForPolylineWithResponseAsync(format, polyline, samples, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and end points, as well as equally spaced points along the polyline will be
-     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
-     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
-     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
-     * geodesic path along the curved surface of the reference ellipsoid.
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param polyline The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
-     *     reference system. The resolution of the data used to compute the elevation will depend on the distance
-     *     between the endpoints.
-     * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value is
+     * 10.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from a successful Get Data for Bounding Box API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ElevationResult postDataForPolyline(
-            JsonFormat format, List<LatLongPairAbbreviated> polyline, Integer samples) {
-        return postDataForPolylineAsync(format, polyline, samples).block();
+    public ElevationResult postDataForPolyline(JsonFormat format, List<LatLongPairAbbreviated> polyline,
+        Integer samples) {
+        return postDataForPolylineWithResponse(format, polyline, samples, Context.NONE).getValue();
     }
 
     /**
+     * Get Elevation Data at Equally Spaced Locations Within a Bounding Box
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Post Data for Polyline API provides elevation data along a polyline.
-     *
-     * <p>A polyline is defined by passing in between 2 and N endpoint coordinates separated by a pipe ('|') character.
-     * In addition to passing in endpoints, customers can specify the number of sample points that will be used to
-     * divide polyline into equally spaced segments.
-     *
-     * <p>Elevation data at both start and end points, as well as equally spaced points along the polyline will be
-     * returned. The results will be listed in the direction from the first endpoint towards the last endpoint. A line
-     * between two endpoints is a straight Cartesian line, the shortest line between those two points in the coordinate
-     * reference system. Note that the point is chosen based on Euclidean distance and may markedly differ from the
-     * geodesic path along the curved surface of the reference ellipsoid.
-     *
+     * 
+     * The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
+     * bounding box is defined by the coordinates for two corners (southwest, northeast) and then subsequently divided
+     * into rows and columns.
+     * 
+     * Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations can
+     * be returned in a single request. The returned elevation values are ordered, starting at the southwest corner, and
+     * then proceeding west to east along the row. At the end of the row, it moves north to the next row, and repeats
+     * the process until it reaches the far northeast corner.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
-     * @param polyline The string representation of a polyline path. A polyline is defined by endpoint coordinates, with
-     *     each endpoint separated by a pipe ('|') character. The polyline should be defined in the following format:
-     *     `[longitude_point1, latitude_point1 | longitude_point2, latitude_point2, ..., longitude_pointN,
-     *     latitude_pointN]`. The longitude and latitude values refer to the World Geodetic System (WGS84) coordinate
-     *     reference system. The resolution of the data used to compute the elevation will depend on the distance
-     *     between the endpoints.
-     * @param samples The samples parameter specifies the number of equally spaced points at which elevation values
-     *     should be provided along a polyline path. The number of samples should range from 2 to 2,000. Default value
-     *     is 10.
+     * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
+     * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
+     * longitude and latitude of the northeast corner. The string is presented in the following format:
+     * `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
+     * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ElevationResult>> getDataForBoundingBoxWithResponseAsync(JsonFormat format,
+        List<Double> bounds, int rows, int columns) {
+        final String accept = "application/json";
+        String boundsConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(bounds, CollectionFormat.CSV);
+        return FluxUtil
+            .withContext(context -> service.getDataForBoundingBox(this.client.getHost(), this.client.getClientId(),
+                this.client.getApiVersion(), format, boundsConverted, rows, columns, accept, context));
+    }
+
+    /**
+     * Get Elevation Data at Equally Spaced Locations Within a Bounding Box
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     * 
+     * The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
+     * bounding box is defined by the coordinates for two corners (southwest, northeast) and then subsequently divided
+     * into rows and columns.
+     * 
+     * Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations can
+     * be returned in a single request. The returned elevation values are ordered, starting at the southwest corner, and
+     * then proceeding west to east along the row. At the end of the row, it moves north to the next row, and repeats
+     * the process until it reaches the far northeast corner.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
+     * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
+     * longitude and latitude of the northeast corner. The string is presented in the following format:
+     * `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
+     * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ElevationResult>> getDataForBoundingBoxWithResponseAsync(JsonFormat format,
+        List<Double> bounds, int rows, int columns, Context context) {
+        final String accept = "application/json";
+        String boundsConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(bounds, CollectionFormat.CSV);
+        return service.getDataForBoundingBox(this.client.getHost(), this.client.getClientId(),
+            this.client.getApiVersion(), format, boundsConverted, rows, columns, accept, context);
+    }
+
+    /**
+     * Get Elevation Data at Equally Spaced Locations Within a Bounding Box
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     * 
+     * The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
+     * bounding box is defined by the coordinates for two corners (southwest, northeast) and then subsequently divided
+     * into rows and columns.
+     * 
+     * Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations can
+     * be returned in a single request. The returned elevation values are ordered, starting at the southwest corner, and
+     * then proceeding west to east along the row. At the end of the row, it moves north to the next row, and repeats
+     * the process until it reaches the far northeast corner.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
+     * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
+     * longitude and latitude of the northeast corner. The string is presented in the following format:
+     * `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
+     * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a successful Get Data for Bounding Box API on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ElevationResult> getDataForBoundingBoxAsync(JsonFormat format, List<Double> bounds, int rows,
+        int columns) {
+        return getDataForBoundingBoxWithResponseAsync(format, bounds, rows, columns)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Elevation Data at Equally Spaced Locations Within a Bounding Box
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     * 
+     * The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
+     * bounding box is defined by the coordinates for two corners (southwest, northeast) and then subsequently divided
+     * into rows and columns.
+     * 
+     * Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations can
+     * be returned in a single request. The returned elevation values are ordered, starting at the southwest corner, and
+     * then proceeding west to east along the row. At the end of the row, it moves north to the next row, and repeats
+     * the process until it reaches the far northeast corner.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
+     * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
+     * longitude and latitude of the northeast corner. The string is presented in the following format:
+     * `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
+     * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response from a successful Get Data for Bounding Box API on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ElevationResult> getDataForBoundingBoxAsync(JsonFormat format, List<Double> bounds, int rows,
+        int columns, Context context) {
+        return getDataForBoundingBoxWithResponseAsync(format, bounds, rows, columns, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Elevation Data at Equally Spaced Locations Within a Bounding Box
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
+     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
+     * 
+     * The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
+     * bounding box is defined by the coordinates for two corners (southwest, northeast) and then subsequently divided
+     * into rows and columns.
+     * 
+     * Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations can
+     * be returned in a single request. The returned elevation values are ordered, starting at the southwest corner, and
+     * then proceeding west to east along the row. At the end of the row, it moves north to the next row, and repeats
+     * the process until it reaches the far northeast corner.
+     * 
+     * @param format Desired format of the response. Only `json` format is supported.
+     * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
+     * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
+     * longitude and latitude of the northeast corner. The string is presented in the following format:
+     * `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
+     * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
+     * vertices (rows x columns) in the grid should be less than 2,000.
+     * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
+     * vertices (rows x columns) in the grid should be less than 2,000.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -986,192 +1370,41 @@ public final class ElevationsImpl {
      * @return the response from a successful Get Data for Bounding Box API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ElevationResult> postDataForPolylineWithResponse(
-            JsonFormat format, List<LatLongPairAbbreviated> polyline, Integer samples, Context context) {
-        return postDataForPolylineWithResponseAsync(format, polyline, samples, context).block();
+    public Response<ElevationResult> getDataForBoundingBoxWithResponse(JsonFormat format, List<Double> bounds, int rows,
+        int columns, Context context) {
+        return getDataForBoundingBoxWithResponseAsync(format, bounds, rows, columns, context).block();
     }
 
     /**
+     * Get Elevation Data at Equally Spaced Locations Within a Bounding Box
+     * 
+     * &gt;[!Important]
+     * &gt;The Azure Maps Elevation services and Render V2 DEM tiles have been retired and will no longer be available
+     * and supported after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this
+     * retirement. For more details, see [Elevation Services
+     * Retirement](https://azure.microsoft.com/en-us/updates/azure-maps-elevation-apis-and-render-v2-dem-tiles-will-be-retired-on-5-may-2023/).
+     * 
+     * 
      * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
+     * 
+     * The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
      * bounding box is defined by the coordinates for two corners (southwest, northeast) and then subsequently divided
      * into rows and columns.
-     *
-     * <p>Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations
-     * can be returned in a single request. The returned elevation values are ordered, starting at the southwest corner,
-     * and then proceeding west to east along the row. At the end of the row, it moves north to the next row, and
-     * repeats the process until it reaches the far northeast corner.
-     *
+     * 
+     * Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations can
+     * be returned in a single request. The returned elevation values are ordered, starting at the southwest corner, and
+     * then proceeding west to east along the row. At the end of the row, it moves north to the next row, and repeats
+     * the process until it reaches the far northeast corner.
+     * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
-     *     by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
-     *     WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
-     *     `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
+     * by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by WGS84
+     * longitude and latitude of the northeast corner. The string is presented in the following format:
+     * `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
      * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
      * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ElevationResult>> getDataForBoundingBoxWithResponseAsync(
-            JsonFormat format, List<Double> bounds, int rows, int columns) {
-        final String accept = "application/json";
-        String boundsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(bounds, CollectionFormat.CSV);
-        return FluxUtil.withContext(
-                context ->
-                        service.getDataForBoundingBox(
-                                this.client.getHost(),
-                                this.client.getClientId(),
-                                this.client.getApiVersion(),
-                                format,
-                                boundsConverted,
-                                rows,
-                                columns,
-                                accept,
-                                context));
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
-     * bounding box is defined by the coordinates for two corners (southwest, northeast) and then subsequently divided
-     * into rows and columns.
-     *
-     * <p>Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations
-     * can be returned in a single request. The returned elevation values are ordered, starting at the southwest corner,
-     * and then proceeding west to east along the row. At the end of the row, it moves north to the next row, and
-     * repeats the process until it reaches the far northeast corner.
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
-     *     by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
-     *     WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
-     *     `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
-     * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
-     * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ElevationResult>> getDataForBoundingBoxWithResponseAsync(
-            JsonFormat format, List<Double> bounds, int rows, int columns, Context context) {
-        final String accept = "application/json";
-        String boundsConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(bounds, CollectionFormat.CSV);
-        return service.getDataForBoundingBox(
-                this.client.getHost(),
-                this.client.getClientId(),
-                this.client.getApiVersion(),
-                format,
-                boundsConverted,
-                rows,
-                columns,
-                accept,
-                context);
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
-     * bounding box is defined by the coordinates for two corners (southwest, northeast) and then subsequently divided
-     * into rows and columns.
-     *
-     * <p>Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations
-     * can be returned in a single request. The returned elevation values are ordered, starting at the southwest corner,
-     * and then proceeding west to east along the row. At the end of the row, it moves north to the next row, and
-     * repeats the process until it reaches the far northeast corner.
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
-     *     by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
-     *     WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
-     *     `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
-     * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
-     * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ElevationResult> getDataForBoundingBoxAsync(
-            JsonFormat format, List<Double> bounds, int rows, int columns) {
-        return getDataForBoundingBoxWithResponseAsync(format, bounds, rows, columns)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
-     * bounding box is defined by the coordinates for two corners (southwest, northeast) and then subsequently divided
-     * into rows and columns.
-     *
-     * <p>Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations
-     * can be returned in a single request. The returned elevation values are ordered, starting at the southwest corner,
-     * and then proceeding west to east along the row. At the end of the row, it moves north to the next row, and
-     * repeats the process until it reaches the far northeast corner.
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
-     *     by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
-     *     WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
-     *     `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
-     * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
-     * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ElevationResult> getDataForBoundingBoxAsync(
-            JsonFormat format, List<Double> bounds, int rows, int columns, Context context) {
-        return getDataForBoundingBoxWithResponseAsync(format, bounds, rows, columns, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
-     * bounding box is defined by the coordinates for two corners (southwest, northeast) and then subsequently divided
-     * into rows and columns.
-     *
-     * <p>Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations
-     * can be returned in a single request. The returned elevation values are ordered, starting at the southwest corner,
-     * and then proceeding west to east along the row. At the end of the row, it moves north to the next row, and
-     * repeats the process until it reaches the far northeast corner.
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
-     *     by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
-     *     WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
-     *     `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
-     * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
-     * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
+     * vertices (rows x columns) in the grid should be less than 2,000.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1179,39 +1412,6 @@ public final class ElevationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ElevationResult getDataForBoundingBox(JsonFormat format, List<Double> bounds, int rows, int columns) {
-        return getDataForBoundingBoxAsync(format, bounds, rows, columns).block();
-    }
-
-    /**
-     * **Applies to:** see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Get Data for Bounding Box API provides elevation data at equally spaced locations within a bounding box. A
-     * bounding box is defined by the coordinates for two corners (southwest, northeast) and then subsequently divided
-     * into rows and columns.
-     *
-     * <p>Elevations are returned for the vertices of the grid created by the rows and columns. Up to 2,000 elevations
-     * can be returned in a single request. The returned elevation values are ordered, starting at the southwest corner,
-     * and then proceeding west to east along the row. At the end of the row, it moves north to the next row, and
-     * repeats the process until it reaches the far northeast corner.
-     *
-     * @param format Desired format of the response. Only `json` format is supported.
-     * @param bounds The string that represents the rectangular area of a bounding box. The bounds parameter is defined
-     *     by the 4 bounding box coordinates, with WGS84 longitude and latitude of the southwest corner followed by
-     *     WGS84 longitude and latitude of the northeast corner. The string is presented in the following format:
-     *     `[SouthwestCorner_Longitude, SouthwestCorner_Latitude, NortheastCorner_Longitude, NortheastCorner_Latitude]`.
-     * @param rows Specifies the number of rows to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
-     * @param columns Specifies the number of columns to use to divide the bounding box area into a grid. The number of
-     *     vertices (rows x columns) in the grid should be less than 2,000.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from a successful Get Data for Bounding Box API along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ElevationResult> getDataForBoundingBoxWithResponse(
-            JsonFormat format, List<Double> bounds, int rows, int columns, Context context) {
-        return getDataForBoundingBoxWithResponseAsync(format, bounds, rows, columns, context).block();
+        return getDataForBoundingBoxWithResponse(format, bounds, rows, columns, Context.NONE).getValue();
     }
 }
