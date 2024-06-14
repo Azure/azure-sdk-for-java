@@ -4,7 +4,6 @@
 module com.azure.storage.blob {
     requires transitive com.azure.storage.common;
 
-    requires com.fasterxml.jackson.dataformat.xml;
     requires com.azure.storage.internal.avro;
 
     exports com.azure.storage.blob;
@@ -27,17 +26,11 @@ module com.azure.storage.blob {
         com.azure.storage.blob.cryptography,
         com.azure.storage.file.datalake,
         com.azure.storage.blob.changefeed,
-        com.fasterxml.jackson.databind,
+        com.azure.core,
         com.azure.storage.blob.batch,
         com.azure.storage.blob.nio;
 
-    opens com.azure.storage.blob.models to
-        com.fasterxml.jackson.databind,
-        com.azure.core;
-    opens com.azure.storage.blob.implementation to
-        com.fasterxml.jackson.databind,
-        com.azure.core;
-    opens com.azure.storage.blob.implementation.models to
-        com.fasterxml.jackson.databind,
-        com.azure.core;
+    opens com.azure.storage.blob.models to com.azure.core;
+    opens com.azure.storage.blob.implementation to com.azure.core;
+    opens com.azure.storage.blob.implementation.models to com.azure.core;
 }

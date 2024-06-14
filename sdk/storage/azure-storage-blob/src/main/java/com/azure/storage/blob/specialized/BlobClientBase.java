@@ -60,7 +60,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -2327,5 +2326,28 @@ public class BlobClientBase {
         Mono<Response<BlobLegalHoldResult>> response = client.setLegalHoldWithResponse(legalHold, context);
 
         return blockWithOptionalTimeout(response, timeout);
+    }
+
+    private static final class ByteBufferBackedOutputStream extends OutputStream {
+        private final ByteBuffer dst;
+
+        ByteBufferBackedOutputStream(ByteBuffer dst) {
+            this.dst = dst;
+        }
+
+        @Override
+        public void write(int b) {
+            dst.put((byte) b);
+        }
+
+        @Override
+        public void write(byte[] b) {
+            dst.put(b);
+        }
+
+        @Override
+        public void write(byte[] b, int off, int len) {
+            dst.put(b, off, len);
+        }
     }
 }

@@ -96,7 +96,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     private BlobAsyncClient vlwBlob;
 
     @BeforeAll
-    public static void setupSpec() throws JsonProcessingException, MalformedURLException {
+    public static void setupSpec() throws MalformedURLException, JsonProcessingException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             vlwContainerName = UUID.randomUUID().toString();
 

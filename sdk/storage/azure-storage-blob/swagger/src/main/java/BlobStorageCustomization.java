@@ -21,18 +21,14 @@ public class BlobStorageCustomization extends Customization {
 
         // Implementation models customizations
         PackageCustomization implementationModels = customization.getPackage("com.azure.storage.blob.implementation.models");
-        implementationModels.getClass("BlobHierarchyListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.class)");
 
         // Models customizations
         PackageCustomization models = customization.getPackage("com.azure.storage.blob.models");
 
         models.getClass("PageList").customizeAst(ast -> {
-            ast.addImport("com.fasterxml.jackson.databind.annotation.JsonDeserialize")
-                .addImport("com.azure.storage.blob.implementation.models.PageListHelper");
+            ast.addImport("com.azure.storage.blob.implementation.models.PageListHelper");
 
             ClassOrInterfaceDeclaration clazz = ast.getClassByName("PageList").get();
-
-            clazz.addAnnotation(StaticJavaParser.parseAnnotation("@JsonDeserialize(using = PageListDeserializer.class)"));
 
             clazz.getMethodsByName("getNextMarker").get(0).setModifiers(com.github.javaparser.ast.Modifier.Keyword.PRIVATE);
             clazz.getMethodsByName("setNextMarker").get(0).setModifiers(com.github.javaparser.ast.Modifier.Keyword.PRIVATE);
@@ -58,19 +54,6 @@ public class BlobStorageCustomization extends Customization {
         ClassCustomization blobContainerEncryptionScope = models.getClass("BlobContainerEncryptionScope");
         blobContainerEncryptionScope.getMethod("isEncryptionScopeOverridePrevented")
             .setReturnType("boolean", "return Boolean.TRUE.equals(%s);", true);
-
-        // Changes to JacksonXmlRootElement for classes that aren't serialized to maintain backwards compatibility.
-        changeJacksonXmlRootElementName(models.getClass("BlobHttpHeaders"), "blob-http-headers");
-        changeJacksonXmlRootElementName(blobContainerEncryptionScope, "blob-container-encryption-scope");
-        changeJacksonXmlRootElementName(models.getClass("CpkInfo"), "cpk-info");
-
-        // Changes to JacksonXmlRootElement for classes that have been renamed.
-        changeJacksonXmlRootElementName(models.getClass("BlobMetrics"), "Metrics");
-        changeJacksonXmlRootElementName(models.getClass("BlobAnalyticsLogging"), "Logging");
-        changeJacksonXmlRootElementName(models.getClass("BlobRetentionPolicy"), "RetentionPolicy");
-        changeJacksonXmlRootElementName(models.getClass("BlobServiceStatistics"), "StorageServiceStats");
-        changeJacksonXmlRootElementName(models.getClass("BlobSignedIdentifier"), "SignedIdentifier");
-        changeJacksonXmlRootElementName(models.getClass("BlobAccessPolicy"), "AccessPolicy");
 
         ClassCustomization blobContainerItemProperties = models.getClass("BlobContainerItemProperties");
         blobContainerItemProperties.getMethod("isEncryptionScopeOverridePrevented")
@@ -115,19 +98,77 @@ public class BlobStorageCustomization extends Customization {
             .getJavadoc()
             .setDeprecated("Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED}");
 
+        //QueryFormat
+        ClassCustomization queryFormat = implementationModels.getClass("QueryFormat");
+        customizeQueryFormat(queryFormat);
+
+        //BlobHierarchyListSegment
+        ClassCustomization blobHierarchyListSegment = implementationModels.getClass("BlobHierarchyListSegment");
+        customizeBlobHierarchyListSegment(blobHierarchyListSegment);
+
+    }
+    private static void customizeQueryFormat(ClassCustomization classCustomization) {
+        String fileContent = classCustomization.getEditor().getFileContent(classCustomization.getFileName());
+        fileContent = fileContent.replace("xmlWriter.nullElement(\"ParquetTextConfiguration\", this.parquetTextConfiguration);",
+            "xmlWriter.writeStartElement(\"ParquetTextConfiguration\").writeEndElement();");
+        fileContent = fileContent.replace("deserializedQueryFormat.parquetTextConfiguration = reader.null;",
+            "deserializedQueryFormat.parquetTextConfiguration = new Object();\nxmlReader.skipElement();");
+        classCustomization.getEditor().replaceFile(classCustomization.getFileName(), fileContent);
     }
 
-    /*
-     * Uses ClassCustomization.customizeAst to replace the 'localName' value of the JacksonXmlRootElement instead of
-     * the previous implementation which removed the JacksonXmlRootElement then added it back with the updated
-     * 'localName'. The previous implementation would occasionally run into an issue where the JacksonXmlRootElement
-     * import wouldn't be added back, causing a failure in CI when validating that code generation was up-to-date.
-     */
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
-    private void changeJacksonXmlRootElementName(ClassCustomization classCustomization, String rootElementName) {
-        classCustomization.customizeAst(ast -> ast.getClassByName(classCustomization.getClassName()).get()
-            .getAnnotationByName("JacksonXmlRootElement").get()
-            .asNormalAnnotationExpr()
-            .setPairs(new NodeList<>(new MemberValuePair("localName", new StringLiteralExpr(rootElementName)))));
+    private static void customizeBlobHierarchyListSegment(ClassCustomization classCustomization){
+        classCustomization.customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+
+            clazz.getMethodsBySignature("toXml", "XmlWriter", "String").get(0)
+                .setBody(StaticJavaParser.parseBlock(String.join("\n",
+                    "{",
+                    "rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Entries\" : rootElementName;",
+                    "xmlWriter.writeStartElement(rootElementName);",
+                    "if (this.blobPrefixes != null) {",
+                    "    for (BlobPrefixInternal element : this.blobPrefixes) {",
+                    "        xmlWriter.writeXml(element, \"BlobPrefixInternal\");",
+                    "    }",
+                    "}",
+                    "if (this.blobItems != null) {",
+                    "    for (BlobItemInternal element : this.blobItems) {",
+                    "        xmlWriter.writeXml(element, \"Blob\");",
+                    "    }",
+                    "}",
+                    "return xmlWriter.writeEndElement();",
+                    "}"
+                )));
+
+            clazz.getMethodsBySignature("fromXml", "XmlReader", "String").get(0)
+                .setBody(StaticJavaParser.parseBlock(String.join("\n",
+                    "{",
+                    "String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;",
+                    "return xmlReader.readObject(finalRootElementName, reader -> {",
+                    "    BlobHierarchyListSegment deserializedBlobHierarchyListSegment",
+                    "        = new BlobHierarchyListSegment();",
+                    "    while (reader.nextElement() != XmlToken.END_ELEMENT) {",
+                    "        QName elementName = reader.getElementName();",
+                    "",
+                    "        if (\"BlobPrefixInternal\".equals(elementName.getLocalPart())) {",
+                    "            if (deserializedBlobHierarchyListSegment.blobPrefixes == null) {",
+                    "                deserializedBlobHierarchyListSegment.blobPrefixes = new ArrayList<>();",
+                    "            }",
+                    "            deserializedBlobHierarchyListSegment.blobPrefixes",
+                    "                .add(BlobPrefixInternal.fromXml(reader, \"BlobPrefixInternal\"));",
+                    "        } else if (\"Blob\".equals(elementName.getLocalPart())) {",
+                    "            if (deserializedBlobHierarchyListSegment.blobItems == null) {",
+                    "                deserializedBlobHierarchyListSegment.blobItems = new ArrayList<>();",
+                    "            }",
+                    "            deserializedBlobHierarchyListSegment.blobItems.add(BlobItemInternal.fromXml(reader, \"Blob\"));",
+                    "        } else {",
+                    "            reader.skipElement();",
+                    "        }",
+                    "    }",
+                    "",
+                    "    return deserializedBlobHierarchyListSegment;",
+                    "});",
+                    "}"
+                )));
+        });
     }
 }
