@@ -63,8 +63,8 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("code_interpreter".equals(discriminatorValue)) {
                     return CodeInterpreterToolDefinition.fromJson(readerToUse.reset());
-                } else if ("retrieval".equals(discriminatorValue)) {
-                    return RetrievalToolDefinition.fromJson(readerToUse.reset());
+                } else if ("file_search".equals(discriminatorValue)) {
+                    return FileSearchToolDefinition.fromJson(readerToUse.reset());
                 } else if ("function".equals(discriminatorValue)) {
                     return FunctionToolDefinition.fromJson(readerToUse.reset());
                 } else {

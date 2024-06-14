@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class NotebookReferenceType extends ExpandableStringEnum<NotebookRe
      * @param name a name to look for.
      * @return the corresponding NotebookReferenceType.
      */
-    @JsonCreator
     public static NotebookReferenceType fromString(String name) {
         return fromString(name, NotebookReferenceType.class);
     }

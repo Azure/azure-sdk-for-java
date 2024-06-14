@@ -177,8 +177,8 @@ public final class DatabaseUpdate {
     }
 
     /**
-     * Get the modules property: Optional set of redis modules to enable in this database - modules can only be added
-     * at creation time.
+     * Get the modules property: Optional set of redis modules to enable in this database - modules can only be added at
+     * creation time.
      * 
      * @return the modules value.
      */
@@ -187,8 +187,8 @@ public final class DatabaseUpdate {
     }
 
     /**
-     * Set the modules property: Optional set of redis modules to enable in this database - modules can only be added
-     * at creation time.
+     * Set the modules property: Optional set of redis modules to enable in this database - modules can only be added at
+     * creation time.
      * 
      * @param modules the modules value to set.
      * @return the DatabaseUpdate object itself.
@@ -221,6 +221,40 @@ public final class DatabaseUpdate {
             this.innerProperties = new DatabaseProperties();
         }
         this.innerProperties().withGeoReplication(geoReplication);
+        return this;
+    }
+
+    /**
+     * Get the redisVersion property: Version of Redis the database is running on, e.g. '6.0'.
+     * 
+     * @return the redisVersion value.
+     */
+    public String redisVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().redisVersion();
+    }
+
+    /**
+     * Get the deferUpgrade property: Option to defer upgrade when newest version is released - default is NotDeferred.
+     * Learn more: https://aka.ms/redisversionupgrade.
+     * 
+     * @return the deferUpgrade value.
+     */
+    public DeferUpgradeSetting deferUpgrade() {
+        return this.innerProperties() == null ? null : this.innerProperties().deferUpgrade();
+    }
+
+    /**
+     * Set the deferUpgrade property: Option to defer upgrade when newest version is released - default is NotDeferred.
+     * Learn more: https://aka.ms/redisversionupgrade.
+     * 
+     * @param deferUpgrade the deferUpgrade value to set.
+     * @return the DatabaseUpdate object itself.
+     */
+    public DatabaseUpdate withDeferUpgrade(DeferUpgradeSetting deferUpgrade) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withDeferUpgrade(deferUpgrade);
         return this;
     }
 

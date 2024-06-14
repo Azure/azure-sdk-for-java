@@ -16,13 +16,12 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileSmbProperties;
-import com.azure.storage.file.share.implementation.accesshelpers.FileSmbPropertiesHelper;
 import com.azure.storage.file.share.implementation.MessageConstants;
+import com.azure.storage.file.share.implementation.accesshelpers.FileSmbPropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FileProperty;
@@ -41,7 +40,6 @@ import com.azure.storage.file.share.implementation.models.SharePropertiesInterna
 import com.azure.storage.file.share.implementation.models.ShareStats;
 import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.SharesGetStatisticsHeaders;
 import com.azure.storage.file.share.implementation.models.StringEncoded;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
@@ -60,7 +58,6 @@ import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
-import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -74,7 +71,6 @@ import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -206,6 +202,7 @@ public class ModelHelper {
         properties.setRootSquash(sharePropertiesInternal.getRootSquash());
         properties.setMetadata(sharePropertiesInternal.getMetadata());
         properties.setProvisionedBandwidthMiBps(sharePropertiesInternal.getProvisionedBandwidthMiBps());
+        properties.setSnapshotVirtualDirectoryAccessEnabled(sharePropertiesInternal.isEnableSnapshotVirtualDirectoryAccess());
 
         return properties;
     }
@@ -463,17 +460,14 @@ public class ModelHelper {
             .setAccessTierChangeTime(headers.getXMsAccessTierChangeTime())
             .setAccessTierTransitionState(headers.getXMsAccessTierTransitionState())
             .setProtocols(ModelHelper.parseShareProtocols(headers.getXMsEnabledProtocols()))
+            .setSnapshotVirtualDirectoryAccessEnabled(headers.isXMsEnableSnapshotVirtualDirectoryAccess())
             .setRootSquash(headers.getXMsRootSquash());
 
         return new SimpleResponse<>(response, shareProperties);
     }
 
-    public static Response<ShareStatistics> mapGetStatisticsResponse(
-        ResponseBase<SharesGetStatisticsHeaders, ShareStats> response) {
-        ShareStatistics shareStatistics =
-            new ShareStatistics(response.getValue().getShareUsageBytes());
-
-        return new SimpleResponse<>(response, shareStatistics);
+    public static Response<ShareStatistics> mapGetStatisticsResponse(Response<ShareStats> response) {
+        return new SimpleResponse<>(response, new ShareStatistics(response.getValue().getShareUsageBytes()));
     }
 
     public static Response<ShareFileUploadInfo> uploadRangeHeadersToShareFileInfo(ResponseBase<FilesUploadRangeHeaders, Void> response) {
@@ -552,46 +546,25 @@ public class ModelHelper {
     }
 
     public static List<ShareFileItem> convertResponseAndGetNumOfResults(
-        ResponseBase<DirectoriesListFilesAndDirectoriesSegmentHeaders, ListFilesAndDirectoriesSegmentResponse> res) {
+        Response<ListFilesAndDirectoriesSegmentResponse> res) {
         Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
         if (res.getValue().getSegment() != null) {
+
             res.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> {
-                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()),
-                        true,
-                        directoryItem.getFileId(),
-                        ModelHelper.transformFileProperty(directoryItem.getProperties()),
-                        NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
-                        directoryItem.getPermissionKey(),
-                        null));
-                });
+                .forEach(directoryItem -> shareFileItems.add(new ShareFileItem(
+                    ModelHelper.decodeName(directoryItem.getName()), true, directoryItem.getFileId(),
+                    ModelHelper.transformFileProperty(directoryItem.getProperties()),
+                    NtfsFileAttributes.toAttributes(directoryItem.getAttributes()), directoryItem.getPermissionKey(),
+                    null)));
+
             res.getValue().getSegment().getFileItems()
-                .forEach(fileItem -> {
-                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
-                        false,
-                        fileItem.getFileId(),
-                        ModelHelper.transformFileProperty(fileItem.getProperties()),
-                        NtfsFileAttributes.toAttributes(fileItem.getAttributes()),
-                        fileItem.getPermissionKey(),
-                        fileItem.getProperties().getContentLength()));
-                });
+                .forEach(fileItem -> shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
+                    false, fileItem.getFileId(), ModelHelper.transformFileProperty(fileItem.getProperties()),
+                    NtfsFileAttributes.toAttributes(fileItem.getAttributes()), fileItem.getPermissionKey(),
+                    fileItem.getProperties().getContentLength())));
         }
 
         return new ArrayList<>(shareFileItems);
-    }
-
-    public static List<ShareFileRange> sliceFile(String path) {
-        File file = new File(path);
-        assert file.exists();
-        List<ShareFileRange> ranges = new ArrayList<>();
-        for (long pos = 0; pos < file.length(); pos += FILE_DEFAULT_BLOCK_SIZE) {
-            long count = FILE_DEFAULT_BLOCK_SIZE;
-            if (pos + count > file.length()) {
-                count = file.length() - pos;
-            }
-            ranges.add(new ShareFileRange(pos, pos + count - 1));
-        }
-        return ranges;
     }
 
     public static List<ShareSignedIdentifier> truncateAccessPolicyPermissionsToSeconds(

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfacesGetVirtualMachineScaleSetIpConfigurationSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * VmssNetworkInterfaceIpConfigGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VmssNetworkInterfaceIpConfigGet.json
      */
     /**
      * Sample code: Get virtual machine scale set network interface.
@@ -18,7 +17,10 @@ public final class NetworkInterfacesGetVirtualMachineScaleSetIpConfigurationSamp
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualMachineScaleSetNetworkInterface(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkInterfaces()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkInterfaces()
             .getVirtualMachineScaleSetIpConfigurationWithResponse("rg1", "vmss1", "2", "nic1", "ip1", null,
                 com.azure.core.util.Context.NONE);
     }

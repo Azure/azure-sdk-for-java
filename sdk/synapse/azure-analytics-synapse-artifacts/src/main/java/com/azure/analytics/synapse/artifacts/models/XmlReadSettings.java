@@ -5,56 +5,62 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Xml read settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("XmlReadSettings")
 @Fluent
 public final class XmlReadSettings extends FormatReadSettings {
     /*
+     * The read setting type.
+     */
+    private String type = "XmlReadSettings";
+
+    /*
      * Compression settings.
      */
-    @JsonProperty(value = "compressionProperties")
     private CompressionReadSettings compressionProperties;
 
     /*
-     * Indicates what validation method is used when reading the xml files. Allowed values: 'none', 'xsd', or 'dtd'.
-     * Type: string (or Expression with resultType string).
+     * Indicates what validation method is used when reading the xml files. Allowed values: 'none', 'xsd', or 'dtd'. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "validationMode")
     private Object validationMode;
 
     /*
-     * Indicates whether type detection is enabled when reading the xml files. Type: boolean (or Expression with
-     * resultType boolean).
+     * Indicates whether type detection is enabled when reading the xml files. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "detectDataType")
     private Object detectDataType;
 
     /*
-     * Indicates whether namespace is enabled when reading the xml files. Type: boolean (or Expression with resultType
-     * boolean).
+     * Indicates whether namespace is enabled when reading the xml files. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "namespaces")
     private Object namespaces;
 
     /*
-     * Namespace uri to prefix mappings to override the prefixes in column names when namespace is enabled, if no
-     * prefix is defined for a namespace uri, the prefix of xml element/attribute name in the xml data file will be
-     * used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression with resultType object).
+     * Namespace uri to prefix mappings to override the prefixes in column names when namespace is enabled, if no prefix is defined for a namespace uri, the prefix of xml element/attribute name in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression with resultType object).
      */
-    @JsonProperty(value = "namespacePrefixes")
     private Object namespacePrefixes;
 
     /**
      * Creates an instance of XmlReadSettings class.
      */
     public XmlReadSettings() {
+    }
+
+    /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -122,8 +128,8 @@ public final class XmlReadSettings extends FormatReadSettings {
     }
 
     /**
-     * Get the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean
-     * (or Expression with resultType boolean).
+     * Get the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean (or
+     * Expression with resultType boolean).
      * 
      * @return the namespaces value.
      */
@@ -132,8 +138,8 @@ public final class XmlReadSettings extends FormatReadSettings {
     }
 
     /**
-     * Set the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean
-     * (or Expression with resultType boolean).
+     * Set the namespaces property: Indicates whether namespace is enabled when reading the xml files. Type: boolean (or
+     * Expression with resultType boolean).
      * 
      * @param namespaces the namespaces value to set.
      * @return the XmlReadSettings object itself.
@@ -146,8 +152,8 @@ public final class XmlReadSettings extends FormatReadSettings {
     /**
      * Get the namespacePrefixes property: Namespace uri to prefix mappings to override the prefixes in column names
      * when namespace is enabled, if no prefix is defined for a namespace uri, the prefix of xml element/attribute name
-     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or
-     * Expression with resultType object).
+     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression
+     * with resultType object).
      * 
      * @return the namespacePrefixes value.
      */
@@ -158,8 +164,8 @@ public final class XmlReadSettings extends FormatReadSettings {
     /**
      * Set the namespacePrefixes property: Namespace uri to prefix mappings to override the prefixes in column names
      * when namespace is enabled, if no prefix is defined for a namespace uri, the prefix of xml element/attribute name
-     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or
-     * Expression with resultType object).
+     * in the xml data file will be used. Example: "{"http://www.example.com/xml":"prefix"}" Type: object (or Expression
+     * with resultType object).
      * 
      * @param namespacePrefixes the namespacePrefixes value to set.
      * @return the XmlReadSettings object itself.
@@ -167,5 +173,67 @@ public final class XmlReadSettings extends FormatReadSettings {
     public XmlReadSettings setNamespacePrefixes(Object namespacePrefixes) {
         this.namespacePrefixes = namespacePrefixes;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("compressionProperties", this.compressionProperties);
+        jsonWriter.writeUntypedField("validationMode", this.validationMode);
+        jsonWriter.writeUntypedField("detectDataType", this.detectDataType);
+        jsonWriter.writeUntypedField("namespaces", this.namespaces);
+        jsonWriter.writeUntypedField("namespacePrefixes", this.namespacePrefixes);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of XmlReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of XmlReadSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the XmlReadSettings.
+     */
+    public static XmlReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            XmlReadSettings deserializedXmlReadSettings = new XmlReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedXmlReadSettings.type = reader.getString();
+                } else if ("compressionProperties".equals(fieldName)) {
+                    deserializedXmlReadSettings.compressionProperties = CompressionReadSettings.fromJson(reader);
+                } else if ("validationMode".equals(fieldName)) {
+                    deserializedXmlReadSettings.validationMode = reader.readUntyped();
+                } else if ("detectDataType".equals(fieldName)) {
+                    deserializedXmlReadSettings.detectDataType = reader.readUntyped();
+                } else if ("namespaces".equals(fieldName)) {
+                    deserializedXmlReadSettings.namespaces = reader.readUntyped();
+                } else if ("namespacePrefixes".equals(fieldName)) {
+                    deserializedXmlReadSettings.namespacePrefixes = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedXmlReadSettings.setAdditionalProperties(additionalProperties);
+
+            return deserializedXmlReadSettings;
+        });
     }
 }

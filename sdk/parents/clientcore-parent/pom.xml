@@ -1481,60 +1481,6 @@
       </build>
     </profile>
 
-    <!-- Runs the dependency checker. -->
-    <profile>
-      <id>dependency-checker</id>
-      <activation>
-        <property>
-          <name>dependency-checker</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>net.jonathangiles.tools</groupId>
-            <artifactId>dependencyChecker-maven-plugin</artifactId>
-            <version>1.0.6</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
-            <inherited>false</inherited>
-            <executions>
-              <execution>
-                <id>generateReport</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-                <configuration>
-                  <reporters>html</reporters>
-                  <showAll>true</showAll>
-                  <dependencyManagement>true</dependencyManagement>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>net.jonathangiles.tools</groupId>
-            <artifactId>whitelistgenerator-maven-plugin</artifactId>
-            <version>1.0.2</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>generateAllowlistReport</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>report</goal>
-                </goals>
-                <configuration>
-                  <baseDir>.</baseDir>
-                  <reportFile>target/dependency-allowlist.json</reportFile>
-                  <ignoredGA>
-                  </ignoredGA>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
     <profile>
       <id>parallel-test-playback-no-azure-test-mode-env</id>
       <activation>

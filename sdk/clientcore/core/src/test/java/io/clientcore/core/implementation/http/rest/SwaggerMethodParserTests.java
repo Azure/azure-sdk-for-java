@@ -170,14 +170,14 @@ public class SwaggerMethodParserTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noHeaders();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test", requestHeaders = {"", ":", "nameOnly:", ":valueOnly"})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", headers = {"", ":", "nameOnly:", ":valueOnly"})
         void malformedHeaders();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test",
-            requestHeaders = {"name1:value1", "name2:value2", "name3:value3"})
+            headers = {"name1:value1", "name2:value2", "name3:value3"})
         void headers();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test", requestHeaders = {"name:value1", "name:value2"})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", headers = {"name:value1", "name:value2"})
         void sameKeyTwiceLastWins();
     }
 
@@ -395,7 +395,7 @@ public class SwaggerMethodParserTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void addHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test", requestHeaders = {"sub1:sub1", "sub2:false"})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", headers = {"sub1:sub1", "sub2:false"})
         void overrideHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")

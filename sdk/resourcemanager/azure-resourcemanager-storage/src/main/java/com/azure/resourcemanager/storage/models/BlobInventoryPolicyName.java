@@ -6,11 +6,16 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Defines values for BlobInventoryPolicyName. */
+/**
+ * Defines values for BlobInventoryPolicyName.
+ */
 public final class BlobInventoryPolicyName extends ExpandableStringEnum<BlobInventoryPolicyName> {
-    /** Static value default for BlobInventoryPolicyName. */
+    /**
+     * Static value default for BlobInventoryPolicyName.
+     */
     public static final BlobInventoryPolicyName DEFAULT = fromString("default");
 
     /**

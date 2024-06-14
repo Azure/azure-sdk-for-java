@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class Db2AuthenticationType extends ExpandableStringEnum<Db2Authent
      * @param name a name to look for.
      * @return the corresponding Db2AuthenticationType.
      */
-    @JsonCreator
     public static Db2AuthenticationType fromString(String name) {
         return fromString(name, Db2AuthenticationType.class);
     }

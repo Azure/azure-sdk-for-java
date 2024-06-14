@@ -12,7 +12,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Usage statistics related to the run.
+ * Usage statistics related to the run. This value will be `null` if the run is not in a terminal state (i.e.
+ * `in_progress`, `queued`, etc.).
  */
 @Immutable
 public final class RunCompletionUsage implements JsonSerializable<RunCompletionUsage> {

@@ -223,7 +223,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .clientOptions(optionsWithTracing)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler)
-            .configuration(v1OrV2(false)); // // Disabling v2 to begin with.
+            .configuration(v1OrV2(true));
 
         logger.info("Getting Builder using credentials : [{}] ", useCredentials);
         if (useCredentials) {

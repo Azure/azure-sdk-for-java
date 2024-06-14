@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.12.1</version>
+    <version>1.12.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -330,7 +330,7 @@ Not all credentials require this configuration. Credentials that authenticate th
   </thead>
   <tbody>
     <tr>
-      <td><code>AzurePipelinesCredential</td>
+      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azurepipelinescredential?view=azure-java-stable">AzurePipelinesCredential</a></td>
       <td>Authenticates with a <a href="https://learn.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml">service connection in Azure Pipelines.</a></td>
       <td></td>
       <td></td>

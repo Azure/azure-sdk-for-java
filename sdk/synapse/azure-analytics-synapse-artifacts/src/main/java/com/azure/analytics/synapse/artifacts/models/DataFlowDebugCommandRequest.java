@@ -5,29 +5,30 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Request body structure for data flow expression preview.
  */
 @Fluent
-public final class DataFlowDebugCommandRequest {
+public final class DataFlowDebugCommandRequest implements JsonSerializable<DataFlowDebugCommandRequest> {
     /*
      * The ID of data flow debug session.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * The command type.
      */
-    @JsonProperty(value = "command")
     private DataFlowDebugCommandType command;
 
     /*
      * The command payload object.
      */
-    @JsonProperty(value = "commandPayload")
     private DataFlowDebugCommandPayload commandPayload;
 
     /**
@@ -94,5 +95,49 @@ public final class DataFlowDebugCommandRequest {
     public DataFlowDebugCommandRequest setCommandPayload(DataFlowDebugCommandPayload commandPayload) {
         this.commandPayload = commandPayload;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeStringField("command", this.command == null ? null : this.command.toString());
+        jsonWriter.writeJsonField("commandPayload", this.commandPayload);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowDebugCommandRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowDebugCommandRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataFlowDebugCommandRequest.
+     */
+    public static DataFlowDebugCommandRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowDebugCommandRequest deserializedDataFlowDebugCommandRequest = new DataFlowDebugCommandRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sessionId".equals(fieldName)) {
+                    deserializedDataFlowDebugCommandRequest.sessionId = reader.getString();
+                } else if ("command".equals(fieldName)) {
+                    deserializedDataFlowDebugCommandRequest.command
+                        = DataFlowDebugCommandType.fromString(reader.getString());
+                } else if ("commandPayload".equals(fieldName)) {
+                    deserializedDataFlowDebugCommandRequest.commandPayload
+                        = DataFlowDebugCommandPayload.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFlowDebugCommandRequest;
+        });
     }
 }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.fluent.models.SubscriptionFeatureRegi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of subscription feature registrations. */
+/**
+ * The list of subscription feature registrations.
+ */
 @Fluent
 public final class SubscriptionFeatureRegistrationList {
     /*
@@ -24,13 +26,15 @@ public final class SubscriptionFeatureRegistrationList {
     @JsonProperty(value = "value")
     private List<SubscriptionFeatureRegistrationInner> value;
 
-    /** Creates an instance of SubscriptionFeatureRegistrationList class. */
+    /**
+     * Creates an instance of SubscriptionFeatureRegistrationList class.
+     */
     public SubscriptionFeatureRegistrationList() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of subscription feature registrations list.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +43,7 @@ public final class SubscriptionFeatureRegistrationList {
 
     /**
      * Set the nextLink property: The link used to get the next page of subscription feature registrations list.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SubscriptionFeatureRegistrationList object itself.
      */
@@ -50,7 +54,7 @@ public final class SubscriptionFeatureRegistrationList {
 
     /**
      * Get the value property: The list of subscription feature registrations.
-     *
+     * 
      * @return the value value.
      */
     public List<SubscriptionFeatureRegistrationInner> value() {
@@ -59,7 +63,7 @@ public final class SubscriptionFeatureRegistrationList {
 
     /**
      * Set the value property: The list of subscription feature registrations.
-     *
+     * 
      * @param value the value value to set.
      * @return the SubscriptionFeatureRegistrationList object itself.
      */
@@ -70,7 +74,7 @@ public final class SubscriptionFeatureRegistrationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

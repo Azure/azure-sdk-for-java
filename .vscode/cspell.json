@@ -245,6 +245,7 @@
     "autoscale",
     "autodetection",
     "awps",
+    "azconfig",
     "azsdk",
     "azsynapse",
     "azurecr",
@@ -1244,6 +1245,14 @@
       ],
       "ignoreRegExpList": [
         "/\/\/\\s*(BEGIN:|END:).*/"
+      ]
+    },
+    {
+      "filename": "sdk/tables/azure-data-tables/**",
+      "words": [
+        "upserts",
+        "upserted",
+        "raud"
       ]
     }
   ],

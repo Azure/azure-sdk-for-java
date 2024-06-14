@@ -60,6 +60,8 @@ help:
   service: selfhelp
 hybridaks:
   service: hybridcontainerservice
+informatica:
+  service: informaticadatamanagement
 keyvault:
   suffix: generated
 liftrastronomer:

@@ -486,8 +486,8 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getDirectories().deleteWithResponseAsync(shareName, directoryPath, null, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return azureFileStorageClient.getDirectories()
+            .deleteNoCustomHeadersWithResponseAsync(shareName, directoryPath, null, context);
     }
 
     /**
@@ -925,19 +925,17 @@ public class ShareDirectoryAsyncClient {
         }
 
         // these options must be absent from request if empty or false
-        final List<ListFilesIncludeType> finalIncludeTypes = includeTypes.size() == 0 ? null : includeTypes;
+        final List<ListFilesIncludeType> finalIncludeTypes = includeTypes.isEmpty() ? null : includeTypes;
 
         BiFunction<String, Integer, Mono<PagedResponse<ShareFileItem>>> retriever =
             (marker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getDirectories()
-                .listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directoryPath, modifiedOptions.getPrefix(),
-                    snapshot, marker, pageSize == null ? modifiedOptions.getMaxResultsPerPage() : pageSize, null,
-                    finalIncludeTypes, modifiedOptions.includeExtendedInfo(), context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    ModelHelper.convertResponseAndGetNumOfResults(response),
-                    response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders()));
+                .listFilesAndDirectoriesSegmentNoCustomHeadersWithResponseAsync(shareName, directoryPath,
+                    modifiedOptions.getPrefix(), snapshot, marker,
+                    pageSize == null ? modifiedOptions.getMaxResultsPerPage() : pageSize, null, finalIncludeTypes,
+                    modifiedOptions.includeExtendedInfo(), context), timeout)
+                .map(response -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), ModelHelper.convertResponseAndGetNumOfResults(response),
+                    response.getValue().getNextMarker(), null));
 
         return new PagedFlux<>(pageSize -> retriever.apply(null, pageSize), retriever);
     }

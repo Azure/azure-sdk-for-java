@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters used to regenerate the storage account key. */
+/**
+ * The parameters used to regenerate the storage account key.
+ */
 @Fluent
 public final class StorageAccountRegenerateKeyParameters {
     /*
@@ -17,14 +19,16 @@ public final class StorageAccountRegenerateKeyParameters {
     @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
-    /** Creates an instance of StorageAccountRegenerateKeyParameters class. */
+    /**
+     * Creates an instance of StorageAccountRegenerateKeyParameters class.
+     */
     public StorageAccountRegenerateKeyParameters() {
     }
 
     /**
      * Get the keyName property: The name of storage keys that want to be regenerated, possible values are key1, key2,
      * kerb1, kerb2.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -34,7 +38,7 @@ public final class StorageAccountRegenerateKeyParameters {
     /**
      * Set the keyName property: The name of storage keys that want to be regenerated, possible values are key1, key2,
      * kerb1, kerb2.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the StorageAccountRegenerateKeyParameters object itself.
      */
@@ -45,15 +49,14 @@ public final class StorageAccountRegenerateKeyParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyName in model StorageAccountRegenerateKeyParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyName in model StorageAccountRegenerateKeyParameters"));
         }
     }
 

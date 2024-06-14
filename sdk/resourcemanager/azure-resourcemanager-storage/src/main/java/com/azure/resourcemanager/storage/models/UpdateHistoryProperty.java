@@ -6,9 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
-/** An update history of the ImmutabilityPolicy of a blob container. */
+/**
+ * An update history of the ImmutabilityPolicy of a blob container.
+ */
 @Fluent
 public final class UpdateHistoryProperty {
     /*
@@ -48,25 +51,20 @@ public final class UpdateHistoryProperty {
     private String upn;
 
     /*
-     * This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be
-     * written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added
-     * and any existing blocks cannot be modified or deleted. This property cannot be changed with
-     * ExtendImmutabilityPolicy API.
+     * This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API.
      */
     @JsonProperty(value = "allowProtectedAppendWrites")
     private Boolean allowProtectedAppendWrites;
 
     /*
-     * This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be
-     * written to both 'Append and Bock Blobs' while maintaining immutability protection and compliance. Only new
-     * blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with
-     * ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and 'allowProtectedAppendWritesAll' properties
-     * are mutually exclusive.
+     * This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
      */
     @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;
 
-    /** Creates an instance of UpdateHistoryProperty class. */
+    /**
+     * Creates an instance of UpdateHistoryProperty class.
+     */
     public UpdateHistoryProperty() {
     }
 

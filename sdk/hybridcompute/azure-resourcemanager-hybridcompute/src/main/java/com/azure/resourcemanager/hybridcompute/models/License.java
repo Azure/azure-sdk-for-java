@@ -4,158 +4,377 @@
 
 package com.azure.resourcemanager.hybridcompute.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.Context;
+import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseInner;
 import java.util.Map;
 
 /**
- * Describes a license in a hybrid machine.
+ * An immutable client-side representation of License.
  */
-@Fluent
-public final class License extends Resource {
-    /*
-     * Hybrid Compute License properties
-     */
-    @JsonProperty(value = "properties")
-    private LicenseProperties innerProperties;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
+public interface License {
     /**
-     * Creates an instance of License class.
-     */
-    public License() {
-    }
-
-    /**
-     * Get the innerProperties property: Hybrid Compute License properties.
+     * Gets the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the innerProperties value.
+     * @return the id value.
      */
-    private LicenseProperties innerProperties() {
-        return this.innerProperties;
-    }
+    String id();
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Gets the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    String name();
+
+    /**
+     * Gets the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    String type();
+
+    /**
+     * Gets the location property: The geo-location where the resource lives.
+     * 
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * Gets the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
-    public SystemData systemData() {
-        return this.systemData;
-    }
+    SystemData systemData();
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public License withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public License withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state, which only appears in the response.
+     * Gets the provisioningState property: The provisioning state, which only appears in the response.
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
+    ProvisioningState provisioningState();
 
     /**
-     * Get the tenantId property: Describes the tenant id.
+     * Gets the tenantId property: Describes the tenant id.
      * 
      * @return the tenantId value.
      */
-    public String tenantId() {
-        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
-    }
+    String tenantId();
 
     /**
-     * Set the tenantId property: Describes the tenant id.
-     * 
-     * @param tenantId the tenantId value to set.
-     * @return the License object itself.
-     */
-    public License withTenantId(String tenantId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LicenseProperties();
-        }
-        this.innerProperties().withTenantId(tenantId);
-        return this;
-    }
-
-    /**
-     * Get the licenseType property: The type of the license resource.
+     * Gets the licenseType property: The type of the license resource.
      * 
      * @return the licenseType value.
      */
-    public LicenseType licenseType() {
-        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
-    }
+    LicenseType licenseType();
 
     /**
-     * Set the licenseType property: The type of the license resource.
-     * 
-     * @param licenseType the licenseType value to set.
-     * @return the License object itself.
-     */
-    public License withLicenseType(LicenseType licenseType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LicenseProperties();
-        }
-        this.innerProperties().withLicenseType(licenseType);
-        return this;
-    }
-
-    /**
-     * Get the licenseDetails property: Describes the properties of a License.
+     * Gets the licenseDetails property: Describes the properties of a License.
      * 
      * @return the licenseDetails value.
      */
-    public LicenseDetails licenseDetails() {
-        return this.innerProperties() == null ? null : this.innerProperties().licenseDetails();
+    LicenseDetails licenseDetails();
+
+    /**
+     * Gets the region of the resource.
+     * 
+     * @return the region of the resource.
+     */
+    Region region();
+
+    /**
+     * Gets the name of the resource region.
+     * 
+     * @return the name of the resource region.
+     */
+    String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
+     * Gets the inner com.azure.resourcemanager.hybridcompute.fluent.models.LicenseInner object.
+     * 
+     * @return the inner object.
+     */
+    LicenseInner innerModel();
+
+    /**
+     * The entirety of the License definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /**
-     * Set the licenseDetails property: Describes the properties of a License.
-     * 
-     * @param licenseDetails the licenseDetails value to set.
-     * @return the License object itself.
+     * The License definition stages.
      */
-    public License withLicenseDetails(LicenseDetails licenseDetails) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LicenseProperties();
+    interface DefinitionStages {
+        /**
+         * The first stage of the License definition.
+         */
+        interface Blank extends WithLocation {
         }
-        this.innerProperties().withLicenseDetails(licenseDetails);
-        return this;
+
+        /**
+         * The stage of the License definition allowing to specify location.
+         */
+        interface WithLocation {
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithResourceGroup withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location The geo-location where the resource lives.
+             * @return the next definition stage.
+             */
+            WithResourceGroup withRegion(String location);
+        }
+
+        /**
+         * The stage of the License definition allowing to specify parent resource.
+         */
+        interface WithResourceGroup {
+            /**
+             * Specifies resourceGroupName.
+             * 
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingResourceGroup(String resourceGroupName);
+        }
+
+        /**
+         * The stage of the License definition which contains all the minimum required properties for the resource to be
+         * created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithTenantId,
+            DefinitionStages.WithLicenseType, DefinitionStages.WithLicenseDetails {
+            /**
+             * Executes the create request.
+             * 
+             * @return the created resource.
+             */
+            License create();
+
+            /**
+             * Executes the create request.
+             * 
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            License create(Context context);
+        }
+
+        /**
+         * The stage of the License definition allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the License definition allowing to specify tenantId.
+         */
+        interface WithTenantId {
+            /**
+             * Specifies the tenantId property: Describes the tenant id..
+             * 
+             * @param tenantId Describes the tenant id.
+             * @return the next definition stage.
+             */
+            WithCreate withTenantId(String tenantId);
+        }
+
+        /**
+         * The stage of the License definition allowing to specify licenseType.
+         */
+        interface WithLicenseType {
+            /**
+             * Specifies the licenseType property: The type of the license resource..
+             * 
+             * @param licenseType The type of the license resource.
+             * @return the next definition stage.
+             */
+            WithCreate withLicenseType(LicenseType licenseType);
+        }
+
+        /**
+         * The stage of the License definition allowing to specify licenseDetails.
+         */
+        interface WithLicenseDetails {
+            /**
+             * Specifies the licenseDetails property: Describes the properties of a License..
+             * 
+             * @param licenseDetails Describes the properties of a License.
+             * @return the next definition stage.
+             */
+            WithCreate withLicenseDetails(LicenseDetails licenseDetails);
+        }
     }
 
     /**
-     * Validates the instance.
+     * Begins update for the License resource.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the stage of resource update.
      */
-    public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+    License.Update update();
+
+    /**
+     * The template for License update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithLicenseType, UpdateStages.WithState,
+        UpdateStages.WithTarget, UpdateStages.WithEdition, UpdateStages.WithType, UpdateStages.WithProcessors {
+        /**
+         * Executes the update request.
+         * 
+         * @return the updated resource.
+         */
+        License apply();
+
+        /**
+         * Executes the update request.
+         * 
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        License apply(Context context);
+    }
+
+    /**
+     * The License update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the License update allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags.
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the License update allowing to specify licenseType.
+         */
+        interface WithLicenseType {
+            /**
+             * Specifies the licenseType property: The type of the license resource..
+             * 
+             * @param licenseType The type of the license resource.
+             * @return the next definition stage.
+             */
+            Update withLicenseType(LicenseType licenseType);
+        }
+
+        /**
+         * The stage of the License update allowing to specify state.
+         */
+        interface WithState {
+            /**
+             * Specifies the state property: Describes the state of the license..
+             * 
+             * @param state Describes the state of the license.
+             * @return the next definition stage.
+             */
+            Update withState(LicenseState state);
+        }
+
+        /**
+         * The stage of the License update allowing to specify target.
+         */
+        interface WithTarget {
+            /**
+             * Specifies the target property: Describes the license target server..
+             * 
+             * @param target Describes the license target server.
+             * @return the next definition stage.
+             */
+            Update withTarget(LicenseTarget target);
+        }
+
+        /**
+         * The stage of the License update allowing to specify edition.
+         */
+        interface WithEdition {
+            /**
+             * Specifies the edition property: Describes the edition of the license. The values are either Standard or
+             * Datacenter..
+             * 
+             * @param edition Describes the edition of the license. The values are either Standard or Datacenter.
+             * @return the next definition stage.
+             */
+            Update withEdition(LicenseEdition edition);
+        }
+
+        /**
+         * The stage of the License update allowing to specify type.
+         */
+        interface WithType {
+            /**
+             * Specifies the type property: Describes the license core type (pCore or vCore)..
+             * 
+             * @param type Describes the license core type (pCore or vCore).
+             * @return the next definition stage.
+             */
+            Update withType(LicenseCoreType type);
+        }
+
+        /**
+         * The stage of the License update allowing to specify processors.
+         */
+        interface WithProcessors {
+            /**
+             * Specifies the processors property: Describes the number of processors..
+             * 
+             * @param processors Describes the number of processors.
+             * @return the next definition stage.
+             */
+            Update withProcessors(Integer processors);
         }
     }
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @return the refreshed resource.
+     */
+    License refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     * 
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    License refresh(Context context);
 }

@@ -172,7 +172,7 @@ extends:
                 ArtifactPath: '$(Build.ArtifactStagingDirectory)/_manifest'
                 ArtifactName: 'manifest'
 
-            - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
+            - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
         - job: 'AnalyzeAndVerify'
           condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))

@@ -5,41 +5,52 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Salesforce Service Cloud source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SalesforceServiceCloudSource")
 @Fluent
 public final class SalesforceServiceCloudSource extends CopySource {
     /*
+     * Copy source type.
+     */
+    private String type = "SalesforceServiceCloudSource";
+
+    /*
      * Database query. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or
-     * Expression with resultType string).
+     * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "readBehavior")
     private Object readBehavior;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
-     * Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
     /**
      * Creates an instance of SalesforceServiceCloudSource class.
      */
     public SalesforceServiceCloudSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -131,5 +142,70 @@ public final class SalesforceServiceCloudSource extends CopySource {
     public SalesforceServiceCloudSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("query", this.query);
+        jsonWriter.writeUntypedField("readBehavior", this.readBehavior);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceServiceCloudSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceServiceCloudSource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SalesforceServiceCloudSource.
+     */
+    public static SalesforceServiceCloudSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceServiceCloudSource deserializedSalesforceServiceCloudSource = new SalesforceServiceCloudSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSource.type = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSource.query = reader.readUntyped();
+                } else if ("readBehavior".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSource.readBehavior = reader.readUntyped();
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudSource.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSalesforceServiceCloudSource.setAdditionalProperties(additionalProperties);
+
+            return deserializedSalesforceServiceCloudSource;
+        });
     }
 }

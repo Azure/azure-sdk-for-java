@@ -12,9 +12,7 @@ import com.azure.resourcemanager.network.fluent.models.SubnetInner;
  */
 public final class VirtualHubIpConfigurationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualHubIpConfigurationPut.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualHubIpConfigurationPut.json
      */
     /**
      * Sample code: VirtualHubIpConfigurationPut.
@@ -22,10 +20,13 @@ public final class VirtualHubIpConfigurationCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualHubIpConfigurationPut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualHubIpConfigurations().createOrUpdate("rg1", "hub1",
-            "ipconfig1",
-            new HubIpConfigurationInner().withSubnet(new SubnetInner().withId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualHubIpConfigurations()
+            .createOrUpdate("rg1", "hub1", "ipconfig1",
+                new HubIpConfigurationInner().withSubnet(new SubnetInner().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")),
+                com.azure.core.util.Context.NONE);
     }
 }

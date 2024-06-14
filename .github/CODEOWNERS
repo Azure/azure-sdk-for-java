@@ -3,25 +3,25 @@
 
 # BOM
 # PRLabel: %azure-spring
-/sdk/boms/spring-cloud-azure-dependencies/          @chenrujun @netyyyy @saragluna @moarychan
+/sdk/boms/spring-cloud-azure-dependencies/          @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/identity/azure-identity-extensions/            @chenrujun @netyyyy @saragluna @moarychan
+/sdk/identity/azure-identity-extensions/            @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/keyvault/azure-security-keyvault-jca           @chenrujun @netyyyy @saragluna @moarychan
+/sdk/keyvault/azure-security-keyvault-jca           @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/                                        @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring/                                        @rujche @netyyyy @saragluna @moarychan
 # PRLabel: %azure-spring
-/sdk/spring-experimental/                           @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring-experimental/                           @rujche @netyyyy @saragluna @moarychan
 
-/eng/versioning/external_dependencies.txt           @chenrujun @netyyyy @saragluna @moarychan
-
-# PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
-/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+/eng/versioning/external_dependencies.txt           @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @trande4884 @TheovanKraay @xinlian12 @chenrujun @netyyyy @saragluna @moarychan @aayush3011 @simorenoh @jeet1995 @Pilchie
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @rujche @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @rujche @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @rujche @netyyyy @saragluna @moarychan
+
+# PRLabel: %azure-spring
+/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @trande4884 @TheovanKraay @xinlian12 @rujche @netyyyy @saragluna @moarychan @aayush3011 @simorenoh @jeet1995 @Pilchie
