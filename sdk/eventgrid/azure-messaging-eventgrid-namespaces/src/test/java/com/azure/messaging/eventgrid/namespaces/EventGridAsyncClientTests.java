@@ -1,12 +1,7 @@
 package com.azure.messaging.eventgrid.namespaces;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventgrid.namespaces.models.ReleaseDelay;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
@@ -20,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public class EventGridReceiverAsyncClientTests extends EventGridClientTestBase {
+public class EventGridAsyncClientTests extends EventGridClientTestBase {
 
 
     EventGridReceiverAsyncClient buildReceiverAsyncClient(boolean useManagedIdentity) {
@@ -50,7 +45,7 @@ public class EventGridReceiverAsyncClientTests extends EventGridClientTestBase {
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient(useManagedIdentity);
 
         senderClient.send(getCloudEvent())
-            .then(client.receive(10, Duration.ofSeconds(10)))
+            .then(client.receive(1, Duration.ofSeconds(10)))
             .as(StepVerifier::create)
             .assertNext(receiveResult -> {
                 assertNotNull(receiveResult);
@@ -71,7 +66,7 @@ public class EventGridReceiverAsyncClientTests extends EventGridClientTestBase {
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient(useManagedIdentity);
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient(useManagedIdentity);
 
-        senderClient.send(getCloudEvent()).then(client.receive(10, Duration.ofSeconds(10)))
+        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10)))
             .flatMap(receiveResult -> {
                 return client.acknowledge(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
             })
@@ -97,7 +92,7 @@ public class EventGridReceiverAsyncClientTests extends EventGridClientTestBase {
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient(useManagedIdentity);
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient(useManagedIdentity);
 
-        senderClient.send(getCloudEvent()).then(client.receive(10, Duration.ofSeconds(10)))
+        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10)))
             .flatMap(receiveResult -> {
                 return client.release(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
             })
@@ -122,7 +117,7 @@ public class EventGridReceiverAsyncClientTests extends EventGridClientTestBase {
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient(useManagedIdentity);
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient(useManagedIdentity);
 
-        senderClient.send(getCloudEvent()).then(client.receive(10, Duration.ofSeconds(10)))
+        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10)))
             .flatMap(receiveResult -> {
                 return client.release(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()), ReleaseDelay.TEN_SECONDS);
             })
@@ -149,7 +144,7 @@ public class EventGridReceiverAsyncClientTests extends EventGridClientTestBase {
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient(useManagedIdentity);
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient(useManagedIdentity);
 
-        senderClient.send(getCloudEvent()).then(client.receive(10, Duration.ofSeconds(10)))
+        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10)))
             .flatMap(receiveResult -> {
                 return client.reject(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
             })
@@ -174,7 +169,7 @@ public class EventGridReceiverAsyncClientTests extends EventGridClientTestBase {
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient(useManagedIdentity);
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient(useManagedIdentity);
 
-        senderClient.send(getCloudEvent()).then(client.receive(10, Duration.ofSeconds(10)))
+        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10)))
             .flatMap(receiveResult -> {
                 return client.renewLocks(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
             })
