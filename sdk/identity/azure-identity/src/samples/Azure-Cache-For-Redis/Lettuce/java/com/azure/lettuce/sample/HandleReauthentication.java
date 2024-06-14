@@ -34,7 +34,7 @@ public class HandleReauthentication {
         TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
         AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
-        // Host Name, Port, Username, and Microsoft Entra token are required here.
+        // Host Name, Port, and Microsoft Entra token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
         String hostName = "<HOST_NAME>";
         RedisClient client = createLettuceRedisClient(hostName, 6380, accessToken);

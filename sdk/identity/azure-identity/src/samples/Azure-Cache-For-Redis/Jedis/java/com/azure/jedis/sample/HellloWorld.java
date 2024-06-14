@@ -30,7 +30,7 @@ public class HellloWorld {
         // SSL connection is required.
         boolean useSsl = true;
         // TODO: Replace Host Name with Azure Cache for Redis Host Name.
-        String cacheHostname = "azdsdktest.redis.cache.windows.net";
+        String cacheHostname = "<Host-Name>";
         String username = extractUsernameFromToken(token);
 
         // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.

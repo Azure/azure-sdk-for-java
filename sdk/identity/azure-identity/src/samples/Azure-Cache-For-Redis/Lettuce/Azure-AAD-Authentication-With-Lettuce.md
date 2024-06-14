@@ -281,7 +281,7 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, defaultAzureCredential);
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
@@ -431,7 +431,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, accessToken);
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
@@ -537,7 +537,7 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 String hostName = "<HOST_NAME>";
 
@@ -781,7 +781,7 @@ TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azu
 TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
 AccessToken accessToken = tokenRefreshCache.getAccessToken();
 
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 RedisClient client = createLettuceRedisClient("<HOST_NAME>", 6380, accessToken);
 StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
@@ -954,3 +954,9 @@ In this error scenario, the authentication was successful, but your registered u
 To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
 * In **Data Access Configuration**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
 * In the event you're using a custom role, ensure the permissions granted under your custom role include the one required for your target action.
+
+##### Managed Identity not working from Local Development Machine
+Managed identity does not work from a local development machine. To use managed identity, your code must be running
+in an Azure VM (or another type of resource in Azure). To run locally with Entra ID authentication, you'll need to
+use a service principal or user account. This is a common source of confusion, so ensure that when developing locally,
+you configure your application to use a service principal or user credentials for authentication.

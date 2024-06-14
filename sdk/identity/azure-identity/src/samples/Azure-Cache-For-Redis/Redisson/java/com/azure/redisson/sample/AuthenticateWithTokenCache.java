@@ -41,7 +41,7 @@ public class AuthenticateWithTokenCache {
         String username = extractUsernameFromToken(accessToken.getToken());
 
         // Create Redisson Client
-        // Host Name, Port, Username, and Microsoft Entra token are required here.
+        // Host Name, Port, and Microsoft Entra token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
         RedissonClient redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, accessToken);
 
@@ -67,7 +67,7 @@ public class AuthenticateWithTokenCache {
                 if (redisson.isShutdown()) {
                     AccessToken token = tokenRefreshCache.getAccessToken();
                     // Recreate the client with a fresh token non-expired token as password for authentication.
-                    redisson = createRedissonClient("rediss://<HOST_NAME>:6380", extractUsernameFromToken(token.getToken()), token);
+                    redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, token);
                 }
             } catch (Exception e) {
                 // Handle Exception as required

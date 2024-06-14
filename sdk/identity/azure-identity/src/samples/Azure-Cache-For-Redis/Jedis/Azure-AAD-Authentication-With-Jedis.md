@@ -133,7 +133,7 @@ String cacheHostname = "<HOST_NAME>";
 String username = extractUsernameFromToken(accessToken.getToken());
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
-// Note: Cache Host Name, Port, Username, Microsoft Entra access token and SSL connections are required below.
+// Note: Cache Host Name, Port, Microsoft Entra access token and SSL connections are required below.
 Jedis jedis = createJedisClient(cacheHostname, 6380, username, accessToken, useSsl);
 
 int maxTries = 3;
@@ -155,7 +155,7 @@ while (i < maxTries) {
         if (jedis.isBroken()) {
             jedis.close();
             accessToken = getAccessToken(defaultAzureCredential, trc);
-            jedis = createJedisClient(cacheHostname, 6380, extractUsernameFromToken(accessToken.getToken()), accessToken, useSsl);
+            jedis = createJedisClient(cacheHostname, 6380, username, accessToken, useSsl);
         }
     }
     i++;
@@ -221,7 +221,7 @@ String cacheHostname = "<HOST_NAME>";
 String username = extractUsernameFromToken(accessToken.getToken());
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
-// Note: Cache Host Name, Port, Username, Microsoft Entra access token and SSL connections are required below.
+// Note: Cache Host Name, Port, Microsoft Entra access token and SSL connections are required below.
 Jedis jedis = createJedisClient(cacheHostname, 6380, username, accessToken, useSsl);
 
 // Configure the jedis instance for proactive authentication before token expires.
@@ -247,7 +247,7 @@ while (i < maxTries) {
         if (jedis.isBroken()) {
             jedis.close();
             accessToken = tokenRefreshCache.getAccessToken();
-            jedis = createJedisClient(cacheHostname, 6380, extractUsernameFromToken(accessToken.getToken()), accessToken, useSsl);
+            jedis = createJedisClient(cacheHostname, 6380, username, accessToken, useSsl);
             
             // Configure the jedis instance for proactive authentication before token expires.
             tokenRefreshCache
@@ -411,7 +411,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 // Create Jedis Client using the builder as follows.
 Jedis jedisClient = new AzureJedisClientBuilder()
     .cacheHostName("<HOST_NAME>") // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-    .port(6380) // Port is requried.
+    .port(6380) // Port is required.
     .useSSL(true) // SSL Connection is required.
     .credential(defaultAzureCredential) // A Token Credential is required to fetch Microsoft Entra access tokens.
     .build();
@@ -438,3 +438,9 @@ To mitigate this error, navigate to your Azure Cache for Redis resource in the A
 * In **Data Access Configuration**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
 * In the event you're using a custom role, ensure the permissions granted under your custom role include the one required for your target action.
 
+
+##### Managed Identity not working from Local Development Machine
+Managed identity does not work from a local development machine. To use managed identity, your code must be running 
+in an Azure VM (or another type of resource in Azure). To run locally with Entra ID authentication, you'll need to 
+use a service principal or user account. This is a common source of confusion, so ensure that when developing locally,
+you configure your application to use a service principal or user credentials for authentication.

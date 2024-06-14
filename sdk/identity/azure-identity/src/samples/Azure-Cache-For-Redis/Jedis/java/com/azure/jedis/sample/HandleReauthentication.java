@@ -57,7 +57,7 @@ public class HandleReauthentication {
                 if (jedis.isBroken()) {
                     jedis.close();
                     accessToken = getAccessToken(defaultAzureCredential, trc);
-                    jedis = createJedisClient(cacheHostname, 6380, extractUsernameFromToken(accessToken.getToken()), accessToken, useSsl);
+                    jedis = createJedisClient(cacheHostname, 6380, username, accessToken, useSsl);
                 }
             }
             i++;

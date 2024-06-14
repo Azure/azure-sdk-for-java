@@ -67,7 +67,7 @@ public class AuthenticateWithTokenCache {
                 if (jedis.isBroken()) {
                     jedis.close();
                     accessToken = tokenRefreshCache.getAccessToken();
-                    jedis = createJedisClient(cacheHostname, 6380, extractUsernameFromToken(accessToken.getToken()), accessToken, useSsl);
+                    jedis = createJedisClient(cacheHostname, 6380, username, accessToken, useSsl);
 
                     // Configure the jedis instance for proactive authentication before token expires.
                     tokenRefreshCache

@@ -43,7 +43,7 @@ public class AuthenticateWithTokenCache {
         TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
         AccessToken accessToken = tokenRefreshCache.getAccessToken();
 
-        // Host Name, Port, Username, and Microsoft Entra token are required here.
+        // Host Name, Port, and Microsoft Entra token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
         String hostName = "<HOST_NAME>";
         RedisClient client = createLettuceRedisClient(hostName, 6380, accessToken);

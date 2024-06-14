@@ -124,7 +124,7 @@ AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 String username = extractUsernameFromToken(accessToken.getToken());
 
 // Create Redisson Client
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 RedissonClient redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, accessToken);
 
@@ -150,7 +150,7 @@ while (i < maxTries) {
         if (redisson.isShutdown()) {
             AccessToken token = getAccessToken(defaultAzureCredential, trc);
             // Recreate the client with a fresh token non-expired token as password for authentication.
-            redisson = createRedissonClient("rediss://<HOST_NAME>:6380", extractUsernameFromToken(token.getToken()), token);
+            redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, token);
         }
     } catch (Exception e) {
         // Handle Exception as required
@@ -220,7 +220,7 @@ AccessToken accessToken = tokenRefreshCache.getAccessToken();
 String username = extractUsernameFromToken(accessToken.getToken());
 
 // Create Redisson Client
-// Host Name, Port, Username, and Microsoft Entra token are required here.
+// Host Name, Port, and Microsoft Entra token are required here.
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 RedissonClient redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, accessToken);
 
@@ -246,7 +246,7 @@ while (i < maxTries) {
         if (redisson.isShutdown()) {
             AccessToken token = tokenRefreshCache.getAccessToken();
             // Recreate the client with a fresh token non-expired token as password for authentication.
-            redisson = createRedissonClient("rediss://<HOST_NAME>:6380", extractUsernameFromToken(token.getToken()), token);
+            redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, token);
         }
     } catch (Exception e) {
         // Handle Exception as required
@@ -359,3 +359,8 @@ To mitigate this error, navigate to your Azure Cache for Redis resource in the A
 * In **Data Access Configuration**, you've assigned the appropriate role (Owner, Contributor, Reader) to your user/service principal identity.
 * In the event you're using a custom role, ensure the permissions granted under your custom role include the one required for your target action.
 
+##### Managed Identity not working from Local Development Machine
+Managed identity does not work from a local development machine. To use managed identity, your code must be running
+in an Azure VM (or another type of resource in Azure). To run locally with Entra ID authentication, you'll need to
+use a service principal or user account. This is a common source of confusion, so ensure that when developing locally,
+you configure your application to use a service principal or user credentials for authentication.
