@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.LabelSelector;
 
 /**
@@ -12,7 +13,7 @@ import com.azure.data.appconfiguration.models.LabelSelector;
  */
 public class ListLabels {
     /**
-     * Runs the sample algorithm and demonstrates how to add, get, and delete a configuration setting.
+     * Runs the sample algorithm and demonstrates how to list labels.
      *
      * @param args Unused. Arguments to the program.
      */
@@ -25,10 +26,13 @@ public class ListLabels {
                 .connectionString(connectionString)
                 .buildClient();
 
-        // Prepare three settings with different labels
-        client.setConfigurationSetting("prod:prod1", "prod1", "prod1");
-        client.setConfigurationSetting("prod:prod2", "prod2", "prod2");
-        client.setConfigurationSetting("prod:prod3", "prod3", "prod3");
+        // Prepare three settings with different labels, prod1, prod2, prod3
+        ConfigurationSetting setting = client.setConfigurationSetting("prod:prod1", "prod1", "prod1");
+        System.out.printf("Key: %s, Label: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue());
+        ConfigurationSetting setting1 = client.setConfigurationSetting("prod:prod2", "prod2", "prod2");
+        System.out.printf("Key: %s, Label: %s, Value: %s%n", setting1.getKey(), setting1.getLabel(), setting1.getValue());
+        ConfigurationSetting setting2 = client.setConfigurationSetting("prod:prod3", "prod3", "prod3");
+        System.out.printf("Key: %s, Label: %s, Value: %s%n", setting2.getKey(), setting2.getLabel(), setting2.getValue());
 
         // If you want to list all labels in the sources, simply pass selector=null in the request;
         // If you want to list labels by exact match, use the exact label name as the filter.

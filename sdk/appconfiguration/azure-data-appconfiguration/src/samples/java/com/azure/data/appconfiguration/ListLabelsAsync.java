@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ListLabelsAsync {
     /**
-     * Runs the sample algorithm and demonstrates how to add, get, and delete a configuration setting asynchronous.
+     * Runs the sample algorithm and demonstrates how to list labels asynchronously.
      *
      * @param args Unused. Arguments to the program.
      * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied,
@@ -29,7 +29,7 @@ public class ListLabelsAsync {
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
                 .buildAsyncClient();
-        // Prepare three settings with different labels
+        // Prepare three settings with different labels, prod1, prod2, prod3
         client.setConfigurationSetting("prod:prod1", "prod1", "prod1").subscribe(
                 setting -> System.out.printf("Key: %s, Label: %s, Value: %s%n", setting.getKey(), setting.getLabel(), setting.getValue()));
         TimeUnit.MILLISECONDS.sleep(1000);
