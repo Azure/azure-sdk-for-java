@@ -38,7 +38,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     /*
      * The name of the compression method configuration that specifies the compression method and optional parameters.
      */
-    private String compressionConfigurationName;
+    private String compressionName;
 
     /**
      * Creates an instance of VectorSearchProfile class.
@@ -91,24 +91,24 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     }
 
     /**
-     * Get the compressionConfigurationName property: The name of the compression method configuration that specifies
-     * the compression method and optional parameters.
+     * Get the compressionName property: The name of the compression method configuration that specifies the
+     * compression method and optional parameters.
      * 
-     * @return the compressionConfigurationName value.
+     * @return the compressionName value.
      */
-    public String getCompressionConfigurationName() {
-        return this.compressionConfigurationName;
+    public String getCompressionName() {
+        return this.compressionName;
     }
 
     /**
-     * Set the compressionConfigurationName property: The name of the compression method configuration that specifies
-     * the compression method and optional parameters.
+     * Set the compressionName property: The name of the compression method configuration that specifies the
+     * compression method and optional parameters.
      * 
-     * @param compressionConfigurationName the compressionConfigurationName value to set.
+     * @param compressionName the compressionName value to set.
      * @return the VectorSearchProfile object itself.
      */
-    public VectorSearchProfile setCompressionConfigurationName(String compressionConfigurationName) {
-        this.compressionConfigurationName = compressionConfigurationName;
+    public VectorSearchProfile setCompressionName(String compressionName) {
+        this.compressionName = compressionName;
         return this;
     }
 
@@ -118,7 +118,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("algorithm", this.algorithmConfigurationName);
         jsonWriter.writeStringField("vectorizer", this.vectorizerName);
-        jsonWriter.writeStringField("compression", this.compressionConfigurationName);
+        jsonWriter.writeStringField("compression", this.compressionName);
         return jsonWriter.writeEndObject();
     }
 
@@ -138,7 +138,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
             boolean algorithmConfigurationNameFound = false;
             String algorithmConfigurationName = null;
             String vectorizerName = null;
-            String compressionConfigurationName = null;
+            String compressionName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -152,7 +152,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
                 } else if ("vectorizer".equals(fieldName)) {
                     vectorizerName = reader.getString();
                 } else if ("compression".equals(fieldName)) {
-                    compressionConfigurationName = reader.getString();
+                    compressionName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -161,7 +161,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
                 VectorSearchProfile deserializedVectorSearchProfile
                     = new VectorSearchProfile(name, algorithmConfigurationName);
                 deserializedVectorSearchProfile.vectorizerName = vectorizerName;
-                deserializedVectorSearchProfile.compressionConfigurationName = compressionConfigurationName;
+                deserializedVectorSearchProfile.compressionName = compressionName;
 
                 return deserializedVectorSearchProfile;
             }

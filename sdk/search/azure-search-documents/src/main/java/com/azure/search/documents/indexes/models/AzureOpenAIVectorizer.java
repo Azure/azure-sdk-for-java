@@ -20,36 +20,34 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     /*
      * Contains the parameters specific to Azure OpenAI embedding vectorization.
      */
-    private AzureOpenAIParameters azureOpenAIParameters;
+    private AzureOpenAIVectorizerParameters parameters;
 
     /**
      * Creates an instance of AzureOpenAIVectorizer class.
      * 
-     * @param name the name value to set.
+     * @param vectorizerName the vectorizerName value to set.
      */
-    public AzureOpenAIVectorizer(String name) {
-        super(name);
+    public AzureOpenAIVectorizer(String vectorizerName) {
+        super(vectorizerName);
     }
 
     /**
-     * Get the azureOpenAIParameters property: Contains the parameters specific to Azure OpenAI embedding
-     * vectorization.
+     * Get the parameters property: Contains the parameters specific to Azure OpenAI embedding vectorization.
      * 
-     * @return the azureOpenAIParameters value.
+     * @return the parameters value.
      */
-    public AzureOpenAIParameters getAzureOpenAIParameters() {
-        return this.azureOpenAIParameters;
+    public AzureOpenAIVectorizerParameters getParameters() {
+        return this.parameters;
     }
 
     /**
-     * Set the azureOpenAIParameters property: Contains the parameters specific to Azure OpenAI embedding
-     * vectorization.
+     * Set the parameters property: Contains the parameters specific to Azure OpenAI embedding vectorization.
      * 
-     * @param azureOpenAIParameters the azureOpenAIParameters value to set.
+     * @param parameters the parameters value to set.
      * @return the AzureOpenAIVectorizer object itself.
      */
-    public AzureOpenAIVectorizer setAzureOpenAIParameters(AzureOpenAIParameters azureOpenAIParameters) {
-        this.azureOpenAIParameters = azureOpenAIParameters;
+    public AzureOpenAIVectorizer setParameters(AzureOpenAIVectorizerParameters parameters) {
+        this.parameters = parameters;
         return this;
     }
 
@@ -58,8 +56,8 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kind", VectorSearchVectorizerKind.AZURE_OPEN_AI == null ? null
             : VectorSearchVectorizerKind.AZURE_OPEN_AI.toString());
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeJsonField("azureOpenAIParameters", this.azureOpenAIParameters);
+        jsonWriter.writeStringField("name", getVectorizerName());
+        jsonWriter.writeJsonField("azureOpenAIParameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -75,9 +73,9 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
      */
     public static AzureOpenAIVectorizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            AzureOpenAIParameters azureOpenAIParameters = null;
+            boolean vectorizerNameFound = false;
+            String vectorizerName = null;
+            AzureOpenAIVectorizerParameters parameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -90,17 +88,17 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
                                 + kind + "'.");
                     }
                 } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
+                    vectorizerName = reader.getString();
+                    vectorizerNameFound = true;
                 } else if ("azureOpenAIParameters".equals(fieldName)) {
-                    azureOpenAIParameters = AzureOpenAIParameters.fromJson(reader);
+                    parameters = AzureOpenAIVectorizerParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (nameFound) {
-                AzureOpenAIVectorizer deserializedAzureOpenAIVectorizer = new AzureOpenAIVectorizer(name);
-                deserializedAzureOpenAIVectorizer.azureOpenAIParameters = azureOpenAIParameters;
+            if (vectorizerNameFound) {
+                AzureOpenAIVectorizer deserializedAzureOpenAIVectorizer = new AzureOpenAIVectorizer(vectorizerName);
+                deserializedAzureOpenAIVectorizer.parameters = parameters;
 
                 return deserializedAzureOpenAIVectorizer;
             }

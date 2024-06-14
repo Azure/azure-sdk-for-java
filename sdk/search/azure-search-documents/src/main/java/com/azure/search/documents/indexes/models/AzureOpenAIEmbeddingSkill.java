@@ -28,7 +28,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     /*
      * The resource URI of the Azure OpenAI resource.
      */
-    private String resourceUri;
+    private String resourceUrl;
 
     /*
      * ID of the Azure OpenAI model deployment on the designated resource.
@@ -83,22 +83,22 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the resourceUri property: The resource URI of the Azure OpenAI resource.
+     * Get the resourceUrl property: The resource URI of the Azure OpenAI resource.
      * 
-     * @return the resourceUri value.
+     * @return the resourceUrl value.
      */
-    public String getResourceUri() {
-        return this.resourceUri;
+    public String getResourceUrl() {
+        return this.resourceUrl;
     }
 
     /**
-     * Set the resourceUri property: The resource URI of the Azure OpenAI resource.
+     * Set the resourceUrl property: The resource URI of the Azure OpenAI resource.
      * 
-     * @param resourceUri the resourceUri value to set.
+     * @param resourceUrl the resourceUrl value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
      */
-    public AzureOpenAIEmbeddingSkill setResourceUri(String resourceUri) {
-        this.resourceUri = resourceUri;
+    public AzureOpenAIEmbeddingSkill setResourceUrl(String resourceUrl) {
+        this.resourceUrl = resourceUrl;
         return this;
     }
 
@@ -219,7 +219,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
         jsonWriter.writeNumberField("dimensions", this.dimensions);
-        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeStringField("resourceUri", this.resourceUrl);
         jsonWriter.writeStringField("deploymentId", this.deploymentName);
         jsonWriter.writeStringField("apiKey", this.apiKey);
         jsonWriter.writeJsonField("authIdentity", this.authIdentity);
@@ -247,7 +247,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
             String description = null;
             String context = null;
             Integer dimensions = null;
-            String resourceUri = null;
+            String resourceUrl = null;
             String deploymentName = null;
             String apiKey = null;
             SearchIndexerDataIdentity authIdentity = null;
@@ -278,7 +278,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
                 } else if ("dimensions".equals(fieldName)) {
                     dimensions = reader.getNullable(JsonReader::getInt);
                 } else if ("resourceUri".equals(fieldName)) {
-                    resourceUri = reader.getString();
+                    resourceUrl = reader.getString();
                 } else if ("deploymentId".equals(fieldName)) {
                     deploymentName = reader.getString();
                 } else if ("apiKey".equals(fieldName)) {
@@ -298,7 +298,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
                 deserializedAzureOpenAIEmbeddingSkill.setDescription(description);
                 deserializedAzureOpenAIEmbeddingSkill.setContext(context);
                 deserializedAzureOpenAIEmbeddingSkill.dimensions = dimensions;
-                deserializedAzureOpenAIEmbeddingSkill.resourceUri = resourceUri;
+                deserializedAzureOpenAIEmbeddingSkill.resourceUrl = resourceUrl;
                 deserializedAzureOpenAIEmbeddingSkill.deploymentName = deploymentName;
                 deserializedAzureOpenAIEmbeddingSkill.apiKey = apiKey;
                 deserializedAzureOpenAIEmbeddingSkill.authIdentity = authIdentity;

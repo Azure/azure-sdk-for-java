@@ -21,30 +21,30 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
     /*
      * The name to associate with this particular vectorization method.
      */
-    private final String name;
+    private final String vectorizerName;
 
     /**
      * Creates an instance of VectorSearchVectorizer class.
      * 
-     * @param name the name value to set.
+     * @param vectorizerName the vectorizerName value to set.
      */
-    public VectorSearchVectorizer(String name) {
-        this.name = name;
+    public VectorSearchVectorizer(String vectorizerName) {
+        this.vectorizerName = vectorizerName;
     }
 
     /**
-     * Get the name property: The name to associate with this particular vectorization method.
+     * Get the vectorizerName property: The name to associate with this particular vectorization method.
      * 
-     * @return the name value.
+     * @return the vectorizerName value.
      */
-    public String getName() {
-        return this.name;
+    public String getVectorizerName() {
+        return this.vectorizerName;
     }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("name", this.vectorizerName);
         return jsonWriter.writeEndObject();
     }
 
@@ -87,21 +87,21 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
 
     static VectorSearchVectorizer fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
+            boolean vectorizerNameFound = false;
+            String vectorizerName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
+                    vectorizerName = reader.getString();
+                    vectorizerNameFound = true;
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (nameFound) {
-                return new VectorSearchVectorizer(name);
+            if (vectorizerNameFound) {
+                return new VectorSearchVectorizer(vectorizerName);
             }
             throw new IllegalStateException("Missing required property: name");
         });

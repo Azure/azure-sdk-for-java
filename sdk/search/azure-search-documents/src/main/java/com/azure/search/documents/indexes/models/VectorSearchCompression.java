@@ -11,18 +11,17 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.indexes.implementation.models.ScalarQuantizationCompressionConfiguration;
 import java.io.IOException;
 
 /**
  * Contains configuration options specific to the compression method used during indexing or querying.
  */
 @Fluent
-public class VectorSearchCompressionConfiguration implements JsonSerializable<VectorSearchCompressionConfiguration> {
+public class VectorSearchCompression implements JsonSerializable<VectorSearchCompression> {
     /*
      * The name to associate with this particular configuration.
      */
-    private final String name;
+    private final String compressionName;
 
     /*
      * If set to true, once the ordered set of results calculated using compressed vectors are obtained, they will be
@@ -40,21 +39,21 @@ public class VectorSearchCompressionConfiguration implements JsonSerializable<Ve
     private Double defaultOversampling;
 
     /**
-     * Creates an instance of VectorSearchCompressionConfiguration class.
+     * Creates an instance of VectorSearchCompression class.
      * 
-     * @param name the name value to set.
+     * @param compressionName the compressionName value to set.
      */
-    public VectorSearchCompressionConfiguration(String name) {
-        this.name = name;
+    public VectorSearchCompression(String compressionName) {
+        this.compressionName = compressionName;
     }
 
     /**
-     * Get the name property: The name to associate with this particular configuration.
+     * Get the compressionName property: The name to associate with this particular configuration.
      * 
-     * @return the name value.
+     * @return the compressionName value.
      */
-    public String getName() {
-        return this.name;
+    public String getCompressionName() {
+        return this.compressionName;
     }
 
     /**
@@ -74,9 +73,9 @@ public class VectorSearchCompressionConfiguration implements JsonSerializable<Ve
      * scores. This will improve recall at the expense of latency.
      * 
      * @param rerankWithOriginalVectors the rerankWithOriginalVectors value to set.
-     * @return the VectorSearchCompressionConfiguration object itself.
+     * @return the VectorSearchCompression object itself.
      */
-    public VectorSearchCompressionConfiguration setRerankWithOriginalVectors(Boolean rerankWithOriginalVectors) {
+    public VectorSearchCompression setRerankWithOriginalVectors(Boolean rerankWithOriginalVectors) {
         this.rerankWithOriginalVectors = rerankWithOriginalVectors;
         return this;
     }
@@ -102,9 +101,9 @@ public class VectorSearchCompressionConfiguration implements JsonSerializable<Ve
      * recall at the expense of latency.
      * 
      * @param defaultOversampling the defaultOversampling value to set.
-     * @return the VectorSearchCompressionConfiguration object itself.
+     * @return the VectorSearchCompression object itself.
      */
-    public VectorSearchCompressionConfiguration setDefaultOversampling(Double defaultOversampling) {
+    public VectorSearchCompression setDefaultOversampling(Double defaultOversampling) {
         this.defaultOversampling = defaultOversampling;
         return this;
     }
@@ -112,23 +111,23 @@ public class VectorSearchCompressionConfiguration implements JsonSerializable<Ve
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("name", this.compressionName);
         jsonWriter.writeBooleanField("rerankWithOriginalVectors", this.rerankWithOriginalVectors);
         jsonWriter.writeNumberField("defaultOversampling", this.defaultOversampling);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of VectorSearchCompressionConfiguration from the JsonReader.
+     * Reads an instance of VectorSearchCompression from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of VectorSearchCompressionConfiguration if the JsonReader was pointing to an instance of it,
-     * or null if it was pointing to JSON null.
+     * @return An instance of VectorSearchCompression if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the VectorSearchCompressionConfiguration.
+     * @throws IOException If an error occurs while reading the VectorSearchCompression.
      */
-    public static VectorSearchCompressionConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static VectorSearchCompression fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
             JsonReader readerToUse = reader.bufferObject();
@@ -146,19 +145,19 @@ public class VectorSearchCompressionConfiguration implements JsonSerializable<Ve
             }
             // Use the discriminator value to determine which subtype should be deserialized.
             if ("scalarQuantization".equals(discriminatorValue)) {
-                return ScalarQuantizationCompressionConfiguration.fromJson(readerToUse.reset());
+                return ScalarQuantizationCompression.fromJson(readerToUse.reset());
             } else if ("binaryQuantization".equals(discriminatorValue)) {
-                return BinaryQuantizationCompressionConfiguration.fromJson(readerToUse.reset());
+                return BinaryQuantizationCompression.fromJson(readerToUse.reset());
             } else {
                 return fromJsonKnownDiscriminator(readerToUse.reset());
             }
         });
     }
 
-    static VectorSearchCompressionConfiguration fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+    static VectorSearchCompression fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
+            boolean compressionNameFound = false;
+            String compressionName = null;
             Boolean rerankWithOriginalVectors = null;
             Double defaultOversampling = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -166,8 +165,8 @@ public class VectorSearchCompressionConfiguration implements JsonSerializable<Ve
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
+                    compressionName = reader.getString();
+                    compressionNameFound = true;
                 } else if ("rerankWithOriginalVectors".equals(fieldName)) {
                     rerankWithOriginalVectors = reader.getNullable(JsonReader::getBoolean);
                 } else if ("defaultOversampling".equals(fieldName)) {
@@ -176,13 +175,13 @@ public class VectorSearchCompressionConfiguration implements JsonSerializable<Ve
                     reader.skipChildren();
                 }
             }
-            if (nameFound) {
-                VectorSearchCompressionConfiguration deserializedVectorSearchCompressionConfiguration
-                    = new VectorSearchCompressionConfiguration(name);
-                deserializedVectorSearchCompressionConfiguration.rerankWithOriginalVectors = rerankWithOriginalVectors;
-                deserializedVectorSearchCompressionConfiguration.defaultOversampling = defaultOversampling;
+            if (compressionNameFound) {
+                VectorSearchCompression deserializedVectorSearchCompression
+                    = new VectorSearchCompression(compressionName);
+                deserializedVectorSearchCompression.rerankWithOriginalVectors = rerankWithOriginalVectors;
+                deserializedVectorSearchCompression.defaultOversampling = defaultOversampling;
 
-                return deserializedVectorSearchCompressionConfiguration;
+                return deserializedVectorSearchCompression;
             }
             throw new IllegalStateException("Missing required property: name");
         });

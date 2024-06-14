@@ -21,15 +21,15 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
     /*
      * Specifies the properties of the user-defined vectorizer.
      */
-    private WebApiParameters webApiParameters;
+    private WebApiVectorizerParameters webApiParameters;
 
     /**
      * Creates an instance of WebApiVectorizer class.
      * 
-     * @param name the name value to set.
+     * @param vectorizerName the vectorizerName value to set.
      */
-    public WebApiVectorizer(String name) {
-        super(name);
+    public WebApiVectorizer(String vectorizerName) {
+        super(vectorizerName);
     }
 
     /**
@@ -37,7 +37,7 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
      * 
      * @return the webApiParameters value.
      */
-    public WebApiParameters getWebApiParameters() {
+    public WebApiVectorizerParameters getWebApiParameters() {
         return this.webApiParameters;
     }
 
@@ -47,7 +47,7 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
      * @param webApiParameters the webApiParameters value to set.
      * @return the WebApiVectorizer object itself.
      */
-    public WebApiVectorizer setWebApiParameters(WebApiParameters webApiParameters) {
+    public WebApiVectorizer setWebApiParameters(WebApiVectorizerParameters webApiParameters) {
         this.webApiParameters = webApiParameters;
         return this;
     }
@@ -57,7 +57,7 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kind", VectorSearchVectorizerKind.CUSTOM_WEB_API == null ? null
             : VectorSearchVectorizerKind.CUSTOM_WEB_API.toString());
-        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("name", getVectorizerName());
         jsonWriter.writeJsonField("customWebApiParameters", this.webApiParameters);
         return jsonWriter.writeEndObject();
     }
@@ -74,9 +74,9 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
      */
     public static WebApiVectorizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            WebApiParameters webApiParameters = null;
+            boolean vectorizerNameFound = false;
+            String vectorizerName = null;
+            WebApiVectorizerParameters webApiParameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -89,16 +89,16 @@ public final class WebApiVectorizer extends VectorSearchVectorizer {
                                 + kind + "'.");
                     }
                 } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
+                    vectorizerName = reader.getString();
+                    vectorizerNameFound = true;
                 } else if ("customWebApiParameters".equals(fieldName)) {
-                    webApiParameters = WebApiParameters.fromJson(reader);
+                    webApiParameters = WebApiVectorizerParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (nameFound) {
-                WebApiVectorizer deserializedWebApiVectorizer = new WebApiVectorizer(name);
+            if (vectorizerNameFound) {
+                WebApiVectorizer deserializedWebApiVectorizer = new WebApiVectorizer(vectorizerName);
                 deserializedWebApiVectorizer.webApiParameters = webApiParameters;
 
                 return deserializedWebApiVectorizer;

@@ -33,7 +33,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * Defines the sequence of characters to use between the lines of text recognized by the OCR skill. The default
      * value is "space".
      */
-    private LineEnding lineEnding;
+    private OcrLineEnding lineEnding;
 
     /**
      * Creates an instance of OcrSkill class.
@@ -93,7 +93,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      *
      * @return the lineEnding value.
      */
-    public LineEnding getLineEnding() {
+    public OcrLineEnding getLineEnding() {
         return this.lineEnding;
     }
 
@@ -104,7 +104,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      * @param lineEnding the lineEnding value to set.
      * @return the OcrSkill object itself.
      */
-    public OcrSkill setLineEnding(LineEnding lineEnding) {
+    public OcrSkill setLineEnding(OcrLineEnding lineEnding) {
         this.lineEnding = lineEnding;
         return this;
     }
@@ -173,7 +173,7 @@ public final class OcrSkill extends SearchIndexerSkill {
             String context = null;
             OcrSkillLanguage defaultLanguageCode = null;
             Boolean shouldDetectOrientation = null;
-            LineEnding lineEnding = null;
+            OcrLineEnding lineEnding = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -201,7 +201,7 @@ public final class OcrSkill extends SearchIndexerSkill {
                 } else if ("detectOrientation".equals(fieldName)) {
                     shouldDetectOrientation = reader.getNullable(JsonReader::getBoolean);
                 } else if ("lineEnding".equals(fieldName)) {
-                    lineEnding = LineEnding.fromString(reader.getString());
+                    lineEnding = OcrLineEnding.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

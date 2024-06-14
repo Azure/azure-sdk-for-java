@@ -22,34 +22,34 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
      * "/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId"
      * that should have been assigned to the search service.
      */
-    private final String userAssignedIdentity;
+    private final String resourceId;
 
     /**
      * Creates an instance of SearchIndexerDataUserAssignedIdentity class.
      * 
-     * @param userAssignedIdentity the userAssignedIdentity value to set.
+     * @param resourceId the resourceId value to set.
      */
-    public SearchIndexerDataUserAssignedIdentity(String userAssignedIdentity) {
-        this.userAssignedIdentity = userAssignedIdentity;
+    public SearchIndexerDataUserAssignedIdentity(String resourceId) {
+        this.resourceId = resourceId;
     }
 
     /**
-     * Get the userAssignedIdentity property: The fully qualified Azure resource Id of a user assigned managed identity
-     * typically in the form
+     * Get the resourceId property: The fully qualified Azure resource Id of a user assigned managed identity typically
+     * in the form
      * "/subscriptions/12345678-1234-1234-1234-1234567890ab/resourceGroups/rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId"
      * that should have been assigned to the search service.
      * 
-     * @return the userAssignedIdentity value.
+     * @return the resourceId value.
      */
-    public String getUserAssignedIdentity() {
-        return this.userAssignedIdentity;
+    public String getResourceId() {
+        return this.resourceId;
     }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.DataUserAssignedIdentity");
-        jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
+        jsonWriter.writeStringField("userAssignedIdentity", this.resourceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -65,8 +65,8 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
      */
     public static SearchIndexerDataUserAssignedIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            boolean userAssignedIdentityFound = false;
-            String userAssignedIdentity = null;
+            boolean resourceIdFound = false;
+            String resourceId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -79,14 +79,14 @@ public final class SearchIndexerDataUserAssignedIdentity extends SearchIndexerDa
                                 + odataType + "'.");
                     }
                 } else if ("userAssignedIdentity".equals(fieldName)) {
-                    userAssignedIdentity = reader.getString();
-                    userAssignedIdentityFound = true;
+                    resourceId = reader.getString();
+                    resourceIdFound = true;
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (userAssignedIdentityFound) {
-                return new SearchIndexerDataUserAssignedIdentity(userAssignedIdentity);
+            if (resourceIdFound) {
+                return new SearchIndexerDataUserAssignedIdentity(resourceId);
             }
             throw new IllegalStateException("Missing required property: userAssignedIdentity");
         });

@@ -90,7 +90,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dc27f9b32787533cd4d07fe0de5245f2f8354dbe/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,VectorQueryKind,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,ScalarQuantizationParameters,ScalarQuantizationCompressionConfiguration
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
 customization-class: src/main/java/SearchIndexCustomizations.java
 directive:
     - rename-model:
@@ -108,7 +108,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/dc27f9b32787533cd4d07fe0de5245f2f8354dbe/specification/search/data-plane/Azure.Search/stable/2024-07-01/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,VectorSearchAlgorithmKind,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,ScalarQuantizationParameters,ScalarQuantizationCompressionConfiguration
+custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
@@ -216,24 +216,11 @@ directive:
       return $;
 ```
 
-### Set `hybridSearch` property to be type `HybridSearch` in SearchRequest
-
-``` yaml $(tag) == 'searchindex'
-directive:
-  - from: swagger-document
-    where: $.definitions.SearchRequest.properties
-    transform: >
-        delete $.hybridSearch["type"];
-        delete $.hybridSearch.items;
-        $.hybridSearch["$ref"] = "#/definitions/HybridSearch";
-        
-```
-
 ### Remove required from properties that are optional
 
 ``` yaml $(tag) == 'searchservice'
 directive:
-  - from: swagger-document
+  - from: "searchservice.json"
     where: $.definitions
     transform: >
       $.SearchIndex.required = $.SearchIndex.required.filter(required => required === 'name');
@@ -248,7 +235,7 @@ directive:
 ### Renames
 ``` yaml $(tag) == 'searchservice'
 directive:
-  - from: swagger-document
+  - from: "searchservice.json"
     where: $.definitions
     transform: >
       $.ServiceCounters["x-ms-client-name"] = "SearchServiceCounters";
@@ -298,24 +285,6 @@ directive:
       param["x-ms-client-name"] = "includeTotalCount";
 ```
 
-### Rename Speller to QuerySpellerType
-``` yaml $(java)
-directive:
-  - from: swagger-document
-    where: $.paths["/docs"].get.parameters
-    transform: >
-      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
-```
-
-### Rename Speller to QuerySpellerType
-``` yaml $(tag) == 'searchindex'
-directive:
-  - from: swagger-document
-    where: $.definitions
-    transform: >
-      $.Speller["x-ms-enum"].name = "QuerySpellerType";
-```
-
 ### Change Answers and Captions to a string in SearchOptions and SearchRequest
 ``` yaml $(java)
 directive:
@@ -335,7 +304,7 @@ directive:
 
 ``` yaml $(tag) == 'searchindex'
 directive:
-  - from: swagger-document
+  - from: "searchindex.json"
     where: $.definitions
     transform: >
       let param = $.SearchRequest.properties.answers;
@@ -388,7 +357,7 @@ directive:
 ### Rename client parameter names
 ``` yaml $(tag) == 'searchservice'
 directive:
-  - from: swagger-document
+  - from: "searchservice.json"
     where: $.definitions
     transform: >
       $.CommonGramTokenFilter.properties.ignoreCase["x-ms-client-name"] = "caseIgnored";
@@ -444,4 +413,39 @@ directive:
 - from: swagger-document
   where: $.definitions.AMLParameters
   transform: $["x-ms-client-name"] = "AzureMachineLearningParameters";
+```
+
+### Archboard feedback for 2024-07-01
+
+```yaml $(tag) == 'searchservice'
+directive:
+- from: "searchservice.json"
+  where: $.definitions
+  transform: >
+    $.AzureOpenAIParameters["x-ms-client-name"] = "AzureOpenAIVectorizerParameters";
+    $.AzureOpenAIParameters.properties.resourceUri["x-ms-client-name"] = "resourceUrl";
+
+    $.AzureOpenAIVectorizer.properties.azureOpenAIParameters["x-ms-client-name"] = "parameters";
+
+    $.SearchIndexerDataUserAssignedIdentity.properties.userAssignedIdentity["x-ms-client-name"] = "resourceId";
+
+    $.SearchIndexerIndexProjections["x-ms-client-name"] = "SearchIndexerIndexProjection";
+    $.SearchIndexerSkillset.properties.indexProjections["x-ms-client-name"] = "indexProjection";
+
+    $.VectorSearchCompressionConfiguration["x-ms-client-name"] = "VectorSearchCompression";
+    $.VectorSearchCompressionConfiguration.properties.name["x-ms-client-name"] = "compressionName";
+    $.ScalarQuantizationVectorSearchCompressionConfiguration["x-ms-client-name"] = "ScalarQuantizationCompression";
+    $.BinaryQuantizationVectorSearchCompressionConfiguration["x-ms-client-name"] = "BinaryQuantizationCompression";
+    $.VectorSearchProfile.properties.compression["x-ms-client-name"] = "compressionName";
+
+    $.VectorSearchVectorizer.properties.name["x-ms-client-name"] = "vectorizerName";
+
+    $.WebApiParameters["x-ms-client-name"] = "WebApiVectorizerParameters";
+    $.WebApiParameters.properties.uri["x-ms-client-name"] = "url";
+
+    $.VectorSearchCompressionTargetDataType["x-ms-client-name"] = "VectorSearchCompressionTarget";
+    $.VectorSearchCompressionTargetDataType["x-ms-enum"].name = "VectorSearchCompressionTarget";
+
+    $.OcrSkillLineEnding["x-ms-client-name"] = "OcrLineEnding";
+    $.OcrSkillLineEnding["x-ms-enum"].name = "OcrLineEnding";
 ```
