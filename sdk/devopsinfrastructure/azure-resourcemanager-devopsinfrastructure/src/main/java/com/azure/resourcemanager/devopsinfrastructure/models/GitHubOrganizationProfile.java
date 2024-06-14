@@ -6,34 +6,25 @@ package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * GitHub organization profile.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = GitHubOrganizationProfile.class,
-    visible = true)
-@JsonTypeName("GitHub")
 @Fluent
 public final class GitHubOrganizationProfile extends OrganizationProfile {
     /*
-     * The kind property.
+     * Discriminator property for OrganizationProfile.
      */
-    @JsonTypeId
-    @JsonProperty(value = "kind", required = true)
     private String kind = "GitHub";
 
     /*
      * The list of GitHub organizations/repositories the pool should be present in.
      */
-    @JsonProperty(value = "organizations", required = true)
     private List<GitHubOrganization> organizations;
 
     /**
@@ -43,7 +34,7 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
     }
 
     /**
-     * Get the kind property: The kind property.
+     * Get the kind property: Discriminator property for OrganizationProfile.
      * 
      * @return the kind value.
      */
@@ -90,4 +81,46 @@ public final class GitHubOrganizationProfile extends OrganizationProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GitHubOrganizationProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("organizations", this.organizations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHubOrganizationProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHubOrganizationProfile if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GitHubOrganizationProfile.
+     */
+    public static GitHubOrganizationProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHubOrganizationProfile deserializedGitHubOrganizationProfile = new GitHubOrganizationProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("organizations".equals(fieldName)) {
+                    List<GitHubOrganization> organizations
+                        = reader.readArray(reader1 -> GitHubOrganization.fromJson(reader1));
+                    deserializedGitHubOrganizationProfile.organizations = organizations;
+                } else if ("kind".equals(fieldName)) {
+                    deserializedGitHubOrganizationProfile.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHubOrganizationProfile;
+        });
+    }
 }

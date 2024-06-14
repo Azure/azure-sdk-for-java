@@ -630,7 +630,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> importBusinessMetadata(@HostParam("endpoint") String endpoint,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData businessMetadataOptions, RequestOptions requestOptions,
             Context context);
 
@@ -642,7 +642,7 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> importBusinessMetadataSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData businessMetadataOptions, RequestOptions requestOptions,
             Context context);
 
