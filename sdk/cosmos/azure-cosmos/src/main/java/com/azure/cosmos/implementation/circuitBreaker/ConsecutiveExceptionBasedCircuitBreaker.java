@@ -176,6 +176,8 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
                         return 20;
                     } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("HIGH")) {
                         return 40;
+                    } else {
+                        throw new IllegalArgumentException("Unsupported tolerance setting " + this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance());
                     }
                 case HealthyTentative:
                     if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("LOW")) {
@@ -184,6 +186,8 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
                         return 10;
                     } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("HIGH")) {
                         return 20;
+                    } else {
+                        throw new IllegalArgumentException("Unsupported tolerance setting " + this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance());
                     }
                 case Healthy:
                     return 0;
