@@ -34,6 +34,22 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
+    void send(boolean useManagedIdentity) {
+        if (interceptorManager.isLiveMode()) {
+            assumeTrue(useManagedIdentity);
+        } else {
+            assumeFalse(useManagedIdentity);
+        }
+
+        EventGridSenderAsyncClient client = buildSenderAsyncClient(useManagedIdentity);
+
+        client.send(getCloudEvent())
+            .as(StepVerifier::create)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
     void receiveBatchOfCloudEvents(boolean useManagedIdentity) {
         if (interceptorManager.isLiveMode()) {
             assumeTrue(useManagedIdentity);
