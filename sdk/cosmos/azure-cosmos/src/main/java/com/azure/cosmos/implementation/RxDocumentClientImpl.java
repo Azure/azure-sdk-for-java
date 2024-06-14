@@ -5930,9 +5930,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
                         getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, resourceType, operationType);
 
-                    // todo: investigate retry policy in stale cache scenarios
                     if (collectionRoutingMapValueHolder.v == null) {
-                        return Mono.error(new CollectionRoutingMapNotFoundException("collectionRoutingMapValueHolder.v cannot be null!"));
+                        return Mono.error(new CollectionRoutingMapNotFoundException("Argument 'collectionRoutingMapValueHolder.v' cannot be null!"));
                     }
 
                     nonNullRequestOptions.setPartitionKeyDefinition(collection.getPartitionKey());
@@ -6088,7 +6087,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
                 }))
             )
-            .retryWhen(Retry.fixedDelay(10, Duration.ofSeconds(1))
+            .retryWhen(Retry.fixedDelay(Configs.getStaleCollectionCacheRefreshRetryCount(), Duration.ofSeconds(Configs.getStaleCollectionCacheRefreshRetryIntervalInSeconds()))
                 .filter(throwable -> throwable instanceof CollectionRoutingMapNotFoundException)
                 .doBeforeRetry((retrySignal) -> this.collectionCache
                 .refresh(

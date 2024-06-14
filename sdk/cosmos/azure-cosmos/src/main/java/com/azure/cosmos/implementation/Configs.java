@@ -205,6 +205,11 @@ public class Configs {
     public static final String DEFAULT_METRICS_CONFIG = CosmosMicrometerMetricsConfig.DEFAULT.toJson();
     private static final String DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG = PartitionLevelCircuitBreakerConfig.DEFAULT.toJson();
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG";
+    private static final String STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG";
+    private static final int DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT = 2;
+    private static final String STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS = "COSMOS.STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS";
+    private static final int DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS = 1;
+
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -607,5 +612,21 @@ public class Configs {
                     DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG));
 
         return PartitionLevelCircuitBreakerConfig.fromJsonString(partitionLevelCircuitBreakerConfig);
+    }
+
+    public static int getStaleCollectionCacheRefreshRetryCount() {
+        return getIntValue(System.getProperty(
+            STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT,
+            firstNonNull(
+                emptyToNull(System.getenv().get(STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT)),
+                STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT)), DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
+    }
+
+    public static int getStaleCollectionCacheRefreshRetryIntervalInSeconds() {
+        return getIntValue(System.getProperty(
+            STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS,
+            firstNonNull(
+                emptyToNull(System.getenv().get(STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS)),
+                STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS)), DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS);
     }
 }
