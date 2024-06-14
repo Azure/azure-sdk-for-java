@@ -758,7 +758,9 @@ try {
     if ($TestApplicationSecret -and $ServicePrincipalAuth) {
         $templateParameters.Add('testApplicationSecret', $TestApplicationSecret)
     }
+    Write-Host "[bebroder] $Environment"
     if ($CI -and $Environment -eq 'AzureCloud') {
+        Write-Host "[bebroder] adding subnet list!"
         $templateParameters.Add('azsdkPipelineSubnetList', $azsdkPipelineSubnets)
     }
 
