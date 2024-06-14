@@ -24,7 +24,7 @@ public final class BlobSignedIdentifierWrapper implements XmlSerializable<BlobSi
 
     /**
      * Creates an instance of BlobSignedIdentifierWrapper.
-     *
+     * 
      * @param signedIdentifiers the list.
      */
     public BlobSignedIdentifierWrapper(List<BlobSignedIdentifier> signedIdentifiers) {
@@ -33,7 +33,7 @@ public final class BlobSignedIdentifierWrapper implements XmlSerializable<BlobSi
 
     /**
      * Get the List&lt;BlobSignedIdentifier&gt; contained in this wrapper.
-     *
+     * 
      * @return the List&lt;BlobSignedIdentifier&gt;.
      */
     public List<BlobSignedIdentifier> items() {
