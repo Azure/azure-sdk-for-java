@@ -220,8 +220,9 @@ feature-management:
 To create a recurrence rule, you need to specify 3 parts: `start`, `end` and `recurrence`. 
 The `start` and `end` parameters define the time window which need to recur periodically. 
 The `recurrence` parameter is made up of two parts: `pattern` (how often the time window will repeat) and `range` (for how long the recurrence pattern will repeat). To create a recurrence rule, you must specify both `pattern` and `range`. Any pattern type can work with any range type. 
+The time zone offset of the `start` property will apply to the recurrence settings.
 
-**Advanced:** The time zone offset of the `start` property will apply to the recurrence settings.
+**Note:** `start` must be a valid first occurrence which fits the recurrence pattern. For example, if we define to repeat on every other Monday and Tuesday, then the start time should be in Monday or Tuesday. <br /> Additionally, the duration of the time window cannot be longer than how frequently it occurs. For example, it is invalid to have a 25-hour time window recur every day.
 
 #### Recurrence Pattern
 
@@ -288,7 +289,6 @@ There are two possible recurrence pattern types: `Daily` and `Weekly`.
             type: "NoEnd"
         ```
 
-    **Note:** `start` must be a valid first occurrence which fits the recurrence pattern. For example, if we define to repeat on every other Monday and Tuesday, then the start time should be in Monday or Tuesday. <br /> Additionally, the duration of the time window cannot be longer than how frequently it occurs. For example, it is invalid to have a 25-hour time window recur every day.
 
 #### Recurrence Range
 
