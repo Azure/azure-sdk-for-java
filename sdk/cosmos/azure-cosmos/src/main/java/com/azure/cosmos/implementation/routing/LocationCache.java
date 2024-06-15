@@ -205,8 +205,6 @@ public class LocationCache {
                 return this.defaultEndpoint;
             }
         } else {
-
-            logger.info("In resolveServiceEndpoint");
             UnmodifiableList<URI> endpoints =
                 request.getOperationType().isWriteOperation()? this.getApplicableWriteEndpoints(request) : this.getApplicableReadEndpoints(request);
             return endpoints.get(locationIndex % endpoints.size());
@@ -214,7 +212,6 @@ public class LocationCache {
     }
 
     public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
-        logger.info("In getApplicableWriteEndpoints with RxDocumentServiceRequest request");
         return this.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions(), request.requestContext.getUnavailableRegionsForPartition());
     }
 
