@@ -114,6 +114,12 @@ abstract class SyncBenchmark<T> {
         configuration = cfg;
         logger = LoggerFactory.getLogger(this.getClass());
 
+        if (configuration.isPartitionLevelCircuitBreakerEnabled()) {
+            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                + "\"circuitBreakerType\": \"COUNT_BASED\","
+                + "\"circuitBreakerFailureTolerance\": \"LOW\"}");
+        }
+
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .preferredRegions(cfg.getPreferredRegionsList())

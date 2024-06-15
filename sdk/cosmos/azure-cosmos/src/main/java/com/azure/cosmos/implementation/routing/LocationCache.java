@@ -237,14 +237,6 @@ public class LocationCache {
         List<String> effectiveExcludedRegionsWithPartitionUnavailableRegions = new ArrayList<>(effectiveExcludedRegions);
 
         if (unavailableRegionsForPartition != null) {
-
-            // todo: remove logging statements eventually
-            logger.info("Printing unavailable location for partition");
-
-            for (String unavailableRegionForPartition : unavailableRegionsForPartition) {
-                logger.info("Unavailable region : {}", unavailableRegionForPartition);
-            }
-
             effectiveExcludedRegionsWithPartitionUnavailableRegions.addAll(unavailableRegionsForPartition);
         }
 
@@ -257,7 +249,6 @@ public class LocationCache {
     }
 
     public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
-        logger.info("In getApplicableReadEndpoints with RxDocumentServiceRequest request");
         return this.getApplicableReadEndpoints(request.requestContext.getExcludeRegions(), request.requestContext.getUnavailableRegionsForPartition());
     }
 
@@ -279,14 +270,6 @@ public class LocationCache {
         List<String> effectiveExcludedRegionsWithPartitionUnavailableRegions = new ArrayList<>(effectiveExcludedRegions);
 
         if (unavailableRegionsForPartition != null) {
-
-            // todo: remove logging statements eventually
-            logger.info("Printing unavailable region for partition");
-
-            for (String unavailableRegionForPartition : unavailableRegionsForPartition) {
-                logger.info("Unavailable region : {}", unavailableRegionForPartition);
-            }
-
             effectiveExcludedRegionsWithPartitionUnavailableRegions.addAll(unavailableRegionsForPartition);
         }
 

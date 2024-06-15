@@ -53,8 +53,6 @@ public class DocumentServiceRequestContext implements Cloneable {
     private volatile long approximateBloomFilterInsertionCount;
     private final Set<String> sessionTokenEvaluationResults = ConcurrentHashMap.newKeySet();
     private volatile List<String> unavailableRegionsForPartition;
-    private volatile boolean isRequestHedged = false;
-    public volatile boolean isRequestSendingStarted = false;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
@@ -172,14 +170,6 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setExcludeRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
-    }
-
-    public void setIsRequestHedged(boolean isRequestHedged) {
-        this.isRequestHedged = isRequestHedged;
-    }
-
-    public boolean isRequestHedged() {
-        return this.isRequestHedged;
     }
 
     public List<String> getUnavailableRegionsForPartition() {
