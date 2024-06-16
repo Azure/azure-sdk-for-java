@@ -57,7 +57,7 @@ public class AzureCosmosConnectionDetailsConditionTests {
 
     @Conditional(AzureCosmosConnectionDetailsCondition.class)
     private static class Config {
-        public static String TEST_BEAN_NAME = "testBean";
+        public static final String TEST_BEAN_NAME = "testBean";
         @Bean
         String testBean() {
             return TEST_BEAN_NAME;
