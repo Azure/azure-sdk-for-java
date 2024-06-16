@@ -5,7 +5,7 @@
 ### Spring Cloud Azure Dependencies (BOM)
 
 #### Dependency Updates
- - Added new module `spring-cloud-azure-testcontainers`.
+ - Added a new dependency: `spring-cloud-azure-testcontainers`.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -30,7 +30,6 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
-- Add ConnectionDetails for Cosmos, Storage Blob and Storage Queue
 - Add `AzureLettucePasswordlessAutoConfiguration` to support redis passwordless [#40287](https://github.com/Azure/azure-sdk-for-java/pull/40287).
 
 #### Bugs Fixed
