@@ -99,24 +99,21 @@ public final class HttpUtil {
         return result;
     }
 
-    public static HttpResponse postWithResponse(String url, Map<String, String> headers, String body,
-        String contentType) {
-
+    public static HttpResponse getWithResponse(String url, Map<String, String> headers) {
         HttpResponse result = null;
 
         try (CloseableHttpClient client = buildClient()) {
-            HttpPost httpPost = new HttpPost(url);
-            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+            HttpGet httpGet = new HttpGet(url);
 
             if (headers != null) {
-                headers.forEach(httpPost::addHeader);
-                httpPost.addHeader("Content-Type", contentType);
+                headers.forEach(httpGet::addHeader);
             }
 
-            httpPost.setEntity(new StringEntity(body, ContentType.create(contentType)));
-            result = client.execute(httpPost, createResponseHandlerForAuthChallenge());
+            httpGet.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+
+            result = client.execute(httpGet, createResponseHandlerForAuthChallenge());
         } catch (IOException ioe) {
-            LOGGER.log(WARNING, "Unable to finish the HTTP POST request.", ioe);
+            LOGGER.log(WARNING, "Unable to finish the HTTP GET request.", ioe);
         }
 
         return result;

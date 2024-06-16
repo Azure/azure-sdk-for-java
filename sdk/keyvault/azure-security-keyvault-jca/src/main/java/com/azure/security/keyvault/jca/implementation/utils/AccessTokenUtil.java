@@ -221,8 +221,7 @@ public final class AccessTokenUtil {
         LOGGER.entering("AccessTokenUtil", "getLoginUri", resourceUri);
         LOGGER.log(INFO, "Getting login URI for Key Vault: {0}", resourceUri.toString());
 
-        HttpResponse response = HttpUtil
-            .postWithResponse(resourceUri.toString(), null, "", "application/x-www-form-urlencoded");
+        HttpResponse response = HttpUtil.getWithResponse(resourceUri + "certificates", null);
         Map<String, String> challengeAttributes =
             extractChallengeAttributes(response.getFirstHeader(WWW_AUTHENTICATE).getValue());
         String scope = challengeAttributes.get("resource");
