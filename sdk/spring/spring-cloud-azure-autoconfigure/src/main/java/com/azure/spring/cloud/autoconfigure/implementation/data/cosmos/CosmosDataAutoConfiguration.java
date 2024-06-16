@@ -21,7 +21,7 @@ import org.springframework.context.annotation.Import;
  * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(AbstractCosmosConfiguration.class)  // Without this line, downstream library will have error: java.io.FileNotFoundException: class path resource [../AbstractCosmosConfiguration.class] cannot be opened because it does not exist.
+@ConditionalOnClass(AbstractCosmosConfiguration.class)  // This is used to avoid error in downstream library: java.io.FileNotFoundException: class path resource [.../AbstractCosmosConfiguration.class] cannot be opened because it does not exist.
 @Conditional(CosmosDataAutoConfigurationCondition.class)
 @Import(CosmosDataDiagnosticsConfiguration.class)
 public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
