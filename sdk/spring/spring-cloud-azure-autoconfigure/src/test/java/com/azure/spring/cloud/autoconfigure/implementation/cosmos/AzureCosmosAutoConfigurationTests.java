@@ -236,7 +236,39 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
     }
 
     @Test
-    void connectionDetailsShouldHasHigherPriorityThanConfigurationProperties() {
+    void cosmosAutoconfigurationShouldNotEnabledWhenBothPropertyAndConnectionDetailsBeanNotProvided() {
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureCosmosAutoConfiguration.class);
+            });
+    }
+
+    @Test
+    void cosmosAutoconfigurationShouldEnabledWhenOnlyPropertyProvided() {
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.cosmos.endpoint=test-endpoint")
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureCosmosAutoConfiguration.class);
+            });
+    }
+
+    @Test
+    void cosmosAutoconfigurationEnabledWhenOnlyConnectionDetailsBeanProvided() {
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
+            .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureCosmosAutoConfiguration.class);
+            });
+    }
+
+    @Test
+    void connectionDetailsShouldHasHigherPriorityThanProperties() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.cosmos.endpoint=test-endpoint",
