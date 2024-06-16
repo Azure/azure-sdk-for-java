@@ -218,6 +218,9 @@ public final class AccessTokenUtil {
     }
 
     public static String getLoginUri(URI resourceUri, boolean disableChallengeResourceVerification) {
+        LOGGER.entering("AccessTokenUtil", "getLoginUri", resourceUri);
+        LOGGER.log(INFO, "Getting login URI for Key Vault: {0}", resourceUri.toString());
+
         HttpResponse response = HttpUtil
             .postWithResponse(resourceUri.toString(), null, "", "application/x-www-form-urlencoded");
         Map<String, String> challengeAttributes =
@@ -251,6 +254,9 @@ public final class AccessTokenUtil {
 
             try {
                 new URI(authorization);
+
+                LOGGER.log(INFO, "Obtained login URI: {0}", authorization);
+                LOGGER.exiting("AccessTokenUtil", "getLoginUri", authorization);
 
                 return authorization;
             } catch (URISyntaxException e) {

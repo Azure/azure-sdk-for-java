@@ -61,7 +61,7 @@ public final class HttpUtil {
             httpGet.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
             result = client.execute(httpGet, createResponseHandler());
         } catch (IOException ioe) {
-            LOGGER.log(WARNING, "Unable to finish the http get request.", ioe);
+            LOGGER.log(WARNING, "Unable to finish the HTTP GET request.", ioe);
         }
         return result;
     }
@@ -94,7 +94,7 @@ public final class HttpUtil {
             httpPost.setEntity(new StringEntity(body, ContentType.create(contentType)));
             result = client.execute(httpPost, createResponseHandler());
         } catch (IOException ioe) {
-            LOGGER.log(WARNING, "Unable to finish the http post request.", ioe);
+            LOGGER.log(WARNING, "Unable to finish the HTTP POST request.", ioe);
         }
         return result;
     }
@@ -116,7 +116,7 @@ public final class HttpUtil {
             httpPost.setEntity(new StringEntity(body, ContentType.create(contentType)));
             result = client.execute(httpPost, createResponseHandlerForAuthChallenge());
         } catch (IOException ioe) {
-            LOGGER.log(WARNING, "Unable to finish the http post request.", ioe);
+            LOGGER.log(WARNING, "Unable to finish the HTTP POST request.", ioe);
         }
 
         return result;
