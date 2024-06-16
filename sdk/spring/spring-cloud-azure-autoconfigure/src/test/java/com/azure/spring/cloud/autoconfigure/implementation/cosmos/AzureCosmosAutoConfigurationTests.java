@@ -236,38 +236,6 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
     }
 
     @Test
-    void cosmosAutoconfigurationShouldNotEnabledWhenBothPropertyAndConnectionDetailsBeanNotProvided() {
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureCosmosAutoConfiguration.class);
-            });
-    }
-
-    @Test
-    void cosmosAutoconfigurationShouldEnabledWhenOnlyPropertyProvided() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.cosmos.endpoint=test-endpoint")
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureCosmosAutoConfiguration.class);
-            });
-    }
-
-    @Test
-    void cosmosAutoconfigurationEnabledWhenOnlyConnectionDetailsBeanProvided() {
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-            .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureCosmosAutoConfiguration.class);
-            });
-    }
-
-    @Test
     void connectionDetailsShouldHasHigherPriorityThanProperties() {
         this.contextRunner
             .withPropertyValues(
@@ -297,34 +265,6 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
 
-    }
-
-    static class CustomAzureCosmosConnectionDetails implements AzureCosmosConnectionDetails {
-
-        @Override
-        public String getEndpoint() {
-            return "test-endpoint-by-connection-detail";
-        }
-
-        @Override
-        public String getKey() {
-            return "cosmos-key-by-connection-detail";
-        }
-
-        @Override
-        public String getDatabase() {
-            return "test-database-by-connection-detail";
-        }
-
-        @Override
-        public Boolean getEndpointDiscoveryEnabled() {
-            return true;
-        }
-
-        @Override
-        public ConnectionMode getConnectionMode() {
-            return ConnectionMode.GATEWAY;
-        }
     }
 
 }

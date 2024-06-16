@@ -15,11 +15,7 @@ import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -30,9 +26,7 @@ import org.springframework.context.annotation.Conditional;
  *
  * @since 4.0.0
  */
-@ConditionalOnClass(CosmosClientBuilder.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.cosmos.enabled", havingValue = "true", matchIfMissing = true)
-@Conditional(AzureCosmosAutoConfiguration.AzureCosmosCondition.class)
+@Conditional(AzureCosmosAutoConfigurationCondition.class)
 @EnableConfigurationProperties
 public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase {
 
@@ -87,23 +81,6 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_COSMOS);
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
-    }
-
-    static class AzureCosmosCondition extends AnyNestedCondition {
-
-        AzureCosmosCondition() {
-            super(ConfigurationPhase.REGISTER_BEAN);
-        }
-
-        @ConditionalOnProperty(prefix = "spring.cloud.azure.cosmos", name = "endpoint")
-        static class PropertiesCondition {
-
-        }
-
-        @ConditionalOnBean(AzureCosmosConnectionDetails.class)
-        static class ConnectionDetailsBeanCondition {
-
-        }
     }
 
     static class PropertiesAzureCosmosConnectionDetails implements AzureCosmosConnectionDetails {
