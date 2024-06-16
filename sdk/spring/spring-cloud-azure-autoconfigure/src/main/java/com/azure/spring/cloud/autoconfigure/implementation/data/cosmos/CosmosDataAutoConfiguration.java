@@ -10,6 +10,7 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -20,6 +21,7 @@ import org.springframework.context.annotation.Import;
  * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnClass(AbstractCosmosConfiguration.class)  // Without this line, downstream library will have error: java.io.FileNotFoundException: class path resource [../AbstractCosmosConfiguration.class] cannot be opened because it does not exist.
 @Conditional(CosmosDataAutoConfigurationCondition.class)
 @Import(CosmosDataDiagnosticsConfiguration.class)
 public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
