@@ -307,7 +307,7 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
         private Integer maxRequestsPerConnection;
 
         @Override
-        public Boolean getConnectionEndpointRediscoveryEnabled() {
+        public  Boolean getConnectionEndpointRediscoveryEnabled() {
             return connectionEndpointRediscoveryEnabled;
         }
 
