@@ -48,8 +48,7 @@ public class AzureCosmosConnectionDetailsConditionTests {
         return (context) -> {
             if (expected) {
                 assertThat(context).hasBean(Config.TEST_BEAN_NAME);
-            }
-            else {
+            } else {
                 assertThat(context).doesNotHaveBean(Config.TEST_BEAN_NAME);
             }
         };

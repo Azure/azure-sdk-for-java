@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.implementation.cosmos;
 
 import com.azure.cosmos.CosmosClientBuilder;
@@ -92,8 +95,7 @@ public class AzureCosmosAutoConfigurationConditionTests {
         return (context) -> {
             if (expected) {
                 assertThat(context).hasBean(Config.TEST_BEAN_NAME);
-            }
-            else {
+            } else {
                 assertThat(context).doesNotHaveBean(Config.TEST_BEAN_NAME);
             }
         };
