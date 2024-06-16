@@ -109,38 +109,38 @@
 
   <build>
     <plugins>
-<!--      <plugin>-->
-<!--        <groupId>com.github.spotbugs</groupId>-->
-<!--        <artifactId>spotbugs-maven-plugin</artifactId>-->
-<!--        <version>4.8.2.0</version> &lt;!&ndash; {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} &ndash;&gt;-->
-<!--        <configuration>-->
-<!--          <skip>true</skip>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
-<!--      <plugin>-->
-<!--        <groupId>com.diffplug.spotless</groupId>-->
-<!--        <artifactId>spotless-maven-plugin</artifactId>-->
-<!--        <version>2.30.0</version> &lt;!&ndash; {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} &ndash;&gt;-->
-<!--        <configuration>-->
-<!--          <skip>true</skip>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
-<!--      <plugin>-->
-<!--        <groupId>org.revapi</groupId>-->
-<!--        <artifactId>revapi-maven-plugin</artifactId>-->
-<!--        <version>0.14.6</version> &lt;!&ndash; {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} &ndash;&gt;-->
-<!--        <configuration>-->
-<!--          <skip>true</skip>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
-<!--      <plugin>-->
-<!--        <groupId>com.azure.tools</groupId>-->
-<!--        <artifactId>codesnippet-maven-plugin</artifactId>-->
-<!--        <version>1.0.0-beta.10</version> &lt;!&ndash; {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} &ndash;&gt;-->
-<!--        <configuration>-->
-<!--          <skip>true</skip>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -170,6 +170,18 @@
               <release>17</release>
             </configuration>
           </execution>
+          <execution>
+            <id>annotation-process</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <compilerArgs>
+                <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+              </compilerArgs>
+              <release>17</release>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <plugin>
@@ -180,7 +192,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-<!--                <include>org.springframework.integration:spring-integration-core:[6.2.4]</include> &lt;!&ndash; {x-include-update;org.springframework.integration:spring-integration-core;external_dependency} &ndash;&gt;-->
+                <include>org.springframework.boot:spring-boot-testcontainers:[3.3.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-testcontainers:jar;external_dependency} -->
+                <include>org.testcontainers:azure:[1.19.8]</include> <!-- {x-include-update;org.testcontainers:azure;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -190,17 +203,10 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <archive>
             <manifestEntries>
-              <Automatic-Module-Name>com.azure.spring.testcontainers</Automatic-Module-Name>
+              <Automatic-Module-Name>com.azure.spring.cloud.stream.binder.servicebus.core</Automatic-Module-Name>
             </manifestEntries>
           </archive>
         </configuration>
