@@ -5,36 +5,39 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of SSIS log location. */
+/**
+ * The type of SSIS log location.
+ */
 public final class SsisLogLocationType extends ExpandableStringEnum<SsisLogLocationType> {
-    /** Static value File for SsisLogLocationType. */
+    /**
+     * Static value File for SsisLogLocationType.
+     */
     public static final SsisLogLocationType FILE = fromString("File");
 
     /**
      * Creates a new instance of SsisLogLocationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SsisLogLocationType() {}
+    public SsisLogLocationType() {
+    }
 
     /**
      * Creates or finds a SsisLogLocationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SsisLogLocationType.
      */
-    @JsonCreator
     public static SsisLogLocationType fromString(String name) {
         return fromString(name, SsisLogLocationType.class);
     }
 
     /**
      * Gets known SsisLogLocationType values.
-     *
+     * 
      * @return known SsisLogLocationType values.
      */
     public static Collection<SsisLogLocationType> values() {

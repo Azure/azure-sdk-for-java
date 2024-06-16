@@ -5,27 +5,47 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity Azure Search Index sink. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureSearchIndexSink")
+/**
+ * A copy activity Azure Search Index sink.
+ */
 @Fluent
 public final class AzureSearchIndexSink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "AzureSearchIndexSink";
+
+    /*
      * Specify the write behavior when upserting documents into Azure Search Index.
      */
-    @JsonProperty(value = "writeBehavior")
     private AzureSearchIndexWriteBehaviorType writeBehavior;
 
-    /** Creates an instance of AzureSearchIndexSink class. */
-    public AzureSearchIndexSink() {}
+    /**
+     * Creates an instance of AzureSearchIndexSink class.
+     */
+    public AzureSearchIndexSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the writeBehavior property: Specify the write behavior when upserting documents into Azure Search Index.
-     *
+     * 
      * @return the writeBehavior value.
      */
     public AzureSearchIndexWriteBehaviorType getWriteBehavior() {
@@ -34,7 +54,7 @@ public final class AzureSearchIndexSink extends CopySink {
 
     /**
      * Set the writeBehavior property: Specify the write behavior when upserting documents into Azure Search Index.
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the AzureSearchIndexSink object itself.
      */
@@ -43,38 +63,114 @@ public final class AzureSearchIndexSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSearchIndexSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSearchIndexSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSearchIndexSink if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureSearchIndexSink.
+     */
+    public static AzureSearchIndexSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSearchIndexSink deserializedAzureSearchIndexSink = new AzureSearchIndexSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedAzureSearchIndexSink.setWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedAzureSearchIndexSink.setWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedAzureSearchIndexSink.setSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedAzureSearchIndexSink.setSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAzureSearchIndexSink.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureSearchIndexSink.type = reader.getString();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedAzureSearchIndexSink.writeBehavior
+                        = AzureSearchIndexWriteBehaviorType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureSearchIndexSink.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureSearchIndexSink;
+        });
     }
 }

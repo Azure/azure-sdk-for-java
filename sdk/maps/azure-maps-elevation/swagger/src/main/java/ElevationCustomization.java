@@ -6,6 +6,11 @@ import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.comments.JavadocComment;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 /**
@@ -17,7 +22,7 @@ public class ElevationCustomization extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization models = customization.getPackage("com.azure.maps.elevation.models");
         PackageCustomization implementationModels = customization.getPackage("com.azure.maps.elevation.implementation.models");
-        
+
         // customize elevation
         customizeElevation(implementationModels);
 
@@ -35,25 +40,30 @@ public class ElevationCustomization extends Customization {
 
     // Customizes the Elevation class
     private void customizeElevationResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("ElevationResult");
-        classCustomization.addConstructor(
-            "private ElevationResult() {\n" + 
-            "}")
-            .getJavadoc()
-            .setDescription("Set default ElevationResult constructor to private");
-        classCustomization.removeMethod("getElevations");
-        classCustomization.addMethod(
-            "public List<GeoPosition> getElevations() {\n" +
-            "   List<GeoPosition> toreturn = new ArrayList<>();\n" +
-            "   for (Elevation e : this.elevations) {\n" +
-            "       toreturn.add(new GeoPosition(e.getCoordinate().getLatitude(), e.getCoordinate().getLongitude(), (double) e.getElevationInMeters()));\n" +
-            "   }\n" +
-            "   return toreturn;\n" +
-            "}")
-            .getJavadoc()
-            .setDescription("Get the elevations property: The response for point/points elevation API. The result will be in same sequence of points listed in request.")
-            .setReturn("the elevations value");
-        classCustomization.addImports("com.azure.core.models.GeoPosition");
-        classCustomization.addImports("java.util.ArrayList");
+        models.getClass("ElevationResult").customizeAst(ast -> {
+            ast.addImport("com.azure.core.models.GeoPosition");
+            ast.addImport("java.util.ArrayList");
+
+            ast.getClassByName("ElevationResult").ifPresent(clazz -> {
+                clazz.setJavadocComment("The response from a successful Get Data for Bounding Box API.");
+                clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PRIVATE)
+                    .setJavadocComment("Set default ElevationResult constructor to private");
+                clazz.getMethodsByName("getElevations").get(0).remove();
+
+                clazz.addMethod("getElevations", Modifier.Keyword.PUBLIC)
+                    .setType("List<GeoPosition>")
+                    .setBody(StaticJavaParser.parseBlock(String.join("\n",
+                        "{",
+                        "   List<GeoPosition> toreturn = new ArrayList<>();",
+                        "   for (Elevation e : this.elevations) {",
+                        "       toreturn.add(new GeoPosition(e.getCoordinate().getLatitude(), e.getCoordinate().getLongitude(), (double) e.getElevationInMeters()));",
+                        "   }",
+                        "   return toreturn;",
+                        "}")))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
+                        "Get the elevations property: The response for point/points elevation API. The result will be in same sequence of points listed in request."))
+                        .addBlockTag("return", "the elevations value"));
+            });
+        });
     }
 }

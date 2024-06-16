@@ -5,41 +5,46 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The LinkTableRequestTarget model. */
+/**
+ * The LinkTableRequestTarget model.
+ */
 @Fluent
-public final class LinkTableRequestTarget {
+public final class LinkTableRequestTarget implements JsonSerializable<LinkTableRequestTarget> {
     /*
      * Target table table name
      */
-    @JsonProperty(value = "tableName")
     private String tableName;
 
     /*
      * Target table schema name
      */
-    @JsonProperty(value = "schemaName")
     private String schemaName;
 
     /*
      * Target table distribution options for link table request
      */
-    @JsonProperty(value = "distributionOptions")
     private LinkTableRequestTargetDistributionOptions distributionOptions;
 
     /*
      * Target table structure options for link table request
      */
-    @JsonProperty(value = "structureOptions")
     private LinkTableRequestTargetStructureOptions structureOptions;
 
-    /** Creates an instance of LinkTableRequestTarget class. */
-    public LinkTableRequestTarget() {}
+    /**
+     * Creates an instance of LinkTableRequestTarget class.
+     */
+    public LinkTableRequestTarget() {
+    }
 
     /**
      * Get the tableName property: Target table table name.
-     *
+     * 
      * @return the tableName value.
      */
     public String getTableName() {
@@ -48,7 +53,7 @@ public final class LinkTableRequestTarget {
 
     /**
      * Set the tableName property: Target table table name.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the LinkTableRequestTarget object itself.
      */
@@ -59,7 +64,7 @@ public final class LinkTableRequestTarget {
 
     /**
      * Get the schemaName property: Target table schema name.
-     *
+     * 
      * @return the schemaName value.
      */
     public String getSchemaName() {
@@ -68,7 +73,7 @@ public final class LinkTableRequestTarget {
 
     /**
      * Set the schemaName property: Target table schema name.
-     *
+     * 
      * @param schemaName the schemaName value to set.
      * @return the LinkTableRequestTarget object itself.
      */
@@ -79,7 +84,7 @@ public final class LinkTableRequestTarget {
 
     /**
      * Get the distributionOptions property: Target table distribution options for link table request.
-     *
+     * 
      * @return the distributionOptions value.
      */
     public LinkTableRequestTargetDistributionOptions getDistributionOptions() {
@@ -88,19 +93,19 @@ public final class LinkTableRequestTarget {
 
     /**
      * Set the distributionOptions property: Target table distribution options for link table request.
-     *
+     * 
      * @param distributionOptions the distributionOptions value to set.
      * @return the LinkTableRequestTarget object itself.
      */
-    public LinkTableRequestTarget setDistributionOptions(
-            LinkTableRequestTargetDistributionOptions distributionOptions) {
+    public LinkTableRequestTarget
+        setDistributionOptions(LinkTableRequestTargetDistributionOptions distributionOptions) {
         this.distributionOptions = distributionOptions;
         return this;
     }
 
     /**
      * Get the structureOptions property: Target table structure options for link table request.
-     *
+     * 
      * @return the structureOptions value.
      */
     public LinkTableRequestTargetStructureOptions getStructureOptions() {
@@ -109,12 +114,59 @@ public final class LinkTableRequestTarget {
 
     /**
      * Set the structureOptions property: Target table structure options for link table request.
-     *
+     * 
      * @param structureOptions the structureOptions value to set.
      * @return the LinkTableRequestTarget object itself.
      */
     public LinkTableRequestTarget setStructureOptions(LinkTableRequestTargetStructureOptions structureOptions) {
         this.structureOptions = structureOptions;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tableName", this.tableName);
+        jsonWriter.writeStringField("schemaName", this.schemaName);
+        jsonWriter.writeJsonField("distributionOptions", this.distributionOptions);
+        jsonWriter.writeJsonField("structureOptions", this.structureOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkTableRequestTarget from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkTableRequestTarget if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkTableRequestTarget.
+     */
+    public static LinkTableRequestTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkTableRequestTarget deserializedLinkTableRequestTarget = new LinkTableRequestTarget();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedLinkTableRequestTarget.tableName = reader.getString();
+                } else if ("schemaName".equals(fieldName)) {
+                    deserializedLinkTableRequestTarget.schemaName = reader.getString();
+                } else if ("distributionOptions".equals(fieldName)) {
+                    deserializedLinkTableRequestTarget.distributionOptions
+                        = LinkTableRequestTargetDistributionOptions.fromJson(reader);
+                } else if ("structureOptions".equals(fieldName)) {
+                    deserializedLinkTableRequestTarget.structureOptions
+                        = LinkTableRequestTargetStructureOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkTableRequestTarget;
+        });
     }
 }
