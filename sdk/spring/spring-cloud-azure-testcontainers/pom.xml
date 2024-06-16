@@ -192,7 +192,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-testcontainers:[3.3.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-testcontainers:jar;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-testcontainers:[3.3.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
                 <include>org.testcontainers:azure:[1.19.8]</include> <!-- {x-include-update;org.testcontainers:azure;external_dependency} -->
               </includes>
             </bannedDependencies>
