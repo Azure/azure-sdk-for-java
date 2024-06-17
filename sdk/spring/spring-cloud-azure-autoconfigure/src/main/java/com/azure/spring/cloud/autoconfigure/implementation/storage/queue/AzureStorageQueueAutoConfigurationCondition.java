@@ -40,12 +40,10 @@ public class AzureStorageQueueAutoConfigurationCondition  extends AllNestedCondi
             prefixes = { "spring.cloud.azure.storage.queue", "spring.cloud.azure.storage" },
             name = { "account-name", "endpoint", "connection-string" })
         static class PropertiesCondition {
-
         }
 
         @ConditionalOnBean(AzureStorageQueueConnectionDetails.class)
         static class ConnectionDetailsBeanCondition {
-
         }
     }
 }
