@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.mobilenetwork.models.GNbId;
 import com.azure.resourcemanager.mobilenetwork.models.GlobalRanNodeId;
+import com.azure.resourcemanager.mobilenetwork.models.GNbId;
 import com.azure.resourcemanager.mobilenetwork.models.PlmnId;
 import org.junit.jupiter.api.Assertions;
 
@@ -14,35 +14,40 @@ public final class GlobalRanNodeIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GlobalRanNodeId model = BinaryData.fromString(
-            "{\"plmnId\":{\"mcc\":\"mtk\",\"mnc\":\"bo\"},\"gNbId\":{\"bitLength\":1558773691,\"gNBValue\":\"dxzxhi\"},\"ngeNbId\":\"rbbcevq\",\"eNbId\":\"tltdhlfkqojpy\",\"n3IwfId\":\"gtrd\",\"wagfId\":\"ifmzzsd\",\"tngfId\":\"brn\",\"nid\":\"u\"}")
+            "{\"plmnId\":{\"mcc\":\"ijpstte\",\"mnc\":\"oqq\"},\"gNbId\":{\"bitLength\":1055275397,\"gNBValue\":\"ufmhrunc\"},\"ngeNbId\":\"mqspkcdqzhlctdd\",\"eNbId\":\"qn\",\"n3IwfId\":\"fpch\",\"wagfId\":\"bnjj\",\"tngfId\":\"gegydcwboxjum\",\"nid\":\"qoli\"}")
             .toObject(GlobalRanNodeId.class);
-        Assertions.assertEquals("mtk", model.plmnId().mcc());
-        Assertions.assertEquals("bo", model.plmnId().mnc());
-        Assertions.assertEquals(1558773691, model.gNbId().bitLength());
-        Assertions.assertEquals("dxzxhi", model.gNbId().gNBValue());
-        Assertions.assertEquals("rbbcevq", model.ngeNbId());
-        Assertions.assertEquals("tltdhlfkqojpy", model.eNbId());
-        Assertions.assertEquals("gtrd", model.n3IwfId());
-        Assertions.assertEquals("ifmzzsd", model.wagfId());
-        Assertions.assertEquals("brn", model.tngfId());
-        Assertions.assertEquals("u", model.nid());
+        Assertions.assertEquals("ijpstte", model.plmnId().mcc());
+        Assertions.assertEquals("oqq", model.plmnId().mnc());
+        Assertions.assertEquals(1055275397, model.gNbId().bitLength());
+        Assertions.assertEquals("ufmhrunc", model.gNbId().gNBValue());
+        Assertions.assertEquals("mqspkcdqzhlctdd", model.ngeNbId());
+        Assertions.assertEquals("qn", model.eNbId());
+        Assertions.assertEquals("fpch", model.n3IwfId());
+        Assertions.assertEquals("bnjj", model.wagfId());
+        Assertions.assertEquals("gegydcwboxjum", model.tngfId());
+        Assertions.assertEquals("qoli", model.nid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GlobalRanNodeId model = new GlobalRanNodeId().withPlmnId(new PlmnId().withMcc("mtk").withMnc("bo"))
-            .withGNbId(new GNbId().withBitLength(1558773691).withGNBValue("dxzxhi")).withNgeNbId("rbbcevq")
-            .withENbId("tltdhlfkqojpy").withN3IwfId("gtrd").withWagfId("ifmzzsd").withTngfId("brn").withNid("u");
+        GlobalRanNodeId model = new GlobalRanNodeId().withPlmnId(new PlmnId().withMcc("ijpstte").withMnc("oqq"))
+            .withGNbId(new GNbId().withBitLength(1055275397).withGNBValue("ufmhrunc"))
+            .withNgeNbId("mqspkcdqzhlctdd")
+            .withENbId("qn")
+            .withN3IwfId("fpch")
+            .withWagfId("bnjj")
+            .withTngfId("gegydcwboxjum")
+            .withNid("qoli");
         model = BinaryData.fromObject(model).toObject(GlobalRanNodeId.class);
-        Assertions.assertEquals("mtk", model.plmnId().mcc());
-        Assertions.assertEquals("bo", model.plmnId().mnc());
-        Assertions.assertEquals(1558773691, model.gNbId().bitLength());
-        Assertions.assertEquals("dxzxhi", model.gNbId().gNBValue());
-        Assertions.assertEquals("rbbcevq", model.ngeNbId());
-        Assertions.assertEquals("tltdhlfkqojpy", model.eNbId());
-        Assertions.assertEquals("gtrd", model.n3IwfId());
-        Assertions.assertEquals("ifmzzsd", model.wagfId());
-        Assertions.assertEquals("brn", model.tngfId());
-        Assertions.assertEquals("u", model.nid());
+        Assertions.assertEquals("ijpstte", model.plmnId().mcc());
+        Assertions.assertEquals("oqq", model.plmnId().mnc());
+        Assertions.assertEquals(1055275397, model.gNbId().bitLength());
+        Assertions.assertEquals("ufmhrunc", model.gNbId().gNBValue());
+        Assertions.assertEquals("mqspkcdqzhlctdd", model.ngeNbId());
+        Assertions.assertEquals("qn", model.eNbId());
+        Assertions.assertEquals("fpch", model.n3IwfId());
+        Assertions.assertEquals("bnjj", model.wagfId());
+        Assertions.assertEquals("gegydcwboxjum", model.tngfId());
+        Assertions.assertEquals("qoli", model.nid());
     }
 }

@@ -24,15 +24,13 @@ public final class AttachedDataNetworkPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * The user plane interface on the data network. For 5G networks, this is the N6 interface. For 4G networks, this
-     * is the SGi interface.
+     * The user plane interface on the data network. For 5G networks, this is the N6 interface. For 4G networks, this is the SGi interface.
      */
     @JsonProperty(value = "userPlaneDataInterface", required = true)
     private InterfaceProperties userPlaneDataInterface;
 
     /*
-     * The DNS servers to signal to UEs to use for this attached data network. This configuration is mandatory - if you
-     * don't want DNS servers, you must provide an empty array.
+     * The DNS servers to signal to UEs to use for this attached data network. This configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
      */
     @JsonProperty(value = "dnsAddresses", required = true)
     private List<String> dnsAddresses;
@@ -45,22 +43,17 @@ public final class AttachedDataNetworkPropertiesFormat {
     private NaptConfiguration naptConfiguration;
 
     /*
-     * The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance
-     * will dynamically assign IP addresses to UEs.
+     * The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance will dynamically assign IP addresses to UEs.
      * The packet core instance assigns an IP address to a UE when the UE sets up a PDU session.
-     * You must define at least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix. If you
-     * define both, they must be of the same size.
+     *  You must define at least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix. If you define both, they must be of the same size.
      */
     @JsonProperty(value = "userEquipmentAddressPoolPrefix")
     private List<String> userEquipmentAddressPoolPrefix;
 
     /*
-     * The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance
-     * will assign static IP addresses to UEs.
-     * The packet core instance assigns an IP address to a UE when the UE sets up a PDU session. The static IP address
-     * for a specific UE is set in StaticIPConfiguration on the corresponding SIM resource.
-     * At least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both
-     * are defined, they must be of the same size.
+     * The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance will assign static IP addresses to UEs.
+     * The packet core instance assigns an IP address to a UE when the UE sets up a PDU session. The static IP address for a specific UE is set in StaticIPConfiguration on the corresponding SIM resource.
+     * At least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined, they must be of the same size.
      */
     @JsonProperty(value = "userEquipmentStaticAddressPoolPrefix")
     private List<String> userEquipmentStaticAddressPoolPrefix;
@@ -213,14 +206,16 @@ public final class AttachedDataNetworkPropertiesFormat {
      */
     public void validate() {
         if (userPlaneDataInterface() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property userPlaneDataInterface in model AttachedDataNetworkPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property userPlaneDataInterface in model AttachedDataNetworkPropertiesFormat"));
         } else {
             userPlaneDataInterface().validate();
         }
         if (dnsAddresses() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dnsAddresses in model AttachedDataNetworkPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dnsAddresses in model AttachedDataNetworkPropertiesFormat"));
         }
         if (naptConfiguration() != null) {
             naptConfiguration().validate();

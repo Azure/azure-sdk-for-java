@@ -21,8 +21,6 @@ import java.util.Map;
 public class AzureJedisClientBuilder {
     private String cacheHostName;
     private Integer port;
-    private String username;
-    private String password;
     private TokenCredential tokenCredential;
     private RetryOptions retryOptions;
     private boolean useSSL;
@@ -57,37 +55,13 @@ public class AzureJedisClientBuilder {
     }
 
     /**
-     * Configure the credential to be used for authentication. if a password is configured via
-     * {@link AzureJedisClientBuilder#password(String)} then the credential is not required.
+     * Configure the credential to be used for authentication.
      *
      * @param tokenCredential the token credential
      * @return An updated instance of this builder.
      */
     public AzureJedisClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
-        return this;
-    }
-
-    /**
-     * The username to be used for authentication.
-     *
-     * @param username the username
-     * @return An updated instance of this builder.
-     */
-    public AzureJedisClientBuilder username(String username) {
-        this.username = username;
-        return this;
-    }
-
-    /**
-     * The password to be used for authentication. If a @{@link TokenCredential} is provided via
-     * {@link AzureJedisClientBuilder#credential(TokenCredential)} then password is not required.
-     *
-     * @param password the password to be used for authentication
-     * @return An updated instance of this builder.
-     */
-    public AzureJedisClientBuilder password(String password) {
-        this.password = password;
         return this;
     }
 
@@ -124,16 +98,10 @@ public class AzureJedisClientBuilder {
             {
                 this.put("cacheHostName", cacheHostName);
                 this.put("port", port);
-                this.put("username", username);
+                this.put("credential", tokenCredential);
             }
         });
-        if (this.password != null && this.tokenCredential != null) {
-            throw this.clientLogger.logExceptionAsError(new IllegalArgumentException("Both Token Credential and Password are provided in AzureJedisClientBuilder. Only one of them should be provided."));
-        } else {
-            return tokenCredential != null
-                ? new AzureJedisClient(cacheHostName, port, username, tokenCredential, useSSL, retryOptions)
-                : new AzureJedisClient(cacheHostName, port, username, password, useSSL, retryOptions);
-        }
+        return new AzureJedisClient(cacheHostName, port, tokenCredential, useSSL, retryOptions);
     }
 
     static void validate(String className, Map<String, Object> parameters) {

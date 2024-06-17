@@ -121,8 +121,8 @@ public final class SimPolicyInner extends Resource {
     }
 
     /**
-     * Get the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice
-     * must exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
+     * Get the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
+     * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      * 
      * @return the defaultSlice value.
      */
@@ -131,8 +131,8 @@ public final class SimPolicyInner extends Resource {
     }
 
     /**
-     * Set the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice
-     * must exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
+     * Set the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
+     * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      * 
      * @param defaultSlice the defaultSlice value to set.
      * @return the SimPolicyInner object itself.
@@ -227,8 +227,8 @@ public final class SimPolicyInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model SimPolicyInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model SimPolicyInner"));
         } else {
             innerProperties().validate();
         }

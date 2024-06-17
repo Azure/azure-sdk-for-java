@@ -9,9 +9,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class PacketCoreControlPlaneVersionsGetBySubscriptionSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * PacketCoreControlPlaneVersionGetBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreControlPlaneVersionGetBySubscription.json
      */
     /**
      * Sample code: Get packet core control plane version by subscription.
@@ -20,7 +18,7 @@ public final class PacketCoreControlPlaneVersionsGetBySubscriptionSamples {
      */
     public static void getPacketCoreControlPlaneVersionBySubscription(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.packetCoreControlPlaneVersions().getBySubscriptionWithResponse("PMN-4-11-1",
-            com.azure.core.util.Context.NONE);
+        manager.packetCoreControlPlaneVersions()
+            .getBySubscriptionWithResponse("2404.0-1", com.azure.core.util.Context.NONE);
     }
 }

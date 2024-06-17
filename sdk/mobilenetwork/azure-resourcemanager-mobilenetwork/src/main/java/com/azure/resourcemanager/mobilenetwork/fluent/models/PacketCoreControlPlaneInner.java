@@ -21,6 +21,7 @@ import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SignalingConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.UserConsentConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -256,8 +257,8 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Get the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G
-     * networks, this is the N2 interface. For 4G networks, this is the S1-MME interface.
+     * Get the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G networks,
+     * this is the N2 interface. For 4G networks, this is the S1-MME interface.
      * 
      * @return the controlPlaneAccessInterface value.
      */
@@ -266,8 +267,8 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Set the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G
-     * networks, this is the N2 interface. For 4G networks, this is the S1-MME interface.
+     * Set the controlPlaneAccessInterface property: The control plane interface on the access network. For 5G networks,
+     * this is the N2 interface. For 4G networks, this is the S1-MME interface.
      * 
      * @param controlPlaneAccessInterface the controlPlaneAccessInterface value to set.
      * @return the PacketCoreControlPlaneInner object itself.
@@ -484,13 +485,36 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
-     * Get the homeNetworkPrivateKeysProvisioning property: The provisioning state of the secret containing private
-     * keys and keyIds for SUPI concealment.
+     * Get the homeNetworkPrivateKeysProvisioning property: The provisioning state of the secret containing private keys
+     * and keyIds for SUPI concealment.
      * 
      * @return the homeNetworkPrivateKeysProvisioning value.
      */
     public HomeNetworkPrivateKeysProvisioning homeNetworkPrivateKeysProvisioning() {
         return this.innerProperties() == null ? null : this.innerProperties().homeNetworkPrivateKeysProvisioning();
+    }
+
+    /**
+     * Get the userConsent property: The user consent configuration for the packet core.
+     * 
+     * @return the userConsent value.
+     */
+    public UserConsentConfiguration userConsent() {
+        return this.innerProperties() == null ? null : this.innerProperties().userConsent();
+    }
+
+    /**
+     * Set the userConsent property: The user consent configuration for the packet core.
+     * 
+     * @param userConsent the userConsent value to set.
+     * @return the PacketCoreControlPlaneInner object itself.
+     */
+    public PacketCoreControlPlaneInner withUserConsent(UserConsentConfiguration userConsent) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
+        }
+        this.innerProperties().withUserConsent(userConsent);
+        return this;
     }
 
     /**
@@ -500,8 +524,9 @@ public final class PacketCoreControlPlaneInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model PacketCoreControlPlaneInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model PacketCoreControlPlaneInner"));
         } else {
             innerProperties().validate();
         }
