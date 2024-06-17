@@ -36,12 +36,15 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
 
     @Test
     void send() {
-
-        EventGridSenderAsyncClient client = buildSenderAsyncClient();
-
-        client.send(getCloudEvent())
-            .as(StepVerifier::create)
-            .verifyComplete();
+        StringBuilder stringBuilder = new StringBuilder();
+        System.getenv().forEach((k, v) -> stringBuilder.append(k).append("\n"));
+        throw new RuntimeException(stringBuilder.toString());
+//
+//        EventGridSenderAsyncClient client = buildSenderAsyncClient();
+//
+//        client.send(getCloudEvent())
+//            .as(StepVerifier::create)
+//            .verifyComplete();
     }
 
     @Test
