@@ -5,6 +5,8 @@ package com.azure.spring.cloud.autoconfigure.implementation.cosmos;
 
 import com.azure.cosmos.CosmosClientBuilder;
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Conditional;
@@ -25,5 +27,20 @@ public class AzureCosmosAutoConfigurationCondition extends AllNestedConditions {
 
     @Conditional(AzureCosmosConnectionDetailsCondition.class)
     static class ConnectionDetailsCondition {
+    }
+
+    static class AzureCosmosConnectionDetailsCondition extends AnyNestedCondition {
+
+        AzureCosmosConnectionDetailsCondition() {
+            super(ConfigurationPhase.REGISTER_BEAN);
+        }
+
+        @ConditionalOnProperty(prefix = "spring.cloud.azure.cosmos", name = "endpoint")
+        static class PropertiesCondition {
+        }
+
+        @ConditionalOnBean(AzureCosmosConnectionDetails.class)
+        static class ConnectionDetailsBeanCondition {
+        }
     }
 }
