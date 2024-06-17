@@ -564,19 +564,18 @@ public final class BlobServiceSasSignatureValues {
     }
 
     /**
-     * @return the correlation id value for the SAS.
+     * @return the directory depth value for the SAS.
      */
     public Integer getDirectoryDepth() {
         return directoryDepth;
     }
 
     /**
-     * Sets the correlation id value for the SAS.
+     * Sets the directory depth value for the SAS.
      *
-     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     * <p>Note: This parameter sets resource type to directory-scoped. </p>
      *
-     * @param directoryDepth A correlation ID used to correlate the storage audit logs with the audit logs used by the
-     * principal generating and distributing SAS.
+     * @param directoryDepth the directory depth, which restricts access to a directory
      * @return the updated BlobServiceSasSignatureValues object
      */
     public BlobServiceSasSignatureValues setDirectoryDepth(Integer directoryDepth) {

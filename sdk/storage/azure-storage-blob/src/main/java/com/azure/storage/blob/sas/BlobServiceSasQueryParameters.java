@@ -212,15 +212,6 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
     }
 
     /**
-     * @return The Content-Type header value when a client accesses the resource with this sas token.
-     * @deprecated Please use {@link BlobServiceSasSignatureValues}
-     */
-    @Deprecated
-    public Integer getDirectoryDepth() {
-        return directoryDepth;
-    }
-
-    /**
      * @return the object ID of the key.
      * @deprecated Please use {@link BlobServiceSasSignatureValues}
      */
