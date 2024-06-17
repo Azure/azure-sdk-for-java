@@ -23,8 +23,6 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueAutoConfigurationTests.CustomAzureStorageQueueConnectionDetails.CONNECTION_STRING;
-import static com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueAutoConfigurationTests.CustomAzureStorageQueueConnectionDetails.ENDPOINT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -207,8 +205,8 @@ class AzureStorageQueueAutoConfigurationTests extends AbstractAzureServiceConfig
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureStorageQueueProperties.class);
                 AzureStorageQueueProperties properties = context.getBean(AzureStorageQueueProperties.class);
-                assertEquals(ENDPOINT, properties.getEndpoint());
-                assertEquals(CONNECTION_STRING, properties.getConnectionString());
+                assertEquals(CustomAzureStorageQueueConnectionDetails.ENDPOINT, properties.getEndpoint());
+                assertEquals(CustomAzureStorageQueueConnectionDetails.CONNECTION_STRING, properties.getConnectionString());
             });
     }
 
@@ -221,7 +219,6 @@ class AzureStorageQueueAutoConfigurationTests extends AbstractAzureServiceConfig
     }
 
     static class CustomAzureStorageQueueConnectionDetails implements AzureStorageQueueConnectionDetails {
-
         static final String CONNECTION_STRING = String.format(STORAGE_CONNECTION_STRING_PATTERN, "bean-account-name", "bean-key");
         static final String ENDPOINT = String.format("https://%s.file.core.windows.net", "bean-account-name");
 
