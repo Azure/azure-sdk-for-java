@@ -147,7 +147,8 @@ public final class TimeZoneClient {
      * @return this object is returned from a successful Timezone By ID call or By Coordinates call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TimeZoneResult> getTimezoneByCoordinatesWithResponse(TimeZoneCoordinateOptions options, Context context) {
+    public Response<TimeZoneResult> getTimezoneByCoordinatesWithResponse(TimeZoneCoordinateOptions options,
+        Context context) {
         return this.asyncClient.getTimezoneByCoordinatesWithResponse(options, context).block();
     }
 
@@ -337,7 +338,9 @@ public final class TimeZoneClient {
      * @return this object is returned from a successful Timezone Windows To IANA call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<IanaId>> convertWindowsTimezoneToIanaWithResponse(String windowsTimezoneId, String windowsTerritoryCode, Context context) {
-        return this.asyncClient.convertWindowsTimezoneToIanaWithResponse(windowsTimezoneId, windowsTerritoryCode, context).block();
+    public Response<List<IanaId>> convertWindowsTimezoneToIanaWithResponse(String windowsTimezoneId,
+        String windowsTerritoryCode, Context context) {
+        return this.asyncClient.convertWindowsTimezoneToIanaWithResponse(windowsTimezoneId, windowsTerritoryCode,
+            context).block();
     }
 }
