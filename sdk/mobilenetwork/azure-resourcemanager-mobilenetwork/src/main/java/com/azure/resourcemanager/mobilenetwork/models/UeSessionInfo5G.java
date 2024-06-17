@@ -209,34 +209,34 @@ public final class UeSessionInfo5G {
      */
     public void validate() {
         if (dnn() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dnn in model UeSessionInfo5G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dnn in model UeSessionInfo5G"));
         }
         if (snssai() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property snssai in model UeSessionInfo5G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property snssai in model UeSessionInfo5G"));
         } else {
             snssai().validate();
         }
         if (ueIpAddress() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ueIpAddress in model UeSessionInfo5G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ueIpAddress in model UeSessionInfo5G"));
         } else {
             ueIpAddress().validate();
         }
         if (pdnType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property pdnType in model UeSessionInfo5G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property pdnType in model UeSessionInfo5G"));
         }
         if (ambr() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ambr in model UeSessionInfo5G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ambr in model UeSessionInfo5G"));
         } else {
             ambr().validate();
         }
         if (qosFlow() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property qosFlow in model UeSessionInfo5G"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property qosFlow in model UeSessionInfo5G"));
         } else {
             qosFlow().forEach(e -> e.validate());
         }

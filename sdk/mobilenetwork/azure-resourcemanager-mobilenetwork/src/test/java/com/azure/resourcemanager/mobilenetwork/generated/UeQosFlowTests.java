@@ -13,27 +13,28 @@ public final class UeQosFlowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UeQosFlow model = BinaryData.fromString(
-            "{\"qfi\":995606751,\"fiveqi\":901132598,\"mbr\":{\"uplink\":\"lageuaulxun\",\"downlink\":\"mjbnk\"},\"gbr\":{\"uplink\":\"xynenl\",\"downlink\":\"vxei\"}}")
+            "{\"qfi\":1071855018,\"fiveqi\":1178102371,\"mbr\":{\"uplink\":\"rsbycucrwn\",\"downlink\":\"mikzeb\"},\"gbr\":{\"uplink\":\"bsmswziqgf\",\"downlink\":\"hokzrusw\"}}")
             .toObject(UeQosFlow.class);
-        Assertions.assertEquals(995606751, model.qfi());
-        Assertions.assertEquals(901132598, model.fiveqi());
-        Assertions.assertEquals("lageuaulxun", model.mbr().uplink());
-        Assertions.assertEquals("mjbnk", model.mbr().downlink());
-        Assertions.assertEquals("xynenl", model.gbr().uplink());
-        Assertions.assertEquals("vxei", model.gbr().downlink());
+        Assertions.assertEquals(1071855018, model.qfi());
+        Assertions.assertEquals(1178102371, model.fiveqi());
+        Assertions.assertEquals("rsbycucrwn", model.mbr().uplink());
+        Assertions.assertEquals("mikzeb", model.mbr().downlink());
+        Assertions.assertEquals("bsmswziqgf", model.gbr().uplink());
+        Assertions.assertEquals("hokzrusw", model.gbr().downlink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UeQosFlow model = new UeQosFlow().withQfi(995606751).withFiveqi(901132598)
-            .withMbr(new Ambr().withUplink("lageuaulxun").withDownlink("mjbnk"))
-            .withGbr(new Ambr().withUplink("xynenl").withDownlink("vxei"));
+        UeQosFlow model = new UeQosFlow().withQfi(1071855018)
+            .withFiveqi(1178102371)
+            .withMbr(new Ambr().withUplink("rsbycucrwn").withDownlink("mikzeb"))
+            .withGbr(new Ambr().withUplink("bsmswziqgf").withDownlink("hokzrusw"));
         model = BinaryData.fromObject(model).toObject(UeQosFlow.class);
-        Assertions.assertEquals(995606751, model.qfi());
-        Assertions.assertEquals(901132598, model.fiveqi());
-        Assertions.assertEquals("lageuaulxun", model.mbr().uplink());
-        Assertions.assertEquals("mjbnk", model.mbr().downlink());
-        Assertions.assertEquals("xynenl", model.gbr().uplink());
-        Assertions.assertEquals("vxei", model.gbr().downlink());
+        Assertions.assertEquals(1071855018, model.qfi());
+        Assertions.assertEquals(1178102371, model.fiveqi());
+        Assertions.assertEquals("rsbycucrwn", model.mbr().uplink());
+        Assertions.assertEquals("mikzeb", model.mbr().downlink());
+        Assertions.assertEquals("bsmswziqgf", model.gbr().uplink());
+        Assertions.assertEquals("hokzrusw", model.gbr().downlink());
     }
 }
