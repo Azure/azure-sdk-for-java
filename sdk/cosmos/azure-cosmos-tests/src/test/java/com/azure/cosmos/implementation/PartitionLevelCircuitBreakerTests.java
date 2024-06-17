@@ -82,7 +82,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
     private List<String> writeRegions;
 
-
     private static final CosmosEndToEndOperationLatencyPolicyConfig noEndToEndTimeout
         = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofDays(1)).build();
 
