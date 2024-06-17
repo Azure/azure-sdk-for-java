@@ -41,9 +41,8 @@ public class ServerSideFeatureManagementPropertiesTest {
         assertEquals(betaFeatureItem.getEnabledFor().size(), 1);
         assertEquals(betaFeatureItem.getEnabledFor().get(0).getName(), "Microsoft.TimeWindowFilter");
 
-        final Feature deltaFeatureItem = serverSideProperties.getFeatureManagement().get("Delta");
-        assertEquals(deltaFeatureItem.getKey(), "Delta");
-        assertEquals(deltaFeatureItem.getEnabledFor().size(), 0);
+        final Boolean deltaFeatureItem = serverSideProperties.getOnOff().get("Delta");
+        assertTrue(deltaFeatureItem);
     }
 
 }
