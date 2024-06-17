@@ -11,10 +11,12 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
-import java.util.Objects;
 
-/** The KeyValue model. */
+/**
+ * The KeyValue model.
+ */
 @Fluent
 public final class KeyValue implements JsonSerializable<KeyValue> {
     /*
@@ -57,12 +59,15 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
      */
     private String etag;
 
-    /** Creates an instance of KeyValue class. */
-    public KeyValue() {}
+    /**
+     * Creates an instance of KeyValue class.
+     */
+    public KeyValue() {
+    }
 
     /**
      * Get the key property: The key of the key-value.
-     *
+     * 
      * @return the key value.
      */
     public String getKey() {
@@ -71,7 +76,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the key property: The key of the key-value.
-     *
+     * 
      * @param key the key value to set.
      * @return the KeyValue object itself.
      */
@@ -82,7 +87,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the label property: The label the key-value belongs to.
-     *
+     * 
      * @return the label value.
      */
     public String getLabel() {
@@ -91,7 +96,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the label property: The label the key-value belongs to.
-     *
+     * 
      * @param label the label value to set.
      * @return the KeyValue object itself.
      */
@@ -102,7 +107,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the contentType property: The content type of the value stored within the key-value.
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -111,7 +116,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the contentType property: The content type of the value stored within the key-value.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the KeyValue object itself.
      */
@@ -122,7 +127,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the value property: The value of the key-value.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {
@@ -131,7 +136,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the value property: The value of the key-value.
-     *
+     * 
      * @param value the value value to set.
      * @return the KeyValue object itself.
      */
@@ -142,7 +147,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the lastModified property: A date representing the last time the key-value was modified.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -151,7 +156,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the lastModified property: A date representing the last time the key-value was modified.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the KeyValue object itself.
      */
@@ -162,7 +167,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the tags property: The tags of the key-value.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -171,7 +176,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the tags property: The tags of the key-value.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the KeyValue object itself.
      */
@@ -182,7 +187,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the locked property: Indicates whether the key-value is locked.
-     *
+     * 
      * @return the locked value.
      */
     public Boolean isLocked() {
@@ -191,7 +196,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the locked property: Indicates whether the key-value is locked.
-     *
+     * 
      * @param locked the locked value to set.
      * @return the KeyValue object itself.
      */
@@ -202,7 +207,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Get the etag property: A value representing the current state of the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String getEtag() {
@@ -211,7 +216,7 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Set the etag property: A value representing the current state of the resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the KeyValue object itself.
      */
@@ -220,6 +225,9 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -227,7 +235,8 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
         jsonWriter.writeStringField("label", this.label);
         jsonWriter.writeStringField("content_type", this.contentType);
         jsonWriter.writeStringField("value", this.value);
-        jsonWriter.writeStringField("last_modified", Objects.toString(this.lastModified, null));
+        jsonWriter.writeStringField("last_modified",
+            this.lastModified == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModified));
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeBooleanField("locked", this.locked);
         jsonWriter.writeStringField("etag", this.etag);
@@ -236,45 +245,43 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
 
     /**
      * Reads an instance of KeyValue from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyValue if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IOException If an error occurs while reading the KeyValue.
      */
     public static KeyValue fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyValue deserializedKeyValue = new KeyValue();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyValue deserializedKeyValue = new KeyValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("key".equals(fieldName)) {
-                            deserializedKeyValue.key = reader.getString();
-                        } else if ("label".equals(fieldName)) {
-                            deserializedKeyValue.label = reader.getString();
-                        } else if ("content_type".equals(fieldName)) {
-                            deserializedKeyValue.contentType = reader.getString();
-                        } else if ("value".equals(fieldName)) {
-                            deserializedKeyValue.value = reader.getString();
-                        } else if ("last_modified".equals(fieldName)) {
-                            deserializedKeyValue.lastModified =
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedKeyValue.tags = tags;
-                        } else if ("locked".equals(fieldName)) {
-                            deserializedKeyValue.locked = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("etag".equals(fieldName)) {
-                            deserializedKeyValue.etag = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("key".equals(fieldName)) {
+                    deserializedKeyValue.key = reader.getString();
+                } else if ("label".equals(fieldName)) {
+                    deserializedKeyValue.label = reader.getString();
+                } else if ("content_type".equals(fieldName)) {
+                    deserializedKeyValue.contentType = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedKeyValue.value = reader.getString();
+                } else if ("last_modified".equals(fieldName)) {
+                    deserializedKeyValue.lastModified
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKeyValue.tags = tags;
+                } else if ("locked".equals(fieldName)) {
+                    deserializedKeyValue.locked = reader.getNullable(JsonReader::getBoolean);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedKeyValue.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyValue;
-                });
+            return deserializedKeyValue;
+        });
     }
 }
