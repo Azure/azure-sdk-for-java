@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -21,7 +22,8 @@ import org.springframework.context.annotation.Import;
  *
  * @since 4.0.0
  */
-@ConditionalOnClass(CosmosTemplate.class)
+@Configuration(proxyBeanMethods = false)
+@ConditionalOnClass({ CosmosTemplate.class })
 @Conditional(AzureCosmosAutoConfigurationCondition.class)
 @Import(CosmosDataDiagnosticsConfiguration.class)
 public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
