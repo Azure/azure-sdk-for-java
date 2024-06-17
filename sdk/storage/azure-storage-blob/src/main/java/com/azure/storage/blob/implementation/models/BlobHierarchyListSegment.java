@@ -83,7 +83,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Entries" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blobs" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.blobPrefixes != null) {
             for (BlobPrefixInternal element : this.blobPrefixes) {

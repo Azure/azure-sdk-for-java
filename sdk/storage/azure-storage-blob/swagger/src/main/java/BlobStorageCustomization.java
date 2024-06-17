@@ -127,7 +127,7 @@ public class BlobStorageCustomization extends Customization {
             clazz.getMethodsBySignature("toXml", "XmlWriter", "String").get(0)
                 .setBody(StaticJavaParser.parseBlock(String.join("\n",
                     "{",
-                    "rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Entries\" : rootElementName;",
+                    "rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;",
                     "xmlWriter.writeStartElement(rootElementName);",
                     "if (this.blobPrefixes != null) {",
                     "    for (BlobPrefixInternal element : this.blobPrefixes) {",
