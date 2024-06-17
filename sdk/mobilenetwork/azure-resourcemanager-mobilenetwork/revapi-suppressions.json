@@ -1,0 +1,24 @@
+[
+  {
+    "extension": "revapi.differences",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "java\\.annotation\\.attributeRemoved",
+          "old": ".*? com\\.azure\\.resourcemanager\\.mobilenetwork\\.models.*",
+          "justification": "Removing Jackson annotations from Mobile Network in transition to stream-style."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "java\\.annotation\\.attributeAdded",
+          "old": ".*? com\\.azure\\.resourcemanager\\.mobilenetwork\\.models.*",
+          "justification": "Adding Jackson annotations from Mobile Network in transition to stream-style."
+        }
+      ]
+    }
+  }
+]
