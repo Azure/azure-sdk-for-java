@@ -3,16 +3,17 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.data.cosmos;
 
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosAutoConfigurationCondition;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
+import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -20,9 +21,8 @@ import org.springframework.context.annotation.Import;
  *
  * @since 4.0.0
  */
-@Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(AbstractCosmosConfiguration.class)  // This is used to avoid error in downstream library: java.io.FileNotFoundException: class path resource [.../AbstractCosmosConfiguration.class] cannot be opened because it does not exist.
-@Conditional(CosmosDataAutoConfigurationCondition.class)
+@ConditionalOnClass(CosmosTemplate.class)
+@Conditional(AzureCosmosAutoConfigurationCondition.class)
 @Import(CosmosDataDiagnosticsConfiguration.class)
 public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
 
@@ -31,7 +31,7 @@ public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
 
     CosmosDataAutoConfiguration(AzureCosmosProperties cosmosProperties,
-                                AzureCosmosConnectionDetails connectionDetails, // This bean is provided in AzureCosmosAutoConfiguration. When CosmosDataAutoConfigurationCondition matches, AzureCosmosAutoConfigurationCondition must matches.
+                                AzureCosmosConnectionDetails connectionDetails,
                                 @Autowired(required = false) ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
         this.cosmosProperties = cosmosProperties;
         this.connectionDetails = connectionDetails;
