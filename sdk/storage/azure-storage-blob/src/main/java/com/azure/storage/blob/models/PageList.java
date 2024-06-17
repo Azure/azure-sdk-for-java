@@ -4,55 +4,58 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.blob.implementation.models.PageListHelper;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import com.azure.storage.blob.implementation.models.PageListHelper;
 
-/** the list of pages. */
-@JacksonXmlRootElement(localName = "PageList")
+/**
+ * the list of pages.
+ */
 @Fluent
-@JsonDeserialize(using = PageListDeserializer.class)
-public final class PageList {
+public final class PageList implements XmlSerializable<PageList> {
 
     static {
-        PageListHelper.setAccessor(
-                new PageListHelper.PageListAccessor() {
+        PageListHelper.setAccessor(new PageListHelper.PageListAccessor() {
 
-                    @Override
-                    public String getNextMarker(PageList pageList) {
-                        return pageList.getNextMarker();
-                    }
+            @Override
+            public String getNextMarker(PageList pageList) {
+                return pageList.getNextMarker();
+            }
 
-                    @Override
-                    public PageList setNextMarker(PageList pageList, String marker) {
-                        return pageList.setNextMarker(marker);
-                    }
-                });
+            @Override
+            public PageList setNextMarker(PageList pageList, String marker) {
+                return pageList.setNextMarker(marker);
+            }
+        });
     }
 
     /*
      * The PageRange property.
      */
-    @JsonProperty("PageRange")
     private List<PageRange> pageRange = new ArrayList<>();
 
     /*
      * The ClearRange property.
      */
-    @JsonProperty("ClearRange")
     private List<ClearRange> clearRange = new ArrayList<>();
 
     /*
      * The NextMarker property.
      */
-    @JsonProperty(value = "NextMarker")
     private String nextMarker;
 
-    /** Creates an instance of PageList class. */
-    public PageList() {}
+    /**
+     * Creates an instance of PageList class.
+     */
+    public PageList() {
+    }
 
     /**
      * Get the pageRange property: The PageRange property.
@@ -112,5 +115,70 @@ public final class PageList {
     private PageList setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageList" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        if (this.pageRange != null) {
+            for (PageRange element : this.pageRange) {
+                xmlWriter.writeXml(element, "PageRange");
+            }
+        }
+        if (this.clearRange != null) {
+            for (ClearRange element : this.clearRange) {
+                xmlWriter.writeXml(element, "ClearRange");
+            }
+        }
+        xmlWriter.writeStringElement("NextMarker", this.nextMarker);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of PageList from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of PageList if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     * XML null.
+     * @throws XMLStreamException If an error occurs while reading the PageList.
+     */
+    public static PageList fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of PageList from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of PageList if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     * XML null.
+     * @throws XMLStreamException If an error occurs while reading the PageList.
+     */
+    public static PageList fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "PageList" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            PageList deserializedPageList = new PageList();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+                if ("PageRange".equals(elementName.getLocalPart())) {
+                    deserializedPageList.pageRange.add(PageRange.fromXml(reader, "PageRange"));
+                } else if ("ClearRange".equals(elementName.getLocalPart())) {
+                    deserializedPageList.clearRange.add(ClearRange.fromXml(reader, "ClearRange"));
+                } else if ("NextMarker".equals(elementName.getLocalPart())) {
+                    deserializedPageList.nextMarker = reader.getStringElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+            return deserializedPageList;
+        });
     }
 }

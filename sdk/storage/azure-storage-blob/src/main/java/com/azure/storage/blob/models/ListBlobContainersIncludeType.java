@@ -4,21 +4,28 @@
 
 package com.azure.storage.blob.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ListBlobContainersIncludeType. */
+/**
+ * Defines values for ListBlobContainersIncludeType.
+ */
 public enum ListBlobContainersIncludeType {
-    /** Enum value metadata. */
+    /**
+     * Enum value metadata.
+     */
     METADATA("metadata"),
 
-    /** Enum value deleted. */
+    /**
+     * Enum value deleted.
+     */
     DELETED("deleted"),
 
-    /** Enum value system. */
+    /**
+     * Enum value system.
+     */
     SYSTEM("system");
 
-    /** The actual serialized value for a ListBlobContainersIncludeType instance. */
+    /**
+     * The actual serialized value for a ListBlobContainersIncludeType instance.
+     */
     private final String value;
 
     ListBlobContainersIncludeType(String value) {
@@ -27,11 +34,10 @@ public enum ListBlobContainersIncludeType {
 
     /**
      * Parses a serialized value to a ListBlobContainersIncludeType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ListBlobContainersIncludeType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ListBlobContainersIncludeType fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum ListBlobContainersIncludeType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

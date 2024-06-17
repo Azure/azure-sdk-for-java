@@ -5,25 +5,33 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** json text configuration. */
-@JacksonXmlRootElement(localName = "JsonTextConfiguration")
+/**
+ * json text configuration.
+ */
 @Fluent
-public final class JsonTextConfiguration {
+public final class JsonTextConfiguration implements XmlSerializable<JsonTextConfiguration> {
     /*
      * The string used to separate records.
      */
-    @JsonProperty(value = "RecordSeparator")
     private String recordSeparator;
 
-    /** Creates an instance of JsonTextConfiguration class. */
-    public JsonTextConfiguration() {}
+    /**
+     * Creates an instance of JsonTextConfiguration class.
+     */
+    public JsonTextConfiguration() {
+    }
 
     /**
      * Get the recordSeparator property: The string used to separate records.
-     *
+     * 
      * @return the recordSeparator value.
      */
     public String getRecordSeparator() {
@@ -32,12 +40,66 @@ public final class JsonTextConfiguration {
 
     /**
      * Set the recordSeparator property: The string used to separate records.
-     *
+     * 
      * @param recordSeparator the recordSeparator value to set.
      * @return the JsonTextConfiguration object itself.
      */
     public JsonTextConfiguration setRecordSeparator(String recordSeparator) {
         this.recordSeparator = recordSeparator;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "JsonTextConfiguration" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("RecordSeparator", this.recordSeparator);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of JsonTextConfiguration from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of JsonTextConfiguration if the XmlReader was pointing to an instance of it, or null if it
+     * was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the JsonTextConfiguration.
+     */
+    public static JsonTextConfiguration fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of JsonTextConfiguration from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of JsonTextConfiguration if the XmlReader was pointing to an instance of it, or null if it
+     * was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the JsonTextConfiguration.
+     */
+    public static JsonTextConfiguration fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "JsonTextConfiguration" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            JsonTextConfiguration deserializedJsonTextConfiguration = new JsonTextConfiguration();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("RecordSeparator".equals(elementName.getLocalPart())) {
+                    deserializedJsonTextConfiguration.recordSeparator = reader.getStringElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedJsonTextConfiguration;
+        });
     }
 }

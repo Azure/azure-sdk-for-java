@@ -5,49 +5,53 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** Groups the settings used for interpreting the blob data if the blob is delimited text formatted. */
-@JacksonXmlRootElement(localName = "DelimitedTextConfiguration")
+/**
+ * Groups the settings used for interpreting the blob data if the blob is delimited text formatted.
+ */
 @Fluent
-public final class DelimitedTextConfiguration {
+public final class DelimitedTextConfiguration implements XmlSerializable<DelimitedTextConfiguration> {
     /*
      * The string used to separate columns.
      */
-    @JsonProperty(value = "ColumnSeparator")
     private String columnSeparator;
 
     /*
      * The string used to quote a specific field.
      */
-    @JsonProperty(value = "FieldQuote")
     private String fieldQuote;
 
     /*
      * The string used to separate records.
      */
-    @JsonProperty(value = "RecordSeparator")
     private String recordSeparator;
 
     /*
      * The string used as an escape character.
      */
-    @JsonProperty(value = "EscapeChar")
     private String escapeChar;
 
     /*
      * Represents whether the data has headers.
      */
-    @JsonProperty(value = "HasHeaders")
     private Boolean headersPresent;
 
-    /** Creates an instance of DelimitedTextConfiguration class. */
-    public DelimitedTextConfiguration() {}
+    /**
+     * Creates an instance of DelimitedTextConfiguration class.
+     */
+    public DelimitedTextConfiguration() {
+    }
 
     /**
      * Get the columnSeparator property: The string used to separate columns.
-     *
+     * 
      * @return the columnSeparator value.
      */
     public String getColumnSeparator() {
@@ -56,7 +60,7 @@ public final class DelimitedTextConfiguration {
 
     /**
      * Set the columnSeparator property: The string used to separate columns.
-     *
+     * 
      * @param columnSeparator the columnSeparator value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
@@ -67,7 +71,7 @@ public final class DelimitedTextConfiguration {
 
     /**
      * Get the fieldQuote property: The string used to quote a specific field.
-     *
+     * 
      * @return the fieldQuote value.
      */
     public String getFieldQuote() {
@@ -76,7 +80,7 @@ public final class DelimitedTextConfiguration {
 
     /**
      * Set the fieldQuote property: The string used to quote a specific field.
-     *
+     * 
      * @param fieldQuote the fieldQuote value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
@@ -87,7 +91,7 @@ public final class DelimitedTextConfiguration {
 
     /**
      * Get the recordSeparator property: The string used to separate records.
-     *
+     * 
      * @return the recordSeparator value.
      */
     public String getRecordSeparator() {
@@ -96,7 +100,7 @@ public final class DelimitedTextConfiguration {
 
     /**
      * Set the recordSeparator property: The string used to separate records.
-     *
+     * 
      * @param recordSeparator the recordSeparator value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
@@ -107,7 +111,7 @@ public final class DelimitedTextConfiguration {
 
     /**
      * Get the escapeChar property: The string used as an escape character.
-     *
+     * 
      * @return the escapeChar value.
      */
     public String getEscapeChar() {
@@ -116,7 +120,7 @@ public final class DelimitedTextConfiguration {
 
     /**
      * Set the escapeChar property: The string used as an escape character.
-     *
+     * 
      * @param escapeChar the escapeChar value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
@@ -127,7 +131,7 @@ public final class DelimitedTextConfiguration {
 
     /**
      * Get the headersPresent property: Represents whether the data has headers.
-     *
+     * 
      * @return the headersPresent value.
      */
     public Boolean isHeadersPresent() {
@@ -136,12 +140,80 @@ public final class DelimitedTextConfiguration {
 
     /**
      * Set the headersPresent property: Represents whether the data has headers.
-     *
+     * 
      * @param headersPresent the headersPresent value to set.
      * @return the DelimitedTextConfiguration object itself.
      */
     public DelimitedTextConfiguration setHeadersPresent(Boolean headersPresent) {
         this.headersPresent = headersPresent;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "DelimitedTextConfiguration" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("ColumnSeparator", this.columnSeparator);
+        xmlWriter.writeStringElement("FieldQuote", this.fieldQuote);
+        xmlWriter.writeStringElement("RecordSeparator", this.recordSeparator);
+        xmlWriter.writeStringElement("EscapeChar", this.escapeChar);
+        xmlWriter.writeBooleanElement("HasHeaders", this.headersPresent);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of DelimitedTextConfiguration from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of DelimitedTextConfiguration if the XmlReader was pointing to an instance of it, or null if
+     * it was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the DelimitedTextConfiguration.
+     */
+    public static DelimitedTextConfiguration fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of DelimitedTextConfiguration from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of DelimitedTextConfiguration if the XmlReader was pointing to an instance of it, or null if
+     * it was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the DelimitedTextConfiguration.
+     */
+    public static DelimitedTextConfiguration fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        String finalRootElementName
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "DelimitedTextConfiguration" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            DelimitedTextConfiguration deserializedDelimitedTextConfiguration = new DelimitedTextConfiguration();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("ColumnSeparator".equals(elementName.getLocalPart())) {
+                    deserializedDelimitedTextConfiguration.columnSeparator = reader.getStringElement();
+                } else if ("FieldQuote".equals(elementName.getLocalPart())) {
+                    deserializedDelimitedTextConfiguration.fieldQuote = reader.getStringElement();
+                } else if ("RecordSeparator".equals(elementName.getLocalPart())) {
+                    deserializedDelimitedTextConfiguration.recordSeparator = reader.getStringElement();
+                } else if ("EscapeChar".equals(elementName.getLocalPart())) {
+                    deserializedDelimitedTextConfiguration.escapeChar = reader.getStringElement();
+                } else if ("HasHeaders".equals(elementName.getLocalPart())) {
+                    deserializedDelimitedTextConfiguration.headersPresent
+                        = reader.getNullableElement(Boolean::parseBoolean);
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedDelimitedTextConfiguration;
+        });
     }
 }

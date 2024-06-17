@@ -4,38 +4,45 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** Represents a single block in a block blob. It describes the block's ID and size. */
-@JacksonXmlRootElement(localName = "Block")
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+
+/**
+ * Represents a single block in a block blob. It describes the block's ID and size.
+ */
 @Fluent
-public final class Block {
+public final class Block implements XmlSerializable<Block> {
     /*
      * The base64 encoded block ID.
      */
-    @JsonProperty(value = "Name", required = true)
     private String name;
 
     /*
      * The block size in bytes.
      */
-    @JsonProperty(value = "Size", required = true)
     private long sizeLong;
 
     /*
      * The SizeInt property.
      */
-    @JsonProperty(value = "SizeInt", required = true)
     private int sizeInt;
 
-    /** Creates an instance of Block class. */
-    public Block() {}
+    /**
+     * Creates an instance of Block class.
+     */
+    public Block() {
+    }
 
     /**
      * Get the name property: The base64 encoded block ID.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -44,7 +51,7 @@ public final class Block {
 
     /**
      * Set the name property: The base64 encoded block ID.
-     *
+     * 
      * @param name the name value to set.
      * @return the Block object itself.
      */
@@ -55,7 +62,7 @@ public final class Block {
 
     /**
      * Get the sizeLong property: The block size in bytes.
-     *
+     * 
      * @return the sizeLong value.
      */
     public long getSizeLong() {
@@ -64,7 +71,7 @@ public final class Block {
 
     /**
      * Set the sizeLong property: The block size in bytes.
-     *
+     * 
      * @param sizeLong the sizeLong value to set.
      * @return the Block object itself.
      */
@@ -75,7 +82,7 @@ public final class Block {
 
     /**
      * Get the sizeInt property: The SizeInt property.
-     *
+     * 
      * @return the sizeInt value.
      * @deprecated Use {@link #getSizeLong()}
      */
@@ -87,7 +94,7 @@ public final class Block {
 
     /**
      * Set the sizeInt property: The SizeInt property.
-     *
+     * 
      * @param sizeInt the sizeInt value to set.
      * @return the Block object itself.
      * @deprecated Use {@link #setSizeLong(long)}
@@ -97,5 +104,66 @@ public final class Block {
         this.sizeInt = sizeInt;
         Block returnValue = this;
         return returnValue.setSizeLong((long) sizeInt);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Block" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("Name", this.name);
+        xmlWriter.writeLongElement("Size", this.sizeLong);
+        xmlWriter.writeIntElement("SizeInt", this.sizeInt);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of Block from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of Block if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     * XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the Block.
+     */
+    public static Block fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of Block from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of Block if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     * XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the Block.
+     */
+    public static Block fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Block" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            Block deserializedBlock = new Block();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Name".equals(elementName.getLocalPart())) {
+                    deserializedBlock.name = reader.getStringElement();
+                } else if ("Size".equals(elementName.getLocalPart())) {
+                    deserializedBlock.sizeLong = reader.getLongElement();
+                } else if ("SizeInt".equals(elementName.getLocalPart())) {
+                    deserializedBlock.sizeInt = reader.getIntElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedBlock;
+        });
     }
 }
