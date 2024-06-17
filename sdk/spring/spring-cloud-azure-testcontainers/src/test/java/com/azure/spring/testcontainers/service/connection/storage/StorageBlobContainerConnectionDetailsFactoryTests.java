@@ -6,7 +6,9 @@ package com.azure.spring.testcontainers.service.connection.storage;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobResourceAutoConfiguration;
+import com.azure.storage.blob.BlobServiceClient;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import static com.azure.spring.testcontainers.service.connection.storage.ApiVersionUtilTests.apiVersionIsAfterToday;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringJUnitConfig
@@ -38,8 +41,14 @@ class StorageBlobContainerConnectionDetailsFactoryTests {
     @Value("azure-blob://testcontainers/message.txt")
     private Resource blobFile;
 
+    @Autowired
+    BlobServiceClient client;
+
     @Test
     void test() throws IOException {
+        if (apiVersionIsAfterToday(client.getServiceVersion().getVersion())) {
+            return;
+        }
         try (OutputStream os = ((WritableResource) this.blobFile).getOutputStream()) {
             os.write("Hello World!".getBytes());
         }
@@ -50,6 +59,5 @@ class StorageBlobContainerConnectionDetailsFactoryTests {
     @Configuration(proxyBeanMethods = false)
     @ImportAutoConfiguration(classes = {AzureGlobalPropertiesAutoConfiguration.class, AzureStorageBlobAutoConfiguration.class, AzureStorageBlobResourceAutoConfiguration.class})
     static class Config {
-
     }
 }

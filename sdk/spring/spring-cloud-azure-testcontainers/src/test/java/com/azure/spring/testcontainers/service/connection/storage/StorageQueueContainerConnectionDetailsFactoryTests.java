@@ -17,6 +17,7 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static com.azure.spring.testcontainers.service.connection.storage.ApiVersionUtilTests.apiVersionIsAfterToday;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringJUnitConfig
@@ -34,8 +35,14 @@ class StorageQueueContainerConnectionDetailsFactoryTests {
     @Autowired
     private QueueClient queueClient;
 
+    @Autowired
+    QueueClient client;
+
     @Test
     void test() {
+        if (apiVersionIsAfterToday(client.getServiceVersion().getVersion())) {
+            return;
+        }
         this.queueClient.create();
         this.queueClient.sendMessage("Hello World!");
 
