@@ -30,10 +30,10 @@ autorest
 ```yaml
 namespace: com.azure.data.appconfiguration
 input-file: 
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-10-01/appconfiguration.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c1af3ab8e803da2f40fc90217a6d023bc13b677f/specification/appconfiguration/data-plane/Microsoft.AppConfiguration/stable/2023-11-01/appconfiguration.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: KeyValueFields,KeyValueFilter,SettingFields,ConfigurationSettingsFilter,CompositionType,SnapshotComposition,Snapshot,ConfigurationSnapshot,Status,ConfigurationSnapshotStatus,SnapshotFields,SnapshotFields
+custom-types: KeyValueFields,KeyValueFilter,SettingFields,ConfigurationSettingsFilter,CompositionType,SnapshotComposition,Snapshot,ConfigurationSnapshot,Status,ConfigurationSnapshotStatus,SnapshotFields,LabelFields,Label
 customization-class: src/main/java/AppConfigCustomization.java
 ```
 
@@ -41,7 +41,7 @@ customization-class: src/main/java/AppConfigCustomization.java
 ```yaml
 output-folder: ..\
 java: true
-use: '@autorest/java@4.1.17'
+use: '@autorest/java@4.1.29'
 enable-sync-stack: true
 generate-client-interfaces: false
 generate-client-as-impl: true
