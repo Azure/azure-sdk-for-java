@@ -120,7 +120,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             Arguments.of(null, 1),
             Arguments.of(testMetadata, null),
             Arguments.of(testMetadata, 1),
-            Arguments.of(null, 6000));
+            Arguments.of(testMetadata, 6000));
     }
 
     @ParameterizedTest

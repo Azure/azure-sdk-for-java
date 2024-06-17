@@ -183,7 +183,7 @@ public class ShareApiTests extends FileShareTestBase {
             Arguments.of(testMetadata, null, null),
             Arguments.of(null, null, ShareAccessTier.HOT),
             Arguments.of(testMetadata, 1, ShareAccessTier.HOT),
-            Arguments.of(null, 6000, null));
+            Arguments.of(testMetadata, 6000, null));
     }
 
     @ParameterizedTest
