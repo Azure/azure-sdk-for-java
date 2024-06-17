@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -45,11 +44,9 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
  * @since 4.0.0
  */
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties
-@ConditionalOnClass(BlobServiceClientBuilder.class)
-@ConditionalOnProperty(value = { "spring.cloud.azure.storage.blob.enabled",  "spring.cloud.azure.storage.enabled" }, havingValue = "true", matchIfMissing = true)
-@Conditional(AzureStorageBlobAutoConfiguration.AzureStorageBlobCondition.class)
+@Conditional(AzureStorageBlobAutoConfigurationCondition.class)
 @Import(AzureStorageConfiguration.class)
+@EnableConfigurationProperties
 public class AzureStorageBlobAutoConfiguration {
 
     @Bean
