@@ -83,7 +83,7 @@ public class AzureStorageQueueAutoConfigurationConditionTests {
     }
 
     @Test
-    void neitherEndPointNorBeanSet() {
+    void neitherConnectionStringNorBeanSet() {
         this.contextRunner.withUserConfiguration(Config.class)
             .withPropertyValues(
                 "spring.cloud.azure.storage.queue.enabled=true"
