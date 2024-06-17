@@ -101,11 +101,6 @@
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
-          <artifactId>azure-keyvault-webkey</artifactId>
-          <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-webkey;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-batch</artifactId>
           <version>11.2.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
         </dependency>
