@@ -12,7 +12,6 @@ import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStr
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -48,31 +47,10 @@ public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBa
     }
 
     @Bean
-    @ConditionalOnMissingBean(AzureEventHubsConnectionDetails.class)
-    PropertiesAzureEventHubsConnectionDetails azureEventHubsConnectionDetails(AzureEventHubsProperties properties) {
-        return new PropertiesAzureEventHubsConnectionDetails(properties);
-    }
-
-    @Bean
     @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
     StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsStaticConnectionStringProvider(
-        AzureEventHubsConnectionDetails connectionDetails) {
+        AzureEventHubsProperties eventHubsProperties) {
         return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS,
-            connectionDetails.getConnectionString());
+            eventHubsProperties.getConnectionString());
     }
-
-    static class PropertiesAzureEventHubsConnectionDetails implements AzureEventHubsConnectionDetails {
-
-        private final AzureEventHubsProperties properties;
-
-        PropertiesAzureEventHubsConnectionDetails(AzureEventHubsProperties properties) {
-            this.properties = properties;
-        }
-
-        @Override
-        public String getConnectionString() {
-            return this.properties.getConnectionString();
-        }
-    }
-
 }
