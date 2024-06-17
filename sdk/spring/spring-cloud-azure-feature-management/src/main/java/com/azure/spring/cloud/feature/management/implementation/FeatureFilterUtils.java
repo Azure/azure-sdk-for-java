@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.feature.management.implementation;
 
+import org.springframework.util.StringUtils;
+
 import java.util.Collection;
 import java.util.Map;
 
@@ -19,5 +21,12 @@ public class FeatureFilterUtils {
             Collection<Object> toType = ((Map<String, Object>) objectMap).values();
             parameters.put(key, toType);
         }
+    }
+
+    public static String getKeyCase(Map<String, Object> parameters, String key) {
+        if (parameters != null && parameters.containsKey(key)) {
+            return key;
+        }
+        return StringUtils.uncapitalize(key);
     }
 }

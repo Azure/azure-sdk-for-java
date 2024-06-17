@@ -44,12 +44,12 @@ public final class TimeWindowFilter implements FeatureFilter {
     @Override
     public boolean evaluate(FeatureFilterEvaluationContext context) {
         final Map<String, Object> parameters = context.getParameters();
-        final Object recurrenceObject = parameters.get(TIME_WINDOW_FILTER_SETTING_RECURRENCE);
+        final Object recurrenceObject = parameters.get(FeatureFilterUtils.getKeyCase(parameters, TIME_WINDOW_FILTER_SETTING_RECURRENCE));
         if (recurrenceObject != null) {
             final Map<String, Object> recurrenceParameters = (Map<String, Object>) recurrenceObject;
-            final Object patternObj = recurrenceParameters.get(RecurrenceConstants.RECURRENCE_PATTERN);
+            final Object patternObj = recurrenceParameters.get(FeatureFilterUtils.getKeyCase(recurrenceParameters, RecurrenceConstants.RECURRENCE_PATTERN));
             if (patternObj != null) {
-                FeatureFilterUtils.updateValueFromMapToList((Map<String, Object>) patternObj, RecurrenceConstants.RECURRENCE_PATTERN_DAYS_OF_WEEK);
+                FeatureFilterUtils.updateValueFromMapToList((Map<String, Object>) patternObj, FeatureFilterUtils.getKeyCase((Map<String, Object>)patternObj, RecurrenceConstants.RECURRENCE_PATTERN_DAYS_OF_WEEK));
             }
         }
 

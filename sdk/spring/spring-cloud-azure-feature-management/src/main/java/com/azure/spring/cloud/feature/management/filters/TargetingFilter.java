@@ -130,9 +130,9 @@ public class TargetingFilter implements FeatureFilter {
         FeatureFilterUtils.updateValueFromMapToList(parameters, GROUPS);
 
         Audience audience;
-        String exclusionValue = getKeyCase(parameters, EXCLUSION_CAMEL);
-        String exclusionUserValue = getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Users");
-        String exclusionGroupsValue = getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Groups");
+        String exclusionValue = FeatureFilterUtils.getKeyCase(parameters, EXCLUSION_CAMEL);
+        String exclusionUserValue = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Users");
+        String exclusionGroupsValue = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Groups");
 
         if (((Map<String, Object>) parameters.getOrDefault(exclusionValue, new HashMap<>()))
             .get(exclusionUserValue) instanceof List) {
@@ -192,13 +192,6 @@ public class TargetingFilter implements FeatureFilter {
         String defaultContextId = targetingContext.getUserId() + "\n" + context.getFeatureName();
 
         return isTargeted(defaultContextId, audience.getDefaultRolloutPercentage());
-    }
-
-    private String getKeyCase(Map<String, Object> parameters, String key) {
-        if (parameters != null && parameters.containsKey(key)) {
-            return key;
-        }
-        return key.toLowerCase(Locale.getDefault());
     }
 
     private boolean targetUser(String userId, List<String> users) {
