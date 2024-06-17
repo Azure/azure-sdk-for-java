@@ -108,11 +108,11 @@ param (
 
 $azsdkPipelineVnet = "/subscriptions/a18897a6-7e44-457d-9260-f2854c0aca42/resourceGroups/azsdk-pools/providers/Microsoft.Network/virtualNetworks/azsdk-pipeline-vnet-wus"
 $azsdkPipelineSubnets = @(
-    $azsdkPipelineVnet + "/subnets/pipeline-subnet-ubuntu-1804-general",
-    $azsdkPipelineVnet + "/subnets/pipeline-subnet-ubuntu-2004-general",
-    $azsdkPipelineVnet + "/subnets/pipeline-subnet-ubuntu-2204-general",
-    $azsdkPipelineVnet + "/subnets/pipeline-subnet-win-2019-general",
-    $azsdkPipelineVnet + "/subnets/pipeline-subnet-win-2022-general"
+    ($azsdkPipelineVnet + "/subnets/pipeline-subnet-ubuntu-1804-general"),
+    ($azsdkPipelineVnet + "/subnets/pipeline-subnet-ubuntu-2004-general"),
+    ($azsdkPipelineVnet + "/subnets/pipeline-subnet-ubuntu-2204-general"),
+    ($azsdkPipelineVnet + "/subnets/pipeline-subnet-win-2019-general"),
+    ($azsdkPipelineVnet + "/subnets/pipeline-subnet-win-2022-general")
 )
 
 if (!$ServicePrincipalAuth) {
