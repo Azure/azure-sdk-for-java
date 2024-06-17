@@ -504,30 +504,11 @@ public abstract class BinaryData implements Closeable {
      * type is not recommended.
      *
      * <p>The type, represented by {@link Type}, can either be a generic or non-generic type. If the type is generic
-     * create a {@link ParameterizedType}, if the type is non-generic use a {@link Class}.</p>
-     *
-     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
-     *
-     * <!-- src_embed io.clientcore.core.util.BinaryData.toObject#Type -->
-     * <pre>
-     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
-     *
-     * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
-     * &#47;&#47; io.clientcore.core.serializer.util.JsonSerializer interface.
-     * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-gson
-     *
-     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
-     *
-     * Person person = binaryData.toObject&#40;Person.class&#41;;
-     * System.out.println&#40;person.getName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end io.clientcore.core.util.BinaryData.toObject#Type -->
-     *
+     * create a {@link ParameterizedType}, if the type is non-generic use {@link BinaryData#toObject(Class)}.</p>
+
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.util.BinaryData.toObject#Type-generic -->
+     * <!-- src_embed io.clientcore.core.util.BinaryData.toObjectFromType#Type-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
@@ -565,17 +546,49 @@ public abstract class BinaryData implements Closeable {
      * &#125;&#41;;
      * persons.forEach&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.BinaryData.toObject#Type-generic -->
+     * <!-- end io.clientcore.core.util.BinaryData.toObjectFromType#Type-generic -->
      *
      * @param type The {@link Type} representing the Object's type.
      * @param <T> Type of the deserialized Object.
-     * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
-     * @throws NullPointerException If {@code type} is null.
+     * @return An {@link Object} representing the deserialized {@link BinaryData}.
      * @throws IOException If deserialization fails.
-     * @see ObjectSerializer
      */
-    public <T> T toObject(Type type) throws IOException {
-        return toObject(type, SERIALIZER);
+    public <T> T toObjectFromType(Type type) throws IOException {
+        return toObjectFromType(type, SERIALIZER);
+    }
+
+    /**
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
+     * {@link ObjectSerializer} and the provided {@link Class}.
+     * <p>The type, represented by {@link Type}, can either be a generic or non-generic type. If the type is generic
+     * create a {@link ParameterizedType}, if the type is non-generic use a {@link Class}.</p>
+     *
+     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
+     *
+     * <!-- src_embed io.clientcore.core.util.BinaryData.toObject#Class -->
+     * <pre>
+     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
+     *
+     * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
+     * &#47;&#47; io.clientcore.core.serializer.util.JsonSerializer interface.
+     * &#47;&#47; Or use Azure provided libraries for this.
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-jackson or
+     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;io.clientcore&#47;azure-core-serializer-json-gson
+     *
+     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
+     *
+     * Person person = binaryData.toObject&#40;Person.class&#41;;
+     * System.out.println&#40;person.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end io.clientcore.core.util.BinaryData.toObject#Class -->
+     *
+     * @param clazz The {@link Class} representing the Object's type.
+     * @param <T> Type of the deserialized Object.
+     * @return An {@link Object} representing the deserialized {@link BinaryData}.
+     * @throws IOException If deserialization fails.
+     */
+    public <T> T toObject(Class<T> clazz) throws IOException {
+        return toObject(clazz, SERIALIZER);
     }
 
     /**
@@ -592,7 +605,7 @@ public abstract class BinaryData implements Closeable {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.util.BinaryData.toObject#Type-ObjectSerializer -->
+     * <!-- src_embed io.clientcore.core.util.BinaryData.toObject#Class-ObjectSerializer -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -606,11 +619,34 @@ public abstract class BinaryData implements Closeable {
      * Person person = binaryData.toObject&#40;Person.class, serializer&#41;;
      * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.BinaryData.toObject#Type-ObjectSerializer -->
+     * <!-- end io.clientcore.core.util.BinaryData.toObject#Class-ObjectSerializer -->
+     *
+     * @param clazz The {@link Class} representing the Object's type.
+     * @param serializer The {@link ObjectSerializer} used to deserialize the object.
+     * @param <T> Type of the deserialized Object.
+     * @return An {@link Object} representing the deserialized {@link BinaryData}.
+     * @throws NullPointerException If {@code type} or {@code serializer} is null.
+     * @throws IOException If deserialization fails.
+     * @see ObjectSerializer
+     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
+     */
+    public abstract <T> T toObject(Class<T> clazz, ObjectSerializer serializer) throws IOException;
+
+    /**
+     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
+     * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of type
+     * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
+     * type is not recommended.
+     *
+     * <p>The type, represented by {@link Type}, can either be a generic or non-generic type. If the type is generic
+     * create a {@link ParameterizedType}, if the type is non-generic use {@link BinaryData#toObject(Class, ObjectSerializer)}.</p>
+     *
+     * <p>The passed {@link ObjectSerializer} can either be one of the implementations offered by the SDKs or your own
+     * implementation.</p>
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed io.clientcore.core.util.BinaryData.toObject#Type-ObjectSerializer-generic -->
+     * <!-- src_embed io.clientcore.core.util.BinaryData.toObjectFromType#Type-ObjectSerializer-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
@@ -642,7 +678,7 @@ public abstract class BinaryData implements Closeable {
      * &#125;, serializer&#41;;
      * persons.forEach&#40;person -&gt; System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.BinaryData.toObject#Type-ObjectSerializer-generic -->
+     * <!-- end io.clientcore.core.util.BinaryData.toObjectFromType#Type-ObjectSerializer-generic -->
      *
      * @param type The {@link Type} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize the object.
@@ -653,7 +689,7 @@ public abstract class BinaryData implements Closeable {
      * @see ObjectSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
-    public abstract <T> T toObject(Type type, ObjectSerializer serializer) throws IOException;
+    public abstract <T> T toObjectFromType(Type type, ObjectSerializer serializer) throws IOException;
 
     /**
      * Returns an {@link InputStream} representation of this {@link BinaryData}.

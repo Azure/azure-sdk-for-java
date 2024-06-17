@@ -24,12 +24,15 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -72,6 +75,44 @@ public class BinaryDataTest {
 
         // Assert
         assertEquals(expectedValue, data.toObject(expectedValue.getClass(), SERIALIZER));
+    }
+
+    @Test
+    public void testToObjectFromType() throws IOException {
+        // Create a list of Person objects
+        final Person person1 = new Person().setName("John");
+        final Person person2 = new Person().setName("Jack");
+
+        List<Person> personList = new ArrayList<>();
+        personList.add(person1);
+        personList.add(person2);
+
+        // Convert the list to BinaryData
+        BinaryData binaryData = BinaryData.fromObject(personList);
+
+        // Use toObjectFromType to convert back to a list of Person objects
+        List<Person> persons = binaryData.toObjectFromType(new ParameterizedType() {
+            @Override
+            public Type[] getActualTypeArguments() {
+                return new Type[] { Person.class };
+            }
+
+            @Override
+            public Type getRawType() {
+                return List.class;
+            }
+
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        });
+
+        // Assert that the original and deserialized lists are equal
+        assertEquals(personList.size(), persons.size());
+        for (int i = 0; i < personList.size(); i++) {
+            assertEquals(personList.get(i).getName(), persons.get(i).getName());
+        }
     }
 
     @Test
