@@ -234,7 +234,7 @@ public class BlobSasImplUtil {
         }
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         if (SAS_DIRECTORY_CONSTANT.equals(this.resource)) {
-            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH, 2);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH, this.directoryDepth);
         }
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
