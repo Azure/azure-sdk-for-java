@@ -24,8 +24,6 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -137,25 +135,6 @@ public class AzureStorageBlobAutoConfiguration {
     StaticConnectionStringProvider<AzureServiceType.StorageBlob> staticStorageBlobConnectionStringProvider(
         AzureStorageBlobConnectionDetails connectionDetails) {
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_BLOB, connectionDetails.getConnectionString());
-    }
-
-    static class AzureStorageBlobCondition extends AnyNestedCondition {
-
-        AzureStorageBlobCondition() {
-            super(ConfigurationPhase.REGISTER_BEAN);
-        }
-
-        @ConditionalOnAnyProperty(
-            prefixes = { "spring.cloud.azure.storage.blob", "spring.cloud.azure.storage" },
-            name = { "account-name", "endpoint", "connection-string" })
-        static class PropertiesCondition {
-
-        }
-
-        @ConditionalOnBean(AzureStorageBlobConnectionDetails.class)
-        static class ConnectionDetailsBeanCondition {
-
-        }
     }
 
     static class PropertiesAzureStorageBlobConnectionDetails implements AzureStorageBlobConnectionDetails {
