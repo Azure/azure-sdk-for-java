@@ -107,14 +107,16 @@ public final class ServiceImpl implements Service, Service.Definition, Service.U
     }
 
     public Service create() {
-        this.innerObject = serviceManager.serviceClient().getServices().createOrUpdate(resourceGroupName,
-            mobileNetworkName, serviceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, serviceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Service create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServices().createOrUpdate(resourceGroupName,
-            mobileNetworkName, serviceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, serviceName, this.innerModel(), context);
         return this;
     }
 
@@ -130,14 +132,16 @@ public final class ServiceImpl implements Service, Service.Definition, Service.U
     }
 
     public Service apply() {
-        this.innerObject = serviceManager.serviceClient().getServices()
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
             .updateTagsWithResponse(resourceGroupName, mobileNetworkName, serviceName, updateParameters, Context.NONE)
             .getValue();
         return this;
     }
 
     public Service apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServices()
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
             .updateTagsWithResponse(resourceGroupName, mobileNetworkName, serviceName, updateParameters, context)
             .getValue();
         return this;
@@ -152,14 +156,18 @@ public final class ServiceImpl implements Service, Service.Definition, Service.U
     }
 
     public Service refresh() {
-        this.innerObject = serviceManager.serviceClient().getServices()
-            .getWithResponse(resourceGroupName, mobileNetworkName, serviceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getWithResponse(resourceGroupName, mobileNetworkName, serviceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Service refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServices()
-            .getWithResponse(resourceGroupName, mobileNetworkName, serviceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getWithResponse(resourceGroupName, mobileNetworkName, serviceName, context)
+            .getValue();
         return this;
     }
 

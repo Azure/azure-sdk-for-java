@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SiteDeletePacketCoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SiteDeletePacketCore model = BinaryData.fromString("{\"packetCore\":{\"id\":\"zdwlvwlyoupfgfb\"}}")
-            .toObject(SiteDeletePacketCore.class);
-        Assertions.assertEquals("zdwlvwlyoupfgfb", model.packetCore().id());
+        SiteDeletePacketCore model
+            = BinaryData.fromString("{\"packetCore\":{\"id\":\"htnsi\"}}").toObject(SiteDeletePacketCore.class);
+        Assertions.assertEquals("htnsi", model.packetCore().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SiteDeletePacketCore model = new SiteDeletePacketCore()
-            .withPacketCore(new PacketCoreControlPlaneResourceId().withId("zdwlvwlyoupfgfb"));
+        SiteDeletePacketCore model
+            = new SiteDeletePacketCore().withPacketCore(new PacketCoreControlPlaneResourceId().withId("htnsi"));
         model = BinaryData.fromObject(model).toObject(SiteDeletePacketCore.class);
-        Assertions.assertEquals("zdwlvwlyoupfgfb", model.packetCore().id());
+        Assertions.assertEquals("htnsi", model.packetCore().id());
     }
 }
