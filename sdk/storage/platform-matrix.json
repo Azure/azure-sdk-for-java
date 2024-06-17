@@ -3,17 +3,17 @@
     "$IMPORT": "eng/pipelines/templates/stages/platform-matrix.json"
   },
   "exclude": [
-    { "OSVmImage": "macos-11" }
+    { "OSVmImage": "macos-latest" }
   ],
   "include": [
     {
-      "Agent": { "macos-11": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" } },
+      "Agent": { "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" } },
       "JavaTestVersion": "1.8",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false
     },
     {
-      "Agent": { "macos-11": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" } },
+      "Agent": { "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" } },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "okhttp",
       "TestFromSource": false
