@@ -23,6 +23,8 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueAutoConfigurationTests.CustomAzureStorageQueueConnectionDetails.CONNECTION_STRING;
+import static com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueAutoConfigurationTests.CustomAzureStorageQueueConnectionDetails.ENDPOINT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -191,32 +193,22 @@ class AzureStorageQueueAutoConfigurationTests extends AbstractAzureServiceConfig
     }
 
     @Test
-    void connectionDetailsShouldBind() {
-        String accountName = "test-account-name";
-        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
+    void connectionDetailsHasHigherPriority() {
+        String accountName = "property-account-name";
+        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "property-key");
         String endpoint = String.format("https://%s.file.core.windows.net", accountName);
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.storage.queue.account-key=test-key",
-                "spring.cloud.azure.storage.queue.sas-token=test-sas-token",
-                "spring.cloud.azure.storage.queue.account-name=test-account-name",
-                "spring.cloud.azure.storage.queue.service-version=V2019_02_02",
-                "spring.cloud.azure.storage.queue.message-encoding=BASE64",
-                "spring.cloud.azure.storage.queue.queueName=test-queue"
+                "spring.cloud.azure.storage.queue.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.queue.endpoint=" + endpoint
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean(AzureStorageQueueConnectionDetails.class, () -> new CustomAzureStorageQueueConnectionDetails(connectionString, endpoint))
+            .withBean(AzureStorageQueueConnectionDetails.class, CustomAzureStorageQueueConnectionDetails::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureStorageQueueProperties.class);
                 AzureStorageQueueProperties properties = context.getBean(AzureStorageQueueProperties.class);
-                assertEquals(endpoint, properties.getEndpoint());
-                assertEquals("test-key", properties.getAccountKey());
-                assertEquals("test-sas-token", properties.getSasToken());
-                assertEquals(connectionString, properties.getConnectionString());
-                assertEquals(accountName, properties.getAccountName());
-                assertEquals(QueueServiceVersion.V2019_02_02, properties.getServiceVersion());
-                assertEquals(QueueMessageEncoding.BASE64, properties.getMessageEncoding());
-                assertEquals("test-queue", properties.getQueueName());
+                assertEquals(ENDPOINT, properties.getEndpoint());
+                assertEquals(CONNECTION_STRING, properties.getConnectionString());
             });
     }
 
@@ -230,23 +222,17 @@ class AzureStorageQueueAutoConfigurationTests extends AbstractAzureServiceConfig
 
     static class CustomAzureStorageQueueConnectionDetails implements AzureStorageQueueConnectionDetails {
 
-        private final String connectionString;
-
-        private final String endpoint;
-
-        CustomAzureStorageQueueConnectionDetails(String connectionString, String endpoint) {
-            this.connectionString = connectionString;
-            this.endpoint = endpoint;
-        }
+        static final String CONNECTION_STRING = String.format(STORAGE_CONNECTION_STRING_PATTERN, "bean-account-name", "bean-key");
+        static final String ENDPOINT = String.format("https://%s.file.core.windows.net", "bean-account-name");
 
         @Override
         public String getConnectionString() {
-            return this.connectionString;
+            return CONNECTION_STRING;
         }
 
         @Override
         public String getEndpoint() {
-            return this.endpoint;
+            return ENDPOINT;
         }
     }
 }
