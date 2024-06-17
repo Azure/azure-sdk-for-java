@@ -17,6 +17,8 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringJUnitConfig
@@ -34,7 +36,8 @@ class StorageQueueContainerConnectionDetailsFactoryTests {
     private QueueClient queueClient;
 
     @Test
-    void test() {
+    void test() throws IOException, InterruptedException {
+        azurite.execInContainer("azurite --skipApiVersionCheck");
         this.queueClient.create();
         this.queueClient.sendMessage("Hello World!");
 

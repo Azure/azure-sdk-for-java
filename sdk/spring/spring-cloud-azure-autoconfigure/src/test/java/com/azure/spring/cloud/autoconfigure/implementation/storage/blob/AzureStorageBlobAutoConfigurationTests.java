@@ -235,7 +235,7 @@ class AzureStorageBlobAutoConfigurationTests extends AbstractAzureServiceConfigu
         String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, "property-account-name", "property-test-key");
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.storage.blob.connection-string="+connectionString
+                "spring.cloud.azure.storage.blob.connection-string=" + connectionString
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(BlobServiceAsyncClient.class, () -> mock(BlobServiceAsyncClient.class))

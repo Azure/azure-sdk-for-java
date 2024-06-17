@@ -39,7 +39,8 @@ class StorageBlobContainerConnectionDetailsFactoryTests {
     private Resource blobFile;
 
     @Test
-    void test() throws IOException {
+    void test() throws IOException, InterruptedException {
+        azurite.execInContainer("azurite --skipApiVersionCheck");
         try (OutputStream os = ((WritableResource) this.blobFile).getOutputStream()) {
             os.write("Hello World!".getBytes());
         }
