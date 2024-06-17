@@ -110,7 +110,7 @@ public class AzureStorageBlobAutoConfigurationConditionTests {
         }
     }
 
-    private static class TestAzureStorageBlobConnectionDetails implements AzureStorageBlobConnectionDetails{
+    private static class TestAzureStorageBlobConnectionDetails implements AzureStorageBlobConnectionDetails {
 
         @Override
         public String getConnectionString() {
