@@ -17,8 +17,6 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringJUnitConfig
@@ -30,14 +28,14 @@ class StorageQueueContainerConnectionDetailsFactoryTests {
     @ServiceConnection
     private static final GenericContainer<?> azurite = new GenericContainer<>(
         "mcr.microsoft.com/azure-storage/azurite:latest")
-        .withExposedPorts(10001);
+        .withExposedPorts(10001)
+        .withCommand("azurite --skipApiVersionCheck && azurite -l /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0");
 
     @Autowired
     private QueueClient queueClient;
 
     @Test
-    void test() throws IOException, InterruptedException {
-        azurite.execInContainer("azurite --skipApiVersionCheck");
+    void test() {
         this.queueClient.create();
         this.queueClient.sendMessage("Hello World!");
 

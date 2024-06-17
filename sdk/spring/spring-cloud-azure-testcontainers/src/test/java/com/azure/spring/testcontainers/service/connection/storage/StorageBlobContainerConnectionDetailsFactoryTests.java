@@ -28,19 +28,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringJUnitConfig
 @Testcontainers
 class StorageBlobContainerConnectionDetailsFactoryTests {
-
     @Container
     @ServiceConnection
     private static final GenericContainer<?> azurite = new GenericContainer<>(
         "mcr.microsoft.com/azure-storage/azurite:latest")
-        .withExposedPorts(10000);
+        .withExposedPorts(10000)
+        .withCommand("azurite --skipApiVersionCheck && azurite -l /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0");
 
     @Value("azure-blob://testcontainers/message.txt")
     private Resource blobFile;
 
     @Test
-    void test() throws IOException, InterruptedException {
-        azurite.execInContainer("azurite --skipApiVersionCheck");
+    void test() throws IOException {
         try (OutputStream os = ((WritableResource) this.blobFile).getOutputStream()) {
             os.write("Hello World!".getBytes());
         }
