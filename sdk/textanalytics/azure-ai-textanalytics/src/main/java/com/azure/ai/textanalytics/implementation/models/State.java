@@ -7,40 +7,57 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Defines values for State. */
+/**
+ * Defines values for State.
+ */
 public final class State extends ExpandableStringEnum<State> {
-    /** Static value notStarted for State. */
+    /**
+     * Static value notStarted for State.
+     */
     public static final State NOT_STARTED = fromString("notStarted");
 
-    /** Static value running for State. */
+    /**
+     * Static value running for State.
+     */
     public static final State RUNNING = fromString("running");
 
-    /** Static value succeeded for State. */
+    /**
+     * Static value succeeded for State.
+     */
     public static final State SUCCEEDED = fromString("succeeded");
 
-    /** Static value failed for State. */
+    /**
+     * Static value failed for State.
+     */
     public static final State FAILED = fromString("failed");
 
-    /** Static value cancelled for State. */
+    /**
+     * Static value cancelled for State.
+     */
     public static final State CANCELLED = fromString("cancelled");
 
-    /** Static value cancelling for State. */
+    /**
+     * Static value cancelling for State.
+     */
     public static final State CANCELLING = fromString("cancelling");
 
-    /** Static value partiallyCompleted for State. */
+    /**
+     * Static value partiallyCompleted for State.
+     */
     public static final State PARTIALLY_COMPLETED = fromString("partiallyCompleted");
 
     /**
      * Creates a new instance of State value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public State() {}
+    public State() {
+    }
 
     /**
      * Creates or finds a State from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding State.
      */
@@ -50,7 +67,7 @@ public final class State extends ExpandableStringEnum<State> {
 
     /**
      * Gets known State values.
-     *
+     * 
      * @return known State values.
      */
     public static Collection<State> values() {
