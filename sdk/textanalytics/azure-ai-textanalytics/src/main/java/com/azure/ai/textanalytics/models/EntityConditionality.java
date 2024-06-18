@@ -35,7 +35,6 @@ public final class EntityConditionality extends ExpandableStringEnum<EntityCondi
      * @param name The string name to look for.
      * @return The corresponding {@code EntityConditionality}.
      */
-    @JsonCreator
     public static EntityConditionality fromString(String name) {
         return fromString(name, EntityConditionality.class);
     }

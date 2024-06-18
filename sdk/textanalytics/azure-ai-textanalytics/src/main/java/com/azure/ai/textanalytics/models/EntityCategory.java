@@ -101,7 +101,6 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
      * @param name The string name to look for.
      * @return The corresponding {@code EntityCategory}.
      */
-    @JsonCreator
     public static EntityCategory fromString(String name) {
         return fromString(name, EntityCategory.class);
     }

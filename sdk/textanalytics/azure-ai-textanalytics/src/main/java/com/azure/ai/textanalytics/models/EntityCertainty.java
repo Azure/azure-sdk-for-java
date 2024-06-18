@@ -44,7 +44,6 @@ public final class EntityCertainty extends ExpandableStringEnum<EntityCertainty>
      * @param name The string name to look for.
      * @return The corresponding {@code EntityCertainty}.
      */
-    @JsonCreator
     public static EntityCertainty fromString(String name) {
         return fromString(name, EntityCertainty.class);
     }

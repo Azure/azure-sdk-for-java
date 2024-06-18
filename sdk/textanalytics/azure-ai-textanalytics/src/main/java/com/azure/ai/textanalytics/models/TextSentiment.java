@@ -49,7 +49,6 @@ public final class TextSentiment extends ExpandableStringEnum<TextSentiment> {
      * @param name A name to look for.
      * @return The corresponding {@code TextSentiment}.
      */
-    @JsonCreator
     public static TextSentiment fromString(String name) {
         return fromString(name, TextSentiment.class);
     }
