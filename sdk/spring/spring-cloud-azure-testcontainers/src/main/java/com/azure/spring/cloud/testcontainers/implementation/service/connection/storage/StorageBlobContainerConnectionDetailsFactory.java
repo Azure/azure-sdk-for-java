@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.testcontainers.service.connection.storage;
+package com.azure.spring.cloud.testcontainers.implementation.service.connection.storage;
 
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobConnectionDetails;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
