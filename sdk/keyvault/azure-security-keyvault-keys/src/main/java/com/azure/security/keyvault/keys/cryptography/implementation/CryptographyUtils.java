@@ -72,8 +72,9 @@ public final class CryptographyUtils {
         }
     }
 
-    public static LocalKeyCryptographyClient initializeLocalClient(JsonWebKey jsonWebKey,
-                                                                   CryptographyClientImpl implClient) {
+    public static LocalKeyCryptographyClient createLocalClient(JsonWebKey jsonWebKey,
+        CryptographyClientImpl implClient) {
+
         if (!KeyType.values().contains(jsonWebKey.getKeyType())) {
             throw new IllegalArgumentException(String.format(
                 "The JSON Web Key type: %s is not supported.", jsonWebKey.getKeyType().toString()));

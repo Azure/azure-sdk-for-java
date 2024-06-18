@@ -35,7 +35,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.initializeLocalClient;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.createLocalClient;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.isThrowableRetryable;
 
 /**
@@ -78,6 +78,14 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
+ *
+ * <p>When a {@link CryptographyClient} gets created using a {@code Azure Key Vault key identifier}, the first time a
+ * cryptographic operation is attempted, the client will attempt to retrieve the key material from the service, cache
+ * it, and perform all future cryptographic operations locally, deferring to the service when that's not possible. If
+ * key retrieval and caching fails because of a non-retryable error, the client will not make any further attempts and
+ * will fall back to performing all cryptographic operations on the service side. Conversely, when a
+ * {@link CryptographyClient} created using a {@link JsonWebKey JSON Web Key}, all cryptographic operations will be
+ * performed locally.</p>
  *
  * <br>
  *
@@ -137,7 +145,7 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
 public class CryptographyClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyClient.class);
 
-    private volatile boolean attemptedToInitializeLocalClient;
+    private volatile boolean skipLocalClientCreation;
     private volatile LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
@@ -149,14 +157,14 @@ public class CryptographyClient {
      * @param keyId The Azure Key Vault key identifier to use for cryptography operations.
      * @param pipeline {@link HttpPipeline} that the HTTP requests and responses flow through.
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
-     * @param disableLocalCryptography Indicates if the the ability to perform cryptographic operations locally is
-     * disabled.
+     * @param disableKeyCaching Indicates if local key caching should be disabled and all cryptographic operations
+     * deferred to the service.
      */
     CryptographyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version,
-                       boolean disableLocalCryptography) {
+                       boolean disableKeyCaching) {
         this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
         this.keyId = keyId;
-        this.attemptedToInitializeLocalClient = disableLocalCryptography;
+        this.skipLocalClientCreation = disableKeyCaching;
     }
 
     /**
@@ -184,8 +192,7 @@ public class CryptographyClient {
         this.keyId = jsonWebKey.getId();
 
         try {
-            this.localKeyCryptographyClient = initializeLocalClient(jsonWebKey, null);
-            this.attemptedToInitializeLocalClient = true;
+            this.localKeyCryptographyClient = createLocalClient(jsonWebKey, null);
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("Could not initialize local cryptography client.", e));
@@ -1205,16 +1212,15 @@ public class CryptographyClient {
     }
 
     private boolean isLocalClientAvailable() {
-        if (!attemptedToInitializeLocalClient) {
+        if (!skipLocalClientCreation && localKeyCryptographyClient == null) {
             try {
                 localKeyCryptographyClient = retrieveJwkAndInitializeLocalClient();
-                attemptedToInitializeLocalClient = true;
             } catch (Throwable t) {
                 if (isThrowableRetryable(t)) {
                     LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography for this operation. "
                         + "Defaulting to service-side cryptography.", t);
                 } else {
-                    attemptedToInitializeLocalClient = true;
+                    skipLocalClientCreation = true;
 
                     LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography. Defaulting to "
                         + "service-side cryptography for all operations.", t);
@@ -1240,7 +1246,7 @@ public class CryptographyClient {
             } else if (!jsonWebKey.isValid()) {
                 throw new IllegalStateException("The retrieved JSON Web Key is not valid.");
             } else {
-                return initializeLocalClient(jsonWebKey, implClient);
+                return createLocalClient(jsonWebKey, implClient);
             }
         } else {
             // Couldn't/didn't create a local cryptography client.

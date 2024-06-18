@@ -72,7 +72,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
 
     private final CryptographyClientBuilder builder;
-    private boolean disableLocalCryptography = false;
+    private boolean isKeyCachingDisabled = false;
 
     /**
      * The constructor with defaults.
@@ -103,16 +103,16 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         builder.keyIdentifier(keyId);
 
         if (CoreUtils.isNullOrEmpty(keyId)) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
-                    + "client."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("An Azure Key Vault key identifier cannot be null and is required to build "
+                    + "the key encryption key client."));
         }
 
         CryptographyServiceVersion serviceVersion =
             builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
 
         if (builder.getPipeline() != null) {
-            return new KeyEncryptionKeyClient(keyId, builder.getPipeline(), serviceVersion, disableLocalCryptography);
+            return new KeyEncryptionKeyClient(keyId, builder.getPipeline(), serviceVersion, isKeyCachingDisabled);
         }
 
         if (builder.getCredential() == null) {
@@ -122,7 +122,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
 
         HttpPipeline pipeline = builder.setupPipeline();
 
-        return new KeyEncryptionKeyClient(keyId, pipeline, serviceVersion, disableLocalCryptography);
+        return new KeyEncryptionKeyClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
     }
 
     /**
@@ -145,6 +145,11 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         } else if (key.getId() == null) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("JSON Web Key's id property is not configured."));
+        }
+
+        if (isKeyCachingDisabled) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Key caching cannot be disabled when using a JSON Web Key."));
         }
 
         return new KeyEncryptionKeyClient(key);
@@ -177,9 +182,9 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         builder.keyIdentifier(keyId);
 
         if (CoreUtils.isNullOrEmpty(keyId)) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
-                    + "client."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("An Azure Key Vault key identifier cannot be null and is required to build "
+                    + "the key encryption key client."));
         }
 
         CryptographyServiceVersion serviceVersion =
@@ -188,7 +193,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         if (builder.getPipeline() != null) {
             return Mono.defer(() ->
                 Mono.just(new KeyEncryptionKeyAsyncClient(keyId, builder.getPipeline(), serviceVersion,
-                    disableLocalCryptography)));
+                    isKeyCachingDisabled)));
         }
 
         if (builder.getCredential() == null) {
@@ -199,7 +204,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
         HttpPipeline pipeline = builder.setupPipeline();
 
         return Mono.defer(() ->
-            Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion, disableLocalCryptography)));
+            Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled)));
     }
 
     /**
@@ -221,8 +226,13 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "JSON Web Key cannot be null and is required to build a local key encryption key async client."));
         } else if (key.getId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "JSON Web Key's id property is not configured."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("JSON Web Key's id property is not configured."));
+        }
+
+        if (isKeyCachingDisabled) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Key caching cannot be disabled when using a JSON Web Key."));
         }
 
         return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(key)));
@@ -465,7 +475,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     public KeyEncryptionKeyClientBuilder disableLocalCryptography() {
-        this.disableLocalCryptography = true;
+        this.isKeyCachingDisabled = true;
 
         return this;
     }

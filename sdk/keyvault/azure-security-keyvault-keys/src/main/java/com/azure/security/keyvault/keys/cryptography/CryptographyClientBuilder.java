@@ -71,8 +71,8 @@ import java.util.Map;
  * attempt to retrieve the key material from the service, cache it, and perform all future cryptographic operations
  * locally, deferring to the service when that's not possible. If key retrieval and caching fails because of a
  * non-retryable error, the client will not make any further attempts and will fall back to performing all cryptographic
- * operations on the service side. Conversely, when a {@link CryptographyAsyncClient} or {@link CryptographyClient} gets created using a
- * {@link JsonWebKey JSON Web Key}, all cryptographic operations will be performed locally.</p>
+ * operations on the service side. Conversely, when a {@link CryptographyAsyncClient} or {@link CryptographyClient} gets
+ * created using a {@link JsonWebKey JSON Web Key}, all cryptographic operations will be performed locally.</p>
  *
  * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
  * {@code Verify}, it is recommended to use a {@link CryptographyAsyncClient} or {@link CryptographyClient} created
@@ -122,8 +122,8 @@ public final class CryptographyClientBuilder implements
     private RetryOptions retryOptions;
     private String keyId;
     private TokenCredential credential;
-    private boolean disableChallengeResourceVerification = false;
-    private boolean disableLocalCryptography = false;
+    private boolean isChallengeResourceVerificationDisabled = false;
+    private boolean isKeyCachingDisabled = false;
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-key-vault-keys.properties");
@@ -173,7 +173,7 @@ public final class CryptographyClientBuilder implements
                 version != null ? version : CryptographyServiceVersion.getLatest();
 
             if (pipeline != null) {
-                return new CryptographyClient(keyId, pipeline, serviceVersion, disableLocalCryptography);
+                return new CryptographyClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
             }
 
             if (credential == null) {
@@ -184,8 +184,13 @@ public final class CryptographyClientBuilder implements
 
             HttpPipeline pipeline = setupPipeline();
 
-            return new CryptographyClient(keyId, pipeline, serviceVersion, disableLocalCryptography);
+            return new CryptographyClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
         } else {
+            if (isKeyCachingDisabled) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("Key caching cannot be disabled when using a JSON Web Key."));
+            }
+
             return new CryptographyClient(jsonWebKey);
         }
     }
@@ -223,7 +228,7 @@ public final class CryptographyClientBuilder implements
                 version != null ? version : CryptographyServiceVersion.getLatest();
 
             if (pipeline != null) {
-                return new CryptographyAsyncClient(keyId, pipeline, serviceVersion, disableLocalCryptography);
+                return new CryptographyAsyncClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
             }
 
             if (credential == null) {
@@ -234,8 +239,13 @@ public final class CryptographyClientBuilder implements
 
             HttpPipeline pipeline = setupPipeline();
 
-            return new CryptographyAsyncClient(keyId, pipeline, serviceVersion, disableLocalCryptography);
+            return new CryptographyAsyncClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
         } else {
+            if (isKeyCachingDisabled) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("Key caching cannot be disabled when using a JSON Web Key."));
+            }
+
             return new CryptographyAsyncClient(jsonWebKey);
         }
     }
@@ -266,7 +276,7 @@ public final class CryptographyClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
+        policies.add(new KeyVaultCredentialPolicy(credential, isChallengeResourceVerificationDisabled));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -565,22 +575,21 @@ public final class CryptographyClientBuilder implements
      * @return The updated {@link CryptographyClientBuilder} object.
      */
     public CryptographyClientBuilder disableChallengeResourceVerification() {
-        this.disableChallengeResourceVerification = true;
+        this.isChallengeResourceVerificationDisabled = true;
 
         return this;
     }
 
     /**
-     * Disables the ability to perform cryptographic operations locally, performing all cryptographic operations on the
-     * service side instead.
+     * Disables local key caching and defers all cryptographic operations to the service.
      *
      * <p>This method will have no effect if used in conjunction with the
      * {@link CryptographyClientBuilder#jsonWebKey(JsonWebKey)} method.</p>
      *
      * @return The updated {@link CryptographyClientBuilder} object.
      */
-    public CryptographyClientBuilder disableLocalCryptography() {
-        this.disableLocalCryptography = true;
+    public CryptographyClientBuilder disableKeyCaching() {
+        this.isKeyCachingDisabled = true;
 
         return this;
     }
