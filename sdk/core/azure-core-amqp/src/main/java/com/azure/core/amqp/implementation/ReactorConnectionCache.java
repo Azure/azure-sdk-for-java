@@ -86,11 +86,11 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
         });
 
         this.createOrGetCachedConnection = newConnection.flatMap(c -> {
-            withConnectionId(logger, c).log("Waiting to connect and active.");
+            withConnectionId(logger, c.getId()).log("Waiting to connect and active.");
 
             return c.connectAndAwaitToActive().doOnCancel(() -> {
                 if (!c.isDisposed()) {
-                    closeConnection(logger, "Request was canceled while waiting to connect and active.", c);
+                    closeConnection(c, logger, "Request was canceled while waiting to connect and active.");
                 }
             });
         }).retryWhen(retryWhenSpec(retryPolicy)).<T>handle((c, sink) -> {
@@ -102,15 +102,15 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                 currentConnection = connection;
             }
             if (terminated) {
-                closeConnection(logger, "Connection recovery support is terminated.", connection);
+                closeConnection(connection, logger, "Connection recovery support is terminated.");
                 sink.error(TERMINATED_ERROR);
             } else {
-                withConnectionId(logger, c).log("Emitting the new active connection.");
+                withConnectionId(logger, c.getId()).log("Emitting the new active connection.");
                 sink.next(connection);
             }
         }).cacheInvalidateIf(c -> {
             if (c.isDisposed()) {
-                withConnectionId(logger, c).log("The connection is closed, requesting a new connection.");
+                withConnectionId(logger, c.getId()).log("The connection is closed, requesting a new connection.");
                 return true;
             } else {
                 // Emit cached connection.
@@ -184,7 +184,7 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
             connection = currentConnection;
         }
         if (connection != null && !connection.isDisposed()) {
-            closeConnection(logger, "Terminating the connection recovery support.", connection);
+            closeConnection(connection, logger, "Terminating the connection recovery support.");
         } else {
             logger.info("Terminating the connection recovery support.");
         }
@@ -272,20 +272,21 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
      * then that connection needs to be closed explicitly.</li>
      * </ol>
      *
+     * @param c the connection to close.
      * @param logger the logger to log the closing of connection.
      * @param message the message to log.
-     * @param c the connection to close.
      */
-    private static void closeConnection(ClientLogger logger, String message, ReactorConnection c) {
-        withConnectionId(logger, c).log("closing connection (" + message + ").");
+    private static void closeConnection(ReactorConnection c, ClientLogger logger, String message) {
+        final LoggingEventBuilder builder = withConnectionId(logger, c.getId());
+        builder.log("closing connection (" + message + ").");
         // Listen and log any terminal signals here, though when connection close finishes, closeAsync()::Mono only
         // emits "completion terminal signal" no matter if there was an error while closing or not.
         c.closeAsync().subscribe(__ -> {
-        }, t -> logger.info("connection close finished with error.", t),
-            () -> logger.info("connection close finished."));
+        }, t -> builder.log("connection close finished with error.", t),
+            () -> builder.log("connection close finished."));
     }
 
-    private static LoggingEventBuilder withConnectionId(ClientLogger logger, ReactorConnection c) {
-        return logger.atInfo().addKeyValue(CONNECTION_ID_KEY, c.getId());
+    private static LoggingEventBuilder withConnectionId(ClientLogger logger, String id) {
+        return logger.atInfo().addKeyValue(CONNECTION_ID_KEY, id);
     }
 }
