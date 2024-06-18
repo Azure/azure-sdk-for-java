@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/**
- * The CheckSnapshotHeaders model.
- */
+/** The CheckSnapshotHeaders model. */
 @Fluent
 public final class CheckSnapshotHeaders {
     /*
@@ -33,7 +31,7 @@ public final class CheckSnapshotHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of CheckSnapshotHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public CheckSnapshotHeaders(HttpHeaders rawHeaders) {
@@ -44,7 +42,7 @@ public final class CheckSnapshotHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     * 
+     *
      * @return the eTag value.
      */
     public String getETag() {
@@ -53,7 +51,7 @@ public final class CheckSnapshotHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     * 
+     *
      * @param eTag the eTag value to set.
      * @return the CheckSnapshotHeaders object itself.
      */
@@ -64,7 +62,7 @@ public final class CheckSnapshotHeaders {
 
     /**
      * Get the syncToken property: The Sync-Token property.
-     * 
+     *
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -73,7 +71,7 @@ public final class CheckSnapshotHeaders {
 
     /**
      * Set the syncToken property: The Sync-Token property.
-     * 
+     *
      * @param syncToken the syncToken value to set.
      * @return the CheckSnapshotHeaders object itself.
      */
@@ -84,7 +82,7 @@ public final class CheckSnapshotHeaders {
 
     /**
      * Get the link property: The Link property.
-     * 
+     *
      * @return the link value.
      */
     public String getLink() {
@@ -93,7 +91,7 @@ public final class CheckSnapshotHeaders {
 
     /**
      * Set the link property: The Link property.
-     * 
+     *
      * @param link the link value to set.
      * @return the CheckSnapshotHeaders object itself.
      */
