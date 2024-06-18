@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class DbNodeMaintenanceType extends ExpandableStringEnum<DbNodeMain
      * @param name a name to look for.
      * @return the corresponding DbNodeMaintenanceType.
      */
-    @JsonCreator
     public static DbNodeMaintenanceType fromString(String name) {
         return fromString(name, DbNodeMaintenanceType.class);
     }

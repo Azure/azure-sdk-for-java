@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class MonthTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Month model = BinaryData.fromString("{\"name\":\"March\"}").toObject(Month.class);
-        Assertions.assertEquals(MonthName.MARCH, model.name());
+        Month model = BinaryData.fromString("{\"name\":\"July\"}").toObject(Month.class);
+        Assertions.assertEquals(MonthName.JULY, model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Month model = new Month().withName(MonthName.MARCH);
+        Month model = new Month().withName(MonthName.JULY);
         model = BinaryData.fromObject(model).toObject(Month.class);
-        Assertions.assertEquals(MonthName.MARCH, model.name());
+        Assertions.assertEquals(MonthName.JULY, model.name());
     }
 }

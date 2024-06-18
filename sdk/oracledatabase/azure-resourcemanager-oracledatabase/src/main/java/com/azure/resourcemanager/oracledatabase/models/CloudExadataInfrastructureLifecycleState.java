@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -64,7 +63,6 @@ public final class CloudExadataInfrastructureLifecycleState
      * @param name a name to look for.
      * @return the corresponding CloudExadataInfrastructureLifecycleState.
      */
-    @JsonCreator
     public static CloudExadataInfrastructureLifecycleState fromString(String name) {
         return fromString(name, CloudExadataInfrastructureLifecycleState.class);
     }

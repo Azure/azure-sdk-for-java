@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** The details of an error. */
+/**
+ * The details of an error.
+ */
 @Fluent
 public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
     /*
@@ -38,7 +40,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
 
     /**
      * Creates an instance of ErrorDetail class.
-     *
+     * 
      * @param code the code value to set.
      * @param message the message value to set.
      */
@@ -49,7 +51,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
 
     /**
      * Get the code property: One of a server-defined set of error codes.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -58,7 +60,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
 
     /**
      * Get the message property: A human-readable representation of the error.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -67,7 +69,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
 
     /**
      * Get the details property: An array of details about specific errors that led to this reported error.
-     *
+     * 
      * @return the details value.
      */
     public List<ErrorDetail> getDetails() {
@@ -76,7 +78,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
 
     /**
      * Set the details property: An array of details about specific errors that led to this reported error.
-     *
+     * 
      * @param details the details value to set.
      * @return the ErrorDetail object itself.
      */
@@ -88,7 +90,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
     /**
      * Get the innererror property: An object containing more specific information than the current object about the
      * error.
-     *
+     * 
      * @return the innererror value.
      */
     public InnerError getInnererror() {
@@ -98,7 +100,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
     /**
      * Set the innererror property: An object containing more specific information than the current object about the
      * error.
-     *
+     * 
      * @param innererror the innererror value to set.
      * @return the ErrorDetail object itself.
      */
@@ -107,6 +109,9 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,57 +124,56 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
 
     /**
      * Reads an instance of ErrorDetail from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ErrorDetail if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ErrorDetail.
      */
     public static ErrorDetail fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean codeFound = false;
-                    String code = null;
-                    boolean messageFound = false;
-                    String message = null;
-                    List<ErrorDetail> details = null;
-                    InnerError innererror = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean codeFound = false;
+            String code = null;
+            boolean messageFound = false;
+            String message = null;
+            List<ErrorDetail> details = null;
+            InnerError innererror = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("code".equals(fieldName)) {
-                            code = reader.getString();
-                            codeFound = true;
-                        } else if ("message".equals(fieldName)) {
-                            message = reader.getString();
-                            messageFound = true;
-                        } else if ("details".equals(fieldName)) {
-                            details = reader.readArray(reader1 -> ErrorDetail.fromJson(reader1));
-                        } else if ("innererror".equals(fieldName)) {
-                            innererror = InnerError.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (codeFound && messageFound) {
-                        ErrorDetail deserializedErrorDetail = new ErrorDetail(code, message);
-                        deserializedErrorDetail.details = details;
-                        deserializedErrorDetail.innererror = innererror;
+                if ("code".equals(fieldName)) {
+                    code = reader.getString();
+                    codeFound = true;
+                } else if ("message".equals(fieldName)) {
+                    message = reader.getString();
+                    messageFound = true;
+                } else if ("details".equals(fieldName)) {
+                    details = reader.readArray(reader1 -> ErrorDetail.fromJson(reader1));
+                } else if ("innererror".equals(fieldName)) {
+                    innererror = InnerError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (codeFound && messageFound) {
+                ErrorDetail deserializedErrorDetail = new ErrorDetail(code, message);
+                deserializedErrorDetail.details = details;
+                deserializedErrorDetail.innererror = innererror;
 
-                        return deserializedErrorDetail;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!codeFound) {
-                        missingProperties.add("code");
-                    }
-                    if (!messageFound) {
-                        missingProperties.add("message");
-                    }
+                return deserializedErrorDetail;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!codeFound) {
+                missingProperties.add("code");
+            }
+            if (!messageFound) {
+                missingProperties.add("message");
+            }
 
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

@@ -419,7 +419,7 @@
         {
           "regex": true,
           "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
-          "old": ".*? com\\.azure\\.resourcemanager\\.(cosmos|network)\\.models.*",
+          "old": ".*? com\\.azure\\.resourcemanager\\.(cosmos|network|mobilenetwork)\\.models.*",
           "justification": "Jackson annotation changed."
         },
         {
@@ -457,6 +457,13 @@
           "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withServiceType(com.azure.resourcemanager.cosmos.models.ServiceType)",
           "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.communication\\.phonenumbers\\.models.*",
+          "new" : ".*? com\\.azure\\.communication\\.phonenumbers\\.models.*",
+          "justification": "Migration to azure-json"
         }
       ]
     }

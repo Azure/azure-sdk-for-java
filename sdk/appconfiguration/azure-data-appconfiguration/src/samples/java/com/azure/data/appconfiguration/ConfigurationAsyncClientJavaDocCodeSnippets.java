@@ -8,6 +8,7 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.data.appconfiguration.models.LabelSelector;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotFields;
@@ -31,6 +32,8 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
+
+    private ConfigurationAsyncClient client = getAsyncClient();
 
     /**
      * Code snippets for {@link ConfigurationAsyncClient#addConfigurationSetting(String, String, String)}
@@ -484,6 +487,19 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
                     recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
             });
         // END: com.azure.data.appconfiguration.configurationasyncclient.listSnapshots
+    }
+
+    /**
+     * Code snippets for {@link ConfigurationAsyncClient#listLabels(LabelSelector)}
+     */
+    public void listLabels() {
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listLabels
+        String labelFilter = "{labelNamePrefix}*";
+        client.listLabels(new LabelSelector().setLabelFilter(labelFilter))
+                .subscribe(label -> {
+                    System.out.println("label name = " + label);
+                });
+        // END: com.azure.data.appconfiguration.configurationasyncclient.listLabels
     }
 
     /**

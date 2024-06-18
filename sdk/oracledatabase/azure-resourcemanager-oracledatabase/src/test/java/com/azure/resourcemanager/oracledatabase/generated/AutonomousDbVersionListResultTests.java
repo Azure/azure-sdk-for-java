@@ -9,19 +9,24 @@ import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDbVersio
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDbVersionListResult;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDbVersionProperties;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDbVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDbVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"udxytlmoyrx\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":false,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":true,\"isPaidEnabled\":true},\"id\":\"dzhlrq\",\"name\":\"bh\",\"type\":\"kfrlhrxsbky\"}],\"nextLink\":\"ycanuzbpzkafku\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"rts\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":true,\"isDefaultForPaid\":true,\"isFreeTierEnabled\":true,\"isPaidEnabled\":true},\"id\":\"mx\",\"name\":\"gkvtmelmqkrhah\",\"type\":\"ljuahaquhcdh\"}],\"nextLink\":\"ualaexqpvfadmw\"}")
             .toObject(AutonomousDbVersionListResult.class);
+        Assertions.assertEquals("ualaexqpvfadmw", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutonomousDbVersionListResult model = new AutonomousDbVersionListResult().withValue(
-            Arrays.asList(new AutonomousDbVersionInner().withProperties(new AutonomousDbVersionProperties())));
+        AutonomousDbVersionListResult model = new AutonomousDbVersionListResult()
+            .withValue(
+                Arrays.asList(new AutonomousDbVersionInner().withProperties(new AutonomousDbVersionProperties())))
+            .withNextLink("ualaexqpvfadmw");
         model = BinaryData.fromObject(model).toObject(AutonomousDbVersionListResult.class);
+        Assertions.assertEquals("ualaexqpvfadmw", model.nextLink());
     }
 }
