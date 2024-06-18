@@ -20,6 +20,7 @@ import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.circuitBreaker.ConsecutiveExceptionBasedCircuitBreaker;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -126,6 +127,50 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     };
 
+    Consumer<ResponseWrapper<?>> validateResponseHasSuccess = (responseWrapper) -> {
+
+        assertThat(responseWrapper.cosmosException).isNull();
+
+        if (responseWrapper.feedResponse != null) {
+            assertThat(responseWrapper.feedResponse.getCosmosDiagnostics()).isNotNull();
+            assertThat(responseWrapper.feedResponse.getCosmosDiagnostics().getDiagnosticsContext()).isNotNull();
+
+            CosmosDiagnosticsContext diagnosticsContext = responseWrapper.feedResponse.getCosmosDiagnostics().getDiagnosticsContext();
+
+            assertThat(diagnosticsContext.getStatusCode() == HttpConstants.StatusCodes.OK || diagnosticsContext.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED).isTrue();
+        } else if (responseWrapper.cosmosItemResponse != null) {
+            assertThat(responseWrapper.cosmosItemResponse.getDiagnostics()).isNotNull();
+            assertThat(responseWrapper.cosmosItemResponse.getDiagnostics().getDiagnosticsContext()).isNotNull();
+
+            CosmosDiagnosticsContext diagnosticsContext = responseWrapper.cosmosItemResponse.getDiagnostics().getDiagnosticsContext();
+
+            assertThat(HttpConstants.StatusCodes.OK <= diagnosticsContext.getStatusCode() && diagnosticsContext.getStatusCode() <= HttpConstants.StatusCodes.NO_CONTENT).isTrue();
+        } else if (responseWrapper.batchResponse != null) {
+            assertThat(responseWrapper.batchResponse.getDiagnostics()).isNotNull();
+            assertThat(responseWrapper.batchResponse.getDiagnostics().getDiagnosticsContext()).isNotNull();
+
+            CosmosDiagnosticsContext diagnosticsContext = responseWrapper.batchResponse.getDiagnostics().getDiagnosticsContext();
+
+            assertThat(HttpConstants.StatusCodes.OK <= diagnosticsContext.getStatusCode() && diagnosticsContext.getStatusCode() <= HttpConstants.StatusCodes.NO_CONTENT).isTrue();
+        }
+    };
+
+    Consumer<ResponseWrapper<?>> validateResponseHasOperationCancelledException = (responseWrapper) -> {
+        assertThat(responseWrapper.cosmosException).isNotNull();
+        assertThat(responseWrapper.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+        assertThat(responseWrapper.cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
+    };
+
+    Consumer<ResponseWrapper<?>> validateResponseHasInternalServerError = (responseWrapper) -> {
+        assertThat(responseWrapper.cosmosException).isNotNull();
+        assertThat(responseWrapper.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
+    };
+
+    Consumer<ResponseWrapper<?>> validateResponseHasServiceUnavailableError = (responseWrapper) -> {
+        assertThat(responseWrapper.cosmosException).isNotNull();
+        assertThat(responseWrapper.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
+    };
+
     private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildServiceUnavailableError
         = PartitionLevelCircuitBreakerTests::buildServiceUnavailableRules;
 
@@ -225,6 +270,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                validateResponseHasSuccess,
+                validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -240,6 +287,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -255,6 +304,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -267,9 +318,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(6),
                 generateServiceUnavailableRules,
+
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -285,6 +339,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -300,6 +356,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -315,6 +373,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -330,6 +390,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -345,6 +407,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -360,6 +424,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -375,6 +441,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -390,6 +458,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -405,6 +475,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -420,6 +492,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -435,6 +509,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -450,6 +526,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -466,6 +544,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -482,6 +562,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -497,6 +579,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -512,6 +596,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -527,6 +613,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -542,6 +630,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -557,6 +647,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -572,21 +664,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            {
-                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                generateTooManyRequestsRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -602,6 +681,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -617,6 +698,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -632,21 +715,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
                 !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            {
-                String.format("Test with faulty %s with read session not available in the first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                generateReadOrWriteSessionNotAvailableRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
-                !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -662,6 +732,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -677,6 +749,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasServiceUnavailableError,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -692,68 +766,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasServiceUnavailableError,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
-                generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.DELETE_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
-                generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.PATCH_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
-                generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
-                generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
@@ -767,143 +783,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasServiceUnavailableError,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.BATCH_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
-                generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
-                generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.READ_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.UPSERT_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.DELETE_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.PATCH_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
@@ -918,6 +801,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -934,36 +819,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            {
-                String.format("Test with faulty %s with internal service error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
-                generateInternalServerErrorRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            {
-                String.format("Test with faulty %s with internal service error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(6),
-                generateInternalServerErrorRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -979,6 +836,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -994,6 +853,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1009,6 +870,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1024,6 +887,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1039,6 +904,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
                 noRegionSwitchHint,
                 nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1054,6 +921,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
                 noRegionSwitchHint,
                 !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1101,6 +970,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 noEndToEndTimeout,
                 noRegionSwitchHint,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1116,6 +987,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1131,6 +1004,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1146,6 +1021,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1161,6 +1038,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 noEndToEndTimeout,
                 noRegionSwitchHint,
+                this.validateResponseHasServiceUnavailableError,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1210,6 +1089,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 noEndToEndTimeout,
                 noRegionSwitchHint,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1225,6 +1106,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1240,6 +1123,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1255,6 +1140,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1270,6 +1157,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 noEndToEndTimeout,
                 noRegionSwitchHint,
+                this.validateResponseHasServiceUnavailableError,
+                this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
@@ -1278,7 +1167,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "partitionLevelCircuitBreakerTestConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "partitionLevelCircuitBreakerTestConfigs", timeOut = 80 * TIMEOUT)
     public void operationHitsTerminalExceptionAcrossKRegions(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
@@ -1286,6 +1175,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicyCfg,
         CosmosRegionSwitchHint regionSwitchHint,
         Boolean nonIdempotentWriteRetriesEnabled,
+        Consumer<ResponseWrapper<?>> validateResponseInPresenceOfFaults,
+        Consumer<ResponseWrapper<?>> validateResponseInAbsenceOfFaults,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitingHasKickedIn,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenExceptionBubblesUp,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
@@ -1374,6 +1265,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             generateFaultInjectionRules,
             executeDataPlaneOperation,
             regionSwitchHint,
+            validateResponseInPresenceOfFaults,
+            validateResponseInAbsenceOfFaults,
             validateRegionsContactedWhenShortCircuitingHasKickedIn,
             validateRegionsContactedWhenExceptionBubblesUp,
             validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
@@ -1381,7 +1274,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             15);
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "readManyTestConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "readManyTestConfigs", timeOut = 80 * TIMEOUT)
     public void readManyOperationHitsTerminalExceptionAcrossKRegions(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
@@ -1389,6 +1282,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation,
         CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicyCfg,
         CosmosRegionSwitchHint regionSwitchHint,
+        Consumer<ResponseWrapper<?>> validateResponseInPresenceOfFaults,
+        Consumer<ResponseWrapper<?>> validateResponseInAbsenceOfFaults,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitingHasKickedIn,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenExceptionBubblesUp,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
@@ -1472,6 +1367,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             generateFaultInjectionRules,
             executeDataPlaneOperation,
             regionSwitchHint,
+            validateResponseInPresenceOfFaults,
+            validateResponseInAbsenceOfFaults,
             validateRegionsContactedWhenShortCircuitingHasKickedIn,
             validateRegionsContactedWhenExceptionBubblesUp,
             validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
@@ -1479,7 +1376,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             15);
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "readAllTestConfigs")
+    @Test(groups = {"multi-master"}, dataProvider = "readAllTestConfigs", timeOut = 80 * TIMEOUT)
     public void readAllOperationHitsTerminalExceptionAcrossKRegions(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
@@ -1487,6 +1384,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation,
         CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicyCfg,
         CosmosRegionSwitchHint regionSwitchHint,
+        Consumer<ResponseWrapper<?>> validateResponseInPresenceOfFaults,
+        Consumer<ResponseWrapper<?>> validateResponseInAbsenceOfFaults,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitingHasKickedIn,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenExceptionBubblesUp,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
@@ -1571,6 +1470,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             generateFaultInjectionRules,
             executeDataPlaneOperation,
             regionSwitchHint,
+            validateResponseInPresenceOfFaults,
+            validateResponseInAbsenceOfFaults,
             validateRegionsContactedWhenShortCircuitingHasKickedIn,
             validateRegionsContactedWhenExceptionBubblesUp,
             validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
@@ -1812,6 +1713,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateFaultInjectionRules,
         Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation,
         CosmosRegionSwitchHint regionSwitchHint,
+        Consumer<ResponseWrapper<?>> validateResponseInPresenceOfFailures,
+        Consumer<ResponseWrapper<?>> validateResponseInAbsenceOfFailures,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitingHasKickedIn,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenExceptionBubblesUp,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
@@ -1928,13 +1831,24 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
                     ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
 
-                    int expectedCircuitBreakingThreshold = doesOperationHaveWriteSemantics(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType()) ? 5 : 10;
+                    ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker
+                        = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker();
+
+                    int expectedCircuitBreakingThreshold
+                        = doesOperationHaveWriteSemantics(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType()) ?
+                        consecutiveExceptionBasedCircuitBreaker.getAllowedExceptionCountToMaintainStatus(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyWithFailures, false) :
+                        consecutiveExceptionBasedCircuitBreaker.getAllowedExceptionCountToMaintainStatus(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyWithFailures, true);
 
                     if (!hasReachedCircuitBreakingThreshold) {
                         hasReachedCircuitBreakingThreshold = expectedCircuitBreakingThreshold == globalPartitionEndpointManagerForCircuitBreaker.getExceptionCountByPartitionKeyRange(
                             new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(faultyPartitionKeyRanges.v.get(0), faultyDocumentCollection.v.getResourceId()));
+                        validateResponseInPresenceOfFailures.accept(response);
                     } else {
                         executionCountAfterCircuitBreakingThresholdBreached++;
+                    }
+
+                    if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
+                        validateResponseInAbsenceOfFailures.accept(response);
                     }
 
                     if (response.cosmosItemResponse != null) {
@@ -1942,7 +1856,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                         assertThat(response.cosmosItemResponse.getDiagnostics()).isNotNull();
 
                         if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
-                            logger.info("In circuit breaking assertion for item response...");
                             validateRegionsContactedWhenShortCircuitingHasKickedIn.accept(response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext());
                         }
                     } else if (response.feedResponse != null) {
@@ -1950,7 +1863,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                         assertThat(response.feedResponse.getCosmosDiagnostics()).isNotNull();
 
                         if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
-                            logger.info("In circuit breaking assertion for feed response...");
                             validateRegionsContactedWhenShortCircuitingHasKickedIn.accept(response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext());
                         }
                     } else if (response.cosmosException != null) {
@@ -1958,8 +1870,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                         assertThat(response.cosmosException.getDiagnostics()).isNotNull();
 
                         if (!hasReachedCircuitBreakingThreshold) {
-
-                            logger.info("In circuit breaking assertion for exception...");
                             CosmosDiagnosticsContext ctx = response.cosmosException.getDiagnostics().getDiagnosticsContext();
 
                             validateRegionsContactedWhenExceptionBubblesUp.accept(ctx);
@@ -1969,7 +1879,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                         assertThat(response.batchResponse.getDiagnostics()).isNotNull();
 
                         if (executionCountAfterCircuitBreakingThresholdBreached > 1) {
-                            logger.info("In circuit breaking assertion for batch response...");
                             validateRegionsContactedWhenShortCircuitingHasKickedIn.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                         }
                     }
@@ -1987,8 +1896,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     }
 
                     ResponseWrapper<?> response = executeDataPlaneOperation.apply(operationInvocationParamsWrapper);
-
-                    logger.info("Hit count : {}", faultInjectionRules.stream().mapToLong(FaultInjectionRule::getHitCount).sum());
+                    validateResponseInAbsenceOfFailures.accept(response);
 
                     if (response.cosmosItemResponse != null) {
                         assertThat(response.cosmosItemResponse).isNotNull();
@@ -2708,10 +2616,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         assertThat(list).isNotEmpty();
     }
 
-    private static boolean isReadManyOperation(OperationInvocationParamsWrapper paramsWrapper) {
-        return !(paramsWrapper.itemIdentitiesForReadManyOperation == null || paramsWrapper.itemIdentitiesForReadManyOperation.isEmpty());
-    }
-
     private static void deleteAllDocuments(CosmosAsyncContainer asyncContainer) {
         asyncContainer
             .queryItems("SELECT * FROM C", TestObject.class)
@@ -2721,7 +2625,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             .blockLast();
     }
 
+    private static boolean requiresClientLevelE2EConfig(FaultInjectionOperationType faultInjectionOperationType) {
+        return faultInjectionOperationType == FaultInjectionOperationType.READ_FEED_ITEM;
+    }
+
     private enum QueryType {
-        READ_MANY, READ_ALL, QUERY_TEXT_BASED
+        READ_MANY, READ_ALL, QUERY_TEXT_BASED, READ_FEED
     }
 }
