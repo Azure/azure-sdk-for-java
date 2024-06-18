@@ -107,7 +107,7 @@ public class AddressRepositoryIT {
         final Optional<Address> addressById = repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(),
             new PartitionKey(collectionManager.getEntityInformation(Address.class).getPartitionKeyFieldValue(TEST_ADDRESS1_PARTITION1)));
 
-        if (addressById.isEmpty()) {
+        if (!addressById.isPresent()) {
             fail("address not found");
             return;
         }
