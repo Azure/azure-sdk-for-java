@@ -65,7 +65,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @param content The collection of structured content associated with the message.
      */
     public ChatRequestUserMessage(List<ChatMessageContentItem> content) {
-        this(BinaryData.fromObject(content.stream().map(BinaryData::fromObject).collect(Collectors.toList())));
+        this(BinaryData.fromObject(content));
     }
 
     /**
@@ -123,7 +123,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeBinaryField("content", this.content.toBytes());
+        jsonWriter.writeRawField("content", this.content.toString());
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
@@ -148,7 +148,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
-                    content = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                    content = BinaryData.fromObject(reader.readUntyped());
                 } else if ("role".equals(fieldName)) {
                     role = ChatRole.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
