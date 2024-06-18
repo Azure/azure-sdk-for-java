@@ -17,11 +17,11 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridReceiverClientImpl;
 import com.azure.messaging.eventgrid.namespaces.implementation.models.AcknowledgeRequest;
-import com.azure.messaging.eventgrid.namespaces.models.ReceiveResult;
 import com.azure.messaging.eventgrid.namespaces.implementation.models.RejectRequest;
 import com.azure.messaging.eventgrid.namespaces.implementation.models.ReleaseRequest;
 import com.azure.messaging.eventgrid.namespaces.implementation.models.RenewLocksRequest;
 import com.azure.messaging.eventgrid.namespaces.models.AcknowledgeResult;
+import com.azure.messaging.eventgrid.namespaces.models.ReceiveResult;
 import com.azure.messaging.eventgrid.namespaces.models.RejectResult;
 import com.azure.messaging.eventgrid.namespaces.models.ReleaseDelay;
 import com.azure.messaging.eventgrid.namespaces.models.ReleaseResult;
@@ -38,7 +38,9 @@ public final class EventGridReceiverAsyncClient {
 
     @Generated
     private final EventGridReceiverClientImpl serviceClient;
+
     private final String topicName;
+
     private final String subscriptionName;
 
     /**
@@ -69,7 +71,7 @@ public final class EventGridReceiverAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     value (Required): [
@@ -117,7 +119,7 @@ public final class EventGridReceiverAsyncClient {
      * along with other failed lock tokens with their corresponding error information. Successfully acknowledged events
      * will no longer be available to be received by any consumer.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -125,9 +127,9 @@ public final class EventGridReceiverAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -185,7 +187,7 @@ public final class EventGridReceiverAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -193,9 +195,9 @@ public final class EventGridReceiverAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -243,7 +245,7 @@ public final class EventGridReceiverAsyncClient {
      * with other failed lock tokens with their corresponding error information. Successfully rejected events will be
      * dead-lettered and can no longer be received by a consumer.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -251,9 +253,9 @@ public final class EventGridReceiverAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -301,7 +303,7 @@ public final class EventGridReceiverAsyncClient {
      * along with other failed lock tokens with their corresponding error information. Successfully renewed locks will
      * ensure that the associated event is only available to the consumer that holds the renewed lock.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     lockTokens (Required): [
@@ -309,9 +311,9 @@ public final class EventGridReceiverAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     failedLockTokens (Required): [
@@ -426,8 +428,7 @@ public final class EventGridReceiverAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         AcknowledgeRequest requestObj = new AcknowledgeRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
-        return acknowledgeWithResponse(topicName, subscriptionName, request, requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return acknowledgeWithResponse(topicName, subscriptionName, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AcknowledgeResult.class));
     }
 
@@ -447,8 +448,7 @@ public final class EventGridReceiverAsyncClient {
      * @return the result of the Release operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReleaseResult> release(List<String> lockTokens,
-        ReleaseDelay releaseDelay) {
+    public Mono<ReleaseResult> release(List<String> lockTokens, ReleaseDelay releaseDelay) {
         // Generated convenience method for releaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
         ReleaseRequest requestObj = new ReleaseRequest(lockTokens);
@@ -528,13 +528,13 @@ public final class EventGridReceiverAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         RenewLocksRequest requestObj = new RenewLocksRequest(lockTokens);
         BinaryData request = BinaryData.fromObject(requestObj);
-        return renewLocksWithResponse(topicName, subscriptionName, request, requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return renewLocksWithResponse(topicName, subscriptionName, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(RenewLocksResult.class));
     }
 
     /**
      * Gets the topicName for this client.
+     * 
      * @return the topic name.
      */
     public String getTopicName() {
@@ -543,6 +543,7 @@ public final class EventGridReceiverAsyncClient {
 
     /**
      * Gets the subscriptionName for this client.
+     * 
      * @return the subscription name.
      */
     public String getSubscriptionName() {

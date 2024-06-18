@@ -26,6 +26,7 @@ public final class EventGridSenderClient {
 
     @Generated
     private final EventGridSenderClientImpl serviceClient;
+
     private final String topicName;
 
     /**
@@ -42,7 +43,7 @@ public final class EventGridSenderClient {
     /**
      * Publish a single Cloud Event to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -57,9 +58,9 @@ public final class EventGridSenderClient {
      *     subject: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * { }
      * }</pre>
@@ -82,7 +83,7 @@ public final class EventGridSenderClient {
     /**
      * Publish a batch of Cloud Events to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -99,9 +100,9 @@ public final class EventGridSenderClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * { }
      * }</pre>
@@ -159,6 +160,7 @@ public final class EventGridSenderClient {
 
     /**
      * Gets the topicName for this client.
+     * 
      * @return the topic name.
      */
     public String getTopicName() {
