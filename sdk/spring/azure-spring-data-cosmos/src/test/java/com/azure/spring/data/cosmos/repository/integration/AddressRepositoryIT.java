@@ -87,7 +87,7 @@ public class AddressRepositoryIT {
 
     @Test
     public void testFindById() {
-        // test findById (ID id) cross partition
+        // test findById (ID id) cross partition query
         final Address result = repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode()).get();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics().toString().contains("\"requestOperationType\":\"Query\"")).isTrue();
@@ -96,7 +96,7 @@ public class AddressRepositoryIT {
 
     @Test
     public void testFindAll() {
-        // findAll cross partition
+        // findAll cross partition query
         final List<Address> result = TestUtils.toList(repository.findAll());
 
         assertThat(result.size()).isEqualTo(4);
@@ -107,7 +107,7 @@ public class AddressRepositoryIT {
         final Optional<Address> addressById = repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(),
             new PartitionKey(collectionManager.getEntityInformation(Address.class).getPartitionKeyFieldValue(TEST_ADDRESS1_PARTITION1)));
 
-        if (!addressById.isPresent()) {
+        if (addressById.isEmpty()) {
             fail("address not found");
             return;
         }
