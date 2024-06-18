@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,7 +52,6 @@ public final class AutonomousDatabaseBackupLifecycleState
      * @param name a name to look for.
      * @return the corresponding AutonomousDatabaseBackupLifecycleState.
      */
-    @JsonCreator
     public static AutonomousDatabaseBackupLifecycleState fromString(String name) {
         return fromString(name, AutonomousDatabaseBackupLifecycleState.class);
     }

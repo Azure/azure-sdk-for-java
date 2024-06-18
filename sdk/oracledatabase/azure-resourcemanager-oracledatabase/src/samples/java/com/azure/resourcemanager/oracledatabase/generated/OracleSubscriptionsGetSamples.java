@@ -9,7 +9,9 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class OracleSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/oracleSubscriptions_get.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/oracleSubscriptions_get
+     * .json
      */
     /**
      * Sample code: Get Oracle Subscription.

@@ -11,7 +11,8 @@ import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBackup;
  */
 public final class AutonomousDatabaseBackupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_patch.json
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
+     * autonomousDatabaseBackup_patch.json
      */
     /**
      * Sample code: Patch Autonomous Database Backup.
@@ -27,7 +28,8 @@ public final class AutonomousDatabaseBackupsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_patch.json
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
+     * autonomousDatabaseBackup_patch.json
      */
     /**
      * Sample code: AutonomousDatabaseBackups_Update.

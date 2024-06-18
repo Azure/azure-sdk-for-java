@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class AutonomousMaintenanceScheduleType extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding AutonomousMaintenanceScheduleType.
      */
-    @JsonCreator
     public static AutonomousMaintenanceScheduleType fromString(String name) {
         return fromString(name, AutonomousMaintenanceScheduleType.class);
     }

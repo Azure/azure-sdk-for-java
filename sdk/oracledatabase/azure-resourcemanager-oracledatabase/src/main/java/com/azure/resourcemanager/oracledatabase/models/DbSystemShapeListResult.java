@@ -6,25 +6,27 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.oracledatabase.fluent.models.DbSystemShapeInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of a DbSystemShape list operation.
  */
 @Fluent
-public final class DbSystemShapeListResult {
+public final class DbSystemShapeListResult implements JsonSerializable<DbSystemShapeListResult> {
     /*
      * The DbSystemShape items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<DbSystemShapeInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -88,4 +90,45 @@ public final class DbSystemShapeListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DbSystemShapeListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DbSystemShapeListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DbSystemShapeListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DbSystemShapeListResult.
+     */
+    public static DbSystemShapeListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DbSystemShapeListResult deserializedDbSystemShapeListResult = new DbSystemShapeListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DbSystemShapeInner> value = reader.readArray(reader1 -> DbSystemShapeInner.fromJson(reader1));
+                    deserializedDbSystemShapeListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDbSystemShapeListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDbSystemShapeListResult;
+        });
+    }
 }

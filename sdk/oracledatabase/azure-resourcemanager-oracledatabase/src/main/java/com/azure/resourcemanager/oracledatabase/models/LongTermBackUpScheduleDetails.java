@@ -5,36 +5,39 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Details for the long-term backup schedule.
  */
 @Fluent
-public final class LongTermBackUpScheduleDetails {
+public final class LongTermBackUpScheduleDetails implements JsonSerializable<LongTermBackUpScheduleDetails> {
     /*
      * The frequency of the long-term backup schedule
      */
-    @JsonProperty(value = "repeatCadence")
     private RepeatCadenceType repeatCadence;
 
     /*
-     * The timestamp for the long-term backup schedule. For a MONTHLY cadence, months having fewer days than the provided date will have the backup taken on the last day of that month.
+     * The timestamp for the long-term backup schedule. For a MONTHLY cadence, months having fewer days than the
+     * provided date will have the backup taken on the last day of that month.
      */
-    @JsonProperty(value = "timeOfBackup")
     private OffsetDateTime timeOfBackup;
 
     /*
      * Retention period, in days, for backups.
      */
-    @JsonProperty(value = "retentionPeriodInDays")
     private Integer retentionPeriodInDays;
 
     /*
      * Indicates if the long-term backup schedule should be deleted. The default value is `FALSE`.
      */
-    @JsonProperty(value = "isDisabled")
     private Boolean isDisabled;
 
     /**
@@ -133,5 +136,55 @@ public final class LongTermBackUpScheduleDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("repeatCadence", this.repeatCadence == null ? null : this.repeatCadence.toString());
+        jsonWriter.writeStringField("timeOfBackup",
+            this.timeOfBackup == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeOfBackup));
+        jsonWriter.writeNumberField("retentionPeriodInDays", this.retentionPeriodInDays);
+        jsonWriter.writeBooleanField("isDisabled", this.isDisabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LongTermBackUpScheduleDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LongTermBackUpScheduleDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LongTermBackUpScheduleDetails.
+     */
+    public static LongTermBackUpScheduleDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LongTermBackUpScheduleDetails deserializedLongTermBackUpScheduleDetails
+                = new LongTermBackUpScheduleDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("repeatCadence".equals(fieldName)) {
+                    deserializedLongTermBackUpScheduleDetails.repeatCadence
+                        = RepeatCadenceType.fromString(reader.getString());
+                } else if ("timeOfBackup".equals(fieldName)) {
+                    deserializedLongTermBackUpScheduleDetails.timeOfBackup = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("retentionPeriodInDays".equals(fieldName)) {
+                    deserializedLongTermBackUpScheduleDetails.retentionPeriodInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("isDisabled".equals(fieldName)) {
+                    deserializedLongTermBackUpScheduleDetails.isDisabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLongTermBackUpScheduleDetails;
+        });
     }
 }

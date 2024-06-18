@@ -11,7 +11,8 @@ import com.azure.resourcemanager.oracledatabase.models.PeerDbDetails;
  */
 public final class AutonomousDatabasesFailoverSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_failover.json
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
+     * autonomousDatabase_failover.json
      */
     /**
      * Sample code: AutonomousDatabases_Failover.
@@ -26,7 +27,8 @@ public final class AutonomousDatabasesFailoverSamples {
     }
 
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_failover.json
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
+     * autonomousDatabase_failover.json
      */
     /**
      * Sample code: Perform failover action on Autonomous Database.
