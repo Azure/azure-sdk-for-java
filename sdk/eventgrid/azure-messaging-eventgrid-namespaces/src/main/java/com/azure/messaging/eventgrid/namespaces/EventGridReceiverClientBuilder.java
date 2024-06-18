@@ -272,7 +272,7 @@ public final class EventGridReceiverClientBuilder implements HttpTrait<EventGrid
 
     /**
      * Sets the topic name.
-     * 
+     *
      * @param topicName the topic name.
      * @return the EventGridReceiverClientBuilder.
      */
@@ -285,7 +285,7 @@ public final class EventGridReceiverClientBuilder implements HttpTrait<EventGrid
 
     /**
      * Sets the subscription name.
-     * 
+     *
      * @param subscriptionName the subscription name.
      * @return the EventGridReceiverClientBuilder.
      */

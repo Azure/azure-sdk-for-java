@@ -160,7 +160,7 @@ public final class EventGridSenderClient {
 
     /**
      * Gets the topicName for this client.
-     * 
+     *
      * @return the topic name.
      */
     public String getTopicName() {

@@ -164,7 +164,7 @@ public final class EventGridSenderAsyncClient {
 
     /**
      * Gets the topicName for this client.
-     * 
+     *
      * @return the topic name.
      */
     public String getTopicName() {

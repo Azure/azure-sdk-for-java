@@ -534,7 +534,7 @@ public final class EventGridReceiverAsyncClient {
 
     /**
      * Gets the topicName for this client.
-     * 
+     *
      * @return the topic name.
      */
     public String getTopicName() {
@@ -543,7 +543,7 @@ public final class EventGridReceiverAsyncClient {
 
     /**
      * Gets the subscriptionName for this client.
-     * 
+     *
      * @return the subscription name.
      */
     public String getSubscriptionName() {
