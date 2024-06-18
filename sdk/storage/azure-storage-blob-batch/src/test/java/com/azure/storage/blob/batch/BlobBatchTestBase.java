@@ -4,6 +4,7 @@
 package com.azure.storage.blob.batch;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -11,8 +12,9 @@ import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
@@ -92,12 +94,14 @@ public class BlobBatchTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        if (getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build()).buildClient();
+        return builder.credential(getTokenCredential()).buildClient();
+    }
+
+    protected TokenCredential getTokenCredential() {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
         } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildClient();
+            return new DefaultAzureCredentialBuilder().build();
         }
     }
 

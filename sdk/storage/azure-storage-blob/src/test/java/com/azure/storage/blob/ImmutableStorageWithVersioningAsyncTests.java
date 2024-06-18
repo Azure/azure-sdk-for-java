@@ -13,7 +13,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -89,7 +89,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     private static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
     private static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
     private static final String API_VERSION = "2021-04-01";
-    private static final TokenCredential CREDENTIAL = new EnvironmentCredentialBuilder().build();
+    private static final TokenCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
     private static final BearerTokenAuthenticationPolicy CREDENTIAL_POLICY =
         new BearerTokenAuthenticationPolicy(CREDENTIAL, "https://management.azure.com/.default");
     private BlobContainerAsyncClient vlwContainer;
