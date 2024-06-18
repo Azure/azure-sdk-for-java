@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory=\
-cosmos.com.azure.spring.cloud.testcontainers.implementation.service.connection.CosmosContainerConnectionDetailsFactory,\
-storage.com.azure.spring.cloud.testcontainers.implementation.service.connection.StorageBlobContainerConnectionDetailsFactory,\
-storage.com.azure.spring.cloud.testcontainers.implementation.service.connection.StorageQueueContainerConnectionDetailsFactory
+com.azure.spring.cloud.testcontainers.implementation.service.connection.cosmos.CosmosContainerConnectionDetailsFactory,\
+com.azure.spring.cloud.testcontainers.implementation.service.connection.storage.StorageBlobContainerConnectionDetailsFactory,\
+com.azure.spring.cloud.testcontainers.implementation.service.connection.storage.StorageQueueContainerConnectionDetailsFactory
