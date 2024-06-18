@@ -40,11 +40,12 @@ class StorageBlobContainerConnectionDetailsFactoryTests {
 
     @Test
     void test() throws IOException {
+        String originalContent = "Hello World!";
         try (OutputStream os = ((WritableResource) this.blobFile).getOutputStream()) {
-            os.write("Hello World!".getBytes());
+            os.write(originalContent.getBytes());
         }
-        var content = StreamUtils.copyToString(this.blobFile.getInputStream(), Charset.defaultCharset());
-        assertThat(content).isEqualTo("Hello World!");
+        String resultContent = StreamUtils.copyToString(this.blobFile.getInputStream(), Charset.defaultCharset());
+        assertThat(resultContent).isEqualTo(originalContent);
     }
 
     @Configuration(proxyBeanMethods = false)

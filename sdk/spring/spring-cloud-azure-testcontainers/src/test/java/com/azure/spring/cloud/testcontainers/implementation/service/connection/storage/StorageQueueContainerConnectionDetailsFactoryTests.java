@@ -36,17 +36,16 @@ class StorageQueueContainerConnectionDetailsFactoryTests {
 
     @Test
     void test() {
+        String message = "Hello World!";
         this.queueClient.create();
-        this.queueClient.sendMessage("Hello World!");
-
+        this.queueClient.sendMessage(message);
         var messageItem = this.queueClient.receiveMessage();
-        assertThat(messageItem.getBody().toString()).isEqualTo("Hello World!");
+        assertThat(messageItem.getBody().toString()).isEqualTo(message);
     }
 
     @Configuration
     @ImportAutoConfiguration(classes = {AzureGlobalPropertiesAutoConfiguration.class, AzureStorageQueueAutoConfiguration.class})
     static class Config {
-
     }
 
 }

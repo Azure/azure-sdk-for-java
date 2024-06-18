@@ -65,12 +65,12 @@ class CosmosContainerConnectionDetailsFactoryTests {
 
     @Test
     void test() {
+        assertThat(this.personRepository.count()).isEqualTo(0);
         this.personRepository.save(new Person("Peter"));
         assertThat(this.personRepository.count()).isEqualTo(1);
     }
 
     interface PersonRepository extends CosmosRepository<Person, String> {
-
     }
 
     @com.azure.spring.data.cosmos.core.mapping.Container(containerName = "person", ru = "400")
@@ -101,7 +101,6 @@ class CosmosContainerConnectionDetailsFactoryTests {
     @ImportAutoConfiguration(classes = {AzureGlobalPropertiesAutoConfiguration.class, AzureCosmosAutoConfiguration.class, CosmosDataAutoConfiguration.class})
     @EnableCosmosRepositories(considerNestedRepositories = true)
     static class Config {
-
     }
 
 }
