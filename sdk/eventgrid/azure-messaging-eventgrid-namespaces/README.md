@@ -53,8 +53,7 @@ To send events to a topic or domain with a `TokenCredential`, the authenticated 
 This authentication method is preferred.
 
 ```java com.azure.messaging.eventgrid.namespaces.TokenCredentialExample
-EventGridSenderClient client = new EventGridSenderClientBuilder()
-    .endpoint("your endpoint")
+EventGridSenderClient client = new EventGridSenderClientBuilder().endpoint("your endpoint")
     .topicName("your topic")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
@@ -69,8 +68,7 @@ az eventgrid topic key list --name <your-resource-name> --resource-group <your-r
 ```
 
 ```java com.azure.messaging.eventgrid.namespaces.AccessKeyExample
-EventGridSenderClient client = new EventGridSenderClientBuilder()
-    .endpoint("your endpoint")
+EventGridSenderClient client = new EventGridSenderClientBuilder().endpoint("your endpoint")
     .topicName("your topic")
     .credential(new AzureKeyCredential("your access key"))
     .buildClient();
@@ -109,54 +107,36 @@ Sending an event is done by creating a `CloudEvent` and using the client to send
 #### Synchronously
 ```java com.azure.messaging.eventgrid.namespaces.SendEventExample
 User user = new User("John", "Doe");
-CloudEvent cloudEvent = new CloudEvent("source",
-    "type",
-    BinaryData.fromObject(user),
-    CloudEventDataFormat.JSON,
-    "application/json");
+CloudEvent cloudEvent
+    = new CloudEvent("source", "type", BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json");
 client.send(cloudEvent);
 ```
 
 ```java com.azure.messaging.eventgrid.namespaces.SendMultipleEventsExample
 User john = new User("John", "Doe");
 User jane = new User("Jane", "Doe");
-CloudEvent johnEvent = new CloudEvent("source",
-    "type",
-    BinaryData.fromObject(user),
-    CloudEventDataFormat.JSON,
-    "application/json");
-CloudEvent janeEvent = new CloudEvent("source",
-    "type",
-    BinaryData.fromObject(user),
-    CloudEventDataFormat.JSON,
-    "application/json");
+CloudEvent johnEvent
+    = new CloudEvent("source", "type", BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json");
+CloudEvent janeEvent
+    = new CloudEvent("source", "type", BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json");
 client.send(Arrays.asList(johnEvent, janeEvent));
 ```
 
 #### Asynchronously
 ```java com.azure.messaging.eventgrid.namespaces.SendEventAsyncExample
 User user = new User("John", "Doe");
-CloudEvent cloudEvent = new CloudEvent("source",
-    "type",
-    BinaryData.fromObject(user),
-    CloudEventDataFormat.JSON,
-    "application/json");
+CloudEvent cloudEvent
+    = new CloudEvent("source", "type", BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json");
 client.send(cloudEvent).subscribe();
 ```
 
 ```java com.azure.messaging.eventgrid.namespaces.SendMultipleEventsAsyncExample
 User john = new User("John", "Doe");
 User jane = new User("Jane", "Doe");
-CloudEvent johnEvent = new CloudEvent("source",
-    "type",
-    BinaryData.fromObject(user),
-    CloudEventDataFormat.JSON,
-    "application/json");
-CloudEvent janeEvent = new CloudEvent("source",
-    "type",
-    BinaryData.fromObject(user),
-    CloudEventDataFormat.JSON,
-    "application/json");
+CloudEvent johnEvent
+    = new CloudEvent("source", "type", BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json");
+CloudEvent janeEvent
+    = new CloudEvent("source", "type", BinaryData.fromObject(user), CloudEventDataFormat.JSON, "application/json");
 client.send(Arrays.asList(johnEvent, janeEvent)).subscribe();
 ```
 
@@ -165,8 +145,7 @@ Receiving events requires an [event subscription](https://learn.microsoft.com/az
 
 ```java com.azure.messaging.eventgrid.namespaces.ReceiveEventExample
 
-EventGridReceiverClient client = new EventGridReceiverClientBuilder()
-    .endpoint("your endpoint")
+EventGridReceiverClient client = new EventGridReceiverClientBuilder().endpoint("your endpoint")
     .topicName("your topic")
     .subscriptionName("your subscription")
     .credential(new DefaultAzureCredentialBuilder().build())
