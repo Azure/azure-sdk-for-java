@@ -3860,11 +3860,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             @Override
             public Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions) {
 
-                if (RxDocumentClientImpl.this.requiresFeedRangeFiltering(request)) {
+                if (RxDocumentClientImpl.this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
 
                     String collectionRid = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getCollectionRid(queryRequestOptions);
 
-                    checkNotNull(collectionRid, "collectionRid cannot be null!");
+                    checkNotNull(collectionRid, "Argument 'collectionRid' cannot be null!");
 
                     return RxDocumentClientImpl.this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), collectionRid, null, null)
                         .flatMap(collectionRoutingMapValueHolder -> {
@@ -5769,11 +5769,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CollectionRoutingMap collectionRoutingMap) {
 
-        checkNotNull(options, "options cannot be null!");
-        checkNotNull(options.getPartitionKeyDefinition(), "partitionKeyDefinition within options cannot be null!");
-        checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+        checkNotNull(request, "Argument 'request' cannot be null!");
 
         if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+
+            checkNotNull(options, "Argument 'options' cannot be null!");
+            checkNotNull(options.getPartitionKeyDefinition(), "Argument 'partitionKeyDefinition' within options cannot be null!");
+            checkNotNull(collectionRoutingMap, "Argument 'collectionRoutingMap' cannot be null!");
+
             PartitionKeyDefinition partitionKeyDefinition = options.getPartitionKeyDefinition();
             PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
 

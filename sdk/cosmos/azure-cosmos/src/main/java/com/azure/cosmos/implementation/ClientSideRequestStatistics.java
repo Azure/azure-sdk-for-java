@@ -166,8 +166,6 @@ public class ClientSideRequestStatistics {
             storeResponseStatistics.sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
             storeResponseStatistics.regionToHealthStatusesForPartitionKeyRange = request.requestContext.getRegionToHealthStatusesForPartitionKeyRange();
 
-            System.out.println("In ClientSideRequestStats : " + request);
-
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
                 storeResponseStatistics.e2ePolicyCfg =
                     request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
