@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -300,13 +301,15 @@ public final class BatchJobPreparationTaskExecutionInfo
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("startTime".equals(fieldName)) {
-                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("state".equals(fieldName)) {
                     state = BatchJobPreparationTaskState.fromString(reader.getString());
                 } else if ("retryCount".equals(fieldName)) {
                     retryCount = reader.getInt();
                 } else if ("endTime".equals(fieldName)) {
-                    endTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("taskRootDirectory".equals(fieldName)) {
                     taskRootDirectory = reader.getString();
                 } else if ("taskRootDirectoryUrl".equals(fieldName)) {
@@ -318,8 +321,8 @@ public final class BatchJobPreparationTaskExecutionInfo
                 } else if ("failureInfo".equals(fieldName)) {
                     failureInfo = BatchTaskFailureInfo.fromJson(reader);
                 } else if ("lastRetryTime".equals(fieldName)) {
-                    lastRetryTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastRetryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("result".equals(fieldName)) {
                     result = BatchTaskExecutionResult.fromString(reader.getString());
                 } else {

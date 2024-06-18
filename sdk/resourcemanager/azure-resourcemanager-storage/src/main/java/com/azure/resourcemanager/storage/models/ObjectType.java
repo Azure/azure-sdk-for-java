@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -13,10 +14,14 @@ import java.util.Collection;
  * level.
  */
 public final class ObjectType extends ExpandableStringEnum<ObjectType> {
-    /** Static value Blob for ObjectType. */
+    /**
+     * Static value Blob for ObjectType.
+     */
     public static final ObjectType BLOB = fromString("Blob");
 
-    /** Static value Container for ObjectType. */
+    /**
+     * Static value Container for ObjectType.
+     */
     public static final ObjectType CONTAINER = fromString("Container");
 
     /**

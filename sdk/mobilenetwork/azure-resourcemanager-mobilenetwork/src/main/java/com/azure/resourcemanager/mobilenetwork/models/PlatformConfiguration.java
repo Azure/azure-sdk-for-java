@@ -21,15 +21,13 @@ public final class PlatformConfiguration {
     private PlatformType type;
 
     /*
-     * The Azure Stack Edge device where the packet core is deployed. If the device is part of a fault tolerant pair,
-     * either device in the pair can be specified.
+     * The Azure Stack Edge device where the packet core is deployed. If the device is part of a fault tolerant pair, either device in the pair can be specified.
      */
     @JsonProperty(value = "azureStackEdgeDevice")
     private AzureStackEdgeDeviceResourceId azureStackEdgeDevice;
 
     /*
-     * The Azure Stack Edge devices where the packet core is deployed. If the packet core is deployed across multiple
-     * devices, all devices will appear in this list.
+     * The Azure Stack Edge devices where the packet core is deployed. If the packet core is deployed across multiple devices, all devices will appear in this list.
      */
     @JsonProperty(value = "azureStackEdgeDevices", access = JsonProperty.Access.WRITE_ONLY)
     private List<AzureStackEdgeDeviceResourceId> azureStackEdgeDevices;
@@ -177,8 +175,8 @@ public final class PlatformConfiguration {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model PlatformConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model PlatformConfiguration"));
         }
         if (azureStackEdgeDevice() != null) {
             azureStackEdgeDevice().validate();

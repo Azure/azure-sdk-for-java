@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -27,8 +27,13 @@ import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
 import com.azure.resourcemanager.netapp.implementation.AccountsImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupPoliciesImpl;
 import com.azure.resourcemanager.netapp.implementation.BackupsImpl;
+import com.azure.resourcemanager.netapp.implementation.BackupsUnderAccountsImpl;
+import com.azure.resourcemanager.netapp.implementation.BackupsUnderBackupVaultsImpl;
+import com.azure.resourcemanager.netapp.implementation.BackupsUnderVolumesImpl;
+import com.azure.resourcemanager.netapp.implementation.BackupVaultsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppManagementClientBuilder;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsImpl;
+import com.azure.resourcemanager.netapp.implementation.NetAppResourceRegionInfosImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourcesImpl;
 import com.azure.resourcemanager.netapp.implementation.OperationsImpl;
 import com.azure.resourcemanager.netapp.implementation.PoolsImpl;
@@ -41,7 +46,12 @@ import com.azure.resourcemanager.netapp.implementation.VolumesImpl;
 import com.azure.resourcemanager.netapp.models.Accounts;
 import com.azure.resourcemanager.netapp.models.BackupPolicies;
 import com.azure.resourcemanager.netapp.models.Backups;
+import com.azure.resourcemanager.netapp.models.BackupsUnderAccounts;
+import com.azure.resourcemanager.netapp.models.BackupsUnderBackupVaults;
+import com.azure.resourcemanager.netapp.models.BackupsUnderVolumes;
+import com.azure.resourcemanager.netapp.models.BackupVaults;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
+import com.azure.resourcemanager.netapp.models.NetAppResourceRegionInfos;
 import com.azure.resourcemanager.netapp.models.NetAppResources;
 import com.azure.resourcemanager.netapp.models.Operations;
 import com.azure.resourcemanager.netapp.models.Pools;
@@ -69,6 +79,8 @@ public final class NetAppFilesManager {
 
     private NetAppResourceQuotaLimits netAppResourceQuotaLimits;
 
+    private NetAppResourceRegionInfos netAppResourceRegionInfos;
+
     private Accounts accounts;
 
     private Pools pools;
@@ -79,8 +91,6 @@ public final class NetAppFilesManager {
 
     private SnapshotPolicies snapshotPolicies;
 
-    private Backups backups;
-
     private BackupPolicies backupPolicies;
 
     private VolumeQuotaRules volumeQuotaRules;
@@ -89,14 +99,26 @@ public final class NetAppFilesManager {
 
     private Subvolumes subvolumes;
 
+    private Backups backups;
+
+    private BackupVaults backupVaults;
+
+    private BackupsUnderBackupVaults backupsUnderBackupVaults;
+
+    private BackupsUnderVolumes backupsUnderVolumes;
+
+    private BackupsUnderAccounts backupsUnderAccounts;
+
     private final NetAppManagementClient clientObject;
 
     private NetAppFilesManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new NetAppManagementClientBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -247,12 +269,19 @@ public final class NetAppFilesManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.netapp").append("/")
-                .append("1.1.0");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.netapp")
+                .append("/")
+                .append("2.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -271,18 +300,21 @@ public final class NetAppFilesManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new NetAppFilesManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -322,6 +354,19 @@ public final class NetAppFilesManager {
                 = new NetAppResourceQuotaLimitsImpl(clientObject.getNetAppResourceQuotaLimits(), this);
         }
         return netAppResourceQuotaLimits;
+    }
+
+    /**
+     * Gets the resource collection API of NetAppResourceRegionInfos.
+     * 
+     * @return Resource collection API of NetAppResourceRegionInfos.
+     */
+    public NetAppResourceRegionInfos netAppResourceRegionInfos() {
+        if (this.netAppResourceRegionInfos == null) {
+            this.netAppResourceRegionInfos
+                = new NetAppResourceRegionInfosImpl(clientObject.getNetAppResourceRegionInfos(), this);
+        }
+        return netAppResourceRegionInfos;
     }
 
     /**
@@ -385,18 +430,6 @@ public final class NetAppFilesManager {
     }
 
     /**
-     * Gets the resource collection API of Backups.
-     * 
-     * @return Resource collection API of Backups.
-     */
-    public Backups backups() {
-        if (this.backups == null) {
-            this.backups = new BackupsImpl(clientObject.getBackups(), this);
-        }
-        return backups;
-    }
-
-    /**
      * Gets the resource collection API of BackupPolicies. It manages BackupPolicy.
      * 
      * @return Resource collection API of BackupPolicies.
@@ -442,6 +475,67 @@ public final class NetAppFilesManager {
             this.subvolumes = new SubvolumesImpl(clientObject.getSubvolumes(), this);
         }
         return subvolumes;
+    }
+
+    /**
+     * Gets the resource collection API of Backups. It manages Backup.
+     * 
+     * @return Resource collection API of Backups.
+     */
+    public Backups backups() {
+        if (this.backups == null) {
+            this.backups = new BackupsImpl(clientObject.getBackups(), this);
+        }
+        return backups;
+    }
+
+    /**
+     * Gets the resource collection API of BackupVaults. It manages BackupVault.
+     * 
+     * @return Resource collection API of BackupVaults.
+     */
+    public BackupVaults backupVaults() {
+        if (this.backupVaults == null) {
+            this.backupVaults = new BackupVaultsImpl(clientObject.getBackupVaults(), this);
+        }
+        return backupVaults;
+    }
+
+    /**
+     * Gets the resource collection API of BackupsUnderBackupVaults.
+     * 
+     * @return Resource collection API of BackupsUnderBackupVaults.
+     */
+    public BackupsUnderBackupVaults backupsUnderBackupVaults() {
+        if (this.backupsUnderBackupVaults == null) {
+            this.backupsUnderBackupVaults
+                = new BackupsUnderBackupVaultsImpl(clientObject.getBackupsUnderBackupVaults(), this);
+        }
+        return backupsUnderBackupVaults;
+    }
+
+    /**
+     * Gets the resource collection API of BackupsUnderVolumes.
+     * 
+     * @return Resource collection API of BackupsUnderVolumes.
+     */
+    public BackupsUnderVolumes backupsUnderVolumes() {
+        if (this.backupsUnderVolumes == null) {
+            this.backupsUnderVolumes = new BackupsUnderVolumesImpl(clientObject.getBackupsUnderVolumes(), this);
+        }
+        return backupsUnderVolumes;
+    }
+
+    /**
+     * Gets the resource collection API of BackupsUnderAccounts.
+     * 
+     * @return Resource collection API of BackupsUnderAccounts.
+     */
+    public BackupsUnderAccounts backupsUnderAccounts() {
+        if (this.backupsUnderAccounts == null) {
+            this.backupsUnderAccounts = new BackupsUnderAccountsImpl(clientObject.getBackupsUnderAccounts(), this);
+        }
+        return backupsUnderAccounts;
     }
 
     /**

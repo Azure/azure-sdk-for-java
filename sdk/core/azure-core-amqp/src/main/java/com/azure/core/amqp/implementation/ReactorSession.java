@@ -658,10 +658,7 @@ public class ReactorSession implements AmqpSession {
             final AmqpException exception = ((AmqpException) error);
             final String errorCondition
                 = exception.getErrorCondition() != null ? exception.getErrorCondition().getErrorCondition() : "UNKNOWN";
-
             condition = new ErrorCondition(Symbol.getSymbol(errorCondition), exception.getMessage());
-
-            closeAsync(exception.getMessage(), condition, true).subscribe();
         } else {
             condition = null;
         }

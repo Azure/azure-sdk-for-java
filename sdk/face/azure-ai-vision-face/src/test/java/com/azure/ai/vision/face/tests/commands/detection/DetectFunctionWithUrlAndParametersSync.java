@@ -25,7 +25,7 @@ class DetectFunctionWithUrlAndParametersSync extends DetectSyncFunction {
         FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel, boolean returnFaceId,
         List<FaceAttributeType> returnFaceAttributes, Boolean returnFaceLandmarks, Boolean returnRecognitionModel,
         Integer faceIdTimeToLive) {
-        return mFaceClient.detectFromUrl(mUrl, detectionModel, recognitionModel, returnFaceId,
+        return mFaceClient.detect(mUrl, detectionModel, recognitionModel, returnFaceId,
             returnFaceAttributes, returnFaceLandmarks, returnRecognitionModel, faceIdTimeToLive);
     }
 }

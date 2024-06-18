@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.fluent.models.FileShareItemInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -22,13 +23,14 @@ public final class FileShareItems {
     private List<FileShareItemInner> value;
 
     /*
-     * Request URL that can be used to query next page of shares. Returned when total number of requested shares exceed
-     * maximum page size.
+     * Request URL that can be used to query next page of shares. Returned when total number of requested shares exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of FileShareItems class. */
+    /**
+     * Creates an instance of FileShareItems class.
+     */
     public FileShareItems() {
     }
 

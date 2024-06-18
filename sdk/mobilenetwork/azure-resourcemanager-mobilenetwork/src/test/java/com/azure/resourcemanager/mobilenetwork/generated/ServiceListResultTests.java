@@ -25,218 +25,116 @@ public final class ServiceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"servicePrecedence\":1237082530,\"serviceQosPolicy\":{\"5qi\":2056337569,\"allocationAndRetentionPriorityLevel\":1063119881,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"Preemptable\",\"maximumBitRate\":{\"uplink\":\"qal\",\"downlink\":\"rmnjijpx\"}},\"pccRules\":[{\"ruleName\":\"q\",\"rulePrecedence\":208789733,\"ruleQosPolicy\":{\"maximumBitRate\":{\"uplink\":\"fn\",\"downlink\":\"yxbaaabjyvayf\"}},\"trafficControl\":\"Enabled\",\"serviceDataFlowTemplates\":[{\"templateName\":\"zrtuzq\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"sexnevfdnw\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"mewzsyyc\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"zsoibjudpfrxtr\",\"rulePrecedence\":552907355,\"ruleQosPolicy\":{\"maximumBitRate\":{\"uplink\":\"vaytdwkqbrq\",\"downlink\":\"bpaxhexiilivpdt\"}},\"trafficControl\":\"Enabled\",\"serviceDataFlowTemplates\":[{\"templateName\":\"tdqoaxoruzfgsq\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]}]}]},\"location\":\"xrxxlep\",\"tags\":{\"wxuqlcvydypatdoo\":\"mxjezwlw\",\"kooebwnu\":\"ojknio\",\"vdkcrodtj\":\"hemms\"},\"id\":\"nfwjlfltkacjvefk\",\"name\":\"lfoakg\",\"type\":\"kfpagao\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"servicePrecedence\":597345805,\"serviceQosPolicy\":{\"5qi\":1177485669,\"allocationAndRetentionPriorityLevel\":985513982,\"preemptionCapability\":\"NotPreempt\",\"preemptionVulnerability\":\"Preemptable\",\"maximumBitRate\":{\"uplink\":\"k\",\"downlink\":\"jnsjervtiagxsd\"}},\"pccRules\":[{\"ruleName\":\"uem\",\"rulePrecedence\":1236978734,\"ruleQosPolicy\":{\"maximumBitRate\":{\"uplink\":\"zkfzbeyv\",\"downlink\":\"nqicvinvkjjxdxrb\"}},\"trafficControl\":\"Enabled\",\"serviceDataFlowTemplates\":[{\"templateName\":\"clewyhm\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"paztzpofncck\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"fz\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"hxx\",\"rulePrecedence\":1513228319,\"ruleQosPolicy\":{\"maximumBitRate\":{\"uplink\":\"qa\",\"downlink\":\"zfeqztppri\"}},\"trafficControl\":\"Blocked\",\"serviceDataFlowTemplates\":[{\"templateName\":\"rjaltolmncw\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"bqwcsdbnwdcf\",\"rulePrecedence\":1062647603,\"ruleQosPolicy\":{\"maximumBitRate\":{\"uplink\":\"qdpfuvglsbjjca\",\"downlink\":\"vxb\"}},\"trafficControl\":\"Blocked\",\"serviceDataFlowTemplates\":[{\"templateName\":\"dut\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"ormrlxqtvcofudfl\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]}]}]},\"location\":\"jub\",\"tags\":{\"nqntorudsgsahm\":\"nnqvsa\",\"rauwjuetaebu\":\"yc\",\"dmovsm\":\"u\"},\"id\":\"l\",\"name\":\"wabm\",\"type\":\"oefki\"},{\"properties\":{\"provisioningState\":\"Deleted\",\"servicePrecedence\":2086656667,\"serviceQosPolicy\":{\"5qi\":188593097,\"allocationAndRetentionPriorityLevel\":2034144205,\"preemptionCapability\":\"NotPreempt\",\"preemptionVulnerability\":\"Preemptable\",\"maximumBitRate\":{\"uplink\":\"kfbtndoaongbjc\",\"downlink\":\"tujitcjedft\"}},\"pccRules\":[{\"ruleName\":\"ae\",\"rulePrecedence\":1170623374,\"ruleQosPolicy\":{\"maximumBitRate\":{\"uplink\":\"jvdcpzfoqouic\",\"downlink\":\"bxarzgszufoxci\"}},\"trafficControl\":\"Enabled\",\"serviceDataFlowTemplates\":[{\"templateName\":\"doamciodhkha\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"khnzbonlw\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"oegokdwbwh\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"z\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"mrv\",\"rulePrecedence\":2100538893,\"ruleQosPolicy\":{\"maximumBitRate\":{\"uplink\":\"tvb\",\"downlink\":\"qgsfraoyzkoow\"}},\"trafficControl\":\"Blocked\",\"serviceDataFlowTemplates\":[{\"templateName\":\"guxawqaldsyuuxi\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"rqf\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"wyznkbyku\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"pfhpagmhrskdsnfd\",\"rulePrecedence\":2086518628,\"ruleQosPolicy\":{\"maximumBitRate\":{\"uplink\":\"akgtdlmkkzevdlh\",\"downlink\":\"wpusdsttwvogv\"}},\"trafficControl\":\"Blocked\",\"serviceDataFlowTemplates\":[{\"templateName\":\"dcngqqmoakufgmj\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"wr\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]}]}]},\"location\":\"twaenuuzko\",\"tags\":{\"hziuiefozbhdms\":\"inrfdwoyu\",\"zqhof\":\"l\"},\"id\":\"rmaequ\",\"name\":\"ah\",\"type\":\"icslfaoq\"}],\"nextLink\":\"iyylhalnswhccsp\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"servicePrecedence\":917318399,\"serviceQosPolicy\":{\"5qi\":2123873865,\"allocationAndRetentionPriorityLevel\":2076050898,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"maximumBitRate\":{\"uplink\":\"txhwgfws\",\"downlink\":\"tawc\"}},\"pccRules\":[{\"ruleName\":\"zbrhubskhudyg\",\"rulePrecedence\":859061140,\"ruleQosPolicy\":{\"maximumBitRate\":{\"uplink\":\"kkqfqjbvle\",\"downlink\":\"rfmluiqtq\"}},\"trafficControl\":\"Blocked\",\"serviceDataFlowTemplates\":[{\"templateName\":\"yvnqqybaryeuay\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"qabqgzslesjcb\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"rnntiewdjcv\",\"rulePrecedence\":284273475,\"ruleQosPolicy\":{\"maximumBitRate\":{\"uplink\":\"wr\",\"downlink\":\"ehwagoh\"}},\"trafficControl\":\"Enabled\",\"serviceDataFlowTemplates\":[{\"templateName\":\"kmr\",\"direction\":\"Bidirectional\",\"protocol\":[],\"remoteIpList\":[]}]},{\"ruleName\":\"mvvhmxtdrjfuta\",\"rulePrecedence\":344867697,\"ruleQosPolicy\":{\"maximumBitRate\":{\"uplink\":\"bj\",\"downlink\":\"ewzcjznmwcp\"}},\"trafficControl\":\"Blocked\",\"serviceDataFlowTemplates\":[{\"templateName\":\"adraufactkahzo\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"jjziuxxpsh\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"e\",\"direction\":\"Uplink\",\"protocol\":[],\"remoteIpList\":[]},{\"templateName\":\"lfg\",\"direction\":\"Downlink\",\"protocol\":[],\"remoteIpList\":[]}]}]},\"location\":\"ubkwdle\",\"tags\":{\"pjuohminyfl\":\"sutujba\"},\"id\":\"orwmduvwpklv\",\"name\":\"w\",\"type\":\"ygdxpgpqchis\"}],\"nextLink\":\"pnnbjc\"}")
             .toObject(ServiceListResult.class);
-        Assertions.assertEquals("xrxxlep", model.value().get(0).location());
-        Assertions.assertEquals("mxjezwlw", model.value().get(0).tags().get("wxuqlcvydypatdoo"));
-        Assertions.assertEquals(1237082530, model.value().get(0).servicePrecedence());
-        Assertions.assertEquals(2056337569, model.value().get(0).serviceQosPolicy().fiveQi());
-        Assertions.assertEquals(1063119881,
+        Assertions.assertEquals("ubkwdle", model.value().get(0).location());
+        Assertions.assertEquals("sutujba", model.value().get(0).tags().get("pjuohminyfl"));
+        Assertions.assertEquals(917318399, model.value().get(0).servicePrecedence());
+        Assertions.assertEquals(2123873865, model.value().get(0).serviceQosPolicy().fiveQi());
+        Assertions.assertEquals(2076050898,
             model.value().get(0).serviceQosPolicy().allocationAndRetentionPriorityLevel());
         Assertions.assertEquals(PreemptionCapability.MAY_PREEMPT,
             model.value().get(0).serviceQosPolicy().preemptionCapability());
-        Assertions.assertEquals(PreemptionVulnerability.PREEMPTABLE,
+        Assertions.assertEquals(PreemptionVulnerability.NOT_PREEMPTABLE,
             model.value().get(0).serviceQosPolicy().preemptionVulnerability());
-        Assertions.assertEquals("qal", model.value().get(0).serviceQosPolicy().maximumBitRate().uplink());
-        Assertions.assertEquals("rmnjijpx", model.value().get(0).serviceQosPolicy().maximumBitRate().downlink());
-        Assertions.assertEquals("q", model.value().get(0).pccRules().get(0).ruleName());
-        Assertions.assertEquals(208789733, model.value().get(0).pccRules().get(0).rulePrecedence());
-        Assertions.assertEquals("fn", model.value().get(0).pccRules().get(0).ruleQosPolicy().maximumBitRate().uplink());
-        Assertions.assertEquals("yxbaaabjyvayf",
+        Assertions.assertEquals("txhwgfws", model.value().get(0).serviceQosPolicy().maximumBitRate().uplink());
+        Assertions.assertEquals("tawc", model.value().get(0).serviceQosPolicy().maximumBitRate().downlink());
+        Assertions.assertEquals("zbrhubskhudyg", model.value().get(0).pccRules().get(0).ruleName());
+        Assertions.assertEquals(859061140, model.value().get(0).pccRules().get(0).rulePrecedence());
+        Assertions.assertEquals("kkqfqjbvle",
+            model.value().get(0).pccRules().get(0).ruleQosPolicy().maximumBitRate().uplink());
+        Assertions.assertEquals("rfmluiqtq",
             model.value().get(0).pccRules().get(0).ruleQosPolicy().maximumBitRate().downlink());
-        Assertions.assertEquals(TrafficControlPermission.ENABLED,
+        Assertions.assertEquals(TrafficControlPermission.BLOCKED,
             model.value().get(0).pccRules().get(0).trafficControl());
-        Assertions.assertEquals("zrtuzq",
+        Assertions.assertEquals("yvnqqybaryeuay",
             model.value().get(0).pccRules().get(0).serviceDataFlowTemplates().get(0).templateName());
-        Assertions.assertEquals(SdfDirection.DOWNLINK,
+        Assertions.assertEquals(SdfDirection.BIDIRECTIONAL,
             model.value().get(0).pccRules().get(0).serviceDataFlowTemplates().get(0).direction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceListResult model
-            = new ServiceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ServiceInner().withLocation("xrxxlep")
-                                .withTags(
-                                    mapOf("wxuqlcvydypatdoo", "mxjezwlw", "kooebwnu", "ojknio", "vdkcrodtj", "hemms"))
-                                .withServicePrecedence(1237082530)
-                                .withServiceQosPolicy(new QosPolicy().withFiveQi(2056337569)
-                                    .withAllocationAndRetentionPriorityLevel(1063119881)
-                                    .withPreemptionCapability(PreemptionCapability.MAY_PREEMPT)
-                                    .withPreemptionVulnerability(
-                                        PreemptionVulnerability.PREEMPTABLE)
-                                    .withMaximumBitRate(new Ambr().withUplink("qal").withDownlink("rmnjijpx")))
-                                .withPccRules(
-                                    Arrays
-                                        .asList(
-                                            new PccRuleConfiguration()
-                                                .withRuleName("q").withRulePrecedence(208789733)
-                                                .withRuleQosPolicy(
-                                                    new PccRuleQosPolicy().withMaximumBitRate(
-                                                        new Ambr().withUplink("fn").withDownlink("yxbaaabjyvayf")))
-                                                .withTrafficControl(TrafficControlPermission.ENABLED)
-                                                .withServiceDataFlowTemplates(Arrays.asList(
-                                                    new ServiceDataFlowTemplate().withTemplateName("zrtuzq")
-                                                        .withDirection(SdfDirection.DOWNLINK)
-                                                        .withProtocol(Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()),
-                                                    new ServiceDataFlowTemplate().withTemplateName("sexnevfdnw")
-                                                        .withDirection(SdfDirection.BIDIRECTIONAL)
-                                                        .withProtocol(Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()),
-                                                    new ServiceDataFlowTemplate().withTemplateName("mewzsyyc")
-                                                        .withDirection(SdfDirection.UPLINK)
-                                                        .withProtocol(Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()))),
-                                            new PccRuleConfiguration().withRuleName("zsoibjudpfrxtr")
-                                                .withRulePrecedence(552907355)
-                                                .withRuleQosPolicy(new PccRuleQosPolicy().withMaximumBitRate(new Ambr()
-                                                    .withUplink("vaytdwkqbrq").withDownlink("bpaxhexiilivpdt")))
-                                                .withTrafficControl(TrafficControlPermission.ENABLED)
-                                                .withServiceDataFlowTemplates(Arrays.asList(
-                                                    new ServiceDataFlowTemplate().withTemplateName("tdqoaxoruzfgsq")
-                                                        .withDirection(SdfDirection.BIDIRECTIONAL)
-                                                        .withProtocol(Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()))))),
-                            new ServiceInner().withLocation("jub")
-                                .withTags(mapOf("nqntorudsgsahm", "nnqvsa", "rauwjuetaebu", "yc", "dmovsm", "u"))
-                                .withServicePrecedence(597345805)
-                                .withServiceQosPolicy(new QosPolicy().withFiveQi(1177485669)
-                                    .withAllocationAndRetentionPriorityLevel(985513982)
-                                    .withPreemptionCapability(PreemptionCapability.NOT_PREEMPT)
-                                    .withPreemptionVulnerability(PreemptionVulnerability.PREEMPTABLE)
-                                    .withMaximumBitRate(new Ambr().withUplink("k").withDownlink("jnsjervtiagxsd")))
-                                .withPccRules(Arrays.asList(
-                                    new PccRuleConfiguration().withRuleName("uem").withRulePrecedence(1236978734)
-                                        .withRuleQosPolicy(new PccRuleQosPolicy().withMaximumBitRate(
-                                            new Ambr().withUplink("zkfzbeyv").withDownlink("nqicvinvkjjxdxrb")))
-                                        .withTrafficControl(
-                                            TrafficControlPermission.ENABLED)
-                                        .withServiceDataFlowTemplates(Arrays.asList(
-                                            new ServiceDataFlowTemplate().withTemplateName("clewyhm")
-                                                .withDirection(SdfDirection.UPLINK).withProtocol(Arrays.asList())
-                                                .withRemoteIpList(Arrays.asList()),
-                                            new ServiceDataFlowTemplate().withTemplateName("paztzpofncck")
-                                                .withDirection(SdfDirection.BIDIRECTIONAL).withProtocol(Arrays.asList())
-                                                .withRemoteIpList(Arrays.asList()),
-                                            new ServiceDataFlowTemplate().withTemplateName("fz")
-                                                .withDirection(SdfDirection.UPLINK).withProtocol(Arrays.asList())
-                                                .withRemoteIpList(Arrays.asList()))),
-                                    new PccRuleConfiguration().withRuleName("hxx").withRulePrecedence(1513228319)
-                                        .withRuleQosPolicy(new PccRuleQosPolicy().withMaximumBitRate(
-                                            new Ambr().withUplink("qa").withDownlink("zfeqztppri")))
-                                        .withTrafficControl(TrafficControlPermission.BLOCKED)
-                                        .withServiceDataFlowTemplates(
-                                            Arrays.asList(new ServiceDataFlowTemplate().withTemplateName("rjaltolmncw")
-                                                .withDirection(SdfDirection.BIDIRECTIONAL).withProtocol(Arrays.asList())
-                                                .withRemoteIpList(Arrays.asList()))),
-                                    new PccRuleConfiguration().withRuleName("bqwcsdbnwdcf")
-                                        .withRulePrecedence(1062647603)
-                                        .withRuleQosPolicy(new PccRuleQosPolicy().withMaximumBitRate(
-                                            new Ambr().withUplink("qdpfuvglsbjjca").withDownlink("vxb")))
-                                        .withTrafficControl(TrafficControlPermission.BLOCKED)
-                                        .withServiceDataFlowTemplates(Arrays.asList(
-                                            new ServiceDataFlowTemplate().withTemplateName("dut")
-                                                .withDirection(SdfDirection.DOWNLINK).withProtocol(Arrays.asList())
-                                                .withRemoteIpList(Arrays.asList()),
-                                            new ServiceDataFlowTemplate().withTemplateName("ormrlxqtvcofudfl")
-                                                .withDirection(SdfDirection.BIDIRECTIONAL).withProtocol(Arrays.asList())
-                                                .withRemoteIpList(Arrays.asList()))))),
-                            new ServiceInner().withLocation("twaenuuzko")
-                                .withTags(mapOf("hziuiefozbhdms", "inrfdwoyu", "zqhof", "l"))
-                                .withServicePrecedence(
-                                    2086656667)
-                                .withServiceQosPolicy(
-                                    new QosPolicy().withFiveQi(188593097)
-                                        .withAllocationAndRetentionPriorityLevel(2034144205)
-                                        .withPreemptionCapability(PreemptionCapability.NOT_PREEMPT)
-                                        .withPreemptionVulnerability(PreemptionVulnerability.PREEMPTABLE)
-                                        .withMaximumBitRate(
-                                            new Ambr().withUplink("kfbtndoaongbjc").withDownlink("tujitcjedft")))
-                                .withPccRules(
-                                    Arrays
-                                        .asList(
-                                            new PccRuleConfiguration().withRuleName("ae").withRulePrecedence(1170623374)
-                                                .withRuleQosPolicy(new PccRuleQosPolicy().withMaximumBitRate(new Ambr()
-                                                    .withUplink("jvdcpzfoqouic").withDownlink("bxarzgszufoxci")))
-                                                .withTrafficControl(TrafficControlPermission.ENABLED)
-                                                .withServiceDataFlowTemplates(Arrays.asList(
-                                                    new ServiceDataFlowTemplate().withTemplateName("doamciodhkha")
-                                                        .withDirection(SdfDirection.BIDIRECTIONAL).withProtocol(
-                                                            Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()),
-                                                    new ServiceDataFlowTemplate().withTemplateName("khnzbonlw")
-                                                        .withDirection(SdfDirection.DOWNLINK).withProtocol(
-                                                            Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()),
-                                                    new ServiceDataFlowTemplate().withTemplateName("oegokdwbwh")
-                                                        .withDirection(SdfDirection.UPLINK).withProtocol(
-                                                            Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()),
-                                                    new ServiceDataFlowTemplate().withTemplateName("z")
-                                                        .withDirection(SdfDirection.DOWNLINK)
-                                                        .withProtocol(Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()))),
-                                            new PccRuleConfiguration().withRuleName("mrv")
-                                                .withRulePrecedence(2100538893)
-                                                .withRuleQosPolicy(
-                                                    new PccRuleQosPolicy().withMaximumBitRate(
-                                                        new Ambr().withUplink("tvb").withDownlink("qgsfraoyzkoow")))
-                                                .withTrafficControl(TrafficControlPermission.BLOCKED)
-                                                .withServiceDataFlowTemplates(Arrays.asList(
-                                                    new ServiceDataFlowTemplate().withTemplateName("guxawqaldsyuuxi")
-                                                        .withDirection(SdfDirection.DOWNLINK)
-                                                        .withProtocol(Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()),
-                                                    new ServiceDataFlowTemplate().withTemplateName("rqf")
-                                                        .withDirection(SdfDirection.DOWNLINK)
-                                                        .withProtocol(Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()),
-                                                    new ServiceDataFlowTemplate()
-                                                        .withTemplateName("wyznkbyku")
-                                                        .withDirection(SdfDirection.BIDIRECTIONAL)
-                                                        .withProtocol(Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()))),
-                                            new PccRuleConfiguration().withRuleName("pfhpagmhrskdsnfd")
-                                                .withRulePrecedence(2086518628)
-                                                .withRuleQosPolicy(new PccRuleQosPolicy().withMaximumBitRate(new Ambr()
-                                                    .withUplink("akgtdlmkkzevdlh").withDownlink("wpusdsttwvogv")))
-                                                .withTrafficControl(TrafficControlPermission.BLOCKED)
-                                                .withServiceDataFlowTemplates(Arrays.asList(
-                                                    new ServiceDataFlowTemplate().withTemplateName("dcngqqmoakufgmj")
-                                                        .withDirection(SdfDirection.UPLINK)
-                                                        .withProtocol(Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList()),
-                                                    new ServiceDataFlowTemplate().withTemplateName("wr")
-                                                        .withDirection(SdfDirection.BIDIRECTIONAL)
-                                                        .withProtocol(Arrays.asList())
-                                                        .withRemoteIpList(Arrays.asList())))))));
+        ServiceListResult model = new ServiceListResult().withValue(Arrays.asList(new ServiceInner()
+            .withLocation("ubkwdle")
+            .withTags(mapOf("pjuohminyfl", "sutujba"))
+            .withServicePrecedence(917318399)
+            .withServiceQosPolicy(new QosPolicy().withFiveQi(2123873865)
+                .withAllocationAndRetentionPriorityLevel(2076050898)
+                .withPreemptionCapability(PreemptionCapability.MAY_PREEMPT)
+                .withPreemptionVulnerability(PreemptionVulnerability.NOT_PREEMPTABLE)
+                .withMaximumBitRate(new Ambr().withUplink("txhwgfws").withDownlink("tawc")))
+            .withPccRules(Arrays.asList(
+                new PccRuleConfiguration()
+                    .withRuleName("zbrhubskhudyg")
+                    .withRulePrecedence(859061140)
+                    .withRuleQosPolicy(new PccRuleQosPolicy()
+                        .withMaximumBitRate(new Ambr().withUplink("kkqfqjbvle").withDownlink("rfmluiqtq")))
+                    .withTrafficControl(TrafficControlPermission.BLOCKED)
+                    .withServiceDataFlowTemplates(Arrays.asList(
+                        new ServiceDataFlowTemplate().withTemplateName("yvnqqybaryeuay")
+                            .withDirection(SdfDirection.BIDIRECTIONAL)
+                            .withProtocol(Arrays.asList())
+                            .withRemoteIpList(Arrays.asList()),
+                        new ServiceDataFlowTemplate().withTemplateName("qabqgzslesjcb")
+                            .withDirection(SdfDirection.BIDIRECTIONAL)
+                            .withProtocol(Arrays.asList())
+                            .withRemoteIpList(Arrays.asList()))),
+                new PccRuleConfiguration().withRuleName("rnntiewdjcv")
+                    .withRulePrecedence(284273475)
+                    .withRuleQosPolicy(
+                        new PccRuleQosPolicy().withMaximumBitRate(new Ambr().withUplink("wr").withDownlink("ehwagoh")))
+                    .withTrafficControl(TrafficControlPermission.ENABLED)
+                    .withServiceDataFlowTemplates(Arrays.asList(new ServiceDataFlowTemplate().withTemplateName("kmr")
+                        .withDirection(SdfDirection.BIDIRECTIONAL)
+                        .withProtocol(Arrays.asList())
+                        .withRemoteIpList(Arrays.asList()))),
+                new PccRuleConfiguration().withRuleName("mvvhmxtdrjfuta")
+                    .withRulePrecedence(344867697)
+                    .withRuleQosPolicy(new PccRuleQosPolicy()
+                        .withMaximumBitRate(new Ambr().withUplink("bj").withDownlink("ewzcjznmwcp")))
+                    .withTrafficControl(TrafficControlPermission.BLOCKED)
+                    .withServiceDataFlowTemplates(Arrays.asList(
+                        new ServiceDataFlowTemplate().withTemplateName("adraufactkahzo")
+                            .withDirection(SdfDirection.UPLINK)
+                            .withProtocol(Arrays.asList())
+                            .withRemoteIpList(Arrays.asList()),
+                        new ServiceDataFlowTemplate().withTemplateName("jjziuxxpsh")
+                            .withDirection(SdfDirection.UPLINK)
+                            .withProtocol(Arrays.asList())
+                            .withRemoteIpList(Arrays.asList()),
+                        new ServiceDataFlowTemplate().withTemplateName("e")
+                            .withDirection(SdfDirection.UPLINK)
+                            .withProtocol(Arrays.asList())
+                            .withRemoteIpList(Arrays.asList()),
+                        new ServiceDataFlowTemplate().withTemplateName("lfg")
+                            .withDirection(SdfDirection.DOWNLINK)
+                            .withProtocol(Arrays.asList())
+                            .withRemoteIpList(Arrays.asList())))))));
         model = BinaryData.fromObject(model).toObject(ServiceListResult.class);
-        Assertions.assertEquals("xrxxlep", model.value().get(0).location());
-        Assertions.assertEquals("mxjezwlw", model.value().get(0).tags().get("wxuqlcvydypatdoo"));
-        Assertions.assertEquals(1237082530, model.value().get(0).servicePrecedence());
-        Assertions.assertEquals(2056337569, model.value().get(0).serviceQosPolicy().fiveQi());
-        Assertions.assertEquals(1063119881,
+        Assertions.assertEquals("ubkwdle", model.value().get(0).location());
+        Assertions.assertEquals("sutujba", model.value().get(0).tags().get("pjuohminyfl"));
+        Assertions.assertEquals(917318399, model.value().get(0).servicePrecedence());
+        Assertions.assertEquals(2123873865, model.value().get(0).serviceQosPolicy().fiveQi());
+        Assertions.assertEquals(2076050898,
             model.value().get(0).serviceQosPolicy().allocationAndRetentionPriorityLevel());
         Assertions.assertEquals(PreemptionCapability.MAY_PREEMPT,
             model.value().get(0).serviceQosPolicy().preemptionCapability());
-        Assertions.assertEquals(PreemptionVulnerability.PREEMPTABLE,
+        Assertions.assertEquals(PreemptionVulnerability.NOT_PREEMPTABLE,
             model.value().get(0).serviceQosPolicy().preemptionVulnerability());
-        Assertions.assertEquals("qal", model.value().get(0).serviceQosPolicy().maximumBitRate().uplink());
-        Assertions.assertEquals("rmnjijpx", model.value().get(0).serviceQosPolicy().maximumBitRate().downlink());
-        Assertions.assertEquals("q", model.value().get(0).pccRules().get(0).ruleName());
-        Assertions.assertEquals(208789733, model.value().get(0).pccRules().get(0).rulePrecedence());
-        Assertions.assertEquals("fn", model.value().get(0).pccRules().get(0).ruleQosPolicy().maximumBitRate().uplink());
-        Assertions.assertEquals("yxbaaabjyvayf",
+        Assertions.assertEquals("txhwgfws", model.value().get(0).serviceQosPolicy().maximumBitRate().uplink());
+        Assertions.assertEquals("tawc", model.value().get(0).serviceQosPolicy().maximumBitRate().downlink());
+        Assertions.assertEquals("zbrhubskhudyg", model.value().get(0).pccRules().get(0).ruleName());
+        Assertions.assertEquals(859061140, model.value().get(0).pccRules().get(0).rulePrecedence());
+        Assertions.assertEquals("kkqfqjbvle",
+            model.value().get(0).pccRules().get(0).ruleQosPolicy().maximumBitRate().uplink());
+        Assertions.assertEquals("rfmluiqtq",
             model.value().get(0).pccRules().get(0).ruleQosPolicy().maximumBitRate().downlink());
-        Assertions.assertEquals(TrafficControlPermission.ENABLED,
+        Assertions.assertEquals(TrafficControlPermission.BLOCKED,
             model.value().get(0).pccRules().get(0).trafficControl());
-        Assertions.assertEquals("zrtuzq",
+        Assertions.assertEquals("yvnqqybaryeuay",
             model.value().get(0).pccRules().get(0).serviceDataFlowTemplates().get(0).templateName());
-        Assertions.assertEquals(SdfDirection.DOWNLINK,
+        Assertions.assertEquals(SdfDirection.BIDIRECTIONAL,
             model.value().get(0).pccRules().get(0).serviceDataFlowTemplates().get(0).direction());
     }
 

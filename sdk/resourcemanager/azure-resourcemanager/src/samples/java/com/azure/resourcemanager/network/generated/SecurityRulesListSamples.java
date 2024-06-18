@@ -9,9 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SecurityRulesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkSecurityGroupRuleList.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkSecurityGroupRuleList.json
      */
     /**
      * Sample code: List network security rules in network security group.
@@ -20,7 +18,10 @@ public final class SecurityRulesListSamples {
      */
     public static void
         listNetworkSecurityRulesInNetworkSecurityGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSecurityRules().list("rg1", "testnsg",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSecurityRules()
+            .list("rg1", "testnsg", com.azure.core.util.Context.NONE);
     }
 }

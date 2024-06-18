@@ -14,15 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class IpsecPolicy {
     /*
-     * The IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for a site to site VPN
-     * tunnel.
+     * The IPSec Security Association (also called Quick Mode or Phase 2 SA) lifetime in seconds for a site to site VPN tunnel.
      */
     @JsonProperty(value = "saLifeTimeSeconds", required = true)
     private int saLifeTimeSeconds;
 
     /*
-     * The IPSec Security Association (also called Quick Mode or Phase 2 SA) payload size in KB for a site to site VPN
-     * tunnel.
+     * The IPSec Security Association (also called Quick Mode or Phase 2 SA) payload size in KB for a site to site VPN tunnel.
      */
     @JsonProperty(value = "saDataSizeKilobytes", required = true)
     private int saDataSizeKilobytes;
@@ -240,28 +238,28 @@ public final class IpsecPolicy {
      */
     public void validate() {
         if (ipsecEncryption() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ipsecEncryption in model IpsecPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ipsecEncryption in model IpsecPolicy"));
         }
         if (ipsecIntegrity() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ipsecIntegrity in model IpsecPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ipsecIntegrity in model IpsecPolicy"));
         }
         if (ikeEncryption() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ikeEncryption in model IpsecPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ikeEncryption in model IpsecPolicy"));
         }
         if (ikeIntegrity() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ikeIntegrity in model IpsecPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ikeIntegrity in model IpsecPolicy"));
         }
         if (dhGroup() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dhGroup in model IpsecPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dhGroup in model IpsecPolicy"));
         }
         if (pfsGroup() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property pfsGroup in model IpsecPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property pfsGroup in model IpsecPolicy"));
         }
     }
 

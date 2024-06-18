@@ -48,8 +48,7 @@ public final class OutboundRulePropertiesFormat {
     private LoadBalancerOutboundRuleProtocol protocol;
 
     /*
-     * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is
-     * only used when the protocol is set to TCP.
+     * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to TCP.
      */
     @JsonProperty(value = "enableTcpReset")
     private Boolean enableTcpReset;
@@ -206,16 +205,19 @@ public final class OutboundRulePropertiesFormat {
      */
     public void validate() {
         if (frontendIpConfigurations() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property frontendIpConfigurations in model OutboundRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property frontendIpConfigurations in model OutboundRulePropertiesFormat"));
         }
         if (backendAddressPool() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property backendAddressPool in model OutboundRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property backendAddressPool in model OutboundRulePropertiesFormat"));
         }
         if (protocol() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property protocol in model OutboundRulePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocol in model OutboundRulePropertiesFormat"));
         }
     }
 

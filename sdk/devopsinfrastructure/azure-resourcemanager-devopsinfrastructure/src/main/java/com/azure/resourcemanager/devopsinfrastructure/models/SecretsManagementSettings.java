@@ -6,30 +6,31 @@ package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The secret management settings of the machines in the pool.
  */
 @Fluent
-public final class SecretsManagementSettings {
+public final class SecretsManagementSettings implements JsonSerializable<SecretsManagementSettings> {
     /*
      * Where to store certificates on the machine.
      */
-    @JsonProperty(value = "certificateStoreLocation")
     private String certificateStoreLocation;
 
     /*
      * The list of certificates to install on all machines in the pool.
      */
-    @JsonProperty(value = "observedCertificates", required = true)
     private List<String> observedCertificates;
 
     /*
      * Defines if the key of the certificates should be exportable.
      */
-    @JsonProperty(value = "keyExportable", required = true)
     private boolean keyExportable;
 
     /**
@@ -112,4 +113,49 @@ public final class SecretsManagementSettings {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecretsManagementSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("observedCertificates", this.observedCertificates,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("keyExportable", this.keyExportable);
+        jsonWriter.writeStringField("certificateStoreLocation", this.certificateStoreLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecretsManagementSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecretsManagementSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecretsManagementSettings.
+     */
+    public static SecretsManagementSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretsManagementSettings deserializedSecretsManagementSettings = new SecretsManagementSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("observedCertificates".equals(fieldName)) {
+                    List<String> observedCertificates = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSecretsManagementSettings.observedCertificates = observedCertificates;
+                } else if ("keyExportable".equals(fieldName)) {
+                    deserializedSecretsManagementSettings.keyExportable = reader.getBoolean();
+                } else if ("certificateStoreLocation".equals(fieldName)) {
+                    deserializedSecretsManagementSettings.certificateStoreLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecretsManagementSettings;
+        });
+    }
 }

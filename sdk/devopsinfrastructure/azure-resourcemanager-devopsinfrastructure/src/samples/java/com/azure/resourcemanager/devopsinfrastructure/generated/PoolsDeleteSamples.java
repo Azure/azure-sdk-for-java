@@ -8,6 +8,10 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  * Samples for Pools Delete.
  */
 public final class PoolsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure/examples/2024-04-04-preview/DeletePool.json
+     */
     /**
      * Sample code: Pools_Delete.
      * 

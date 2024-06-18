@@ -79,8 +79,8 @@ public final class SnapshotRestoreFiles {
      */
     public void validate() {
         if (filePaths() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property filePaths in model SnapshotRestoreFiles"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property filePaths in model SnapshotRestoreFiles"));
         }
     }
 

@@ -66,7 +66,7 @@ public final class ReadmeSamples {
         Path filePath = layoutDocument.toPath();
         BinaryData layoutDocumentData = BinaryData.fromFile(filePath, (int) layoutDocument.length());
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
             documentIntelligenceClient.beginAnalyzeDocument("prebuilt-layout",
                 null,
                 null,
@@ -76,7 +76,7 @@ public final class ReadmeSamples {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(layoutDocument.toPath())));
 
-        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
         // pages
         analyzeLayoutResult.getPages().forEach(documentPage -> {
@@ -119,7 +119,7 @@ public final class ReadmeSamples {
         File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/receipts/contoso-allinone.jpg");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
             documentIntelligenceClient.beginAnalyzeDocument("prebuilt-receipt",
                 null,
                 null,
@@ -129,7 +129,7 @@ public final class ReadmeSamples {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
 
-        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
         for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
             Document analyzedReceipt = receiptResults.getDocuments().get(i);
@@ -207,7 +207,7 @@ public final class ReadmeSamples {
         // BEGIN: com.azure.ai.documentintelligence.readme.analyzeCustomModel
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = documentIntelligenceClient.beginAnalyzeDocument(modelId,
             "1",
             "en-US",
             StringIndexType.TEXT_ELEMENTS,
@@ -216,7 +216,7 @@ public final class ReadmeSamples {
             ContentFormat.TEXT,
             new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
-        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
             final Document analyzedDocument = analyzeResult.getDocuments().get(i);

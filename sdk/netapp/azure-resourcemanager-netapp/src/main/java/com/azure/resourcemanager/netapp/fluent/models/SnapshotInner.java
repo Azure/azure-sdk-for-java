@@ -116,8 +116,8 @@ public final class SnapshotInner extends ProxyResource {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property location in model SnapshotInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model SnapshotInner"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();

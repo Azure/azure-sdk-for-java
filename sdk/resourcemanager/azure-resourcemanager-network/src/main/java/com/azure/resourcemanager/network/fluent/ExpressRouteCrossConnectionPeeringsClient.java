@@ -14,18 +14,18 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionPeeringInner;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
+
 /**
- * An instance of this class provides access to all the operations defined in
- * ExpressRouteCrossConnectionPeeringsClient.
+ * An instance of this class provides access to all the operations defined in ExpressRouteCrossConnectionPeeringsClient.
  */
 public interface ExpressRouteCrossConnectionPeeringsClient {
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +38,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,7 +51,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param context The context to associate with this operation.
@@ -66,7 +66,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -81,7 +81,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -96,7 +96,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -111,7 +111,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -127,7 +127,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -141,7 +141,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -154,7 +154,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -168,7 +168,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -184,7 +184,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -199,7 +199,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -215,7 +215,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -230,7 +230,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -248,7 +248,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -266,7 +266,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -284,7 +284,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -303,7 +303,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -320,7 +320,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -337,7 +337,7 @@ public interface ExpressRouteCrossConnectionPeeringsClient {
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.

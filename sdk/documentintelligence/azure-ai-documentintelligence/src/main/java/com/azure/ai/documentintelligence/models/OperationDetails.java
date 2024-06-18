@@ -6,6 +6,7 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +25,7 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
      * Type of operation.
      */
     @Generated
-    private OperationKind kind;
+    private OperationKind kind = OperationKind.fromString("OperationDetails");
 
     /*
      * Operation ID
@@ -91,7 +92,6 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
     @Generated
     protected OperationDetails(OperationStatus status, OffsetDateTime createdDateTime,
         OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
-        this.kind = OperationKind.fromString("OperationDetails");
         this.status = status;
         this.createdDateTime = createdDateTime;
         this.lastUpdatedDateTime = lastUpdatedDateTime;
@@ -344,11 +344,11 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
                 } else if ("status".equals(fieldName)) {
                     status = OperationStatus.fromString(reader.getString());
                 } else if ("createdDateTime".equals(fieldName)) {
-                    createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    lastUpdatedDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("resourceLocation".equals(fieldName)) {
                     resourceLocation = reader.getString();
                 } else if ("kind".equals(fieldName)) {

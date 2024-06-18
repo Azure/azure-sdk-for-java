@@ -68,8 +68,9 @@ public final class VpnClientRootCertificatePropertiesFormat {
      */
     public void validate() {
         if (publicCertData() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publicCertData in model VpnClientRootCertificatePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publicCertData in model VpnClientRootCertificatePropertiesFormat"));
         }
     }
 

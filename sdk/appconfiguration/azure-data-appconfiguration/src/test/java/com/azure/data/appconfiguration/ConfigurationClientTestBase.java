@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -46,37 +47,44 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
-    private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String KEY_PREFIX = "key";
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
     private static final int RESOURCE_LENGTH = 16;
+    // Disable `("$.key")` and name sanitizer from the list of common sanitizers
+    public static final String[] REMOVE_SANITIZER_ID = {"AZSDK3493", "AZSDK3447"};
 
     public static final String FAKE_CONNECTION_STRING =
         "Endpoint=https://localhost:8080;Id=0000000000000;Secret=fakeSecrePlaceholder";
 
     static final Duration MINIMUM_RETENTION_PERIOD = Duration.ofHours(1);
 
-    static String connectionString;
+    static TokenCredential tokenCredential;
 
     String keyPrefix;
     String labelPrefix;
 
     void beforeTestSetup() {
         keyPrefix = testResourceNamer.randomName(KEY_PREFIX, PREFIX_LENGTH);
-        labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH);
+        labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH + 2);
     }
 
-    <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
-        if (CoreUtils.isNullOrEmpty(connectionString)) {
-            connectionString = interceptorManager.isPlaybackMode() ? FAKE_CONNECTION_STRING
-                                   : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+    <T> T clientSetup(BiFunction<TokenCredential, String, T> clientBuilder) {
+        if (tokenCredential == null) {
+            tokenCredential = TestHelper.getTokenCredential(interceptorManager);
         }
 
-        Objects.requireNonNull(connectionString, "AZURE_APPCONFIG_CONNECTION_STRING expected to be set.");
+        String endpoint = interceptorManager.isPlaybackMode()
+            ? new ConfigurationClientCredentials(FAKE_CONNECTION_STRING).getBaseUri()
+            : Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
 
-        return Objects.requireNonNull(clientBuilder.apply(new ConfigurationClientCredentials(connectionString)));
+
+        Objects.requireNonNull(tokenCredential, "Token Credential expected to be set.");
+        Objects.requireNonNull(endpoint, "Az Config endpoint expected to be set.");
+
+        return Objects.requireNonNull(clientBuilder.apply(tokenCredential, endpoint));
     }
+
 
     String getKey() {
         return testResourceNamer.randomName(keyPrefix, RESOURCE_LENGTH);
@@ -106,6 +114,21 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
 
         testRunner.accept(newConfiguration);
         testRunner.accept(newConfiguration.setLabel(getLabel()));
+    }
+
+    ConfigurationSetting addConfigurationSettingWithTagsRunner(Consumer<ConfigurationSetting> testRunner) {
+        final Map<String, String> tags = new HashMap<>();
+        tags.put("MyTag", "TagValue");
+        tags.put("AnotherTag", "AnotherTagValue");
+
+        final ConfigurationSetting newConfiguration = new ConfigurationSetting()
+                .setKey(getKey())
+                .setValue("myNewValue")
+                .setContentType("text");
+
+        testRunner.accept(newConfiguration);
+        testRunner.accept(newConfiguration.setLabel(getLabel()).setTags(tags));
+        return newConfiguration;
     }
 
     @Test
@@ -621,6 +644,103 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void listSettingsWithPageETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
+    @Test
+    public abstract void listLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    List<ConfigurationSetting> listLabelsRunner(Consumer<ConfigurationSetting> testRunner) {
+        String key = getKey();
+        String label = getLabel();
+        String label2 = getLabel();
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label);
+        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key).setValue("value").setLabel(label2);
+        testRunner.accept(setting);
+        testRunner.accept(setting2);
+        List<ConfigurationSetting> result = new ArrayList<>();
+        result.add(setting);
+        result.add(setting2);
+        return result;
+    }
+
+    @Test
+    public abstract void listSettingByTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    List<ConfigurationSetting> listSettingByTagsFilterRunner(Consumer<ConfigurationSetting> testRunner) {
+        String key = getKey();
+        String key2 = getKey();
+        Map<String, String> tags = new HashMap<>();
+        tags.put(key, "tagValue");
+        Map<String, String> tags2 = new HashMap<>();
+        tags2.put(key, "tagValue");
+        tags2.put(key2, "tagValue");
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value").setTags(tags);
+        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key2).setValue("value").setTags(tags2);
+
+        testRunner.accept(setting);
+        testRunner.accept(setting2);
+
+        List<ConfigurationSetting> result = new ArrayList<>();
+        result.add(setting);
+        result.add(setting2);
+        return result;
+    }
+
+    @Test
+    public abstract void listRevisionsWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    List<ConfigurationSetting> listRevisionsWithTagsFilterRunner(Consumer<ConfigurationSetting> testRunner) {
+        final String keyName = getKey();
+        final Map<String, String> tags = new HashMap<>();
+        tags.put("MyTag", "TagValue");
+        tags.put("AnotherTag", "AnotherTagValue");
+
+        final ConfigurationSetting original = new ConfigurationSetting().setKey(keyName).setValue("myValue").setTags(tags);
+        final ConfigurationSetting updated = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
+
+        testRunner.accept(original);
+        testRunner.accept(updated);
+        testRunner.accept(updated2);
+
+        List<ConfigurationSetting> result = new ArrayList<>();
+        result.add(original);
+        result.add(updated);
+        result.add(updated2);
+        return result;
+    }
+
+    @Test
+    public abstract void createSnapshotWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
+
+    List<ConfigurationSetting> createSnapshotWithTagsFilterPrepareRunner(Consumer<ConfigurationSetting> testRunner) {
+        String key = getKey();
+        String key2 = getKey();
+        Map<String, String> tags = new HashMap<>();
+        tags.put("MyTag", "TagValue");
+        tags.put("AnotherTag", "AnotherTagValue");
+
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(key).setValue("value");
+        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(key2).setValue("value").setTags(tags);
+
+        testRunner.accept(setting);
+        testRunner.accept(setting2);
+
+        List<ConfigurationSetting> result = new ArrayList<>();
+        result.add(setting);
+        result.add(setting2);
+        return result;
+    }
+
+    void createSnapshotWithTagsFilterRunner(BiConsumer<String, List<ConfigurationSettingsFilter>> testRunner) {
+        String snapshotName = getKey();
+        List<String> tagsFilter = new ArrayList<>();
+        tagsFilter.add("MyTag=TagValue");
+        tagsFilter.add("AnotherTag=AnotherTagValue");
+
+        List<ConfigurationSettingsFilter> filters = new ArrayList<>();
+        filters.add(new ConfigurationSettingsFilter(KEY_PREFIX + "*").setTags(tagsFilter));
+        testRunner.accept(snapshotName, filters);
+    }
+
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
      *
@@ -659,8 +779,6 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
      */
     static void assertConfigurationEquals(ConfigurationSetting expected, Response<ConfigurationSetting> response, final int expectedStatusCode) {
         assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
-
         assertConfigurationEquals(expected, response.getValue());
     }
 

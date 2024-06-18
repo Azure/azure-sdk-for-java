@@ -20,6 +20,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.LabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -42,6 +43,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -75,9 +77,10 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     private ConfigurationAsyncClient getConfigurationAsyncClient(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion) {
-        return clientSetup(credentials -> {
+        return clientSetup((credentials, endpoint) -> {
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
+                .credential(credentials)
+                .endpoint(endpoint)
                 .serviceVersion(serviceVersion);
 
             builder = setHttpClient(httpClient, builder);
@@ -91,7 +94,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Disable `$.key` snanitizer
             if (!interceptorManager.isLiveMode()) {
-                interceptorManager.removeSanitizers(Arrays.asList("AZSDK3447"));
+                interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
             }
             return builder.buildAsyncClient();
         });
@@ -1898,7 +1901,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         PagedResponse<ConfigurationSetting> pagedResponse = client.listConfigurationSettings(null).byPage().blockLast();
         matchConditionsList.add(new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
 
-
         // Step 2: Test list settings with page ETag
         // Validation 1: Validate all pages are not modified and return empty list of settings in each page response.
         // List settings with page ETag
@@ -1927,6 +1929,137 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                             .get();
                     assertConfigurationEquals(updatedSetting, updatedSettingFromResponse);
                 }).verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listLabels(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Clean all existing settings before this test purpose
+        StepVerifier.create(client.listConfigurationSettings(null)
+                        .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+                        .then())
+                .verifyComplete();
+        // Prepare two settings with different labels
+        List<ConfigurationSetting> preparedSettings = listLabelsRunner(setting ->
+                StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                        .assertNext(response -> assertConfigurationEquals(setting, response))
+                        .verifyComplete());
+        ConfigurationSetting setting = preparedSettings.get(0);
+        ConfigurationSetting setting2 = preparedSettings.get(1);
+        // List only the first label var, 'label'
+        String label = setting.getLabel();
+        StepVerifier.create(client.listLabels(new LabelSelector().setLabelFilter(label)))
+                .assertNext(actual -> assertEquals(label, actual))
+                .verifyComplete();
+        // List labels with wildcard label filter
+        String label2 = setting2.getLabel();
+        StepVerifier.create(client.listLabels(new LabelSelector().setLabelFilter("label*")))
+                .assertNext(actual -> assertEquals(label, actual))
+                .assertNext(actual -> assertEquals(label2, actual))
+                .verifyComplete();
+        // List all labels
+        List<String> selected = new ArrayList<>();
+        StepVerifier.create(client.listLabels(null))
+                .consumeNextWith(selected::add)
+                .consumeNextWith(selected::add)
+                .verifyComplete();
+        assertTrue(selected.size() >= 2);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSettingByTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Clean all existing settings before this test purpose
+        StepVerifier.create(client.listConfigurationSettings(null)
+                        .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+                        .then())
+                .verifyComplete();
+
+        // Prepare two settings with different tags
+        List<ConfigurationSetting> preparedSettings = listSettingByTagsFilterRunner(setting -> {
+            StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                    .assertNext(response -> assertConfigurationEquals(setting, response))
+                    .verifyComplete();
+        });
+        ConfigurationSetting setting = preparedSettings.get(0);
+        ConfigurationSetting setting2 = preparedSettings.get(1);
+
+        // List setting by first tags filter, it should return all settings
+        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setTagsFilter(getTagsFilterInString(setting.getTags()))))
+                .assertNext(response -> assertConfigurationEquals(setting, response))
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .verifyComplete();
+        // List setting by second tags filter, it should return only one setting
+        StepVerifier.create(client.listConfigurationSettings(new SettingSelector().setTagsFilter(getTagsFilterInString(setting2.getTags()))))
+                .assertNext(response -> assertConfigurationEquals(setting2, response))
+                .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listRevisionsWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Create 3 revisions of the same key.
+        List<ConfigurationSetting> configurationSettings = listRevisionsWithTagsFilterRunner(setting -> {
+            StepVerifier.create(client.setConfigurationSettingWithResponse(setting, false))
+                    .assertNext(response -> assertConfigurationEquals(setting, response))
+                    .verifyComplete();
+        });
+
+        ConfigurationSetting original = configurationSettings.get(0);
+
+        // Get all revisions for a key with tags filter, they are listed in descending order.
+        StepVerifier.create(client.listRevisions(
+                new SettingSelector()
+                        .setKeyFilter(original.getKey())
+                        .setTagsFilter(getTagsFilterInString(original.getTags()))))
+                .assertNext(response -> assertConfigurationEquals(original, response))
+                .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void createSnapshotWithTagsFilter(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Clean all existing settings before this test purpose
+        StepVerifier.create(client.listConfigurationSettings(null)
+                        .flatMap(setting -> client.deleteConfigurationSettingWithResponse(setting, false))
+                        .then())
+                .verifyComplete();
+
+        // Prepare settings before creating a snapshot
+        List<ConfigurationSetting> settings = createSnapshotWithTagsFilterPrepareRunner(setting -> {
+            StepVerifier.create(client.addConfigurationSettingWithResponse(setting))
+                    .assertNext(response -> assertConfigurationEquals(setting, response))
+                    .verifyComplete();
+        });
+        ConfigurationSetting setting = settings.get(0);
+        ConfigurationSetting settingWithTag = settings.get(1);
+        assertTrue(setting.getTags().isEmpty());
+        assertFalse(settingWithTag.getTags().isEmpty());
+
+        createSnapshotWithTagsFilterRunner((name, filters) -> {
+            // Retention period can be setup when creating a snapshot and cannot edit.
+            ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
+                    .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
+                    client.beginCreateSnapshot(name, snapshot).getSyncPoller();
+            poller.setPollInterval(interceptorManager.isPlaybackMode() ? Duration.ofMillis(1) : Duration.ofSeconds(10));
+            poller.waitForCompletion();
+            ConfigurationSnapshot snapshotResult = poller.getFinalResult();
+            assertEquals(name, snapshotResult.getName());
+
+            // The snapshot should only contain the setting with tags
+            StepVerifier.create(client.listConfigurationSettingsForSnapshot(name))
+                    .assertNext(actual -> assertEquals(settingWithTag.getTags(), actual.getTags()))
+                    .verifyComplete();
+            // Archived the snapshot, it will be deleted automatically when retention period expires.
+            StepVerifier.create(client.archiveSnapshot(name))
+                    .assertNext(response -> assertEquals(ConfigurationSnapshotStatus.ARCHIVED, response.getStatus()))
+                    .verifyComplete();
+        });
     }
 
     /**

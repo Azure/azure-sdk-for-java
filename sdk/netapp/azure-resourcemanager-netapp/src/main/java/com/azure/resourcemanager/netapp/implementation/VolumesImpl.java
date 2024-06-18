@@ -93,8 +93,8 @@ public final class VolumesImpl implements Volumes {
 
     public Volume populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
-        VolumeInner inner = this.serviceClient().populateAvailabilityZone(resourceGroupName, accountName, poolName,
-            volumeName, context);
+        VolumeInner inner = this.serviceClient()
+            .populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName, context);
         if (inner != null) {
             return new VolumeImpl(inner, this.manager());
         } else {
@@ -168,14 +168,14 @@ public final class VolumesImpl implements Volumes {
 
     public void reestablishReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         ReestablishReplicationRequest body, Context context) {
-        this.serviceClient().reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body,
-            context);
+        this.serviceClient()
+            .reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
     public Response<ReplicationStatus> replicationStatusWithResponse(String resourceGroupName, String accountName,
         String poolName, String volumeName, Context context) {
-        Response<ReplicationStatusInner> inner = this.serviceClient().replicationStatusWithResponse(resourceGroupName,
-            accountName, poolName, volumeName, context);
+        Response<ReplicationStatusInner> inner = this.serviceClient()
+            .replicationStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReplicationStatusImpl(inner.getValue(), this.manager()));

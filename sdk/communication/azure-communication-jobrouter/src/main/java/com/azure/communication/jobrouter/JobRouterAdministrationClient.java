@@ -4,10 +4,11 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
-import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
-import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
-import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
+import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -16,23 +17,19 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
-import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.core.util.DateTimeRfc1123;
+import java.time.OffsetDateTime;
+import com.azure.communication.jobrouter.implementation.converters.OptionBagAdapters;
 import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.CreateQueueOptions;
-import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.RouterQueue;
 
 /**
  * Initializes a new instance of the synchronous JobRouterAdministrationClient type.
@@ -112,8 +109,6 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertDistributionPolicyWithResponse(String distributionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertDistributionPolicy' is 'application/merge-patch+json'
-        // and stream-style-serialization is not enabled
         return this.serviceClient.upsertDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions);
     }
 
@@ -299,8 +294,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DistributionPolicy> createDistributionPolicyWithResponse(
         CreateDistributionPolicyOptions createDistributionPolicyOptions, RequestOptions requestOptions) {
-        DistributionPolicyInternal distributionPolicy
-            = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
+        DistributionPolicy distributionPolicy = OptionBagAdapters.toDistributionPolicy(createDistributionPolicyOptions);
         Response<BinaryData> response = this.serviceClient.upsertDistributionPolicyWithResponse(
             createDistributionPolicyOptions.getDistributionPolicyId(), BinaryData.fromObject(distributionPolicy),
             requestOptions);
@@ -488,8 +482,6 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertClassificationPolicyWithResponse(String classificationPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertClassificationPolicy' is 'application/merge-patch+json'
-        // and stream-style-serialization is not enabled
         return this.serviceClient.upsertClassificationPolicyWithResponse(classificationPolicyId, resource,
             requestOptions);
     }
@@ -698,8 +690,8 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClassificationPolicy> createClassificationPolicyWithResponse(
         CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
-        ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter
-            .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
+        ClassificationPolicy classificationPolicy
+            = OptionBagAdapters.toClassificationPolicy(createClassificationPolicyOptions);
         Response<BinaryData> response = this.serviceClient.upsertClassificationPolicyWithResponse(
             createClassificationPolicyOptions.getClassificationPolicyId(), BinaryData.fromObject(classificationPolicy),
             requestOptions);
@@ -850,12 +842,12 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -874,12 +866,12 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -902,8 +894,6 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertExceptionPolicyWithResponse(String exceptionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertExceptionPolicy' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
         return this.serviceClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions);
     }
 
@@ -1105,8 +1095,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExceptionPolicy> createExceptionPolicyWithResponse(
         CreateExceptionPolicyOptions createExceptionPolicyOptions, RequestOptions requestOptions) {
-        ExceptionPolicyInternal exceptionPolicy
-            = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
+        ExceptionPolicy exceptionPolicy = OptionBagAdapters.toExceptionPolicy(createExceptionPolicyOptions);
         Response<BinaryData> response
             = this.serviceClient.upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
                 BinaryData.fromObject(exceptionPolicy), requestOptions);
@@ -1140,12 +1129,12 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
      *                 kind: String(queueLength/waitTime) (Required)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
      *                     kind: String(cancel/manualReclassify/reclassify) (Required)
      *                     id: String (Optional)
      *                 }
@@ -1298,8 +1287,6 @@ public final class JobRouterAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertQueueWithResponse(String queueId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertQueue' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
         return this.serviceClient.upsertQueueWithResponse(queueId, resource, requestOptions);
     }
 
@@ -1478,7 +1465,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RouterQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions,
         RequestOptions requestOptions) {
-        RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
+        RouterQueue queue = OptionBagAdapters.toRouterQueue(createQueueOptions);
         Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(createQueueOptions.getQueueId(),
             BinaryData.fromObject(queue), requestOptions);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -1804,5 +1791,264 @@ public final class JobRouterAdministrationClient {
         // Generated convenience method for deleteQueueWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteQueueWithResponse(queueId, requestOptions).getValue();
+    }
+
+    /**
+     * Creates or updates a exception policy.
+     *
+     * @param exceptionPolicyId Id of an exception policy.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy that defines actions to execute when exception are triggered.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExceptionPolicy upsertExceptionPolicy(String exceptionPolicyId, ExceptionPolicy resource, String ifMatch,
+        OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertExceptionPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getExceptionPolicyAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getExceptionPolicyAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertExceptionPolicyWithResponse(exceptionPolicyId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(ExceptionPolicy.class);
+    }
+
+    /**
+     * Creates or updates a exception policy.
+     *
+     * @param exceptionPolicyId Id of an exception policy.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy that defines actions to execute when exception are triggered.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExceptionPolicy upsertExceptionPolicy(String exceptionPolicyId, ExceptionPolicy resource) {
+        // Generated convenience method for upsertExceptionPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getExceptionPolicyAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getExceptionPolicyAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertExceptionPolicyWithResponse(exceptionPolicyId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(ExceptionPolicy.class);
+    }
+
+    /**
+     * Creates or updates a distribution policy.
+     *
+     * @param distributionPolicyId Id of a distribution policy.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy governing how jobs are distributed to workers.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DistributionPolicy upsertDistributionPolicy(String distributionPolicyId, DistributionPolicy resource,
+        String ifMatch, OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertDistributionPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getDistributionPolicyAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getDistributionPolicyAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertDistributionPolicyWithResponse(distributionPolicyId, resourceInBinaryData, requestOptions)
+            .getValue()
+            .toObject(DistributionPolicy.class);
+    }
+
+    /**
+     * Creates or updates a distribution policy.
+     *
+     * @param distributionPolicyId Id of a distribution policy.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy governing how jobs are distributed to workers.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DistributionPolicy upsertDistributionPolicy(String distributionPolicyId, DistributionPolicy resource) {
+        // Generated convenience method for upsertDistributionPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getDistributionPolicyAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getDistributionPolicyAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertDistributionPolicyWithResponse(distributionPolicyId, resourceInBinaryData, requestOptions)
+            .getValue()
+            .toObject(DistributionPolicy.class);
+    }
+
+    /**
+     * Creates or updates a classification policy.
+     *
+     * @param classificationPolicyId Id of a classification policy.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for the rules that govern how jobs are classified.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClassificationPolicy upsertClassificationPolicy(String classificationPolicyId, ClassificationPolicy resource,
+        String ifMatch, OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertClassificationPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getClassificationPolicyAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getClassificationPolicyAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertClassificationPolicyWithResponse(classificationPolicyId, resourceInBinaryData, requestOptions)
+            .getValue()
+            .toObject(ClassificationPolicy.class);
+    }
+
+    /**
+     * Creates or updates a classification policy.
+     *
+     * @param classificationPolicyId Id of a classification policy.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for the rules that govern how jobs are classified.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClassificationPolicy upsertClassificationPolicy(String classificationPolicyId, ClassificationPolicy resource) {
+        // Generated convenience method for upsertClassificationPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getClassificationPolicyAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getClassificationPolicyAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertClassificationPolicyWithResponse(classificationPolicyId, resourceInBinaryData, requestOptions)
+            .getValue()
+            .toObject(ClassificationPolicy.class);
+    }
+
+    /**
+     * Creates or updates a queue.
+     *
+     * @param queueId Id of a queue.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a queue that can contain jobs to be routed.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouterQueue upsertQueue(String queueId, RouterQueue resource, String ifMatch, OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertQueueWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getRouterQueueAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getRouterQueueAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertQueueWithResponse(queueId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(RouterQueue.class);
+    }
+
+    /**
+     * Creates or updates a queue.
+     *
+     * @param queueId Id of a queue.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a queue that can contain jobs to be routed.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouterQueue upsertQueue(String queueId, RouterQueue resource) {
+        // Generated convenience method for upsertQueueWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getRouterQueueAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        resourceInBinaryData.getLength();
+        JsonMergePatchHelper.getRouterQueueAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertQueueWithResponse(queueId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(RouterQueue.class);
     }
 }

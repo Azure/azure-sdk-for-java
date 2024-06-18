@@ -12,14 +12,14 @@ public final class EsuProfileUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EsuProfileUpdateProperties model
-            = BinaryData.fromString("{\"assignedLicense\":\"euzvx\"}").toObject(EsuProfileUpdateProperties.class);
-        Assertions.assertEquals("euzvx", model.assignedLicense());
+            = BinaryData.fromString("{\"assignedLicense\":\"ncstt\"}").toObject(EsuProfileUpdateProperties.class);
+        Assertions.assertEquals("ncstt", model.assignedLicense());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EsuProfileUpdateProperties model = new EsuProfileUpdateProperties().withAssignedLicense("euzvx");
+        EsuProfileUpdateProperties model = new EsuProfileUpdateProperties().withAssignedLicense("ncstt");
         model = BinaryData.fromObject(model).toObject(EsuProfileUpdateProperties.class);
-        Assertions.assertEquals("euzvx", model.assignedLicense());
+        Assertions.assertEquals("ncstt", model.assignedLicense());
     }
 }

@@ -34,6 +34,10 @@
  * Samples for Operations List.
  */
 public final class OperationsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/Operations_List.json
+     */
     /**
      * Sample code: Operations_List.
      * 
@@ -62,6 +66,10 @@ import java.util.Map;
  * Samples for StandbyContainerGroupPools CreateOrUpdate.
  */
 public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/
+     * StandbyContainerGroupPools_CreateOrUpdate.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_CreateOrUpdate.
      * 
@@ -107,6 +115,11 @@ public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
  * Samples for StandbyContainerGroupPools Delete.
  */
 public final class StandbyContainerGroupPoolsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/StandbyContainerGroupPools_Delete.
+     * json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_Delete.
      * 
@@ -126,6 +139,10 @@ public final class StandbyContainerGroupPoolsDeleteSamples {
  * Samples for StandbyContainerGroupPools GetByResourceGroup.
  */
 public final class StandbyContainerGroupPoolsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/StandbyContainerGroupPools_Get.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_Get.
      * 
@@ -145,6 +162,10 @@ public final class StandbyContainerGroupPoolsGetByResourceGroupSamples {
  * Samples for StandbyContainerGroupPools List.
  */
 public final class StandbyContainerGroupPoolsListSamples {
+    /*
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/
+     * StandbyContainerGroupPools_ListBySubscription.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_ListBySubscription.
      * 
@@ -164,6 +185,10 @@ public final class StandbyContainerGroupPoolsListSamples {
  * Samples for StandbyContainerGroupPools ListByResourceGroup.
  */
 public final class StandbyContainerGroupPoolsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/
+     * StandbyContainerGroupPools_ListByResourceGroup.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_ListByResourceGroup.
      * 
@@ -194,6 +219,11 @@ import java.util.Map;
  * Samples for StandbyContainerGroupPools Update.
  */
 public final class StandbyContainerGroupPoolsUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/StandbyContainerGroupPools_Update.
+     * json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_Update.
      * 
@@ -245,6 +275,10 @@ import java.util.Map;
  * Samples for StandbyVirtualMachinePools CreateOrUpdate.
  */
 public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/
+     * StandbyVirtualMachinePools_CreateOrUpdate.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_CreateOrUpdate.
      * 
@@ -286,6 +320,11 @@ public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
  * Samples for StandbyVirtualMachinePools Delete.
  */
 public final class StandbyVirtualMachinePoolsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/StandbyVirtualMachinePools_Delete.
+     * json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_Delete.
      * 
@@ -305,6 +344,10 @@ public final class StandbyVirtualMachinePoolsDeleteSamples {
  * Samples for StandbyVirtualMachinePools GetByResourceGroup.
  */
 public final class StandbyVirtualMachinePoolsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/StandbyVirtualMachinePools_Get.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_Get.
      * 
@@ -324,6 +367,10 @@ public final class StandbyVirtualMachinePoolsGetByResourceGroupSamples {
  * Samples for StandbyVirtualMachinePools List.
  */
 public final class StandbyVirtualMachinePoolsListSamples {
+    /*
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/
+     * StandbyVirtualMachinePools_ListBySubscription.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_ListBySubscription.
      * 
@@ -343,6 +390,10 @@ public final class StandbyVirtualMachinePoolsListSamples {
  * Samples for StandbyVirtualMachinePools ListByResourceGroup.
  */
 public final class StandbyVirtualMachinePoolsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/
+     * StandbyVirtualMachinePools_ListByResourceGroup.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_ListByResourceGroup.
      * 
@@ -369,6 +420,11 @@ import java.util.Map;
  * Samples for StandbyVirtualMachinePools Update.
  */
 public final class StandbyVirtualMachinePoolsUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/StandbyVirtualMachinePools_Update.
+     * json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_Update.
      * 
@@ -410,6 +466,10 @@ public final class StandbyVirtualMachinePoolsUpdateSamples {
  * Samples for StandbyVirtualMachines Get.
  */
 public final class StandbyVirtualMachinesGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/StandbyVirtualMachines_Get.json
+     */
     /**
      * Sample code: StandbyVirtualMachines_Get.
      * 
@@ -429,6 +489,10 @@ public final class StandbyVirtualMachinesGetSamples {
  * Samples for StandbyVirtualMachines ListByStandbyVirtualMachinePoolResource.
  */
 public final class StandbyVirtualMachinesListByStandbyVirtualMachinePoolResourceSamples {
+    /*
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/
+     * StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.json
+     */
     /**
      * Sample code: StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.
      * 

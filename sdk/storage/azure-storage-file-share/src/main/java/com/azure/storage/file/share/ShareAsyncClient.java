@@ -366,8 +366,9 @@ public class ShareAsyncClient {
         String enabledProtocol = options.getProtocols() == null ? null : options.getProtocols().toString();
         enabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
         return azureFileStorageClient.getShares()
-            .createWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
-                options.getAccessTier(), enabledProtocol, options.getRootSquash(), context)
+            .createNoCustomHeadersWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
+                options.getAccessTier(), enabledProtocol, options.getRootSquash(),
+                options.isSnapshotVirtualDirectoryAccessEnabled(), context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -616,11 +617,9 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares()
-            .deleteWithResponseAsync(shareName, snapshot, null,
-                ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
-                requestConditions.getLeaseId(), context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return azureFileStorageClient.getShares().deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null,
+            ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
+            requestConditions.getLeaseId(), context);
     }
 
     /**
@@ -924,8 +923,9 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares().setPropertiesWithResponseAsync(shareName, null,
-            options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(), context)
+        return azureFileStorageClient.getShares().setPropertiesNoCustomHeadersWithResponseAsync(shareName, null,
+            options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
+            options.isSnapshotVirtualDirectoryAccessEnabled(), context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1048,7 +1048,7 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares().setMetadataWithResponseAsync(shareName, null,
+        return azureFileStorageClient.getShares().setMetadataNoCustomHeadersWithResponseAsync(shareName, null,
             options.getMetadata(), requestConditions.getLeaseId(), context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
@@ -1242,8 +1242,8 @@ public class ShareAsyncClient {
 
         context = context == null ? Context.NONE : context;
 
-        return azureFileStorageClient.getShares()
-            .setAccessPolicyWithResponseAsync(shareName, null, requestConditions.getLeaseId(), permissions, context)
+        return azureFileStorageClient.getShares().setAccessPolicyNoCustomHeadersWithResponseAsync(shareName, null,
+                requestConditions.getLeaseId(), permissions, context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1333,7 +1333,7 @@ public class ShareAsyncClient {
         ShareRequestConditions requestConditions = options.getRequestConditions() == null
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getShares().getStatisticsWithResponseAsync(shareName, null,
+        return azureFileStorageClient.getShares().getStatisticsNoCustomHeadersWithResponseAsync(shareName, null,
             requestConditions.getLeaseId(), context)
             .map(ModelHelper::mapGetStatisticsResponse);
     }

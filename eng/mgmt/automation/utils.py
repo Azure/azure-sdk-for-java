@@ -1,10 +1,10 @@
-import math
 import os
 import sys
 import yaml
 import logging
 import re
 import subprocess
+import platform
 from typing import Tuple
 
 from parameters import CI_HEADER
@@ -177,23 +177,39 @@ def update_service_ci_and_pom(sdk_root: str, service: str, group: str, module: s
 
 
 def update_version(sdk_root: str, output_folder: str):
+    # find the python command
+    python_cmd = "python"
+    try:
+        subprocess.check_call([python_cmd, "--version"])
+    except subprocess.CalledProcessError:
+        python_cmd = "python3"
+        try:
+            subprocess.check_call([python_cmd, "--version"])
+        except subprocess.CalledProcessError:
+            raise Exception("python or python3 not found")
+
     pwd = os.getcwd()
     try:
         os.chdir(sdk_root)
         print(os.getcwd())
         subprocess.run(
-            "python3 eng/versioning/update_versions.py --ut library --bt client --sr",
+            [python_cmd, "eng/versioning/update_versions.py", "--ut", "library", "--bt", "client", "--sr"],
             stdout=subprocess.DEVNULL,
             stderr=sys.stderr,
-            shell=True,
         )
         subprocess.run(
-            "python3 eng/versioning/update_versions.py --ut library --bt client --tf {0}/README.md".format(
-                output_folder
-            ),
+            [
+                python_cmd,
+                "eng/versioning/update_versions.py",
+                "--ut",
+                "library",
+                "--bt",
+                "client",
+                "--tf",
+                "{0}/README.md".format(output_folder),
+            ],
             stdout=subprocess.DEVNULL,
             stderr=sys.stderr,
-            shell=True,
         )
     finally:
         os.chdir(pwd)
@@ -330,3 +346,7 @@ def set_or_increase_version(
         write_version(version_file, lines, version_index, project, stable_version, current_version)
 
     return stable_version, current_version
+
+
+def is_windows():
+    return platform.system().lower() == "windows"

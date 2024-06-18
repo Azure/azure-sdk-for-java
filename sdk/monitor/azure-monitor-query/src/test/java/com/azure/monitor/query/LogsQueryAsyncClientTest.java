@@ -90,6 +90,12 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
             clientBuilder.credential(getCredential());
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
+
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `$..name` and `$..id` sanitizer from the list of common sanitizers
+            interceptorManager.removeSanitizers("AZSDK3493", "AZSDK3430");
+        }
+
         this.client = clientBuilder
                 .buildAsyncClient();
     }

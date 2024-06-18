@@ -11,7 +11,8 @@ public final class SitePropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SitePropertiesFormat model = BinaryData
-            .fromString("{\"provisioningState\":\"Deleted\",\"networkFunctions\":[{\"id\":\"rqemvvhmxt\"}]}")
+            .fromString(
+                "{\"provisioningState\":\"Accepted\",\"networkFunctions\":[{\"id\":\"iv\"},{\"id\":\"oyzunbixxr\"}]}")
             .toObject(SitePropertiesFormat.class);
     }
 

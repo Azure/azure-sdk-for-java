@@ -3,7 +3,7 @@
     "extension": "revapi.java",
     "configuration": {
       "missing-classes": {
-        "behavior": "report",
+        "behavior": "ignore",
         "ignoreMissingAnnotations": false
       },
       "matchOverloads": true
@@ -313,19 +313,6 @@
           "justification": "Previous value did was incorrect."
         },
         {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.(containers\\.containerregistry|search\\.documents(\\.indexes)?|security\\.keyvault\\.(administration|certificates|keys|keys\\.cryptography)|ai\\.textanalytics|ai\\.formrecognizer(\\.(documentanalysis(\\.administration)?|training))?|ai\\.metricsadvisor(\\.administration)?|messaging.servicebus(\\.administration)?)\\.models.*",
-          "description": ".*com.fasterxml.jackson.*",
-          "justification": "Removing Jackson annotations from ACR, Form Recognizer, KeyVault, Metrics Advisor, Search, ServiceBus, and Text Analytics in transition to stream-style."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.messaging\\.eventgrid\\.systemevents.*",
-          "justification": "Removing Jackson annotations from EventGrid in transition to stream-style."
-        },
-        {
           "code": "java.field.removed",
           "old": "field com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties.AZURE_GERMANY",
           "justification": "Remove this because AZURE_GERMANY is deprecated."
@@ -378,8 +365,8 @@
         },
         {
           "code": "java.annotation.added",
-          "old" : "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
-          "new" : "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
+          "old": "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
+          "new": "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
           "justification": "Ignore CosmosDiagnosticsContext in CosmosDiagnostics to avoid stackoverflow error."
         },
         {
@@ -389,46 +376,32 @@
           "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "justification": "Adding missing Jackson annotations to Job Router models."
         },
-		{
+        {
           "regex": true,
           "code": "java\\.method\\.removed",
           "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "justification": "Remove setter for Value from RouterWorkerSelector/RouterQueueSelector since it's in the constructor."
         },
-		{
+        {
           "regex": true,
           "code": "java\\.method\\.numberOfParametersChanged",
           "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "justification": "Make Value mandatory in RouterWorkerSelector/RouterQueueSelector constructor."
         },
-		{
+        {
           "regex": true,
           "code": "java\\.annotation\\.attributeValueChanged",
           "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
           "justification": "Fix incorrect json attributes."
         },
-		{
-          "regex": true,
-          "code": "java\\.method\\.returnTypeTypeParametersChanged",
-          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
-          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Return Router models rather than BinaryData."
-        },
         {
           "regex": true,
-          "code": "java\\.method\\.parameterTypeChanged",
+          "code": "java\\.method\\.(parameterTypeChanged|returnTypeTypeParametersChanged|returnTypeChanged)",
           "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
           "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Accept Router models rather than BinaryData."
-        },
-		{
-          "regex": true,
-          "code": "java\\.method\\.returnTypeChanged",
-          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
-          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Return Router models rather than BinaryData."
+          "justification": "Accept and return Router models rather than BinaryData."
         },
         {
           "ignore": true,
@@ -444,38 +417,46 @@
           "justification": "Additional schema formats are supported by Schema Registry."
         },
         {
-          "ignore": true,
-          "code": "java.annotation.removed",
-          "package": "com.azure.ai.contentsafety.models",
-          "annotationType": "com.fasterxml.jackson.annotation.JsonProperty",
-          "justification": "Migrate to azure-json."
-        },
-        {
-          "ignore": true,
-          "code": "java.annotation.removed",
-          "package": "com.azure.ai.contentsafety.models",
-          "annotationType": "com.fasterxml.jackson.annotation.JsonCreator",
-          "justification": "Migrate to azure-json."
-        },
-        {
-          "ignore": true,
           "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.storage\\.queue\\.models.*",
-          "justification": "Removing Jackson annotations from Storage Queue in transition to stream-style."
+          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
+          "old": ".*? com\\.azure\\.resourcemanager\\.(cosmos|network|mobilenetwork)\\.models.*",
+          "justification": "Jackson annotation changed."
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.monitor\\.query.*",
-          "justification": "Removing Jackson annotations from Monitor Query in transition to stream-style."
+          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
+          "old": ".*? com\\.azure\\.communication\\.messages\\.models.*",
+          "justification": "Jackson annotation changed."
         },
         {
-          "regex": true,
-          "code": "java.annotation.removed",
-          "old": ".*? com.azure.storage.file.share.models.*",
-          "new": ".*? com.azure.storage.file.share.models.*",
-          "justification": "Removing Jackson annotations from Monitor Query in transition to stream-style."
+          "code": "java.method.removed",
+          "old": "method java.lang.Integer com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::instanceCount()",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.ServiceSize com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::instanceSize()",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.ServiceType com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::serviceType()",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withInstanceCount(java.lang.Integer)",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withInstanceSize(com.azure.resourcemanager.cosmos.models.ServiceSize)",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withServiceType(com.azure.resourcemanager.cosmos.models.ServiceType)",
+          "justification": "The property flatten disabled due to model changed to polymorphic."
         }
       ]
     }

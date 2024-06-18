@@ -99,6 +99,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
+import static com.azure.identity.implementation.util.IdentityUtil.isWindowsPlatform;
+
 public abstract class IdentityClientBase {
     static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     static final String WINDOWS_STARTER = "cmd.exe";
@@ -127,7 +129,7 @@ public abstract class IdentityClientBase {
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
 
-    private final Map<String, String> properties;
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
 
 
     final IdentityClientOptions options;
@@ -141,7 +143,7 @@ public abstract class IdentityClientBase {
     final Supplier<String> clientAssertionSupplier;
     final String certificatePassword;
     HttpPipelineAdapter httpPipelineAdapter;
-    String userAgent = UserAgentUtil.DEFAULT_USER_AGENT_HEADER;
+    static String userAgent = UserAgentUtil.DEFAULT_USER_AGENT_HEADER;
     private Class<?> interactiveBrowserBroker;
     private Method getMsalRuntimeBroker;
 
@@ -181,7 +183,6 @@ public abstract class IdentityClientBase {
         this.certificatePassword = certificatePassword;
         this.clientAssertionSupplier = clientAssertionSupplier;
         this.options = options;
-        properties = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
 
     }
 
@@ -838,10 +839,6 @@ public abstract class IdentityClientBase {
         }
     }
 
-    boolean isWindowsPlatform() {
-        return System.getProperty("os.name").contains("Windows");
-    }
-
     String redactInfo(String input) {
         return ACCESS_TOKEN_PATTERN.matcher(input).replaceAll("****");
     }
@@ -850,11 +847,11 @@ public abstract class IdentityClientBase {
     abstract Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext);
 
 
-    HttpPipeline setupPipeline(HttpClient httpClient) {
+    public static HttpPipeline setupPipeline(HttpClient httpClient, IdentityClientOptions options) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
         Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
 
@@ -894,10 +891,10 @@ public abstract class IdentityClientBase {
             // If http client is set on the credential, then it should override the proxy options if any configured.
             HttpClient httpClient = options.getHttpClient();
             if (httpClient != null) {
-                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient), options);
+                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(httpClient, this.options), options);
             } else if (options.getProxyOptions() == null) {
                 //Http Client is null, proxy options are not set, use the default client and build the pipeline.
-                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()), options);
+                httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault(), options), options);
             }
         }
     }

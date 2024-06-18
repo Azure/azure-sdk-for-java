@@ -100,6 +100,11 @@ public class RoomsTestBase extends TestProxyTestBase {
                             "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            // Remove the sanitizer `id` from the list of common sanitizers
+            interceptorManager.removeSanitizers("AZSDK3430");
+        }
+
         return builder;
     }
 

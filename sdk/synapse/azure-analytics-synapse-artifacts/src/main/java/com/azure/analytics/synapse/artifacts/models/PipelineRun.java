@@ -5,95 +5,83 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * Information about a pipeline run.
  */
 @Fluent
-public final class PipelineRun {
+public final class PipelineRun implements JsonSerializable<PipelineRun> {
     /*
      * Identifier of a run.
      */
-    @JsonProperty(value = "runId", access = JsonProperty.Access.WRITE_ONLY)
     private String runId;
 
     /*
      * Identifier that correlates all the recovery runs of a pipeline run.
      */
-    @JsonProperty(value = "runGroupId", access = JsonProperty.Access.WRITE_ONLY)
     private String runGroupId;
 
     /*
      * Indicates if the recovered pipeline run is the latest in its group.
      */
-    @JsonProperty(value = "isLatest", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isLatest;
 
     /*
      * The pipeline name.
      */
-    @JsonProperty(value = "pipelineName", access = JsonProperty.Access.WRITE_ONLY)
     private String pipelineName;
 
     /*
      * The full or partial list of parameter name, value pair used in the pipeline run.
      */
-    @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, String> parameters;
 
     /*
      * Entity that started the pipeline run.
      */
-    @JsonProperty(value = "invokedBy", access = JsonProperty.Access.WRITE_ONLY)
     private PipelineRunInvokedBy invokedBy;
 
     /*
      * The last updated timestamp for the pipeline run event in ISO8601 format.
      */
-    @JsonProperty(value = "lastUpdated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdated;
 
     /*
      * The start time of a pipeline run in ISO8601 format.
      */
-    @JsonProperty(value = "runStart", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime runStart;
 
     /*
      * The end time of a pipeline run in ISO8601 format.
      */
-    @JsonProperty(value = "runEnd", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime runEnd;
 
     /*
      * The duration of a pipeline run.
      */
-    @JsonProperty(value = "durationInMs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer durationInMs;
 
     /*
      * The status of a pipeline run.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * The message from a pipeline run.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Information about a pipeline run.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -215,7 +203,6 @@ public final class PipelineRun {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -231,11 +218,75 @@ public final class PipelineRun {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PipelineRun from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PipelineRun if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PipelineRun.
+     */
+    public static PipelineRun fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PipelineRun deserializedPipelineRun = new PipelineRun();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runId".equals(fieldName)) {
+                    deserializedPipelineRun.runId = reader.getString();
+                } else if ("runGroupId".equals(fieldName)) {
+                    deserializedPipelineRun.runGroupId = reader.getString();
+                } else if ("isLatest".equals(fieldName)) {
+                    deserializedPipelineRun.isLatest = reader.getNullable(JsonReader::getBoolean);
+                } else if ("pipelineName".equals(fieldName)) {
+                    deserializedPipelineRun.pipelineName = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPipelineRun.parameters = parameters;
+                } else if ("invokedBy".equals(fieldName)) {
+                    deserializedPipelineRun.invokedBy = PipelineRunInvokedBy.fromJson(reader);
+                } else if ("lastUpdated".equals(fieldName)) {
+                    deserializedPipelineRun.lastUpdated
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("runStart".equals(fieldName)) {
+                    deserializedPipelineRun.runStart
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("runEnd".equals(fieldName)) {
+                    deserializedPipelineRun.runEnd
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("durationInMs".equals(fieldName)) {
+                    deserializedPipelineRun.durationInMs = reader.getNullable(JsonReader::getInt);
+                } else if ("status".equals(fieldName)) {
+                    deserializedPipelineRun.status = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedPipelineRun.message = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedPipelineRun.additionalProperties = additionalProperties;
+
+            return deserializedPipelineRun;
+        });
     }
 }

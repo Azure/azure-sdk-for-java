@@ -28,7 +28,8 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
         = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect";
 
     /*
-     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
+     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other
+     * receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
      */
     private Duration lockDuration;
 
@@ -38,7 +39,9 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     private Boolean requiresSession;
 
     /*
-     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
+     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting
+     * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
+     * message itself.
      */
     private Duration defaultMessageTimeToLive;
 
@@ -53,12 +56,18 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     private Boolean deadLetteringOnFilterEvaluationExceptions;
 
     /*
+     * The default rule description.
+     */
+    private RuleDescriptionImpl defaultRuleDescription;
+
+    /*
      * The number of messages in the subscription.
      */
     private Integer messageCount;
 
     /*
-     * The maximum delivery count. A message is automatically deadlettered after this number of deliveries. Default value is 10.
+     * The maximum delivery count. A message is automatically deadlettered after this number of deliveries. Default
+     * value is 10.
      */
     private Integer maxDeliveryCount;
 
@@ -108,7 +117,8 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     private String forwardDeadLetteredMessagesTo;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the subscription is automatically deleted. The minimum duration is 5 minutes.
+     * ISO 8601 timeSpan idle interval after which the subscription is automatically deleted. The minimum duration is 5
+     * minutes.
      */
     private Duration autoDeleteOnIdle;
 
@@ -116,11 +126,6 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      * Availability status of the entity
      */
     private EntityAvailabilityStatusImpl entityAvailabilityStatus;
-
-    /*
-     * The default rule description.
-     */
-    private RuleDescriptionImpl defaultRuleDescription;
 
     /**
      * Creates an instance of SubscriptionDescription class.
@@ -240,6 +245,26 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     public SubscriptionDescriptionImpl
         setDeadLetteringOnFilterEvaluationExceptions(Boolean deadLetteringOnFilterEvaluationExceptions) {
         this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
+        return this;
+    }
+
+    /**
+     * Get the defaultRuleDescription property: The default rule description.
+     * 
+     * @return the defaultRuleDescription value.
+     */
+    public RuleDescriptionImpl getDefaultRuleDescription() {
+        return this.defaultRuleDescription;
+    }
+
+    /**
+     * Set the defaultRuleDescription property: The default rule description.
+     * 
+     * @param defaultRuleDescription the defaultRuleDescription value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescriptionImpl setDefaultRuleDescription(RuleDescriptionImpl defaultRuleDescription) {
+        this.defaultRuleDescription = defaultRuleDescription;
         return this;
     }
 
@@ -516,26 +541,6 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
         return this;
     }
 
-    /**
-     * Get the defaultRuleDescription property: The default rule description.
-     * 
-     * @return the defaultRuleDescription value.
-     */
-    public RuleDescriptionImpl getDefaultRuleDescription() {
-        return this.defaultRuleDescription;
-    }
-
-    /**
-     * Set the defaultRuleDescription property: The default rule description.
-     * 
-     * @param defaultRuleDescription the defaultRuleDescription value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescriptionImpl setDefaultRuleDescription(RuleDescriptionImpl defaultRuleDescription) {
-        this.defaultRuleDescription = defaultRuleDescription;
-        return this;
-    }
-
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
@@ -556,6 +561,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
             this.deadLetteringOnMessageExpiration);
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT,
             "DeadLetteringOnFilterEvaluationExceptions", this.deadLetteringOnFilterEvaluationExceptions);
+        xmlWriter.writeXml(this.defaultRuleDescription, "DefaultRuleDescription");
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MessageCount", this.messageCount);
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MaxDeliveryCount",
             this.maxDeliveryCount);
@@ -578,7 +584,6 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
             CoreUtils.durationToStringWithDays(this.autoDeleteOnIdle));
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "EntityAvailabilityStatus",
             this.entityAvailabilityStatus == null ? null : this.entityAvailabilityStatus.toString());
-        xmlWriter.writeXml(this.defaultRuleDescription, "DefaultRuleDescription");
         return xmlWriter.writeEndElement();
     }
 
@@ -632,6 +637,10 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.deadLetteringOnFilterEvaluationExceptions
                         = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("DefaultRuleDescription".equals(elementName.getLocalPart())
+                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
+                    deserializedSubscriptionDescription.defaultRuleDescription
+                        = RuleDescriptionImpl.fromXml(reader, "DefaultRuleDescription");
                 } else if ("MessageCount".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.messageCount = reader.getNullableElement(Integer::parseInt);
@@ -677,10 +686,6 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.entityAvailabilityStatus
                         = EntityAvailabilityStatusImpl.fromString(reader.getStringElement());
-                } else if ("DefaultRuleDescription".equals(elementName.getLocalPart())
-                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
-                    deserializedSubscriptionDescription.defaultRuleDescription
-                        = RuleDescriptionImpl.fromXml(reader, "DefaultRuleDescription");
                 } else {
                     reader.skipElement();
                 }

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualHubRouteTableV2SGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualHubRouteTableV2Get.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualHubRouteTableV2Get.json
      */
     /**
      * Sample code: VirtualHubVirtualHubRouteTableV2Get.
@@ -19,7 +17,10 @@ public final class VirtualHubRouteTableV2SGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualHubVirtualHubRouteTableV2Get(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualHubRouteTableV2S().getWithResponse("rg1", "virtualHub1",
-            "virtualHubRouteTable1a", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualHubRouteTableV2S()
+            .getWithResponse("rg1", "virtualHub1", "virtualHubRouteTable1a", com.azure.core.util.Context.NONE);
     }
 }

@@ -60,6 +60,8 @@ help:
   service: selfhelp
 hybridaks:
   service: hybridcontainerservice
+informatica:
+  service: informaticadatamanagement
 keyvault:
   suffix: generated
 liftrastronomer:
@@ -84,6 +86,8 @@ offazurespringboot:
   service: springappdiscovery
 operationalinsights:
   service: loganalytics
+oracle:
+  service: oracledatabase
 paloaltonetworks:
   suffix: ngfw
 postgresql:

@@ -96,7 +96,7 @@ class LockRenewalOperation implements AutoCloseable, Disposable {
                 cancellationProcessor.onComplete();
             }, () -> {
                 if (status.compareAndSet(LockRenewalStatus.RUNNING, LockRenewalStatus.COMPLETE)) {
-                    logger.verbose("Renewing session lock task completed.");
+                    logger.verbose("Renewing lock task completed.");
                 }
 
                 cancellationProcessor.onComplete();

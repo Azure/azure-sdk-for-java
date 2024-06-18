@@ -9,7 +9,6 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
-import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
@@ -67,7 +66,7 @@ public final class MachinePropertiesInner {
      * Specifies the License related properties for a machine.
      */
     @JsonProperty(value = "licenseProfile")
-    private LicenseProfileMachineInstanceView licenseProfile;
+    private LicenseProfileMachineInstanceViewInner licenseProfile;
 
     /*
      * The provisioning state, which only appears in the response.
@@ -335,7 +334,7 @@ public final class MachinePropertiesInner {
      * 
      * @return the licenseProfile value.
      */
-    public LicenseProfileMachineInstanceView licenseProfile() {
+    public LicenseProfileMachineInstanceViewInner licenseProfile() {
         return this.licenseProfile;
     }
 
@@ -345,7 +344,7 @@ public final class MachinePropertiesInner {
      * @param licenseProfile the licenseProfile value to set.
      * @return the MachinePropertiesInner object itself.
      */
-    public MachinePropertiesInner withLicenseProfile(LicenseProfileMachineInstanceView licenseProfile) {
+    public MachinePropertiesInner withLicenseProfile(LicenseProfileMachineInstanceViewInner licenseProfile) {
         this.licenseProfile = licenseProfile;
         return this;
     }

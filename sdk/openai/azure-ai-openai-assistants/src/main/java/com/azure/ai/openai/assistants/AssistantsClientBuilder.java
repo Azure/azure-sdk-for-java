@@ -269,7 +269,7 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         localClientOptions.getHeaders()
             .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (!useAzureOpenAIService(this.endpoint)) {
-            headers.add("OpenAI-Beta", "assistants=v1");
+            headers.add("OpenAI-Beta", "assistants=v2");
         }
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
@@ -346,6 +346,7 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
      * @return an instance of AssistantsClientImpl.
      */
     private AssistantsClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         AssistantsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AssistantsServiceVersion.getLatest();
@@ -356,5 +357,10 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
                     : OpenAIUtils.getOpenAIEndpoint() + "/v1",
                 localServiceVersion);
         return client;
+    }
+
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
     }
 }
