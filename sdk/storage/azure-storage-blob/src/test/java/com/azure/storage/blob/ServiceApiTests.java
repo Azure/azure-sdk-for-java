@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedIterable;
@@ -1001,10 +1002,11 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void oAuthOnSecondary() {
-        BlobServiceClient serviceClient = setOauthCredentials(getServiceClientBuilder(null,
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary())).buildClient();
+        BlobServiceClientBuilder secondaryBuilder = getServiceClientBuilder(null,
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary());
+        BlobServiceClient secondaryClient = secondaryBuilder.credential(getTokenCredential()).buildClient();
 
-        assertDoesNotThrow(serviceClient::getProperties);
+        assertDoesNotThrow(secondaryClient::getProperties);
     }
 
     @ParameterizedTest

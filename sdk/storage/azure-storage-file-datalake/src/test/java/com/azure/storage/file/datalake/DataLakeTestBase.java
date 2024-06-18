@@ -20,10 +20,8 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -196,26 +194,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected TokenCredential getTokenCredential() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        if (!interceptorManager.isPlaybackMode()) {
-            // Determine whether to use the environment credential based on the shared configurations or to use the
-            // credential based on resource deployment.
-            if (!CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID))
-                && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
-                && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))) {
-                // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-                return new EnvironmentCredentialBuilder().build();
-            } else {
-                // STORAGE_TENANT_ID, STORAGE_CLIENT_ID, STORAGE_CLIENT_SECRET
-                return new ClientSecretCredentialBuilder()
-                    .tenantId(configuration.get("STORAGE_TENANT_ID"))
-                    .clientId(configuration.get("STORAGE_CLIENT_ID"))
-                    .clientSecret(configuration.get("STORAGE_CLIENT_SECRET"))
-                    .build();
-            }
-        } else {
-            // Running in playback, use the mock credential.
+        if (interceptorManager.isPlaybackMode()) {
             return new MockTokenCredential();
+        } else {
+            return new DefaultAzureCredentialBuilder().build();
         }
     }
 

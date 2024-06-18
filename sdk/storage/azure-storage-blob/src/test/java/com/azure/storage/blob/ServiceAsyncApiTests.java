@@ -62,6 +62,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -1057,10 +1058,11 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
     @Test
     public void oAuthOnSecondary() {
-        BlobServiceAsyncClient serviceClient = setOauthCredentials(getServiceClientBuilder(null,
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary())).buildAsyncClient();
+        BlobServiceClientBuilder secondaryBuilder = getServiceClientBuilder(null,
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary());
+        BlobServiceAsyncClient secondaryClient = secondaryBuilder.credential(getTokenCredential()).buildAsyncClient();
 
-        StepVerifier.create(serviceClient.getProperties())
+        StepVerifier.create(secondaryClient.getProperties())
             .expectNextCount(1)
             .verifyComplete();
     }

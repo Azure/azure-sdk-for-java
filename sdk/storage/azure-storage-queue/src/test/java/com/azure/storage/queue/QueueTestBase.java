@@ -4,14 +4,16 @@
 package com.azure.storage.queue;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
-import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestEnvironment;
@@ -89,15 +91,9 @@ public class QueueTestBase extends TestProxyTestBase {
     }
 
     protected QueueServiceClientBuilder getOAuthServiceClientBuilder(String endpoint) {
-        QueueServiceClientBuilder builder = new QueueServiceClientBuilder();
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
-        return instrument(builder).endpoint(endpoint);
+        QueueServiceClientBuilder builder = new QueueServiceClientBuilder().endpoint(endpoint);
+        instrument(builder);
+        return builder.credential(getTokenCredential());
     }
 
     protected QueueServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
@@ -122,16 +118,18 @@ public class QueueTestBase extends TestProxyTestBase {
         return instrument(new QueueClientBuilder()).endpoint(endpoint);
     }
 
-    protected QueueClientBuilder getOAuthQueueClientBuilder(String endpoint) {
-        QueueClientBuilder builder = new QueueClientBuilder();
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            builder.credential(new EnvironmentCredentialBuilder().build());
+    protected TokenCredential getTokenCredential() {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
         } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+            return new DefaultAzureCredentialBuilder().build();
         }
-        return instrument(builder).endpoint(endpoint);
+    }
+
+    protected QueueClientBuilder getOAuthQueueClientBuilder(String endpoint) {
+        QueueClientBuilder builder = new QueueClientBuilder().endpoint(endpoint);
+        instrument(builder);
+        return builder.credential(getTokenCredential());
     }
 
     protected Duration getMessageUpdateDelay(long liveMillis) {

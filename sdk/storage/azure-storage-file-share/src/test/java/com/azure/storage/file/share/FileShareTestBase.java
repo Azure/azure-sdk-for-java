@@ -5,6 +5,7 @@ package com.azure.storage.file.share;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -17,9 +18,10 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
@@ -314,7 +316,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return setOauthCredentials(builder).buildClient();
+        return builder.credential(getTokenCredential()).buildClient();
     }
 
     protected ShareServiceClient getOAuthServiceClientSharedKey(ShareServiceClientBuilder builder) {
@@ -325,7 +327,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildClient();
+        return builder.credential(getTokenCredential()).buildClient();
     }
 
     protected ShareServiceAsyncClient getOAuthServiceAsyncClient(ShareServiceClientBuilder builder) {
@@ -336,7 +338,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return setOauthCredentials(builder).buildAsyncClient();
+        return builder.credential(getTokenCredential()).buildAsyncClient();
     }
 
     protected ShareServiceAsyncClient getOAuthServiceClientAsyncSharedKey(ShareServiceClientBuilder builder) {
@@ -350,13 +352,11 @@ public class FileShareTestBase extends TestProxyTestBase {
         return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildAsyncClient();
     }
 
-    protected ShareServiceClientBuilder setOauthCredentials(ShareServiceClientBuilder builder) {
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build());
+    protected TokenCredential getTokenCredential() {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
         } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+            return new DefaultAzureCredentialBuilder().build();
         }
     }
 
@@ -372,18 +372,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return setOauthCredentials(builder);
-    }
-
-
-    protected ShareClientBuilder setOauthCredentials(ShareClientBuilder builder) {
-        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-            return builder.credential(new EnvironmentCredentialBuilder().build());
-        } else {
-            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
-            return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
-        }
+        return builder.credential(getTokenCredential());
     }
 
     protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
@@ -474,7 +463,7 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
         List<String> scopes = new ArrayList<>();
         scopes.add("https://storage.azure.com/.default");
-        return new EnvironmentCredentialBuilder().build().getToken(new TokenRequestContext().setScopes(scopes)).map(AccessToken::getToken).block();
+        return new DefaultAzureCredentialBuilder().build().getToken(new TokenRequestContext().setScopes(scopes)).map(AccessToken::getToken).block();
     }
 
     protected HttpPipelinePolicy getPerCallVersionPolicy() {

@@ -17,7 +17,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
@@ -121,11 +121,7 @@ public class KeyVaultKeyTests extends BlobCryptographyTestBase {
         TokenCredential credential;
 
         if (getTestMode() != TestMode.PLAYBACK) {
-            credential = new ClientSecretCredentialBuilder()
-                .clientSecret(global.get("AZURE_CLIENT_SECRET"))
-                .clientId(global.get("AZURE_CLIENT_ID"))
-                .tenantId(global.get("AZURE_TENANT_ID"))
-                .build();
+            credential = new DefaultAzureCredentialBuilder().build();
         } else {
             credential = new MockTokenCredential();
         }
