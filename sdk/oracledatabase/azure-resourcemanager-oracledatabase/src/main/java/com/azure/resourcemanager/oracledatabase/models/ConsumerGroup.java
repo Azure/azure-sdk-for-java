@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class ConsumerGroup extends ExpandableStringEnum<ConsumerGroup> {
      * @param name a name to look for.
      * @return the corresponding ConsumerGroup.
      */
-    @JsonCreator
     public static ConsumerGroup fromString(String name) {
         return fromString(name, ConsumerGroup.class);
     }

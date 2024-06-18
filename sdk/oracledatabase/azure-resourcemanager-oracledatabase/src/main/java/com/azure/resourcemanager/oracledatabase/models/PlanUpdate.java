@@ -5,41 +5,41 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * ResourcePlanTypeUpdate model definition.
  */
 @Fluent
-public final class PlanUpdate {
+public final class PlanUpdate implements JsonSerializable<PlanUpdate> {
     /*
      * A user defined name of the 3rd Party Artifact that is being procured.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
-     * The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the artifact at the time of Data Market onboarding. 
+     * The 3rd Party artifact that is being procured. E.g. NewRelic. Product maps to the OfferID specified for the
+     * artifact at the time of Data Market onboarding.
      */
-    @JsonProperty(value = "product")
     private String product;
 
     /*
      * A publisher provided promotion code as provisioned in Data Market for the said product/artifact.
      */
-    @JsonProperty(value = "promotionCode")
     private String promotionCode;
 
     /*
      * The version of the desired product/artifact.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /**
@@ -158,5 +158,53 @@ public final class PlanUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("promotionCode", this.promotionCode);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlanUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlanUpdate if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the PlanUpdate.
+     */
+    public static PlanUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlanUpdate deserializedPlanUpdate = new PlanUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPlanUpdate.name = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedPlanUpdate.publisher = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedPlanUpdate.product = reader.getString();
+                } else if ("promotionCode".equals(fieldName)) {
+                    deserializedPlanUpdate.promotionCode = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedPlanUpdate.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlanUpdate;
+        });
     }
 }

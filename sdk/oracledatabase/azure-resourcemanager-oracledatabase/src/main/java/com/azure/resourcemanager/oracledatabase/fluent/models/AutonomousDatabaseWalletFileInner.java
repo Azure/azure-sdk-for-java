@@ -6,17 +6,20 @@ package com.azure.resourcemanager.oracledatabase.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Autonomous Database Wallet File resource model.
  */
 @Fluent
-public final class AutonomousDatabaseWalletFileInner {
+public final class AutonomousDatabaseWalletFileInner implements JsonSerializable<AutonomousDatabaseWalletFileInner> {
     /*
      * The base64 encoded wallet files
      */
-    @JsonProperty(value = "walletFiles", required = true)
     private String walletFiles;
 
     /**
@@ -59,4 +62,42 @@ public final class AutonomousDatabaseWalletFileInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutonomousDatabaseWalletFileInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("walletFiles", this.walletFiles);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutonomousDatabaseWalletFileInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutonomousDatabaseWalletFileInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutonomousDatabaseWalletFileInner.
+     */
+    public static AutonomousDatabaseWalletFileInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutonomousDatabaseWalletFileInner deserializedAutonomousDatabaseWalletFileInner
+                = new AutonomousDatabaseWalletFileInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("walletFiles".equals(fieldName)) {
+                    deserializedAutonomousDatabaseWalletFileInner.walletFiles = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutonomousDatabaseWalletFileInner;
+        });
+    }
 }

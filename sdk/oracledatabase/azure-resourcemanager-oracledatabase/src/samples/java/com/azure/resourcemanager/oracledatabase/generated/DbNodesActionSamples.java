@@ -12,7 +12,8 @@ import com.azure.resourcemanager.oracledatabase.models.DbNodeActionEnum;
  */
 public final class DbNodesActionSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/dbNodes_action.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/dbNodes_action.json
      */
     /**
      * Sample code: DbNodes_Action.
@@ -26,7 +27,8 @@ public final class DbNodesActionSamples {
     }
 
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/dbNodes_action.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/dbNodes_action.json
      */
     /**
      * Sample code: VM actions on DbNodes of VM Cluster.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DataBaseType extends ExpandableStringEnum<DataBaseType> {
      * @param name a name to look for.
      * @return the corresponding DataBaseType.
      */
-    @JsonCreator
     public static DataBaseType fromString(String name) {
         return fromString(name, DataBaseType.class);
     }

@@ -6,25 +6,27 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.oracledatabase.fluent.models.VirtualNetworkAddressInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of a VirtualNetworkAddress list operation.
  */
 @Fluent
-public final class VirtualNetworkAddressListResult {
+public final class VirtualNetworkAddressListResult implements JsonSerializable<VirtualNetworkAddressListResult> {
     /*
      * The VirtualNetworkAddress items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<VirtualNetworkAddressInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -89,4 +91,47 @@ public final class VirtualNetworkAddressListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkAddressListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkAddressListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkAddressListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkAddressListResult.
+     */
+    public static VirtualNetworkAddressListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkAddressListResult deserializedVirtualNetworkAddressListResult
+                = new VirtualNetworkAddressListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualNetworkAddressInner> value
+                        = reader.readArray(reader1 -> VirtualNetworkAddressInner.fromJson(reader1));
+                    deserializedVirtualNetworkAddressListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualNetworkAddressListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkAddressListResult;
+        });
+    }
 }

@@ -5,108 +5,97 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * AutonomousDatabaseBackup resource model.
  */
 @Fluent
-public final class AutonomousDatabaseBackupProperties {
+public final class AutonomousDatabaseBackupProperties implements JsonSerializable<AutonomousDatabaseBackupProperties> {
     /*
      * The OCID of the Autonomous Database.
      */
-    @JsonProperty(value = "autonomousDatabaseOcid", access = JsonProperty.Access.WRITE_ONLY)
     private String autonomousDatabaseOcid;
 
     /*
      * The size of the database in terabytes at the time the backup was taken.
      */
-    @JsonProperty(value = "databaseSizeInTbs", access = JsonProperty.Access.WRITE_ONLY)
     private Double databaseSizeInTbs;
 
     /*
      * A valid Oracle Database version for Autonomous Database.
      */
-    @JsonProperty(value = "dbVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String dbVersion;
 
     /*
      * The user-friendly name for the backup. The name does not have to be unique.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The OCID of the Autonomous Database backup.
      */
-    @JsonProperty(value = "ocid", access = JsonProperty.Access.WRITE_ONLY)
     private String ocid;
 
     /*
      * Indicates whether the backup is user-initiated or automatic.
      */
-    @JsonProperty(value = "isAutomatic", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isAutomatic;
 
     /*
      * Indicates whether the backup can be used to restore the associated Autonomous Database.
      */
-    @JsonProperty(value = "isRestorable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isRestorable;
 
     /*
      * Additional information about the current lifecycle state.
      */
-    @JsonProperty(value = "lifecycleDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String lifecycleDetails;
 
     /*
      * The current state of the backup.
      */
-    @JsonProperty(value = "lifecycleState", access = JsonProperty.Access.WRITE_ONLY)
     private AutonomousDatabaseBackupLifecycleState lifecycleState;
 
     /*
      * Retention period, in days, for long-term backups.
      */
-    @JsonProperty(value = "retentionPeriodInDays")
     private Integer retentionPeriodInDays;
 
     /*
      * The backup size in terabytes (TB).
      */
-    @JsonProperty(value = "sizeInTbs", access = JsonProperty.Access.WRITE_ONLY)
     private Double sizeInTbs;
 
     /*
      * Timestamp until when the backup will be available.
      */
-    @JsonProperty(value = "timeAvailableTil", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeAvailableTil;
 
     /*
      * The date and time the backup started.
      */
-    @JsonProperty(value = "timeStarted", access = JsonProperty.Access.WRITE_ONLY)
     private String timeStarted;
 
     /*
      * The date and time the backup completed.
      */
-    @JsonProperty(value = "timeEnded", access = JsonProperty.Access.WRITE_ONLY)
     private String timeEnded;
 
     /*
      * The type of backup.
      */
-    @JsonProperty(value = "backupType", access = JsonProperty.Access.WRITE_ONLY)
     private AutonomousDatabaseBackupType backupType;
 
     /*
      * Azure resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AzureResourceProvisioningState provisioningState;
 
     /**
@@ -288,5 +277,82 @@ public final class AutonomousDatabaseBackupProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeNumberField("retentionPeriodInDays", this.retentionPeriodInDays);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutonomousDatabaseBackupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutonomousDatabaseBackupProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutonomousDatabaseBackupProperties.
+     */
+    public static AutonomousDatabaseBackupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutonomousDatabaseBackupProperties deserializedAutonomousDatabaseBackupProperties
+                = new AutonomousDatabaseBackupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("autonomousDatabaseOcid".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.autonomousDatabaseOcid = reader.getString();
+                } else if ("databaseSizeInTbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.databaseSizeInTbs
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("dbVersion".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.dbVersion = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.displayName = reader.getString();
+                } else if ("ocid".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.ocid = reader.getString();
+                } else if ("isAutomatic".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.isAutomatic
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isRestorable".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.isRestorable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lifecycleDetails".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.lifecycleDetails = reader.getString();
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.lifecycleState
+                        = AutonomousDatabaseBackupLifecycleState.fromString(reader.getString());
+                } else if ("retentionPeriodInDays".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.retentionPeriodInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("sizeInTbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.sizeInTbs
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("timeAvailableTil".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.timeAvailableTil = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeStarted".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.timeStarted = reader.getString();
+                } else if ("timeEnded".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.timeEnded = reader.getString();
+                } else if ("backupType".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.backupType
+                        = AutonomousDatabaseBackupType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupProperties.provisioningState
+                        = AzureResourceProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutonomousDatabaseBackupProperties;
+        });
     }
 }

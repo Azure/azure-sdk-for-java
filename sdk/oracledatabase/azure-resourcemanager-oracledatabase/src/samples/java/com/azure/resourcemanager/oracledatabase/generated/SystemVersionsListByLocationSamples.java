@@ -9,7 +9,8 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class SystemVersionsListByLocationSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/systemVersions_listByLocation.json
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
+     * systemVersions_listByLocation.json
      */
     /**
      * Sample code: List Exadata System Versions by the provided filter.
@@ -22,7 +23,8 @@ public final class SystemVersionsListByLocationSamples {
     }
 
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/systemVersions_listByLocation.json
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
+     * systemVersions_listByLocation.json
      */
     /**
      * Sample code: systemVersions_listByLocation.

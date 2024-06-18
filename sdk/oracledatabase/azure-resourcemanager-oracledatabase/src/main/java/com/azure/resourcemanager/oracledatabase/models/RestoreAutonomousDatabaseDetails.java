@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Details to restore an Oracle Autonomous Database.
  */
 @Fluent
-public final class RestoreAutonomousDatabaseDetails {
+public final class RestoreAutonomousDatabaseDetails implements JsonSerializable<RestoreAutonomousDatabaseDetails> {
     /*
      * The time to restore the database to.
      */
-    @JsonProperty(value = "timestamp", required = true)
     private OffsetDateTime timestamp;
 
     /**
@@ -60,4 +65,44 @@ public final class RestoreAutonomousDatabaseDetails {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RestoreAutonomousDatabaseDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreAutonomousDatabaseDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreAutonomousDatabaseDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestoreAutonomousDatabaseDetails.
+     */
+    public static RestoreAutonomousDatabaseDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoreAutonomousDatabaseDetails deserializedRestoreAutonomousDatabaseDetails
+                = new RestoreAutonomousDatabaseDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timestamp".equals(fieldName)) {
+                    deserializedRestoreAutonomousDatabaseDetails.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoreAutonomousDatabaseDetails;
+        });
+    }
 }
