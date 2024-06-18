@@ -19,7 +19,9 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosDataAutoConfigurationTests.CustomAzureCosmosConnectionDetails.DATABASE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.RETURNS_MOCKS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -49,6 +51,45 @@ class CosmosDataAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.cosmos.enabled=true")
             .run(context -> assertThat(context).doesNotHaveBean(CosmosConfig.class));
+    }
+
+    @Test
+    @SuppressWarnings("try")
+    void onlyConnectionDetailsBeanConfigured() {
+        try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
+            AzureCosmosProperties azureCosmosProperties = new AzureCosmosProperties();
+            azureCosmosProperties.setEndpoint(ENDPOINT);
+            azureCosmosProperties.setDatabase("property-database");
+            this.contextRunner
+                .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
+                .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
+                .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
+                .run(context -> {
+                    assertThat(context).hasSingleBean(CosmosTemplate.class);
+                    assertThat(context).hasSingleBean(ReactiveCosmosTemplate.class);
+                });
+        }
+    }
+
+    @Test
+    @SuppressWarnings("try")
+    void bothPropertyAndBeanConfiguredBeanHasHigherPriority() {
+        try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
+            AzureCosmosProperties azureCosmosProperties = new AzureCosmosProperties();
+            azureCosmosProperties.setEndpoint(ENDPOINT);
+            String propertyDatabase = "property-database";
+            azureCosmosProperties.setDatabase(propertyDatabase);
+            this.contextRunner
+                .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
+                .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
+                .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
+                .run(context -> {
+                    assertThat(context).hasSingleBean(CosmosTemplate.class);
+                    assertThat(context).hasSingleBean(ReactiveCosmosTemplate.class);
+                    assertThat(context).hasSingleBean(CosmosDataAutoConfiguration.class);
+                    assertEquals(DATABASE, context.getBean(CosmosDataAutoConfiguration.class).getDatabaseName());
+                });
+        }
     }
 
     @Test
@@ -157,20 +198,21 @@ class CosmosDataAutoConfigurationTests {
     }
 
     static class CustomAzureCosmosConnectionDetails implements AzureCosmosConnectionDetails {
+        static final String DATABASE = "bean-database";
 
         @Override
         public String getEndpoint() {
-            return "endpoint";
+            return "bean-endpoint";
         }
 
         @Override
         public String getKey() {
-            return "key";
+            return "bean-key";
         }
 
         @Override
         public String getDatabase() {
-            return "test";
+            return DATABASE;
         }
 
         @Override
