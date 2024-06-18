@@ -25,7 +25,7 @@ public class EventGridCustomization extends Customization {
         logger.info("removing PublishResult.java");
         customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/implementation/models/PublishResult.java");
         logger.info("removing CloudEvent.java");
-        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/implementation/models/CloudEvent.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/models/CloudEvent.java");
     }
 
     public void customizeEventGridClientImplImports(LibraryCustomization customization, Logger logger) {
@@ -37,7 +37,7 @@ public class EventGridCustomization extends Customization {
             PackageCustomization packageCustomization = customization.getPackage(p);
             packageCustomization.listClasses().forEach(c -> {
                 c.customizeAst(comp -> {
-                    if (comp.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.implementation.models.CloudEvent"))) {
+                    if (comp.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.models.CloudEvent"))) {
                         logger.info("Removed CloudEvent import from " + c.getClassName());
                         comp.addImport("com.azure.core.models.CloudEvent");
                     }
