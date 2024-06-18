@@ -37,6 +37,7 @@ import java.util.Objects;
 
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.createLocalClient;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.isThrowableRetryable;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.retrieveJwkAndCreateLocalClient;
 
 /**
  * The {@link CryptographyClient} provides synchronous methods to perform cryptographic operations using asymmetric and
@@ -1214,7 +1215,7 @@ public class CryptographyClient {
     private boolean isLocalClientAvailable() {
         if (!skipLocalClientCreation && localKeyCryptographyClient == null) {
             try {
-                localKeyCryptographyClient = retrieveJwkAndInitializeLocalClient();
+                localKeyCryptographyClient = retrieveJwkAndCreateLocalClient(implClient);
             } catch (Throwable t) {
                 if (isThrowableRetryable(t)) {
                     LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography for this operation. "
@@ -1229,28 +1230,5 @@ public class CryptographyClient {
         }
 
         return localKeyCryptographyClient != null;
-    }
-
-    private LocalKeyCryptographyClient retrieveJwkAndInitializeLocalClient() {
-        // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
-        if (!CoreUtils.isNullOrEmpty(implClient.getKeyCollection())) {
-            // Get the JWK from the service and validate it. Then attempt to create a local cryptography client or
-            // default to using service-side cryptography.
-            JsonWebKey jsonWebKey = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
-                ? implClient.getSecretKey()
-                : implClient.getKey(Context.NONE).getValue().getKey();
-
-            if (jsonWebKey == null) {
-                throw new IllegalStateException(
-                    "Could not retrieve JSON Web Key to perform local cryptographic operations.");
-            } else if (!jsonWebKey.isValid()) {
-                throw new IllegalStateException("The retrieved JSON Web Key is not valid.");
-            } else {
-                return createLocalClient(jsonWebKey, implClient);
-            }
-        } else {
-            // Couldn't/didn't create a local cryptography client.
-            throw new IllegalStateException("Could not create a local cryptography client.");
-        }
     }
 }

@@ -39,6 +39,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.createLocalClient;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.isThrowableRetryable;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.retrieveJwkAndCreateLocalAsyncClient;
 
 /**
  * The {@link CryptographyAsyncClient} provides asynchronous methods to perform cryptographic operations using
@@ -883,7 +884,7 @@ public class CryptographyAsyncClient {
 
     private Mono<Boolean> isLocalClientAvailable() {
         if (!skipLocalClientCreation && localKeyCryptographyClient == null) {
-            return retrieveJwkAndInitializeLocalAsyncClient()
+            return retrieveJwkAndCreateLocalAsyncClient(implClient)
                 .map(localClient -> {
                     localKeyCryptographyClient = localClient;
 
@@ -905,28 +906,5 @@ public class CryptographyAsyncClient {
         }
 
         return Mono.just(localKeyCryptographyClient != null);
-    }
-
-    private Mono<LocalKeyCryptographyClient> retrieveJwkAndInitializeLocalAsyncClient() {
-        // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
-        if (!CoreUtils.isNullOrEmpty(implClient.getKeyCollection())) {
-            // Get the JWK from the service and validate it. Then attempt to create a local cryptography client or
-            // default to using service-side cryptography.
-            Mono<JsonWebKey> jsonWebKeyMono = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
-                ? implClient.getSecretKeyAsync()
-                : implClient.getKeyAsync().map(keyVaultKeyResponse -> keyVaultKeyResponse.getValue().getKey());
-
-            return jsonWebKeyMono.handle((jsonWebKey, sink) -> {
-                if (!jsonWebKey.isValid()) {
-                    sink.error(new IllegalStateException("The retrieved JSON Web Key is not valid."));
-                } else {
-                    sink.next(createLocalClient(jsonWebKey, implClient));
-                }
-            });
-        } else {
-            // Couldn't/didn't create a local cryptography client.
-            return Mono.error(new IllegalStateException(
-                "Could not create a local cryptography client. Key collection is null or empty."));
-        }
     }
 }
