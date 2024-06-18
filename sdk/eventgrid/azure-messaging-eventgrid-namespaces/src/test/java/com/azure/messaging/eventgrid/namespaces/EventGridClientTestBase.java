@@ -47,17 +47,15 @@ public class EventGridClientTestBase extends TestProxyTestBase {
     EventGridSenderClientBuilder senderBuilder;
 
 
-
-    @Override
-    protected void beforeTest() {
+    protected void makeBuilders(boolean sync) {
         receiverBuilder = buildReceiverClientBuilder();
         senderBuilder = buildSenderClientBuilder();
         if (interceptorManager.isPlaybackMode()) {
-            receiverBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), false));
-            senderBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), false));
+            receiverBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), sync));
+            senderBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), sync));
         } else { // both record and live will use these clients
-            receiverBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), false));
-            senderBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), false));
+            receiverBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), sync));
+            senderBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), sync));
         }
 
         if (interceptorManager.isRecordMode()) {
@@ -66,7 +64,6 @@ public class EventGridClientTestBase extends TestProxyTestBase {
             senderBuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .retryPolicy(new RetryPolicy());
         }
-
         setupSanitizers();
     }
 

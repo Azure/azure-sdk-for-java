@@ -19,6 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventGridAsyncClientTests extends EventGridClientTestBase {
 
+    @Override
+    protected void beforeTest() {
+        makeBuilders(false);
+    }
 
     EventGridReceiverAsyncClient buildReceiverAsyncClient() {
         if (interceptorManager.isLiveMode()) {
@@ -45,7 +49,16 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
     }
 
     @Test
-    void receiveBatchOfCloudEvents() {
+    void sendBatch() {
+        EventGridSenderAsyncClient client = buildSenderAsyncClient();
+
+        client.send(Arrays.asList(getCloudEvent(), getCloudEvent()))
+            .as(StepVerifier::create)
+            .verifyComplete();
+    }
+
+    @Test
+    void receiveBatch() {
 
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient();
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient();
@@ -61,7 +74,7 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
     }
 
     @Test
-    void acknowledgeBatchOfCloudEvents() {
+    void acknowledgeBatch() {
 
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient();
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient();
@@ -81,7 +94,7 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
 
 
     @Test
-    void releaseBatchOfCloudEvents() {
+    void releaseBatch() {
 
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient();
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient();
@@ -100,7 +113,7 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
     }
 
     @Test
-    void releaseBatchOfCloudEventsWithDelay() {
+    void releaseBatchWithDelay() {
 
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient();
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient();
@@ -121,7 +134,7 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
     }
 
     @Test
-    void rejectBatchOfCloudEvents() {
+    void rejectBatch() {
 
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient();
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient();
@@ -140,7 +153,7 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
     }
 
     @Test
-    void renewBatchOfCloudEvents() {
+    void renewBatch() {
 
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient();
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient();
