@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * HostFormatType enum.
+ * Host format type enum.
  */
 public final class HostFormatType extends ExpandableStringEnum<HostFormatType> {
     /**

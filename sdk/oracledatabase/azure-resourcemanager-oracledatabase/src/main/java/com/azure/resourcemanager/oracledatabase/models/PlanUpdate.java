@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * ResourcePlanTypeUpdate model definition.
  */
 @Fluent
-public final class ResourcePlanTypeUpdate {
+public final class PlanUpdate {
     /*
      * A user defined name of the 3rd Party Artifact that is being procured.
      */
@@ -43,9 +43,9 @@ public final class ResourcePlanTypeUpdate {
     private String version;
 
     /**
-     * Creates an instance of ResourcePlanTypeUpdate class.
+     * Creates an instance of PlanUpdate class.
      */
-    public ResourcePlanTypeUpdate() {
+    public PlanUpdate() {
     }
 
     /**
@@ -61,9 +61,9 @@ public final class ResourcePlanTypeUpdate {
      * Set the name property: A user defined name of the 3rd Party Artifact that is being procured.
      * 
      * @param name the name value to set.
-     * @return the ResourcePlanTypeUpdate object itself.
+     * @return the PlanUpdate object itself.
      */
-    public ResourcePlanTypeUpdate withName(String name) {
+    public PlanUpdate withName(String name) {
         this.name = name;
         return this;
     }
@@ -81,9 +81,9 @@ public final class ResourcePlanTypeUpdate {
      * Set the publisher property: The publisher of the 3rd Party Artifact that is being bought. E.g. NewRelic.
      * 
      * @param publisher the publisher value to set.
-     * @return the ResourcePlanTypeUpdate object itself.
+     * @return the PlanUpdate object itself.
      */
-    public ResourcePlanTypeUpdate withPublisher(String publisher) {
+    public PlanUpdate withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
     }
@@ -103,9 +103,9 @@ public final class ResourcePlanTypeUpdate {
      * OfferID specified for the artifact at the time of Data Market onboarding.
      * 
      * @param product the product value to set.
-     * @return the ResourcePlanTypeUpdate object itself.
+     * @return the PlanUpdate object itself.
      */
-    public ResourcePlanTypeUpdate withProduct(String product) {
+    public PlanUpdate withProduct(String product) {
         this.product = product;
         return this;
     }
@@ -125,9 +125,9 @@ public final class ResourcePlanTypeUpdate {
      * product/artifact.
      * 
      * @param promotionCode the promotionCode value to set.
-     * @return the ResourcePlanTypeUpdate object itself.
+     * @return the PlanUpdate object itself.
      */
-    public ResourcePlanTypeUpdate withPromotionCode(String promotionCode) {
+    public PlanUpdate withPromotionCode(String promotionCode) {
         this.promotionCode = promotionCode;
         return this;
     }
@@ -145,9 +145,9 @@ public final class ResourcePlanTypeUpdate {
      * Set the version property: The version of the desired product/artifact.
      * 
      * @param version the version value to set.
-     * @return the ResourcePlanTypeUpdate object itself.
+     * @return the PlanUpdate object itself.
      */
-    public ResourcePlanTypeUpdate withVersion(String version) {
+    public PlanUpdate withVersion(String version) {
         this.version = version;
         return this;
     }

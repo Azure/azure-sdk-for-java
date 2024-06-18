@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * ComputeModel enum.
+ * Compute model enum.
  */
 public final class ComputeModel extends ExpandableStringEnum<ComputeModel> {
     /**

@@ -27,4 +27,22 @@ public final class AutonomousDatabaseBackupsCreateOrUpdateSamples {
                 .withRetentionPeriodInDays(365))
             .create();
     }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_create.json
+     */
+    /**
+     * Sample code: AutonomousDatabaseBackups_CreateOrUpdate.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void autonomousDatabaseBackupsCreateOrUpdate(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabaseBackups()
+            .define("1711644130")
+            .withExistingAutonomousDatabase("rg000", "databasedb1")
+            .withProperties(new AutonomousDatabaseBackupProperties().withDisplayName("Nightly Backup")
+                .withRetentionPeriodInDays(365))
+            .create();
+    }
 }

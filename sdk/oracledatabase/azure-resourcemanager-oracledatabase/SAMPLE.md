@@ -33,6 +33,8 @@
 - [GetByResourceGroup](#autonomousdatabases_getbyresourcegroup)
 - [List](#autonomousdatabases_list)
 - [ListByResourceGroup](#autonomousdatabases_listbyresourcegroup)
+- [Restore](#autonomousdatabases_restore)
+- [Shrink](#autonomousdatabases_shrink)
 - [Switchover](#autonomousdatabases_switchover)
 - [Update](#autonomousdatabases_update)
 
@@ -104,6 +106,11 @@
 - [ListSaasSubscriptionDetails](#oraclesubscriptions_listsaassubscriptiondetails)
 - [Update](#oraclesubscriptions_update)
 
+## SystemVersions
+
+- [Get](#systemversions_get)
+- [ListByLocation](#systemversions_listbylocation)
+
 ## VirtualNetworkAddresses
 
 - [CreateOrUpdate](#virtualnetworkaddresses_createorupdate)
@@ -136,6 +143,24 @@ public final class AutonomousDatabaseBackupsCreateOrUpdateSamples {
                 .withRetentionPeriodInDays(365))
             .create();
     }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_create.json
+     */
+    /**
+     * Sample code: AutonomousDatabaseBackups_CreateOrUpdate.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void autonomousDatabaseBackupsCreateOrUpdate(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabaseBackups()
+            .define("1711644130")
+            .withExistingAutonomousDatabase("rg000", "databasedb1")
+            .withProperties(new AutonomousDatabaseBackupProperties().withDisplayName("Nightly Backup")
+                .withRetentionPeriodInDays(365))
+            .create();
+    }
 }
 ```
 
@@ -156,6 +181,20 @@ public final class AutonomousDatabaseBackupsDeleteSamples {
      */
     public static void
         deleteAutonomousDatabaseBackup(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabaseBackups()
+            .delete("rg000", "databasedb1", "1711644130", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_delete.json
+     */
+    /**
+     * Sample code: AutonomousDatabaseBackups_Delete.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabaseBackupsDelete(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.autonomousDatabaseBackups()
             .delete("rg000", "databasedb1", "1711644130", com.azure.core.util.Context.NONE);
     }
@@ -182,6 +221,20 @@ public final class AutonomousDatabaseBackupsGetSamples {
         manager.autonomousDatabaseBackups()
             .getWithResponse("rg000", "databasedb1", "1711644130", com.azure.core.util.Context.NONE);
     }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_get.json
+     */
+    /**
+     * Sample code: AutonomousDatabaseBackups_Get.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabaseBackupsGet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabaseBackups()
+            .getWithResponse("rg000", "databasedb1", "1711644130", com.azure.core.util.Context.NONE);
+    }
 }
 ```
 
@@ -201,6 +254,20 @@ public final class AutonomousDatabaseBackupsListByAutonomousDatabaseSamples {
      * @param manager Entry point to OracleDatabaseManager.
      */
     public static void listAutonomousDatabaseBackupsByAutonomousDatabase(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabaseBackups()
+            .listByAutonomousDatabase("rg000", "databasedb1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_listByParent.json
+     */
+    /**
+     * Sample code: AutonomousDatabaseBackups_ListByAutonomousDatabase.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void autonomousDatabaseBackupsListByAutonomousDatabase(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.autonomousDatabaseBackups()
             .listByAutonomousDatabase("rg000", "databasedb1", com.azure.core.util.Context.NONE);
@@ -227,6 +294,22 @@ public final class AutonomousDatabaseBackupsUpdateSamples {
      */
     public static void
         patchAutonomousDatabaseBackup(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        AutonomousDatabaseBackup resource = manager.autonomousDatabaseBackups()
+            .getWithResponse("rg000", "databasedb1", "1711644130", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseBackup_patch.json
+     */
+    /**
+     * Sample code: AutonomousDatabaseBackups_Update.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabaseBackupsUpdate(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         AutonomousDatabaseBackup resource = manager.autonomousDatabaseBackups()
             .getWithResponse("rg000", "databasedb1", "1711644130", com.azure.core.util.Context.NONE)
             .getValue();
@@ -386,6 +469,36 @@ public final class AutonomousDatabasesCreateOrUpdateSamples {
      * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_create.json
      */
     /**
+     * Sample code: AutonomousDatabases_CreateOrUpdate.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabasesCreateOrUpdate(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabases()
+            .define("databasedb1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rg000")
+            .withTags(mapOf("tagK1", "tagV1"))
+            .withProperties(new AutonomousDatabaseProperties().withAdminPassword("fakeTokenPlaceholder")
+                .withCharacterSet("AL32UTF8")
+                .withComputeCount(2.0F)
+                .withComputeModel(ComputeModel.ECPU)
+                .withDataStorageSizeInTbs(1)
+                .withDbVersion("18.4.0.0")
+                .withDisplayName("example_autonomous_databasedb1")
+                .withNcharacterSet("AL16UTF16")
+                .withSubnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")
+                .withVnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_create.json
+     */
+    /**
      * Sample code: Create Autonomous Database.
      * 
      * @param manager Entry point to OracleDatabaseManager.
@@ -422,6 +535,38 @@ public final class AutonomousDatabasesCreateOrUpdateSamples {
      */
     public static void
         createCloneAutonomousDatabase(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabases()
+            .define("databasedb1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rg000")
+            .withTags(mapOf("tagK1", "tagV1"))
+            .withProperties(new AutonomousDatabaseCloneProperties().withAdminPassword("fakeTokenPlaceholder")
+                .withCharacterSet("AL32UTF8")
+                .withComputeCount(2.0F)
+                .withComputeModel(ComputeModel.ECPU)
+                .withDataStorageSizeInTbs(1)
+                .withDisplayName("example_autonomous_databasedb1_clone")
+                .withNcharacterSet("AL16UTF16")
+                .withSubnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1")
+                .withVnetId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Microsoft.Network/virtualNetworks/vnet1")
+                .withSourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1")
+                .withCloneType(CloneType.FULL))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabaseClone_create.json
+     */
+    /**
+     * Sample code: AutonomousDatabases_CreateOrUpdate_clone.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabasesCreateOrUpdateClone(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.autonomousDatabases()
             .define("databasedb1")
             .withRegion("eastus")
@@ -493,6 +638,21 @@ public final class AutonomousDatabasesFailoverSamples {
      * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_failover.json
      */
     /**
+     * Sample code: AutonomousDatabases_Failover.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabasesFailover(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabases()
+            .failover("rg000", "databasedb1", new PeerDbDetails().withPeerDbId("peerDbId"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_failover.json
+     */
+    /**
      * Sample code: Perform failover action on Autonomous Database.
      * 
      * @param manager Entry point to OracleDatabaseManager.
@@ -555,6 +715,19 @@ public final class AutonomousDatabasesGetByResourceGroupSamples {
         manager.autonomousDatabases()
             .getByResourceGroupWithResponse("rg000", "databasedb1", com.azure.core.util.Context.NONE);
     }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_get.json
+     */
+    /**
+     * Sample code: AutonomousDatabases_Get.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void autonomousDatabasesGet(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabases()
+            .getByResourceGroupWithResponse("rg000", "databasedb1", com.azure.core.util.Context.NONE);
+    }
 }
 ```
 
@@ -602,6 +775,72 @@ public final class AutonomousDatabasesListByResourceGroupSamples {
 }
 ```
 
+### AutonomousDatabases_Restore
+
+```java
+import com.azure.resourcemanager.oracledatabase.models.RestoreAutonomousDatabaseDetails;
+import java.time.OffsetDateTime;
+
+/**
+ * Samples for AutonomousDatabases Restore.
+ */
+public final class AutonomousDatabasesRestoreSamples {
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_restore.json
+     */
+    /**
+     * Sample code: AutonomousDatabases_Restore.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabasesRestore(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabases()
+            .restore("rg000", "databasedb1",
+                new RestoreAutonomousDatabaseDetails().withTimestamp(OffsetDateTime.parse("2024-04-23T00:00:00.000Z")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_restore.json
+     */
+    /**
+     * Sample code: Perform restore action on Autonomous Database.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void performRestoreActionOnAutonomousDatabase(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabases()
+            .restore("rg000", "databasedb1",
+                new RestoreAutonomousDatabaseDetails().withTimestamp(OffsetDateTime.parse("2024-04-23T00:00:00.000Z")),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AutonomousDatabases_Shrink
+
+```java
+/**
+ * Samples for AutonomousDatabases Shrink.
+ */
+public final class AutonomousDatabasesShrinkSamples {
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_shrink.json
+     */
+    /**
+     * Sample code: Perform shrink action on Autonomous Database.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void performShrinkActionOnAutonomousDatabase(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabases().shrink("rg000", "databasedb1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### AutonomousDatabases_Switchover
 
 ```java
@@ -621,6 +860,21 @@ public final class AutonomousDatabasesSwitchoverSamples {
      */
     public static void performSwitchoverActionOnAutonomousDatabase(
         com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.autonomousDatabases()
+            .switchover("rg000", "databasedb1", new PeerDbDetails().withPeerDbId("peerDbId"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/autonomousDatabase_switchover.json
+     */
+    /**
+     * Sample code: AutonomousDatabases_Switchover.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        autonomousDatabasesSwitchover(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.autonomousDatabases()
             .switchover("rg000", "databasedb1", new PeerDbDetails().withPeerDbId("peerDbId"),
                 com.azure.core.util.Context.NONE);
@@ -1127,6 +1381,20 @@ public final class DbNodesActionSamples {
      * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/dbNodes_action.json
      */
     /**
+     * Sample code: DbNodes_Action.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void dbNodesAction(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.dbNodes()
+            .action("rg000", "cluster1", "ocid1....aaaaaa", new DbNodeAction().withAction(DbNodeActionEnum.START),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/dbNodes_action.json
+     */
+    /**
      * Sample code: VM actions on DbNodes of VM Cluster.
      * 
      * @param manager Entry point to OracleDatabaseManager.
@@ -1604,6 +1872,75 @@ public final class OracleSubscriptionsUpdateSamples {
      */
     public static void patchOracleSubscription(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
         manager.oracleSubscriptions().update(new OracleSubscriptionUpdate(), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SystemVersions_Get
+
+```java
+/**
+ * Samples for SystemVersions Get.
+ */
+public final class SystemVersionsGetSamples {
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/systemVersions_get.json
+     */
+    /**
+     * Sample code: systemVersions_listSystemVersions.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        systemVersionsListSystemVersions(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.systemVersions().getWithResponse("eastus", "22.x", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/systemVersions_get.json
+     */
+    /**
+     * Sample code: Get Exadata System Version.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void getExadataSystemVersion(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.systemVersions().getWithResponse("eastus", "22.x", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SystemVersions_ListByLocation
+
+```java
+/**
+ * Samples for SystemVersions ListByLocation.
+ */
+public final class SystemVersionsListByLocationSamples {
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/systemVersions_listByLocation.json
+     */
+    /**
+     * Sample code: List Exadata System Versions by the provided filter.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void listExadataSystemVersionsByTheProvidedFilter(
+        com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.systemVersions().listByLocation("eastus", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/systemVersions_listByLocation.json
+     */
+    /**
+     * Sample code: systemVersions_listByLocation.
+     * 
+     * @param manager Entry point to OracleDatabaseManager.
+     */
+    public static void
+        systemVersionsListByLocation(com.azure.resourcemanager.oracledatabase.OracleDatabaseManager manager) {
+        manager.systemVersions().listByLocation("eastus", com.azure.core.util.Context.NONE);
     }
 }
 ```

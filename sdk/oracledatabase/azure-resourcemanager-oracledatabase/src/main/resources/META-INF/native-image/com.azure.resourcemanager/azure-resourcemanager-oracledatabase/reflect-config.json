@@ -74,6 +74,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.oracledatabase.models.LongTermBackUpScheduleDetails",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructureListResult",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -249,6 +254,21 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.oracledatabase.models.SystemVersionListResult",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.oracledatabase.fluent.models.SystemVersionInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.oracledatabase.models.SystemVersionProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.oracledatabase.models.OracleSubscriptionListResult",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -274,7 +294,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.oracledatabase.models.ResourcePlanTypeUpdate",
+  "name" : "com.azure.resourcemanager.oracledatabase.models.PlanUpdate",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -355,6 +375,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseWalletFileInner",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.oracledatabase.models.RestoreAutonomousDatabaseDetails",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -550,6 +575,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.oracledatabase.models.DatabaseEditionType",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.oracledatabase.models.RepeatCadenceType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

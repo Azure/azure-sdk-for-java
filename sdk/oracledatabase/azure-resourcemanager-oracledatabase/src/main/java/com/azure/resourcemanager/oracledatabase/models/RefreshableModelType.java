@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * RefreshableModelType enum.
+ * Refreshable model type enum.
  */
 public final class RefreshableModelType extends ExpandableStringEnum<RefreshableModelType> {
     /**

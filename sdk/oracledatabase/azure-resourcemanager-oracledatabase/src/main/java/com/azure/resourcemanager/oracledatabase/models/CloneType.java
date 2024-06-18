@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * CloneType enum.
+ * Clone type enum.
  */
 public final class CloneType extends ExpandableStringEnum<CloneType> {
     /**

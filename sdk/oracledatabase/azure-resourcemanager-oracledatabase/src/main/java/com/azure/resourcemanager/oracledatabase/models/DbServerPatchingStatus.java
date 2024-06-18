@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Db Server patching status enum.
+ * DB Server patching status enum.
  */
 public final class DbServerPatchingStatus extends ExpandableStringEnum<DbServerPatchingStatus> {
     /**

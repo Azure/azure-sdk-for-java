@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * OpenModeType enum.
+ * Open mode type enum.
  */
 public final class OpenModeType extends ExpandableStringEnum<OpenModeType> {
     /**

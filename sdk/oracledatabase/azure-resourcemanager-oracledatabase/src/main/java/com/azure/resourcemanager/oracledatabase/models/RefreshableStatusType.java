@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * RefreshableStatusType enum.
+ * Refreshable status type enum.
  */
 public final class RefreshableStatusType extends ExpandableStringEnum<RefreshableStatusType> {
     /**

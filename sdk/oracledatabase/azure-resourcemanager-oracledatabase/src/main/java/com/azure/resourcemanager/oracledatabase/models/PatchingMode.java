@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * PatchingMode enum.
+ * Patching mode enum.
  */
 public final class PatchingMode extends ExpandableStringEnum<PatchingMode> {
     /**

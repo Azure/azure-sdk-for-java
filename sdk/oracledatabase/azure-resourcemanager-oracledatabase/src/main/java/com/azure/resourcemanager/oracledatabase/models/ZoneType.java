@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * ZoneType enum.
+ * Zone type enum.
  */
 public final class ZoneType extends ExpandableStringEnum<ZoneType> {
     /**

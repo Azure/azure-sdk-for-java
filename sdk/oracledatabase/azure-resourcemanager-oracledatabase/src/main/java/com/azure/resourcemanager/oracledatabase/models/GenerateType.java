@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * GenerateType enum.
+ * Generate type enum.
  */
 public final class GenerateType extends ExpandableStringEnum<GenerateType> {
     /**

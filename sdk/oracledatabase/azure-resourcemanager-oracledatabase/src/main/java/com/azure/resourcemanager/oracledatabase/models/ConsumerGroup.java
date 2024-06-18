@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * ConsumerGroup enum.
+ * Consumer group enum.
  */
 public final class ConsumerGroup extends ExpandableStringEnum<ConsumerGroup> {
     /**

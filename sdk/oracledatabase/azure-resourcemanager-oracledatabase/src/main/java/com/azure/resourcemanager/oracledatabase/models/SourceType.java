@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * SourceType enum.
+ * Source type enum.
  */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
     /**

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * DataSafeStatusType enum.
+ * DataSafe status type enum.
  */
 public final class DataSafeStatusType extends ExpandableStringEnum<DataSafeStatusType> {
     /**

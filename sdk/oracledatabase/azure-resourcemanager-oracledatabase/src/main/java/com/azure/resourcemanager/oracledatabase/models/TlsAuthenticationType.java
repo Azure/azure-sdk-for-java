@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * TlsAuthenticationType enum.
+ * TLS authentication type enum.
  */
 public final class TlsAuthenticationType extends ExpandableStringEnum<TlsAuthenticationType> {
     /**

@@ -295,6 +295,16 @@ public final class AutonomousDatabaseProperties extends AutonomousDatabaseBasePr
      */
     @Override
     public AutonomousDatabaseProperties
+        withLongTermBackupSchedule(LongTermBackUpScheduleDetails longTermBackupSchedule) {
+        super.withLongTermBackupSchedule(longTermBackupSchedule);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AutonomousDatabaseProperties
         withLocalAdgAutoFailoverMaxDataLossLimit(Integer localAdgAutoFailoverMaxDataLossLimit) {
         super.withLocalAdgAutoFailoverMaxDataLossLimit(localAdgAutoFailoverMaxDataLossLimit);
         return this;

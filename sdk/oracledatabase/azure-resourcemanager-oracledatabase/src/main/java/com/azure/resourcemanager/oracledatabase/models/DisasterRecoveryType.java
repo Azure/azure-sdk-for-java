@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * DisasterRecoveryType enum.
+ * Disaster recovery type enum.
  */
 public final class DisasterRecoveryType extends ExpandableStringEnum<DisasterRecoveryType> {
     /**

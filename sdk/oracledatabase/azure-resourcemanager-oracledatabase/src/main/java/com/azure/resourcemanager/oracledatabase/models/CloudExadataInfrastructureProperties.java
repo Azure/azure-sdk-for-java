@@ -138,7 +138,7 @@ public final class CloudExadataInfrastructureProperties {
      * The quantity of data in the database, in terabytes.
      */
     @JsonProperty(value = "dataStorageSizeInTbs", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer dataStorageSizeInTbs;
+    private Double dataStorageSizeInTbs;
 
     /*
      * The total available DATA disk group size.
@@ -457,7 +457,7 @@ public final class CloudExadataInfrastructureProperties {
      * 
      * @return the dataStorageSizeInTbs value.
      */
-    public Integer dataStorageSizeInTbs() {
+    public Double dataStorageSizeInTbs() {
         return this.dataStorageSizeInTbs;
     }
 

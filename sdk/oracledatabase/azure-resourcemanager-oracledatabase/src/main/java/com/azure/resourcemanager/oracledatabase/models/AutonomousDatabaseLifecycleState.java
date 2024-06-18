@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * AutonomousDatabaseLifecycleState enum.
+ * Autonomous database lifecycle state enum.
  */
 public final class AutonomousDatabaseLifecycleState extends ExpandableStringEnum<AutonomousDatabaseLifecycleState> {
     /**
