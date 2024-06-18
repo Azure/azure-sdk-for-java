@@ -33,13 +33,11 @@ public class SchemaRegistryAsyncClientCustomTests extends TestProxyTestBase {
         TokenCredential tokenCredential;
         String endpoint;
         String schemaGroup;
+        tokenCredential = TestUtil.getTestTokenCredential(interceptorManager);
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = tokenRequestContext ->
-                Mono.fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
             schemaGroup = PLAYBACK_TEST_GROUP;
             endpoint = PLAYBACK_ENDPOINT;
         } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
             endpoint = System.getenv(SCHEMA_REGISTRY_CUSTOM_FULLY_QUALIFIED_NAMESPACE);
             schemaGroup = System.getenv(SCHEMA_REGISTRY_GROUP);
 

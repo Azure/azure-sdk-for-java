@@ -26,12 +26,6 @@
         "description": "The application client ID used to run tests."
       }
     },
-    "testApplicationSecret": {
-      "type": "string",
-      "metadata": {
-        "description": "The application client secret used to run tests."
-      }
-    },
     "testApplicationOid": {
       "type": "string",
       "defaultValue": "b3653439-8136-4cd5-aac3-2a9460871ca6",
@@ -199,19 +193,9 @@
       "type": "string",
       "value": "[parameters('testApplicationId')]"
     },
-    "AZURE_CLIENT_SECRET": {
-      "type": "string",
-      "value": "[parameters('testApplicationSecret')]"
-    },
-
     "SCHEMA_REGISTRY_AVRO_EVENT_HUB_NAME": {
       "type": "string",
       "value": "[parameters('eventHubName')]"
-    },
-
-    "SCHEMA_REGISTRY_AVRO_EVENT_HUB_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('baseNameAvro'), 'RootManageSharedAccessKey'), variables('apiVersion')).primaryConnectionString]"
     },
 
     "SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE": {

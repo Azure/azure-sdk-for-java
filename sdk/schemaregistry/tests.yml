@@ -3,6 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: schemaregistry
     Artifacts:
       - name: azure-data-schemaregistry
@@ -13,8 +14,5 @@ extends:
         safeName: azuredataschemaregistryapacheavro
     TimeoutInMinutes: 60
     EnvVars:
-      AZURE_CLIENT_ID: $(SCHEMAREGISTRY_CLIENT_ID)
-      AZURE_CLIENT_SECRET: $(SCHEMAREGISTRY_CLIENT_SECRET)
-      AZURE_TENANT_ID: $(SCHEMAREGISTRY_TENANT_ID)
       SCHEMA_REGISTRY_GROUP: $(SCHEMA_REGISTRY_GROUP)
       SCHEMA_REGISTRY_ENDPOINT: $(SCHEMA_REGISTRY_ENDPOINT)

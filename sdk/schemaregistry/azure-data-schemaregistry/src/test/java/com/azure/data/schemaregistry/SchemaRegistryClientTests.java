@@ -44,22 +44,12 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
     protected void beforeTest() {
         final String endpoint;
         TokenCredential tokenCredential;
-        if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = new TokenCredential() {
-                @Override
-                public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-                    return Mono.fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
-                }
+        tokenCredential = TestUtil.getTestTokenCredential(interceptorManager);
 
-                @Override
-                public AccessToken getTokenSync(TokenRequestContext request) {
-                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-                }
-            };
+        if (interceptorManager.isPlaybackMode()) {
             schemaGroup = PLAYBACK_TEST_GROUP;
             endpoint = "https://foo.servicebus.windows.net";
         } else {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
             endpoint = System.getenv(Constants.SCHEMA_REGISTRY_AVRO_FULLY_QUALIFIED_NAMESPACE);
             schemaGroup = System.getenv(Constants.SCHEMA_REGISTRY_GROUP);
 

@@ -47,8 +47,8 @@ public class SchemaRegistryAsyncClientPlaybackTests {
                 "Expected testInfo.getTestMethod() not be empty since we need a method for TestContextManager.");
         }
 
-        this.tokenCredential = tokenRequestContext ->
-            Mono.fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
+        this.tokenCredential = TestUtil.getPlaybackTokenCredential();
+
         this.endpoint = PLAYBACK_ENDPOINT;
 
         final String resourceName = "/compat/" + testInfo.getTestMethod().get().getName() + ".json";
