@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -85,7 +84,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     this.globalEndpointManager.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
 
                 isFailoverPossible.set(
-                    partitionLevelLocationUnavailabilityInfoAsVal.areLocationsAvailableForPartitionKeyRange(partitionKeyRangeWrapperAsKey, applicableEndpoints, request.isReadOnlyRequest()));
+                    partitionLevelLocationUnavailabilityInfoAsVal.areLocationsAvailableForPartitionKeyRange(applicableEndpoints));
             }
 
             request.requestContext.setRegionToHealthStatusesForPartitionKeyRange(partitionLevelLocationUnavailabilityInfoAsVal.regionToHealthStatus);
@@ -317,7 +316,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             });
         }
 
-        public boolean areLocationsAvailableForPartitionKeyRange(PartitionKeyRangeWrapper partitionKeyRangeWrapper, List<URI> availableLocationsAtAccountLevel, boolean isReadOnlyRequest) {
+        public boolean areLocationsAvailableForPartitionKeyRange(List<URI> availableLocationsAtAccountLevel) {
 
             for (URI availableLocation : availableLocationsAtAccountLevel) {
                 if (!this.locationEndpointToLocationSpecificContextForPartition.containsKey(availableLocation)) {
@@ -329,43 +328,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         return true;
                     }
                 }
-            }
-
-            Instant mostHealthyTentativeTimeAcrossRegions = Instant.MAX;
-            LocationSpecificContext locationLevelFailureMetadataForMostStaleLocation = null;
-            URI mostHealthyTentativeLocation = null;
-
-            // find region with most 'stale' unavailability
-            for (Map.Entry<URI, LocationSpecificContext> uriToLocationLevelFailureMetadata : this.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
-                LocationSpecificContext locationSpecificContext = uriToLocationLevelFailureMetadata.getValue();
-
-                if (locationSpecificContext.isRegionAvailableToProcessRequests()) {
-                    return true;
-                }
-
-                Instant unavailableSinceSnapshot = locationSpecificContext.getUnavailableSince();
-
-                if (mostHealthyTentativeTimeAcrossRegions.isAfter(unavailableSinceSnapshot)) {
-                    mostHealthyTentativeTimeAcrossRegions = unavailableSinceSnapshot;
-                    mostHealthyTentativeLocation = uriToLocationLevelFailureMetadata.getKey();
-                    locationLevelFailureMetadataForMostStaleLocation = locationSpecificContext;
-                }
-            }
-
-            if (locationLevelFailureMetadataForMostStaleLocation != null) {
-                this.locationEndpointToLocationSpecificContextForPartition.compute(mostHealthyTentativeLocation, (mostHealthyTentativeLocationAsKey, locationSpecificStatusAsVal) -> {
-
-                    if (locationSpecificStatusAsVal != null) {
-                        locationSpecificStatusAsVal = this.locationContextTransitionHandler.handleSuccess(
-                            locationSpecificStatusAsVal,
-                            partitionKeyRangeWrapper,
-                            mostHealthyTentativeLocationAsKey,
-                            true,
-                            isReadOnlyRequest);
-                    }
-
-                    return locationSpecificStatusAsVal;
-                });
             }
 
             return false;
