@@ -528,7 +528,7 @@ public abstract class BinaryData implements Closeable {
      *
      * &#47;&#47; Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
      * &#47;&#47; type arguments and raw type passed.
-     * List&lt;Person&gt; persons = binaryData.toObject&#40;new ParameterizedType&#40;&#41; &#123;
+     * List&lt;Person&gt; persons = binaryData.toObjectFromType&#40;new ParameterizedType&#40;&#41; &#123;
      *     &#64;Override
      *     public Type[] getActualTypeArguments&#40;&#41; &#123;
      *         return new Type[] &#123; Person.class &#125;;
@@ -660,7 +660,7 @@ public abstract class BinaryData implements Closeable {
      *
      * &#47;&#47; Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
      * &#47;&#47; type arguments and raw type passed.
-     * List&lt;Person&gt; persons = binaryData.toObject&#40;new ParameterizedType&#40;&#41; &#123;
+     * List&lt;Person&gt; persons = binaryData.toObjectFromType&#40;new ParameterizedType&#40;&#41; &#123;
      *     &#64;Override
      *     public Type[] getActualTypeArguments&#40;&#41; &#123;
      *         return new Type[] &#123; Person.class &#125;;
