@@ -14,9 +14,7 @@
  * <li>Publish events to Event Grid topics using the Cloud Event schema</li>
  * <li>Consume and settle Cloud Events.</li>
  * </ul>
- * </p>
  *
- * </p>
  * <h2>Authentication</h2>
  *
  * In order to send events, we need an endpoint to send to and authentication for the endpoint. The authentication can
@@ -29,12 +27,11 @@
  * The endpoint is listed on the dashboard of the topic or domain in the <a href="https://ms.portal.azure.com/">Azure
  * Portal</a>,
  * or can be obtained using the following command in <a href="https://docs.microsoft.com/cli/azure">Azure CLI</a>:
- * 
+ *
  * <pre>
- * az eventgrid topic show --name <your-resource-name> --resource-group <your-resource-group-name> --query "endpoint"
+ * az eventgrid topic show --name &lt;your-resource-name&gt; --resource-group &lt;your-resource-group-name&gt; --query &quot;endpoint&quot;
  * </pre>
- * 
- * <p>
+ *
  * <h2>Entra ID Token authentication</h2>
  * Azure Event Grid provides integration with Entra ID for identity-based authentication of requests.
  * With Entra ID, you can use role-based access control (RBAC) to grant access to your Azure Event Grid resources to
@@ -49,27 +46,25 @@
  *
  * <h2>Access Key</h2>
  *
- * The keys are listed in the "Access Keys" tab of the <a href="https://ms.portal.azure.com/>Azure Portal</a>, or can be
+ * The keys are listed in the "Access Keys" tab of the <a href="https://ms.portal.azure.com/">Azure Portal</a>, or can be
  * obtained
  * using the following command in <a href="https://docs.microsoft.com/cli/azure">Azure CLI</a>. Anyone of the keys
  * listed will work.
- * 
+ *
  * <pre>
- * az eventgrid topic key list --name <your-resource-name> --resource-group <your-resource-group-name>
+ * az eventgrid topic key list --name &lt;your-resource-name&gt; --resource-group &lt;your-resource-group-name&gt;
  * </pre>
- * 
+ *
  * <!-- src_embed com.azure.messaging.eventgrid.namespaces.AccessKeyExample -->
- * 
  * <pre>
- * EventGridSenderClient client = new EventGridSenderClientBuilder&#40;&#41;.endpoint&#40;&quot;your endpoint&quot;&#41;
+ * EventGridSenderClient client = new EventGridSenderClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;your endpoint&quot;&#41;
  *     .topicName&#40;&quot;your topic&quot;&#41;
  *     .credential&#40;new AzureKeyCredential&#40;&quot;your access key&quot;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * 
  * <!-- end com.azure.messaging.eventgrid.namespaces.AccessKeyExample -->
  *
- * <p>
  * <h2>Key concepts</h2>
  * <h3>Event Grid Namespace</h3>
  * A <a href="https://learn.microsoft.com/azure/event-grid/concepts-event-grid-namespaces#namespaces">namespace</a> is a
@@ -83,37 +78,36 @@
  * <h3>Event Subscription</h3>
  * An <a href="https://learn.microsoft.com/azure/event-grid/concepts-event-grid-namespaces#event-subscriptions">event
  * subscription</a> is a configuration resource associated with a single topic.
- * </p>
  *
  * <h2>Examples</h2>
  * <h3>Sending an event</h3>
  * <!-- src_embed com.azure.messaging.eventgrid.namespaces.TokenCredentialExample -->
- * 
  * <pre>
- * EventGridSenderClient client = new EventGridSenderClientBuilder&#40;&#41;.endpoint&#40;&quot;your endpoint&quot;&#41;
+ * EventGridSenderClient client = new EventGridSenderClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;your endpoint&quot;&#41;
  *     .topicName&#40;&quot;your topic&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * 
  * <!-- end com.azure.messaging.eventgrid.namespaces.TokenCredentialExample -->
  * <!-- src_embed com.azure.messaging.eventgrid.namespaces.SendEventExample -->
- * 
  * <pre>
  * User user = new User&#40;&quot;John&quot;, &quot;Doe&quot;&#41;;
- * CloudEvent cloudEvent
- *     = new CloudEvent&#40;&quot;source&quot;, &quot;type&quot;, BinaryData.fromObject&#40;user&#41;, CloudEventDataFormat.JSON, &quot;application&#47;json&quot;&#41;;
+ * CloudEvent cloudEvent = new CloudEvent&#40;&quot;source&quot;,
+ *     &quot;type&quot;,
+ *     BinaryData.fromObject&#40;user&#41;,
+ *     CloudEventDataFormat.JSON,
+ *     &quot;application&#47;json&quot;&#41;;
  * client.send&#40;cloudEvent&#41;;
  * </pre>
- * 
  * <!-- end com.azure.messaging.eventgrid.namespaces.SendEventExample -->
  *
  * <h3>Receiving and Settling events</h3>
  * <!-- src_embed com.azure.messaging.eventgrid.namespaces.ReceiveEventExample -->
- * 
  * <pre>
  *
- * EventGridReceiverClient client = new EventGridReceiverClientBuilder&#40;&#41;.endpoint&#40;&quot;your endpoint&quot;&#41;
+ * EventGridReceiverClient client = new EventGridReceiverClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;your endpoint&quot;&#41;
  *     .topicName&#40;&quot;your topic&quot;&#41;
  *     .subscriptionName&#40;&quot;your subscription&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
@@ -144,7 +138,6 @@
  * &#125;&#41;;
  *
  * </pre>
- * 
  * <!-- end com.azure.messaging.eventgrid.namespaces.ReceiveEventExample -->
  */
 package com.azure.messaging.eventgrid.namespaces;

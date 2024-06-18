@@ -93,7 +93,7 @@ public class EventGridClientTests extends EventGridClientTestBase {
         EventGridSenderClient senderClient = buildSenderClient();
         EventGridReceiverClient client = buildReceiverClient();
         senderClient.send(getCloudEvent());
-        ReceiveResult receiveResult = client.receive( 1, Duration.ofSeconds(10));
+        ReceiveResult receiveResult = client.receive(1, Duration.ofSeconds(10));
         ReleaseResult releaseResult = client.release(Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()), ReleaseDelay.TEN_SECONDS);
         assertNotNull(releaseResult);
         assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
@@ -104,7 +104,7 @@ public class EventGridClientTests extends EventGridClientTestBase {
         EventGridSenderClient senderClient = buildSenderClient();
         EventGridReceiverClient client = buildReceiverClient();
         senderClient.send(getCloudEvent());
-        ReceiveResult receiveResult = client.receive( 1, Duration.ofSeconds(10));
+        ReceiveResult receiveResult = client.receive(1, Duration.ofSeconds(10));
         RejectResult rejectResult = client.reject(Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
         assertNotNull(rejectResult);
         assertFalse(rejectResult.getSucceededLockTokens().isEmpty());
@@ -115,7 +115,7 @@ public class EventGridClientTests extends EventGridClientTestBase {
         EventGridSenderClient senderClient = buildSenderClient();
         EventGridReceiverClient client = buildReceiverClient();
         senderClient.send(getCloudEvent());
-        ReceiveResult receiveResult = client.receive( 1, Duration.ofSeconds(10));
+        ReceiveResult receiveResult = client.receive(1, Duration.ofSeconds(10));
         RenewLocksResult renewResult =  client.renewLocks(Collections.singletonList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
         assertNotNull(renewResult);
         assertFalse(renewResult.getSucceededLockTokens().isEmpty());

@@ -13,7 +13,6 @@ import com.azure.messaging.eventgrid.namespaces.models.User;
 
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.List;
 
 public class EventGridNamespacesSamples {
     final String endpoint = "endpoint";
@@ -137,7 +136,7 @@ public class EventGridNamespacesSamples {
                 client.acknowledge(Arrays.asList(details.getBrokerProperties().getLockToken()));
             } else if (user.getFirstName().equals("Jane")) {
                 // Release the event.
-               client.release(Arrays.asList(details.getBrokerProperties().getLockToken()));
+                client.release(Arrays.asList(details.getBrokerProperties().getLockToken()));
             } else {
                 // Reject the event.
                 client.reject(Arrays.asList(details.getBrokerProperties().getLockToken()));
