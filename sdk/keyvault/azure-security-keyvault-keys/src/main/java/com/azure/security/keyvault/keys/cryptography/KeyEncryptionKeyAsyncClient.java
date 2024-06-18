@@ -3,8 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import static com.azure.core.util.FluxUtil.monoError;
-
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -14,6 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A key client which is used to asynchronously wrap or unwrap another key.
