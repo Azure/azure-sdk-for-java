@@ -28,6 +28,7 @@ import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -546,6 +547,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.globalPartitionEndpointManagerForCircuitBreaker.init();
 
+            this.diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(this.globalPartitionEndpointManagerForCircuitBreaker.getCircuitBreakerConfig());
+
             this.retryPolicy = new RetryPolicy(
                 this,
                 this.globalEndpointManager,
@@ -672,7 +675,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.globalPartitionEndpointManagerForCircuitBreaker);
 
             this.globalEndpointManager.init();
-
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
             this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
 
@@ -2040,6 +2042,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return false;
         }
 
+        if (request.hasFeedRangeFilteringBeenApplied()) {
+            return false;
+        }
+
         switch (request.getOperationType()) {
             case ReadFeed:
             case Query:
@@ -2378,12 +2384,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         }
                     }
                 }
-
-                // todo: investigate below scenario - gets called when INTERNAL_SERVER_ERROR injected
-                // todo: something is causing cancellation w/o e2e operation timeout set
-//                    else {
-//                        this.handleLocationExceptionForPartitionKeyRange(potentiallyFailedRequest);
-//                    }
             });
     }
 
@@ -2426,49 +2426,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         && feedOperationContextForCircuitBreaker.hasPartitionKeyRangeSeenSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId())) {
                         this.handleLocationCancellationExceptionForPartitionKeyRange(request);
                     }
-                }
-            });
-    }
-
-    private Mono<NonTransientPointOperationResult> handleCircuitBreakingFeedbackForPointOperationWithAvailabilityStrategy(Mono<NonTransientPointOperationResult> response, RxDocumentServiceRequest request) {
-
-        if (!this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
-            return response;
-        }
-
-        return response
-            .doOnSuccess(nonTransientPointOperationResult -> {
-
-                if (!nonTransientPointOperationResult.isError()) {
-
-                    checkNotNull(request, "Argument 'request' cannot be null!");
-                    checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
-
-                    PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker
-                        = request.requestContext.getPointOperationContextForCircuitBreaker();
-
-                    pointOperationContextForCircuitBreaker.setHasOperationSeenSuccess();
-                    this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
-                }
-
-            })
-            .doFinally(signalType -> {
-                if (signalType != SignalType.CANCEL) {
-                    return;
-                }
-
-                checkNotNull(request, "Argument 'request' cannot be null!");
-                checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
-
-                PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker
-                    = request.requestContext.getPointOperationContextForCircuitBreaker();
-
-                checkNotNull(pointOperationContextForCircuitBreaker, "Argument 'pointOperationContextForCircuitBreaker' cannot be null!");
-
-                if (!pointOperationContextForCircuitBreaker.getIsRequestHedged()
-                    && pointOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()
-                    && pointOperationContextForCircuitBreaker.getHasOperationSeenSuccess()) {
-                    this.handleLocationCancellationExceptionForPartitionKeyRange(request);
                 }
             });
     }
@@ -6293,7 +6250,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             false,
             initialExcludedRegions);
 
-        Map<GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper, GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess = new ConcurrentHashMap<>();
+        Map<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess = new ConcurrentHashMap<>();
 
         FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow = new FeedOperationContextForCircuitBreaker(partitionKeyRangesWithSuccess, false);
         feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow.setIsRequestHedged(false);
@@ -6310,10 +6267,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         orderedApplicableRegionsForSpeculation
             .forEach(region -> {
-
                 RxDocumentServiceRequest clonedRequest = req.clone();
-
-                logger.info("Cloned request : {}", req);
 
                 if (monoList.isEmpty()) {
                     // no special error handling for transient errors to suppress them here
@@ -6324,8 +6278,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreakerForNonHedgedRequest = new FeedOperationContextForCircuitBreaker(partitionKeyRangesWithSuccess, true);
                     feedOperationContextForCircuitBreakerForNonHedgedRequest.setIsRequestHedged(false);
                     clonedRequest.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForNonHedgedRequest);
-
-                    logger.info("Cloned request : {}", clonedRequest);
 
                     Mono<NonTransientFeedOperationResult<T>> initialMonoAcrossAllRegions =
                         handleCircuitBreakingFeedbackForFeedOperationWithAvailabilityStrategy(feedOperation.apply(retryPolicyFactory, clonedRequest)
@@ -6355,8 +6307,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreakerForHedgedRequest = new FeedOperationContextForCircuitBreaker(partitionKeyRangesWithSuccess, true);
                     feedOperationContextForCircuitBreakerForHedgedRequest.setIsRequestHedged(true);
                     clonedRequest.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForHedgedRequest);
-
-                    logger.info("Cloned request : {}", clonedRequest);
 
                     // Non-Transient errors are mapped to a value - this ensures the firstWithValue
                     // operator below will complete the composite Mono for both successful values
@@ -6616,7 +6566,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    static class CollectionRoutingMapNotFoundException extends CosmosException {
+    private static class CollectionRoutingMapNotFoundException extends CosmosException {
 
         private static final long serialVersionUID = 1L;
 

@@ -22,6 +22,8 @@ import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.circuitBreaker.ConsecutiveExceptionBasedCircuitBreaker;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
+import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
@@ -1836,12 +1838,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
                     int expectedCircuitBreakingThreshold
                         = doesOperationHaveWriteSemantics(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType()) ?
-                        consecutiveExceptionBasedCircuitBreaker.getAllowedExceptionCountToMaintainStatus(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyWithFailures, false) :
-                        consecutiveExceptionBasedCircuitBreaker.getAllowedExceptionCountToMaintainStatus(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyWithFailures, true);
+                        consecutiveExceptionBasedCircuitBreaker.getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, false) :
+                        consecutiveExceptionBasedCircuitBreaker.getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, true);
 
                     if (!hasReachedCircuitBreakingThreshold) {
                         hasReachedCircuitBreakingThreshold = expectedCircuitBreakingThreshold == globalPartitionEndpointManagerForCircuitBreaker.getExceptionCountByPartitionKeyRange(
-                            new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(faultyPartitionKeyRanges.v.get(0), faultyDocumentCollection.v.getResourceId()));
+                            new PartitionKeyRangeWrapper(faultyPartitionKeyRanges.v.get(0), faultyDocumentCollection.v.getResourceId()));
                         validateResponseInPresenceOfFailures.accept(response);
                     } else {
                         executionCountAfterCircuitBreakingThresholdBreached++;

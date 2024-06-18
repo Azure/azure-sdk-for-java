@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.circuitBreaker;
 
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
@@ -25,6 +26,8 @@ public class PartitionLevelCircuitBreakerConfig {
     @JsonProperty
     private String circuitBreakerFailureTolerance = "LOW";
 
+    private String cachedConfigAsString = "";
+
     public Boolean isPartitionLevelCircuitBreakerEnabled() {
         return isPartitionLevelCircuitBreakerEnabled;
     }
@@ -43,6 +46,15 @@ public class PartitionLevelCircuitBreakerConfig {
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Unable to convert to Json String", e);
         }
+    }
+
+    public String getConfigAsString() {
+        if (StringUtils.isEmpty(this.cachedConfigAsString)) {
+            this.cachedConfigAsString = "(" + "cb: " + this.isPartitionLevelCircuitBreakerEnabled + ", " +
+                "type: " + this.circuitBreakerType + ", " +
+                "tl: " + this.circuitBreakerFailureTolerance + ")";
+        }
+        return this.cachedConfigAsString;
     }
 
     public static PartitionLevelCircuitBreakerConfig fromJsonString(String jsonString) {

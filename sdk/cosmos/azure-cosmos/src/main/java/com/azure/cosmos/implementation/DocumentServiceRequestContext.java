@@ -61,6 +61,7 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
+    private volatile Utils.ValueHolder<Map<String, String>> regionToHealthStatusesForPartitionKeyRange = new Utils.ValueHolder<>();
 
     public DocumentServiceRequestContext() {}
 
@@ -214,6 +215,14 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setClientRetryPolicySupplier(Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier) {
         this.clientRetryPolicySupplier = clientRetryPolicySupplier;
+    }
+
+    public Utils.ValueHolder<Map<String, String>> getRegionToHealthStatusesForPartitionKeyRange() {
+        return regionToHealthStatusesForPartitionKeyRange;
+    }
+
+    public void setRegionToHealthStatusesForPartitionKeyRange(Map<String, String> regionToHealthStatusesForPartitionKeyRange) {
+        this.regionToHealthStatusesForPartitionKeyRange.v = regionToHealthStatusesForPartitionKeyRange;
     }
 }
 

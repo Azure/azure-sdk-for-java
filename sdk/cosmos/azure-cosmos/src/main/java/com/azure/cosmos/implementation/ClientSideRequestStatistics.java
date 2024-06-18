@@ -164,6 +164,9 @@ public class ClientSideRequestStatistics {
 
             this.approximateInsertionCountInBloomFilter = request.requestContext.getApproximateBloomFilterInsertionCount();
             storeResponseStatistics.sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
+            storeResponseStatistics.regionToHealthStatusesForPartitionKeyRange = request.requestContext.getRegionToHealthStatusesForPartitionKeyRange();
+
+            System.out.println("In ClientSideRequestStats : " + request);
 
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
                 storeResponseStatistics.e2ePolicyCfg =
@@ -237,6 +240,7 @@ public class ClientSideRequestStatistics {
 
                 if (rxDocumentServiceRequest.requestContext != null) {
                     gatewayStatistics.sessionTokenEvaluationResults = rxDocumentServiceRequest.requestContext.getSessionTokenEvaluationResults();
+                    gatewayStatistics.regionToHealthStatusesForPartitionKeyRange = rxDocumentServiceRequest.requestContext.getRegionToHealthStatusesForPartitionKeyRange();
                 }
             }
             gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
@@ -665,6 +669,9 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private Set<String> sessionTokenEvaluationResults;
 
+        @JsonSerialize
+        private Utils.ValueHolder<Map<String, String>> regionToHealthStatusesForPartitionKeyRange;
+
         public String getExcludedRegions() { return this.excludedRegions; }
 
         public StoreResultDiagnostics getStoreResult() {
@@ -853,6 +860,7 @@ public class ClientSideRequestStatistics {
         private String faultInjectionRuleId;
         private List<String> faultInjectionEvaluationResults;
         private Set<String> sessionTokenEvaluationResults;
+        private Utils.ValueHolder<Map<String, String>> regionToHealthStatusesForPartitionKeyRange;
 
         public String getSessionToken() {
             return sessionToken;
@@ -910,6 +918,10 @@ public class ClientSideRequestStatistics {
             return sessionTokenEvaluationResults;
         }
 
+        public Map<String, String> getRegionToHealthStatusesForPartitionKeyRange() {
+            return regionToHealthStatusesForPartitionKeyRange.v;
+        }
+
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
             private static final long serialVersionUID = 1L;
 
@@ -943,6 +955,7 @@ public class ClientSideRequestStatistics {
                 }
 
                 this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
+                this.writeNonNullObjectField(jsonGenerator, "regionHealthStatusesForPkRange", gatewayStatistics.getRegionToHealthStatusesForPartitionKeyRange());
                 jsonGenerator.writeEndObject();
             }
 
@@ -968,6 +981,14 @@ public class ClientSideRequestStatistics {
                 }
 
                 jsonGenerator.writePOJOField(fieldName, values);
+            }
+
+            private void writeNonNullObjectField(JsonGenerator jsonGenerator, String fieldName, Object object) throws IOException {
+                if (object == null) {
+                    return;
+                }
+
+                jsonGenerator.writePOJOField(fieldName, object);
             }
         }
     }
@@ -1004,10 +1025,6 @@ public class ClientSideRequestStatistics {
             this.regionContacted = regionContacted;
             this.locationEndpointsContacted = locationEndpointsContacted;
             this.recordedTimestamp = System.currentTimeMillis();
-        }
-
-        public String getRegionContacted() {
-            return regionContacted;
         }
 
         @Override

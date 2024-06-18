@@ -11,7 +11,7 @@ public class LocationSpecificContext {
     private final int exceptionCountForRead;
     private final int successCountForRead;
     private final Instant unavailableSince;
-    private final GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus locationHealthStatus;
+    private final LocationHealthStatus locationHealthStatus;
     private final boolean isExceptionThresholdBreached;
 
     public LocationSpecificContext(
@@ -20,7 +20,7 @@ public class LocationSpecificContext {
         int successCountForRead,
         int exceptionCountForRead,
         Instant unavailableSince,
-        GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus locationHealthStatus,
+        LocationHealthStatus locationHealthStatus,
         boolean isExceptionThresholdBreached) {
 
         this.successCountForWrite = successCountForWrite;
@@ -37,9 +37,9 @@ public class LocationSpecificContext {
     }
 
     public boolean isRegionAvailableToProcessRequests() {
-        return this.locationHealthStatus == GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.Healthy ||
-            this.locationHealthStatus == GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyWithFailures ||
-            this.locationHealthStatus == GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyTentative;
+        return this.locationHealthStatus == LocationHealthStatus.Healthy ||
+            this.locationHealthStatus == LocationHealthStatus.HealthyWithFailures ||
+            this.locationHealthStatus == LocationHealthStatus.HealthyTentative;
     }
 
     public int getExceptionCountForWrite() {
@@ -62,7 +62,7 @@ public class LocationSpecificContext {
         return unavailableSince;
     }
 
-    public GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus getLocationHealthStatus() {
+    public LocationHealthStatus getLocationHealthStatus() {
         return locationHealthStatus;
     }
 }

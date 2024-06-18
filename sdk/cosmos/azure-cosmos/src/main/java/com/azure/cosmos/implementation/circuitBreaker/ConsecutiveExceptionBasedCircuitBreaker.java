@@ -20,8 +20,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
         int exceptionCountAfterHandling
             = (isReadOnlyRequest) ? locationSpecificContext.getExceptionCountForRead() : locationSpecificContext.getExceptionCountForWrite();
 
-        GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus locationHealthStatus
-            = locationSpecificContext.getLocationHealthStatus();
+        LocationHealthStatus locationHealthStatus = locationSpecificContext.getLocationHealthStatus();
 
         switch (locationHealthStatus) {
             case Healthy:
@@ -64,8 +63,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
         int successCountAfterHandling
             = (isReadOnlyRequest) ? locationSpecificContext.getSuccessCountForRead() : locationSpecificContext.getSuccessCountForWrite();
 
-        GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus locationHealthStatus
-            = locationSpecificContext.getLocationHealthStatus();
+        LocationHealthStatus locationHealthStatus = locationSpecificContext.getLocationHealthStatus();
 
         switch (locationHealthStatus) {
             case Healthy:
@@ -139,13 +137,13 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
         int exceptionCountActual
             = isReadOnlyRequest ? locationSpecificContext.getExceptionCountForRead() : locationSpecificContext.getExceptionCountForWrite();
 
-        GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus locationHealthStatus = locationSpecificContext.getLocationHealthStatus();
+        LocationHealthStatus locationHealthStatus = locationSpecificContext.getLocationHealthStatus();
 
         return successCountActual >= getMinimumSuccessCountForStatusUpgrade(locationHealthStatus, isReadOnlyRequest) &&
             (double) exceptionCountActual / (double) successCountActual < getAllowedExceptionToSuccessRatio(locationHealthStatus, isReadOnlyRequest);
     }
 
-    private static double getAllowedExceptionToSuccessRatio(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus status, boolean isReadOnlyRequest) {
+    private static double getAllowedExceptionToSuccessRatio(LocationHealthStatus status, boolean isReadOnlyRequest) {
 
         if (isReadOnlyRequest) {
             switch (status) {
@@ -168,7 +166,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
         }
     }
 
-    public int getAllowedExceptionCountToMaintainStatus(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus status, boolean isReadOnlyRequest) {
+    public int getAllowedExceptionCountToMaintainStatus(LocationHealthStatus status, boolean isReadOnlyRequest) {
 
         if (isReadOnlyRequest) {
             switch (status) {
@@ -193,7 +191,6 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
                         throw new IllegalArgumentException("Unsupported tolerance setting " + this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance());
                     }
                 case Healthy:
-                    return 0;
                 case Unavailable:
                     return 0;
                 default:
@@ -229,7 +226,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
         }
     }
 
-    public int getMinimumSuccessCountForStatusUpgrade(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus status, boolean isReadOnlyRequest) {
+    public int getMinimumSuccessCountForStatusUpgrade(LocationHealthStatus status, boolean isReadOnlyRequest) {
         if (isReadOnlyRequest) {
             switch (status) {
                 case HealthyTentative:
@@ -243,9 +240,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
                         throw new IllegalArgumentException("Unsupported tolerance setting " + this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance());
                     }
                 case Unavailable:
-                    return 0;
                 case HealthyWithFailures:
-                    return 0;
                 case Healthy:
                     return 0;
                 default:
@@ -264,9 +259,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
                         throw new IllegalArgumentException("Unsupported tolerance setting " + this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance());
                     }
                 case Unavailable:
-                    return 0;
                 case HealthyWithFailures:
-                    return 0;
                 case Healthy:
                     return 0;
                 default:
@@ -277,5 +270,9 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
 
     public boolean isPartitionLevelCircuitBreakerEnabled() {
         return this.partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled();
+    }
+
+    public PartitionLevelCircuitBreakerConfig getPartitionLevelCircuitBreakerConfig() {
+        return partitionLevelCircuitBreakerConfig;
     }
 }

@@ -5,7 +5,9 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
 import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificContext;
+import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
@@ -35,6 +37,25 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     @BeforeClass(groups = {"unit"})
     public void beforeClass() {
         this.globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
+
+        Mockito
+            .when(this.globalEndpointManagerMock.getRegionName(LocationEastUsEndpointToLocationPair.getKey(), OperationType.Read))
+            .thenReturn(LocationEastUsEndpointToLocationPair.getRight());
+        Mockito
+            .when(this.globalEndpointManagerMock.getRegionName(LocationEastUsEndpointToLocationPair.getKey(), OperationType.Create))
+            .thenReturn(LocationEastUsEndpointToLocationPair.getRight());
+        Mockito
+            .when(this.globalEndpointManagerMock.getRegionName(LocationCentralUsEndpointToLocationPair.getKey(), OperationType.Read))
+            .thenReturn(LocationCentralUsEndpointToLocationPair.getRight());
+        Mockito
+            .when(this.globalEndpointManagerMock.getRegionName(LocationCentralUsEndpointToLocationPair.getKey(), OperationType.Create))
+            .thenReturn(LocationCentralUsEndpointToLocationPair.getRight());
+        Mockito
+            .when(this.globalEndpointManagerMock.getRegionName(LocationEastUs2EndpointToLocationPair.getKey(), OperationType.Read))
+            .thenReturn(LocationEastUs2EndpointToLocationPair.getRight());
+        Mockito
+            .when(this.globalEndpointManagerMock.getRegionName(LocationEastUs2EndpointToLocationPair.getKey(), OperationType.Create))
+            .thenReturn(LocationEastUs2EndpointToLocationPair.getRight());
     }
 
     @DataProvider(name = "partitionLevelCircuitBreakerConfigs")
@@ -105,7 +126,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             .handleLocationSuccessForPartitionKeyRange(request);
 
         Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(
+            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new PartitionKeyRangeWrapper(
                 new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
 
         LocationSpecificContext locationSpecificContext
@@ -154,7 +175,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
 
         Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(
+            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
 
         LocationSpecificContext locationSpecificContext
@@ -200,7 +221,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
-            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyWithFailures, readOperationTrue);
+            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
@@ -208,7 +229,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         }
 
         Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(
+            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
 
         LocationSpecificContext locationSpecificContext
@@ -256,7 +277,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
-            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyWithFailures, readOperationTrue);
+            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
@@ -264,7 +285,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         }
 
         Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(
+            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
 
         LocationSpecificContext locationSpecificContext
@@ -323,7 +344,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
-            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyWithFailures, readOperationTrue);
+            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
@@ -331,7 +352,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         }
 
         Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(
+            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
 
         LocationSpecificContext locationSpecificContext
@@ -348,7 +369,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         locationSpecificContext = locationToLocationSpecificContextMappings.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        int successCountToUpgradeStatus = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getMinimumSuccessCountForStatusUpgrade(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyTentative, readOperationTrue);
+        int successCountToUpgradeStatus = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getMinimumSuccessCountForStatusUpgrade(LocationHealthStatus.HealthyTentative, readOperationTrue);
 
         for (int i = 1; i <= successCountToUpgradeStatus + 1; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
@@ -397,7 +418,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
 
         int exceptionCountToHandle
-            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyWithFailures, readOperationTrue);
+            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
@@ -405,7 +426,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         }
 
         Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(
+            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
 
         LocationSpecificContext locationSpecificContext
@@ -420,7 +441,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             throw new RuntimeException(ex);
         }
 
-        exceptionCountToHandle = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyTentative, readOperationTrue);
+        exceptionCountToHandle = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyTentative, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
@@ -472,7 +493,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         int exceptionCountToHandle
             = globalPartitionEndpointManagerForCircuitBreaker
             .getConsecutiveExceptionBasedCircuitBreaker()
-            .getAllowedExceptionCountToMaintainStatus(GlobalPartitionEndpointManagerForCircuitBreaker.LocationHealthStatus.HealthyWithFailures, readOperationTrue);
+            .getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
 
         for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
             globalPartitionEndpointManagerForCircuitBreaker
@@ -484,7 +505,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         }
 
         Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(
+            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
 
         assertThat(locationToLocationSpecificContextMappings).isNull();

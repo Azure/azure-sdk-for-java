@@ -4,16 +4,17 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
 
 import java.util.Map;
 
 public class FeedOperationContextForCircuitBreaker {
 
-    private final Map<GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper, GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess;
+    private final Map<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess;
     private final boolean isThresholdBasedAvailabilityStrategyEnabled;
     private boolean isRequestHedged;
 
-    public FeedOperationContextForCircuitBreaker(Map<GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper, GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess, boolean isThresholdBasedAvailabilityStrategyEnabled) {
+    public FeedOperationContextForCircuitBreaker(Map<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess, boolean isThresholdBasedAvailabilityStrategyEnabled) {
         this.partitionKeyRangesWithSuccess = partitionKeyRangesWithSuccess;
         this.isThresholdBasedAvailabilityStrategyEnabled = isThresholdBasedAvailabilityStrategyEnabled;
     }
@@ -27,14 +28,12 @@ public class FeedOperationContextForCircuitBreaker {
     }
 
     public void addPartitionKeyRangeWithSuccess(PartitionKeyRange partitionKeyRange, String resourceId) {
-        GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper partitionKeyRangeWrapper
-            = new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(partitionKeyRange, resourceId);
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resourceId);
         this.partitionKeyRangesWithSuccess.put(partitionKeyRangeWrapper, partitionKeyRangeWrapper);
     }
 
     public boolean hasPartitionKeyRangeSeenSuccess(PartitionKeyRange partitionKeyRange, String resourceId) {
-        GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper partitionKeyRangeWrapper
-            = new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(partitionKeyRange, resourceId);
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resourceId);
         return this.partitionKeyRangesWithSuccess.containsKey(partitionKeyRangeWrapper);
     }
 
