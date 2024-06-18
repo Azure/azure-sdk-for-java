@@ -356,7 +356,7 @@ public final class EventGridReceiverClientBuilder implements HttpTrait<EventGrid
      *
      * @return an instance of EventGridReceiverAsyncClient.
      */
-    @Generated
+
     public EventGridReceiverAsyncClient buildAsyncClient() {
         if (CoreUtils.isNullOrEmpty(topicName)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Topic name cannot be null or empty"));
@@ -372,7 +372,7 @@ public final class EventGridReceiverClientBuilder implements HttpTrait<EventGrid
      *
      * @return an instance of EventGridReceiverClient.
      */
-    @Generated
+
     public EventGridReceiverClient buildClient() {
         if (CoreUtils.isNullOrEmpty(topicName)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Topic name cannot be null or empty"));

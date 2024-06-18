@@ -35,7 +35,6 @@ public final class EventGridSenderAsyncClient {
      * @param serviceClient the service client implementation.
      * @param topicName the topicName for this client.
      */
-    @Generated
     EventGridSenderAsyncClient(EventGridSenderClientImpl serviceClient, String topicName) {
         this.serviceClient = serviceClient;
         this.topicName = topicName;
