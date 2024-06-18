@@ -24,26 +24,32 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
     private final ClientLogger logger = new ClientLogger(EventRoutesTestBase.class);
 
     static final String EVENT_ROUTE_ENDPOINT_NAME = "someEventHubEndpoint";
-    static final String FILTER = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
+    static final String FILTER
+        = "$eventType = 'DigitalTwinTelemetryMessages' or $eventType = 'DigitalTwinLifecycleNotification'";
 
     @Test
-    public abstract void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws InterruptedException;
+    public abstract void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
     @Test
-    public abstract void getEventRouteThrowsIfEventRouteDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void getEventRouteThrowsIfEventRouteDoesNotExist(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion);
 
     @Test
-    public abstract void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion);
 
     @Test
-    public abstract void listEventRoutesPaginationWorks(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+    public abstract void listEventRoutesPaginationWorks(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion);
 
-    // Azure Digital Twins instances have a low cap on the number of event routes allowed, so we need to delete the existing
-    // event routes before each test to make sure that we can add an event route in each test.
+    // Azure Digital Twins instances have a low cap on the number of event routes allowed, so we need to delete the
+    // existing event routes before each test to make sure that we can add an event route in each test.
     @BeforeEach
     public void removeAllEventRoutes() {
-        // Using sync client for simplicity. This function isn't testing the clients, so no need to use both sync and async clients for cleanup
-        DigitalTwinsClient client = getDigitalTwinsClientBuilder(null, DigitalTwinsServiceVersion.getLatest()).buildClient();
+        // Using sync client for simplicity. This function isn't testing the clients, so no need to use both sync and
+        // async clients for cleanup
+        DigitalTwinsClient client = getDigitalTwinsClientBuilder(null,
+            DigitalTwinsServiceVersion.getLatest()).buildClient();
         PagedIterable<DigitalTwinsEventRoute> listedEventRoutes = client.listEventRoutes();
         List<String> currentEventRouteIds = new ArrayList<>();
         for (DigitalTwinsEventRoute listedEventRoute : listedEventRoutes) {
@@ -56,9 +62,10 @@ public abstract class EventRoutesTestBase extends DigitalTwinsTestBase {
         }
     }
 
-    // Note that only service returned eventRoute instances have their Id field set. When a user builds an instance locally,
-    // there is no way to assign an Id to it.
-    protected static void assertEventRoutesEqual(DigitalTwinsEventRoute expected, String expectedId, DigitalTwinsEventRoute actual) {
+    // Note that only service returned eventRoute instances have their Id field set. When a user builds an instance
+    // locally, there is no way to assign an ID to it.
+    protected static void assertEventRoutesEqual(DigitalTwinsEventRoute expected, String expectedId,
+        DigitalTwinsEventRoute actual) {
         assertEquals(expectedId, actual.getEventRouteId());
         assertEquals(expected.getEndpointName(), actual.getEndpointName());
         assertEquals(expected.getFilter(), actual.getFilter());

@@ -4,8 +4,11 @@
 package com.azure.digitaltwins.core.implementation.converters;
 
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * A converter between {@link com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData} and
@@ -26,9 +29,11 @@ public final class DigitalTwinsModelDataConverter {
         String modelStringValue = null;
 
         if (input.getModel() != null) {
-            try {
-                modelStringValue = new ObjectMapper().writeValueAsString(input.getModel());
-            } catch (JsonProcessingException e) {
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeUntyped(input.getModel()).flush();
+                modelStringValue = outputStream.toString();
+            } catch (IOException e) {
                 throw new IllegalArgumentException("ModelData does not have a valid model definition.", e);
             }
         }

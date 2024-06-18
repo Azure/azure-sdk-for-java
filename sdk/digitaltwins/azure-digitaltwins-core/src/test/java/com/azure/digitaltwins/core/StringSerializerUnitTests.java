@@ -16,7 +16,8 @@ import java.io.StringWriter;
 
 public class StringSerializerUnitTests {
 
-    private static DigitalTwinsStringSerializer serializer = new DigitalTwinsStringSerializer(String.class, new ObjectMapper());
+    private static final DigitalTwinsStringSerializer SERIALIZER
+        = new DigitalTwinsStringSerializer(String.class, new ObjectMapper());
 
     @ParameterizedTest
     @CsvSource(value = {
@@ -39,7 +40,7 @@ public class StringSerializerUnitTests {
         StringWriter writer = new StringWriter();
         JsonGenerator generator = new JsonFactory().createGenerator(writer);
 
-        serializer.serialize(token, generator, null);
+        SERIALIZER.serialize(token, generator, null);
         generator.flush();
         generator.close();
 

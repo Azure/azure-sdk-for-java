@@ -11,11 +11,10 @@ import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.DigitalTwinsResponse;
 import com.azure.digitaltwins.core.models.UpdateComponentOptions;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.opentest4j.AssertionFailedError;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,17 +33,22 @@ public class ComponentsTests extends ComponentsTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+    public void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+        throws IOException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         String wifiComponentName = "wifiAccessPoint";
 
-        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
-        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
-        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(
+            TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX,
+            client, getRandomIntegerStringGenerator());
+        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, client,
+            getRandomIntegerStringGenerator());
 
         String modelWifi = TestAssetsHelper.getWifiModelPayload(wifiModelId);
-        String modelRoomWithWifi = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, wifiComponentName);
+        String modelRoomWithWifi = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId,
+            wifiComponentName);
         String roomWithWifiTwin = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, wifiComponentName);
 
         List<String> modelsList = new ArrayList<>(Arrays.asList(modelWifi, modelRoomWithWifi));
@@ -54,37 +58,31 @@ public class ComponentsTests extends ComponentsTestBase {
             client.createModels(modelsList);
             logger.info("Created models successfully");
 
-            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
+            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomWithWifiTwinId,
+                deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin::fromJson), BasicDigitalTwin.class);
 
             logger.info("Created {} twin successfully", createdTwin.getId());
             assertEquals(createdTwin.getId(), roomWithWifiTwinId);
 
             // Get the component
-            Response<String> getComponentResponse = client.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, String.class, Context.NONE);
+            Response<String> getComponentResponse = client.getComponentWithResponse(roomWithWifiTwinId,
+                wifiComponentName, String.class, Context.NONE);
             assertEquals(getComponentResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
 
             // Update component
-            DigitalTwinsResponse<Void> updateComponentResponse = client.updateComponentWithResponse(
-                roomWithWifiTwinId,
-                wifiComponentName,
-                TestAssetsHelper.getWifiComponentUpdatePayload(),
-                null,
-                Context.NONE);
+            DigitalTwinsResponse<Void> updateComponentResponse = client.updateComponentWithResponse(roomWithWifiTwinId,
+                wifiComponentName, TestAssetsHelper.getWifiComponentUpdatePayload(), null, Context.NONE);
 
             assertEquals(updateComponentResponse.getStatusCode(), HttpURLConnection.HTTP_NO_CONTENT);
         } finally {
-            try {
-                if (roomWithWifiTwinId != null) {
-                    client.deleteDigitalTwin(roomWithWifiTwinId);
-                }
-                if (roomWithWifiModelId != null) {
-                    client.deleteModel(roomWithWifiModelId);
-                }
-                if (wifiModelId != null) {
-                    client.deleteModel(wifiModelId);
-                }
-            } catch (Exception ex) {
-                throw new AssertionFailedError("Test celanup failed", ex);
+            if (roomWithWifiTwinId != null) {
+                client.deleteDigitalTwin(roomWithWifiTwinId);
+            }
+            if (roomWithWifiModelId != null) {
+                client.deleteModel(roomWithWifiModelId);
+            }
+            if (wifiModelId != null) {
+                client.deleteModel(wifiModelId);
             }
         }
     }
@@ -92,17 +90,22 @@ public class ComponentsTests extends ComponentsTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void patchComponentFailsIfETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+    public void patchComponentFailsIfETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+        throws IOException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         String wifiComponentName = "wifiAccessPoint";
 
-        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
-        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
-        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(
+            TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX,
+            client, getRandomIntegerStringGenerator());
+        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, client,
+            getRandomIntegerStringGenerator());
 
         String modelWifi = TestAssetsHelper.getWifiModelPayload(wifiModelId);
-        String modelRoomWithWifi = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, wifiComponentName);
+        String modelRoomWithWifi = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId,
+            wifiComponentName);
         String roomWithWifiTwin = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, wifiComponentName);
 
         List<String> modelsList = new ArrayList<>(Arrays.asList(modelWifi, modelRoomWithWifi));
@@ -112,7 +115,8 @@ public class ComponentsTests extends ComponentsTestBase {
             client.createModels(modelsList);
             logger.info("Created models successfully");
 
-            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
+            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomWithWifiTwinId,
+                deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin::fromJson), BasicDigitalTwin.class);
 
             logger.info("Created {} twin successfully", createdTwin.getId());
 
@@ -120,36 +124,22 @@ public class ComponentsTests extends ComponentsTestBase {
             String etagBeforeUpdate = createdTwin.getETag();
 
             // Update component
-            client.updateComponentWithResponse(
-                roomWithWifiTwinId,
-                wifiComponentName,
-                TestAssetsHelper.getWifiComponentUpdatePayload(),
-                null,
-                Context.NONE);
+            client.updateComponentWithResponse(roomWithWifiTwinId, wifiComponentName,
+                TestAssetsHelper.getWifiComponentUpdatePayload(), null, Context.NONE);
 
             // Update component, but with the out of date ETag
-            assertRestException(
-                () -> client.updateComponentWithResponse(
-                    roomWithWifiTwinId,
-                    wifiComponentName,
-                    TestAssetsHelper.getWifiComponentSecondUpdatePayload(),
-                    new UpdateComponentOptions().setIfMatch(etagBeforeUpdate),
-                    Context.NONE),
-                HTTP_PRECON_FAILED
-            );
+            assertRestException(() -> client.updateComponentWithResponse(roomWithWifiTwinId, wifiComponentName,
+                TestAssetsHelper.getWifiComponentSecondUpdatePayload(),
+                new UpdateComponentOptions().setIfMatch(etagBeforeUpdate), Context.NONE), HTTP_PRECON_FAILED);
         } finally {
-            try {
-                if (roomWithWifiTwinId != null) {
-                    client.deleteDigitalTwin(roomWithWifiTwinId);
-                }
-                if (roomWithWifiModelId != null) {
-                    client.deleteModel(roomWithWifiModelId);
-                }
-                if (wifiModelId != null) {
-                    client.deleteModel(wifiModelId);
-                }
-            } catch (Exception ex) {
-                throw new AssertionFailedError("Test celanup failed", ex);
+            if (roomWithWifiTwinId != null) {
+                client.deleteDigitalTwin(roomWithWifiTwinId);
+            }
+            if (roomWithWifiModelId != null) {
+                client.deleteModel(roomWithWifiModelId);
+            }
+            if (wifiModelId != null) {
+                client.deleteModel(wifiModelId);
             }
         }
     }
@@ -157,17 +147,22 @@ public class ComponentsTests extends ComponentsTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void patchComponentSucceedsIfETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException {
+    public void patchComponentSucceedsIfETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+        throws IOException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         String wifiComponentName = "wifiAccessPoint";
 
-        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
-        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
-        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomWithWifiTwinId = UniqueIdHelper.getUniqueDigitalTwinId(
+            TestAssetDefaults.ROOM_WITH_WIFI_TWIN_ID_PREFIX, client, getRandomIntegerStringGenerator());
+        String roomWithWifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_WITH_WIFI_MODEL_ID_PREFIX,
+            client, getRandomIntegerStringGenerator());
+        String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, client,
+            getRandomIntegerStringGenerator());
 
         String modelWifi = TestAssetsHelper.getWifiModelPayload(wifiModelId);
-        String modelRoomWithWifi = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, wifiComponentName);
+        String modelRoomWithWifi = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId,
+            wifiComponentName);
         String roomWithWifiTwin = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, wifiComponentName);
 
         List<String> modelsList = new ArrayList<>(Arrays.asList(modelWifi, modelRoomWithWifi));
@@ -177,29 +172,23 @@ public class ComponentsTests extends ComponentsTestBase {
             client.createModels(modelsList);
             logger.info("Created models successfully");
 
-            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomWithWifiTwinId, deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin.class), BasicDigitalTwin.class);
+            BasicDigitalTwin createdTwin = client.createOrReplaceDigitalTwin(roomWithWifiTwinId,
+                deserializeJsonString(roomWithWifiTwin, BasicDigitalTwin::fromJson), BasicDigitalTwin.class);
 
             logger.info("Created {} twin successfully", createdTwin.getId());
 
             // Update component
-            DigitalTwinsResponse<Void> updateComponentResponse = client.updateComponentWithResponse(
-                roomWithWifiTwinId,
-                wifiComponentName,
-                TestAssetsHelper.getWifiComponentUpdatePayload(),
-                null,
-                Context.NONE);
+            DigitalTwinsResponse<Void> updateComponentResponse = client.updateComponentWithResponse(roomWithWifiTwinId,
+                wifiComponentName, TestAssetsHelper.getWifiComponentUpdatePayload(), null, Context.NONE);
 
             // A component does not have its own etag. It uses the digital twin's etag instead for concurrency protection
             String upToDateETag = updateComponentResponse.getDeserializedHeaders().getETag();
 
             // Update component, but with the out of date ETag
             try {
-                client.updateComponentWithResponse(
-                    roomWithWifiTwinId,
-                    wifiComponentName,
+                client.updateComponentWithResponse(roomWithWifiTwinId, wifiComponentName,
                     TestAssetsHelper.getWifiComponentSecondUpdatePayload(),
-                    new UpdateComponentOptions().setIfMatch(upToDateETag),
-                    Context.NONE);
+                    new UpdateComponentOptions().setIfMatch(upToDateETag), Context.NONE);
             } catch (ErrorResponseException ex) {
                 if (ex.getResponse().getStatusCode() == HTTP_PRECON_FAILED) {
                     fail("Should not have gotten a 412 error since ifNoneMatch header was not sent", ex);
@@ -208,18 +197,14 @@ public class ComponentsTests extends ComponentsTestBase {
                 }
             }
         } finally {
-            try {
-                if (roomWithWifiTwinId != null) {
-                    client.deleteDigitalTwin(roomWithWifiTwinId);
-                }
-                if (roomWithWifiModelId != null) {
-                    client.deleteModel(roomWithWifiModelId);
-                }
-                if (wifiModelId != null) {
-                    client.deleteModel(wifiModelId);
-                }
-            } catch (Exception ex) {
-                throw new AssertionFailedError("Test cleanup failed", ex);
+            if (roomWithWifiTwinId != null) {
+                client.deleteDigitalTwin(roomWithWifiTwinId);
+            }
+            if (roomWithWifiModelId != null) {
+                client.deleteModel(roomWithWifiModelId);
+            }
+            if (wifiModelId != null) {
+                client.deleteModel(wifiModelId);
             }
         }
     }
