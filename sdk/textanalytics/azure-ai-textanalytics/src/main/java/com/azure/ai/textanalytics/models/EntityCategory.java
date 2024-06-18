@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
