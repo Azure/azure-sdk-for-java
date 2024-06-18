@@ -5,26 +5,36 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a country. */
+/**
+ * Represents a country.
+ */
 @Immutable
-public final class PhoneNumberCountry {
+public final class PhoneNumberCountry implements JsonSerializable<PhoneNumberCountry> {
     /*
      * Represents the name of the country.
      */
-    @JsonProperty(value = "localizedName", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String localizedName;
 
     /*
      * Represents the abbreviated name of the country.
      */
-    @JsonProperty(value = "countryCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String countryCode;
 
     /**
+     * Creates an instance of PhoneNumberCountry class.
+     */
+    public PhoneNumberCountry() {
+    }
+
+    /**
      * Get the localizedName property: Represents the name of the country.
-     *
+     * 
      * @return the localizedName value.
      */
     public String getLocalizedName() {
@@ -33,10 +43,48 @@ public final class PhoneNumberCountry {
 
     /**
      * Get the countryCode property: Represents the abbreviated name of the country.
-     *
+     * 
      * @return the countryCode value.
      */
     public String getCountryCode() {
         return this.countryCode;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PhoneNumberCountry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PhoneNumberCountry if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PhoneNumberCountry.
+     */
+    public static PhoneNumberCountry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PhoneNumberCountry deserializedPhoneNumberCountry = new PhoneNumberCountry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("localizedName".equals(fieldName)) {
+                    deserializedPhoneNumberCountry.localizedName = reader.getString();
+                } else if ("countryCode".equals(fieldName)) {
+                    deserializedPhoneNumberCountry.countryCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPhoneNumberCountry;
+        });
     }
 }
