@@ -3,20 +3,16 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
 public final class SequenceAckMessage extends WebPubSubMessage {
 
     private static final String TYPE = "sequenceAck";
 
     private long sequenceId = 0L;
 
-    @JsonGetter
     public String getType() {
         return TYPE;
     }
 
-    @JsonGetter
     public long getSequenceId() {
         return sequenceId;
     }

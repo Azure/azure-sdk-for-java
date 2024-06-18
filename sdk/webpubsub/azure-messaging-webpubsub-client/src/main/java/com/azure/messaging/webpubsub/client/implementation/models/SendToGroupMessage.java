@@ -3,8 +3,6 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-
 public final class SendToGroupMessage extends WebPubSubMessageAck {
 
     private static final String TYPE = "sendToGroup";
@@ -17,12 +15,10 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
 
     private Object data;
 
-    @JsonGetter
     public String getType() {
         return TYPE;
     }
 
-    @JsonGetter
     public String getGroup() {
         return group;
     }
@@ -38,7 +34,6 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
         return this;
     }
 
-    @JsonGetter
     public Boolean isNoEcho() {
         return noEcho;
     }
@@ -48,7 +43,6 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
         return this;
     }
 
-    @JsonGetter
     public String getDataType() {
         return dataType;
     }
@@ -58,7 +52,6 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
         return this;
     }
 
-    @JsonGetter
     public Object getData() {
         return data;
     }

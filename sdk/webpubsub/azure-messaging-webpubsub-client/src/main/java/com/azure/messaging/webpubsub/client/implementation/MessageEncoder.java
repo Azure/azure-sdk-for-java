@@ -15,6 +15,7 @@ import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Base64;
+import java.util.function.Consumer;
 
 public final class MessageEncoder {
 
@@ -35,41 +36,26 @@ public final class MessageEncoder {
     }
 
     private static void updateDataForType(SendToGroupMessage message) {
-        String dataType = message.getDataType();
-        if (WebPubSubDataFormat.BINARY.toString().equals(dataType)
-            || WebPubSubDataFormat.PROTOBUF.toString().equals(dataType)) {
-            Object data = message.getData();
-            if (data instanceof BinaryData) {
-                BinaryData content = (BinaryData) data;
-                data = Base64.getEncoder().encodeToString(content.toBytes());
-                message.setData(data);
-            }
-        } else if (WebPubSubDataFormat.TEXT.toString().equals(dataType)) {
-            Object data = message.getData();
-            if (data instanceof BinaryData) {
-                BinaryData content = (BinaryData) data;
-                data = content.toString();
-                message.setData(data);
-            }
-        }
+        updateDataForType(message.getDataType(), message.getData(), message::setData);
     }
 
     private static void updateDataForType(SendEventMessage message) {
-        String dataType = message.getDataType();
+        updateDataForType(message.getDataType(), message.getData(), message::setData);
+    }
+
+    private static void updateDataForType(String dataType, Object data, Consumer<Object> dataUpdater) {
         if (WebPubSubDataFormat.BINARY.toString().equals(dataType)
             || WebPubSubDataFormat.PROTOBUF.toString().equals(dataType)) {
-            Object data = message.getData();
             if (data instanceof BinaryData) {
                 BinaryData content = (BinaryData) data;
                 data = Base64.getEncoder().encodeToString(content.toBytes());
-                message.setData(data);
+                dataUpdater.accept(data);
             }
         } else if (WebPubSubDataFormat.TEXT.toString().equals(dataType)) {
-            Object data = message.getData();
             if (data instanceof BinaryData) {
                 BinaryData content = (BinaryData) data;
                 data = content.toString();
-                message.setData(data);
+                dataUpdater.accept(data);
             }
         }
     }

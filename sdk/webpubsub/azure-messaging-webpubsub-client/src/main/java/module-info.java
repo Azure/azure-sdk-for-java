@@ -14,8 +14,7 @@ module com.azure.messaging.webpubsub.client {
     exports com.azure.messaging.webpubsub.client;
     exports com.azure.messaging.webpubsub.client.models;
 
-    opens com.azure.messaging.webpubsub.client.implementation.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.messaging.webpubsub.client.implementation to com.azure.core;
+    opens com.azure.messaging.webpubsub.client.implementation.models to com.azure.core;
 }
 

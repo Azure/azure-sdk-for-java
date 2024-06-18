@@ -29,7 +29,7 @@ public final class GroupDataMessage {
      * @param sequenceId the sequenceId.
      */
     public GroupDataMessage(String group, WebPubSubDataFormat dataType, BinaryData data, String fromUserId,
-                            Long sequenceId) {
+        Long sequenceId) {
         this.data = data;
         this.dataType = dataType;
         this.fromUserId = fromUserId;

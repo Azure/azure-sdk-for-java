@@ -3,19 +3,18 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
+import com.azure.core.annotation.Fluent;
 
+@Fluent
 public final class JoinGroupMessage extends WebPubSubMessageAck {
 
     private static final String TYPE = "joinGroup";
     private String group;
 
-    @JsonGetter
     public String getType() {
         return TYPE;
     }
 
-    @JsonGetter
     public String getGroup() {
         return group;
     }

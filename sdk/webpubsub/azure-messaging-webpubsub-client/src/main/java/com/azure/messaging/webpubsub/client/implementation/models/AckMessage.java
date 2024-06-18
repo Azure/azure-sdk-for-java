@@ -3,15 +3,15 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.messaging.webpubsub.client.models.AckResponseError;
 
+@Fluent
 public final class AckMessage extends WebPubSubMessage {
-
     private long ackId;
     private boolean success;
 
     private AckResponseError error;
-
 
     public long getAckId() {
         return ackId;

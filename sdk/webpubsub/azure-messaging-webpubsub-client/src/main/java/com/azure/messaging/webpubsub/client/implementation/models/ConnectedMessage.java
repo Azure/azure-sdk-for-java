@@ -3,6 +3,9 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
+import com.azure.core.annotation.Fluent;
+
+@Fluent
 public final class ConnectedMessage extends WebPubSubMessage {
 
     private final String connectionId;

@@ -4,40 +4,39 @@
 package com.azure.messaging.webpubsub.client.implementation;
 
 import com.azure.core.util.BinaryData;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.azure.messaging.webpubsub.client.implementation.models.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ConnectedMessage;
-import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
-import com.azure.messaging.webpubsub.client.models.AckResponseError;
 import com.azure.messaging.webpubsub.client.implementation.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
+import com.azure.messaging.webpubsub.client.models.AckResponseError;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Base64;
+import java.util.Map;
+import java.util.Objects;
 
 public final class MessageDecoder {
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     public Object decode(String s) {
         Object msg = null;
-        try (JsonParser parser = OBJECT_MAPPER.createParser(s)) {
-            JsonNode jsonNode = OBJECT_MAPPER.readTree(parser);
-            switch (jsonNode.get("type").asText()) {
+        try (JsonReader jsonReader = JsonProviders.createReader(s)) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+            switch (jsonTree.get("type").toString()) {
                 case "message":
-                    msg = parseMessage(jsonNode);
+                    msg = parseMessage(jsonTree);
                     break;
 
                 case "ack":
-                    msg = parseAck(jsonNode);
+                    msg = parseAck(jsonTree);
                     break;
 
                 case "system":
-                    msg = parseSystem(jsonNode);
+                    msg = parseSystem(jsonTree);
                     break;
 
                 default:
@@ -49,83 +48,67 @@ public final class MessageDecoder {
         }
     }
 
-    private static Object parseMessage(JsonNode jsonNode) throws IOException {
-        Object msg = null;
-        WebPubSubDataFormat type = WebPubSubDataFormat.fromString(jsonNode.get("dataType").asText());
-        BinaryData data = parseData(jsonNode, type);
-        switch (jsonNode.get("from").asText()) {
+    private static Object parseMessage(Map<String, Object> jsonTree) {
+        WebPubSubDataFormat type = WebPubSubDataFormat.fromString(jsonTree.get("dataType").toString());
+        BinaryData data = parseData(jsonTree, type);
+        switch (jsonTree.get("from").toString()) {
             case "group":
-                msg = new GroupDataMessage(
-                    jsonNode.get("group").asText(),
-                    type,
-                    data,
-                    jsonNode.has("fromUserId") ? jsonNode.get("fromUserId").asText() : null,
-                    jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null
-                );
-                break;
+                return new GroupDataMessage(jsonTree.get("group").toString(), type, data,
+                    Objects.toString(jsonTree.get("fromUserId"), null), parseLong(jsonTree.get("sequenceId")));
 
             case "server":
-                msg = new ServerDataMessage(
-                    type,
-                    data,
-                    jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null
-                );
-                break;
+                return new ServerDataMessage(type, data, parseLong(jsonTree.get("sequenceId")));
 
             default:
-                break;
+                return null;
         }
-        return msg;
     }
 
-    private static Object parseSystem(JsonNode jsonNode) throws IOException {
-        Object msg = null;
-        switch (jsonNode.get("event").asText()) {
-            case "connected":
-                ConnectedMessage connectedMessage = new ConnectedMessage(jsonNode.get("connectionId").asText());
+    private static Long parseLong(Object sequenceId) {
+        if (sequenceId == null) {
+            return null;
+        } else if (sequenceId instanceof Number) {
+            return ((Number) sequenceId).longValue();
+        } else {
+            return Long.parseLong(sequenceId.toString());
+        }
+    }
 
-                if (jsonNode.has("reconnectionToken")) {
-                    connectedMessage.setReconnectionToken(jsonNode.get("reconnectionToken").asText());
-                }
-                if (jsonNode.has("userId")) {
-                    connectedMessage.setUserId(jsonNode.get("userId").asText());
-                }
-                msg = connectedMessage;
-                break;
+    private static Object parseSystem(Map<String, Object> jsonTree) throws IOException {
+        switch (jsonTree.get("event").toString()) {
+            case "connected":
+                return new ConnectedMessage(jsonTree.get("connectionId").toString())
+                    .setReconnectionToken(Objects.toString(jsonTree.get("reconnectionToken"), null))
+                    .setUserId(Objects.toString(jsonTree.get("userId"), null));
 
             case "disconnected":
-                msg = new DisconnectedMessage(jsonNode.get("message").asText());
-                break;
+                return new DisconnectedMessage(jsonTree.get("message").toString());
 
             default:
-                break;
+                return null;
         }
-        return msg;
     }
 
-    private static WebPubSubMessage parseAck(JsonNode jsonNode) {
-        AckMessage ackMessage = new AckMessage()
-            .setAckId(jsonNode.get("ackId").asLong())
-            .setSuccess(jsonNode.get("success").asBoolean());
-        if (jsonNode.has("error")) {
-            JsonNode errorNode = jsonNode.get("error");
-            ackMessage.setError(new AckResponseError(
-                errorNode.get("name").asText(),
-                errorNode.get("message").asText()));
+    private static WebPubSubMessage parseAck(Map<String, Object> jsonTree) {
+        AckMessage ackMessage = new AckMessage().setAckId(parseLong(jsonTree.get("ackId")))
+            .setSuccess(Boolean.parseBoolean(jsonTree.get("success").toString()));
+        Object error = jsonTree.get("error");
+        if (error instanceof Map<?, ?>) {
+            Map<?, ?> errorMap = (Map<?, ?>) error;
+            ackMessage.setError(
+                new AckResponseError(errorMap.get("name").toString(), errorMap.get("message").toString()));
         }
         return ackMessage;
     }
 
-    private static BinaryData parseData(JsonNode jsonNode, WebPubSubDataFormat type) throws IOException {
-        BinaryData data = null;
+    private static BinaryData parseData(Map<String, Object> jsonTree, WebPubSubDataFormat type) {
         if (type == WebPubSubDataFormat.TEXT) {
-            data = BinaryData.fromString(jsonNode.get("data").asText());
+            return BinaryData.fromString(jsonTree.get("data").toString());
         } else if (type == WebPubSubDataFormat.BINARY || type == WebPubSubDataFormat.PROTOBUF) {
-            data = BinaryData.fromBytes(jsonNode.get("data").binaryValue());
+            return BinaryData.fromBytes(Base64.getDecoder().decode(jsonTree.get("data").toString()));
         } else {
             // WebPubSubDataType.JSON
-            data = BinaryData.fromObject(jsonNode.get("data"));
+            return BinaryData.fromObject(jsonTree.get("data"));
         }
-        return data;
     }
 }

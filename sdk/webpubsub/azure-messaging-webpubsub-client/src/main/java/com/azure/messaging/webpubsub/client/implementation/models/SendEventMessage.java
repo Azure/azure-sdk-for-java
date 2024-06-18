@@ -3,8 +3,9 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
+import com.azure.core.annotation.Fluent;
 
+@Fluent
 public final class SendEventMessage extends WebPubSubMessageAck {
 
     private static final String TYPE = "event";
@@ -15,12 +16,11 @@ public final class SendEventMessage extends WebPubSubMessageAck {
 
     private Object data;
 
-    @JsonGetter
+
     public String getType() {
         return TYPE;
     }
 
-    @JsonGetter
     public String getEvent() {
         return event;
     }
@@ -30,13 +30,11 @@ public final class SendEventMessage extends WebPubSubMessageAck {
         return this;
     }
 
-    @Override
     public SendEventMessage setAckId(Long ackId) {
         super.setAckId(ackId);
         return this;
     }
 
-    @JsonGetter
     public String getDataType() {
         return dataType;
     }
@@ -46,7 +44,6 @@ public final class SendEventMessage extends WebPubSubMessageAck {
         return this;
     }
 
-    @JsonGetter
     public Object getData() {
         return data;
     }
