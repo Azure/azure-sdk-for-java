@@ -6,6 +6,8 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.RequestOptions;
 
+import java.util.Set;
+
 /**
  * Encapsulates options that can be specified for an patch operation used in Bulk execution. It can be passed while
  * creating bulk patch request using {@link CosmosBulkOperations}.
@@ -16,6 +18,7 @@ public final class CosmosBulkPatchItemRequestOptions {
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
     private String filterPredicate;
+    private Set<String> customCorrelatedIds;
 
     /**
      * Constructor
@@ -123,12 +126,24 @@ public final class CosmosBulkPatchItemRequestOptions {
         return this;
     }
 
+    /**
+     * Sets the custom ids.
+     *
+     * @param customCorrelatedIds the custom ids.
+     * @return the current request options.
+     */
+    public CosmosBulkPatchItemRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.customCorrelatedIds = customCorrelatedIds;
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(this.ifMatchETag);
         requestOptions.setIfNoneMatchETag(this.ifNoneMatchETag);
         requestOptions.setContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled);
         requestOptions.setFilterPredicate(this.filterPredicate);
+        requestOptions.setCustomCorrelatedIds(this.customCorrelatedIds);
         return requestOptions;
     }
 }

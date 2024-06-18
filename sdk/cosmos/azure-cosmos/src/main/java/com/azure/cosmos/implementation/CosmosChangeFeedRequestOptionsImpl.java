@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInte
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosCommonRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.util.Beta;
@@ -18,6 +19,7 @@ import com.azure.cosmos.util.Beta;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
@@ -39,6 +41,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private CosmosDiagnosticsThresholds thresholds;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
+    private Set<String> customCorrelatedIds;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl topBeCloned) {
         this.continuationState = topBeCloned.continuationState;
@@ -262,6 +265,15 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
             HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
     }
 
+    public void setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.customCorrelatedIds = customCorrelatedIds;
+    }
+
+    @Override
+    public Set<String> getCustomCorrelatedIds() {
+        return this.customCorrelatedIds;
+    }
+
     @Override
     public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
         this.maxItemCount = overrideOption(cosmosCommonRequestOptions.getMaxItemCount(), this.maxItemCount);
@@ -269,6 +281,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.excludeRegions = overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
         this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
         this.thresholds = overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        this.customCorrelatedIds = overrideOption(cosmosCommonRequestOptions.getCustomCorrelatedIds(), this.customCorrelatedIds);
     }
 
 }

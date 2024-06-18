@@ -31,6 +31,7 @@ import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
+import com.azure.cosmos.implementation.batch.ItemBulkOperation;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -1264,6 +1265,8 @@ public class CosmosAsyncContainer {
         RequestOptions requestOptionsInternal = ModelBridgeInternal.toRequestOptions(requestOptions);
         applyPolicies(OperationType.Batch, ResourceType.Document, requestOptionsInternal, this.batchSpanName);
 
+        // getOperationsInternal call applyPolicies on each operation
+
         return withContext(context -> {
             final BatchExecutor executor = new BatchExecutor(this, cosmosBatch, requestOptionsInternal);
             final Mono<CosmosBatchResponse> responseMono = executor.executeAsync();
@@ -1344,18 +1347,20 @@ public class CosmosAsyncContainer {
         if (bulkOptions == null) {
             bulkOptions = new CosmosBulkExecutionOptions();
         }
-        /*
-        operations.map(operation -> {
-            ((ItemBulkOperation) operation).getRequestOptions();
+
+        Flux<CosmosItemOperation> modifiedOperations = operations.map(operation -> {
+            RequestOptions requestOptionsInternal = ((ItemBulkOperation<?,?>) operation).getRequestOptions();
+            applyPolicies(OperationType.Batch, ResourceType.Document, requestOptionsInternal, this.bulkSpanName);
+
             return operation;
-        });*/
+        });
 
         CosmosBulkExecutionOptions clonedOptions = bulkExecutionOptionsAccessor.clone(bulkOptions);
         CosmosBulkExecutionOptionsImpl requestOptionsInternal = bulkExecutionOptionsAccessor.getImpl(clonedOptions);
         applyPolicies(OperationType.Batch, ResourceType.Document, requestOptionsInternal, this.bulkSpanName);
 
         return Flux.deferContextual(context -> {
-            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, clonedOptions);
+            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, modifiedOperations, clonedOptions);
 
             return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
         });

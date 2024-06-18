@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Specifies the options associated with read many operation
@@ -308,6 +309,17 @@ public final class CosmosReadManyRequestOptions {
     public CosmosReadManyRequestOptions setCustomItemSerializer(CosmosItemSerializer customItemSerializer) {
         this.actualRequestOptions.setCustomItemSerializer(customItemSerializer);
 
+        return this;
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param customCorrelatedIds the custom ids.
+     * @return the current request options.
+     */
+    public CosmosReadManyRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.actualRequestOptions.setCustomCorrelatedIds(customCorrelatedIds);
         return this;
     }
 

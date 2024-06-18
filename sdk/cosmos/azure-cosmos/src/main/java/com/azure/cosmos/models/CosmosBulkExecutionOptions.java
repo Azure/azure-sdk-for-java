@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -320,6 +321,17 @@ public final class CosmosBulkExecutionOptions {
 
     BulkExecutorDiagnosticsTracker getDiagnosticsTracker() {
         return this.actualRequestOptions.getDiagnosticsTracker();
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param customCorrelatedIds the custom ids.
+     * @return the current request options.
+     */
+    public CosmosBulkExecutionOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.actualRequestOptions.setCustomCorrelatedIds(customCorrelatedIds);
+        return this;
     }
 
     CosmosBulkExecutionOptionsImpl getImpl() {

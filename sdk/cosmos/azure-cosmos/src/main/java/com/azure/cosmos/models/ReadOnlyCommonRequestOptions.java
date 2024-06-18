@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Getters for the common request options for operations in CosmosDB.
@@ -178,4 +179,11 @@ public interface ReadOnlyCommonRequestOptions {
         LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the query name.");
         return null;
     }
+
+    /**
+     * Gets the custom correlated ids.
+     *
+     * @return the custom correlated ids.
+     */
+    Set<String> getCustomCorrelatedIds();
 }

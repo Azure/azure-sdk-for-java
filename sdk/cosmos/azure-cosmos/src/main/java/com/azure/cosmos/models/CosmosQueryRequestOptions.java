@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Specifies the options associated with query methods (enumeration operations)
@@ -526,6 +527,17 @@ public class CosmosQueryRequestOptions {
 
     CosmosQueryRequestOptions setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         this.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
+        return this;
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param customCorrelatedIds the custom ids.
+     * @return the current request options.
+     */
+    public CosmosQueryRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.actualRequestOptions.setCustomCorrelatedIds(customCorrelatedIds);
         return this;
     }
 

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -58,6 +59,7 @@ public class RequestOptions implements OverridableRequestOptions {
     private CosmosItemSerializer effectiveItemSerializer;
 
     private final AtomicReference<Runnable> markE2ETimeoutInRequestContextCallbackHook;
+    private Set<String> customCorrelatedIds;
 
     public RequestOptions() {
 
@@ -550,6 +552,15 @@ public class RequestOptions implements OverridableRequestOptions {
         return this.markE2ETimeoutInRequestContextCallbackHook;
     }
 
+    public void setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.customCorrelatedIds = customCorrelatedIds;
+    }
+
+    @Override
+    public Set<String> getCustomCorrelatedIds() {
+        return customCorrelatedIds;
+    }
+
     @Override
     public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
         this.consistencyLevel = overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
@@ -560,6 +571,7 @@ public class RequestOptions implements OverridableRequestOptions {
         this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
         this.thresholds = overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
         this.endToEndOperationLatencyConfig = overrideOption(cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.endToEndOperationLatencyConfig);
+        this.customCorrelatedIds = overrideOption(cosmosCommonRequestOptions.getCustomCorrelatedIds(), this.customCorrelatedIds);
     }
 
     public CosmosItemSerializer getEffectiveItemSerializer() {

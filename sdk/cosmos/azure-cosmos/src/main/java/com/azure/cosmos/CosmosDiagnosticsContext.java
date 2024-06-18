@@ -915,6 +915,10 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
+    public Set<String> getCustomCorrelatedActivityId() {
+        return this.requestOptions.getCustomCorrelatedIds();
+    }
+
     OverridableRequestOptions getRequestOptions() {
         return this.requestOptions;
     }

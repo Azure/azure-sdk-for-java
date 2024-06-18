@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -42,6 +43,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
+    private Set<String> customCorrelatedIds;
 
     /**
      * Instantiates a new query request options.
@@ -456,6 +458,15 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         return (T)this;
     }
 
+    public void setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.customCorrelatedIds = customCorrelatedIds;
+    }
+
+    @Override
+    public Set<String> getCustomCorrelatedIds() {
+        return this.customCorrelatedIds;
+    }
+
     @Override
     public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
         this.consistencyLevel = overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
@@ -467,6 +478,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         this.indexMetricsEnabled = overrideOption(cosmosCommonRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
         this.queryMetricsEnabled = overrideOption(cosmosCommonRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
         this.responseContinuationTokenLimitInKb = overrideOption(cosmosCommonRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
+        this.customCorrelatedIds = overrideOption(cosmosCommonRequestOptions.getCustomCorrelatedIds(), this.customCorrelatedIds);
     }
 
     public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {

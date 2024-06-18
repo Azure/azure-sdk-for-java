@@ -5,6 +5,8 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.RequestOptions;
 
+import java.util.Set;
+
 /**
  * Encapsulates options that can be specified for an operation within a {@link CosmosBatch}.
  */
@@ -13,6 +15,7 @@ public final class CosmosBatchItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private String throughputControlGroupName;
+    private Set<String> customCorrelatedIds;
 
     /**
      * Creates a new {@link CosmosBatchItemRequestOptions} object.
@@ -64,11 +67,22 @@ public final class CosmosBatchItemRequestOptions {
      * Sets the throughput control group name.
      *
      * @param throughputControlGroupName the throughput control group name.
-     * @return the CosmosBulkExecutionOptions.
+     * @return the CosmosBatchItemRequestOptions.
      */
     public CosmosBatchItemRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
 
+        return this;
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param customCorrelatedIds the custom ids.
+     * @return the CosmosBatchItemRequestOptions.
+     */
+    public CosmosBatchItemRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.customCorrelatedIds = customCorrelatedIds;
         return this;
     }
 
@@ -77,6 +91,7 @@ public final class CosmosBatchItemRequestOptions {
         requestOptions.setIfMatchETag(this.ifMatchETag);
         requestOptions.setIfNoneMatchETag(this.ifNoneMatchETag);
         requestOptions.setThroughputControlGroupName(throughputControlGroupName);
+        requestOptions.setCustomCorrelatedIds(this.customCorrelatedIds);
         return requestOptions;
     }
 }

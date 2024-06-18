@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * The common request options for operations. This class should be used with the addPolicy method in the {@link com.azure.cosmos.CosmosClientBuilder}
@@ -32,6 +33,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
     private Boolean indexMetricsEnabled;
     private Integer maxPrefetchPageCount;
     private String queryName;
+    private Set<String> customCorrelatedIds;
 
     /**
      * Sets the CosmosEndToEndLatencyPolicyConfig.
@@ -220,6 +222,17 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
         return this;
     }
 
+    /**
+     * Sets the CustomCorrelatedIds.
+     *
+     * @param customCorrelatedIds the CustomCorrelatedIds.
+     * @return current CosmosCommonRequestOptions.
+     */
+    public CosmosCommonRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.customCorrelatedIds = customCorrelatedIds;
+        return this;
+    }
+
     @Override
     public Integer getMaxItemCount() {
         return this.maxItemCount;
@@ -307,5 +320,10 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
     @Override
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
         return this.endToEndOperationLatencyConfig;
+    }
+
+    @Override
+    public Set<String> getCustomCorrelatedIds() {
+        return this.customCorrelatedIds;
     }
 }

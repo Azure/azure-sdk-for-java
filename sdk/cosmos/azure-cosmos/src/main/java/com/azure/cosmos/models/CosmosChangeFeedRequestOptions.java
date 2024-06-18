@@ -26,6 +26,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -516,6 +517,17 @@ public final class CosmosChangeFeedRequestOptions {
      */
     Map<String, String> getHeaders() {
         return this.actualRequestOptions.getHeaders();
+    }
+
+    /**
+     * Sets the custom ids.
+     *
+     * @param customCorrelatedIds the custom ids.
+     * @return the current request options.
+     */
+    public CosmosChangeFeedRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.actualRequestOptions.setCustomCorrelatedIds(customCorrelatedIds);
+        return this;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Encapsulates options that can be specified for a request issued to cosmos Item.
@@ -45,6 +46,7 @@ public class CosmosItemRequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
+    private Set<String> customCorrelatedIds;
 
     /**
      * copy constructor
@@ -452,6 +454,7 @@ public class CosmosItemRequestOptions {
         }
         requestOptions.setEffectiveItemSerializer(this.customSerializer);
         requestOptions.setUseTrackingIds(this.useTrackingIds);
+        requestOptions.setCustomCorrelatedIds(customCorrelatedIds);
         return requestOptions;
     }
 
@@ -560,6 +563,16 @@ public class CosmosItemRequestOptions {
         return this;
     }
 
+    /**
+     * Sets the custom ids.
+     *
+     * @param customCorrelatedIds the custom ids.
+     * @return the current request options.
+     */
+    public CosmosItemRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.customCorrelatedIds = customCorrelatedIds;
+        return this;
+    }
 
     /**
      * Gets the custom item request options

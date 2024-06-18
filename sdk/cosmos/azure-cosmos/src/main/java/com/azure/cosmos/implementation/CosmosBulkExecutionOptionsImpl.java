@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosBatchPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
 import com.azure.cosmos.models.CosmosCommonRequestOptions;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
@@ -43,6 +45,7 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
     private List<String> excludeRegions;
     private BulkExecutorDiagnosticsTracker diagnosticsTracker = null;
     private CosmosItemSerializer customSerializer;
+    private Set<String> customCorrelatedIds;
 
 
     public CosmosBulkExecutionOptionsImpl(CosmosBulkExecutionOptionsImpl toBeCloned) {
@@ -219,10 +222,20 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
         return this.diagnosticsTracker;
     }
 
+    public void setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
+        this.customCorrelatedIds = customCorrelatedIds;
+    }
+
+    @Override
+    public Set<String> getCustomCorrelatedIds() {
+        return this.customCorrelatedIds;
+    }
+
     @Override
     public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
         this.excludeRegions = overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
         this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.customCorrelatedIds = overrideOption(cosmosCommonRequestOptions.getCustomCorrelatedIds(), this.customCorrelatedIds);
     }
 
 }
