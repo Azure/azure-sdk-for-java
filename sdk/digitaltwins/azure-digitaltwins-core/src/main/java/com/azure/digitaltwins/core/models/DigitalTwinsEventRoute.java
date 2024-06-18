@@ -4,11 +4,9 @@
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-// This class exists so that the public APIs don't directly consume a generated type and so that we can avoid exposing a validate() method
-// that the generated type comes with when client side validation is enabled.
+// This class exists so that the public APIs don't directly consume a generated type and so that we can avoid exposing a
+// validate() method that the generated type comes with when client side validation is enabled.
 
 /**
  * The EventRoute model. Event routes are used for defining where published telemetry gets sent to. As an example, an
@@ -19,28 +17,25 @@ public final class DigitalTwinsEventRoute {
     /*
      * The id of the event route.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the endpoint this event route is bound to.
      */
-    @JsonProperty(value = "endpointName", required = true)
-    private String endpointName;
+    private final String endpointName;
 
     /*
      * An expression which describes the events which are routed to the
      * endpoint.
      */
-    @JsonProperty(value = "filter")
     private String filter;
 
     /**
      * Creates an instance of EventRoute class.
+     *
      * @param endpointName the name of the endpoint that this event route connects to.
      */
-    @JsonCreator
-    public DigitalTwinsEventRoute(@JsonProperty(value = "endpointName", required = true) String endpointName) {
+    public DigitalTwinsEventRoute(String endpointName) {
         this.endpointName = endpointName;
     }
 

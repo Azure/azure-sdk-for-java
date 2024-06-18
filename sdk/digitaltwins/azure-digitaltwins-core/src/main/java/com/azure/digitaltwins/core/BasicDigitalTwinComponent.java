@@ -36,12 +36,18 @@ public final class BasicDigitalTwinComponent {
      */
     @JsonIgnore
     private OffsetDateTime lastUpdatedOn;
-   
+
     /**
      * The additional contents of the model. This field will contain any contents of the digital twin that are not already defined by the other strong types of this class.
      */
     @JsonIgnore
     private final Map<String, Object> contents = new HashMap<>();
+
+    /**
+     * Creates a new instance of {@link BasicDigitalTwinComponent}.
+     */
+    public BasicDigitalTwinComponent() {
+    }
 
     /**
      * Gets the metadata about the model.
@@ -61,7 +67,7 @@ public final class BasicDigitalTwinComponent {
         this.metadata.put(key, metadata);
         return this;
     }
-    
+
     /**
      * Gets the date and time when the twin was last updated.
      * @return The date and time the twin was last updated.
@@ -96,13 +102,13 @@ public final class BasicDigitalTwinComponent {
     private void unwrapMetadata(Map<String, Object> metadata) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        
+
         String lastUpdatedOnString = (String) metadata.get(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
         if (lastUpdatedOnString != null) {
             this.lastUpdatedOn = OffsetDateTime.parse(lastUpdatedOnString);
             metadata.remove(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
         }
-        
+
         for (Entry<String, Object> metadataEntry : metadata.entrySet()) {
             this.metadata.put(metadataEntry.getKey(), mapper.convertValue(metadataEntry.getValue(), DigitalTwinPropertyMetadata.class));
         }

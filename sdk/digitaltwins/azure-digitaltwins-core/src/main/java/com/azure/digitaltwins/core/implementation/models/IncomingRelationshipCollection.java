@@ -5,39 +5,40 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A collection of incoming relationships which relate digital twins together. */
+/**
+ * A collection of incoming relationships which relate digital twins together.
+ */
 @Fluent
-public final class IncomingRelationshipCollection {
+public final class IncomingRelationshipCollection implements JsonSerializable<IncomingRelationshipCollection> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value", required = true)
-    private List<IncomingRelationship> value;
+    private final List<IncomingRelationship> value;
 
     /*
      * A URI to retrieve the next page of objects.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
      * Creates an instance of IncomingRelationshipCollection class.
-     *
+     * 
      * @param value the value value to set.
      */
-    @JsonCreator
-    public IncomingRelationshipCollection(
-            @JsonProperty(value = "value", required = true) List<IncomingRelationship> value) {
+    public IncomingRelationshipCollection(List<IncomingRelationship> value) {
         this.value = value;
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<IncomingRelationship> getValue() {
@@ -46,7 +47,7 @@ public final class IncomingRelationshipCollection {
 
     /**
      * Get the nextLink property: A URI to retrieve the next page of objects.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -55,7 +56,7 @@ public final class IncomingRelationshipCollection {
 
     /**
      * Set the nextLink property: A URI to retrieve the next page of objects.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the IncomingRelationshipCollection object itself.
      */
@@ -65,16 +66,51 @@ public final class IncomingRelationshipCollection {
     }
 
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
-    public void validate() {
-        if (getValue() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property value in model IncomingRelationshipCollection");
-        } else {
-            getValue().forEach(e -> e.validate());
-        }
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncomingRelationshipCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncomingRelationshipCollection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IncomingRelationshipCollection.
+     */
+    public static IncomingRelationshipCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean valueFound = false;
+            List<IncomingRelationship> value = null;
+            String nextLink = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    value = reader.readArray(reader1 -> IncomingRelationship.fromJson(reader1));
+                    valueFound = true;
+                } else if ("nextLink".equals(fieldName)) {
+                    nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (valueFound) {
+                IncomingRelationshipCollection deserializedIncomingRelationshipCollection
+                    = new IncomingRelationshipCollection(value);
+                deserializedIncomingRelationshipCollection.nextLink = nextLink;
+
+                return deserializedIncomingRelationshipCollection;
+            }
+            throw new IllegalStateException("Missing required property: value");
+        });
     }
 }

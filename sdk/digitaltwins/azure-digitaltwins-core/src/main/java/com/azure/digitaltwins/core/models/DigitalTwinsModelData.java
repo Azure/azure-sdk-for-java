@@ -4,7 +4,6 @@
 package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -16,43 +15,35 @@ import java.util.Map;
 public final class DigitalTwinsModelData {
 
     /*
-     * A language map that contains the localized display names as specified in
-     * the model definition.
+     * A language map that contains the localized display names as specified in the model definition.
      */
-    @JsonProperty(value = "displayName")
-    private Map<String, String> displayName;
+    private final Map<String, String> displayName;
 
     /*
-     * A language map that contains the localized descriptions as specified in
-     * the model definition.
+     * A language map that contains the localized descriptions as specified in the model definition.
      */
-    @JsonProperty(value = "description")
-    private Map<String, String> description;
+    private final Map<String, String> description;
 
     /*
      * The id of the model as specified in the model definition.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
      * The time the model was uploaded to the service.
      */
-    @JsonProperty(value = "uploadTime")
-    private OffsetDateTime uploadTime;
+    private final OffsetDateTime uploadTime;
 
     /*
-     * Indicates if the model is decommissioned. Decommissioned models cannot
-     * be referenced by newly created digital twins.
+     * Indicates if the model is decommissioned. Decommissioned models cannot be referenced by newly created digital
+     * twins.
      */
-    @JsonProperty(value = "decommissioned")
-    private boolean decommissioned;
+    private final boolean decommissioned;
 
     /*
      * The model definition that conforms to Digital Twins Definition Language (DTDL) v2.
      */
-    @JsonProperty(value = "model")
-    private String dtdlModel;
+    private final String dtdlModel;
 
     /**
      * Construct a new DigitalTwinsModelData instance. This class should only be constructed internally since the
@@ -65,12 +56,8 @@ public final class DigitalTwinsModelData {
      * @param uploadedOn The time when this model was uploaded.
      * @param decommissioned If this model has been decommissioned.
      */
-    public DigitalTwinsModelData(String modelId,
-                                 String dtdlModel,
-                                 Map<String, String> displayName,
-                                 Map<String, String> description,
-                                 OffsetDateTime uploadedOn,
-                                 boolean decommissioned) {
+    public DigitalTwinsModelData(String modelId, String dtdlModel, Map<String, String> displayName,
+        Map<String, String> description, OffsetDateTime uploadedOn, boolean decommissioned) {
         this.displayName = displayName;
         this.description = description;
         this.id = modelId;

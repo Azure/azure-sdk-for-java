@@ -5,33 +5,36 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameter group. */
+/**
+ * Parameter group.
+ */
 @Fluent
 public final class DigitalTwinsAddRelationshipOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
-    @JsonProperty(value = "traceparent")
     private String traceparent;
 
     /*
-     * Provides vendor-specific trace identification information and is a
-     * companion to traceparent.
+     * Provides vendor-specific trace identification information and is a companion to traceparent.
      */
-    @JsonProperty(value = "tracestate")
     private String tracestate;
 
     /*
      * Only perform the operation if the entity does not already exist.
      */
-    @JsonProperty(value = "If-None-Match")
     private String ifNoneMatch;
 
     /**
+     * Creates an instance of DigitalTwinsAddRelationshipOptions class.
+     */
+    public DigitalTwinsAddRelationshipOptions() {
+    }
+
+    /**
      * Get the traceparent property: Identifies the request in a distributed tracing system.
-     *
+     * 
      * @return the traceparent value.
      */
     public String getTraceparent() {
@@ -40,7 +43,7 @@ public final class DigitalTwinsAddRelationshipOptions {
 
     /**
      * Set the traceparent property: Identifies the request in a distributed tracing system.
-     *
+     * 
      * @param traceparent the traceparent value to set.
      * @return the DigitalTwinsAddRelationshipOptions object itself.
      */
@@ -52,7 +55,7 @@ public final class DigitalTwinsAddRelationshipOptions {
     /**
      * Get the tracestate property: Provides vendor-specific trace identification information and is a companion to
      * traceparent.
-     *
+     * 
      * @return the tracestate value.
      */
     public String getTracestate() {
@@ -62,7 +65,7 @@ public final class DigitalTwinsAddRelationshipOptions {
     /**
      * Set the tracestate property: Provides vendor-specific trace identification information and is a companion to
      * traceparent.
-     *
+     * 
      * @param tracestate the tracestate value to set.
      * @return the DigitalTwinsAddRelationshipOptions object itself.
      */
@@ -73,7 +76,7 @@ public final class DigitalTwinsAddRelationshipOptions {
 
     /**
      * Get the ifNoneMatch property: Only perform the operation if the entity does not already exist.
-     *
+     * 
      * @return the ifNoneMatch value.
      */
     public String getIfNoneMatch() {
@@ -82,7 +85,7 @@ public final class DigitalTwinsAddRelationshipOptions {
 
     /**
      * Set the ifNoneMatch property: Only perform the operation if the entity does not already exist.
-     *
+     * 
      * @param ifNoneMatch the ifNoneMatch value to set.
      * @return the DigitalTwinsAddRelationshipOptions object itself.
      */
@@ -90,11 +93,4 @@ public final class DigitalTwinsAddRelationshipOptions {
         this.ifNoneMatch = ifNoneMatch;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

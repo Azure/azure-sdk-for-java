@@ -46,18 +46,13 @@ public class ComponentSyncSamples {
 
         SamplesArguments parsedArguments = new SamplesArguments(args);
 
-        client = new DigitalTwinsClientBuilder()
-            .credential(
-                new ClientSecretCredentialBuilder()
-                    .tenantId(parsedArguments.getTenantId())
+        client = new DigitalTwinsClientBuilder().credential(
+                new ClientSecretCredentialBuilder().tenantId(parsedArguments.getTenantId())
                     .clientId(parsedArguments.getClientId())
                     .clientSecret(parsedArguments.getClientSecret())
-                    .build()
-            )
+                    .build())
             .endpoint(parsedArguments.getDigitalTwinEndpoint())
-            .httpLogOptions(
-                new HttpLogOptions()
-                    .setLogLevel(parsedArguments.getHttpLogDetailLevel()))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(parsedArguments.getHttpLogDetailLevel()))
             .buildClient();
 
         // This mapper gets used to deserialize a digital twin that has a date time within a property metadata, so it
@@ -75,22 +70,24 @@ public class ComponentSyncSamples {
         // For the purpose of this example we will create temporary models using a random model Ids.
         // We have to make sure these model Ids are unique within the DT instance.
 
-        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_COMPONENT_MODEL_PREFIX, client, randomIntegerStringGenerator);
-        String modelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_MODEL_PREFIX, client, randomIntegerStringGenerator);
-        String basicDigitalTwinId = UniqueIdHelper.getUniqueDigitalTwinId(SamplesConstants.TEMPORARY_TWIN_PREFIX, client, randomIntegerStringGenerator);
+        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_COMPONENT_MODEL_PREFIX,
+            client, randomIntegerStringGenerator);
+        String modelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_MODEL_PREFIX, client,
+            randomIntegerStringGenerator);
+        String basicDigitalTwinId = UniqueIdHelper.getUniqueDigitalTwinId(SamplesConstants.TEMPORARY_TWIN_PREFIX,
+            client, randomIntegerStringGenerator);
 
-        String newComponentModelPayload = SamplesConstants.TEMPORARY_COMPONENT_MODEL_PAYLOAD
-            .replace(SamplesConstants.COMPONENT_ID, componentModelId);
+        String newComponentModelPayload = SamplesConstants.TEMPORARY_COMPONENT_MODEL_PAYLOAD.replace(
+            SamplesConstants.COMPONENT_ID, componentModelId);
 
-        String newModelPayload = SamplesConstants.TEMPORARY_MODEL_WITH_COMPONENT_PAYLOAD
-            .replace(SamplesConstants.MODEL_ID, modelId)
-            .replace(SamplesConstants.COMPONENT_ID, componentModelId);
+        String newModelPayload = SamplesConstants.TEMPORARY_MODEL_WITH_COMPONENT_PAYLOAD.replace(
+            SamplesConstants.MODEL_ID, modelId).replace(SamplesConstants.COMPONENT_ID, componentModelId);
 
         List<String> modelsList = new ArrayList<>(Arrays.asList(newComponentModelPayload, newModelPayload));
 
         ConsoleLogger.printHeader("Create Models");
         // We now create all the models (including components)
-        Iterable<DigitalTwinsModelData> modelList =  client.createModels(modelsList);
+        Iterable<DigitalTwinsModelData> modelList = client.createModels(modelsList);
 
         for (DigitalTwinsModelData model : modelList) {
             ConsoleLogger.print("Created model: " + model.getModelId());
@@ -98,43 +95,39 @@ public class ComponentSyncSamples {
 
         ConsoleLogger.printHeader("Create digital twin with components");
         // Create digital twin with component payload using the BasicDigitalTwin serialization helper.
-        BasicDigitalTwin basicTwin = new BasicDigitalTwin(basicDigitalTwinId)
-            .setMetadata(
-                new BasicDigitalTwinMetadata()
-                    .setModelId(modelId)
-                    .addPropertyMetadata(
-                        "Prop2",
-                        new DigitalTwinPropertyMetadata()
-                            .setSourceTime(OffsetDateTime.now(Clock.systemUTC())))
-            )
+        BasicDigitalTwin basicTwin = new BasicDigitalTwin(basicDigitalTwinId).setMetadata(
+                new BasicDigitalTwinMetadata().setModelId(modelId)
+                    .addPropertyMetadata("Prop2",
+                        new DigitalTwinPropertyMetadata().setSourceTime(OffsetDateTime.now(Clock.systemUTC()))))
             .addToContents("Prop1", "Value1")
             .addToContents("Prop2", 987)
-            .addToContents(
-                "Component1",
-                new BasicDigitalTwinComponent()
-                    .addToContents("ComponentProp1", "Component value 1")
+            .addToContents("Component1",
+                new BasicDigitalTwinComponent().addToContents("ComponentProp1", "Component value 1")
                     .addToContents("ComponentProp2", 123)
-                    .addMetadata(
-                        "ComponentProp2",
-                        new DigitalTwinPropertyMetadata()
-                            .setSourceTime(OffsetDateTime.now(Clock.systemUTC())))
-            );
+                    .addMetadata("ComponentProp2",
+                        new DigitalTwinPropertyMetadata().setSourceTime(OffsetDateTime.now(Clock.systemUTC()))));
 
-        BasicDigitalTwin basicTwinResponse = client.createOrReplaceDigitalTwin(basicDigitalTwinId, basicTwin, BasicDigitalTwin.class);
+        BasicDigitalTwin basicTwinResponse = client.createOrReplaceDigitalTwin(basicDigitalTwinId, basicTwin,
+            BasicDigitalTwin.class);
 
         ConsoleLogger.print("Created digital twin " + basicTwinResponse.getId());
 
         // You can get a digital twin in json string format and deserialize it on your own
-        Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, String.class, Context.NONE);
-        ConsoleLogger.print("Successfully retrieved digital twin as a json string \n" + getStringDigitalTwinResponse.getValue());
+        Response<String> getStringDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId,
+            String.class, Context.NONE);
+        ConsoleLogger.print(
+            "Successfully retrieved digital twin as a json string \n" + getStringDigitalTwinResponse.getValue());
 
-        BasicDigitalTwin deserializedDigitalTwin = MAPPER.readValue(getStringDigitalTwinResponse.getValue(), BasicDigitalTwin.class);
-        ConsoleLogger.print("Deserialized the string response into a BasicDigitalTwin with Id: " + deserializedDigitalTwin.getId());
+        BasicDigitalTwin deserializedDigitalTwin = MAPPER.readValue(getStringDigitalTwinResponse.getValue(),
+            BasicDigitalTwin.class);
+        ConsoleLogger.print(
+            "Deserialized the string response into a BasicDigitalTwin with Id: " + deserializedDigitalTwin.getId());
 
         // You can also get a digital twin using the built in deserializer into a BasicDigitalTwin.
         // It works well for basic stuff, but as you can see it gets more difficult when delving into
         // more complex properties, like components.
-        Response<BasicDigitalTwin> basicDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId, BasicDigitalTwin.class, Context.NONE);
+        Response<BasicDigitalTwin> basicDigitalTwinResponse = client.getDigitalTwinWithResponse(basicDigitalTwinId,
+            BasicDigitalTwin.class, Context.NONE);
 
         if (basicDigitalTwinResponse.getStatusCode() == HttpsURLConnection.HTTP_OK) {
 
@@ -144,14 +137,16 @@ public class ComponentSyncSamples {
 
             HashMap component1 = MAPPER.readValue(component1RawText, HashMap.class);
 
-            ConsoleLogger.print("Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: " + basicDigitalTwin.getId() + ":\n\t"
-                + "ETag: " + basicDigitalTwin.getETag() + "\n\t"
-                + "Last Updated: " + basicDigitalTwin.getLastUpdatedOn() + "\n\t"
-                + "Prop1: " + basicDigitalTwin.getContents().get("Prop1") + "\n\t"
-                + "Prop2: " + basicDigitalTwin.getContents().get("Prop2") + " with sourceTime " + basicDigitalTwin.getMetadata().getPropertyMetadata().get("Prop2").getSourceTime() + "\n\t"
-                + "ComponentProp1: " + component1.get("ComponentProp1") + "\n\t"
-                + "ComponentProp2: " + component1.get("ComponentProp2") + "\n\t"
-            );
+            ConsoleLogger.print(
+                "Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: "
+                    + basicDigitalTwin.getId() + ":\n\t" + "ETag: " + basicDigitalTwin.getETag() + "\n\t"
+                    + "Last Updated: " + basicDigitalTwin.getLastUpdatedOn() + "\n\t" + "Prop1: "
+                    + basicDigitalTwin.getContents().get("Prop1") + "\n\t" + "Prop2: " + basicDigitalTwin.getContents()
+                    .get("Prop2") + " with sourceTime " + basicDigitalTwin.getMetadata()
+                    .getPropertyMetadata()
+                    .get("Prop2")
+                    .getSourceTime() + "\n\t" + "ComponentProp1: " + component1.get("ComponentProp1") + "\n\t"
+                    + "ComponentProp2: " + component1.get("ComponentProp2") + "\n\t");
         }
 
         ConsoleLogger.printHeader("Update Component");
@@ -165,12 +160,14 @@ public class ComponentSyncSamples {
         ConsoleLogger.print("Updated component for digital twin: " + basicDigitalTwinId);
 
         ConsoleLogger.printHeader("Get Component");
-        BasicDigitalTwinComponent getComponentResponse = client.getComponent(basicDigitalTwinId, "Component1", BasicDigitalTwinComponent.class);
+        BasicDigitalTwinComponent getComponentResponse = client.getComponent(basicDigitalTwinId, "Component1",
+            BasicDigitalTwinComponent.class);
 
         ConsoleLogger.print("Retrieved component for digital twin " + basicDigitalTwinId + " :");
         for (String key : getComponentResponse.getContents().keySet()) {
             ConsoleLogger.print("\t" + key + " : " + getComponentResponse.getContents().get(key));
-            ConsoleLogger.print("\t\tLast updated on: " + getComponentResponse.getMetadata().get(key).getLastUpdatedOn());
+            ConsoleLogger.print(
+                "\t\tLast updated on: " + getComponentResponse.getMetadata().get(key).getLastUpdatedOn());
         }
 
         // Clean up

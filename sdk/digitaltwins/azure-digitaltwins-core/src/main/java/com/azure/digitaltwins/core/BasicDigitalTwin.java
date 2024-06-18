@@ -20,13 +20,12 @@ import java.util.Map;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- * An optional, helper class for deserializing a digital twin.
- * Only properties with non-null values are included.
+ * An optional, helper class for deserializing a digital twin. Only properties with non-null values are included.
  * <p>
  * Note that this class uses {@link JsonProperty} from the Jackson serialization library. Because of this, this type
- * will only work if the default json serializer is used by the digital twins client or if the custom json
- * serializer uses Jackson as well. In order to use a different json library, a new BasicDigitalTwin class must
- * be constructed and have its json properties tagged by the annotation used by that json library.
+ * will only work if the default json serializer is used by the digital twins client or if the custom json serializer
+ * uses Jackson as well. In order to use a different json library, a new BasicDigitalTwin class must be constructed and
+ * have its json properties tagged by the annotation used by that json library.
  */
 @Fluent
 @JsonInclude(Include.NON_NULL)
@@ -132,19 +131,19 @@ public final class BasicDigitalTwin {
         this.contents.put(key, value);
         return this;
     }
-    
+
     // Unwraps the raw metadata received from the service and extracts the "$lastUpdateTime" property.
     @JsonProperty(value = DigitalTwinsJsonPropertyNames.DIGITAL_TWIN_METADATA)
     private void unwrapMetadata(Map<String, Object> metadata) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        
+
         String lastUpdatedOnString = (String) metadata.get(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
         if (lastUpdatedOnString != null) {
             this.lastUpdatedOn = OffsetDateTime.parse(lastUpdatedOnString);
             metadata.remove(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
         }
-        
+
         this.metadata = mapper.convertValue(metadata, BasicDigitalTwinMetadata.class);
     }
 }
