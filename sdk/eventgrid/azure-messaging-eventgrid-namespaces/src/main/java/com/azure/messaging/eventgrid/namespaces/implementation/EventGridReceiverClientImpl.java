@@ -36,13 +36,13 @@ import com.azure.messaging.eventgrid.namespaces.EventGridServiceVersion;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the EventGridClient type.
+ * Initializes a new instance of the EventGridReceiverClient type.
  */
-public final class EventGridClientImpl {
+public final class EventGridReceiverClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final EventGridClientService service;
+    private final EventGridReceiverClientService service;
 
     /**
      * The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net.
@@ -101,106 +101,60 @@ public final class EventGridClientImpl {
     }
 
     /**
-     * Initializes an instance of EventGridClient client.
+     * Initializes an instance of EventGridReceiverClient client.
      * 
      * @param endpoint The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net.
      * @param serviceVersion Service version.
      */
-    public EventGridClientImpl(String endpoint, EventGridServiceVersion serviceVersion) {
+    public EventGridReceiverClientImpl(String endpoint, EventGridServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of EventGridClient client.
+     * Initializes an instance of EventGridReceiverClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net.
      * @param serviceVersion Service version.
      */
-    public EventGridClientImpl(HttpPipeline httpPipeline, String endpoint, EventGridServiceVersion serviceVersion) {
+    public EventGridReceiverClientImpl(HttpPipeline httpPipeline, String endpoint,
+        EventGridServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
-     * Initializes an instance of EventGridClient client.
+     * Initializes an instance of EventGridReceiverClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net.
      * @param serviceVersion Service version.
      */
-    public EventGridClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+    public EventGridReceiverClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
         EventGridServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.service = RestProxy.create(EventGridClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EventGridReceiverClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
-     * The interface defining all the services for EventGridClient to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for EventGridReceiverClient to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "EventGridClient")
-    public interface EventGridClientService {
-        @Post("/topics/{topicName}:publish")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> publishCloudEvent(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("application/cloudevents+json; charset=utf-8") BinaryData event, RequestOptions requestOptions,
-            Context context);
-
-        @Post("/topics/{topicName}:publish")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> publishCloudEventSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("application/cloudevents+json; charset=utf-8") BinaryData event, RequestOptions requestOptions,
-            Context context);
-
-        @Post("/topics/{topicName}:publish")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> publishCloudEvents(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("application/cloudevents-batch+json; charset=utf-8") BinaryData events,
-            RequestOptions requestOptions, Context context);
-
-        @Post("/topics/{topicName}:publish")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> publishCloudEventsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("application/cloudevents-batch+json; charset=utf-8") BinaryData events,
-            RequestOptions requestOptions, Context context);
-
+    @ServiceInterface(name = "EventGridReceiverCli")
+    public interface EventGridReceiverClientService {
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:receive")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> receiveCloudEvents(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> receive(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -211,7 +165,7 @@ public final class EventGridClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> receiveCloudEventsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> receiveSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
@@ -222,11 +176,10 @@ public final class EventGridClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> acknowledgeCloudEvents(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> acknowledge(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData acknowledgeOptions, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:acknowledge")
         @ExpectedResponses({ 200 })
@@ -234,11 +187,10 @@ public final class EventGridClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> acknowledgeCloudEventsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> acknowledgeSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData acknowledgeOptions, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release")
         @ExpectedResponses({ 200 })
@@ -246,10 +198,10 @@ public final class EventGridClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> releaseCloudEvents(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> release(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData releaseOptions, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release")
         @ExpectedResponses({ 200 })
@@ -257,10 +209,10 @@ public final class EventGridClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> releaseCloudEventsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> releaseSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData releaseOptions, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject")
         @ExpectedResponses({ 200 })
@@ -268,10 +220,10 @@ public final class EventGridClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> rejectCloudEvents(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> reject(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData rejectOptions, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
 
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject")
         @ExpectedResponses({ 200 })
@@ -279,202 +231,36 @@ public final class EventGridClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> rejectCloudEventsSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> rejectSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData rejectOptions, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+
+        @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:renewLock")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> renewLocks(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+
+        @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:renewLock")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> renewLocksSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
     }
 
     /**
-     * Publish Single Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
-     * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
-     * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
-     * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     source: String (Required)
-     *     data: Object (Optional)
-     *     data_base64: byte[] (Optional)
-     *     type: String (Required)
-     *     time: OffsetDateTime (Optional)
-     *     specversion: String (Required)
-     *     dataschema: String (Optional)
-     *     datacontenttype: String (Optional)
-     *     subject: String (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * { }
-     * }</pre>
-     * 
-     * @param topicName Topic Name.
-     * @param event Single Cloud Event being published.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the Publish operation along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> publishCloudEventWithResponseAsync(String topicName, BinaryData event,
-        RequestOptions requestOptions) {
-        final String contentType = "application/cloudevents+json; charset=utf-8";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.publishCloudEvent(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), topicName, contentType, accept, event, requestOptions, context));
-    }
-
-    /**
-     * Publish Single Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
-     * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
-     * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
-     * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     source: String (Required)
-     *     data: Object (Optional)
-     *     data_base64: byte[] (Optional)
-     *     type: String (Required)
-     *     time: OffsetDateTime (Optional)
-     *     specversion: String (Required)
-     *     dataschema: String (Optional)
-     *     datacontenttype: String (Optional)
-     *     subject: String (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * { }
-     * }</pre>
-     * 
-     * @param topicName Topic Name.
-     * @param event Single Cloud Event being published.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the Publish operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> publishCloudEventWithResponse(String topicName, BinaryData event,
-        RequestOptions requestOptions) {
-        final String contentType = "application/cloudevents+json; charset=utf-8";
-        final String accept = "application/json";
-        return service.publishCloudEventSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
-            contentType, accept, event, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Publish Batch Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
-     * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
-     * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
-     * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         id: String (Required)
-     *         source: String (Required)
-     *         data: Object (Optional)
-     *         data_base64: byte[] (Optional)
-     *         type: String (Required)
-     *         time: OffsetDateTime (Optional)
-     *         specversion: String (Required)
-     *         dataschema: String (Optional)
-     *         datacontenttype: String (Optional)
-     *         subject: String (Optional)
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * { }
-     * }</pre>
-     * 
-     * @param topicName Topic Name.
-     * @param events Array of Cloud Events being published.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the Publish operation along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> publishCloudEventsWithResponseAsync(String topicName, BinaryData events,
-        RequestOptions requestOptions) {
-        final String contentType = "application/cloudevents-batch+json; charset=utf-8";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.publishCloudEvents(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), topicName, contentType, accept, events, requestOptions, context));
-    }
-
-    /**
-     * Publish Batch Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
-     * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
-     * 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410:
-     * which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         id: String (Required)
-     *         source: String (Required)
-     *         data: Object (Optional)
-     *         data_base64: byte[] (Optional)
-     *         type: String (Required)
-     *         time: OffsetDateTime (Optional)
-     *         specversion: String (Required)
-     *         dataschema: String (Optional)
-     *         datacontenttype: String (Optional)
-     *         subject: String (Optional)
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * { }
-     * }</pre>
-     * 
-     * @param topicName Topic Name.
-     * @param events Array of Cloud Events being published.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of the Publish operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> publishCloudEventsWithResponse(String topicName, BinaryData events,
-        RequestOptions requestOptions) {
-        final String contentType = "application/cloudevents-batch+json; charset=utf-8";
-        final String accept = "application/json";
-        return service.publishCloudEventsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
-            contentType, accept, events, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Receive Batch of Cloud Events from the Event Subscription.
+     * Receive a batch of Cloud Events from a subscription.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -525,15 +311,15 @@ public final class EventGridClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> receiveCloudEventsWithResponseAsync(String topicName,
-        String eventSubscriptionName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> receiveWithResponseAsync(String topicName, String eventSubscriptionName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.receiveCloudEvents(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.receive(this.getEndpoint(),
             this.getServiceVersion().getVersion(), topicName, eventSubscriptionName, accept, requestOptions, context));
     }
 
     /**
-     * Receive Batch of Cloud Events from the Event Subscription.
+     * Receive a batch of Cloud Events from a subscription.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -583,18 +369,17 @@ public final class EventGridClientImpl {
      * @return details of the Receive operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> receiveCloudEventsWithResponse(String topicName, String eventSubscriptionName,
+    public Response<BinaryData> receiveWithResponse(String topicName, String eventSubscriptionName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.receiveCloudEventsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
+        return service.receiveSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
             eventSubscriptionName, accept, requestOptions, Context.NONE);
     }
 
     /**
-     * Acknowledge batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
-     * successfully accepted. The response body will include the set of successfully acknowledged lockTokens, along with
-     * other failed lockTokens with their corresponding error information. Successfully acknowledged events will no
-     * longer be available to any consumer.
+     * Acknowledge a batch of Cloud Events. The response will include the set of successfully acknowledged lock tokens,
+     * along with other failed lock tokens with their corresponding error information. Successfully acknowledged events
+     * will no longer be available to be received by any consumer.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -634,7 +419,7 @@ public final class EventGridClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param acknowledgeOptions AcknowledgeOptions.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -644,19 +429,18 @@ public final class EventGridClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> acknowledgeCloudEventsWithResponseAsync(String topicName,
-        String eventSubscriptionName, BinaryData acknowledgeOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> acknowledgeWithResponseAsync(String topicName, String eventSubscriptionName,
+        BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.acknowledgeCloudEvents(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                topicName, eventSubscriptionName, accept, acknowledgeOptions, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.acknowledge(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                topicName, eventSubscriptionName, accept, request, requestOptions, context));
     }
 
     /**
-     * Acknowledge batch of Cloud Events. The server responds with an HTTP 200 status code if the request is
-     * successfully accepted. The response body will include the set of successfully acknowledged lockTokens, along with
-     * other failed lockTokens with their corresponding error information. Successfully acknowledged events will no
-     * longer be available to any consumer.
+     * Acknowledge a batch of Cloud Events. The response will include the set of successfully acknowledged lock tokens,
+     * along with other failed lock tokens with their corresponding error information. Successfully acknowledged events
+     * will no longer be available to be received by any consumer.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -696,7 +480,7 @@ public final class EventGridClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param acknowledgeOptions AcknowledgeOptions.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -705,17 +489,25 @@ public final class EventGridClientImpl {
      * @return the result of the Acknowledge operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> acknowledgeCloudEventsWithResponse(String topicName, String eventSubscriptionName,
-        BinaryData acknowledgeOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> acknowledgeWithResponse(String topicName, String eventSubscriptionName,
+        BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.acknowledgeCloudEventsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
-            eventSubscriptionName, accept, acknowledgeOptions, requestOptions, Context.NONE);
+        return service.acknowledgeSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
+            eventSubscriptionName, accept, request, requestOptions, Context.NONE);
     }
 
     /**
-     * Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
-     * accepted. The response body will include the set of successfully released lockTokens, along with other failed
-     * lockTokens with their corresponding error information.
+     * Release a batch of Cloud Events. The response will include the set of successfully released lock tokens, along
+     * with other failed lock tokens with their corresponding error information. Successfully released events can be
+     * received by consumers.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>releaseDelayInSeconds</td><td>String</td><td>No</td><td>Release cloud events with the specified delay in
+     * seconds. Allowed values: "0", "10", "60", "600", "3600".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -755,7 +547,7 @@ public final class EventGridClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param releaseOptions ReleaseOptions.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -764,18 +556,26 @@ public final class EventGridClientImpl {
      * @return the result of the Release operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> releaseCloudEventsWithResponseAsync(String topicName,
-        String eventSubscriptionName, BinaryData releaseOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> releaseWithResponseAsync(String topicName, String eventSubscriptionName,
+        BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.releaseCloudEvents(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
-                eventSubscriptionName, accept, releaseOptions, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.release(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                topicName, eventSubscriptionName, accept, request, requestOptions, context));
     }
 
     /**
-     * Release batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
-     * accepted. The response body will include the set of successfully released lockTokens, along with other failed
-     * lockTokens with their corresponding error information.
+     * Release a batch of Cloud Events. The response will include the set of successfully released lock tokens, along
+     * with other failed lock tokens with their corresponding error information. Successfully released events can be
+     * received by consumers.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>releaseDelayInSeconds</td><td>String</td><td>No</td><td>Release cloud events with the specified delay in
+     * seconds. Allowed values: "0", "10", "60", "600", "3600".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -815,7 +615,7 @@ public final class EventGridClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param releaseOptions ReleaseOptions.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -824,17 +624,17 @@ public final class EventGridClientImpl {
      * @return the result of the Release operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> releaseCloudEventsWithResponse(String topicName, String eventSubscriptionName,
-        BinaryData releaseOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> releaseWithResponse(String topicName, String eventSubscriptionName, BinaryData request,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.releaseCloudEventsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
-            eventSubscriptionName, accept, releaseOptions, requestOptions, Context.NONE);
+        return service.releaseSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
+            eventSubscriptionName, accept, request, requestOptions, Context.NONE);
     }
 
     /**
-     * Reject batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
-     * accepted. The response body will include the set of successfully rejected lockTokens, along with other failed
-     * lockTokens with their corresponding error information.
+     * Reject a batch of Cloud Events. The response will include the set of successfully rejected lock tokens, along
+     * with other failed lock tokens with their corresponding error information. Successfully rejected events will be
+     * dead-lettered and can no longer be received by a consumer.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -874,7 +674,7 @@ public final class EventGridClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param rejectOptions RejectOptions.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -883,18 +683,17 @@ public final class EventGridClientImpl {
      * @return the result of the Reject operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> rejectCloudEventsWithResponseAsync(String topicName, String eventSubscriptionName,
-        BinaryData rejectOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> rejectWithResponseAsync(String topicName, String eventSubscriptionName,
+        BinaryData request, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.rejectCloudEvents(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                topicName, eventSubscriptionName, accept, rejectOptions, requestOptions, context));
+        return FluxUtil.withContext(context -> service.reject(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            topicName, eventSubscriptionName, accept, request, requestOptions, context));
     }
 
     /**
-     * Reject batch of Cloud Events. The server responds with an HTTP 200 status code if the request is successfully
-     * accepted. The response body will include the set of successfully rejected lockTokens, along with other failed
-     * lockTokens with their corresponding error information.
+     * Reject a batch of Cloud Events. The response will include the set of successfully rejected lock tokens, along
+     * with other failed lock tokens with their corresponding error information. Successfully rejected events will be
+     * dead-lettered and can no longer be received by a consumer.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -934,7 +733,7 @@ public final class EventGridClientImpl {
      * 
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
-     * @param rejectOptions RejectOptions.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -943,10 +742,130 @@ public final class EventGridClientImpl {
      * @return the result of the Reject operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> rejectCloudEventsWithResponse(String topicName, String eventSubscriptionName,
-        BinaryData rejectOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> rejectWithResponse(String topicName, String eventSubscriptionName, BinaryData request,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.rejectCloudEventsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
-            eventSubscriptionName, accept, rejectOptions, requestOptions, Context.NONE);
+        return service.rejectSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
+            eventSubscriptionName, accept, request, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Renew locks for a batch of Cloud Events. The response will include the set of successfully renewed lock tokens,
+     * along with other failed lock tokens with their corresponding error information. Successfully renewed locks will
+     * ensure that the associated event is only available to the consumer that holds the renewed lock.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     lockTokens (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     failedLockTokens (Required): [
+     *          (Required){
+     *             lockToken: String (Required)
+     *             error (Required): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Optional)
+     *                     innererror (Optional): (recursive schema, see innererror above)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     succeededLockTokens (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * @param topicName Topic Name.
+     * @param eventSubscriptionName Event Subscription Name.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of the RenewLock operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> renewLocksWithResponseAsync(String topicName, String eventSubscriptionName,
+        BinaryData request, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.renewLocks(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                topicName, eventSubscriptionName, accept, request, requestOptions, context));
+    }
+
+    /**
+     * Renew locks for a batch of Cloud Events. The response will include the set of successfully renewed lock tokens,
+     * along with other failed lock tokens with their corresponding error information. Successfully renewed locks will
+     * ensure that the associated event is only available to the consumer that holds the renewed lock.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     lockTokens (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     failedLockTokens (Required): [
+     *          (Required){
+     *             lockToken: String (Required)
+     *             error (Required): {
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *                 target: String (Optional)
+     *                 details (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 innererror (Optional): {
+     *                     code: String (Optional)
+     *                     innererror (Optional): (recursive schema, see innererror above)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     succeededLockTokens (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }</pre>
+     * 
+     * @param topicName Topic Name.
+     * @param eventSubscriptionName Event Subscription Name.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of the RenewLock operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> renewLocksWithResponse(String topicName, String eventSubscriptionName,
+        BinaryData request, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.renewLocksSync(this.getEndpoint(), this.getServiceVersion().getVersion(), topicName,
+            eventSubscriptionName, accept, request, requestOptions, Context.NONE);
     }
 }
