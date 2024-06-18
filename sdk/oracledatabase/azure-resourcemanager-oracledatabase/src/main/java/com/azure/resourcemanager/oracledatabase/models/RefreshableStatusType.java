@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * RefreshableStatusType enum.
+ * Refreshable status type enum.
  */
 public final class RefreshableStatusType extends ExpandableStringEnum<RefreshableStatusType> {
     /**
@@ -37,7 +36,6 @@ public final class RefreshableStatusType extends ExpandableStringEnum<Refreshabl
      * @param name a name to look for.
      * @return the corresponding RefreshableStatusType.
      */
-    @JsonCreator
     public static RefreshableStatusType fromString(String name) {
         return fromString(name, RefreshableStatusType.class);
     }
