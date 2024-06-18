@@ -12,7 +12,7 @@ public final class AutonomousDbVersionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDbVersionInner model = BinaryData.fromString(
-            "{\"properties\":{\"version\":\"crnwbmeh\",\"dbWorkload\":\"APEX\",\"isDefaultForFree\":false,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":false,\"isPaidEnabled\":false},\"id\":\"hspkdeemao\",\"name\":\"mx\",\"type\":\"gkvtmelmqkrhah\"}")
+            "{\"properties\":{\"version\":\"crgvxpvgom\",\"dbWorkload\":\"DW\",\"isDefaultForFree\":true,\"isDefaultForPaid\":false,\"isFreeTierEnabled\":true,\"isPaidEnabled\":false},\"id\":\"e\",\"name\":\"dawkzbali\",\"type\":\"urqhaka\"}")
             .toObject(AutonomousDbVersionInner.class);
     }
 

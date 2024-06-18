@@ -12,20 +12,20 @@ public final class DbIormConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbIormConfig model
-            = BinaryData.fromString("{\"dbName\":\"cmnyyazttb\",\"flashCacheLimit\":\"wrqpue\",\"share\":2070417133}")
+            = BinaryData.fromString("{\"dbName\":\"kde\",\"flashCacheLimit\":\"pvlopwiyighxpkd\",\"share\":1060544654}")
                 .toObject(DbIormConfig.class);
-        Assertions.assertEquals("cmnyyazttb", model.dbName());
-        Assertions.assertEquals("wrqpue", model.flashCacheLimit());
-        Assertions.assertEquals(2070417133, model.share());
+        Assertions.assertEquals("kde", model.dbName());
+        Assertions.assertEquals("pvlopwiyighxpkd", model.flashCacheLimit());
+        Assertions.assertEquals(1060544654, model.share());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DbIormConfig model
-            = new DbIormConfig().withDbName("cmnyyazttb").withFlashCacheLimit("wrqpue").withShare(2070417133);
+            = new DbIormConfig().withDbName("kde").withFlashCacheLimit("pvlopwiyighxpkd").withShare(1060544654);
         model = BinaryData.fromObject(model).toObject(DbIormConfig.class);
-        Assertions.assertEquals("cmnyyazttb", model.dbName());
-        Assertions.assertEquals("wrqpue", model.flashCacheLimit());
-        Assertions.assertEquals(2070417133, model.share());
+        Assertions.assertEquals("kde", model.dbName());
+        Assertions.assertEquals("pvlopwiyighxpkd", model.flashCacheLimit());
+        Assertions.assertEquals(1060544654, model.share());
     }
 }

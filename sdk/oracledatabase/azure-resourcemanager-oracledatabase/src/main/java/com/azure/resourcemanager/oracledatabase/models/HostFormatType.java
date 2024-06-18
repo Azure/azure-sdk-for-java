@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * HostFormatType enum.
+ * Host format type enum.
  */
 public final class HostFormatType extends ExpandableStringEnum<HostFormatType> {
     /**
@@ -37,7 +36,6 @@ public final class HostFormatType extends ExpandableStringEnum<HostFormatType> {
      * @param name a name to look for.
      * @return the corresponding HostFormatType.
      */
-    @JsonCreator
     public static HostFormatType fromString(String name) {
         return fromString(name, HostFormatType.class);
     }
