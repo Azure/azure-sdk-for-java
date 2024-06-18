@@ -48,7 +48,6 @@ public final class EventGridReceiverAsyncClient {
      * @param topicName the topicName for this client.
      * @param subscriptionName the subscriptionName for this client.
      */
-
     EventGridReceiverAsyncClient(EventGridReceiverClientImpl serviceClient, String topicName, String subscriptionName) {
         this.serviceClient = serviceClient;
         this.topicName = topicName;
