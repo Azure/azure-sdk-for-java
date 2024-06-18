@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * ProtocolType enum.
+ * Protocol type enum.
  */
 public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
     /**

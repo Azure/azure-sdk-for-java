@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AutonomousDatabaseBackupUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutonomousDatabaseBackupUpdateProperties model = BinaryData.fromString("{\"retentionPeriodInDays\":708415547}")
+        AutonomousDatabaseBackupUpdateProperties model = BinaryData.fromString("{\"retentionPeriodInDays\":510695304}")
             .toObject(AutonomousDatabaseBackupUpdateProperties.class);
-        Assertions.assertEquals(708415547, model.retentionPeriodInDays());
+        Assertions.assertEquals(510695304, model.retentionPeriodInDays());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutonomousDatabaseBackupUpdateProperties model
-            = new AutonomousDatabaseBackupUpdateProperties().withRetentionPeriodInDays(708415547);
+            = new AutonomousDatabaseBackupUpdateProperties().withRetentionPeriodInDays(510695304);
         model = BinaryData.fromObject(model).toObject(AutonomousDatabaseBackupUpdateProperties.class);
-        Assertions.assertEquals(708415547, model.retentionPeriodInDays());
+        Assertions.assertEquals(510695304, model.retentionPeriodInDays());
     }
 }

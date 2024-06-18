@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * SessionModeType enum.
+ * Session mode type enum.
  */
 public final class SessionModeType extends ExpandableStringEnum<SessionModeType> {
     /**

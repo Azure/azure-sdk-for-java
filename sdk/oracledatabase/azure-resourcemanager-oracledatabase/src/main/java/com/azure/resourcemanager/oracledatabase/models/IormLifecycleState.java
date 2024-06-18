@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * IORMLifecycleState enum.
+ * ORM lifecycle state enum.
  */
 public final class IormLifecycleState extends ExpandableStringEnum<IormLifecycleState> {
     /**

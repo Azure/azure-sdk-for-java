@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * RoleType enum.
+ * Role type enum.
  */
 public final class RoleType extends ExpandableStringEnum<RoleType> {
     /**

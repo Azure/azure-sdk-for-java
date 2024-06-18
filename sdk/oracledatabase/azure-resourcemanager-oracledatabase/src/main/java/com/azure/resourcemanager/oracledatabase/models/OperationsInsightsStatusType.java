@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * OperationsInsightsStatusType enum.
+ * Operations Insights status type enum.
  */
 public final class OperationsInsightsStatusType extends ExpandableStringEnum<OperationsInsightsStatusType> {
     /**

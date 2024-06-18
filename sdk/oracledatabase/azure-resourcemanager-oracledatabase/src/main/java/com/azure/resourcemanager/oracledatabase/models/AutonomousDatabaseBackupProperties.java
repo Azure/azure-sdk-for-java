@@ -16,14 +16,14 @@ public final class AutonomousDatabaseBackupProperties {
     /*
      * The OCID of the Autonomous Database.
      */
-    @JsonProperty(value = "autonomousDatabaseId", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private String autonomousDatabaseId;
+    @JsonProperty(value = "autonomousDatabaseOcid", access = JsonProperty.Access.WRITE_ONLY)
+    private String autonomousDatabaseOcid;
 
     /*
      * The size of the database in terabytes at the time the backup was taken.
      */
-    @JsonProperty(value = "databaseSizeInTBs", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer databaseSizeInTBs;
+    @JsonProperty(value = "databaseSizeInTbs", access = JsonProperty.Access.WRITE_ONLY)
+    private Double databaseSizeInTbs;
 
     /*
      * A valid Oracle Database version for Autonomous Database.
@@ -76,14 +76,20 @@ public final class AutonomousDatabaseBackupProperties {
     /*
      * The backup size in terabytes (TB).
      */
-    @JsonProperty(value = "sizeInTBs", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer sizeInTBs;
+    @JsonProperty(value = "sizeInTbs", access = JsonProperty.Access.WRITE_ONLY)
+    private Double sizeInTbs;
 
     /*
      * Timestamp until when the backup will be available.
      */
     @JsonProperty(value = "timeAvailableTil", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeAvailableTil;
+
+    /*
+     * The date and time the backup started.
+     */
+    @JsonProperty(value = "timeStarted", access = JsonProperty.Access.WRITE_ONLY)
+    private String timeStarted;
 
     /*
      * The date and time the backup completed.
@@ -94,8 +100,8 @@ public final class AutonomousDatabaseBackupProperties {
     /*
      * The type of backup.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private AutonomousDatabaseBackupType type;
+    @JsonProperty(value = "backupType", access = JsonProperty.Access.WRITE_ONLY)
+    private AutonomousDatabaseBackupType backupType;
 
     /*
      * Azure resource provisioning state.
@@ -110,21 +116,21 @@ public final class AutonomousDatabaseBackupProperties {
     }
 
     /**
-     * Get the autonomousDatabaseId property: The OCID of the Autonomous Database.
+     * Get the autonomousDatabaseOcid property: The OCID of the Autonomous Database.
      * 
-     * @return the autonomousDatabaseId value.
+     * @return the autonomousDatabaseOcid value.
      */
-    public String autonomousDatabaseId() {
-        return this.autonomousDatabaseId;
+    public String autonomousDatabaseOcid() {
+        return this.autonomousDatabaseOcid;
     }
 
     /**
-     * Get the databaseSizeInTBs property: The size of the database in terabytes at the time the backup was taken.
+     * Get the databaseSizeInTbs property: The size of the database in terabytes at the time the backup was taken.
      * 
-     * @return the databaseSizeInTBs value.
+     * @return the databaseSizeInTbs value.
      */
-    public Integer databaseSizeInTBs() {
-        return this.databaseSizeInTBs;
+    public Double databaseSizeInTbs() {
+        return this.databaseSizeInTbs;
     }
 
     /**
@@ -223,12 +229,12 @@ public final class AutonomousDatabaseBackupProperties {
     }
 
     /**
-     * Get the sizeInTBs property: The backup size in terabytes (TB).
+     * Get the sizeInTbs property: The backup size in terabytes (TB).
      * 
-     * @return the sizeInTBs value.
+     * @return the sizeInTbs value.
      */
-    public Integer sizeInTBs() {
-        return this.sizeInTBs;
+    public Double sizeInTbs() {
+        return this.sizeInTbs;
     }
 
     /**
@@ -241,6 +247,15 @@ public final class AutonomousDatabaseBackupProperties {
     }
 
     /**
+     * Get the timeStarted property: The date and time the backup started.
+     * 
+     * @return the timeStarted value.
+     */
+    public String timeStarted() {
+        return this.timeStarted;
+    }
+
+    /**
      * Get the timeEnded property: The date and time the backup completed.
      * 
      * @return the timeEnded value.
@@ -250,12 +265,12 @@ public final class AutonomousDatabaseBackupProperties {
     }
 
     /**
-     * Get the type property: The type of backup.
+     * Get the backupType property: The type of backup.
      * 
-     * @return the type value.
+     * @return the backupType value.
      */
-    public AutonomousDatabaseBackupType type() {
-        return this.type;
+    public AutonomousDatabaseBackupType backupType() {
+        return this.backupType;
     }
 
     /**

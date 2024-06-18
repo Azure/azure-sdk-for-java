@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * PermissionLevelType enum.
+ * Permission level type enum.
  */
 public final class PermissionLevelType extends ExpandableStringEnum<PermissionLevelType> {
     /**

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * DatabaseEditionType enum.
+ * Database edition type enum.
  */
 public final class DatabaseEditionType extends ExpandableStringEnum<DatabaseEditionType> {
     /**

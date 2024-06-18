@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * CloudVmClusterLifecycleState enum.
+ * Cloud VM Cluster lifecycle state enum.
  */
 public final class CloudVmClusterLifecycleState extends ExpandableStringEnum<CloudVmClusterLifecycleState> {
     /**

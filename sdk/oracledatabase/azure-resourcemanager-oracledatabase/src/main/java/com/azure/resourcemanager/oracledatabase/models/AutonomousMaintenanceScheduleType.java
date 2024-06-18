@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * AutonomousMaintenanceScheduleType enum.
+ * Autonomous database maintenance schedule type enum.
  */
 public final class AutonomousMaintenanceScheduleType extends ExpandableStringEnum<AutonomousMaintenanceScheduleType> {
     /**

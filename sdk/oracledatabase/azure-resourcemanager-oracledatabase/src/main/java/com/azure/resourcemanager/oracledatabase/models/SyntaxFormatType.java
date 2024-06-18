@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * SyntaxFormatType enum.
+ * Syntax format type enum.
  */
 public final class SyntaxFormatType extends ExpandableStringEnum<SyntaxFormatType> {
     /**

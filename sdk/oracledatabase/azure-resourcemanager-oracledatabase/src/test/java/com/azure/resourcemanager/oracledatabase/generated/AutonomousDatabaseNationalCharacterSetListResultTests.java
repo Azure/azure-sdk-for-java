@@ -9,27 +9,24 @@ import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabase
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseNationalCharacterSetListResult;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseNationalCharacterSetProperties;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class AutonomousDatabaseNationalCharacterSetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutonomousDatabaseNationalCharacterSetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"characterSet\":\"jzkdeslpvlopwi\"},\"id\":\"ghxpkdw\",\"name\":\"baiuebbaumny\",\"type\":\"upedeojnabckhs\"},{\"properties\":{\"characterSet\":\"xpsiebtfhvpes\"},\"id\":\"skrdqmhjj\",\"name\":\"htldwk\",\"type\":\"zxuutkncwscwsvl\"},{\"properties\":{\"characterSet\":\"togt\"},\"id\":\"upqsx\",\"name\":\"nmic\",\"type\":\"kvceoveilovnotyf\"},{\"properties\":{\"characterSet\":\"cnjbkcnxdhbt\"},\"id\":\"phywpnvj\",\"name\":\"oqnermclfpl\",\"type\":\"hoxus\"}],\"nextLink\":\"pabgyeps\"}")
+            "{\"value\":[{\"properties\":{\"characterSet\":\"udxytlmoyrx\"},\"id\":\"fudwpznt\",\"name\":\"hdzhlrqj\",\"type\":\"hckfrlhrx\"}],\"nextLink\":\"kyv\"}")
             .toObject(AutonomousDatabaseNationalCharacterSetListResult.class);
+        Assertions.assertEquals("kyv", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutonomousDatabaseNationalCharacterSetListResult model
-            = new AutonomousDatabaseNationalCharacterSetListResult().withValue(Arrays.asList(
-                new AutonomousDatabaseNationalCharacterSetInner()
-                    .withProperties(new AutonomousDatabaseNationalCharacterSetProperties()),
-                new AutonomousDatabaseNationalCharacterSetInner()
-                    .withProperties(new AutonomousDatabaseNationalCharacterSetProperties()),
-                new AutonomousDatabaseNationalCharacterSetInner()
-                    .withProperties(new AutonomousDatabaseNationalCharacterSetProperties()),
-                new AutonomousDatabaseNationalCharacterSetInner()
-                    .withProperties(new AutonomousDatabaseNationalCharacterSetProperties())));
+        AutonomousDatabaseNationalCharacterSetListResult model = new AutonomousDatabaseNationalCharacterSetListResult()
+            .withValue(Arrays.asList(new AutonomousDatabaseNationalCharacterSetInner()
+                .withProperties(new AutonomousDatabaseNationalCharacterSetProperties())))
+            .withNextLink("kyv");
         model = BinaryData.fromObject(model).toObject(AutonomousDatabaseNationalCharacterSetListResult.class);
+        Assertions.assertEquals("kyv", model.nextLink());
     }
 }

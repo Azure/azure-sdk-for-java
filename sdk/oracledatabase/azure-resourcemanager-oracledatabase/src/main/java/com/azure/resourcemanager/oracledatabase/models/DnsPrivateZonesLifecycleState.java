@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * DnsPrivateZones lifecycle state enum.
+ * DNS Private Zones lifecycle state enum.
  */
 public final class DnsPrivateZonesLifecycleState extends ExpandableStringEnum<DnsPrivateZonesLifecycleState> {
     /**

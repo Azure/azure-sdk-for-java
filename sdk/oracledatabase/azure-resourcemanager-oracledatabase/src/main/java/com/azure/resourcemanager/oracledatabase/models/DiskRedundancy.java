@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * DiskRedundancy enum.
+ * Disk redundancy enum.
  */
 public final class DiskRedundancy extends ExpandableStringEnum<DiskRedundancy> {
     /**

@@ -138,7 +138,7 @@ public final class CloudVmClusterProperties {
     /*
      * Operating system version of the image.
      */
-    @JsonProperty(value = "systemVersion", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "systemVersion")
     private String systemVersion;
 
     /*
@@ -681,6 +681,17 @@ public final class CloudVmClusterProperties {
      */
     public String systemVersion() {
         return this.systemVersion;
+    }
+
+    /**
+     * Set the systemVersion property: Operating system version of the image.
+     * 
+     * @param systemVersion the systemVersion value to set.
+     * @return the CloudVmClusterProperties object itself.
+     */
+    public CloudVmClusterProperties withSystemVersion(String systemVersion) {
+        this.systemVersion = systemVersion;
+        return this;
     }
 
     /**

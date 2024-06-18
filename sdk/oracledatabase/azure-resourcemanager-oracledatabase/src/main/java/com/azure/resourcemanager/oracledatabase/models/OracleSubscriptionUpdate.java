@@ -16,7 +16,7 @@ public final class OracleSubscriptionUpdate {
      * Details of the resource plan.
      */
     @JsonProperty(value = "plan")
-    private ResourcePlanTypeUpdate plan;
+    private PlanUpdate plan;
 
     /*
      * The updatable properties of the OracleSubscription.
@@ -35,7 +35,7 @@ public final class OracleSubscriptionUpdate {
      * 
      * @return the plan value.
      */
-    public ResourcePlanTypeUpdate plan() {
+    public PlanUpdate plan() {
         return this.plan;
     }
 
@@ -45,7 +45,7 @@ public final class OracleSubscriptionUpdate {
      * @param plan the plan value to set.
      * @return the OracleSubscriptionUpdate object itself.
      */
-    public OracleSubscriptionUpdate withPlan(ResourcePlanTypeUpdate plan) {
+    public OracleSubscriptionUpdate withPlan(PlanUpdate plan) {
         this.plan = plan;
         return this;
     }

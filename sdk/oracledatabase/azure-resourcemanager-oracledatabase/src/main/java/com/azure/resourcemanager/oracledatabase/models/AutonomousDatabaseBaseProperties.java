@@ -317,6 +317,18 @@ public class AutonomousDatabaseBaseProperties {
     private Integer inMemoryAreaInGbs;
 
     /*
+     * The date and time when the next long-term backup would be created.
+     */
+    @JsonProperty(value = "nextLongTermBackupTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime nextLongTermBackupTimestamp;
+
+    /*
+     * Details for the long-term backup schedule.
+     */
+    @JsonProperty(value = "longTermBackupSchedule")
+    private LongTermBackUpScheduleDetails longTermBackupSchedule;
+
+    /*
      * Indicates if the Autonomous Database version is a preview version.
      */
     @JsonProperty(value = "isPreview", access = JsonProperty.Access.WRITE_ONLY)
@@ -1234,6 +1246,36 @@ public class AutonomousDatabaseBaseProperties {
     }
 
     /**
+     * Get the nextLongTermBackupTimestamp property: The date and time when the next long-term backup would be created.
+     * 
+     * @return the nextLongTermBackupTimestamp value.
+     */
+    public OffsetDateTime nextLongTermBackupTimestamp() {
+        return this.nextLongTermBackupTimestamp;
+    }
+
+    /**
+     * Get the longTermBackupSchedule property: Details for the long-term backup schedule.
+     * 
+     * @return the longTermBackupSchedule value.
+     */
+    public LongTermBackUpScheduleDetails longTermBackupSchedule() {
+        return this.longTermBackupSchedule;
+    }
+
+    /**
+     * Set the longTermBackupSchedule property: Details for the long-term backup schedule.
+     * 
+     * @param longTermBackupSchedule the longTermBackupSchedule value to set.
+     * @return the AutonomousDatabaseBaseProperties object itself.
+     */
+    public AutonomousDatabaseBaseProperties
+        withLongTermBackupSchedule(LongTermBackUpScheduleDetails longTermBackupSchedule) {
+        this.longTermBackupSchedule = longTermBackupSchedule;
+        return this;
+    }
+
+    /**
      * Get the isPreview property: Indicates if the Autonomous Database version is a preview version.
      * 
      * @return the isPreview value.
@@ -1564,6 +1606,9 @@ public class AutonomousDatabaseBaseProperties {
         }
         if (connectionUrls() != null) {
             connectionUrls().validate();
+        }
+        if (longTermBackupSchedule() != null) {
+            longTermBackupSchedule().validate();
         }
     }
 }

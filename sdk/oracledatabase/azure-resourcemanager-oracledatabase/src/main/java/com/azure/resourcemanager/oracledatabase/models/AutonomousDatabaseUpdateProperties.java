@@ -110,6 +110,12 @@ public final class AutonomousDatabaseUpdateProperties {
     private DatabaseEditionType databaseEdition;
 
     /*
+     * Details for the long-term backup schedule.
+     */
+    @JsonProperty(value = "longTermBackupSchedule")
+    private LongTermBackUpScheduleDetails longTermBackupSchedule;
+
+    /*
      * Parameter that allows users to select an acceptable maximum data loss limit in seconds, up to which Automatic Failover will be triggered when necessary for a Local Autonomous Data Guard
      */
     @JsonProperty(value = "localAdgAutoFailoverMaxDataLossLimit")
@@ -489,6 +495,27 @@ public final class AutonomousDatabaseUpdateProperties {
     }
 
     /**
+     * Get the longTermBackupSchedule property: Details for the long-term backup schedule.
+     * 
+     * @return the longTermBackupSchedule value.
+     */
+    public LongTermBackUpScheduleDetails longTermBackupSchedule() {
+        return this.longTermBackupSchedule;
+    }
+
+    /**
+     * Set the longTermBackupSchedule property: Details for the long-term backup schedule.
+     * 
+     * @param longTermBackupSchedule the longTermBackupSchedule value to set.
+     * @return the AutonomousDatabaseUpdateProperties object itself.
+     */
+    public AutonomousDatabaseUpdateProperties
+        withLongTermBackupSchedule(LongTermBackUpScheduleDetails longTermBackupSchedule) {
+        this.longTermBackupSchedule = longTermBackupSchedule;
+        return this;
+    }
+
+    /**
      * Get the localAdgAutoFailoverMaxDataLossLimit property: Parameter that allows users to select an acceptable
      * maximum data loss limit in seconds, up to which Automatic Failover will be triggered when necessary for a Local
      * Autonomous Data Guard.
@@ -630,6 +657,9 @@ public final class AutonomousDatabaseUpdateProperties {
         }
         if (scheduledOperations() != null) {
             scheduledOperations().validate();
+        }
+        if (longTermBackupSchedule() != null) {
+            longTermBackupSchedule().validate();
         }
     }
 }
