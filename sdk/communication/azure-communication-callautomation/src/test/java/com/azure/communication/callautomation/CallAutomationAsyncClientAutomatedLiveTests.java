@@ -18,9 +18,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.DoNotRecord;
 
-import src.main.java.com.azure.communication.callautomation.CallAutomationAsyncClient;
-import src.main.java.com.azure.communication.callautomation.CallConnectionAsync;
-
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -245,6 +242,10 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
                 .addPolicy((context, next) -> logHeaders("createVOIPCallAndConnectCallTest", next))
                 .buildAsyncClient();
 
+            // Create call automation client and use source as the caller.
+            CallAutomationAsyncClient connectAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("createVOIPCallAndConnectCallTest", next))
+            .buildAsyncClient();
             String uniqueId = serviceBusWithNewCall(caller, target);
 
             // create a call
@@ -290,9 +291,9 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             String serverCallId = answerCallResult.getCallConnectionProperties().getServerCallId();
             ServerCallLocator serverCallLocator = new ServerCallLocator(serverCallId);
             ConnectCallOptions connectCallOptions= new ConnectCallOptions(serverCallLocator, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<ConnectCallResult> connectCallResult = answerCallResult.connectCallWithResponse(connectCallOptions);
+            ConnectCallResult connectCallResult =Objects.requireNonNull(connectAsyncClient.connectCallWithResponse(connectCallOptions).block()).getValue();
             String callConnectionId = connectCallResult.getCallConnectionProperties().getCallConnectionId();
-            CallConnected connectCallConnectedEvent = waitForEvent(CallConnected.class, receiverConnectionId, Duration.ofSeconds(10));
+            CallConnected connectCallConnectedEvent = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(10));
             assertNotNull(connectCallConnectedEvent);
 
             // hang up the call.
