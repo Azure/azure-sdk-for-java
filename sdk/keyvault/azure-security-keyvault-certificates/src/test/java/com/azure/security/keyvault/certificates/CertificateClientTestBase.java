@@ -99,9 +99,9 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
         TokenCredential credential;
 
         if (interceptorManager.isLiveMode()) {
-            credential = new AzurePowerShellCredentialBuilder().build();
+            credential = new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
         } else if (interceptorManager.isRecordMode()) {
-            credential = new DefaultAzureCredentialBuilder().build();
+            credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
             List<TestProxySanitizer> customSanitizers = new ArrayList<>();
             customSanitizers.add(new TestProxySanitizer("value", "-----BEGIN PRIVATE KEY-----\\n(.+\\n)*-----END PRIVATE KEY-----\\n", "-----BEGIN PRIVATE KEY-----\\nREDACTED\\n-----END PRIVATE KEY-----\\n", TestProxySanitizerType.BODY_KEY));
             interceptorManager.addSanitizers(customSanitizers);

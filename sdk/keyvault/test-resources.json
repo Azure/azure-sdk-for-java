@@ -507,6 +507,10 @@
       "type": "string",
       "value": "[parameters('testApplicationId')]"
     },
+    "AZURE_KEYVAULT_CLIENT_SECRET": {
+      "type": "string",
+      "value": "Dummy-secret"
+    },
     "AZURE_KEYVAULT_CERTIFICATE_NAME": {
       "type": "string",
       "value": "[parameters('certificateName')]"
