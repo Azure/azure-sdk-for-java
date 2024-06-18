@@ -18,7 +18,29 @@ public class EventGridCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
         removeExtraFiles(customization, logger);
+        removeSendEvents(customization, logger);
         customizeEventGridClientImplImports(customization, logger);
+    }
+
+    private void removeSendEvents(LibraryCustomization customization, Logger logger) {
+        PackageCustomization packageCustomization = customization.getPackage("com.azure.messaging.eventgrid.namespaces");
+        ClassCustomization classCustomization = packageCustomization.getClass("EventGridSenderClient");
+        classCustomization.customizeAst(compilationUnit -> {
+            compilationUnit.getClassByName("EventGridSenderClient").get().getMethods().forEach(method -> {
+                if (method.getNameAsString().equals("sendEvents")) {
+                    method.remove();
+                }
+            });
+        });
+
+        classCustomization = packageCustomization.getClass("EventGridSenderAsyncClient");
+        classCustomization.customizeAst(compilationUnit -> {
+            compilationUnit.getClassByName("EventGridSenderAsyncClient").get().getMethods().forEach(method -> {
+                if (method.getNameAsString().equals("sendEvents")) {
+                    method.remove();
+                }
+            });
+        });
     }
 
     public void removeExtraFiles(LibraryCustomization customization, Logger logger) {
