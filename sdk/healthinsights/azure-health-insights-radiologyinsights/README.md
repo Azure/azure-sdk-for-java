@@ -33,9 +33,11 @@ For more information about creating the resource or how to get the location and 
 
 ### Authenticate the client
 
-In order to interact with the Health Insights Radiology Insights service, you'll need to create an instance of the [`RadiologyInsightsClient`][radiology_insights_client_class] class.  You will need an **endpoint** and an **API key** to instantiate a client object.
+In order to interact with the Health Insights Radiology Insights service, you'll need to create an instance of the [`RadiologyInsightsClient`][radiology_insights_client_class] class.  Either you can use an **endpoint** and an **API key** to instantiate a client object or you can use the **DefaultAzureCredential**.
 
-#### Get API Key
+####Authenticating with an API Key
+
+##### Get API Key
 
 You can obtain the endpoint and API key from the resource information in the [Azure Portal][azure_portal].
 
@@ -45,7 +47,7 @@ Alternatively, you can use the [Azure CLI][azure_cli] snippet below to get the A
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ```
 
-#### Create a RadiologyInsightsClient with an API Key Credential
+##### Create a RadiologyInsightsClient with an API Key Credential
 
 Once you have the value for the API key, you can pass it as a string into an instance of **AzureKeyCredential**. Use the key as the credential parameter
 to authenticate the client. You may choose to build a **synchronous** or **asynchronous** client.
@@ -76,6 +78,20 @@ if (apiKey != null && !apiKey.equals("")) {
     clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
 }
 RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
+```
+
+#### Authenticate and create a RadiologyInsightsClient with DefaultAzureCredential
+
+DefaultAzureCredential provides an alternative way to authenticate with the service. Documentation about this can be found [here][azure_credential]
+
+```java com.azure.health.insights.radiologyinsights.defaultazurecredential
+String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
+
+   RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
+           .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
+   DefaultAzureCredential c = new DefaultAzureCredentialBuilder().build();
+   
+   clientBuilder = clientBuilder.credential(c);
 ```
 
 ## Key concepts
@@ -765,5 +781,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/
 [package]: https://central.sonatype.com/artifact/com.azure/azure-health-insights-radiologyinsights
 [samples_location]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples
+[azure_credential]: https://learn.microsoft.com/en-us/java/api/com.azure.identity.defaultazurecredential?view=azure-java-stable
 
 ![Impressions]: https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fhealthinsights%2Fazure-health-insights-radiologyinsights%2FREADME.png
+
