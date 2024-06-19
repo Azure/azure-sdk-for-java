@@ -58,7 +58,7 @@ public class RadiologyInsightsAgeMismatchTest extends RadiologyInsightsClientTes
         
         try {
             testRadiologyInsightsWithResponse(request -> {
-            	RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
+                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
                         getClient().beginInferRadiologyInsights("job1715007451704", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
