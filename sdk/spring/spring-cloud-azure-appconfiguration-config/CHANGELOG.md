@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Adds `refreshAsync` to `AppConfigurationRefresh`, which refreshes asyncly. This can be used in situation such as Spring WebFlux.
+
 ### Breaking Changes
 
 ### Bugs Fixed
