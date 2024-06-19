@@ -13,7 +13,6 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -237,10 +236,10 @@ public final class WebPubSubServiceClientBuilder implements
     }
 
     /**
-     * Target hub name, which should start with alphabetic characters and only contain alpha-numeric characters or
+     * Target hub name, which should start with alphabetic characters and only contain alphanumeric characters or
      * underscore.
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
+     * @param hub Target hub name, which should start with alphabetic characters and only contain alphanumeric
      * characters or underscore.
      * @return The updated {@link WebPubSubServiceClientBuilder} object.
      * @throws NullPointerException If {@code hub} is {@code null}.
@@ -462,8 +461,7 @@ public final class WebPubSubServiceClientBuilder implements
 
         final String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         final String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId =
-            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -490,11 +488,9 @@ public final class WebPubSubServiceClientBuilder implements
         }
         policies.addAll(this.policies);
 
-        if (clientOptions != null) {
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        HttpHeaders addHeaders = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (addHeaders != null) {
+            policies.add(new AddHeadersPolicy(addHeaders));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
