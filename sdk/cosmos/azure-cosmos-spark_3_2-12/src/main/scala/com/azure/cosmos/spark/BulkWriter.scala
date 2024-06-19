@@ -989,14 +989,25 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   numberOfIntervalsWithIdenticalActiveOperationSnapshots
                 )
 
-                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get == 1L &&
-                    // pending retries only tracks the time to enqueue
-                    // the retry - so this should never take longer than 1 minute
-                    pendingRetriesSnapshot == 0L &&
-                    Scannable.from(bulkInputEmitter).scan(Scannable.Attr.BUFFERED) >0) {
+                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get > 0L) {
+
+
+                  val buffered = Scannable.from(bulkInputEmitter).scan(Scannable.Attr.BUFFERED)
 
                   if (verboseLoggingAfterReEnqueueingRetriesEnabled.compareAndSet(false, true)) {
                     log.logWarning(s"Starting to re-enqueue retries. Enabling verbose logs. "
+                      + s"Number of intervals with identical pending operations: "
+                      + s"$numberOfIntervalsWithIdenticalActiveOperationSnapshots Active Bulk Operations: "
+                      + s"$activeOperationsSnapshot, Active Read-Many Operations: $activeReadManyOperationsSnapshot,  "
+                      + s"PendingRetries: $pendingRetriesSnapshot, Buffered tasks: $buffered "
+                      + s"Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
+                      + s"Context: ${operationContext.toString} $getThreadInfo")
+                  } else if ((numberOfIntervalsWithIdenticalActiveOperationSnapshots.get % 3) == 0) {
+                    log.logWarning(s"Reattempting to re-enqueue retries. Enabling verbose logs. "
+                      + s"Number of intervals with identical pending operations: "
+                      + s"$numberOfIntervalsWithIdenticalActiveOperationSnapshots Active Bulk Operations: "
+                      + s"$activeOperationsSnapshot, Active Read-Many Operations: $activeReadManyOperationsSnapshot,  "
+                      + s"PendingRetries: $pendingRetriesSnapshot, Buffered tasks: $buffered "
                       + s"Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
                       + s"Context: ${operationContext.toString} $getThreadInfo")
                   }
