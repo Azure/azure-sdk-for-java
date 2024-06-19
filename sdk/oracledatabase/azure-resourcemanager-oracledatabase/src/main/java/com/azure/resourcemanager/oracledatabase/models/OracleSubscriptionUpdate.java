@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The type used for update operations of the OracleSubscription.
  */
 @Fluent
-public final class OracleSubscriptionUpdate {
+public final class OracleSubscriptionUpdate implements JsonSerializable<OracleSubscriptionUpdate> {
     /*
      * Details of the resource plan.
      */
-    @JsonProperty(value = "plan")
-    private ResourcePlanTypeUpdate plan;
+    private PlanUpdate plan;
 
     /*
      * The updatable properties of the OracleSubscription.
      */
-    @JsonProperty(value = "properties")
     private OracleSubscriptionUpdateProperties properties;
 
     /**
@@ -35,7 +37,7 @@ public final class OracleSubscriptionUpdate {
      * 
      * @return the plan value.
      */
-    public ResourcePlanTypeUpdate plan() {
+    public PlanUpdate plan() {
         return this.plan;
     }
 
@@ -45,7 +47,7 @@ public final class OracleSubscriptionUpdate {
      * @param plan the plan value to set.
      * @return the OracleSubscriptionUpdate object itself.
      */
-    public OracleSubscriptionUpdate withPlan(ResourcePlanTypeUpdate plan) {
+    public OracleSubscriptionUpdate withPlan(PlanUpdate plan) {
         this.plan = plan;
         return this;
     }
@@ -82,5 +84,45 @@ public final class OracleSubscriptionUpdate {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("plan", this.plan);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OracleSubscriptionUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OracleSubscriptionUpdate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OracleSubscriptionUpdate.
+     */
+    public static OracleSubscriptionUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OracleSubscriptionUpdate deserializedOracleSubscriptionUpdate = new OracleSubscriptionUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("plan".equals(fieldName)) {
+                    deserializedOracleSubscriptionUpdate.plan = PlanUpdate.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOracleSubscriptionUpdate.properties
+                        = OracleSubscriptionUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOracleSubscriptionUpdate;
+        });
     }
 }

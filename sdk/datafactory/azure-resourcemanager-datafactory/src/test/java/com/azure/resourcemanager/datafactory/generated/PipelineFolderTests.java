@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class PipelineFolderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PipelineFolder model = BinaryData.fromString("{\"name\":\"onmacjekniz\"}").toObject(PipelineFolder.class);
-        Assertions.assertEquals("onmacjekniz", model.name());
+        PipelineFolder model = BinaryData.fromString("{\"name\":\"rnntiewdjcv\"}").toObject(PipelineFolder.class);
+        Assertions.assertEquals("rnntiewdjcv", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PipelineFolder model = new PipelineFolder().withName("onmacjekniz");
+        PipelineFolder model = new PipelineFolder().withName("rnntiewdjcv");
         model = BinaryData.fromObject(model).toObject(PipelineFolder.class);
-        Assertions.assertEquals("onmacjekniz", model.name());
+        Assertions.assertEquals("rnntiewdjcv", model.name());
     }
 }

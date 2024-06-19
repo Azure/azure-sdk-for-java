@@ -30,7 +30,8 @@ public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
     private IntegrationRuntimeType type = IntegrationRuntimeType.SELF_HOSTED;
 
     /*
-     * When this property is not null, means this is a linked integration runtime. The property is used to access original integration runtime.
+     * When this property is not null, means this is a linked integration runtime. The property is used to access
+     * original integration runtime.
      */
     @JsonProperty(value = "typeProperties")
     private SelfHostedIntegrationRuntimeTypeProperties innerTypeProperties;

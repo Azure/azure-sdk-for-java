@@ -12,7 +12,7 @@ public final class ActivationLinksInnerTests {
     public void testDeserialize() throws Exception {
         ActivationLinksInner model = BinaryData
             .fromString(
-                "{\"newCloudAccountActivationLink\":\"utwu\",\"existingCloudAccountActivationLink\":\"grpkhjwniyqs\"}")
+                "{\"newCloudAccountActivationLink\":\"dqrhzoymib\",\"existingCloudAccountActivationLink\":\"qyib\"}")
             .toObject(ActivationLinksInner.class);
     }
 

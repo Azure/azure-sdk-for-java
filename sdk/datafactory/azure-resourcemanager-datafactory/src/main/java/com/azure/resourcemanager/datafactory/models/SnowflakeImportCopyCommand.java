@@ -31,18 +31,29 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
     private String type = "SnowflakeImportCopyCommand";
 
     /*
-     * Additional copy options directly passed to snowflake Copy Command. Type: key value pairs (value should be string type) (or Expression with resultType object). Example: "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY", "TIME_FORMAT": "'HH24:MI:SS.FF'" }
+     * Additional copy options directly passed to snowflake Copy Command. Type: key value pairs (value should be string
+     * type) (or Expression with resultType object). Example: "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY",
+     * "TIME_FORMAT": "'HH24:MI:SS.FF'" }
      */
     @JsonProperty(value = "additionalCopyOptions")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalCopyOptions;
 
     /*
-     * Additional format options directly passed to snowflake Copy Command. Type: key value pairs (value should be string type) (or Expression with resultType object). Example: "additionalFormatOptions": { "FORCE": "TRUE", "LOAD_UNCERTAIN_FILES": "'FALSE'" }
+     * Additional format options directly passed to snowflake Copy Command. Type: key value pairs (value should be
+     * string type) (or Expression with resultType object). Example: "additionalFormatOptions": { "FORCE": "TRUE",
+     * "LOAD_UNCERTAIN_FILES": "'FALSE'" }
      */
     @JsonProperty(value = "additionalFormatOptions")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalFormatOptions;
+
+    /*
+     * The name of the snowflake storage integration to use for the copy operation. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "storageIntegration")
+    private Object storageIntegration;
 
     /**
      * Creates an instance of SnowflakeImportCopyCommand class.
@@ -105,6 +116,28 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
      */
     public SnowflakeImportCopyCommand withAdditionalFormatOptions(Map<String, Object> additionalFormatOptions) {
         this.additionalFormatOptions = additionalFormatOptions;
+        return this;
+    }
+
+    /**
+     * Get the storageIntegration property: The name of the snowflake storage integration to use for the copy operation.
+     * Type: string (or Expression with resultType string).
+     * 
+     * @return the storageIntegration value.
+     */
+    public Object storageIntegration() {
+        return this.storageIntegration;
+    }
+
+    /**
+     * Set the storageIntegration property: The name of the snowflake storage integration to use for the copy operation.
+     * Type: string (or Expression with resultType string).
+     * 
+     * @param storageIntegration the storageIntegration value to set.
+     * @return the SnowflakeImportCopyCommand object itself.
+     */
+    public SnowflakeImportCopyCommand withStorageIntegration(Object storageIntegration) {
+        this.storageIntegration = storageIntegration;
         return this;
     }
 

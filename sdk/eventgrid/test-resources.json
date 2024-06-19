@@ -9,21 +9,20 @@
       "type": "string",
       "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
       "metadata": {
-        "description": "The tenant ID to which the application and resources belong."
+          "description": "The tenant id to which the application and resources belong."
       }
-    },
+  },
     "testApplicationId": {
-      "type": "string",
-      "metadata": {
-        "description": "The application client ID used to run tests."
-      }
+        "type": "string",
+        "metadata": {
+            "description": "The client id of the service principal used to run tests."
+        }
     },
     "testApplicationOid": {
-      "type": "string",
-      "defaultValue": "b3653439-8136-4cd5-aac3-2a9460871ca6",
-      "metadata": {
-        "description": "The client OID to grant access to test resources."
-      }
+        "type": "string",
+        "metadata": {
+            "description": "This is the object id of the service principal used to run tests."
+        }
     }
   },
   "variables": {
@@ -46,7 +45,7 @@
   "resources": [
     {
       "type": "Microsoft.EventGrid/namespaces",
-      "apiVersion": "2023-12-15-preview",
+      "apiVersion": "2024-06-01-preview",
       "name": "[variables('namespaceName')]",
       "location": "[resourceGroup().location]",
       "sku": {
@@ -60,7 +59,7 @@
     },
     {
       "type": "Microsoft.EventGrid/namespaces/topics",
-      "apiVersion": "2023-12-15-preview",
+      "apiVersion": "2024-06-01-preview",
       "name": "[format('{0}/{1}', variables('namespaceName'), variables('topicName'))]",
       "properties": {
         "publisherType": "Custom",
@@ -73,7 +72,7 @@
     },
     {
       "type": "Microsoft.EventGrid/namespaces/topics/eventSubscriptions",
-      "apiVersion": "2023-12-15-preview",
+      "apiVersion": "2024-06-01-preview",
       "name": "[format('{0}/{1}/{2}', variables('namespaceName'), variables('topicName'), variables('subscriptionName'))]",
       "properties": {
         "deliveryConfiguration": {
@@ -204,6 +203,26 @@
           "resourceGroupName": "[resourceGroup().Name]",
           "source": "customSource"
         }
+      },
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2019-04-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('eventGridDataSenderRoleId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('eventGridDataSenderRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]",
+        "scope": "[resourceGroup().id]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2019-04-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('eventGridDataContributorRoleId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('eventGridDataContributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]",
+        "scope": "[resourceGroup().id]"
       }
     },
     {
@@ -282,11 +301,11 @@
     },
     "EVENTGRID_KEY": {
       "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.EventGrid/namespaces', variables('namespaceName')), '2023-12-15-preview').key1]"
+      "value": "[listKeys(resourceId('Microsoft.EventGrid/namespaces', variables('namespaceName')), '2024-06-01-preview').key1]"
     },
     "EVENTGRID_ENDPOINT": {
       "type": "string",
-      "value": "[format('https://{0}', reference(resourceId('Microsoft.EventGrid/namespaces', variables('namespaceName')), '2023-12-15-preview').topicsConfiguration.hostname)]"
+      "value": "[format('https://{0}', reference(resourceId('Microsoft.EventGrid/namespaces', variables('namespaceName')), '2024-06-01-preview').topicsConfiguration.hostname)]"
     },
     "EVENTGRID_TOPIC_NAME": {
       "type": "string",

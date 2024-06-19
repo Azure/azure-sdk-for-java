@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The updatable properties of the AutonomousDatabaseBackup.
  */
 @Fluent
-public final class AutonomousDatabaseBackupUpdateProperties {
+public final class AutonomousDatabaseBackupUpdateProperties
+    implements JsonSerializable<AutonomousDatabaseBackupUpdateProperties> {
     /*
      * Retention period, in days, for long-term backups.
      */
-    @JsonProperty(value = "retentionPeriodInDays")
     private Integer retentionPeriodInDays;
 
     /**
@@ -50,5 +54,43 @@ public final class AutonomousDatabaseBackupUpdateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("retentionPeriodInDays", this.retentionPeriodInDays);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutonomousDatabaseBackupUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutonomousDatabaseBackupUpdateProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutonomousDatabaseBackupUpdateProperties.
+     */
+    public static AutonomousDatabaseBackupUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutonomousDatabaseBackupUpdateProperties deserializedAutonomousDatabaseBackupUpdateProperties
+                = new AutonomousDatabaseBackupUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("retentionPeriodInDays".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupUpdateProperties.retentionPeriodInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutonomousDatabaseBackupUpdateProperties;
+        });
     }
 }

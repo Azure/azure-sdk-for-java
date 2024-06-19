@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzurePostgreSqlTableDatasetTypeProperties {
     /*
-     * The table name of the Azure PostgreSQL database which includes both schema and table. Type: string (or Expression with resultType string).
+     * The table name of the Azure PostgreSQL database which includes both schema and table. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "tableName")
     private Object tableName;

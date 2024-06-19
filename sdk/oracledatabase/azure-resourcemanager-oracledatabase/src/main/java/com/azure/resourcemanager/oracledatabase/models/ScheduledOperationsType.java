@@ -6,29 +6,30 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The list of scheduled operations.
  */
 @Fluent
-public final class ScheduledOperationsType {
+public final class ScheduledOperationsType implements JsonSerializable<ScheduledOperationsType> {
     /*
      * Day of week
      */
-    @JsonProperty(value = "dayOfWeek", required = true)
     private DayOfWeek dayOfWeek;
 
     /*
      * auto start time. value must be of ISO-8601 format HH:mm
      */
-    @JsonProperty(value = "scheduledStartTime")
     private String scheduledStartTime;
 
     /*
      * auto stop time. value must be of ISO-8601 format HH:mm
      */
-    @JsonProperty(value = "scheduledStopTime")
     private String scheduledStopTime;
 
     /**
@@ -113,4 +114,47 @@ public final class ScheduledOperationsType {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduledOperationsType.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dayOfWeek", this.dayOfWeek);
+        jsonWriter.writeStringField("scheduledStartTime", this.scheduledStartTime);
+        jsonWriter.writeStringField("scheduledStopTime", this.scheduledStopTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledOperationsType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledOperationsType if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduledOperationsType.
+     */
+    public static ScheduledOperationsType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledOperationsType deserializedScheduledOperationsType = new ScheduledOperationsType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dayOfWeek".equals(fieldName)) {
+                    deserializedScheduledOperationsType.dayOfWeek = DayOfWeek.fromJson(reader);
+                } else if ("scheduledStartTime".equals(fieldName)) {
+                    deserializedScheduledOperationsType.scheduledStartTime = reader.getString();
+                } else if ("scheduledStopTime".equals(fieldName)) {
+                    deserializedScheduledOperationsType.scheduledStopTime = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledOperationsType;
+        });
+    }
 }
