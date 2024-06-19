@@ -513,6 +513,81 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
+    @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
+    public void multiContainerBothWithSinglePartitionHealthyToUnavailableHandling(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) {
+        System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
+
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
+            = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManagerMock);
+
+        String pkRangeId = "0";
+        String minInclusive = "AA";
+        String maxExclusive = "BB";
+        String collectionResourceId1 = "dbs/db1/colls/coll1";
+        String collectionResourceId2 = "dbs/db1/colls/coll2";
+
+        List<URI> applicableReadWriteEndpoints = ImmutableList.of(
+                LocationEastUs2EndpointToLocationPair,
+                LocationEastUsEndpointToLocationPair,
+                LocationCentralUsEndpointToLocationPair)
+            .stream()
+            .map(uriToLocationMappings -> uriToLocationMappings.getLeft())
+            .collect(Collectors.toList());
+
+        RxDocumentServiceRequest request1 = constructRxDocumentServiceRequestInstance(
+            readOperationTrue ? OperationType.Read : OperationType.Create,
+            ResourceType.Document,
+            collectionResourceId1,
+            pkRangeId,
+            minInclusive,
+            maxExclusive,
+            LocationEastUs2EndpointToLocationPair.getKey());
+
+        RxDocumentServiceRequest request2 = constructRxDocumentServiceRequestInstance(
+            readOperationTrue ? OperationType.Read : OperationType.Create,
+            ResourceType.Document,
+            collectionResourceId2,
+            pkRangeId,
+            minInclusive,
+            maxExclusive,
+            LocationEastUs2EndpointToLocationPair.getKey());
+
+        Mockito.when(this.globalEndpointManagerMock.getApplicableWriteEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+        Mockito.when(this.globalEndpointManagerMock.getApplicableReadEndpoints(Mockito.anyList())).thenReturn((UnmodifiableList<URI>) UnmodifiableList.unmodifiableList(applicableReadWriteEndpoints));
+
+        int exceptionCountToHandle
+            = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, readOperationTrue);
+
+        for (int i = 1; i <= exceptionCountToHandle + 1; i++) {
+            globalPartitionEndpointManagerForCircuitBreaker
+                .handleLocationExceptionForPartitionKeyRange(request1, LocationEastUs2EndpointToLocationPair.getKey());
+        }
+
+        globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request2);
+
+        Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappingsForColl1
+            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new PartitionKeyRangeWrapper(
+            new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId1));
+
+        Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappingsForColl2
+            = globalPartitionEndpointManagerForCircuitBreaker.getLocationToLocationSpecificContextMappings(new PartitionKeyRangeWrapper(
+            new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId2));
+
+        LocationSpecificContext locationSpecificContext1
+            = locationToLocationSpecificContextMappingsForColl1.get(LocationEastUs2EndpointToLocationPair.getKey());
+
+        LocationSpecificContext locationSpecificContext2
+            = locationToLocationSpecificContextMappingsForColl2.get(LocationEastUs2EndpointToLocationPair.getKey());
+
+        assertThat(locationSpecificContext1.isRegionAvailableToProcessRequests()).isFalse();
+        assertThat(locationSpecificContext1.isExceptionThresholdBreached()).isTrue();
+
+        assertThat(locationSpecificContext2.isRegionAvailableToProcessRequests()).isTrue();
+        assertThat(locationSpecificContext2.isExceptionThresholdBreached()).isFalse();
+
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
+    }
+
     private RxDocumentServiceRequest constructRxDocumentServiceRequestInstance(
         OperationType operationType,
         ResourceType resourceType,

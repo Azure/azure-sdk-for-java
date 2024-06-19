@@ -223,6 +223,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             return false;
         }
 
+        if (request.getOperationType() == OperationType.QueryPlan) {
+            return false;
+        }
+
         GlobalEndpointManager globalEndpointManager = this.globalEndpointManager;
 
         if (!globalEndpointManager.canUseMultipleWriteLocations(request)) {

@@ -6255,14 +6255,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         Map<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess = new ConcurrentHashMap<>();
 
-        FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow = new FeedOperationContextForCircuitBreaker(partitionKeyRangesWithSuccess, false);
-        feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow.setIsRequestHedged(false);
-        req.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow);
 
         if (orderedApplicableRegionsForSpeculation.size() < 2) {
+            FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow = new FeedOperationContextForCircuitBreaker(partitionKeyRangesWithSuccess, false);
+            feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow.setIsRequestHedged(false);
+            req.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForRequestOutsideOfAvailabilityStrategyFlow);
+
             // There is at most one applicable region - no hedging possible
             return feedOperation.apply(retryPolicyFactory, req);
         }
+
+        FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreakerForParentRequestInAvailabilityStrategyFlow = new FeedOperationContextForCircuitBreaker(partitionKeyRangesWithSuccess, true);
+        feedOperationContextForCircuitBreakerForParentRequestInAvailabilityStrategyFlow.setIsRequestHedged(false);
+        req.requestContext.setFeedOperationContext(feedOperationContextForCircuitBreakerForParentRequestInAvailabilityStrategyFlow);
 
         ThresholdBasedAvailabilityStrategy availabilityStrategy =
             (ThresholdBasedAvailabilityStrategy)endToEndPolicyConfig.getAvailabilityStrategy();
