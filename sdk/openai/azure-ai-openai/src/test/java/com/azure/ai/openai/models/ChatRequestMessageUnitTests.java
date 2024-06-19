@@ -6,7 +6,7 @@ package com.azure.ai.openai.models;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,7 +24,7 @@ public class ChatRequestMessageUnitTests {
 
 
         // List<ChatMessageContentItem> type content
-        final ChatRequestUserMessage user = new ChatRequestUserMessage(List.of(
+        final ChatRequestUserMessage user = new ChatRequestUserMessage(Arrays.asList(
                 new ChatMessageTextContentItem("text"),
                 new ChatMessageImageContentItem(new ChatMessageImageUrl("testImage"))
         ));

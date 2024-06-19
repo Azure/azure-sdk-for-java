@@ -4,7 +4,6 @@
 package com.azure.ai.openai.implementation;
 
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -39,7 +38,7 @@ public class EmbeddingUtilsTests {
     }
 
     @Test
-    public void testBinaryDataHasNoEncodingFormat() throws JsonProcessingException {
+    public void testBinaryDataHasNoEncodingFormat() {
         // Arrange
         String jsonWithoutEncodingFormat = "{\"input\":[\"Your text string goes here\"]}";
         String expectedJson = "{\"input\":[\"Your text string goes here\"],\"encoding_format\":\"base64\"}";
@@ -50,7 +49,7 @@ public class EmbeddingUtilsTests {
     }
 
     @Test
-    public void testBinaryDataHasEncodingFormat() throws JsonProcessingException {
+    public void testBinaryDataHasEncodingFormat() {
         // Arrange
         String jsonWithEncodingFormat = "{\"input\":[\"Your text string goes here\"],\"encoding_format\":\"float\"}";
         // Act

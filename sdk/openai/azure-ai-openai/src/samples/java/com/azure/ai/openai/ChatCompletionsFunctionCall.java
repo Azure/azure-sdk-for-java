@@ -16,12 +16,16 @@ import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.FunctionParameters;
 import com.azure.ai.openai.models.FunctionProperties;
+import com.azure.core.annotation.Generated;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -124,12 +128,10 @@ public class ChatCompletionsFunctionCall {
     }
 
     // WeatherLocation is used for this sample. This describes the parameter of the function you want to use.
-    private static class WeatherLocation {
-        @JsonProperty(value = "unit") String unit;
-        @JsonProperty(value = "location") String location;
-        @JsonCreator
-        WeatherLocation(@JsonProperty(value = "unit") String unit,
-                        @JsonProperty(value = "location") String location) {
+    private static class WeatherLocation implements JsonSerializable<WeatherLocation> {
+        String unit;
+        String location;
+        WeatherLocation(String unit, String location) {
             this.unit = unit;
             this.location = location;
         }
@@ -140,6 +142,37 @@ public class ChatCompletionsFunctionCall {
 
         public String getLocation() {
             return location;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("unit", this.unit);
+            jsonWriter.writeStringField("location", this.location);
+            return jsonWriter.writeEndObject();
+        }
+
+        @Generated
+        public static WeatherLocation fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                String unit = null;
+                String location = null;
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("unit".equals(fieldName)) {
+                        unit = reader.getString();
+                    } else if ("location".equals(fieldName)) {
+                        location = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return new WeatherLocation(unit, location);
+            });
         }
     }
 }

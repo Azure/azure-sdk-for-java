@@ -3,8 +3,6 @@
 
 package com.azure.ai.openai.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +20,6 @@ public class FunctionParameters {
     private Map<String, FunctionProperties> properties;
 
     /* Required properties */
-    @JsonProperty(value = "required")
     private List<String> requiredPropertyNames;
 
     /**
