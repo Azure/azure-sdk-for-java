@@ -744,7 +744,7 @@ Fixed the issue that the second call of `ServiceBusReceiverClient.complete` is s
 Version 7.0.0-beta.1 is a beta of our efforts in creating a client library that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
 our efforts can be found in the [Azure SDK Design Guidelines for
-.Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+.Java](https://aka.ms/azsdk/guide/java).
 
 ### Features
 
