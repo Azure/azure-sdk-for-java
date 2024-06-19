@@ -10,18 +10,17 @@ import com.azure.resourcemanager.datafactory.fluent.models.AzureSynapseArtifacts
 public final class AzureSynapseArtifactsLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureSynapseArtifactsLinkedServiceTypeProperties model = BinaryData
-            .fromString(
-                "{\"endpoint\":\"dataw\",\"authentication\":\"datavu\",\"workspaceResourceId\":\"dataqmwqsgy\"}")
+        AzureSynapseArtifactsLinkedServiceTypeProperties model = BinaryData.fromString(
+            "{\"endpoint\":\"dataxorhsxcsoaxcme\",\"authentication\":\"datapxtbxyn\",\"workspaceResourceId\":\"databwkdi\"}")
             .toObject(AzureSynapseArtifactsLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureSynapseArtifactsLinkedServiceTypeProperties model
-            = new AzureSynapseArtifactsLinkedServiceTypeProperties().withEndpoint("dataw")
-                .withAuthentication("datavu")
-                .withWorkspaceResourceId("dataqmwqsgy");
+            = new AzureSynapseArtifactsLinkedServiceTypeProperties().withEndpoint("dataxorhsxcsoaxcme")
+                .withAuthentication("datapxtbxyn")
+                .withWorkspaceResourceId("databwkdi");
         model = BinaryData.fromObject(model).toObject(AzureSynapseArtifactsLinkedServiceTypeProperties.class);
     }
 }

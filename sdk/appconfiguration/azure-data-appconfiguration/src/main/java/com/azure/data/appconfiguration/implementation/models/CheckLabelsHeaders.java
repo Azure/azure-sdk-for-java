@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/**
- * The CheckLabelsHeaders model.
- */
+/** The CheckLabelsHeaders model. */
 @Fluent
 public final class CheckLabelsHeaders {
     /*
@@ -23,7 +21,7 @@ public final class CheckLabelsHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of CheckLabelsHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public CheckLabelsHeaders(HttpHeaders rawHeaders) {
@@ -32,7 +30,7 @@ public final class CheckLabelsHeaders {
 
     /**
      * Get the syncToken property: The Sync-Token property.
-     * 
+     *
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -41,7 +39,7 @@ public final class CheckLabelsHeaders {
 
     /**
      * Set the syncToken property: The Sync-Token property.
-     * 
+     *
      * @param syncToken the syncToken value to set.
      * @return the CheckLabelsHeaders object itself.
      */

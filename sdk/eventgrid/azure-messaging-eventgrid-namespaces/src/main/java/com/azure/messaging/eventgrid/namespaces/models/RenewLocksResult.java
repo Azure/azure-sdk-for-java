@@ -16,10 +16,11 @@ import java.util.List;
  * The result of the RenewLock operation.
  */
 @Immutable
-public final class RenewCloudEventLocksResult implements JsonSerializable<RenewCloudEventLocksResult> {
+public final class RenewLocksResult implements JsonSerializable<RenewLocksResult> {
 
     /*
-     * Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the related error information (namely, the error code and description).
+     * Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
+     * related error information (namely, the error code and description).
      */
     @Generated
     private final List<FailedLockToken> failedLockTokens;
@@ -31,13 +32,13 @@ public final class RenewCloudEventLocksResult implements JsonSerializable<RenewC
     private final List<String> succeededLockTokens;
 
     /**
-     * Creates an instance of RenewCloudEventLocksResult class.
+     * Creates an instance of RenewLocksResult class.
      *
      * @param failedLockTokens the failedLockTokens value to set.
      * @param succeededLockTokens the succeededLockTokens value to set.
      */
     @Generated
-    private RenewCloudEventLocksResult(List<FailedLockToken> failedLockTokens, List<String> succeededLockTokens) {
+    private RenewLocksResult(List<FailedLockToken> failedLockTokens, List<String> succeededLockTokens) {
         this.failedLockTokens = failedLockTokens;
         this.succeededLockTokens = succeededLockTokens;
     }
@@ -78,16 +79,16 @@ public final class RenewCloudEventLocksResult implements JsonSerializable<RenewC
     }
 
     /**
-     * Reads an instance of RenewCloudEventLocksResult from the JsonReader.
+     * Reads an instance of RenewLocksResult from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of RenewCloudEventLocksResult if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of RenewLocksResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RenewCloudEventLocksResult.
+     * @throws IOException If an error occurs while reading the RenewLocksResult.
      */
     @Generated
-    public static RenewCloudEventLocksResult fromJson(JsonReader jsonReader) throws IOException {
+    public static RenewLocksResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<FailedLockToken> failedLockTokens = null;
             List<String> succeededLockTokens = null;
@@ -102,7 +103,7 @@ public final class RenewCloudEventLocksResult implements JsonSerializable<RenewC
                     reader.skipChildren();
                 }
             }
-            return new RenewCloudEventLocksResult(failedLockTokens, succeededLockTokens);
+            return new RenewLocksResult(failedLockTokens, succeededLockTokens);
         });
     }
 }

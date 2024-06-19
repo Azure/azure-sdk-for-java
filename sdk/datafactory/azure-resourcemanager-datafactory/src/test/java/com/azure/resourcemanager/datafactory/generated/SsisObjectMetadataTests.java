@@ -6,27 +6,26 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.SsisObjectMetadata;
-import com.azure.resourcemanager.datafactory.models.SsisProject;
 import org.junit.jupiter.api.Assertions;
 
 public final class SsisObjectMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SsisObjectMetadata model = BinaryData.fromString(
-            "{\"type\":\"Project\",\"id\":8168827985153452849,\"name\":\"wwaloayqcgwrt\",\"description\":\"uzgwyzmhtx\"}")
+            "{\"type\":\"SsisObjectMetadata\",\"id\":1536045625796396557,\"name\":\"oyq\",\"description\":\"xrmcqibycnojvk\"}")
             .toObject(SsisObjectMetadata.class);
-        Assertions.assertEquals(8168827985153452849L, model.id());
-        Assertions.assertEquals("wwaloayqcgwrt", model.name());
-        Assertions.assertEquals("uzgwyzmhtx", model.description());
+        Assertions.assertEquals(1536045625796396557L, model.id());
+        Assertions.assertEquals("oyq", model.name());
+        Assertions.assertEquals("xrmcqibycnojvk", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SsisObjectMetadata model
-            = new SsisProject().withId(8168827985153452849L).withName("wwaloayqcgwrt").withDescription("uzgwyzmhtx");
+            = new SsisObjectMetadata().withId(1536045625796396557L).withName("oyq").withDescription("xrmcqibycnojvk");
         model = BinaryData.fromObject(model).toObject(SsisObjectMetadata.class);
-        Assertions.assertEquals(8168827985153452849L, model.id());
-        Assertions.assertEquals("wwaloayqcgwrt", model.name());
-        Assertions.assertEquals("uzgwyzmhtx", model.description());
+        Assertions.assertEquals(1536045625796396557L, model.id());
+        Assertions.assertEquals("oyq", model.name());
+        Assertions.assertEquals("xrmcqibycnojvk", model.description());
     }
 }

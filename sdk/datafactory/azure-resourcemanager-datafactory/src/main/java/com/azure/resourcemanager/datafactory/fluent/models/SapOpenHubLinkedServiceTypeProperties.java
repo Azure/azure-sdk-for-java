@@ -14,25 +14,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapOpenHubLinkedServiceTypeProperties {
     /*
-     * Host name of the SAP BW instance where the open hub destination is located. Type: string (or Expression with resultType string).
+     * Host name of the SAP BW instance where the open hub destination is located. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "server")
     private Object server;
 
     /*
-     * System number of the BW system where the open hub destination is located. (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
+     * System number of the BW system where the open hub destination is located. (Usually a two-digit decimal number
+     * represented as a string.) Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "systemNumber")
     private Object systemNumber;
 
     /*
-     * Client ID of the client on the BW system where the open hub destination is located. (Usually a three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
+     * Client ID of the client on the BW system where the open hub destination is located. (Usually a three-digit
+     * decimal number represented as a string) Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
-     * Language of the BW system where the open hub destination is located. The default value is EN. Type: string (or Expression with resultType string).
+     * Language of the BW system where the open hub destination is located. The default value is EN. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "language")
     private Object language;
@@ -44,7 +48,8 @@ public final class SapOpenHubLinkedServiceTypeProperties {
     private Object systemId;
 
     /*
-     * Username to access the SAP BW server where the open hub destination is located. Type: string (or Expression with resultType string).
+     * Username to access the SAP BW server where the open hub destination is located. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -74,7 +79,8 @@ public final class SapOpenHubLinkedServiceTypeProperties {
     private Object logonGroup;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
