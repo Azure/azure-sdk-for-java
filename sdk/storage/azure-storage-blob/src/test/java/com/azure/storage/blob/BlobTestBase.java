@@ -5,7 +5,6 @@ package com.azure.storage.blob;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -18,7 +17,6 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -333,7 +331,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return builder.credential(getTokenCredential()).buildClient();
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
     protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
@@ -342,15 +340,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return builder.credential(getTokenCredential()).buildAsyncClient();
-    }
-
-    protected TokenCredential getTokenCredential() {
-        if (interceptorManager.isPlaybackMode()) {
-            return new MockTokenCredential();
-        } else {
-            return new DefaultAzureCredentialBuilder().build();
-        }
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
     }
 
     protected BlobServiceClient getServiceClient(String endpoint) {
@@ -422,7 +412,7 @@ public class BlobTestBase extends TestProxyTestBase {
             builder.addPolicy(policy);
         }
 
-        builder.credential(getTokenCredential());
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;
@@ -525,7 +515,7 @@ public class BlobTestBase extends TestProxyTestBase {
             builder.addPolicy(policy);
         }
 
-        builder.credential(getTokenCredential());
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;
@@ -588,7 +578,7 @@ public class BlobTestBase extends TestProxyTestBase {
             builder.addPolicy(policy);
         }
 
-        builder.credential(getTokenCredential());
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;
@@ -675,7 +665,7 @@ public class BlobTestBase extends TestProxyTestBase {
             builder.addPolicy(policy);
         }
 
-        builder.credential(getTokenCredential());
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         instrument(builder);
         return builder;

@@ -4,16 +4,13 @@
 package com.azure.storage.queue;
 
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestEnvironment;
@@ -93,7 +90,7 @@ public class QueueTestBase extends TestProxyTestBase {
     protected QueueServiceClientBuilder getOAuthServiceClientBuilder(String endpoint) {
         QueueServiceClientBuilder builder = new QueueServiceClientBuilder().endpoint(endpoint);
         instrument(builder);
-        return builder.credential(getTokenCredential());
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
     }
 
     protected QueueServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
@@ -118,18 +115,10 @@ public class QueueTestBase extends TestProxyTestBase {
         return instrument(new QueueClientBuilder()).endpoint(endpoint);
     }
 
-    protected TokenCredential getTokenCredential() {
-        if (interceptorManager.isPlaybackMode()) {
-            return new MockTokenCredential();
-        } else {
-            return new DefaultAzureCredentialBuilder().build();
-        }
-    }
-
     protected QueueClientBuilder getOAuthQueueClientBuilder(String endpoint) {
         QueueClientBuilder builder = new QueueClientBuilder().endpoint(endpoint);
         instrument(builder);
-        return builder.credential(getTokenCredential());
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
     }
 
     protected Duration getMessageUpdateDelay(long liveMillis) {

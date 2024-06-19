@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedIterable;
@@ -41,6 +40,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -1004,7 +1004,8 @@ public class ServiceApiTests extends BlobTestBase {
     public void oAuthOnSecondary() {
         BlobServiceClientBuilder secondaryBuilder = getServiceClientBuilder(null,
             ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary());
-        BlobServiceClient secondaryClient = secondaryBuilder.credential(getTokenCredential()).buildClient();
+        BlobServiceClient secondaryClient = secondaryBuilder
+            .credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
 
         assertDoesNotThrow(secondaryClient::getProperties);
     }

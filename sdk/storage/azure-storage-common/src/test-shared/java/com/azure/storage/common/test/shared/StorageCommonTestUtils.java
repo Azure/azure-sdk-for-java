@@ -3,6 +3,7 @@
 package com.azure.storage.common.test.shared;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
@@ -10,10 +11,12 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.implementation.Constants;
 
 import java.io.ByteArrayOutputStream;
@@ -286,6 +289,20 @@ public final class StorageCommonTestUtils {
             return file;
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    /**
+     * Gets token credentials for a test.
+     *
+     * @param interceptorManager The interceptor manager to use.
+     * @return The TokenCredential to use.
+     */
+    public static TokenCredential getTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        } else {
+            return new DefaultAzureCredentialBuilder().build();
         }
     }
 }

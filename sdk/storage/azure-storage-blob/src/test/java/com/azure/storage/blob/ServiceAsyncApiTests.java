@@ -37,6 +37,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -62,7 +63,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -1060,7 +1060,8 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     public void oAuthOnSecondary() {
         BlobServiceClientBuilder secondaryBuilder = getServiceClientBuilder(null,
             ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary());
-        BlobServiceAsyncClient secondaryClient = secondaryBuilder.credential(getTokenCredential()).buildAsyncClient();
+        BlobServiceAsyncClient secondaryClient = secondaryBuilder
+            .credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
 
         StepVerifier.create(secondaryClient.getProperties())
             .expectNextCount(1)

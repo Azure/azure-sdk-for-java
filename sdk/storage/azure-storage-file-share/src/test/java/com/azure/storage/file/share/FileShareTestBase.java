@@ -5,7 +5,6 @@ package com.azure.storage.file.share;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -18,7 +17,6 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -316,7 +314,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return builder.credential(getTokenCredential()).buildClient();
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
     protected ShareServiceClient getOAuthServiceClientSharedKey(ShareServiceClientBuilder builder) {
@@ -327,7 +325,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return builder.credential(getTokenCredential()).buildClient();
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
     protected ShareServiceAsyncClient getOAuthServiceAsyncClient(ShareServiceClientBuilder builder) {
@@ -338,7 +336,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return builder.credential(getTokenCredential()).buildAsyncClient();
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
     }
 
     protected ShareServiceAsyncClient getOAuthServiceClientAsyncSharedKey(ShareServiceClientBuilder builder) {
@@ -350,14 +348,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         instrument(builder);
 
         return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildAsyncClient();
-    }
-
-    protected TokenCredential getTokenCredential() {
-        if (interceptorManager.isPlaybackMode()) {
-            return new MockTokenCredential();
-        } else {
-            return new DefaultAzureCredentialBuilder().build();
-        }
     }
 
     protected ShareClient getOAuthShareClient(ShareClientBuilder builder) {
@@ -372,7 +362,7 @@ public class FileShareTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return builder.credential(getTokenCredential());
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
     }
 
     protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {

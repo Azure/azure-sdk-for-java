@@ -4,7 +4,6 @@
 package com.azure.storage.blob.batch;
 
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -12,9 +11,7 @@ import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
@@ -94,15 +91,7 @@ public class BlobBatchTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return builder.credential(getTokenCredential()).buildClient();
-    }
-
-    protected TokenCredential getTokenCredential() {
-        if (interceptorManager.isPlaybackMode()) {
-            return new MockTokenCredential();
-        } else {
-            return new DefaultAzureCredentialBuilder().build();
-        }
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
     }
 
     protected BlobServiceClient getServiceClient(TestAccount account) {

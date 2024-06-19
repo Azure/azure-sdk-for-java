@@ -4,7 +4,6 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -19,9 +18,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
@@ -190,15 +187,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
-        return builder.credential(getTokenCredential());
-    }
-
-    protected TokenCredential getTokenCredential() {
-        if (interceptorManager.isPlaybackMode()) {
-            return new MockTokenCredential();
-        } else {
-            return new DefaultAzureCredentialBuilder().build();
-        }
+        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
     }
 
     protected DataLakeServiceAsyncClient getOAuthServiceAsyncClient() {
@@ -421,7 +410,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
     protected DataLakePathClientBuilder getPathClientBuilderWithTokenCredential(String endpoint, String pathName,
                                                                                 HttpPipelinePolicy... policies) {
         DataLakePathClientBuilder builder = new DataLakePathClientBuilder().pathName(pathName).endpoint(endpoint);
-        builder.credential(getTokenCredential());
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -484,7 +473,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected DataLakeFileSystemClientBuilder getFileSystemClientBuilderWithTokenCredential(String endpoint) {
         DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder().endpoint(endpoint);
-        builder.credential(getTokenCredential());
+        builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
         return instrument(builder);
     }
 
