@@ -3,10 +3,10 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.models.CosmosCommonRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.ReadOnlyRequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -364,12 +364,12 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     }
 
     @Override
-    public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        super.override(cosmosCommonRequestOptions);
-        this.scanInQueryEnabled = overrideOption(cosmosCommonRequestOptions.isScanInQueryEnabled(), this.scanInQueryEnabled);
-        this.maxDegreeOfParallelism = overrideOption(cosmosCommonRequestOptions.getMaxDegreeOfParallelism(), this.maxDegreeOfParallelism);
-        this.maxBufferedItemCount = overrideOption(cosmosCommonRequestOptions.getMaxBufferedItemCount(), this.maxBufferedItemCount);
-        this.maxItemCount = overrideOption(cosmosCommonRequestOptions.getMaxItemCount(), this.maxItemCount);
-        this.queryName = overrideOption(cosmosCommonRequestOptions.getQueryNameOrDefault(""), this.queryName);
+    public void override(ReadOnlyRequestOptions readOnlyRequestOptions) {
+        super.override(readOnlyRequestOptions);
+        this.scanInQueryEnabled = overrideOption(readOnlyRequestOptions.isScanInQueryEnabled(), this.scanInQueryEnabled);
+        this.maxDegreeOfParallelism = overrideOption(readOnlyRequestOptions.getMaxDegreeOfParallelism(), this.maxDegreeOfParallelism);
+        this.maxBufferedItemCount = overrideOption(readOnlyRequestOptions.getMaxBufferedItemCount(), this.maxBufferedItemCount);
+        this.maxItemCount = overrideOption(readOnlyRequestOptions.getMaxItemCount(), this.maxItemCount);
+        this.queryName = overrideOption(readOnlyRequestOptions.getQueryNameOrDefault(""), this.queryName);
     }
 }

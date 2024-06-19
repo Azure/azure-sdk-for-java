@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * Getters for the common request options for operations in CosmosDB.
  */
-public interface ReadOnlyCommonRequestOptions {
+public interface ReadOnlyRequestOptions {
 
     /**
      * Gets the CosmosEndToEndLatencyPolicyConfig.
@@ -21,7 +21,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the CosmosEndToEndLatencyPolicyConfig.
      */
     default CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the CosmosEndToEndLatencyPolicyConfig.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the CosmosEndToEndLatencyPolicyConfig.");
         return null;
     }
 
@@ -31,7 +31,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the consistency level.
      */
     default ConsistencyLevel getConsistencyLevel() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the consistency level.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the consistency level.");
         return null;
     }
 
@@ -41,7 +41,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the content response on write enabled.
      */
     default Boolean isContentResponseOnWriteEnabled() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the content response on write enabled.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the content response on write enabled.");
         return null;
     }
 
@@ -51,7 +51,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the non idempotent write retries enabled.
      */
     default Boolean getNonIdempotentWriteRetriesEnabled() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the non idempotent write retries enabled.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the non idempotent write retries enabled.");
         return null;
     }
 
@@ -61,7 +61,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the dedicated gateway request options.
      */
     default DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the dedicated gateway request options.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the dedicated gateway request options.");
         return null;
     }
 
@@ -85,7 +85,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the diagnostics thresholds.
      */
     default CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the diagnostics thresholds.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the diagnostics thresholds.");
         return null;
     }
 
@@ -95,7 +95,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the scan in query enabled.
      */
     default Boolean isScanInQueryEnabled() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the scan in query enabled.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the scan in query enabled.");
         return null;
     }
 
@@ -105,7 +105,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the max degree of parallelism.
      */
     default Integer getMaxDegreeOfParallelism() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the max degree of parallelism.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the max degree of parallelism.");
         return null;
     }
 
@@ -115,7 +115,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the max buffered item count.
      */
     default Integer getMaxBufferedItemCount() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the max buffered item count.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the max buffered item count.");
         return null;
     }
 
@@ -125,7 +125,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the response continuation token limit in KB.
      */
     default Integer getResponseContinuationTokenLimitInKb() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the response continuation token limit in KB.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the response continuation token limit in KB.");
         return null;
     }
 
@@ -135,7 +135,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the max item count.
      */
     default Integer getMaxItemCount() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the max item count.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the max item count.");
         return null;
     }
 
@@ -145,7 +145,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the query metrics enabled.
      */
     default Boolean isQueryMetricsEnabled() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the query metrics enabled.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the query metrics enabled.");
         return null;
     }
 
@@ -155,7 +155,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the index metrics enabled.
      */
     default Boolean isIndexMetricsEnabled() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the index metrics enabled.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the index metrics enabled.");
         return null;
     }
 
@@ -165,7 +165,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the query name.
      */
     default Integer getMaxPrefetchPageCount() {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the max prefetch page count.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the max prefetch page count.");
         return null;
     }
 
@@ -176,7 +176,7 @@ public interface ReadOnlyCommonRequestOptions {
      * @return the query name.
      */
     default String getQueryNameOrDefault(String defaultQueryName) {
-        LoggerFactory.getLogger(ReadOnlyCommonRequestOptions.class).info("This is not the correct class to get the query name.");
+        LoggerFactory.getLogger(ReadOnlyRequestOptions.class).info("This is not the correct class to get the query name.");
         return null;
     }
 

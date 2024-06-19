@@ -12,7 +12,7 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.CosmosCommonRequestOptions;
+import com.azure.cosmos.models.ReadOnlyRequestOptions;
 import com.azure.cosmos.models.ThroughputProperties;
 
 import java.util.ArrayList;
@@ -562,7 +562,7 @@ public class RequestOptions implements OverridableRequestOptions {
     }
 
     @Override
-    public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+    public void override(ReadOnlyRequestOptions cosmosCommonRequestOptions) {
         this.consistencyLevel = overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
         this.contentResponseOnWriteEnabled = overrideOption(cosmosCommonRequestOptions.isContentResponseOnWriteEnabled(), this.contentResponseOnWriteEnabled);
         this.nonIdempotentWriteRetriesEnabled = overrideOption(cosmosCommonRequestOptions.getNonIdempotentWriteRetriesEnabled(), this.nonIdempotentWriteRetriesEnabled);

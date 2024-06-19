@@ -9,9 +9,9 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.CosmosCommonRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
+import com.azure.cosmos.models.ReadOnlyRequestOptions;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -468,17 +468,17 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     }
 
     @Override
-    public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        this.consistencyLevel = overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
-        this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
-        this.dedicatedGatewayRequestOptions = overrideOption(cosmosCommonRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
-        this.cosmosEndToEndOperationLatencyPolicyConfig = overrideOption(cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.cosmosEndToEndOperationLatencyPolicyConfig);
-        this.excludeRegions = overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
-        this.thresholds = overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
-        this.indexMetricsEnabled = overrideOption(cosmosCommonRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
-        this.queryMetricsEnabled = overrideOption(cosmosCommonRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
-        this.responseContinuationTokenLimitInKb = overrideOption(cosmosCommonRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
-        this.customCorrelatedIds = overrideOption(cosmosCommonRequestOptions.getCustomCorrelatedIds(), this.customCorrelatedIds);
+    public void override(ReadOnlyRequestOptions readOnlyRequestOptions) {
+        this.consistencyLevel = overrideOption( readOnlyRequestOptions.getConsistencyLevel(), this.consistencyLevel);
+        this.throughputControlGroupName = overrideOption( readOnlyRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.dedicatedGatewayRequestOptions = overrideOption( readOnlyRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
+        this.cosmosEndToEndOperationLatencyPolicyConfig = overrideOption( readOnlyRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.cosmosEndToEndOperationLatencyPolicyConfig);
+        this.excludeRegions = overrideOption( readOnlyRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.thresholds = overrideOption( readOnlyRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        this.indexMetricsEnabled = overrideOption( readOnlyRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
+        this.queryMetricsEnabled = overrideOption( readOnlyRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
+        this.responseContinuationTokenLimitInKb = overrideOption( readOnlyRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
+        this.customCorrelatedIds = overrideOption( readOnlyRequestOptions.getCustomCorrelatedIds(), this.customCorrelatedIds);
     }
 
     public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {

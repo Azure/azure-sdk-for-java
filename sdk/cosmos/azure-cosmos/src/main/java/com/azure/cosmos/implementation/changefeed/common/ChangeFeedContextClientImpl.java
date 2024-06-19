@@ -56,9 +56,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     private final AsyncDocumentClient documentClient;
     private final CosmosAsyncContainer cosmosContainer;
     private Scheduler scheduler;
-    private final static
-    ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+   private static final ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.CosmosAsyncDatabaseAccessor cosmosAsyncDatabaseAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncDatabaseHelper.getCosmosAsyncDatabaseAccessor();
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
@@ -166,7 +165,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                     }
 
                     ChangeFeedOperationState state = new ChangeFeedOperationState(
-                        CosmosBridgeInternal.getClient(database),
+                        cosmosAsyncDatabaseAccessor.getCosmosAsyncClient(database),
                         "queryChangeFeed." + collection.getId(),
                         database.getId(),
                         collection.getId(),

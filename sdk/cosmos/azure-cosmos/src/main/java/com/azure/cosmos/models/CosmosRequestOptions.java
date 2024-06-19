@@ -15,7 +15,7 @@ import java.util.Set;
  *  to change request options without restarting the application.
  *
  */
-public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOptions {
+public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
     private ConsistencyLevel consistencyLevel;
     private Boolean contentResponseOnWriteEnabled;
@@ -41,7 +41,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param endToEndOperationLatencyPolicyConfig the CosmosEndToEndLatencyPolicyConfig.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+    public CosmosRequestOptions setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
         this.endToEndOperationLatencyConfig = endToEndOperationLatencyPolicyConfig;
         return this;
     }
@@ -52,7 +52,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param consistencyLevel the consistency level.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+    public CosmosRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
     }
@@ -63,7 +63,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param contentResponseOnWriteEnabled the content response on write enabled.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
+    public CosmosRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
         return this;
     }
@@ -74,7 +74,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param nonIdempotentWriteRetriesEnabled the NonIdempotentWriteRetriesEnabled.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setNonIdempotentWriteRetriesEnabled(boolean nonIdempotentWriteRetriesEnabled) {
+    public CosmosRequestOptions setNonIdempotentWriteRetriesEnabled(boolean nonIdempotentWriteRetriesEnabled) {
         this.nonIdempotentWriteRetriesEnabled = nonIdempotentWriteRetriesEnabled;
         return this;
     }
@@ -85,7 +85,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param dedicatedGatewayRequestOptions the DedicatedGatewayRequestOptions.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
+    public CosmosRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
         this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
         return this;
     }
@@ -96,7 +96,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param excludeRegions the ExcludeRegions.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setExcludeRegions(List<String> excludeRegions) {
+    public CosmosRequestOptions setExcludeRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
         return this;
     }
@@ -107,7 +107,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param throughputControlGroupName the ThroughputControlGroupName.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
+    public CosmosRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
         return this;
     }
@@ -118,7 +118,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param thresholds the CosmosDiagnosticsThresholds.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setThresholds(CosmosDiagnosticsThresholds thresholds) {
+    public CosmosRequestOptions setThresholds(CosmosDiagnosticsThresholds thresholds) {
         this.thresholds = thresholds;
         return this;
     }
@@ -129,7 +129,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param scanInQueryEnabled the ScanInQueryEnabled.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setScanInQueryEnabled(Boolean scanInQueryEnabled) {
+    public CosmosRequestOptions setScanInQueryEnabled(Boolean scanInQueryEnabled) {
         this.scanInQueryEnabled = scanInQueryEnabled;
         return this;
     }
@@ -140,7 +140,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param maxDegreeOfParallelism the MaxDegreeOfParallelism.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
+    public CosmosRequestOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         return this;
     }
@@ -151,7 +151,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param maxBufferedItemCount the MaxBufferedItemCount.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setMaxBufferedItemCount(int maxBufferedItemCount) {
+    public CosmosRequestOptions setMaxBufferedItemCount(int maxBufferedItemCount) {
         this.maxBufferedItemCount = maxBufferedItemCount;
         return this;
     }
@@ -162,7 +162,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param responseContinuationTokenLimitInKb the ResponseContinuationTokenLimitInKb.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setResponseContinuationTokenLimitInKb(int responseContinuationTokenLimitInKb) {
+    public CosmosRequestOptions setResponseContinuationTokenLimitInKb(int responseContinuationTokenLimitInKb) {
         this.responseContinuationTokenLimitInKb = responseContinuationTokenLimitInKb;
         return this;
     }
@@ -173,7 +173,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param maxItemCount the MaxItemCount.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setMaxItemCount(int maxItemCount) {
+    public CosmosRequestOptions setMaxItemCount(int maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
@@ -184,7 +184,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param queryMetricsEnabled the QueryMetricsEnabled.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
+    public CosmosRequestOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
         this.queryMetricsEnabled = queryMetricsEnabled;
         return this;
     }
@@ -195,7 +195,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param indexMetricsEnabled the IndexMetricsEnabled.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setIndexMetricsEnabled(boolean indexMetricsEnabled) {
+    public CosmosRequestOptions setIndexMetricsEnabled(boolean indexMetricsEnabled) {
         this.indexMetricsEnabled = indexMetricsEnabled;
         return this;
     }
@@ -206,7 +206,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param maxPrefetchPageCount the MaxPrefetchPageCount.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setMaxPrefetchPageCount(int maxPrefetchPageCount) {
+    public CosmosRequestOptions setMaxPrefetchPageCount(int maxPrefetchPageCount) {
         this.maxPrefetchPageCount = maxPrefetchPageCount;
         return this;
     }
@@ -217,7 +217,7 @@ public final class CosmosCommonRequestOptions implements ReadOnlyCommonRequestOp
      * @param queryName the QueryName.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setQueryName(String queryName) {
+    public CosmosRequestOptions setQueryName(String queryName) {
         this.queryName = queryName;
         return this;
     }

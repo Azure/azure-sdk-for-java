@@ -1402,7 +1402,7 @@ public class ImplementationBridgeHelpers {
 
             DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client);
 
-            List<CosmosOperationPolicy> getPolicies(CosmosAsyncClient client);
+            List<CosmosOperationPolicy> getOperationPolicies(CosmosAsyncClient client);
 
             CosmosItemSerializer getEffectiveItemSerializer(
                 CosmosAsyncClient client,

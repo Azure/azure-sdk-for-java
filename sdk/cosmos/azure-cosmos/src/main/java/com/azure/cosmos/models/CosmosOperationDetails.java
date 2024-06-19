@@ -23,10 +23,10 @@ public final class CosmosOperationDetails {
     /**
      * Applies the options in the CosmosCommonRequestOptions to the internal request options.
      *
-     * @param cosmosCommonRequestOptions the common request options for overriding.
+     * @param readOnlyRequestOptions the common request options for overriding.
      */
-    public void setCommonOptions(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        requestOptions.override(cosmosCommonRequestOptions);
+    public void setCommonOptions(ReadOnlyRequestOptions readOnlyRequestOptions) {
+        requestOptions.override(readOnlyRequestOptions);
     }
 
     /**
@@ -34,7 +34,7 @@ public final class CosmosOperationDetails {
      *
      * @return the internal request options.
      */
-    public ReadOnlyCommonRequestOptions getRequestOptions() {
+    public ReadOnlyRequestOptions getRequestOptions() {
         return requestOptions;
     }
 

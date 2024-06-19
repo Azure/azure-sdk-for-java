@@ -240,12 +240,12 @@ public class CosmosClientBuilder implements
      * @param policy the policy to add
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder addPolicy(CosmosOperationPolicy policy) {
+    public CosmosClientBuilder addOperationPolicy(CosmosOperationPolicy policy) {
         this.requestPolicies.add(policy);
         return this;
     }
 
-    List<CosmosOperationPolicy> getPolicies() {
+    List<CosmosOperationPolicy> getOperationPolicies() {
         return requestPolicies;
     }
 

@@ -348,7 +348,7 @@ public interface AsyncDocumentClient {
             return credential;
         }
 
-        public Builder withRequestPolicies(List<CosmosOperationPolicy> operationPolicies) {
+        public Builder withOperationPolicies(List<CosmosOperationPolicy> operationPolicies) {
             this.operationPolicies = operationPolicies;
             return this;
         }
