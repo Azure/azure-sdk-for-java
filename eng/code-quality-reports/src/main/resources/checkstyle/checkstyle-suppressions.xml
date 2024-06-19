@@ -343,6 +343,13 @@ the main ServiceBusClientBuilder. -->
 
   <!-- ### begin: Spring related suppression -->
 
+  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-data-cosmos[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
+  <suppress checks="EnforceFinalFields" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest"/>
+  <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
+  <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
+
   <!-- The constant name is public static. -->
   <suppress checks="ConstantName" files="com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties"/>
 
@@ -370,6 +377,7 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress package name warning: oauth2 is the protocol name. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2" />
   <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter"/>
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.aadb2c.*" />
   <!-- The package name length limit -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties"/>
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.package-info.java"/>
@@ -397,10 +405,10 @@ the main ServiceBusClientBuilder. -->
   <!-- Checkstyle suppressions for com.azure.spring.cloud.service.implementation.redis package -->
   <suppress checks="MethodName" files="com.azure.spring.cloud.service.implementation.redis.AzureJedisClientConfig"/>
 
-  <!-- ### end: Spring related suppression -->
-
   <!-- Checkstyle suppressions for azure.spring.cloud.autoconfigure.compatibility package -->
   <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.java"/>
+
+  <!-- ### end: Spring related suppression -->
 
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
   <!-- Suppress DigitalTwins for now -->
