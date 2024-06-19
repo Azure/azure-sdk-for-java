@@ -527,7 +527,7 @@ public interface StorageTaskAssignmentsClient {
      * @return list of storage task assignments for the storage account as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<StorageTaskAssignmentInner> listAsync(String resourceGroupName, String accountName, String maxpagesize);
+    PagedFlux<StorageTaskAssignmentInner> listAsync(String resourceGroupName, String accountName, Integer maxpagesize);
 
     /**
      * List all the storage task assignments in an account.
@@ -574,6 +574,6 @@ public interface StorageTaskAssignmentsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String accountName, String maxpagesize,
+    PagedIterable<StorageTaskAssignmentInner> list(String resourceGroupName, String accountName, Integer maxpagesize,
         Context context);
 }
