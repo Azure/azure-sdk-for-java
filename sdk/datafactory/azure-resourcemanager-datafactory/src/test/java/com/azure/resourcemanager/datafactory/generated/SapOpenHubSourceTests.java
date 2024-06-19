@@ -11,22 +11,22 @@ public final class SapOpenHubSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapOpenHubSource model = BinaryData.fromString(
-            "{\"type\":\"syhdapynpvgya\",\"excludeLastRequest\":\"datasksfbkxfkeeqo\",\"baseRequestId\":\"databek\",\"customRfcReadTableFunctionModule\":\"dataerwss\",\"sapDataColumnDelimiter\":\"datamrpdjrylfpdudx\",\"queryTimeout\":\"databanfsqfhatqssnge\",\"additionalColumns\":\"datayffgohrhj\",\"sourceRetryCount\":\"datatbet\",\"sourceRetryWait\":\"datadtgpvnczf\",\"maxConcurrentConnections\":\"dataybjku\",\"disableMetricsCollection\":\"dataajkyrhucbfkaqlp\",\"\":{\"ronbqakt\":\"datat\",\"obcqvzmywvsyn\":\"dataotmge\"}}")
+            "{\"type\":\"SapOpenHubSource\",\"excludeLastRequest\":\"datazglbplqh\",\"baseRequestId\":\"dataaruk\",\"customRfcReadTableFunctionModule\":\"datapsxufyqcqfou\",\"sapDataColumnDelimiter\":\"dataeyxgxbgo\",\"queryTimeout\":\"datapxpswp\",\"additionalColumns\":\"datasioo\",\"sourceRetryCount\":\"dataugbdkxlwck\",\"sourceRetryWait\":\"datalzk\",\"maxConcurrentConnections\":\"datajtapvqjebtdp\",\"disableMetricsCollection\":\"datakeexso\",\"\":{\"twtfqpmpyw\":\"datavylvt\"}}")
             .toObject(SapOpenHubSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapOpenHubSource model = new SapOpenHubSource().withSourceRetryCount("datatbet")
-            .withSourceRetryWait("datadtgpvnczf")
-            .withMaxConcurrentConnections("dataybjku")
-            .withDisableMetricsCollection("dataajkyrhucbfkaqlp")
-            .withQueryTimeout("databanfsqfhatqssnge")
-            .withAdditionalColumns("datayffgohrhj")
-            .withExcludeLastRequest("datasksfbkxfkeeqo")
-            .withBaseRequestId("databek")
-            .withCustomRfcReadTableFunctionModule("dataerwss")
-            .withSapDataColumnDelimiter("datamrpdjrylfpdudx");
+        SapOpenHubSource model = new SapOpenHubSource().withSourceRetryCount("dataugbdkxlwck")
+            .withSourceRetryWait("datalzk")
+            .withMaxConcurrentConnections("datajtapvqjebtdp")
+            .withDisableMetricsCollection("datakeexso")
+            .withQueryTimeout("datapxpswp")
+            .withAdditionalColumns("datasioo")
+            .withExcludeLastRequest("datazglbplqh")
+            .withBaseRequestId("dataaruk")
+            .withCustomRfcReadTableFunctionModule("datapsxufyqcqfou")
+            .withSapDataColumnDelimiter("dataeyxgxbgo");
         model = BinaryData.fromObject(model).toObject(SapOpenHubSource.class);
     }
 }

@@ -11,19 +11,19 @@ public final class MariaDBSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MariaDBSource model = BinaryData.fromString(
-            "{\"type\":\"s\",\"query\":\"databbwtagxhriru\",\"queryTimeout\":\"datad\",\"additionalColumns\":\"dataxjxl\",\"sourceRetryCount\":\"datarolagbellp\",\"sourceRetryWait\":\"datafbrsmyisndf\",\"maxConcurrentConnections\":\"datahgowhnvcqhmuv\",\"disableMetricsCollection\":\"datastohurktod\",\"\":{\"phnxxwble\":\"datatyijlvc\",\"ebw\":\"databdkwzbkhvlsahj\",\"ihfxtbvhmsvcmce\":\"dataqnluszilkrcpxl\"}}")
+            "{\"type\":\"MariaDBSource\",\"query\":\"datajvmllyjelnhmu\",\"queryTimeout\":\"dataxkofzx\",\"additionalColumns\":\"datasleokbama\",\"sourceRetryCount\":\"datawgccgblepamvl\",\"sourceRetryWait\":\"dataxdaoj\",\"maxConcurrentConnections\":\"datalqoxwqlnxvnmrl\",\"disableMetricsCollection\":\"datajzya\",\"\":{\"zp\":\"dataecwnufldzjcpvhj\",\"boxvwtlnv\":\"datahfejgpef\",\"rje\":\"datashtujaqpkupnr\"}}")
             .toObject(MariaDBSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MariaDBSource model = new MariaDBSource().withSourceRetryCount("datarolagbellp")
-            .withSourceRetryWait("datafbrsmyisndf")
-            .withMaxConcurrentConnections("datahgowhnvcqhmuv")
-            .withDisableMetricsCollection("datastohurktod")
-            .withQueryTimeout("datad")
-            .withAdditionalColumns("dataxjxl")
-            .withQuery("databbwtagxhriru");
+        MariaDBSource model = new MariaDBSource().withSourceRetryCount("datawgccgblepamvl")
+            .withSourceRetryWait("dataxdaoj")
+            .withMaxConcurrentConnections("datalqoxwqlnxvnmrl")
+            .withDisableMetricsCollection("datajzya")
+            .withQueryTimeout("dataxkofzx")
+            .withAdditionalColumns("datasleokbama")
+            .withQuery("datajvmllyjelnhmu");
         model = BinaryData.fromObject(model).toObject(MariaDBSource.class);
     }
 }

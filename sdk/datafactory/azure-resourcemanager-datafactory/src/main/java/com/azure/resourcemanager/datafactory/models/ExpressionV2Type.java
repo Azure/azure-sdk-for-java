@@ -33,6 +33,11 @@ public final class ExpressionV2Type extends ExpandableStringEnum<ExpressionV2Typ
     public static final ExpressionV2Type BINARY = fromString("Binary");
 
     /**
+     * Static value NAry for ExpressionV2Type.
+     */
+    public static final ExpressionV2Type NARY = fromString("NAry");
+
+    /**
      * Creates a new instance of ExpressionV2Type value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

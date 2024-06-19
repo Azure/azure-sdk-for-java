@@ -14,20 +14,20 @@ public final class ExcelSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExcelSource model = BinaryData.fromString(
-            "{\"type\":\"rw\",\"storeSettings\":{\"type\":\"bubyabtowbuuhlw\",\"maxConcurrentConnections\":\"datavzuxfsmfpd\",\"disableMetricsCollection\":\"dataoqpzwfvnoy\",\"\":{\"ljzrqw\":\"datajylhv\",\"kejyavk\":\"datatswemot\"}},\"additionalColumns\":\"datavctqaq\",\"sourceRetryCount\":\"dataeyklxs\",\"sourceRetryWait\":\"databrszltvmmdsngoa\",\"maxConcurrentConnections\":\"datam\",\"disableMetricsCollection\":\"datahhnsf\",\"\":{\"jooep\":\"datakcgdnhacexibomr\"}}")
+            "{\"type\":\"ExcelSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datapx\",\"disableMetricsCollection\":\"datayhivh\",\"\":{\"brdnovuduwwjo\":\"dataqxyfbkazylay\"}},\"additionalColumns\":\"datacnrkmcivhwwhy\",\"sourceRetryCount\":\"datahwbdfcfyzw\",\"sourceRetryWait\":\"datarjfsq\",\"maxConcurrentConnections\":\"datafqaqoveqowqod\",\"disableMetricsCollection\":\"datapasxwiic\",\"\":{\"dow\":\"datajhhad\"}}")
             .toObject(ExcelSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExcelSource model = new ExcelSource().withSourceRetryCount("dataeyklxs")
-            .withSourceRetryWait("databrszltvmmdsngoa")
-            .withMaxConcurrentConnections("datam")
-            .withDisableMetricsCollection("datahhnsf")
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datavzuxfsmfpd")
-                .withDisableMetricsCollection("dataoqpzwfvnoy")
-                .withAdditionalProperties(mapOf("type", "bubyabtowbuuhlw")))
-            .withAdditionalColumns("datavctqaq");
+        ExcelSource model = new ExcelSource().withSourceRetryCount("datahwbdfcfyzw")
+            .withSourceRetryWait("datarjfsq")
+            .withMaxConcurrentConnections("datafqaqoveqowqod")
+            .withDisableMetricsCollection("datapasxwiic")
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datapx")
+                .withDisableMetricsCollection("datayhivh")
+                .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
+            .withAdditionalColumns("datacnrkmcivhwwhy");
         model = BinaryData.fromObject(model).toObject(ExcelSource.class);
     }
 

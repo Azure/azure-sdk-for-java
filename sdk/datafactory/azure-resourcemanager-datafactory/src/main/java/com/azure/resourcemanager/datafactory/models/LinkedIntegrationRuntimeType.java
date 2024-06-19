@@ -30,13 +30,12 @@ public class LinkedIntegrationRuntimeType {
      */
     @JsonTypeId
     @JsonProperty(value = "authorizationType", required = true)
-    private String authorizationType;
+    private String authorizationType = "LinkedIntegrationRuntimeType";
 
     /**
      * Creates an instance of LinkedIntegrationRuntimeType class.
      */
     public LinkedIntegrationRuntimeType() {
-        this.authorizationType = "LinkedIntegrationRuntimeType";
     }
 
     /**

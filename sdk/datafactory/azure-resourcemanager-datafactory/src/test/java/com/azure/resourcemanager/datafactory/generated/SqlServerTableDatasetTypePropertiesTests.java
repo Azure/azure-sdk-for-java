@@ -11,16 +11,16 @@ public final class SqlServerTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlServerTableDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"datamrttujyd\",\"schema\":\"datatwxpxbxedhxbboc\",\"table\":\"datasramqc\"}")
+            .fromString("{\"tableName\":\"datavwrmjx\",\"schema\":\"datauod\",\"table\":\"dataczbassqfyylwpp\"}")
             .toObject(SqlServerTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlServerTableDatasetTypeProperties model
-            = new SqlServerTableDatasetTypeProperties().withTableName("datamrttujyd")
-                .withSchema("datatwxpxbxedhxbboc")
-                .withTable("datasramqc");
+            = new SqlServerTableDatasetTypeProperties().withTableName("datavwrmjx")
+                .withSchema("datauod")
+                .withTable("dataczbassqfyylwpp");
         model = BinaryData.fromObject(model).toObject(SqlServerTableDatasetTypeProperties.class);
     }
 }
