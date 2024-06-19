@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * SyntaxFormatType enum.
+ * Syntax format type enum.
  */
 public final class SyntaxFormatType extends ExpandableStringEnum<SyntaxFormatType> {
     /**
@@ -42,7 +41,6 @@ public final class SyntaxFormatType extends ExpandableStringEnum<SyntaxFormatTyp
      * @param name a name to look for.
      * @return the corresponding SyntaxFormatType.
      */
-    @JsonCreator
     public static SyntaxFormatType fromString(String name) {
         return fromString(name, SyntaxFormatType.class);
     }

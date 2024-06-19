@@ -11,16 +11,16 @@ public final class MongoDbAtlasLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbAtlasLinkedServiceTypeProperties model = BinaryData.fromString(
-            "{\"connectionString\":\"databsgpdbhbdx\",\"database\":\"datajsoxuuwuungdvv\",\"driverVersion\":\"datarcpq\"}")
+            "{\"connectionString\":\"datandidhuepikwcxoa\",\"database\":\"datagukqmkiynbfvkiwm\",\"driverVersion\":\"dataw\"}")
             .toObject(MongoDbAtlasLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MongoDbAtlasLinkedServiceTypeProperties model
-            = new MongoDbAtlasLinkedServiceTypeProperties().withConnectionString("databsgpdbhbdx")
-                .withDatabase("datajsoxuuwuungdvv")
-                .withDriverVersion("datarcpq");
+            = new MongoDbAtlasLinkedServiceTypeProperties().withConnectionString("datandidhuepikwcxoa")
+                .withDatabase("datagukqmkiynbfvkiwm")
+                .withDriverVersion("dataw");
         model = BinaryData.fromObject(model).toObject(MongoDbAtlasLinkedServiceTypeProperties.class);
     }
 }

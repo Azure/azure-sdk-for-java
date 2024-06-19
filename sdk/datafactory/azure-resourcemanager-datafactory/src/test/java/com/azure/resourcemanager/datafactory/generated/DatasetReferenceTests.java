@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DatasetReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatasetReference model = BinaryData
-            .fromString("{\"referenceName\":\"mnitmujd\",\"parameters\":{\"xfzuvrzmzqmzj\":\"dataclyymffhmjpddn\"}}")
-            .toObject(DatasetReference.class);
-        Assertions.assertEquals("mnitmujd", model.referenceName());
+        DatasetReference model
+            = BinaryData.fromString("{\"referenceName\":\"ojbf\",\"parameters\":{\"xmbjroum\":\"datakfnjyixhafrat\"}}")
+                .toObject(DatasetReference.class);
+        Assertions.assertEquals("ojbf", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetReference model = new DatasetReference().withReferenceName("mnitmujd")
-            .withParameters(mapOf("xfzuvrzmzqmzj", "dataclyymffhmjpddn"));
+        DatasetReference model
+            = new DatasetReference().withReferenceName("ojbf").withParameters(mapOf("xmbjroum", "datakfnjyixhafrat"));
         model = BinaryData.fromObject(model).toObject(DatasetReference.class);
-        Assertions.assertEquals("mnitmujd", model.referenceName());
+        Assertions.assertEquals("ojbf", model.referenceName());
     }
 
     // Use "Map.of" if available

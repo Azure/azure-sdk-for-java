@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -18,7 +18,8 @@ import java.util.Map;
 @Fluent
 public final class IntegrationRuntimeComputeProperties {
     /*
-     * The location for managed integration runtime. The supported regions could be found on https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities
+     * The location for managed integration runtime. The supported regions could be found on
+     * https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities
      */
     @JsonProperty(value = "location")
     private String location;
@@ -270,7 +271,7 @@ public final class IntegrationRuntimeComputeProperties {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

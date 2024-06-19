@@ -15,22 +15,24 @@ public final class SelfHostedIntegrationRuntimeNodeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SelfHostedIntegrationRuntimeNodeInner model = BinaryData.fromString(
-            "{\"nodeName\":\"gmtsavjcbpwxqpsr\",\"machineName\":\"ftguv\",\"hostServiceUri\":\"uhprwmdyvxqt\",\"status\":\"InitializeFailed\",\"capabilities\":{\"bycnojvkn\":\"wroyqbexrmcq\"},\"versionStatus\":\"fqsgzvahapjy\",\"version\":\"pvgqzcjrvxdjzlm\",\"registerTime\":\"2021-03-28T06:32:39Z\",\"lastConnectTime\":\"2021-07-11T22:18:52Z\",\"expiryTime\":\"2021-11-03T14:53:04Z\",\"lastStartTime\":\"2021-11-07T19:38:17Z\",\"lastStopTime\":\"2021-02-21T21:24:09Z\",\"lastUpdateResult\":\"None\",\"lastStartUpdateTime\":\"2021-04-06T17:45:34Z\",\"lastEndUpdateTime\":\"2021-08-30T15:15:07Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":2116872834,\"maxConcurrentJobs\":1184758782,\"\":{\"jzuaejxdultskzbb\":\"dataprnxipeil\"}}")
+            "{\"nodeName\":\"e\",\"machineName\":\"sgzvahapjyzhpv\",\"hostServiceUri\":\"zcjrvxdjzlmwlx\",\"status\":\"Online\",\"capabilities\":{\"nnprn\":\"hzovawjvzunlut\",\"eilpjzuaejxdu\":\"i\",\"pwo\":\"tskzbbtdzumveek\",\"fpbsjyofdxl\":\"uh\"},\"versionStatus\":\"sd\",\"version\":\"ouwaboekqvkeln\",\"registerTime\":\"2021-02-02T03:25:54Z\",\"lastConnectTime\":\"2020-12-28T23:28:21Z\",\"expiryTime\":\"2021-07-06T07:16:14Z\",\"lastStartTime\":\"2021-03-30T06:11:19Z\",\"lastStopTime\":\"2021-08-23T09:42:03Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-01-31T17:20:46Z\",\"lastEndUpdateTime\":\"2021-07-31T18:32:18Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":1744629944,\"maxConcurrentJobs\":923639125,\"\":{\"iidzyexzne\":\"dataawjoyaqcslyjp\"}}")
             .toObject(SelfHostedIntegrationRuntimeNodeInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SelfHostedIntegrationRuntimeNodeInner model = new SelfHostedIntegrationRuntimeNodeInner()
-            .withAdditionalProperties(mapOf("nodeName", "gmtsavjcbpwxqpsr", "lastStartUpdateTime",
-                "2021-04-06T17:45:34Z", "lastConnectTime", "2021-07-11T22:18:52Z", "capabilities",
+            .withAdditionalProperties(mapOf("nodeName", "e", "lastStartUpdateTime", "2021-01-31T17:20:46Z",
+                "lastConnectTime", "2020-12-28T23:28:21Z", "capabilities",
                 JacksonAdapter.createDefaultSerializerAdapter()
-                    .deserialize("{\"bycnojvkn\":\"wroyqbexrmcq\"}", Object.class, SerializerEncoding.JSON),
-                "hostServiceUri", "uhprwmdyvxqt", "registerTime", "2021-03-28T06:32:39Z", "maxConcurrentJobs",
-                1184758782, "lastStopTime", "2021-02-21T21:24:09Z", "version", "pvgqzcjrvxdjzlm", "machineName",
-                "ftguv", "versionStatus", "fqsgzvahapjy", "concurrentJobsLimit", 2116872834, "lastEndUpdateTime",
-                "2021-08-30T15:15:07Z", "expiryTime", "2021-11-03T14:53:04Z", "lastStartTime", "2021-11-07T19:38:17Z",
-                "lastUpdateResult", "None", "isActiveDispatcher", false, "status", "InitializeFailed"));
+                    .deserialize(
+                        "{\"nnprn\":\"hzovawjvzunlut\",\"eilpjzuaejxdu\":\"i\",\"pwo\":\"tskzbbtdzumveek\",\"fpbsjyofdxl\":\"uh\"}",
+                        Object.class, SerializerEncoding.JSON),
+                "hostServiceUri", "zcjrvxdjzlmwlx", "registerTime", "2021-02-02T03:25:54Z", "maxConcurrentJobs",
+                923639125, "lastStopTime", "2021-08-23T09:42:03Z", "version", "ouwaboekqvkeln", "machineName",
+                "sgzvahapjyzhpv", "versionStatus", "sd", "concurrentJobsLimit", 1744629944, "lastEndUpdateTime",
+                "2021-07-31T18:32:18Z", "expiryTime", "2021-07-06T07:16:14Z", "lastStartTime", "2021-03-30T06:11:19Z",
+                "lastUpdateResult", "Fail", "isActiveDispatcher", true, "status", "Online"));
         model = BinaryData.fromObject(model).toObject(SelfHostedIntegrationRuntimeNodeInner.class);
     }
 

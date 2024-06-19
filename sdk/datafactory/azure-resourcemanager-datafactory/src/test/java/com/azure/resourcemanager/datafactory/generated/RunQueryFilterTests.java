@@ -15,21 +15,21 @@ public final class RunQueryFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RunQueryFilter model = BinaryData.fromString(
-            "{\"operand\":\"TriggerRunTimestamp\",\"operator\":\"NotEquals\",\"values\":[\"qytibyowbblgyavu\",\"pthjoxo\",\"smsks\",\"pi\"]}")
+            "{\"operand\":\"TriggerName\",\"operator\":\"Equals\",\"values\":[\"vewzcj\",\"nmwcpmgu\",\"adraufactkahzo\",\"ajjziuxxpshne\"]}")
             .toObject(RunQueryFilter.class);
-        Assertions.assertEquals(RunQueryFilterOperand.TRIGGER_RUN_TIMESTAMP, model.operand());
-        Assertions.assertEquals(RunQueryFilterOperator.NOT_EQUALS, model.operator());
-        Assertions.assertEquals("qytibyowbblgyavu", model.values().get(0));
+        Assertions.assertEquals(RunQueryFilterOperand.TRIGGER_NAME, model.operand());
+        Assertions.assertEquals(RunQueryFilterOperator.EQUALS, model.operator());
+        Assertions.assertEquals("vewzcj", model.values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RunQueryFilter model = new RunQueryFilter().withOperand(RunQueryFilterOperand.TRIGGER_RUN_TIMESTAMP)
-            .withOperator(RunQueryFilterOperator.NOT_EQUALS)
-            .withValues(Arrays.asList("qytibyowbblgyavu", "pthjoxo", "smsks", "pi"));
+        RunQueryFilter model = new RunQueryFilter().withOperand(RunQueryFilterOperand.TRIGGER_NAME)
+            .withOperator(RunQueryFilterOperator.EQUALS)
+            .withValues(Arrays.asList("vewzcj", "nmwcpmgu", "adraufactkahzo", "ajjziuxxpshne"));
         model = BinaryData.fromObject(model).toObject(RunQueryFilter.class);
-        Assertions.assertEquals(RunQueryFilterOperand.TRIGGER_RUN_TIMESTAMP, model.operand());
-        Assertions.assertEquals(RunQueryFilterOperator.NOT_EQUALS, model.operator());
-        Assertions.assertEquals("qytibyowbblgyavu", model.values().get(0));
+        Assertions.assertEquals(RunQueryFilterOperand.TRIGGER_NAME, model.operand());
+        Assertions.assertEquals(RunQueryFilterOperator.EQUALS, model.operator());
+        Assertions.assertEquals("vewzcj", model.values().get(0));
     }
 }

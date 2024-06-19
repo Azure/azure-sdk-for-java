@@ -5,78 +5,73 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The updatable properties of the CloudVmCluster.
  */
 @Fluent
-public final class CloudVmClusterUpdateProperties {
+public final class CloudVmClusterUpdateProperties implements JsonSerializable<CloudVmClusterUpdateProperties> {
     /*
      * The data disk group size to be allocated in GBs per VM.
      */
-    @JsonProperty(value = "storageSizeInGbs")
     private Integer storageSizeInGbs;
 
     /*
      * The data disk group size to be allocated in TBs.
      */
-    @JsonProperty(value = "dataStorageSizeInTbs")
     private Double dataStorageSizeInTbs;
 
     /*
      * The local node storage to be allocated in GBs.
      */
-    @JsonProperty(value = "dbNodeStorageSizeInGbs")
     private Integer dbNodeStorageSizeInGbs;
 
     /*
      * The memory to be allocated in GBs.
      */
-    @JsonProperty(value = "memorySizeInGbs")
     private Integer memorySizeInGbs;
 
     /*
      * The number of CPU cores enabled on the cloud VM cluster.
      */
-    @JsonProperty(value = "cpuCoreCount")
     private Integer cpuCoreCount;
 
     /*
-     * The number of OCPU cores to enable on the cloud VM cluster. Only 1 decimal place is allowed for the fractional part.
+     * The number of OCPU cores to enable on the cloud VM cluster. Only 1 decimal place is allowed for the fractional
+     * part.
      */
-    @JsonProperty(value = "ocpuCount")
     private Float ocpuCount;
 
     /*
      * The public key portion of one or more key pairs used for SSH access to the cloud VM cluster.
      */
-    @JsonProperty(value = "sshPublicKeys")
     private List<String> sshPublicKeys;
 
     /*
-     * The Oracle license model that applies to the cloud VM cluster. The default is LICENSE_INCLUDED. 
+     * The Oracle license model that applies to the cloud VM cluster. The default is LICENSE_INCLUDED.
      */
-    @JsonProperty(value = "licenseModel")
     private LicenseModel licenseModel;
 
     /*
-     * Indicates user preferences for the various diagnostic collection options for the VM cluster/Cloud VM cluster/VMBM DBCS.
+     * Indicates user preferences for the various diagnostic collection options for the VM cluster/Cloud VM cluster/VMBM
+     * DBCS.
      */
-    @JsonProperty(value = "dataCollectionOptions")
     private DataCollectionOptions dataCollectionOptions;
 
     /*
      * Display Name
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The list of compute servers to be added to the cloud VM cluster.
      */
-    @JsonProperty(value = "computeNodes")
     private List<String> computeNodes;
 
     /**
@@ -322,5 +317,80 @@ public final class CloudVmClusterUpdateProperties {
         if (dataCollectionOptions() != null) {
             dataCollectionOptions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("storageSizeInGbs", this.storageSizeInGbs);
+        jsonWriter.writeNumberField("dataStorageSizeInTbs", this.dataStorageSizeInTbs);
+        jsonWriter.writeNumberField("dbNodeStorageSizeInGbs", this.dbNodeStorageSizeInGbs);
+        jsonWriter.writeNumberField("memorySizeInGbs", this.memorySizeInGbs);
+        jsonWriter.writeNumberField("cpuCoreCount", this.cpuCoreCount);
+        jsonWriter.writeNumberField("ocpuCount", this.ocpuCount);
+        jsonWriter.writeArrayField("sshPublicKeys", this.sshPublicKeys,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("licenseModel", this.licenseModel == null ? null : this.licenseModel.toString());
+        jsonWriter.writeJsonField("dataCollectionOptions", this.dataCollectionOptions);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("computeNodes", this.computeNodes, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudVmClusterUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudVmClusterUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudVmClusterUpdateProperties.
+     */
+    public static CloudVmClusterUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudVmClusterUpdateProperties deserializedCloudVmClusterUpdateProperties
+                = new CloudVmClusterUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageSizeInGbs".equals(fieldName)) {
+                    deserializedCloudVmClusterUpdateProperties.storageSizeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("dataStorageSizeInTbs".equals(fieldName)) {
+                    deserializedCloudVmClusterUpdateProperties.dataStorageSizeInTbs
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("dbNodeStorageSizeInGbs".equals(fieldName)) {
+                    deserializedCloudVmClusterUpdateProperties.dbNodeStorageSizeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("memorySizeInGbs".equals(fieldName)) {
+                    deserializedCloudVmClusterUpdateProperties.memorySizeInGbs = reader.getNullable(JsonReader::getInt);
+                } else if ("cpuCoreCount".equals(fieldName)) {
+                    deserializedCloudVmClusterUpdateProperties.cpuCoreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("ocpuCount".equals(fieldName)) {
+                    deserializedCloudVmClusterUpdateProperties.ocpuCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("sshPublicKeys".equals(fieldName)) {
+                    List<String> sshPublicKeys = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCloudVmClusterUpdateProperties.sshPublicKeys = sshPublicKeys;
+                } else if ("licenseModel".equals(fieldName)) {
+                    deserializedCloudVmClusterUpdateProperties.licenseModel
+                        = LicenseModel.fromString(reader.getString());
+                } else if ("dataCollectionOptions".equals(fieldName)) {
+                    deserializedCloudVmClusterUpdateProperties.dataCollectionOptions
+                        = DataCollectionOptions.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedCloudVmClusterUpdateProperties.displayName = reader.getString();
+                } else if ("computeNodes".equals(fieldName)) {
+                    List<String> computeNodes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCloudVmClusterUpdateProperties.computeNodes = computeNodes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudVmClusterUpdateProperties;
+        });
     }
 }

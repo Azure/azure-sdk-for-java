@@ -50,9 +50,8 @@ com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-textanalytics;5.4.6;5.5.0-beta.1
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-translation-text;1.0.0;1.1.0-beta.1
-com.azure:azure-ai-translation-document;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-ai-translation-document;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-defender-easm;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-analytics-purview-catalog;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-analytics-purview-datamap;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-analytics-purview-scanning;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-analytics-purview-sharing;1.0.0-beta.2;1.0.0-beta.3
@@ -142,7 +141,6 @@ com.azure:azure-json-gson;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-json-reflect;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-maps-traffic;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-weather;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-maps-elevation;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-maps-timezone;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-geolocation;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-render;1.0.0-beta.2;1.0.0-beta.3
@@ -150,7 +148,7 @@ com.azure:azure-maps-route;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-search;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-media-videoanalyzer-edge;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-messaging-eventgrid;4.22.2;4.23.0-beta.1
-com.azure:azure-messaging-eventgrid-namespaces;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-messaging-eventgrid-namespaces;1.0.0;1.1.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventhubs;5.18.4;5.19.0-beta.2
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.19.4;1.20.0-beta.2
@@ -424,7 +422,7 @@ com.azure.resourcemanager:azure-resourcemanager-devhub;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-elasticsan;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hybridcontainerservice;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-securitydevops;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-appcomplianceautomation;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-appcomplianceautomation;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-servicenetworking;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicessiterecovery;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-billingbenefits;1.0.0-beta.1;1.0.0-beta.2

@@ -21,7 +21,8 @@ public final class ScriptActivityScriptBlock {
     private Object text;
 
     /*
-     * The type of the query. Please refer to the ScriptType for valid options. Type: string (or Expression with resultType string).
+     * The type of the query. Please refer to the ScriptType for valid options. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "type", required = true)
     private Object type;

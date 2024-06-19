@@ -16,6 +16,7 @@ import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabase
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdate;
 import com.azure.resourcemanager.oracledatabase.models.GenerateAutonomousDatabaseWalletDetails;
 import com.azure.resourcemanager.oracledatabase.models.PeerDbDetails;
+import com.azure.resourcemanager.oracledatabase.models.RestoreAutonomousDatabaseDetails;
 
 /**
  * An instance of this class provides access to all the operations defined in AutonomousDatabasesClient.
@@ -364,6 +365,124 @@ public interface AutonomousDatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     AutonomousDatabaseWalletFileInner generateWallet(String resourceGroupName, String autonomousdatabasename,
         GenerateAutonomousDatabaseWalletDetails body);
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginRestore(String resourceGroupName,
+        String autonomousdatabasename, RestoreAutonomousDatabaseDetails body);
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginRestore(String resourceGroupName,
+        String autonomousdatabasename, RestoreAutonomousDatabaseDetails body, Context context);
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AutonomousDatabaseInner restore(String resourceGroupName, String autonomousdatabasename,
+        RestoreAutonomousDatabaseDetails body);
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AutonomousDatabaseInner restore(String resourceGroupName, String autonomousdatabasename,
+        RestoreAutonomousDatabaseDetails body, Context context);
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginShrink(String resourceGroupName,
+        String autonomousdatabasename);
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginShrink(String resourceGroupName,
+        String autonomousdatabasename, Context context);
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AutonomousDatabaseInner shrink(String resourceGroupName, String autonomousdatabasename);
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AutonomousDatabaseInner shrink(String resourceGroupName, String autonomousdatabasename, Context context);
 
     /**
      * Perform switchover action on Autonomous Database.

@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class GlobalParameterSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GlobalParameterSpecification model
-            = BinaryData.fromString("{\"type\":\"Object\",\"value\":\"datajiwkuofoskghsau\"}")
-                .toObject(GlobalParameterSpecification.class);
-        Assertions.assertEquals(GlobalParameterType.OBJECT, model.type());
+        GlobalParameterSpecification model = BinaryData.fromString("{\"type\":\"String\",\"value\":\"datarm\"}")
+            .toObject(GlobalParameterSpecification.class);
+        Assertions.assertEquals(GlobalParameterType.STRING, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GlobalParameterSpecification model
-            = new GlobalParameterSpecification().withType(GlobalParameterType.OBJECT).withValue("datajiwkuofoskghsau");
+            = new GlobalParameterSpecification().withType(GlobalParameterType.STRING).withValue("datarm");
         model = BinaryData.fromObject(model).toObject(GlobalParameterSpecification.class);
-        Assertions.assertEquals(GlobalParameterType.OBJECT, model.type());
+        Assertions.assertEquals(GlobalParameterType.STRING, model.type());
     }
 }
