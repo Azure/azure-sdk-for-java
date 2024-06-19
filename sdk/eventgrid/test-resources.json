@@ -24,6 +24,13 @@
       "metadata": {
         "description": "The client OID to grant access to test resources."
       }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "westus3",
+      "metadata": {
+        "description": "The location of the resource. By default, this is the same as the resource group."
+      }
     }
   },
   "variables": {
@@ -46,7 +53,7 @@
       "type": "Microsoft.EventGrid/namespaces",
       "apiVersion": "2023-12-15-preview",
       "name": "[variables('namespaceName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "sku": {
         "name": "Standard",
         "capacity": 1
@@ -95,13 +102,13 @@
       "type": "Microsoft.EventGrid/topics",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('eventGridTopicName')]",
-      "location": "[resourceGroup().location]"
+      "location": "[parameters('location')]"
     },
     {
       "type": "Microsoft.EventGrid/topics",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('cloudeventTopicName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "inputSchema": "CloudEventSchemaV1_0"
       }
@@ -110,7 +117,7 @@
       "type": "Microsoft.EventGrid/domains",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('cloudeventDomainName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "inputSchema": "CloudEventSchemaV1_0"
       }
@@ -119,7 +126,7 @@
       "type": "Microsoft.EventGrid/topics",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('customeventTopicName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "inputSchema": "CustomEventSchema",
         "inputSchemaMapping": {
@@ -181,7 +188,7 @@
       "dependsOn": [
         "[resourceId('Microsoft.EventGrid/partnerConfigurations', variables('partnerConfigurationName'))]"
       ],
-      "location": "[resourceGroup().location]",
+      "location": "[parameters('location')]",
       "properties": {
         "partnerRegistrationFullyQualifiedId": "[resourceId('Microsoft.EventGrid/partnerRegistrations', variables('partnerRegistrationName'))]",
         "partnerTopicRoutingMode": "ChannelNameHeader"
