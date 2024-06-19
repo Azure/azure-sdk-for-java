@@ -5,6 +5,7 @@ extends:
   parameters:
     UseFederatedAuth: true
     ServiceDirectory: eventgrid
+    Location: eastus
     TimeoutInMinutes: 60
     MaxParallel: 7
     Artifacts:

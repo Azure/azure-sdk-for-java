@@ -24,13 +24,6 @@
       "metadata": {
         "description": "The client OID to grant access to test resources."
       }
-    },
-    "location": {
-      "type": "string",
-      "defaultValue": "westus3",
-      "metadata": {
-        "description": "The location of the resource. By default, this is the same as the resource group."
-      }
     }
   },
   "variables": {
@@ -46,14 +39,16 @@
     "partnerConfigurationName": "default",
     "partnerNamespaceName": "[concat(parameters('baseName'), 'partner-namespace')]",
     "partnerChannelName": "[concat(parameters('baseName'), 'partner-channel')]",
-    "partnerTopicName": "[concat(parameters('baseName'), 'partner-topic')]"
+    "partnerTopicName": "[concat(parameters('baseName'), 'partner-topic')]",
+    "eventGridDataSenderRoleId": "d5a91429-5739-47e2-a06b-3470a27159e7",
+    "eventGridDataContributorRoleId": "1d8c3fe3-8864-474b-8749-01e3783e8157"
   },
   "resources": [
     {
       "type": "Microsoft.EventGrid/namespaces",
       "apiVersion": "2023-12-15-preview",
       "name": "[variables('namespaceName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "sku": {
         "name": "Standard",
         "capacity": 1
@@ -102,13 +97,13 @@
       "type": "Microsoft.EventGrid/topics",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('eventGridTopicName')]",
-      "location": "[parameters('location')]"
+      "location": "[resourceGroup().location]"
     },
     {
       "type": "Microsoft.EventGrid/topics",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('cloudeventTopicName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "inputSchema": "CloudEventSchemaV1_0"
       }
@@ -117,7 +112,7 @@
       "type": "Microsoft.EventGrid/domains",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('cloudeventDomainName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "inputSchema": "CloudEventSchemaV1_0"
       }
@@ -126,7 +121,7 @@
       "type": "Microsoft.EventGrid/topics",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('customeventTopicName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "inputSchema": "CustomEventSchema",
         "inputSchemaMapping": {
@@ -188,7 +183,7 @@
       "dependsOn": [
         "[resourceId('Microsoft.EventGrid/partnerConfigurations', variables('partnerConfigurationName'))]"
       ],
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "properties": {
         "partnerRegistrationFullyQualifiedId": "[resourceId('Microsoft.EventGrid/partnerRegistrations', variables('partnerRegistrationName'))]",
         "partnerTopicRoutingMode": "ChannelNameHeader"
@@ -209,6 +204,26 @@
           "resourceGroupName": "[resourceGroup().Name]",
           "source": "customSource"
         }
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2019-04-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('eventGridDataSenderRoleId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('eventGridDataSenderRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]",
+        "scope": "[resourceGroup().id]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2019-04-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('eventGridDataContributorRoleId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('eventGridDataContributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]",
+        "scope": "[resourceGroup().id]"
       }
     }
   ],
