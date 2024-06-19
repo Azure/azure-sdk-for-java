@@ -5,50 +5,44 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Rest service source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = RestSource.class, visible = true)
-@JsonTypeName("RestSource")
 @Fluent
 public final class RestSource extends CopySource {
     /*
      * Copy source type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "RestSource";
 
     /*
      * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
      * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
      * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
      * The pagination rules to compose next page requests. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "paginationRules")
     private Object paginationRules;
 
     /*
@@ -56,19 +50,16 @@ public final class RestSource extends CopySource {
      * response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
     /*
      * The time to await before sending next page request.
      */
-    @JsonProperty(value = "requestInterval")
     private Object requestInterval;
 
     /*
      * Specifies the additional columns to be added to source data. Type: key value pairs (value should be string type).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
     /**
@@ -285,5 +276,85 @@ public final class RestSource extends CopySource {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        jsonWriter.writeUntypedField("requestBody", this.requestBody);
+        jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        jsonWriter.writeUntypedField("paginationRules", this.paginationRules);
+        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        jsonWriter.writeUntypedField("requestInterval", this.requestInterval);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestSource if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the RestSource.
+     */
+    public static RestSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestSource deserializedRestSource = new RestSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedRestSource.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedRestSource.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedRestSource.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedRestSource.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestSource.type = reader.getString();
+                } else if ("requestMethod".equals(fieldName)) {
+                    deserializedRestSource.requestMethod = reader.readUntyped();
+                } else if ("requestBody".equals(fieldName)) {
+                    deserializedRestSource.requestBody = reader.readUntyped();
+                } else if ("additionalHeaders".equals(fieldName)) {
+                    deserializedRestSource.additionalHeaders = reader.readUntyped();
+                } else if ("paginationRules".equals(fieldName)) {
+                    deserializedRestSource.paginationRules = reader.readUntyped();
+                } else if ("httpRequestTimeout".equals(fieldName)) {
+                    deserializedRestSource.httpRequestTimeout = reader.readUntyped();
+                } else if ("requestInterval".equals(fieldName)) {
+                    deserializedRestSource.requestInterval = reader.readUntyped();
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedRestSource.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedRestSource.withAdditionalProperties(additionalProperties);
+
+            return deserializedRestSource;
+        });
     }
 }

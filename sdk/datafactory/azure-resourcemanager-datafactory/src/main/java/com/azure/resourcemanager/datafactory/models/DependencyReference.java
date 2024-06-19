@@ -5,29 +5,20 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Referenced dependency.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DependencyReference.class, visible = true)
-@JsonTypeName("DependencyReference")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "TriggerDependencyReference", value = TriggerDependencyReference.class),
-    @JsonSubTypes.Type(
-        name = "SelfDependencyTumblingWindowTriggerReference",
-        value = SelfDependencyTumblingWindowTriggerReference.class) })
 @Immutable
-public class DependencyReference {
+public class DependencyReference implements JsonSerializable<DependencyReference> {
     /*
      * The type of dependency reference.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "DependencyReference";
 
     /**
@@ -51,5 +42,70 @@ public class DependencyReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DependencyReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DependencyReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DependencyReference.
+     */
+    public static DependencyReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("TriggerDependencyReference".equals(discriminatorValue)) {
+                    return TriggerDependencyReference.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("TumblingWindowTriggerDependencyReference".equals(discriminatorValue)) {
+                    return TumblingWindowTriggerDependencyReference.fromJson(readerToUse.reset());
+                } else if ("SelfDependencyTumblingWindowTriggerReference".equals(discriminatorValue)) {
+                    return SelfDependencyTumblingWindowTriggerReference.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DependencyReference fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DependencyReference deserializedDependencyReference = new DependencyReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDependencyReference.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDependencyReference;
+        });
     }
 }

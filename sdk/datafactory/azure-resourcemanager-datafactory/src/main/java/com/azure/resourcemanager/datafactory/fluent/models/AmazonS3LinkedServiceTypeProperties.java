@@ -5,32 +5,34 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Amazon S3 linked service properties.
  */
 @Fluent
-public final class AmazonS3LinkedServiceTypeProperties {
+public final class AmazonS3LinkedServiceTypeProperties
+    implements JsonSerializable<AmazonS3LinkedServiceTypeProperties> {
     /*
      * The authentication type of S3. Allowed value: AccessKey (default) or TemporarySecurityCredentials. Type: string
      * (or Expression with resultType string).
      */
-    @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
      * The access key identifier of the Amazon S3 Identity and Access Management (IAM) user. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "accessKeyId")
     private Object accessKeyId;
 
     /*
      * The secret access key of the Amazon S3 Identity and Access Management (IAM) user.
      */
-    @JsonProperty(value = "secretAccessKey")
     private SecretBase secretAccessKey;
 
     /*
@@ -38,20 +40,17 @@ public final class AmazonS3LinkedServiceTypeProperties {
      * if you want to try a different service endpoint or want to switch between https and http. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "serviceUrl")
     private Object serviceUrl;
 
     /*
      * The session token for the S3 temporary security credential.
      */
-    @JsonProperty(value = "sessionToken")
     private SecretBase sessionToken;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -204,5 +203,57 @@ public final class AmazonS3LinkedServiceTypeProperties {
         if (sessionToken() != null) {
             sessionToken().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        jsonWriter.writeUntypedField("accessKeyId", this.accessKeyId);
+        jsonWriter.writeJsonField("secretAccessKey", this.secretAccessKey);
+        jsonWriter.writeUntypedField("serviceUrl", this.serviceUrl);
+        jsonWriter.writeJsonField("sessionToken", this.sessionToken);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonS3LinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonS3LinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonS3LinkedServiceTypeProperties.
+     */
+    public static AmazonS3LinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonS3LinkedServiceTypeProperties deserializedAmazonS3LinkedServiceTypeProperties
+                = new AmazonS3LinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authenticationType".equals(fieldName)) {
+                    deserializedAmazonS3LinkedServiceTypeProperties.authenticationType = reader.readUntyped();
+                } else if ("accessKeyId".equals(fieldName)) {
+                    deserializedAmazonS3LinkedServiceTypeProperties.accessKeyId = reader.readUntyped();
+                } else if ("secretAccessKey".equals(fieldName)) {
+                    deserializedAmazonS3LinkedServiceTypeProperties.secretAccessKey = SecretBase.fromJson(reader);
+                } else if ("serviceUrl".equals(fieldName)) {
+                    deserializedAmazonS3LinkedServiceTypeProperties.serviceUrl = reader.readUntyped();
+                } else if ("sessionToken".equals(fieldName)) {
+                    deserializedAmazonS3LinkedServiceTypeProperties.sessionToken = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAmazonS3LinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmazonS3LinkedServiceTypeProperties;
+        });
     }
 }

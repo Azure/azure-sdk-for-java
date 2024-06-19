@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties specific to this dataset type.
  */
 @Fluent
-public final class HttpDatasetTypeProperties {
+public final class HttpDatasetTypeProperties implements JsonSerializable<HttpDatasetTypeProperties> {
     /*
      * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;
 
     /*
      * The HTTP method for the HTTP request. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
      * The body for the HTTP request. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
@@ -38,19 +39,16 @@ public final class HttpDatasetTypeProperties {
      * ...
      * request-header-name-n:request-header-value-n Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
      * The format of files.
      */
-    @JsonProperty(value = "format")
     private DatasetStorageFormat format;
 
     /*
      * The data compression method used on files.
      */
-    @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
     /**
@@ -201,5 +199,56 @@ public final class HttpDatasetTypeProperties {
         if (compression() != null) {
             compression().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("relativeUrl", this.relativeUrl);
+        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        jsonWriter.writeUntypedField("requestBody", this.requestBody);
+        jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeJsonField("compression", this.compression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpDatasetTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpDatasetTypeProperties.
+     */
+    public static HttpDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpDatasetTypeProperties deserializedHttpDatasetTypeProperties = new HttpDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("relativeUrl".equals(fieldName)) {
+                    deserializedHttpDatasetTypeProperties.relativeUrl = reader.readUntyped();
+                } else if ("requestMethod".equals(fieldName)) {
+                    deserializedHttpDatasetTypeProperties.requestMethod = reader.readUntyped();
+                } else if ("requestBody".equals(fieldName)) {
+                    deserializedHttpDatasetTypeProperties.requestBody = reader.readUntyped();
+                } else if ("additionalHeaders".equals(fieldName)) {
+                    deserializedHttpDatasetTypeProperties.additionalHeaders = reader.readUntyped();
+                } else if ("format".equals(fieldName)) {
+                    deserializedHttpDatasetTypeProperties.format = DatasetStorageFormat.fromJson(reader);
+                } else if ("compression".equals(fieldName)) {
+                    deserializedHttpDatasetTypeProperties.compression = DatasetCompression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpDatasetTypeProperties;
+        });
     }
 }

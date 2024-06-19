@@ -5,47 +5,35 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SSIS object metadata.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SsisObjectMetadata.class, visible = true)
-@JsonTypeName("SsisObjectMetadata")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Folder", value = SsisFolder.class),
-    @JsonSubTypes.Type(name = "Project", value = SsisProject.class),
-    @JsonSubTypes.Type(name = "Package", value = SsisPackage.class),
-    @JsonSubTypes.Type(name = "Environment", value = SsisEnvironment.class) })
 @Fluent
-public class SsisObjectMetadata {
+public class SsisObjectMetadata implements JsonSerializable<SsisObjectMetadata> {
     /*
      * Type of metadata.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private SsisObjectMetadataType type = SsisObjectMetadataType.fromString("SsisObjectMetadata");
 
     /*
      * Metadata id.
      */
-    @JsonProperty(value = "id")
     private Long id;
 
     /*
      * Metadata name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Metadata description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -129,5 +117,81 @@ public class SsisObjectMetadata {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNumberField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisObjectMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisObjectMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisObjectMetadata.
+     */
+    public static SsisObjectMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Folder".equals(discriminatorValue)) {
+                    return SsisFolder.fromJson(readerToUse.reset());
+                } else if ("Project".equals(discriminatorValue)) {
+                    return SsisProject.fromJson(readerToUse.reset());
+                } else if ("Package".equals(discriminatorValue)) {
+                    return SsisPackage.fromJson(readerToUse.reset());
+                } else if ("Environment".equals(discriminatorValue)) {
+                    return SsisEnvironment.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static SsisObjectMetadata fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisObjectMetadata deserializedSsisObjectMetadata = new SsisObjectMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedSsisObjectMetadata.type = SsisObjectMetadataType.fromString(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedSsisObjectMetadata.id = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSsisObjectMetadata.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSsisObjectMetadata.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisObjectMetadata;
+        });
     }
 }

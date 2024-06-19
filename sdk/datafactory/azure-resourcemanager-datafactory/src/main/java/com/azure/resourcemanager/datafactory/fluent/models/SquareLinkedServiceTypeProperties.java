@@ -5,69 +5,64 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Square Service linked service properties.
  */
 @Fluent
-public final class SquareLinkedServiceTypeProperties {
+public final class SquareLinkedServiceTypeProperties implements JsonSerializable<SquareLinkedServiceTypeProperties> {
     /*
      * Properties used to connect to Square. It is mutually exclusive with any other properties in the linked service.
      * Type: object.
      */
-    @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
 
     /*
      * The URL of the Square instance. (i.e. mystore.mysquare.com)
      */
-    @JsonProperty(value = "host")
     private Object host;
 
     /*
      * The client ID associated with your Square application.
      */
-    @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
      * The client secret associated with your Square application.
      */
-    @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
      * The redirect URL assigned in the Square application dashboard. (i.e. http://localhost:2500)
      */
-    @JsonProperty(value = "redirectUri")
     private Object redirectUri;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
-    @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -277,5 +272,66 @@ public final class SquareLinkedServiceTypeProperties {
         if (clientSecret() != null) {
             clientSecret().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        jsonWriter.writeUntypedField("host", this.host);
+        jsonWriter.writeUntypedField("clientId", this.clientId);
+        jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+        jsonWriter.writeUntypedField("redirectUri", this.redirectUri);
+        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SquareLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SquareLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SquareLinkedServiceTypeProperties.
+     */
+    public static SquareLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SquareLinkedServiceTypeProperties deserializedSquareLinkedServiceTypeProperties
+                = new SquareLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionProperties".equals(fieldName)) {
+                    deserializedSquareLinkedServiceTypeProperties.connectionProperties = reader.readUntyped();
+                } else if ("host".equals(fieldName)) {
+                    deserializedSquareLinkedServiceTypeProperties.host = reader.readUntyped();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedSquareLinkedServiceTypeProperties.clientId = reader.readUntyped();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedSquareLinkedServiceTypeProperties.clientSecret = SecretBase.fromJson(reader);
+                } else if ("redirectUri".equals(fieldName)) {
+                    deserializedSquareLinkedServiceTypeProperties.redirectUri = reader.readUntyped();
+                } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                    deserializedSquareLinkedServiceTypeProperties.useEncryptedEndpoints = reader.readUntyped();
+                } else if ("useHostVerification".equals(fieldName)) {
+                    deserializedSquareLinkedServiceTypeProperties.useHostVerification = reader.readUntyped();
+                } else if ("usePeerVerification".equals(fieldName)) {
+                    deserializedSquareLinkedServiceTypeProperties.usePeerVerification = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedSquareLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSquareLinkedServiceTypeProperties;
+        });
     }
 }

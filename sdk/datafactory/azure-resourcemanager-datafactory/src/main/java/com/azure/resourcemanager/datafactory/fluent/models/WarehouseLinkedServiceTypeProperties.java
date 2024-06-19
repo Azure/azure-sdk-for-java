@@ -6,64 +6,61 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Microsoft Fabric Warehouse linked service properties.
  */
 @Fluent
-public final class WarehouseLinkedServiceTypeProperties {
+public final class WarehouseLinkedServiceTypeProperties
+    implements JsonSerializable<WarehouseLinkedServiceTypeProperties> {
     /*
      * The ID of Microsoft Fabric Warehouse artifact. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "artifactId", required = true)
     private Object artifactId;
 
     /*
      * The endpoint of Microsoft Fabric Warehouse server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "endpoint", required = true)
     private Object endpoint;
 
     /*
      * The ID of Microsoft Fabric workspace. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "workspaceId")
     private Object workspaceId;
 
     /*
      * The ID of the application used to authenticate against Microsoft Fabric Warehouse. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The Key of the application used to authenticate against Microsoft Fabric Warehouse.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
      * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalCredentialType")
     private Object servicePrincipalCredentialType;
 
     /*
@@ -72,7 +69,6 @@ public final class WarehouseLinkedServiceTypeProperties {
      * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
 
     /**
@@ -311,4 +307,68 @@ public final class WarehouseLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WarehouseLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("artifactId", this.artifactId);
+        jsonWriter.writeUntypedField("endpoint", this.endpoint);
+        jsonWriter.writeUntypedField("workspaceId", this.workspaceId);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WarehouseLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WarehouseLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WarehouseLinkedServiceTypeProperties.
+     */
+    public static WarehouseLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WarehouseLinkedServiceTypeProperties deserializedWarehouseLinkedServiceTypeProperties
+                = new WarehouseLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("artifactId".equals(fieldName)) {
+                    deserializedWarehouseLinkedServiceTypeProperties.artifactId = reader.readUntyped();
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedWarehouseLinkedServiceTypeProperties.endpoint = reader.readUntyped();
+                } else if ("workspaceId".equals(fieldName)) {
+                    deserializedWarehouseLinkedServiceTypeProperties.workspaceId = reader.readUntyped();
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedWarehouseLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedWarehouseLinkedServiceTypeProperties.servicePrincipalKey = SecretBase.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedWarehouseLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedWarehouseLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                    deserializedWarehouseLinkedServiceTypeProperties.servicePrincipalCredentialType
+                        = reader.readUntyped();
+                } else if ("servicePrincipalCredential".equals(fieldName)) {
+                    deserializedWarehouseLinkedServiceTypeProperties.servicePrincipalCredential
+                        = SecretBase.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWarehouseLinkedServiceTypeProperties;
+        });
+    }
 }

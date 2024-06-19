@@ -5,68 +5,64 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * QuickBooks server linked service properties.
  */
 @Fluent
-public final class QuickBooksLinkedServiceTypeProperties {
+public final class QuickBooksLinkedServiceTypeProperties
+    implements JsonSerializable<QuickBooksLinkedServiceTypeProperties> {
     /*
      * Properties used to connect to QuickBooks. It is mutually exclusive with any other properties in the linked
      * service. Type: object.
      */
-    @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
 
     /*
      * The endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com)
      */
-    @JsonProperty(value = "endpoint")
     private Object endpoint;
 
     /*
      * The company ID of the QuickBooks company to authorize.
      */
-    @JsonProperty(value = "companyId")
     private Object companyId;
 
     /*
      * The consumer key for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "consumerKey")
     private Object consumerKey;
 
     /*
      * The consumer secret for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "consumerSecret")
     private SecretBase consumerSecret;
 
     /*
      * The access token for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "accessToken")
     private SecretBase accessToken;
 
     /*
      * The access token secret for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "accessTokenSecret")
     private SecretBase accessTokenSecret;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
-    @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -276,5 +272,66 @@ public final class QuickBooksLinkedServiceTypeProperties {
         if (accessTokenSecret() != null) {
             accessTokenSecret().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        jsonWriter.writeUntypedField("endpoint", this.endpoint);
+        jsonWriter.writeUntypedField("companyId", this.companyId);
+        jsonWriter.writeUntypedField("consumerKey", this.consumerKey);
+        jsonWriter.writeJsonField("consumerSecret", this.consumerSecret);
+        jsonWriter.writeJsonField("accessToken", this.accessToken);
+        jsonWriter.writeJsonField("accessTokenSecret", this.accessTokenSecret);
+        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuickBooksLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuickBooksLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuickBooksLinkedServiceTypeProperties.
+     */
+    public static QuickBooksLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuickBooksLinkedServiceTypeProperties deserializedQuickBooksLinkedServiceTypeProperties
+                = new QuickBooksLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionProperties".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.connectionProperties = reader.readUntyped();
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.endpoint = reader.readUntyped();
+                } else if ("companyId".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.companyId = reader.readUntyped();
+                } else if ("consumerKey".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.consumerKey = reader.readUntyped();
+                } else if ("consumerSecret".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.consumerSecret = SecretBase.fromJson(reader);
+                } else if ("accessToken".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.accessToken = SecretBase.fromJson(reader);
+                } else if ("accessTokenSecret".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.accessTokenSecret = SecretBase.fromJson(reader);
+                } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.useEncryptedEndpoints = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuickBooksLinkedServiceTypeProperties;
+        });
     }
 }

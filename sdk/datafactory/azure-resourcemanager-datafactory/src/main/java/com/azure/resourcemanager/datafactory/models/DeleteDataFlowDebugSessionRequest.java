@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Request body structure for deleting data flow debug session.
  */
 @Fluent
-public final class DeleteDataFlowDebugSessionRequest {
+public final class DeleteDataFlowDebugSessionRequest implements JsonSerializable<DeleteDataFlowDebugSessionRequest> {
     /*
      * The ID of data flow debug session.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /**
@@ -50,5 +53,42 @@ public final class DeleteDataFlowDebugSessionRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeleteDataFlowDebugSessionRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeleteDataFlowDebugSessionRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeleteDataFlowDebugSessionRequest.
+     */
+    public static DeleteDataFlowDebugSessionRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeleteDataFlowDebugSessionRequest deserializedDeleteDataFlowDebugSessionRequest
+                = new DeleteDataFlowDebugSessionRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sessionId".equals(fieldName)) {
+                    deserializedDeleteDataFlowDebugSessionRequest.sessionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeleteDataFlowDebugSessionRequest;
+        });
     }
 }

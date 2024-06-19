@@ -5,58 +5,56 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Microsoft Fabric LakeHouse linked service properties.
  */
 @Fluent
-public final class LakeHouseLinkedServiceTypeProperties {
+public final class LakeHouseLinkedServiceTypeProperties
+    implements JsonSerializable<LakeHouseLinkedServiceTypeProperties> {
     /*
      * The ID of Microsoft Fabric workspace. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "workspaceId")
     private Object workspaceId;
 
     /*
      * The ID of Microsoft Fabric LakeHouse artifact. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "artifactId")
     private Object artifactId;
 
     /*
      * The ID of the application used to authenticate against Microsoft Fabric LakeHouse. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The Key of the application used to authenticate against Microsoft Fabric LakeHouse.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
      * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalCredentialType")
     private Object servicePrincipalCredentialType;
 
     /*
@@ -65,7 +63,6 @@ public final class LakeHouseLinkedServiceTypeProperties {
      * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
 
     /**
@@ -269,5 +266,65 @@ public final class LakeHouseLinkedServiceTypeProperties {
         if (servicePrincipalCredential() != null) {
             servicePrincipalCredential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("workspaceId", this.workspaceId);
+        jsonWriter.writeUntypedField("artifactId", this.artifactId);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LakeHouseLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LakeHouseLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LakeHouseLinkedServiceTypeProperties.
+     */
+    public static LakeHouseLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LakeHouseLinkedServiceTypeProperties deserializedLakeHouseLinkedServiceTypeProperties
+                = new LakeHouseLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspaceId".equals(fieldName)) {
+                    deserializedLakeHouseLinkedServiceTypeProperties.workspaceId = reader.readUntyped();
+                } else if ("artifactId".equals(fieldName)) {
+                    deserializedLakeHouseLinkedServiceTypeProperties.artifactId = reader.readUntyped();
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedLakeHouseLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedLakeHouseLinkedServiceTypeProperties.servicePrincipalKey = SecretBase.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedLakeHouseLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedLakeHouseLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                    deserializedLakeHouseLinkedServiceTypeProperties.servicePrincipalCredentialType
+                        = reader.readUntyped();
+                } else if ("servicePrincipalCredential".equals(fieldName)) {
+                    deserializedLakeHouseLinkedServiceTypeProperties.servicePrincipalCredential
+                        = SecretBase.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLakeHouseLinkedServiceTypeProperties;
+        });
     }
 }

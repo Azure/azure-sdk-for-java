@@ -6,41 +6,42 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Dynamics linked service properties.
  */
 @Fluent
-public final class DynamicsLinkedServiceTypeProperties {
+public final class DynamicsLinkedServiceTypeProperties
+    implements JsonSerializable<DynamicsLinkedServiceTypeProperties> {
     /*
      * The deployment type of the Dynamics instance. 'Online' for Dynamics Online and 'OnPremisesWithIfd' for Dynamics
      * on-premises with Ifd. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "deploymentType", required = true)
     private Object deploymentType;
 
     /*
      * The host name of the on-premises Dynamics server. The property is required for on-prem and not allowed for
      * online. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "hostName")
     private Object hostname;
 
     /*
      * The port of on-premises Dynamics server. The property is required for on-prem and not allowed for online. Default
      * is 443. Type: integer (or Expression with resultType integer), minimum: 0.
      */
-    @JsonProperty(value = "port")
     private Object port;
 
     /*
      * The URL to the Microsoft Dynamics server. The property is required for on-line and not allowed for on-prem. Type:
      * string (or Expression with resultType string).
      */
-    @JsonProperty(value = "serviceUri")
     private Object serviceUri;
 
     /*
@@ -48,7 +49,6 @@ public final class DynamicsLinkedServiceTypeProperties {
      * there are more than one Dynamics instances associated with the user. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "organizationName")
     private Object organizationName;
 
     /*
@@ -56,33 +56,28 @@ public final class DynamicsLinkedServiceTypeProperties {
      * with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online scenario. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "authenticationType", required = true)
     private Object authenticationType;
 
     /*
      * User name to access the Dynamics instance. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * Password to access the Dynamics instance.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The client ID of the application in Azure Active Directory used for Server-To-Server authentication. Type: string
      * (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
      * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalCredentialType")
     private Object servicePrincipalCredentialType;
 
     /*
@@ -91,20 +86,17 @@ public final class DynamicsLinkedServiceTypeProperties {
      * servicePrincipalCredentialType is 'ServicePrincipalCert', servicePrincipalCredential can only be
      * AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "servicePrincipalCredential")
     private SecretBase servicePrincipalCredential;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /**
@@ -434,4 +426,80 @@ public final class DynamicsLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DynamicsLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("deploymentType", this.deploymentType);
+        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        jsonWriter.writeUntypedField("hostName", this.hostname);
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeUntypedField("serviceUri", this.serviceUri);
+        jsonWriter.writeUntypedField("organizationName", this.organizationName);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        jsonWriter.writeJsonField("servicePrincipalCredential", this.servicePrincipalCredential);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynamicsLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynamicsLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DynamicsLinkedServiceTypeProperties.
+     */
+    public static DynamicsLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynamicsLinkedServiceTypeProperties deserializedDynamicsLinkedServiceTypeProperties
+                = new DynamicsLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentType".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.deploymentType = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.authenticationType = reader.readUntyped();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.hostname = reader.readUntyped();
+                } else if ("port".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("serviceUri".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.serviceUri = reader.readUntyped();
+                } else if ("organizationName".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.organizationName = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.servicePrincipalCredentialType
+                        = reader.readUntyped();
+                } else if ("servicePrincipalCredential".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.servicePrincipalCredential
+                        = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedDynamicsLinkedServiceTypeProperties.credential = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDynamicsLinkedServiceTypeProperties;
+        });
+    }
 }

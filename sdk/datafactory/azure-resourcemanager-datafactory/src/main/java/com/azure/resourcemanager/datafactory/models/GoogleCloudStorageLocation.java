@@ -5,39 +5,31 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The location of Google Cloud Storage dataset.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = GoogleCloudStorageLocation.class,
-    visible = true)
-@JsonTypeName("GoogleCloudStorageLocation")
 @Fluent
 public final class GoogleCloudStorageLocation extends DatasetLocation {
     /*
      * Type of dataset storage location.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "GoogleCloudStorageLocation";
 
     /*
      * Specify the bucketName of Google Cloud Storage. Type: string (or Expression with resultType string)
      */
-    @JsonProperty(value = "bucketName")
     private Object bucketName;
 
     /*
      * Specify the version of Google Cloud Storage. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "version")
     private Object version;
 
     /**
@@ -126,5 +118,64 @@ public final class GoogleCloudStorageLocation extends DatasetLocation {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", folderPath());
+        jsonWriter.writeUntypedField("fileName", fileName());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("bucketName", this.bucketName);
+        jsonWriter.writeUntypedField("version", this.version);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GoogleCloudStorageLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GoogleCloudStorageLocation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GoogleCloudStorageLocation.
+     */
+    public static GoogleCloudStorageLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GoogleCloudStorageLocation deserializedGoogleCloudStorageLocation = new GoogleCloudStorageLocation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedGoogleCloudStorageLocation.withFolderPath(reader.readUntyped());
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedGoogleCloudStorageLocation.withFileName(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedGoogleCloudStorageLocation.type = reader.getString();
+                } else if ("bucketName".equals(fieldName)) {
+                    deserializedGoogleCloudStorageLocation.bucketName = reader.readUntyped();
+                } else if ("version".equals(fieldName)) {
+                    deserializedGoogleCloudStorageLocation.version = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedGoogleCloudStorageLocation.withAdditionalProperties(additionalProperties);
+
+            return deserializedGoogleCloudStorageLocation;
+        });
     }
 }

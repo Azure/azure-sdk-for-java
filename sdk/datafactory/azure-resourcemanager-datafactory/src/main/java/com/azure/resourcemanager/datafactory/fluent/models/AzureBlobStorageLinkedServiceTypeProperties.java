@@ -5,68 +5,65 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
 import com.azure.resourcemanager.datafactory.models.AzureStorageAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Azure Blob Storage linked service properties.
  */
 @Fluent
-public final class AzureBlobStorageLinkedServiceTypeProperties {
+public final class AzureBlobStorageLinkedServiceTypeProperties
+    implements JsonSerializable<AzureBlobStorageLinkedServiceTypeProperties> {
     /*
      * The connection string. It is mutually exclusive with sasUri, serviceEndpoint property. Type: string, SecureString
      * or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of accountKey in connection string.
      */
-    @JsonProperty(value = "accountKey")
     private AzureKeyVaultSecretReference accountKey;
 
     /*
      * SAS URI of the Azure Blob Storage resource. It is mutually exclusive with connectionString, serviceEndpoint
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "sasUri")
     private Object sasUri;
 
     /*
      * The Azure key vault secret reference of sasToken in sas uri.
      */
-    @JsonProperty(value = "sasToken")
     private AzureKeyVaultSecretReference sasToken;
 
     /*
      * Blob service endpoint of the Azure Blob Storage resource. It is mutually exclusive with connectionString, sasUri
      * property.
      */
-    @JsonProperty(value = "serviceEndpoint")
     private Object serviceEndpoint;
 
     /*
      * The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against Azure SQL Data Warehouse.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
@@ -74,40 +71,34 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
      * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
      * Specify the kind of your storage account. Allowed values are: Storage (general purpose v1), StorageV2 (general
      * purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "accountKind")
     private Object accountKind;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /*
      * The type used for authentication. Type: string.
      */
-    @JsonProperty(value = "authenticationType")
     private AzureStorageAuthenticationType authenticationType;
 
     /*
      * Container uri of the Azure Blob Storage resource only support for anonymous access. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "containerUri")
     private Object containerUri;
 
     /**
@@ -439,5 +430,87 @@ public final class AzureBlobStorageLinkedServiceTypeProperties {
         if (credential() != null) {
             credential().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeJsonField("accountKey", this.accountKey);
+        jsonWriter.writeUntypedField("sasUri", this.sasUri);
+        jsonWriter.writeJsonField("sasToken", this.sasToken);
+        jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        jsonWriter.writeUntypedField("accountKind", this.accountKind);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("credential", this.credential);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("containerUri", this.containerUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobStorageLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobStorageLinkedServiceTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBlobStorageLinkedServiceTypeProperties.
+     */
+    public static AzureBlobStorageLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobStorageLinkedServiceTypeProperties deserializedAzureBlobStorageLinkedServiceTypeProperties
+                = new AzureBlobStorageLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("accountKey".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.accountKey
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("sasUri".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.sasUri = reader.readUntyped();
+                } else if ("sasToken".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.sasToken
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("serviceEndpoint".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.serviceEndpoint = reader.readUntyped();
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.servicePrincipalKey
+                        = SecretBase.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("azureCloudType".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.azureCloudType = reader.readUntyped();
+                } else if ("accountKind".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.accountKind = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.credential
+                        = CredentialReference.fromJson(reader);
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.authenticationType
+                        = AzureStorageAuthenticationType.fromString(reader.getString());
+                } else if ("containerUri".equals(fieldName)) {
+                    deserializedAzureBlobStorageLinkedServiceTypeProperties.containerUri = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBlobStorageLinkedServiceTypeProperties;
+        });
     }
 }

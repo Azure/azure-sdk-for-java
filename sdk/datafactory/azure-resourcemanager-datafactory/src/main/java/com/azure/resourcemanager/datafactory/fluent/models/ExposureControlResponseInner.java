@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The exposure control response.
  */
 @Immutable
-public final class ExposureControlResponseInner {
+public final class ExposureControlResponseInner implements JsonSerializable<ExposureControlResponseInner> {
     /*
      * The feature name.
      */
-    @JsonProperty(value = "featureName", access = JsonProperty.Access.WRITE_ONLY)
     private String featureName;
 
     /*
      * The feature value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**
@@ -54,5 +56,42 @@ public final class ExposureControlResponseInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExposureControlResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExposureControlResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExposureControlResponseInner.
+     */
+    public static ExposureControlResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExposureControlResponseInner deserializedExposureControlResponseInner = new ExposureControlResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("featureName".equals(fieldName)) {
+                    deserializedExposureControlResponseInner.featureName = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedExposureControlResponseInner.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExposureControlResponseInner;
+        });
     }
 }

@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,13 +17,12 @@ import java.util.Map;
  * DW Copy Command settings.
  */
 @Fluent
-public final class DWCopyCommandSettings {
+public final class DWCopyCommandSettings implements JsonSerializable<DWCopyCommandSettings> {
     /*
      * Specifies the default values for each target column in SQL DW. The default values in the property overwrite the
      * DEFAULT constraint set in the DB, and identity column cannot have a default value. Type: array of objects (or
      * Expression with resultType array of objects).
      */
-    @JsonProperty(value = "defaultValues")
     private List<DWCopyCommandDefaultValue> defaultValues;
 
     /*
@@ -28,8 +30,6 @@ public final class DWCopyCommandSettings {
      * (or Expression with resultType object). Example: "additionalOptions": { "MAXERRORS": "1000", "DATEFORMAT":
      * "'ymd'" }
      */
-    @JsonProperty(value = "additionalOptions")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> additionalOptions;
 
     /**
@@ -95,5 +95,48 @@ public final class DWCopyCommandSettings {
         if (defaultValues() != null) {
             defaultValues().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("defaultValues", this.defaultValues, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("additionalOptions", this.additionalOptions,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DWCopyCommandSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DWCopyCommandSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DWCopyCommandSettings.
+     */
+    public static DWCopyCommandSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DWCopyCommandSettings deserializedDWCopyCommandSettings = new DWCopyCommandSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultValues".equals(fieldName)) {
+                    List<DWCopyCommandDefaultValue> defaultValues
+                        = reader.readArray(reader1 -> DWCopyCommandDefaultValue.fromJson(reader1));
+                    deserializedDWCopyCommandSettings.defaultValues = defaultValues;
+                } else if ("additionalOptions".equals(fieldName)) {
+                    Map<String, String> additionalOptions = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDWCopyCommandSettings.additionalOptions = additionalOptions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDWCopyCommandSettings;
+        });
     }
 }

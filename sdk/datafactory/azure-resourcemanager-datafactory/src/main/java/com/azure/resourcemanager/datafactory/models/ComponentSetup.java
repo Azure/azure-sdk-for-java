@@ -6,30 +6,25 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.LicensedComponentSetupTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * The custom setup of installing 3rd party components.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ComponentSetup.class, visible = true)
-@JsonTypeName("ComponentSetup")
 @Fluent
 public final class ComponentSetup extends CustomSetupBase {
     /*
      * The type of custom setup.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "ComponentSetup";
 
     /*
      * Install 3rd party component type properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private LicensedComponentSetupTypeProperties innerTypeProperties = new LicensedComponentSetupTypeProperties();
 
     /**
@@ -121,4 +116,45 @@ public final class ComponentSetup extends CustomSetupBase {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ComponentSetup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComponentSetup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComponentSetup if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ComponentSetup.
+     */
+    public static ComponentSetup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComponentSetup deserializedComponentSetup = new ComponentSetup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("typeProperties".equals(fieldName)) {
+                    deserializedComponentSetup.innerTypeProperties
+                        = LicensedComponentSetupTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedComponentSetup.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComponentSetup;
+        });
+    }
 }

@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Attribute mapping details.
  */
 @Fluent
-public final class MapperAttributeMappings {
+public final class MapperAttributeMappings implements JsonSerializable<MapperAttributeMappings> {
     /*
      * List of attribute mappings.
      */
-    @JsonProperty(value = "attributeMappings")
     private List<MapperAttributeMapping> attributeMappings;
 
     /**
@@ -54,5 +57,44 @@ public final class MapperAttributeMappings {
         if (attributeMappings() != null) {
             attributeMappings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("attributeMappings", this.attributeMappings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapperAttributeMappings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapperAttributeMappings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapperAttributeMappings.
+     */
+    public static MapperAttributeMappings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapperAttributeMappings deserializedMapperAttributeMappings = new MapperAttributeMappings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("attributeMappings".equals(fieldName)) {
+                    List<MapperAttributeMapping> attributeMappings
+                        = reader.readArray(reader1 -> MapperAttributeMapping.fromJson(reader1));
+                    deserializedMapperAttributeMappings.attributeMappings = attributeMappings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapperAttributeMappings;
+        });
     }
 }

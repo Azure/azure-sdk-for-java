@@ -6,38 +6,38 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.Expression;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * ForEach activity properties.
  */
 @Fluent
-public final class ForEachActivityTypeProperties {
+public final class ForEachActivityTypeProperties implements JsonSerializable<ForEachActivityTypeProperties> {
     /*
      * Should the loop be executed in sequence or in parallel (max 50)
      */
-    @JsonProperty(value = "isSequential")
     private Boolean isSequential;
 
     /*
      * Batch count to be used for controlling the number of parallel execution (when isSequential is set to false).
      */
-    @JsonProperty(value = "batchCount")
     private Integer batchCount;
 
     /*
      * Collection to iterate.
      */
-    @JsonProperty(value = "items", required = true)
     private Expression items;
 
     /*
      * List of activities to execute .
      */
-    @JsonProperty(value = "activities", required = true)
     private List<Activity> activities;
 
     /**
@@ -151,4 +151,52 @@ public final class ForEachActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ForEachActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("items", this.items);
+        jsonWriter.writeArrayField("activities", this.activities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isSequential", this.isSequential);
+        jsonWriter.writeNumberField("batchCount", this.batchCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForEachActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForEachActivityTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ForEachActivityTypeProperties.
+     */
+    public static ForEachActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForEachActivityTypeProperties deserializedForEachActivityTypeProperties
+                = new ForEachActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("items".equals(fieldName)) {
+                    deserializedForEachActivityTypeProperties.items = Expression.fromJson(reader);
+                } else if ("activities".equals(fieldName)) {
+                    List<Activity> activities = reader.readArray(reader1 -> Activity.fromJson(reader1));
+                    deserializedForEachActivityTypeProperties.activities = activities;
+                } else if ("isSequential".equals(fieldName)) {
+                    deserializedForEachActivityTypeProperties.isSequential = reader.getNullable(JsonReader::getBoolean);
+                } else if ("batchCount".equals(fieldName)) {
+                    deserializedForEachActivityTypeProperties.batchCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForEachActivityTypeProperties;
+        });
+    }
 }

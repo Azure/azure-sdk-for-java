@@ -5,103 +5,33 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Copy activity sources of tabular type.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = TabularSource.class, visible = true)
-@JsonTypeName("TabularSource")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureTableSource", value = AzureTableSource.class),
-    @JsonSubTypes.Type(name = "InformixSource", value = InformixSource.class),
-    @JsonSubTypes.Type(name = "Db2Source", value = Db2Source.class),
-    @JsonSubTypes.Type(name = "OdbcSource", value = OdbcSource.class),
-    @JsonSubTypes.Type(name = "MySqlSource", value = MySqlSource.class),
-    @JsonSubTypes.Type(name = "PostgreSqlSource", value = PostgreSqlSource.class),
-    @JsonSubTypes.Type(name = "PostgreSqlV2Source", value = PostgreSqlV2Source.class),
-    @JsonSubTypes.Type(name = "SybaseSource", value = SybaseSource.class),
-    @JsonSubTypes.Type(name = "SapBwSource", value = SapBwSource.class),
-    @JsonSubTypes.Type(name = "SalesforceSource", value = SalesforceSource.class),
-    @JsonSubTypes.Type(name = "SapCloudForCustomerSource", value = SapCloudForCustomerSource.class),
-    @JsonSubTypes.Type(name = "SapEccSource", value = SapEccSource.class),
-    @JsonSubTypes.Type(name = "SapHanaSource", value = SapHanaSource.class),
-    @JsonSubTypes.Type(name = "SapOpenHubSource", value = SapOpenHubSource.class),
-    @JsonSubTypes.Type(name = "SapOdpSource", value = SapOdpSource.class),
-    @JsonSubTypes.Type(name = "SapTableSource", value = SapTableSource.class),
-    @JsonSubTypes.Type(name = "SqlSource", value = SqlSource.class),
-    @JsonSubTypes.Type(name = "SqlServerSource", value = SqlServerSource.class),
-    @JsonSubTypes.Type(name = "AmazonRdsForSqlServerSource", value = AmazonRdsForSqlServerSource.class),
-    @JsonSubTypes.Type(name = "AzureSqlSource", value = AzureSqlSource.class),
-    @JsonSubTypes.Type(name = "SqlMISource", value = SqlMISource.class),
-    @JsonSubTypes.Type(name = "SqlDWSource", value = SqlDWSource.class),
-    @JsonSubTypes.Type(name = "AzureMySqlSource", value = AzureMySqlSource.class),
-    @JsonSubTypes.Type(name = "TeradataSource", value = TeradataSource.class),
-    @JsonSubTypes.Type(name = "CassandraSource", value = CassandraSource.class),
-    @JsonSubTypes.Type(name = "AmazonMWSSource", value = AmazonMwsSource.class),
-    @JsonSubTypes.Type(name = "AzurePostgreSqlSource", value = AzurePostgreSqlSource.class),
-    @JsonSubTypes.Type(name = "ConcurSource", value = ConcurSource.class),
-    @JsonSubTypes.Type(name = "CouchbaseSource", value = CouchbaseSource.class),
-    @JsonSubTypes.Type(name = "DrillSource", value = DrillSource.class),
-    @JsonSubTypes.Type(name = "EloquaSource", value = EloquaSource.class),
-    @JsonSubTypes.Type(name = "GoogleBigQuerySource", value = GoogleBigQuerySource.class),
-    @JsonSubTypes.Type(name = "GoogleBigQueryV2Source", value = GoogleBigQueryV2Source.class),
-    @JsonSubTypes.Type(name = "GreenplumSource", value = GreenplumSource.class),
-    @JsonSubTypes.Type(name = "HBaseSource", value = HBaseSource.class),
-    @JsonSubTypes.Type(name = "HiveSource", value = HiveSource.class),
-    @JsonSubTypes.Type(name = "HubspotSource", value = HubspotSource.class),
-    @JsonSubTypes.Type(name = "ImpalaSource", value = ImpalaSource.class),
-    @JsonSubTypes.Type(name = "JiraSource", value = JiraSource.class),
-    @JsonSubTypes.Type(name = "MagentoSource", value = MagentoSource.class),
-    @JsonSubTypes.Type(name = "MariaDBSource", value = MariaDBSource.class),
-    @JsonSubTypes.Type(name = "AzureMariaDBSource", value = AzureMariaDBSource.class),
-    @JsonSubTypes.Type(name = "MarketoSource", value = MarketoSource.class),
-    @JsonSubTypes.Type(name = "PaypalSource", value = PaypalSource.class),
-    @JsonSubTypes.Type(name = "PhoenixSource", value = PhoenixSource.class),
-    @JsonSubTypes.Type(name = "PrestoSource", value = PrestoSource.class),
-    @JsonSubTypes.Type(name = "QuickBooksSource", value = QuickBooksSource.class),
-    @JsonSubTypes.Type(name = "ServiceNowSource", value = ServiceNowSource.class),
-    @JsonSubTypes.Type(name = "ShopifySource", value = ShopifySource.class),
-    @JsonSubTypes.Type(name = "SparkSource", value = SparkSource.class),
-    @JsonSubTypes.Type(name = "SquareSource", value = SquareSource.class),
-    @JsonSubTypes.Type(name = "XeroSource", value = XeroSource.class),
-    @JsonSubTypes.Type(name = "ZohoSource", value = ZohoSource.class),
-    @JsonSubTypes.Type(name = "NetezzaSource", value = NetezzaSource.class),
-    @JsonSubTypes.Type(name = "VerticaSource", value = VerticaSource.class),
-    @JsonSubTypes.Type(name = "SalesforceMarketingCloudSource", value = SalesforceMarketingCloudSource.class),
-    @JsonSubTypes.Type(name = "ResponsysSource", value = ResponsysSource.class),
-    @JsonSubTypes.Type(name = "DynamicsAXSource", value = DynamicsAXSource.class),
-    @JsonSubTypes.Type(name = "OracleServiceCloudSource", value = OracleServiceCloudSource.class),
-    @JsonSubTypes.Type(name = "GoogleAdWordsSource", value = GoogleAdWordsSource.class),
-    @JsonSubTypes.Type(name = "AmazonRedshiftSource", value = AmazonRedshiftSource.class),
-    @JsonSubTypes.Type(name = "WarehouseSource", value = WarehouseSource.class),
-    @JsonSubTypes.Type(name = "SalesforceV2Source", value = SalesforceV2Source.class),
-    @JsonSubTypes.Type(name = "ServiceNowV2Source", value = ServiceNowV2Source.class) })
 @Fluent
 public class TabularSource extends CopySource {
     /*
      * Copy source type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "TabularSource";
 
     /*
      * Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
     /**
@@ -208,5 +138,221 @@ public class TabularSource extends CopySource {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TabularSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TabularSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TabularSource.
+     */
+    public static TabularSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureTableSource".equals(discriminatorValue)) {
+                    return AzureTableSource.fromJson(readerToUse.reset());
+                } else if ("InformixSource".equals(discriminatorValue)) {
+                    return InformixSource.fromJson(readerToUse.reset());
+                } else if ("Db2Source".equals(discriminatorValue)) {
+                    return Db2Source.fromJson(readerToUse.reset());
+                } else if ("OdbcSource".equals(discriminatorValue)) {
+                    return OdbcSource.fromJson(readerToUse.reset());
+                } else if ("MySqlSource".equals(discriminatorValue)) {
+                    return MySqlSource.fromJson(readerToUse.reset());
+                } else if ("PostgreSqlSource".equals(discriminatorValue)) {
+                    return PostgreSqlSource.fromJson(readerToUse.reset());
+                } else if ("PostgreSqlV2Source".equals(discriminatorValue)) {
+                    return PostgreSqlV2Source.fromJson(readerToUse.reset());
+                } else if ("SybaseSource".equals(discriminatorValue)) {
+                    return SybaseSource.fromJson(readerToUse.reset());
+                } else if ("SapBwSource".equals(discriminatorValue)) {
+                    return SapBwSource.fromJson(readerToUse.reset());
+                } else if ("SalesforceSource".equals(discriminatorValue)) {
+                    return SalesforceSource.fromJson(readerToUse.reset());
+                } else if ("SapCloudForCustomerSource".equals(discriminatorValue)) {
+                    return SapCloudForCustomerSource.fromJson(readerToUse.reset());
+                } else if ("SapEccSource".equals(discriminatorValue)) {
+                    return SapEccSource.fromJson(readerToUse.reset());
+                } else if ("SapHanaSource".equals(discriminatorValue)) {
+                    return SapHanaSource.fromJson(readerToUse.reset());
+                } else if ("SapOpenHubSource".equals(discriminatorValue)) {
+                    return SapOpenHubSource.fromJson(readerToUse.reset());
+                } else if ("SapOdpSource".equals(discriminatorValue)) {
+                    return SapOdpSource.fromJson(readerToUse.reset());
+                } else if ("SapTableSource".equals(discriminatorValue)) {
+                    return SapTableSource.fromJson(readerToUse.reset());
+                } else if ("SqlSource".equals(discriminatorValue)) {
+                    return SqlSource.fromJson(readerToUse.reset());
+                } else if ("SqlServerSource".equals(discriminatorValue)) {
+                    return SqlServerSource.fromJson(readerToUse.reset());
+                } else if ("AmazonRdsForSqlServerSource".equals(discriminatorValue)) {
+                    return AmazonRdsForSqlServerSource.fromJson(readerToUse.reset());
+                } else if ("AzureSqlSource".equals(discriminatorValue)) {
+                    return AzureSqlSource.fromJson(readerToUse.reset());
+                } else if ("SqlMISource".equals(discriminatorValue)) {
+                    return SqlMISource.fromJson(readerToUse.reset());
+                } else if ("SqlDWSource".equals(discriminatorValue)) {
+                    return SqlDWSource.fromJson(readerToUse.reset());
+                } else if ("AzureMySqlSource".equals(discriminatorValue)) {
+                    return AzureMySqlSource.fromJson(readerToUse.reset());
+                } else if ("TeradataSource".equals(discriminatorValue)) {
+                    return TeradataSource.fromJson(readerToUse.reset());
+                } else if ("CassandraSource".equals(discriminatorValue)) {
+                    return CassandraSource.fromJson(readerToUse.reset());
+                } else if ("AmazonMWSSource".equals(discriminatorValue)) {
+                    return AmazonMwsSource.fromJson(readerToUse.reset());
+                } else if ("AzurePostgreSqlSource".equals(discriminatorValue)) {
+                    return AzurePostgreSqlSource.fromJson(readerToUse.reset());
+                } else if ("ConcurSource".equals(discriminatorValue)) {
+                    return ConcurSource.fromJson(readerToUse.reset());
+                } else if ("CouchbaseSource".equals(discriminatorValue)) {
+                    return CouchbaseSource.fromJson(readerToUse.reset());
+                } else if ("DrillSource".equals(discriminatorValue)) {
+                    return DrillSource.fromJson(readerToUse.reset());
+                } else if ("EloquaSource".equals(discriminatorValue)) {
+                    return EloquaSource.fromJson(readerToUse.reset());
+                } else if ("GoogleBigQuerySource".equals(discriminatorValue)) {
+                    return GoogleBigQuerySource.fromJson(readerToUse.reset());
+                } else if ("GoogleBigQueryV2Source".equals(discriminatorValue)) {
+                    return GoogleBigQueryV2Source.fromJson(readerToUse.reset());
+                } else if ("GreenplumSource".equals(discriminatorValue)) {
+                    return GreenplumSource.fromJson(readerToUse.reset());
+                } else if ("HBaseSource".equals(discriminatorValue)) {
+                    return HBaseSource.fromJson(readerToUse.reset());
+                } else if ("HiveSource".equals(discriminatorValue)) {
+                    return HiveSource.fromJson(readerToUse.reset());
+                } else if ("HubspotSource".equals(discriminatorValue)) {
+                    return HubspotSource.fromJson(readerToUse.reset());
+                } else if ("ImpalaSource".equals(discriminatorValue)) {
+                    return ImpalaSource.fromJson(readerToUse.reset());
+                } else if ("JiraSource".equals(discriminatorValue)) {
+                    return JiraSource.fromJson(readerToUse.reset());
+                } else if ("MagentoSource".equals(discriminatorValue)) {
+                    return MagentoSource.fromJson(readerToUse.reset());
+                } else if ("MariaDBSource".equals(discriminatorValue)) {
+                    return MariaDBSource.fromJson(readerToUse.reset());
+                } else if ("AzureMariaDBSource".equals(discriminatorValue)) {
+                    return AzureMariaDBSource.fromJson(readerToUse.reset());
+                } else if ("MarketoSource".equals(discriminatorValue)) {
+                    return MarketoSource.fromJson(readerToUse.reset());
+                } else if ("PaypalSource".equals(discriminatorValue)) {
+                    return PaypalSource.fromJson(readerToUse.reset());
+                } else if ("PhoenixSource".equals(discriminatorValue)) {
+                    return PhoenixSource.fromJson(readerToUse.reset());
+                } else if ("PrestoSource".equals(discriminatorValue)) {
+                    return PrestoSource.fromJson(readerToUse.reset());
+                } else if ("QuickBooksSource".equals(discriminatorValue)) {
+                    return QuickBooksSource.fromJson(readerToUse.reset());
+                } else if ("ServiceNowSource".equals(discriminatorValue)) {
+                    return ServiceNowSource.fromJson(readerToUse.reset());
+                } else if ("ShopifySource".equals(discriminatorValue)) {
+                    return ShopifySource.fromJson(readerToUse.reset());
+                } else if ("SparkSource".equals(discriminatorValue)) {
+                    return SparkSource.fromJson(readerToUse.reset());
+                } else if ("SquareSource".equals(discriminatorValue)) {
+                    return SquareSource.fromJson(readerToUse.reset());
+                } else if ("XeroSource".equals(discriminatorValue)) {
+                    return XeroSource.fromJson(readerToUse.reset());
+                } else if ("ZohoSource".equals(discriminatorValue)) {
+                    return ZohoSource.fromJson(readerToUse.reset());
+                } else if ("NetezzaSource".equals(discriminatorValue)) {
+                    return NetezzaSource.fromJson(readerToUse.reset());
+                } else if ("VerticaSource".equals(discriminatorValue)) {
+                    return VerticaSource.fromJson(readerToUse.reset());
+                } else if ("SalesforceMarketingCloudSource".equals(discriminatorValue)) {
+                    return SalesforceMarketingCloudSource.fromJson(readerToUse.reset());
+                } else if ("ResponsysSource".equals(discriminatorValue)) {
+                    return ResponsysSource.fromJson(readerToUse.reset());
+                } else if ("DynamicsAXSource".equals(discriminatorValue)) {
+                    return DynamicsAXSource.fromJson(readerToUse.reset());
+                } else if ("OracleServiceCloudSource".equals(discriminatorValue)) {
+                    return OracleServiceCloudSource.fromJson(readerToUse.reset());
+                } else if ("GoogleAdWordsSource".equals(discriminatorValue)) {
+                    return GoogleAdWordsSource.fromJson(readerToUse.reset());
+                } else if ("AmazonRedshiftSource".equals(discriminatorValue)) {
+                    return AmazonRedshiftSource.fromJson(readerToUse.reset());
+                } else if ("WarehouseSource".equals(discriminatorValue)) {
+                    return WarehouseSource.fromJson(readerToUse.reset());
+                } else if ("SalesforceV2Source".equals(discriminatorValue)) {
+                    return SalesforceV2Source.fromJson(readerToUse.reset());
+                } else if ("ServiceNowV2Source".equals(discriminatorValue)) {
+                    return ServiceNowV2Source.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TabularSource fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TabularSource deserializedTabularSource = new TabularSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedTabularSource.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedTabularSource.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedTabularSource.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedTabularSource.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedTabularSource.type = reader.getString();
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedTabularSource.queryTimeout = reader.readUntyped();
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedTabularSource.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedTabularSource.withAdditionalProperties(additionalProperties);
+
+            return deserializedTabularSource;
+        });
     }
 }

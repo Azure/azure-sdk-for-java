@@ -6,53 +6,52 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Azure Databricks Delta Lake linked service properties.
  */
 @Fluent
-public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties {
+public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties
+    implements JsonSerializable<AzureDatabricksDetltaLakeLinkedServiceTypeProperties> {
     /*
      * <REGION>.azuredatabricks.net, domain name of your Databricks deployment. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "domain", required = true)
     private Object domain;
 
     /*
      * Access token for databricks REST API. Refer to https://docs.azuredatabricks.net/api/latest/authentication.html.
      * Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "accessToken")
     private SecretBase accessToken;
 
     /*
      * The id of an existing interactive cluster that will be used for all runs of this job. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "clusterId")
     private Object clusterId;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /*
      * Workspace resource id for databricks REST API. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "workspaceResourceId")
     private Object workspaceResourceId;
 
     /**
@@ -214,4 +213,62 @@ public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties {
 
     private static final ClientLogger LOGGER
         = new ClientLogger(AzureDatabricksDetltaLakeLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("domain", this.domain);
+        jsonWriter.writeJsonField("accessToken", this.accessToken);
+        jsonWriter.writeUntypedField("clusterId", this.clusterId);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("credential", this.credential);
+        jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDatabricksDetltaLakeLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDatabricksDetltaLakeLinkedServiceTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureDatabricksDetltaLakeLinkedServiceTypeProperties.
+     */
+    public static AzureDatabricksDetltaLakeLinkedServiceTypeProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDatabricksDetltaLakeLinkedServiceTypeProperties deserializedAzureDatabricksDetltaLakeLinkedServiceTypeProperties
+                = new AzureDatabricksDetltaLakeLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domain".equals(fieldName)) {
+                    deserializedAzureDatabricksDetltaLakeLinkedServiceTypeProperties.domain = reader.readUntyped();
+                } else if ("accessToken".equals(fieldName)) {
+                    deserializedAzureDatabricksDetltaLakeLinkedServiceTypeProperties.accessToken
+                        = SecretBase.fromJson(reader);
+                } else if ("clusterId".equals(fieldName)) {
+                    deserializedAzureDatabricksDetltaLakeLinkedServiceTypeProperties.clusterId = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureDatabricksDetltaLakeLinkedServiceTypeProperties.encryptedCredential
+                        = reader.getString();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedAzureDatabricksDetltaLakeLinkedServiceTypeProperties.credential
+                        = CredentialReference.fromJson(reader);
+                } else if ("workspaceResourceId".equals(fieldName)) {
+                    deserializedAzureDatabricksDetltaLakeLinkedServiceTypeProperties.workspaceResourceId
+                        = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDatabricksDetltaLakeLinkedServiceTypeProperties;
+        });
+    }
 }

@@ -6,7 +6,10 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Integration runtime debug resource.
@@ -16,7 +19,6 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
     /*
      * Integration runtime properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private IntegrationRuntime properties;
 
     /**
@@ -72,4 +74,45 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeDebugResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeDebugResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeDebugResource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeDebugResource.
+     */
+    public static IntegrationRuntimeDebugResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeDebugResource deserializedIntegrationRuntimeDebugResource
+                = new IntegrationRuntimeDebugResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIntegrationRuntimeDebugResource.withName(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIntegrationRuntimeDebugResource.properties = IntegrationRuntime.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationRuntimeDebugResource;
+        });
+    }
 }

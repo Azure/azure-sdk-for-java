@@ -5,10 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,35 +18,30 @@ import java.util.Map;
  * VNet properties for managed integration runtime.
  */
 @Fluent
-public final class IntegrationRuntimeVNetProperties {
+public final class IntegrationRuntimeVNetProperties implements JsonSerializable<IntegrationRuntimeVNetProperties> {
     /*
      * The ID of the VNet that this integration runtime will join.
      */
-    @JsonProperty(value = "vNetId")
     private String vNetId;
 
     /*
      * The name of the subnet this integration runtime will join.
      */
-    @JsonProperty(value = "subnet")
     private String subnet;
 
     /*
      * Resource IDs of the public IP addresses that this integration runtime will use.
      */
-    @JsonProperty(value = "publicIPs")
     private List<String> publicIPs;
 
     /*
      * The ID of subnet, to which this Azure-SSIS integration runtime will be joined.
      */
-    @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
      * VNet properties for managed integration runtime.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -139,7 +135,6 @@ public final class IntegrationRuntimeVNetProperties {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -155,19 +150,69 @@ public final class IntegrationRuntimeVNetProperties {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vNetId", this.vNetId);
+        jsonWriter.writeStringField("subnet", this.subnet);
+        jsonWriter.writeArrayField("publicIPs", this.publicIPs, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeVNetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeVNetProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeVNetProperties.
+     */
+    public static IntegrationRuntimeVNetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeVNetProperties deserializedIntegrationRuntimeVNetProperties
+                = new IntegrationRuntimeVNetProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vNetId".equals(fieldName)) {
+                    deserializedIntegrationRuntimeVNetProperties.vNetId = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedIntegrationRuntimeVNetProperties.subnet = reader.getString();
+                } else if ("publicIPs".equals(fieldName)) {
+                    List<String> publicIPs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIntegrationRuntimeVNetProperties.publicIPs = publicIPs;
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedIntegrationRuntimeVNetProperties.subnetId = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedIntegrationRuntimeVNetProperties.additionalProperties = additionalProperties;
+
+            return deserializedIntegrationRuntimeVNetProperties;
+        });
     }
 }

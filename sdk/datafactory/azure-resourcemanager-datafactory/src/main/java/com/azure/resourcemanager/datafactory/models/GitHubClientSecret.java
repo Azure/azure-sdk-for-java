@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Client secret information for factory's bring your own app repository configuration.
  */
 @Fluent
-public final class GitHubClientSecret {
+public final class GitHubClientSecret implements JsonSerializable<GitHubClientSecret> {
     /*
      * Bring your own app client secret AKV URL.
      */
-    @JsonProperty(value = "byoaSecretAkvUrl")
     private String byoaSecretAkvUrl;
 
     /*
      * Bring your own app client secret name in AKV.
      */
-    @JsonProperty(value = "byoaSecretName")
     private String byoaSecretName;
 
     /**
@@ -76,5 +78,44 @@ public final class GitHubClientSecret {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("byoaSecretAkvUrl", this.byoaSecretAkvUrl);
+        jsonWriter.writeStringField("byoaSecretName", this.byoaSecretName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHubClientSecret from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHubClientSecret if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GitHubClientSecret.
+     */
+    public static GitHubClientSecret fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHubClientSecret deserializedGitHubClientSecret = new GitHubClientSecret();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("byoaSecretAkvUrl".equals(fieldName)) {
+                    deserializedGitHubClientSecret.byoaSecretAkvUrl = reader.getString();
+                } else if ("byoaSecretName".equals(fieldName)) {
+                    deserializedGitHubClientSecret.byoaSecretName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHubClientSecret;
+        });
     }
 }

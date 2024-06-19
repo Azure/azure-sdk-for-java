@@ -5,36 +5,28 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.SalesforceV2ObjectDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * The Salesforce V2 object dataset.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = SalesforceV2ObjectDataset.class,
-    visible = true)
-@JsonTypeName("SalesforceV2Object")
 @Fluent
 public final class SalesforceV2ObjectDataset extends Dataset {
     /*
      * Type of dataset.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "SalesforceV2Object";
 
     /*
      * Salesforce V2 object dataset properties.
      */
-    @JsonProperty(value = "typeProperties")
     private SalesforceV2ObjectDatasetTypeProperties innerTypeProperties;
 
     /**
@@ -184,5 +176,82 @@ public final class SalesforceV2ObjectDataset extends Dataset {
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeUntypedField("structure", structure());
+        jsonWriter.writeUntypedField("schema", schema());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", folder());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceV2ObjectDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceV2ObjectDataset if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SalesforceV2ObjectDataset.
+     */
+    public static SalesforceV2ObjectDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceV2ObjectDataset deserializedSalesforceV2ObjectDataset = new SalesforceV2ObjectDataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedSalesforceV2ObjectDataset
+                        .withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSalesforceV2ObjectDataset.withDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedSalesforceV2ObjectDataset.withStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedSalesforceV2ObjectDataset.withSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedSalesforceV2ObjectDataset.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSalesforceV2ObjectDataset.withAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedSalesforceV2ObjectDataset.withFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedSalesforceV2ObjectDataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedSalesforceV2ObjectDataset.innerTypeProperties
+                        = SalesforceV2ObjectDatasetTypeProperties.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSalesforceV2ObjectDataset.withAdditionalProperties(additionalProperties);
+
+            return deserializedSalesforceV2ObjectDataset;
+        });
     }
 }

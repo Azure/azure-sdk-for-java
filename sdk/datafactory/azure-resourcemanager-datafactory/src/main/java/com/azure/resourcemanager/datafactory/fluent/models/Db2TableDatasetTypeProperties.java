@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Db2 table dataset properties.
  */
 @Fluent
-public final class Db2TableDatasetTypeProperties {
+public final class Db2TableDatasetTypeProperties implements JsonSerializable<Db2TableDatasetTypeProperties> {
     /*
      * This property will be retired. Please consider using schema + table properties instead.
      */
-    @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
      * The Db2 schema name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "schema")
     private Object schema;
 
     /*
      * The Db2 table name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "table")
     private Object table;
 
     /**
@@ -104,5 +105,48 @@ public final class Db2TableDatasetTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("tableName", this.tableName);
+        jsonWriter.writeUntypedField("schema", this.schema);
+        jsonWriter.writeUntypedField("table", this.table);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Db2TableDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Db2TableDatasetTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Db2TableDatasetTypeProperties.
+     */
+    public static Db2TableDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Db2TableDatasetTypeProperties deserializedDb2TableDatasetTypeProperties
+                = new Db2TableDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedDb2TableDatasetTypeProperties.tableName = reader.readUntyped();
+                } else if ("schema".equals(fieldName)) {
+                    deserializedDb2TableDatasetTypeProperties.schema = reader.readUntyped();
+                } else if ("table".equals(fieldName)) {
+                    deserializedDb2TableDatasetTypeProperties.table = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDb2TableDatasetTypeProperties;
+        });
     }
 }

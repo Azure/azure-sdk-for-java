@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,75 +19,60 @@ import java.util.Map;
  * Trigger runs.
  */
 @Fluent
-public final class TriggerRun {
+public final class TriggerRun implements JsonSerializable<TriggerRun> {
     /*
      * Trigger run id.
      */
-    @JsonProperty(value = "triggerRunId", access = JsonProperty.Access.WRITE_ONLY)
     private String triggerRunId;
 
     /*
      * Trigger name.
      */
-    @JsonProperty(value = "triggerName", access = JsonProperty.Access.WRITE_ONLY)
     private String triggerName;
 
     /*
      * Trigger type.
      */
-    @JsonProperty(value = "triggerType", access = JsonProperty.Access.WRITE_ONLY)
     private String triggerType;
 
     /*
      * Trigger run start time.
      */
-    @JsonProperty(value = "triggerRunTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime triggerRunTimestamp;
 
     /*
      * Trigger run status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private TriggerRunStatus status;
 
     /*
      * Trigger error message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * List of property name and value related to trigger run. Name, value pair depends on type of trigger.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
     /*
      * List of pipeline name and run Id triggered by the trigger run.
      */
-    @JsonProperty(value = "triggeredPipelines", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> triggeredPipelines;
 
     /*
      * Run dimension for which trigger was fired.
      */
-    @JsonProperty(value = "runDimension", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> runDimension;
 
     /*
      * Status of the upstream pipelines.
      */
-    @JsonProperty(value = "dependencyStatus", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> dependencyStatus;
 
     /*
      * Trigger runs.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -191,7 +177,6 @@ public final class TriggerRun {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -207,19 +192,80 @@ public final class TriggerRun {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerRun from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerRun if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TriggerRun.
+     */
+    public static TriggerRun fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerRun deserializedTriggerRun = new TriggerRun();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("triggerRunId".equals(fieldName)) {
+                    deserializedTriggerRun.triggerRunId = reader.getString();
+                } else if ("triggerName".equals(fieldName)) {
+                    deserializedTriggerRun.triggerName = reader.getString();
+                } else if ("triggerType".equals(fieldName)) {
+                    deserializedTriggerRun.triggerType = reader.getString();
+                } else if ("triggerRunTimestamp".equals(fieldName)) {
+                    deserializedTriggerRun.triggerRunTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedTriggerRun.status = TriggerRunStatus.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedTriggerRun.message = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTriggerRun.properties = properties;
+                } else if ("triggeredPipelines".equals(fieldName)) {
+                    Map<String, String> triggeredPipelines = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTriggerRun.triggeredPipelines = triggeredPipelines;
+                } else if ("runDimension".equals(fieldName)) {
+                    Map<String, String> runDimension = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTriggerRun.runDimension = runDimension;
+                } else if ("dependencyStatus".equals(fieldName)) {
+                    Map<String, Object> dependencyStatus = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedTriggerRun.dependencyStatus = dependencyStatus;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedTriggerRun.additionalProperties = additionalProperties;
+
+            return deserializedTriggerRun;
+        });
     }
 }

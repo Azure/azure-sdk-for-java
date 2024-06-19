@@ -6,17 +6,21 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * CosmosDB (SQL API) Collection dataset properties.
  */
 @Fluent
-public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
+public final class CosmosDbSqlApiCollectionDatasetTypeProperties
+    implements JsonSerializable<CosmosDbSqlApiCollectionDatasetTypeProperties> {
     /*
      * CosmosDB (SQL API) collection name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "collectionName", required = true)
     private Object collectionName;
 
     /**
@@ -61,4 +65,42 @@ public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CosmosDbSqlApiCollectionDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("collectionName", this.collectionName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CosmosDbSqlApiCollectionDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CosmosDbSqlApiCollectionDatasetTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CosmosDbSqlApiCollectionDatasetTypeProperties.
+     */
+    public static CosmosDbSqlApiCollectionDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CosmosDbSqlApiCollectionDatasetTypeProperties deserializedCosmosDbSqlApiCollectionDatasetTypeProperties
+                = new CosmosDbSqlApiCollectionDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("collectionName".equals(fieldName)) {
+                    deserializedCosmosDbSqlApiCollectionDatasetTypeProperties.collectionName = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCosmosDbSqlApiCollectionDatasetTypeProperties;
+        });
+    }
 }

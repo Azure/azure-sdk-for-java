@@ -6,24 +6,26 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.Expression;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Filter activity properties.
  */
 @Fluent
-public final class FilterActivityTypeProperties {
+public final class FilterActivityTypeProperties implements JsonSerializable<FilterActivityTypeProperties> {
     /*
      * Input array on which filter should be applied.
      */
-    @JsonProperty(value = "items", required = true)
     private Expression items;
 
     /*
      * Condition to be used for filtering the input.
      */
-    @JsonProperty(value = "condition", required = true)
     private Expression condition;
 
     /**
@@ -95,4 +97,44 @@ public final class FilterActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FilterActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("items", this.items);
+        jsonWriter.writeJsonField("condition", this.condition);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FilterActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FilterActivityTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FilterActivityTypeProperties.
+     */
+    public static FilterActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FilterActivityTypeProperties deserializedFilterActivityTypeProperties = new FilterActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("items".equals(fieldName)) {
+                    deserializedFilterActivityTypeProperties.items = Expression.fromJson(reader);
+                } else if ("condition".equals(fieldName)) {
+                    deserializedFilterActivityTypeProperties.condition = Expression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFilterActivityTypeProperties;
+        });
+    }
 }

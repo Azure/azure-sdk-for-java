@@ -6,17 +6,21 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SAP Table Resource properties.
  */
 @Fluent
-public final class SapTableResourceDatasetTypeProperties {
+public final class SapTableResourceDatasetTypeProperties
+    implements JsonSerializable<SapTableResourceDatasetTypeProperties> {
     /*
      * The name of the SAP Table. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "tableName", required = true)
     private Object tableName;
 
     /**
@@ -59,4 +63,42 @@ public final class SapTableResourceDatasetTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SapTableResourceDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("tableName", this.tableName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapTableResourceDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapTableResourceDatasetTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SapTableResourceDatasetTypeProperties.
+     */
+    public static SapTableResourceDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapTableResourceDatasetTypeProperties deserializedSapTableResourceDatasetTypeProperties
+                = new SapTableResourceDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedSapTableResourceDatasetTypeProperties.tableName = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapTableResourceDatasetTypeProperties;
+        });
+    }
 }

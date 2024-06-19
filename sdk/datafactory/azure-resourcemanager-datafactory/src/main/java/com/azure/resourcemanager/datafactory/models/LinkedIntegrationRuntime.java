@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The linked integration runtime information.
  */
 @Immutable
-public final class LinkedIntegrationRuntime {
+public final class LinkedIntegrationRuntime implements JsonSerializable<LinkedIntegrationRuntime> {
     /*
      * The name of the linked integration runtime.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The subscription ID for which the linked integration runtime belong to.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * The name of the data factory for which the linked integration runtime belong to.
      */
-    @JsonProperty(value = "dataFactoryName", access = JsonProperty.Access.WRITE_ONLY)
     private String dataFactoryName;
 
     /*
      * The location of the data factory for which the linked integration runtime belong to.
      */
-    @JsonProperty(value = "dataFactoryLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String dataFactoryLocation;
 
     /*
      * The creating time of the linked integration runtime.
      */
-    @JsonProperty(value = "createTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createTime;
 
     /**
@@ -102,5 +102,49 @@ public final class LinkedIntegrationRuntime {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkedIntegrationRuntime from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkedIntegrationRuntime if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkedIntegrationRuntime.
+     */
+    public static LinkedIntegrationRuntime fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkedIntegrationRuntime deserializedLinkedIntegrationRuntime = new LinkedIntegrationRuntime();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedLinkedIntegrationRuntime.name = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedLinkedIntegrationRuntime.subscriptionId = reader.getString();
+                } else if ("dataFactoryName".equals(fieldName)) {
+                    deserializedLinkedIntegrationRuntime.dataFactoryName = reader.getString();
+                } else if ("dataFactoryLocation".equals(fieldName)) {
+                    deserializedLinkedIntegrationRuntime.dataFactoryLocation = reader.getString();
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedLinkedIntegrationRuntime.createTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkedIntegrationRuntime;
+        });
     }
 }

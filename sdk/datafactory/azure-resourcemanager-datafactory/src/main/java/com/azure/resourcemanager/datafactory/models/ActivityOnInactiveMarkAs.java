@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class ActivityOnInactiveMarkAs extends ExpandableStringEnum<Activit
      * @param name a name to look for.
      * @return the corresponding ActivityOnInactiveMarkAs.
      */
-    @JsonCreator
     public static ActivityOnInactiveMarkAs fromString(String name) {
         return fromString(name, ActivityOnInactiveMarkAs.class);
     }

@@ -6,6 +6,10 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CopySink;
 import com.azure.resourcemanager.datafactory.models.CopySource;
 import com.azure.resourcemanager.datafactory.models.LogSettings;
@@ -13,105 +17,90 @@ import com.azure.resourcemanager.datafactory.models.LogStorageSettings;
 import com.azure.resourcemanager.datafactory.models.RedirectIncompatibleRowSettings;
 import com.azure.resourcemanager.datafactory.models.SkipErrorFile;
 import com.azure.resourcemanager.datafactory.models.StagingSettings;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Copy activity properties.
  */
 @Fluent
-public final class CopyActivityTypeProperties {
+public final class CopyActivityTypeProperties implements JsonSerializable<CopyActivityTypeProperties> {
     /*
      * Copy activity source.
      */
-    @JsonProperty(value = "source", required = true)
     private CopySource source;
 
     /*
      * Copy activity sink.
      */
-    @JsonProperty(value = "sink", required = true)
     private CopySink sink;
 
     /*
      * Copy activity translator. If not specified, tabular translator is used.
      */
-    @JsonProperty(value = "translator")
     private Object translator;
 
     /*
      * Specifies whether to copy data via an interim staging. Default value is false. Type: boolean (or Expression with
      * resultType boolean).
      */
-    @JsonProperty(value = "enableStaging")
     private Object enableStaging;
 
     /*
      * Specifies interim staging settings when EnableStaging is true.
      */
-    @JsonProperty(value = "stagingSettings")
     private StagingSettings stagingSettings;
 
     /*
      * Maximum number of concurrent sessions opened on the source or sink to avoid overloading the data store. Type:
      * integer (or Expression with resultType integer), minimum: 0.
      */
-    @JsonProperty(value = "parallelCopies")
     private Object parallelCopies;
 
     /*
      * Maximum number of data integration units that can be used to perform this data movement. Type: integer (or
      * Expression with resultType integer), minimum: 0.
      */
-    @JsonProperty(value = "dataIntegrationUnits")
     private Object dataIntegrationUnits;
 
     /*
      * Whether to skip incompatible row. Default value is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enableSkipIncompatibleRow")
     private Object enableSkipIncompatibleRow;
 
     /*
      * Redirect incompatible row settings when EnableSkipIncompatibleRow is true.
      */
-    @JsonProperty(value = "redirectIncompatibleRowSettings")
     private RedirectIncompatibleRowSettings redirectIncompatibleRowSettings;
 
     /*
      * (Deprecated. Please use LogSettings) Log storage settings customer need to provide when enabling session log.
      */
-    @JsonProperty(value = "logStorageSettings")
     private LogStorageSettings logStorageSettings;
 
     /*
      * Log settings customer needs provide when enabling log.
      */
-    @JsonProperty(value = "logSettings")
     private LogSettings logSettings;
 
     /*
      * Preserve Rules.
      */
-    @JsonProperty(value = "preserveRules")
     private List<Object> preserveRules;
 
     /*
      * Preserve rules.
      */
-    @JsonProperty(value = "preserve")
     private List<Object> preserve;
 
     /*
      * Whether to enable Data Consistency validation. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "validateDataConsistency")
     private Object validateDataConsistency;
 
     /*
      * Specify the fault tolerance for data consistency.
      */
-    @JsonProperty(value = "skipErrorFile")
     private SkipErrorFile skipErrorFile;
 
     /**
@@ -473,4 +462,87 @@ public final class CopyActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CopyActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeJsonField("sink", this.sink);
+        jsonWriter.writeUntypedField("translator", this.translator);
+        jsonWriter.writeUntypedField("enableStaging", this.enableStaging);
+        jsonWriter.writeJsonField("stagingSettings", this.stagingSettings);
+        jsonWriter.writeUntypedField("parallelCopies", this.parallelCopies);
+        jsonWriter.writeUntypedField("dataIntegrationUnits", this.dataIntegrationUnits);
+        jsonWriter.writeUntypedField("enableSkipIncompatibleRow", this.enableSkipIncompatibleRow);
+        jsonWriter.writeJsonField("redirectIncompatibleRowSettings", this.redirectIncompatibleRowSettings);
+        jsonWriter.writeJsonField("logStorageSettings", this.logStorageSettings);
+        jsonWriter.writeJsonField("logSettings", this.logSettings);
+        jsonWriter.writeArrayField("preserveRules", this.preserveRules,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("preserve", this.preserve, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeUntypedField("validateDataConsistency", this.validateDataConsistency);
+        jsonWriter.writeJsonField("skipErrorFile", this.skipErrorFile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CopyActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CopyActivityTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CopyActivityTypeProperties.
+     */
+    public static CopyActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CopyActivityTypeProperties deserializedCopyActivityTypeProperties = new CopyActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.source = CopySource.fromJson(reader);
+                } else if ("sink".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.sink = CopySink.fromJson(reader);
+                } else if ("translator".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.translator = reader.readUntyped();
+                } else if ("enableStaging".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.enableStaging = reader.readUntyped();
+                } else if ("stagingSettings".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.stagingSettings = StagingSettings.fromJson(reader);
+                } else if ("parallelCopies".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.parallelCopies = reader.readUntyped();
+                } else if ("dataIntegrationUnits".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.dataIntegrationUnits = reader.readUntyped();
+                } else if ("enableSkipIncompatibleRow".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.enableSkipIncompatibleRow = reader.readUntyped();
+                } else if ("redirectIncompatibleRowSettings".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.redirectIncompatibleRowSettings
+                        = RedirectIncompatibleRowSettings.fromJson(reader);
+                } else if ("logStorageSettings".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.logStorageSettings = LogStorageSettings.fromJson(reader);
+                } else if ("logSettings".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.logSettings = LogSettings.fromJson(reader);
+                } else if ("preserveRules".equals(fieldName)) {
+                    List<Object> preserveRules = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedCopyActivityTypeProperties.preserveRules = preserveRules;
+                } else if ("preserve".equals(fieldName)) {
+                    List<Object> preserve = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedCopyActivityTypeProperties.preserve = preserve;
+                } else if ("validateDataConsistency".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.validateDataConsistency = reader.readUntyped();
+                } else if ("skipErrorFile".equals(fieldName)) {
+                    deserializedCopyActivityTypeProperties.skipErrorFile = SkipErrorFile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCopyActivityTypeProperties;
+        });
+    }
 }

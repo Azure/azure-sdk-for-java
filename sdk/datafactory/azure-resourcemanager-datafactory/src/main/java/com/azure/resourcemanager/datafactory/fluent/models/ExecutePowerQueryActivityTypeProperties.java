@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.ContinuationSettingsReference;
 import com.azure.resourcemanager.datafactory.models.DataFlowReference;
 import com.azure.resourcemanager.datafactory.models.DataFlowStagingInfo;
@@ -12,8 +15,7 @@ import com.azure.resourcemanager.datafactory.models.ExecuteDataFlowActivityTypeP
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeReference;
 import com.azure.resourcemanager.datafactory.models.PowerQuerySink;
 import com.azure.resourcemanager.datafactory.models.PowerQuerySinkMapping;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +27,11 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
     /*
      * (Deprecated. Please use Queries). List of Power Query activity sinks mapped to a queryName.
      */
-    @JsonProperty(value = "sinks")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, PowerQuerySink> sinks;
 
     /*
      * List of mapping for Power Query mashup query to sink dataset(s).
      */
-    @JsonProperty(value = "queries")
     private List<PowerQuerySinkMapping> queries;
 
     /**
@@ -184,5 +183,82 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
         if (queries() != null) {
             queries().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dataFlow", dataFlow());
+        jsonWriter.writeJsonField("staging", staging());
+        jsonWriter.writeJsonField("integrationRuntime", integrationRuntime());
+        jsonWriter.writeJsonField("continuationSettings", continuationSettings());
+        jsonWriter.writeJsonField("compute", compute());
+        jsonWriter.writeUntypedField("traceLevel", traceLevel());
+        jsonWriter.writeUntypedField("continueOnError", continueOnError());
+        jsonWriter.writeUntypedField("runConcurrently", runConcurrently());
+        jsonWriter.writeUntypedField("sourceStagingConcurrency", sourceStagingConcurrency());
+        jsonWriter.writeMapField("sinks", this.sinks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("queries", this.queries, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecutePowerQueryActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecutePowerQueryActivityTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExecutePowerQueryActivityTypeProperties.
+     */
+    public static ExecutePowerQueryActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecutePowerQueryActivityTypeProperties deserializedExecutePowerQueryActivityTypeProperties
+                = new ExecutePowerQueryActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataFlow".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withDataFlow(DataFlowReference.fromJson(reader));
+                } else if ("staging".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withStaging(DataFlowStagingInfo.fromJson(reader));
+                } else if ("integrationRuntime".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withIntegrationRuntime(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("continuationSettings".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withContinuationSettings(ContinuationSettingsReference.fromJson(reader));
+                } else if ("compute".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withCompute(ExecuteDataFlowActivityTypePropertiesCompute.fromJson(reader));
+                } else if ("traceLevel".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties.withTraceLevel(reader.readUntyped());
+                } else if ("continueOnError".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties.withContinueOnError(reader.readUntyped());
+                } else if ("runConcurrently".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties.withRunConcurrently(reader.readUntyped());
+                } else if ("sourceStagingConcurrency".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withSourceStagingConcurrency(reader.readUntyped());
+                } else if ("sinks".equals(fieldName)) {
+                    Map<String, PowerQuerySink> sinks = reader.readMap(reader1 -> PowerQuerySink.fromJson(reader1));
+                    deserializedExecutePowerQueryActivityTypeProperties.sinks = sinks;
+                } else if ("queries".equals(fieldName)) {
+                    List<PowerQuerySinkMapping> queries
+                        = reader.readArray(reader1 -> PowerQuerySinkMapping.fromJson(reader1));
+                    deserializedExecutePowerQueryActivityTypeProperties.queries = queries;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExecutePowerQueryActivityTypeProperties;
+        });
     }
 }

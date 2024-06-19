@@ -6,22 +6,26 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.ScriptAction;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * HDInsight ondemand linked service properties.
  */
 @Fluent
-public final class HDInsightOnDemandLinkedServiceTypeProperties {
+public final class HDInsightOnDemandLinkedServiceTypeProperties
+    implements JsonSerializable<HDInsightOnDemandLinkedServiceTypeProperties> {
     /*
      * Number of worker/data nodes in the cluster. Suggestion value: 4. Type: int (or Expression with resultType int).
      */
-    @JsonProperty(value = "clusterSize", required = true)
     private Object clusterSize;
 
     /*
@@ -29,180 +33,151 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
      * stays alive after completion of an activity run if there are no other active jobs in the cluster. The minimum
      * value is 5 mins. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "timeToLive", required = true)
     private Object timeToLive;
 
     /*
      * Version of the HDInsight cluster.  Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "version", required = true)
     private Object version;
 
     /*
      * Azure Storage linked service to be used by the on-demand cluster for storing and processing data.
      */
-    @JsonProperty(value = "linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;
 
     /*
      * The customer’s subscription to host the cluster. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "hostSubscriptionId", required = true)
     private Object hostSubscriptionId;
 
     /*
      * The service principal id for the hostSubscriptionId. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The key for the service principal id.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * The Tenant id/name to which the service principal belongs. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "tenant", required = true)
     private Object tenant;
 
     /*
      * The resource group where the cluster belongs. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "clusterResourceGroup", required = true)
     private Object clusterResourceGroup;
 
     /*
      * The prefix of cluster name, postfix will be distinct with timestamp. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "clusterNamePrefix")
     private Object clusterNamePrefix;
 
     /*
      * The username to access the cluster. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "clusterUserName")
     private Object clusterUsername;
 
     /*
      * The password to access the cluster.
      */
-    @JsonProperty(value = "clusterPassword")
     private SecretBase clusterPassword;
 
     /*
      * The username to SSH remotely connect to cluster’s node (for Linux). Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "clusterSshUserName")
     private Object clusterSshUsername;
 
     /*
      * The password to SSH remotely connect cluster’s node (for Linux).
      */
-    @JsonProperty(value = "clusterSshPassword")
     private SecretBase clusterSshPassword;
 
     /*
      * Specifies additional storage accounts for the HDInsight linked service so that the Data Factory service can
      * register them on your behalf.
      */
-    @JsonProperty(value = "additionalLinkedServiceNames")
     private List<LinkedServiceReference> additionalLinkedServiceNames;
 
     /*
      * The name of Azure SQL linked service that point to the HCatalog database. The on-demand HDInsight cluster is
      * created by using the Azure SQL database as the metastore.
      */
-    @JsonProperty(value = "hcatalogLinkedServiceName")
     private LinkedServiceReference hcatalogLinkedServiceName;
 
     /*
      * The cluster type. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "clusterType")
     private Object clusterType;
 
     /*
      * The version of spark if the cluster type is 'spark'. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "sparkVersion")
     private Object sparkVersion;
 
     /*
      * Specifies the core configuration parameters (as in core-site.xml) for the HDInsight cluster to be created.
      */
-    @JsonProperty(value = "coreConfiguration")
     private Object coreConfiguration;
 
     /*
      * Specifies the HBase configuration parameters (hbase-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "hBaseConfiguration")
     private Object hBaseConfiguration;
 
     /*
      * Specifies the HDFS configuration parameters (hdfs-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "hdfsConfiguration")
     private Object hdfsConfiguration;
 
     /*
      * Specifies the hive configuration parameters (hive-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "hiveConfiguration")
     private Object hiveConfiguration;
 
     /*
      * Specifies the MapReduce configuration parameters (mapred-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "mapReduceConfiguration")
     private Object mapReduceConfiguration;
 
     /*
      * Specifies the Oozie configuration parameters (oozie-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "oozieConfiguration")
     private Object oozieConfiguration;
 
     /*
      * Specifies the Storm configuration parameters (storm-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "stormConfiguration")
     private Object stormConfiguration;
 
     /*
      * Specifies the Yarn configuration parameters (yarn-site.xml) for the HDInsight cluster.
      */
-    @JsonProperty(value = "yarnConfiguration")
     private Object yarnConfiguration;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * Specifies the size of the head node for the HDInsight cluster.
      */
-    @JsonProperty(value = "headNodeSize")
     private Object headNodeSize;
 
     /*
      * Specifies the size of the data node for the HDInsight cluster.
      */
-    @JsonProperty(value = "dataNodeSize")
     private Object dataNodeSize;
 
     /*
      * Specifies the size of the Zoo Keeper node for the HDInsight cluster.
      */
-    @JsonProperty(value = "zookeeperNodeSize")
     private Object zookeeperNodeSize;
 
     /*
@@ -210,27 +185,23 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
      * https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%
      * 2Fhdinsight%2Fr-server%2FTOC.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
      */
-    @JsonProperty(value = "scriptActions")
     private List<ScriptAction> scriptActions;
 
     /*
      * The ARM resource ID for the vNet to which the cluster should be joined after creation. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "virtualNetworkId")
     private Object virtualNetworkId;
 
     /*
      * The ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified, then this property is
      * required. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "subnetName")
     private Object subnetName;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /**
@@ -1043,4 +1014,154 @@ public final class HDInsightOnDemandLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HDInsightOnDemandLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("clusterSize", this.clusterSize);
+        jsonWriter.writeUntypedField("timeToLive", this.timeToLive);
+        jsonWriter.writeUntypedField("version", this.version);
+        jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
+        jsonWriter.writeUntypedField("hostSubscriptionId", this.hostSubscriptionId);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeUntypedField("clusterResourceGroup", this.clusterResourceGroup);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("clusterNamePrefix", this.clusterNamePrefix);
+        jsonWriter.writeUntypedField("clusterUserName", this.clusterUsername);
+        jsonWriter.writeJsonField("clusterPassword", this.clusterPassword);
+        jsonWriter.writeUntypedField("clusterSshUserName", this.clusterSshUsername);
+        jsonWriter.writeJsonField("clusterSshPassword", this.clusterSshPassword);
+        jsonWriter.writeArrayField("additionalLinkedServiceNames", this.additionalLinkedServiceNames,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("hcatalogLinkedServiceName", this.hcatalogLinkedServiceName);
+        jsonWriter.writeUntypedField("clusterType", this.clusterType);
+        jsonWriter.writeUntypedField("sparkVersion", this.sparkVersion);
+        jsonWriter.writeUntypedField("coreConfiguration", this.coreConfiguration);
+        jsonWriter.writeUntypedField("hBaseConfiguration", this.hBaseConfiguration);
+        jsonWriter.writeUntypedField("hdfsConfiguration", this.hdfsConfiguration);
+        jsonWriter.writeUntypedField("hiveConfiguration", this.hiveConfiguration);
+        jsonWriter.writeUntypedField("mapReduceConfiguration", this.mapReduceConfiguration);
+        jsonWriter.writeUntypedField("oozieConfiguration", this.oozieConfiguration);
+        jsonWriter.writeUntypedField("stormConfiguration", this.stormConfiguration);
+        jsonWriter.writeUntypedField("yarnConfiguration", this.yarnConfiguration);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeUntypedField("headNodeSize", this.headNodeSize);
+        jsonWriter.writeUntypedField("dataNodeSize", this.dataNodeSize);
+        jsonWriter.writeUntypedField("zookeeperNodeSize", this.zookeeperNodeSize);
+        jsonWriter.writeArrayField("scriptActions", this.scriptActions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeUntypedField("virtualNetworkId", this.virtualNetworkId);
+        jsonWriter.writeUntypedField("subnetName", this.subnetName);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightOnDemandLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightOnDemandLinkedServiceTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HDInsightOnDemandLinkedServiceTypeProperties.
+     */
+    public static HDInsightOnDemandLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightOnDemandLinkedServiceTypeProperties deserializedHDInsightOnDemandLinkedServiceTypeProperties
+                = new HDInsightOnDemandLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clusterSize".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.clusterSize = reader.readUntyped();
+                } else if ("timeToLive".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.timeToLive = reader.readUntyped();
+                } else if ("version".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.version = reader.readUntyped();
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.linkedServiceName
+                        = LinkedServiceReference.fromJson(reader);
+                } else if ("hostSubscriptionId".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.hostSubscriptionId = reader.readUntyped();
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("clusterResourceGroup".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.clusterResourceGroup
+                        = reader.readUntyped();
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.servicePrincipalKey
+                        = SecretBase.fromJson(reader);
+                } else if ("clusterNamePrefix".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.clusterNamePrefix = reader.readUntyped();
+                } else if ("clusterUserName".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.clusterUsername = reader.readUntyped();
+                } else if ("clusterPassword".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.clusterPassword
+                        = SecretBase.fromJson(reader);
+                } else if ("clusterSshUserName".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.clusterSshUsername = reader.readUntyped();
+                } else if ("clusterSshPassword".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.clusterSshPassword
+                        = SecretBase.fromJson(reader);
+                } else if ("additionalLinkedServiceNames".equals(fieldName)) {
+                    List<LinkedServiceReference> additionalLinkedServiceNames
+                        = reader.readArray(reader1 -> LinkedServiceReference.fromJson(reader1));
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.additionalLinkedServiceNames
+                        = additionalLinkedServiceNames;
+                } else if ("hcatalogLinkedServiceName".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.hcatalogLinkedServiceName
+                        = LinkedServiceReference.fromJson(reader);
+                } else if ("clusterType".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.clusterType = reader.readUntyped();
+                } else if ("sparkVersion".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.sparkVersion = reader.readUntyped();
+                } else if ("coreConfiguration".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.coreConfiguration = reader.readUntyped();
+                } else if ("hBaseConfiguration".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.hBaseConfiguration = reader.readUntyped();
+                } else if ("hdfsConfiguration".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.hdfsConfiguration = reader.readUntyped();
+                } else if ("hiveConfiguration".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.hiveConfiguration = reader.readUntyped();
+                } else if ("mapReduceConfiguration".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.mapReduceConfiguration
+                        = reader.readUntyped();
+                } else if ("oozieConfiguration".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.oozieConfiguration = reader.readUntyped();
+                } else if ("stormConfiguration".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.stormConfiguration = reader.readUntyped();
+                } else if ("yarnConfiguration".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.yarnConfiguration = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("headNodeSize".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.headNodeSize = reader.readUntyped();
+                } else if ("dataNodeSize".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.dataNodeSize = reader.readUntyped();
+                } else if ("zookeeperNodeSize".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.zookeeperNodeSize = reader.readUntyped();
+                } else if ("scriptActions".equals(fieldName)) {
+                    List<ScriptAction> scriptActions = reader.readArray(reader1 -> ScriptAction.fromJson(reader1));
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.scriptActions = scriptActions;
+                } else if ("virtualNetworkId".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.virtualNetworkId = reader.readUntyped();
+                } else if ("subnetName".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.subnetName = reader.readUntyped();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedHDInsightOnDemandLinkedServiceTypeProperties.credential
+                        = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHDInsightOnDemandLinkedServiceTypeProperties;
+        });
+    }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class AmazonRdsForSqlAuthenticationType extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding AmazonRdsForSqlAuthenticationType.
      */
-    @JsonCreator
     public static AmazonRdsForSqlAuthenticationType fromString(String name) {
         return fromString(name, AmazonRdsForSqlAuthenticationType.class);
     }

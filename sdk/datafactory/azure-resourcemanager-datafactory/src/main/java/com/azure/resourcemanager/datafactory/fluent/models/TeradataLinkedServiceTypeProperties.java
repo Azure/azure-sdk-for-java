@@ -5,50 +5,49 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.TeradataAuthenticationType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Teradata linked service properties.
  */
 @Fluent
-public final class TeradataLinkedServiceTypeProperties {
+public final class TeradataLinkedServiceTypeProperties
+    implements JsonSerializable<TeradataLinkedServiceTypeProperties> {
     /*
      * Teradata ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
      * Server name for connection. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "server")
     private Object server;
 
     /*
      * AuthenticationType to be used for connection.
      */
-    @JsonProperty(value = "authenticationType")
     private TeradataAuthenticationType authenticationType;
 
     /*
      * Username for authentication. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "username")
     private Object username;
 
     /*
      * Password for authentication.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -190,5 +189,59 @@ public final class TeradataLinkedServiceTypeProperties {
         if (password() != null) {
             password().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeUntypedField("server", this.server);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TeradataLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TeradataLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TeradataLinkedServiceTypeProperties.
+     */
+    public static TeradataLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TeradataLinkedServiceTypeProperties deserializedTeradataLinkedServiceTypeProperties
+                = new TeradataLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("server".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.server = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.authenticationType
+                        = TeradataAuthenticationType.fromString(reader.getString());
+                } else if ("username".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedTeradataLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTeradataLinkedServiceTypeProperties;
+        });
     }
 }

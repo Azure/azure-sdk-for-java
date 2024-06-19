@@ -5,43 +5,38 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity for Microsoft Fabric LakeHouse Table sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = LakeHouseTableSink.class, visible = true)
-@JsonTypeName("LakeHouseTableSink")
 @Fluent
 public final class LakeHouseTableSink extends CopySink {
     /*
      * Copy sink type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "LakeHouseTableSink";
 
     /*
      * The type of table action for LakeHouse Table sink. Possible values include: "None", "Append", "Overwrite".
      */
-    @JsonProperty(value = "tableActionOption")
     private Object tableActionOption;
 
     /*
      * Create partitions in folder structure based on one or multiple columns. Each distinct column value (pair) will be
      * a new partition. Possible values include: "None", "PartitionByKey".
      */
-    @JsonProperty(value = "partitionOption")
     private Object partitionOption;
 
     /*
      * Specify the partition column names from sink columns. Type: array of objects (or Expression with resultType array
      * of objects).
      */
-    @JsonProperty(value = "partitionNameList")
     private Object partitionNameList;
 
     /**
@@ -188,5 +183,79 @@ public final class LakeHouseTableSink extends CopySink {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("tableActionOption", this.tableActionOption);
+        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        jsonWriter.writeUntypedField("partitionNameList", this.partitionNameList);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LakeHouseTableSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LakeHouseTableSink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LakeHouseTableSink.
+     */
+    public static LakeHouseTableSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LakeHouseTableSink deserializedLakeHouseTableSink = new LakeHouseTableSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedLakeHouseTableSink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedLakeHouseTableSink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedLakeHouseTableSink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedLakeHouseTableSink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedLakeHouseTableSink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedLakeHouseTableSink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedLakeHouseTableSink.type = reader.getString();
+                } else if ("tableActionOption".equals(fieldName)) {
+                    deserializedLakeHouseTableSink.tableActionOption = reader.readUntyped();
+                } else if ("partitionOption".equals(fieldName)) {
+                    deserializedLakeHouseTableSink.partitionOption = reader.readUntyped();
+                } else if ("partitionNameList".equals(fieldName)) {
+                    deserializedLakeHouseTableSink.partitionNameList = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedLakeHouseTableSink.withAdditionalProperties(additionalProperties);
+
+            return deserializedLakeHouseTableSink;
+        });
     }
 }

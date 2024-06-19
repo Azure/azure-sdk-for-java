@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ScriptActivityLogDestination extends ExpandableStringEnum<Scr
      * @param name a name to look for.
      * @return the corresponding ScriptActivityLogDestination.
      */
-    @JsonCreator
     public static ScriptActivityLogDestination fromString(String name) {
         return fromString(name, ScriptActivityLogDestination.class);
     }

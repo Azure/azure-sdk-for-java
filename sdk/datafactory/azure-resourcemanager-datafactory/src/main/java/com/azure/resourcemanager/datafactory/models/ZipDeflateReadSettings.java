@@ -5,29 +5,26 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The ZipDeflate compression read settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ZipDeflateReadSettings.class, visible = true)
-@JsonTypeName("ZipDeflateReadSettings")
 @Fluent
 public final class ZipDeflateReadSettings extends CompressionReadSettings {
     /*
      * The Compression setting type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "ZipDeflateReadSettings";
 
     /*
      * Preserve the zip file name as folder path. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "preserveZipFileNameAsFolder")
     private Object preserveZipFileNameAsFolder;
 
     /**
@@ -76,5 +73,55 @@ public final class ZipDeflateReadSettings extends CompressionReadSettings {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("preserveZipFileNameAsFolder", this.preserveZipFileNameAsFolder);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ZipDeflateReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ZipDeflateReadSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ZipDeflateReadSettings.
+     */
+    public static ZipDeflateReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ZipDeflateReadSettings deserializedZipDeflateReadSettings = new ZipDeflateReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedZipDeflateReadSettings.type = reader.getString();
+                } else if ("preserveZipFileNameAsFolder".equals(fieldName)) {
+                    deserializedZipDeflateReadSettings.preserveZipFileNameAsFolder = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedZipDeflateReadSettings.withAdditionalProperties(additionalProperties);
+
+            return deserializedZipDeflateReadSettings;
+        });
     }
 }

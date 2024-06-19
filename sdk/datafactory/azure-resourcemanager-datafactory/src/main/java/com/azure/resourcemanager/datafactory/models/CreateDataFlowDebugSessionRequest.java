@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Request body structure for creating data flow debug session.
  */
 @Fluent
-public final class CreateDataFlowDebugSessionRequest {
+public final class CreateDataFlowDebugSessionRequest implements JsonSerializable<CreateDataFlowDebugSessionRequest> {
     /*
      * Compute type of the cluster. The value will be overwritten by the same setting in integration runtime if
      * provided.
      */
-    @JsonProperty(value = "computeType")
     private String computeType;
 
     /*
      * Core count of the cluster. The value will be overwritten by the same setting in integration runtime if provided.
      */
-    @JsonProperty(value = "coreCount")
     private Integer coreCount;
 
     /*
      * Time to live setting of the cluster in minutes.
      */
-    @JsonProperty(value = "timeToLive")
     private Integer timeToLive;
 
     /*
      * Set to use integration runtime setting for data flow debug session.
      */
-    @JsonProperty(value = "integrationRuntime")
     private IntegrationRuntimeDebugResource integrationRuntime;
 
     /**
@@ -137,5 +137,52 @@ public final class CreateDataFlowDebugSessionRequest {
         if (integrationRuntime() != null) {
             integrationRuntime().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("computeType", this.computeType);
+        jsonWriter.writeNumberField("coreCount", this.coreCount);
+        jsonWriter.writeNumberField("timeToLive", this.timeToLive);
+        jsonWriter.writeJsonField("integrationRuntime", this.integrationRuntime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateDataFlowDebugSessionRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateDataFlowDebugSessionRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateDataFlowDebugSessionRequest.
+     */
+    public static CreateDataFlowDebugSessionRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateDataFlowDebugSessionRequest deserializedCreateDataFlowDebugSessionRequest
+                = new CreateDataFlowDebugSessionRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeType".equals(fieldName)) {
+                    deserializedCreateDataFlowDebugSessionRequest.computeType = reader.getString();
+                } else if ("coreCount".equals(fieldName)) {
+                    deserializedCreateDataFlowDebugSessionRequest.coreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("timeToLive".equals(fieldName)) {
+                    deserializedCreateDataFlowDebugSessionRequest.timeToLive = reader.getNullable(JsonReader::getInt);
+                } else if ("integrationRuntime".equals(fieldName)) {
+                    deserializedCreateDataFlowDebugSessionRequest.integrationRuntime
+                        = IntegrationRuntimeDebugResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateDataFlowDebugSessionRequest;
+        });
     }
 }

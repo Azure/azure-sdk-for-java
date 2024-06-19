@@ -5,33 +5,26 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Salesforce Service Cloud V2 source.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = SalesforceServiceCloudV2Source.class,
-    visible = true)
-@JsonTypeName("SalesforceServiceCloudV2Source")
 @Fluent
 public final class SalesforceServiceCloudV2Source extends CopySource {
     /*
      * Copy source type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "SalesforceServiceCloudV2Source";
 
     /*
      * Deprecating, please use 'query' property instead. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "SOQLQuery")
     private Object soqlQuery;
 
     /*
@@ -41,21 +34,18 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
      * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
      * will be retrieved. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "query")
     private Object query;
 
     /*
      * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
      * Expression with resultType boolean).
      */
-    @JsonProperty(value = "includeDeletedObjects")
     private Object includeDeletedObjects;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
     /**
@@ -212,5 +202,77 @@ public final class SalesforceServiceCloudV2Source extends CopySource {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("SOQLQuery", this.soqlQuery);
+        jsonWriter.writeUntypedField("query", this.query);
+        jsonWriter.writeUntypedField("includeDeletedObjects", this.includeDeletedObjects);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceServiceCloudV2Source from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceServiceCloudV2Source if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SalesforceServiceCloudV2Source.
+     */
+    public static SalesforceServiceCloudV2Source fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceServiceCloudV2Source deserializedSalesforceServiceCloudV2Source
+                = new SalesforceServiceCloudV2Source();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudV2Source.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudV2Source.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudV2Source.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudV2Source.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudV2Source.type = reader.getString();
+                } else if ("SOQLQuery".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudV2Source.soqlQuery = reader.readUntyped();
+                } else if ("query".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudV2Source.query = reader.readUntyped();
+                } else if ("includeDeletedObjects".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudV2Source.includeDeletedObjects = reader.readUntyped();
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudV2Source.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSalesforceServiceCloudV2Source.withAdditionalProperties(additionalProperties);
+
+            return deserializedSalesforceServiceCloudV2Source;
+        });
     }
 }

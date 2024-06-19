@@ -6,39 +6,39 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetReference;
 import com.azure.resourcemanager.datafactory.models.FormatReadSettings;
 import com.azure.resourcemanager.datafactory.models.StoreReadSettings;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * GetMetadata activity properties.
  */
 @Fluent
-public final class GetMetadataActivityTypeProperties {
+public final class GetMetadataActivityTypeProperties implements JsonSerializable<GetMetadataActivityTypeProperties> {
     /*
      * GetMetadata activity dataset reference.
      */
-    @JsonProperty(value = "dataset", required = true)
     private DatasetReference dataset;
 
     /*
      * Fields of metadata to get from dataset.
      */
-    @JsonProperty(value = "fieldList")
     private List<Object> fieldList;
 
     /*
      * GetMetadata activity store settings.
      */
-    @JsonProperty(value = "storeSettings")
     private StoreReadSettings storeSettings;
 
     /*
      * GetMetadata activity format settings.
      */
-    @JsonProperty(value = "formatSettings")
     private FormatReadSettings formatSettings;
 
     /**
@@ -149,4 +149,52 @@ public final class GetMetadataActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GetMetadataActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dataset", this.dataset);
+        jsonWriter.writeArrayField("fieldList", this.fieldList, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("storeSettings", this.storeSettings);
+        jsonWriter.writeJsonField("formatSettings", this.formatSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetMetadataActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetMetadataActivityTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GetMetadataActivityTypeProperties.
+     */
+    public static GetMetadataActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetMetadataActivityTypeProperties deserializedGetMetadataActivityTypeProperties
+                = new GetMetadataActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataset".equals(fieldName)) {
+                    deserializedGetMetadataActivityTypeProperties.dataset = DatasetReference.fromJson(reader);
+                } else if ("fieldList".equals(fieldName)) {
+                    List<Object> fieldList = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedGetMetadataActivityTypeProperties.fieldList = fieldList;
+                } else if ("storeSettings".equals(fieldName)) {
+                    deserializedGetMetadataActivityTypeProperties.storeSettings = StoreReadSettings.fromJson(reader);
+                } else if ("formatSettings".equals(fieldName)) {
+                    deserializedGetMetadataActivityTypeProperties.formatSettings = FormatReadSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetMetadataActivityTypeProperties;
+        });
+    }
 }

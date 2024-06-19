@@ -6,19 +6,22 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Json dataset properties.
  */
 @Fluent
-public final class JsonDatasetTypeProperties {
+public final class JsonDatasetTypeProperties implements JsonSerializable<JsonDatasetTypeProperties> {
     /*
      * The location of the json data storage.
      */
-    @JsonProperty(value = "location", required = true)
     private DatasetLocation location;
 
     /*
@@ -27,13 +30,11 @@ public final class JsonDatasetTypeProperties {
      * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "encodingName")
     private Object encodingName;
 
     /*
      * The data compression method used for the json dataset.
      */
-    @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
     /**
@@ -127,4 +128,47 @@ public final class JsonDatasetTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JsonDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("location", this.location);
+        jsonWriter.writeUntypedField("encodingName", this.encodingName);
+        jsonWriter.writeJsonField("compression", this.compression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JsonDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JsonDatasetTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JsonDatasetTypeProperties.
+     */
+    public static JsonDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonDatasetTypeProperties deserializedJsonDatasetTypeProperties = new JsonDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedJsonDatasetTypeProperties.location = DatasetLocation.fromJson(reader);
+                } else if ("encodingName".equals(fieldName)) {
+                    deserializedJsonDatasetTypeProperties.encodingName = reader.readUntyped();
+                } else if ("compression".equals(fieldName)) {
+                    deserializedJsonDatasetTypeProperties.compression = DatasetCompression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJsonDatasetTypeProperties;
+        });
+    }
 }

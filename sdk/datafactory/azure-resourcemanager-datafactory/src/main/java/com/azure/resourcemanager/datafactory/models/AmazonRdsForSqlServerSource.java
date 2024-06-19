@@ -5,46 +5,37 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Amazon RDS for SQL Server source.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AmazonRdsForSqlServerSource.class,
-    visible = true)
-@JsonTypeName("AmazonRdsForSqlServerSource")
 @Fluent
 public final class AmazonRdsForSqlServerSource extends TabularSource {
     /*
      * Copy source type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AmazonRdsForSqlServerSource";
 
     /*
      * SQL reader query. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "sqlReaderQuery")
     private Object sqlReaderQuery;
 
     /*
      * Name of the stored procedure for a SQL Database source. This cannot be used at the same time as SqlReaderQuery.
      * Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "sqlReaderStoredProcedureName")
     private Object sqlReaderStoredProcedureName;
 
     /*
      * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
-    @JsonProperty(value = "storedProcedureParameters")
     private Object storedProcedureParameters;
 
     /*
@@ -52,26 +43,22 @@ public final class AmazonRdsForSqlServerSource extends TabularSource {
      * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
      * string (or Expression with resultType string).
      */
-    @JsonProperty(value = "isolationLevel")
     private Object isolationLevel;
 
     /*
      * Which additional types to produce.
      */
-    @JsonProperty(value = "produceAdditionalTypes")
     private Object produceAdditionalTypes;
 
     /*
      * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
      * "PhysicalPartitionsOfTable", "DynamicRange".
      */
-    @JsonProperty(value = "partitionOption")
     private Object partitionOption;
 
     /*
      * The settings that will be leveraged for Sql source partitioning.
      */
-    @JsonProperty(value = "partitionSettings")
     private SqlPartitionSettings partitionSettings;
 
     /**
@@ -305,5 +292,91 @@ public final class AmazonRdsForSqlServerSource extends TabularSource {
         if (partitionSettings() != null) {
             partitionSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
+        jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("sqlReaderQuery", this.sqlReaderQuery);
+        jsonWriter.writeUntypedField("sqlReaderStoredProcedureName", this.sqlReaderStoredProcedureName);
+        jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+        jsonWriter.writeUntypedField("isolationLevel", this.isolationLevel);
+        jsonWriter.writeUntypedField("produceAdditionalTypes", this.produceAdditionalTypes);
+        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonRdsForSqlServerSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonRdsForSqlServerSource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonRdsForSqlServerSource.
+     */
+    public static AmazonRdsForSqlServerSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonRdsForSqlServerSource deserializedAmazonRdsForSqlServerSource = new AmazonRdsForSqlServerSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.withQueryTimeout(reader.readUntyped());
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.withAdditionalColumns(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.type = reader.getString();
+                } else if ("sqlReaderQuery".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.sqlReaderQuery = reader.readUntyped();
+                } else if ("sqlReaderStoredProcedureName".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.sqlReaderStoredProcedureName = reader.readUntyped();
+                } else if ("storedProcedureParameters".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.storedProcedureParameters = reader.readUntyped();
+                } else if ("isolationLevel".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.isolationLevel = reader.readUntyped();
+                } else if ("produceAdditionalTypes".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.produceAdditionalTypes = reader.readUntyped();
+                } else if ("partitionOption".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.partitionOption = reader.readUntyped();
+                } else if ("partitionSettings".equals(fieldName)) {
+                    deserializedAmazonRdsForSqlServerSource.partitionSettings = SqlPartitionSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAmazonRdsForSqlServerSource.withAdditionalProperties(additionalProperties);
+
+            return deserializedAmazonRdsForSqlServerSource;
+        });
     }
 }

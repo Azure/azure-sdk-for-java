@@ -6,39 +6,40 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Azure Data Lake Store linked service properties.
  */
 @Fluent
-public final class AzureDataLakeStoreLinkedServiceTypeProperties {
+public final class AzureDataLakeStoreLinkedServiceTypeProperties
+    implements JsonSerializable<AzureDataLakeStoreLinkedServiceTypeProperties> {
     /*
      * Data Lake Store service URI. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "dataLakeStoreUri", required = true)
     private Object dataLakeStoreUri;
 
     /*
      * The ID of the application used to authenticate against the Azure Data Lake Store account. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The Key of the application used to authenticate against the Azure Data Lake Store account.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
@@ -46,40 +47,34 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
      * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
      * Data Lake Store account name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "accountName")
     private Object accountName;
 
     /*
      * Data Lake Store account subscription ID (if different from Data Factory account). Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "subscriptionId")
     private Object subscriptionId;
 
     /*
      * Data Lake Store account resource group name (if different from Data Factory account). Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "resourceGroupName")
     private Object resourceGroupName;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /**
@@ -326,4 +321,71 @@ public final class AzureDataLakeStoreLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureDataLakeStoreLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("dataLakeStoreUri", this.dataLakeStoreUri);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        jsonWriter.writeUntypedField("accountName", this.accountName);
+        jsonWriter.writeUntypedField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeUntypedField("resourceGroupName", this.resourceGroupName);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDataLakeStoreLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDataLakeStoreLinkedServiceTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureDataLakeStoreLinkedServiceTypeProperties.
+     */
+    public static AzureDataLakeStoreLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDataLakeStoreLinkedServiceTypeProperties deserializedAzureDataLakeStoreLinkedServiceTypeProperties
+                = new AzureDataLakeStoreLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataLakeStoreUri".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLinkedServiceTypeProperties.dataLakeStoreUri = reader.readUntyped();
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLinkedServiceTypeProperties.servicePrincipalKey
+                        = SecretBase.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("azureCloudType".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLinkedServiceTypeProperties.azureCloudType = reader.readUntyped();
+                } else if ("accountName".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLinkedServiceTypeProperties.accountName = reader.readUntyped();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLinkedServiceTypeProperties.subscriptionId = reader.readUntyped();
+                } else if ("resourceGroupName".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLinkedServiceTypeProperties.resourceGroupName = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedAzureDataLakeStoreLinkedServiceTypeProperties.credential
+                        = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDataLakeStoreLinkedServiceTypeProperties;
+        });
+    }
 }

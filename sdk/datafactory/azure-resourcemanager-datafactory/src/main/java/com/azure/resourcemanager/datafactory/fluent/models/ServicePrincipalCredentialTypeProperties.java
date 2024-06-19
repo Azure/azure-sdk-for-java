@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Service Principal credential type properties.
  */
 @Fluent
-public final class ServicePrincipalCredentialTypeProperties {
+public final class ServicePrincipalCredentialTypeProperties
+    implements JsonSerializable<ServicePrincipalCredentialTypeProperties> {
     /*
      * The app ID of the service principal used to authenticate
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private AzureKeyVaultSecretReference servicePrincipalKey;
 
     /*
      * The ID of the tenant to which the service principal belongs
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /**
@@ -107,5 +109,49 @@ public final class ServicePrincipalCredentialTypeProperties {
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicePrincipalCredentialTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicePrincipalCredentialTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServicePrincipalCredentialTypeProperties.
+     */
+    public static ServicePrincipalCredentialTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicePrincipalCredentialTypeProperties deserializedServicePrincipalCredentialTypeProperties
+                = new ServicePrincipalCredentialTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedServicePrincipalCredentialTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedServicePrincipalCredentialTypeProperties.servicePrincipalKey
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedServicePrincipalCredentialTypeProperties.tenant = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicePrincipalCredentialTypeProperties;
+        });
     }
 }

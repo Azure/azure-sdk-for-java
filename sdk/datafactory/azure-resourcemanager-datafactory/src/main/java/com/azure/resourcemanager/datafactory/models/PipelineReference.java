@@ -6,29 +6,30 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Pipeline reference type.
  */
 @Fluent
-public final class PipelineReference {
+public final class PipelineReference implements JsonSerializable<PipelineReference> {
     /*
      * Pipeline reference type.
      */
-    @JsonProperty(value = "type", required = true)
     private String type = "PipelineReference";
 
     /*
      * Reference pipeline name.
      */
-    @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
     /*
      * Reference name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -111,4 +112,45 @@ public final class PipelineReference {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PipelineReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PipelineReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PipelineReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PipelineReference.
+     */
+    public static PipelineReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PipelineReference deserializedPipelineReference = new PipelineReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("referenceName".equals(fieldName)) {
+                    deserializedPipelineReference.referenceName = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPipelineReference.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPipelineReference;
+        });
+    }
 }

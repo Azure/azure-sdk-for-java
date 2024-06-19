@@ -6,58 +6,56 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.GoogleBigQueryV2AuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Google BigQuery service linked service properties.
  */
 @Fluent
-public final class GoogleBigQueryV2LinkedServiceTypeProperties {
+public final class GoogleBigQueryV2LinkedServiceTypeProperties
+    implements JsonSerializable<GoogleBigQueryV2LinkedServiceTypeProperties> {
     /*
      * The default BigQuery project id to query against. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "projectId", required = true)
     private Object projectId;
 
     /*
      * The OAuth 2.0 authentication mechanism used for authentication.
      */
-    @JsonProperty(value = "authenticationType", required = true)
     private GoogleBigQueryV2AuthenticationType authenticationType;
 
     /*
      * The client id of the google application used to acquire the refresh token. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
      * The client secret of the google application used to acquire the refresh token.
      */
-    @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
      * The refresh token obtained from Google for authorizing access to BigQuery for UserAuthentication.
      */
-    @JsonProperty(value = "refreshToken")
     private SecretBase refreshToken;
 
     /*
      * The content of the .json key file that is used to authenticate the service account. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "keyFileContent")
     private SecretBase keyFileContent;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -245,4 +243,63 @@ public final class GoogleBigQueryV2LinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GoogleBigQueryV2LinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("projectId", this.projectId);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("clientId", this.clientId);
+        jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+        jsonWriter.writeJsonField("refreshToken", this.refreshToken);
+        jsonWriter.writeJsonField("keyFileContent", this.keyFileContent);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GoogleBigQueryV2LinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GoogleBigQueryV2LinkedServiceTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GoogleBigQueryV2LinkedServiceTypeProperties.
+     */
+    public static GoogleBigQueryV2LinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GoogleBigQueryV2LinkedServiceTypeProperties deserializedGoogleBigQueryV2LinkedServiceTypeProperties
+                = new GoogleBigQueryV2LinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("projectId".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2LinkedServiceTypeProperties.projectId = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2LinkedServiceTypeProperties.authenticationType
+                        = GoogleBigQueryV2AuthenticationType.fromString(reader.getString());
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2LinkedServiceTypeProperties.clientId = reader.readUntyped();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2LinkedServiceTypeProperties.clientSecret = SecretBase.fromJson(reader);
+                } else if ("refreshToken".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2LinkedServiceTypeProperties.refreshToken = SecretBase.fromJson(reader);
+                } else if ("keyFileContent".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2LinkedServiceTypeProperties.keyFileContent
+                        = SecretBase.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2LinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGoogleBigQueryV2LinkedServiceTypeProperties;
+        });
+    }
 }

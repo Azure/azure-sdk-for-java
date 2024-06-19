@@ -5,53 +5,52 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Salesforce V2 linked service properties.
  */
 @Fluent
-public final class SalesforceV2LinkedServiceTypeProperties {
+public final class SalesforceV2LinkedServiceTypeProperties
+    implements JsonSerializable<SalesforceV2LinkedServiceTypeProperties> {
     /*
      * The URL of Salesforce instance. For example, 'https://[domain].my.salesforce.com'. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "environmentUrl")
     private Object environmentUrl;
 
     /*
      * The authentication type to be used to connect to the Salesforce. Currently, we only support
      * OAuth2ClientCredentials, it is also the default value
      */
-    @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
      * The client Id for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
      * The client secret for OAuth 2.0 Client Credentials Flow authentication of the Salesforce instance.
      */
-    @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
      * The Salesforce API version used in ADF. The version must be larger than or equal to 47.0 which is required by
      * Salesforce BULK API 2.0. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "apiVersion")
     private Object apiVersion;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -201,5 +200,57 @@ public final class SalesforceV2LinkedServiceTypeProperties {
         if (clientSecret() != null) {
             clientSecret().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("environmentUrl", this.environmentUrl);
+        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        jsonWriter.writeUntypedField("clientId", this.clientId);
+        jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+        jsonWriter.writeUntypedField("apiVersion", this.apiVersion);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceV2LinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceV2LinkedServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SalesforceV2LinkedServiceTypeProperties.
+     */
+    public static SalesforceV2LinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceV2LinkedServiceTypeProperties deserializedSalesforceV2LinkedServiceTypeProperties
+                = new SalesforceV2LinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environmentUrl".equals(fieldName)) {
+                    deserializedSalesforceV2LinkedServiceTypeProperties.environmentUrl = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedSalesforceV2LinkedServiceTypeProperties.authenticationType = reader.readUntyped();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedSalesforceV2LinkedServiceTypeProperties.clientId = reader.readUntyped();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedSalesforceV2LinkedServiceTypeProperties.clientSecret = SecretBase.fromJson(reader);
+                } else if ("apiVersion".equals(fieldName)) {
+                    deserializedSalesforceV2LinkedServiceTypeProperties.apiVersion = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedSalesforceV2LinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSalesforceV2LinkedServiceTypeProperties;
+        });
     }
 }
