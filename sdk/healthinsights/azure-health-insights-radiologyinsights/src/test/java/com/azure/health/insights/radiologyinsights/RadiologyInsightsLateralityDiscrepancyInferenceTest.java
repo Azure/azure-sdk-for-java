@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Test;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Extension;
 import com.azure.health.insights.radiologyinsights.models.LateralityDiscrepancyInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 
 /**
@@ -43,10 +43,10 @@ public class RadiologyInsightsLateralityDiscrepancyInferenceTest extends Radiolo
         
         try {
             testRadiologyInsightsWithResponse(request -> {
-                RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
+            	RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
                         getClient().beginInferRadiologyInsights("job1715007617997", request)).getFinalResult();
 
-                List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
+                List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());
                 
                 RadiologyInsightsPatientResult patient = patients.get(0);

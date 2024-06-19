@@ -93,10 +93,10 @@ public class SampleCriticalResultInferenceSync {
         // END: com.azure.health.insights.radiologyinsights.buildsyncclient
         
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
-        RadiologyInsightsJob riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob()).getFinalResult();
+        RadiologyInsightsInferenceResult riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob()).getFinalResult();
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
 
-        displayCriticalResults(riJobResponse.getResult());
+        displayCriticalResults(riJobResponse);
     }
 
     /**
