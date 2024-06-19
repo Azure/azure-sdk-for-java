@@ -64,19 +64,23 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     RadiologyInsightsClientBuilder getClientBuilder() {
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_API_KEY", FAKE_API_KEY);
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080/");
-
         RadiologyInsightsClientBuilder builder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
         if (apiKey != null /*&& !apiKey.equals(FAKE_API_KEY)*/) {
             builder = builder.credential(new AzureKeyCredential(apiKey));
         }
 
         System.out.println("Test mode: " + getTestMode());
+        
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.PLAYBACK) {
             builder.httpClient(interceptorManager.getPlaybackClient());
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id"))));
+        }
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `operation-location` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2030");
         }
         return builder;
     }

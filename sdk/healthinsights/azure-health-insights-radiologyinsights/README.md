@@ -87,11 +87,11 @@ DefaultAzureCredential provides an alternative way to authenticate with the serv
 ```java com.azure.health.insights.radiologyinsights.defaultazurecredential
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
 
-   RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
-           .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
-   DefaultAzureCredential c = new DefaultAzureCredentialBuilder().build();
-   
-   clientBuilder = clientBuilder.credential(c);
+RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
+        .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
+DefaultAzureCredential c = new DefaultAzureCredentialBuilder().build();
+
+clientBuilder = clientBuilder.credential(c);
 ```
 
 ## Key concepts

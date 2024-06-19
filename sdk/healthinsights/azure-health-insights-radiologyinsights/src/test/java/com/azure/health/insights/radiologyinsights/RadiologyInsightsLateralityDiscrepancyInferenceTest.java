@@ -43,7 +43,7 @@ public class RadiologyInsightsLateralityDiscrepancyInferenceTest extends Radiolo
         
         try {
             testRadiologyInsightsWithResponse(request -> {
-            	RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
+                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
                         getClient().beginInferRadiologyInsights("job1715007617997", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();

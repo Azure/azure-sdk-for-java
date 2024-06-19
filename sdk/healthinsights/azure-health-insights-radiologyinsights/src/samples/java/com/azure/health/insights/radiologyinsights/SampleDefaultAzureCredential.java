@@ -89,7 +89,7 @@ public class SampleDefaultAzureCredential {
      */
     public static void main(final String[] args) throws InterruptedException {
         // BEGIN: com.azure.health.insights.radiologyinsights.defaultazurecredential
-    	String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
 
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());

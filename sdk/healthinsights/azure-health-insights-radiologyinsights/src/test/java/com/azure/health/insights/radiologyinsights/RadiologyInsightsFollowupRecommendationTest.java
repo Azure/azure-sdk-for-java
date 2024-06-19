@@ -55,7 +55,7 @@ public class RadiologyInsightsFollowupRecommendationTest extends RadiologyInsigh
         
         try {
             testRadiologyInsightsWithResponse(request -> {
-            	RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
+                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
                         getClient().beginInferRadiologyInsights("job1715007599316", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
