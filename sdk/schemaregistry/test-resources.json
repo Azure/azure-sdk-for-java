@@ -214,6 +214,11 @@
     "SCHEMA_REGISTRY_GROUP": {
       "type": "string",
       "value": "[variables('schemaRegistryGroup')]"
+    },
+
+    "SCHEMA_REGISTRY_AVRO_EVENT_HUB_FULLY_QUALIFIED_NAMESPACE": {
+      "type": "string",
+      "value": "[format('{0}.servicebus.windows.net', variables('baseNameAvro'))]"
     }
   }
 }
