@@ -23,18 +23,17 @@ import com.azure.resourcemanager.storage.fluent.ObjectReplicationPoliciesOperati
 import com.azure.resourcemanager.storage.fluent.OperationsClient;
 import com.azure.resourcemanager.storage.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.storage.fluent.PrivateLinkResourcesClient;
-import com.azure.resourcemanager.storage.fluent.QueueServicesClient;
 import com.azure.resourcemanager.storage.fluent.QueuesClient;
+import com.azure.resourcemanager.storage.fluent.QueueServicesClient;
 import com.azure.resourcemanager.storage.fluent.SkusClient;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.storage.fluent.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.StorageTaskAssignmentInstancesReportsClient;
 import com.azure.resourcemanager.storage.fluent.StorageTaskAssignmentsClient;
 import com.azure.resourcemanager.storage.fluent.StorageTaskAssignmentsInstancesReportsClient;
-import com.azure.resourcemanager.storage.fluent.TableServicesClient;
 import com.azure.resourcemanager.storage.fluent.TablesClient;
+import com.azure.resourcemanager.storage.fluent.TableServicesClient;
 import com.azure.resourcemanager.storage.fluent.UsagesClient;
-
 import java.time.Duration;
 
 /**
@@ -49,7 +48,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -63,7 +62,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -77,7 +76,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -91,7 +90,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -105,7 +104,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
@@ -119,7 +118,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
@@ -133,7 +132,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the BlobServicesClient object to access its operations.
-     *
+     * 
      * @return the BlobServicesClient object.
      */
     public BlobServicesClient getBlobServices() {
@@ -147,7 +146,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the BlobContainersClient object to access its operations.
-     *
+     * 
      * @return the BlobContainersClient object.
      */
     public BlobContainersClient getBlobContainers() {
@@ -161,7 +160,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the FileServicesClient object to access its operations.
-     *
+     * 
      * @return the FileServicesClient object.
      */
     public FileServicesClient getFileServices() {
@@ -175,7 +174,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the FileSharesClient object to access its operations.
-     *
+     * 
      * @return the FileSharesClient object.
      */
     public FileSharesClient getFileShares() {
@@ -189,7 +188,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the QueueServicesClient object to access its operations.
-     *
+     * 
      * @return the QueueServicesClient object.
      */
     public QueueServicesClient getQueueServices() {
@@ -203,7 +202,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the QueuesClient object to access its operations.
-     *
+     * 
      * @return the QueuesClient object.
      */
     public QueuesClient getQueues() {
@@ -217,7 +216,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
@@ -231,7 +230,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the SkusClient object to access its operations.
-     *
+     * 
      * @return the SkusClient object.
      */
     public SkusClient getSkus() {
@@ -245,7 +244,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the StorageAccountsClient object to access its operations.
-     *
+     * 
      * @return the StorageAccountsClient object.
      */
     public StorageAccountsClient getStorageAccounts() {
@@ -259,7 +258,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the DeletedAccountsClient object to access its operations.
-     *
+     * 
      * @return the DeletedAccountsClient object.
      */
     public DeletedAccountsClient getDeletedAccounts() {
@@ -273,7 +272,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the UsagesClient object to access its operations.
-     *
+     * 
      * @return the UsagesClient object.
      */
     public UsagesClient getUsages() {
@@ -287,7 +286,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ManagementPoliciesClient object to access its operations.
-     *
+     * 
      * @return the ManagementPoliciesClient object.
      */
     public ManagementPoliciesClient getManagementPolicies() {
@@ -301,7 +300,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the BlobInventoryPoliciesClient object to access its operations.
-     *
+     * 
      * @return the BlobInventoryPoliciesClient object.
      */
     public BlobInventoryPoliciesClient getBlobInventoryPolicies() {
@@ -315,7 +314,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
@@ -329,7 +328,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
@@ -343,7 +342,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ObjectReplicationPoliciesOperationsClient object to access its operations.
-     *
+     * 
      * @return the ObjectReplicationPoliciesOperationsClient object.
      */
     public ObjectReplicationPoliciesOperationsClient getObjectReplicationPoliciesOperations() {
@@ -357,7 +356,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the LocalUsersOperationsClient object to access its operations.
-     *
+     * 
      * @return the LocalUsersOperationsClient object.
      */
     public LocalUsersOperationsClient getLocalUsersOperations() {
@@ -371,7 +370,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the EncryptionScopesClient object to access its operations.
-     *
+     * 
      * @return the EncryptionScopesClient object.
      */
     public EncryptionScopesClient getEncryptionScopes() {
@@ -385,7 +384,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the TableServicesClient object to access its operations.
-     *
+     * 
      * @return the TableServicesClient object.
      */
     public TableServicesClient getTableServices() {
@@ -399,7 +398,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the TablesClient object to access its operations.
-     *
+     * 
      * @return the TablesClient object.
      */
     public TablesClient getTables() {
@@ -413,7 +412,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the NetworkSecurityPerimeterConfigurationsClient object.
      */
     public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
@@ -427,7 +426,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the StorageTaskAssignmentsClient object to access its operations.
-     *
+     * 
      * @return the StorageTaskAssignmentsClient object.
      */
     public StorageTaskAssignmentsClient getStorageTaskAssignments() {
@@ -441,7 +440,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the StorageTaskAssignmentsInstancesReportsClient object to access its operations.
-     *
+     * 
      * @return the StorageTaskAssignmentsInstancesReportsClient object.
      */
     public StorageTaskAssignmentsInstancesReportsClient getStorageTaskAssignmentsInstancesReports() {
@@ -455,7 +454,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the StorageTaskAssignmentInstancesReportsClient object to access its operations.
-     *
+     * 
      * @return the StorageTaskAssignmentInstancesReportsClient object.
      */
     public StorageTaskAssignmentInstancesReportsClient getStorageTaskAssignmentInstancesReports() {
@@ -464,7 +463,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Initializes an instance of StorageManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
