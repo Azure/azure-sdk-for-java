@@ -51,10 +51,6 @@ public final class CosmosBridgeInternal {
     public static AsyncDocumentClient getContextClient(CosmosAsyncDatabase database) {
         return database.getClient().getContextClient();
     }
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosAsyncClient getClient(CosmosAsyncDatabase database) {
-        return database.getClient();
-    }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static AsyncDocumentClient getContextClient(CosmosAsyncContainer container) {

@@ -11,8 +11,8 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInte
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
-import com.azure.cosmos.models.CosmosCommonRequestOptions;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.ReadOnlyRequestOptions;
 import com.azure.cosmos.util.Beta;
 
 import java.util.HashMap;
@@ -263,12 +263,12 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     }
 
     @Override
-    public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        this.maxItemCount = overrideOption(cosmosCommonRequestOptions.getMaxItemCount(), this.maxItemCount);
-        this.maxPrefetchPageCount = overrideOption(cosmosCommonRequestOptions.getMaxPrefetchPageCount(), this.maxPrefetchPageCount);
-        this.excludeRegions = overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
-        this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
-        this.thresholds = overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+    public void override(ReadOnlyRequestOptions readOnlyRequestOptions) {
+        this.maxItemCount = overrideOption(readOnlyRequestOptions.getMaxItemCount(), this.maxItemCount);
+        this.maxPrefetchPageCount = overrideOption(readOnlyRequestOptions.getMaxPrefetchPageCount(), this.maxPrefetchPageCount);
+        this.excludeRegions = overrideOption(readOnlyRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.throughputControlGroupName = overrideOption(readOnlyRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        this.thresholds = overrideOption(readOnlyRequestOptions.getDiagnosticsThresholds(), this.thresholds);
     }
 
 }

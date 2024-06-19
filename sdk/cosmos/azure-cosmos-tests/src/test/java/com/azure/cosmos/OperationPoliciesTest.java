@@ -17,7 +17,7 @@ import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosCommonRequestOptions;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -89,12 +89,12 @@ public class OperationPoliciesTest extends TestSuiteBase {
         }
     }
 
-    private static void createReadDeleteBatchEtcOptions(String operationType, String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+    private static void createReadDeleteBatchEtcOptions(String operationType, String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (operationType.equals("Create") || operationType.equals("Read") || operationType.equals("Replace")
             || operationType.equals("Delete") || operationType.equals("Patch") || operationType.equals("Upsert")
             || (operationType.equals("Batch") && spanName.contains("transactionalBatch"))) {
 
-            cosmosCommonRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
+            cosmosRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
                     Duration.ofSeconds(Long.parseLong(prop.getProperty(E2E_TIMEOUT))),
                     new ThresholdBasedAvailabilityStrategy()))
                 .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
@@ -109,10 +109,10 @@ public class OperationPoliciesTest extends TestSuiteBase {
         }
     }
 
-    private static void createQueryReadAllItemsOptions(String operationType, String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+    private static void createQueryReadAllItemsOptions(String operationType, String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (operationType.equals("Query") || spanName.contains("readAllItems")) {
 
-            cosmosCommonRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
+            cosmosRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
                     Duration.ofSeconds(Long.parseLong(prop.getProperty(E2E_TIMEOUT))),
                     new ThresholdBasedAvailabilityStrategy()))
                 .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
@@ -133,9 +133,9 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
         }
     }
-    private static void createReadManyOptions(String operationType, String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+    private static void createReadManyOptions(String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (spanName.contains("readMany")) {
-                cosmosCommonRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
+                cosmosRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
                         Duration.ofSeconds(Long.parseLong(prop.getProperty(E2E_TIMEOUT))),
                         new ThresholdBasedAvailabilityStrategy()))
                     .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
@@ -150,16 +150,16 @@ public class OperationPoliciesTest extends TestSuiteBase {
         }
     }
 
-    private static void createBulkOptions(String operationType, String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+    private static void createBulkOptions(String operationType, String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (operationType.equals("Batch") && spanName.contains("nonTransactionalBatch")) {
-                cosmosCommonRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
+                cosmosRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME));
         }
     }
 
-    private static void createChangeFeedOptions(String operationType, String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+    private static void createChangeFeedOptions(String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (spanName.contains("queryChangeFeed")) {
-                cosmosCommonRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
+                cosmosRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
                     .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
                     .setMaxPrefetchPageCount(Integer.parseInt(prop.getProperty(MAX_PREFETCH_PAGE_COUNT)))
@@ -173,42 +173,42 @@ public class OperationPoliciesTest extends TestSuiteBase {
             CosmosDiagnosticsContext cosmosDiagnosticsContext = cosmosOperationDetails.getDiagnosticsContext();
             String operationType = cosmosDiagnosticsContext.getOperationType();
             String spanName = cosmosDiagnosticsContext.getSpanName();
-            CosmosCommonRequestOptions cosmosCommonRequestOptions = new CosmosCommonRequestOptions();
-            createReadDeleteBatchEtcOptions(operationType, spanName, cosmosCommonRequestOptions);
-            createQueryReadAllItemsOptions(operationType, spanName, cosmosCommonRequestOptions);
-            createReadManyOptions(operationType, spanName, cosmosCommonRequestOptions);
-            createBulkOptions(operationType, spanName, cosmosCommonRequestOptions);
-            createChangeFeedOptions(operationType, spanName, cosmosCommonRequestOptions);
-            cosmosOperationDetails.setCommonOptions(cosmosCommonRequestOptions);
+            CosmosRequestOptions cosmosRequestOptions = new CosmosRequestOptions();
+            createReadDeleteBatchEtcOptions(operationType, spanName, cosmosRequestOptions);
+            createQueryReadAllItemsOptions(operationType, spanName, cosmosRequestOptions);
+            createReadManyOptions(spanName, cosmosRequestOptions);
+            createBulkOptions(operationType, spanName, cosmosRequestOptions);
+            createChangeFeedOptions(spanName, cosmosRequestOptions);
+            cosmosOperationDetails.setCommonOptions(cosmosRequestOptions);
         };
 
         CosmosClientBuilder[] clientBuilders = new CosmosClientBuilder[3];
         clientBuilders[0] =  new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
             .credential(credential)
             .gatewayMode()
-            .addPolicy(policy);
+            .addOperationPolicy(policy);
         clientBuilders[1] =  new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
             .credential(credential)
-            .addPolicy(policy);
+            .addOperationPolicy(policy);
         clientBuilders[2] = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
             .credential(credential)
-            .addPolicy((cosmosOperationDetails) -> {
+            .addOperationPolicy((cosmosOperationDetails) -> {
                 CosmosDiagnosticsContext cosmosDiagnosticsContext = cosmosOperationDetails.getDiagnosticsContext();
                 String operationType = cosmosDiagnosticsContext.getOperationType();
                 String spanName = cosmosDiagnosticsContext.getSpanName();
-                CosmosCommonRequestOptions cosmosCommonRequestOptions = new CosmosCommonRequestOptions();
-                createReadDeleteBatchEtcOptions(operationType, spanName, cosmosCommonRequestOptions);
-                createQueryReadAllItemsOptions(operationType, spanName, cosmosCommonRequestOptions);
-                createReadManyOptions(operationType, spanName, cosmosCommonRequestOptions);
-                cosmosOperationDetails.setCommonOptions(cosmosCommonRequestOptions);
-            }).addPolicy((cosmosOperationDetails) -> {
+                CosmosRequestOptions cosmosRequestOptions = new CosmosRequestOptions();
+                createReadDeleteBatchEtcOptions(operationType, spanName, cosmosRequestOptions);
+                createQueryReadAllItemsOptions(operationType, spanName, cosmosRequestOptions);
+                createReadManyOptions(spanName, cosmosRequestOptions);
+                cosmosOperationDetails.setCommonOptions(cosmosRequestOptions);
+            }).addOperationPolicy((cosmosOperationDetails) -> {
                 CosmosDiagnosticsContext cosmosDiagnosticsContext = cosmosOperationDetails.getDiagnosticsContext();
                 String operationType = cosmosDiagnosticsContext.getOperationType();
                 String spanName = cosmosDiagnosticsContext.getSpanName();
-                CosmosCommonRequestOptions cosmosCommonRequestOptions = new CosmosCommonRequestOptions();
-                createBulkOptions(operationType, spanName, cosmosCommonRequestOptions);
-                createChangeFeedOptions(operationType, spanName, cosmosCommonRequestOptions);
-                cosmosOperationDetails.setCommonOptions(cosmosCommonRequestOptions);
+                CosmosRequestOptions cosmosRequestOptions = new CosmosRequestOptions();
+                createBulkOptions(operationType, spanName, cosmosRequestOptions);
+                createChangeFeedOptions(spanName, cosmosRequestOptions);
+                cosmosOperationDetails.setCommonOptions(cosmosRequestOptions);
             });
         return clientBuilders;
     }

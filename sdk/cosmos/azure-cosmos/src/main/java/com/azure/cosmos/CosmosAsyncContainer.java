@@ -591,7 +591,7 @@ public class CosmosAsyncContainer {
             requestOptions);
 
         CosmosOperationDetails operationDetails = operationDetailsAccessor.create(requestOptions, cosmosCtx);
-        clientAccessor.getPolicies(client).forEach(policy -> policy.process(operationDetails));
+        clientAccessor.getOperationPolicies(client).forEach(policy -> policy.process(operationDetails));
     }
 
 
@@ -1344,11 +1344,6 @@ public class CosmosAsyncContainer {
         if (bulkOptions == null) {
             bulkOptions = new CosmosBulkExecutionOptions();
         }
-        /*
-        operations.map(operation -> {
-            ((ItemBulkOperation) operation).getRequestOptions();
-            return operation;
-        });*/
 
         CosmosBulkExecutionOptions clonedOptions = bulkExecutionOptionsAccessor.clone(bulkOptions);
         CosmosBulkExecutionOptionsImpl requestOptionsInternal = bulkExecutionOptionsAccessor.getImpl(clonedOptions);

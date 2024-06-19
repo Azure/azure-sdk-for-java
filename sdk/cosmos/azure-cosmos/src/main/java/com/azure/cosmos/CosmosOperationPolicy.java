@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosOperationDetails;
@@ -11,7 +13,7 @@ public interface CosmosOperationPolicy {
     /**
      * Processes the request details and calls the next policy in the chain.
      *
-     * @param requestDetails The request details.
+     * @param operationDetails The request details.
      */
-    void process(CosmosOperationDetails requestDetails);
+    void process(CosmosOperationDetails operationDetails);
 }

@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
-import com.azure.cosmos.models.CosmosCommonRequestOptions;
+import com.azure.cosmos.models.ReadOnlyRequestOptions;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -220,9 +220,9 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
     }
 
     @Override
-    public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        this.excludeRegions = overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
-        this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+    public void override(ReadOnlyRequestOptions readOnlyRequestOptions) {
+        this.excludeRegions = overrideOption(readOnlyRequestOptions.getExcludedRegions(), this.excludeRegions);
+        this.throughputControlGroupName = overrideOption(readOnlyRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
     }
 
 }

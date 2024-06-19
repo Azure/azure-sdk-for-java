@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.CosmosCommonRequestOptions;
-import com.azure.cosmos.models.ReadOnlyCommonRequestOptions;
+import com.azure.cosmos.models.ReadOnlyRequestOptions;
 
-public interface OverridableRequestOptions extends ReadOnlyCommonRequestOptions {
-    void override(CosmosCommonRequestOptions cosmosCommonRequestOptions);
+public interface OverridableRequestOptions extends ReadOnlyRequestOptions {
+    void override(ReadOnlyRequestOptions readOnlyRequestOptions);
 
     default <T> T overrideOption(T source, T target) {
         if (source != null) {
