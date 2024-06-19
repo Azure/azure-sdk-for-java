@@ -838,7 +838,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
     @Test
     public void defaultAudience() {
         queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder()
             .audience(null) // should default to "https://storage.azure.com/"
             .queueName(queueAsyncClient.getQueueName())
             .buildAsyncClient();
@@ -851,7 +851,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
     @Test
     public void storageAccountAudience() {
         queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder()
             .audience(QueueAudience.createQueueServiceAccountAudience(queueAsyncClient.getAccountName()))
             .queueName(queueAsyncClient.getQueueName())
             .buildAsyncClient();
@@ -869,7 +869,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
      */
     public void audienceErrorBearerChallengeRetry() {
         queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder()
             .queueName(queueAsyncClient.getQueueName())
             .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
             .buildAsyncClient();
@@ -885,7 +885,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
         QueueAudience audience = QueueAudience.fromString(url);
 
         queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder()
             .audience(audience)
             .queueName(queueAsyncClient.getQueueName())
             .buildAsyncClient();

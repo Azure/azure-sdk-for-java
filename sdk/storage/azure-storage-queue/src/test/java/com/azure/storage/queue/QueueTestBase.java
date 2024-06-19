@@ -87,8 +87,10 @@ public class QueueTestBase extends TestProxyTestBase {
             .queueName(getRandomName(60));
     }
 
-    protected QueueServiceClientBuilder getOAuthServiceClientBuilder(String endpoint) {
-        QueueServiceClientBuilder builder = new QueueServiceClientBuilder().endpoint(endpoint);
+    protected QueueServiceClientBuilder getOAuthServiceClientBuilder() {
+        QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint());
+
         instrument(builder);
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
     }
@@ -115,8 +117,10 @@ public class QueueTestBase extends TestProxyTestBase {
         return instrument(new QueueClientBuilder()).endpoint(endpoint);
     }
 
-    protected QueueClientBuilder getOAuthQueueClientBuilder(String endpoint) {
-        QueueClientBuilder builder = new QueueClientBuilder().endpoint(endpoint);
+    protected QueueClientBuilder getOAuthQueueClientBuilder() {
+        QueueClientBuilder builder = new QueueClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getQueueEndpoint());
+
         instrument(builder);
         return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager));
     }
