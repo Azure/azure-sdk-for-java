@@ -334,6 +334,15 @@ public final class CosmosBulkExecutionOptions {
         return this;
     }
 
+    /**
+     * Gets the custom ids.
+     *
+     * @return set of custom ids.
+     */
+    public Set<String> getCustomCorrelatedIds() {
+        return this.actualRequestOptions.getCustomCorrelatedIds();
+    }
+
     CosmosBulkExecutionOptionsImpl getImpl() {
         return this.actualRequestOptions;
     }

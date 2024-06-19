@@ -55,6 +55,7 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
@@ -874,6 +875,26 @@ public class ImplementationBridgeHelpers {
                 Integer sequenceNumber,
                 String queryStatement,
                 OverridableRequestOptions requestOptions);
+
+            CosmosDiagnosticsContext create(
+                String spanName,
+                String account,
+                String endpoint,
+                String databaseId,
+                String containerId,
+                ResourceType resourceType,
+                OperationType operationType,
+                String operationId,
+                ConsistencyLevel consistencyLevel,
+                Integer maxItemCount,
+                CosmosDiagnosticsThresholds thresholds,
+                String trackingId,
+                String connectionMode,
+                String userAgent,
+                Integer sequenceNumber,
+                String queryStatement,
+                OverridableRequestOptions requestOptions,
+                CosmosItemOperationType subOperationType);
 
             OverridableRequestOptions getRequestOptions(CosmosDiagnosticsContext ctx);
 

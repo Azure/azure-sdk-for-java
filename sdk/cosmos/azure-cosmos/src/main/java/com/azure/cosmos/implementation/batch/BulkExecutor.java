@@ -825,6 +825,7 @@ public final class BulkExecutor<TContext> implements Disposable {
         RequestOptions options = new RequestOptions();
         options.setThroughputControlGroupName(cosmosBulkExecutionOptions.getThroughputControlGroupName());
         options.setExcludedRegions(cosmosBulkExecutionOptions.getExcludedRegions());
+        options.setCustomCorrelatedIds(cosmosBulkExecutionOptions.getCustomCorrelatedIds());
 
         //  This logic is to handle custom bulk options which can be passed through encryption or through some other project
         Map<String, String> customOptions = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
