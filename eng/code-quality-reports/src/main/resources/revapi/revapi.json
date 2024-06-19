@@ -158,7 +158,8 @@
         {
           "regex": true,
           "code": "java\\.method\\.removed",
-          "old": "method java\\.lang\\.String com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(getPassword|getRemoteUrl|getUsername)\\(\\)"
+          "old": "method java\\.lang\\.String com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(getPassword|getRemoteUrl|getUsername)\\(\\)",
+          "justification": "Remove some meaningless jms properties"
         },
         {
           "code": "java.annotation.attributeValueChanged",
@@ -169,7 +170,7 @@
         {
           "regex": true,
           "code": "java\\.method\\.removed",
-          "old": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(setPassword|setRemoteUrl|setUsername)\\(java\\.lang\\.String\\)"
+          "old": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(setPassword|setRemoteUrl|setUsername)\\(java\\.lang\\.String\\)",
         },
         {
           "code": "java.method.added",
