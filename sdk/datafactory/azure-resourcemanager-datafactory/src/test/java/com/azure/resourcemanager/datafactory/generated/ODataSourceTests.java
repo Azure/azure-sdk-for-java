@@ -11,19 +11,19 @@ public final class ODataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ODataSource model = BinaryData.fromString(
-            "{\"type\":\"gd\",\"query\":\"datajjprd\",\"httpRequestTimeout\":\"datablonlhtgexwjhicu\",\"additionalColumns\":\"dataavimxnhylwogtvl\",\"sourceRetryCount\":\"datat\",\"sourceRetryWait\":\"datadxlfn\",\"maxConcurrentConnections\":\"dataclkmggnzlfyxaiaf\",\"disableMetricsCollection\":\"datamxekfvycvhwduo\",\"\":{\"sbahcassqeybd\":\"datapzzcxku\",\"cxtumqinawctaarb\":\"datazeyakgrkohfqmxzk\"}}")
+            "{\"type\":\"ODataSource\",\"query\":\"datawmtsmeaciy\",\"httpRequestTimeout\":\"datahnrgmg\",\"additionalColumns\":\"datacusvidkzbdbvlsn\",\"sourceRetryCount\":\"dataymrfomlh\",\"sourceRetryWait\":\"dataiktecs\",\"maxConcurrentConnections\":\"datacqweydaa\",\"disableMetricsCollection\":\"datattmfcx\",\"\":{\"afqiwlduot\":\"datafsqjxxb\",\"kfzpr\":\"datayjzdas\",\"lbddlnzmff\":\"dataqomuzohnpkof\"}}")
             .toObject(ODataSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ODataSource model = new ODataSource().withSourceRetryCount("datat")
-            .withSourceRetryWait("datadxlfn")
-            .withMaxConcurrentConnections("dataclkmggnzlfyxaiaf")
-            .withDisableMetricsCollection("datamxekfvycvhwduo")
-            .withQuery("datajjprd")
-            .withHttpRequestTimeout("datablonlhtgexwjhicu")
-            .withAdditionalColumns("dataavimxnhylwogtvl");
+        ODataSource model = new ODataSource().withSourceRetryCount("dataymrfomlh")
+            .withSourceRetryWait("dataiktecs")
+            .withMaxConcurrentConnections("datacqweydaa")
+            .withDisableMetricsCollection("datattmfcx")
+            .withQuery("datawmtsmeaciy")
+            .withHttpRequestTimeout("datahnrgmg")
+            .withAdditionalColumns("datacusvidkzbdbvlsn");
         model = BinaryData.fromObject(model).toObject(ODataSource.class);
     }
 }

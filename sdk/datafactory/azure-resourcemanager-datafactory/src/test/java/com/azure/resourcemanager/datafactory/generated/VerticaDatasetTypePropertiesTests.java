@@ -11,15 +11,15 @@ public final class VerticaDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VerticaDatasetTypeProperties model = BinaryData.fromString(
-            "{\"tableName\":\"datagwhzbbdwrje\",\"table\":\"dataofeiiewibdtplj\",\"schema\":\"datamajokbxxcdkhxjwt\"}")
+            "{\"tableName\":\"datafofkbcjzzwweob\",\"table\":\"datatdqzhixccnkfso\",\"schema\":\"datayoxmyqzyqepg\"}")
             .toObject(VerticaDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VerticaDatasetTypeProperties model = new VerticaDatasetTypeProperties().withTableName("datagwhzbbdwrje")
-            .withTable("dataofeiiewibdtplj")
-            .withSchema("datamajokbxxcdkhxjwt");
+        VerticaDatasetTypeProperties model = new VerticaDatasetTypeProperties().withTableName("datafofkbcjzzwweob")
+            .withTable("datatdqzhixccnkfso")
+            .withSchema("datayoxmyqzyqepg");
         model = BinaryData.fromObject(model).toObject(VerticaDatasetTypeProperties.class);
     }
 }

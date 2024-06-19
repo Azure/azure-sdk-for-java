@@ -204,6 +204,29 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @return the continuationSettings value.
+     */
+    public ContinuationSettingsReference continuationSettings() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().continuationSettings();
+    }
+
+    /**
+     * Set the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @param continuationSettings the continuationSettings value to set.
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    public ExecuteDataFlowActivity withContinuationSettings(ContinuationSettingsReference continuationSettings) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ExecuteDataFlowActivityTypeProperties();
+        }
+        this.innerTypeProperties().withContinuationSettings(continuationSettings);
+        return this;
+    }
+
+    /**
      * Get the compute property: Compute properties for data flow activity.
      * 
      * @return the compute value.

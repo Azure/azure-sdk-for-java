@@ -11,19 +11,19 @@ public final class PostgreSqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PostgreSqlSource model = BinaryData.fromString(
-            "{\"type\":\"aeu\",\"query\":\"datanfbms\",\"queryTimeout\":\"dataerbdd\",\"additionalColumns\":\"datangdctmjz\",\"sourceRetryCount\":\"datagvheqzlqevas\",\"sourceRetryWait\":\"datagoodfh\",\"maxConcurrentConnections\":\"datauegdynyddp\",\"disableMetricsCollection\":\"dataizlzxht\",\"\":{\"znhol\":\"datalgm\",\"okuykrvxmobn\":\"dataflsjwawlkqmznkcw\"}}")
+            "{\"type\":\"PostgreSqlSource\",\"query\":\"dataljlwfqrfyw\",\"queryTimeout\":\"datasipkhqh\",\"additionalColumns\":\"datatcztmqdkhohspkgx\",\"sourceRetryCount\":\"datavlyaprjzbx\",\"sourceRetryWait\":\"dataqfrntzbhmxl\",\"maxConcurrentConnections\":\"datafauvgt\",\"disableMetricsCollection\":\"datanozsmy\",\"\":{\"bmrwhknefcoo\":\"dataap\",\"pdd\":\"datatmd\",\"laxuybxjwny\":\"datagupiosibg\",\"fiksjpkig\":\"dataskyrttnrikss\"}}")
             .toObject(PostgreSqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PostgreSqlSource model = new PostgreSqlSource().withSourceRetryCount("datagvheqzlqevas")
-            .withSourceRetryWait("datagoodfh")
-            .withMaxConcurrentConnections("datauegdynyddp")
-            .withDisableMetricsCollection("dataizlzxht")
-            .withQueryTimeout("dataerbdd")
-            .withAdditionalColumns("datangdctmjz")
-            .withQuery("datanfbms");
+        PostgreSqlSource model = new PostgreSqlSource().withSourceRetryCount("datavlyaprjzbx")
+            .withSourceRetryWait("dataqfrntzbhmxl")
+            .withMaxConcurrentConnections("datafauvgt")
+            .withDisableMetricsCollection("datanozsmy")
+            .withQueryTimeout("datasipkhqh")
+            .withAdditionalColumns("datatcztmqdkhohspkgx")
+            .withQuery("dataljlwfqrfyw");
         model = BinaryData.fromObject(model).toObject(PostgreSqlSource.class);
     }
 }

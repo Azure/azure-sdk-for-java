@@ -66,7 +66,8 @@ public class AppConfigCustomization extends Customization {
     private void customizeKeyValueFields(ClassCustomization classCustomization) {
         classCustomization.customizeAst(ast -> {
             // Add imports required by class changes.
-            ast.addImport("java.util.Locale");
+            ast.addImport("java.util.Locale")
+                .addImport("com.azure.data.appconfiguration.ConfigurationAsyncClient");
 
             ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
 
@@ -82,11 +83,12 @@ public class AppConfigCustomization extends Customization {
             // Add class-level javadoc
             clazz.setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
                 "Fields in {@link ConfigurationSetting} that can be returned from GET queries.",
-                "@see SettingSelector"
+                "@see SettingSelector",
+                "@see ConfigurationAsyncClient"
             )));
 
             // Add toStringMapper static new method to SettingFields
-            clazz.addMethod("toStringMapper", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC).setType("String")
+            clazz.addMethod("toStringMapper", Modifier.Keyword.STATIC, Modifier.Keyword.PUBLIC).setType("String")
                 .addParameter("SettingFields", "field")
                 .setBody(new BlockStmt(new NodeList<>(StaticJavaParser.parseStatement("return field.toString().toLowerCase(Locale.US);"))))
                 .addAnnotation(Deprecated.class)

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.datafactory.models.CustomSetupBase;
 public final class CustomSetupBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomSetupBase model = BinaryData.fromString("{\"type\":\"zplhaljom\"}").toObject(CustomSetupBase.class);
+        CustomSetupBase model = BinaryData.fromString("{\"type\":\"CustomSetupBase\"}").toObject(CustomSetupBase.class);
     }
 
     @org.junit.jupiter.api.Test

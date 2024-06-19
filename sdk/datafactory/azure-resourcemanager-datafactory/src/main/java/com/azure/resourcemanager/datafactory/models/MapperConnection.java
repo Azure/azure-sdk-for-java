@@ -33,7 +33,8 @@ public final class MapperConnection {
     private ConnectionType type;
 
     /*
-     * A boolean indicating whether linked service is of type inline dataset. Currently only inline datasets are supported.
+     * A boolean indicating whether linked service is of type inline dataset. Currently only inline datasets are
+     * supported.
      */
     @JsonProperty(value = "isInlineDataset")
     private Boolean isInlineDataset;

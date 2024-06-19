@@ -149,8 +149,9 @@ public class ReactorSession implements AmqpSession {
 
         shutdownSignals = amqpConnection.getShutdownSignals();
         subscriptions.add(this.endpointStates.subscribe());
-        subscriptions
-            .add(shutdownSignals.flatMap(signal -> closeAsync("Shutdown signal received", null, false)).subscribe());
+        subscriptions.add(shutdownSignals
+            .flatMap(signal -> closeAsync("Shutdown signal received (" + signal.toString() + ")", null, false))
+            .subscribe());
 
         session.open();
     }
