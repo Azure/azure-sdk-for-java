@@ -18,6 +18,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -45,8 +46,6 @@ public class GlobalEndpointManager implements AutoCloseable {
     private volatile DatabaseAccount latestDatabaseAccount;
 
     private volatile Throwable latestDatabaseRefreshError;
-
-    private GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
 
     public void setLatestDatabaseRefreshError(Throwable latestDatabaseRefreshError) {
         this.latestDatabaseRefreshError = latestDatabaseRefreshError;
@@ -105,12 +104,12 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegions) {
         // readonly
-        return this.locationCache.getApplicableReadEndpoints(excludedRegions, new ArrayList<>());
+        return this.locationCache.getApplicableReadEndpoints(excludedRegions, Collections.emptyList());
     }
 
     public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegions) {
         //readonly
-        return this.locationCache.getApplicableWriteEndpoints(excludedRegions, new ArrayList<>());
+        return this.locationCache.getApplicableWriteEndpoints(excludedRegions, Collections.emptyList());
     }
 
     public List<URI> getAvailableReadEndpoints() {
@@ -336,14 +335,6 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public String getRegionName(URI locationEndpoint, OperationType operationType) {
         return this.locationCache.getRegionName(locationEndpoint, operationType);
-    }
-
-    public GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
-        return globalPartitionEndpointManagerForCircuitBreaker;
-    }
-
-    public void setGlobalPartitionEndpointManagerForCircuitBreaker(GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
-        this.globalPartitionEndpointManagerForCircuitBreaker = globalPartitionEndpointManagerForCircuitBreaker;
     }
 
     public ConnectionPolicy getConnectionPolicy() {

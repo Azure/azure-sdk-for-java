@@ -50,7 +50,6 @@ public class GlobalAddressResolverTest {
 
     private HttpClient httpClient;
     private GlobalEndpointManager endpointManager;
-    private GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager;
     private IAuthorizationTokenProvider authorizationTokenProvider;
     private UserAgentContainer userAgentContainer;
     private RxCollectionCache collectionCache;
@@ -111,7 +110,7 @@ public class GlobalAddressResolverTest {
 
         GlobalAddressResolver globalAddressResolver = new GlobalAddressResolver(mockDiagnosticsClientContext(), httpClient, endpointManager, Protocol.HTTPS, authorizationTokenProvider, collectionCache, routingMapProvider,
                 userAgentContainer,
-                serviceConfigReader, connectionPolicy, null, globalPartitionEndpointManager);
+                serviceConfigReader, connectionPolicy, null);
         RxDocumentServiceRequest request;
         request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read,
@@ -146,8 +145,7 @@ public class GlobalAddressResolverTest {
                         userAgentContainer,
                         serviceConfigReader,
                         connectionPolicy,
-                        null,
-                        globalPartitionEndpointManager);
+                        null);
         GlobalAddressResolver.EndpointCache endpointCache = new GlobalAddressResolver.EndpointCache();
         GatewayAddressCache gatewayAddressCache = Mockito.mock(GatewayAddressCache.class);
         endpointCache.addressCache = gatewayAddressCache;

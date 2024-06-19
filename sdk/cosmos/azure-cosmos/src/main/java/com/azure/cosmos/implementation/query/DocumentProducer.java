@@ -154,9 +154,8 @@ class DocumentProducer<T> {
                             finalRetryPolicy.onBeforeSendRequest(req);
                         }
                         ++retries;
-                        return Mono.just(req);
-                    })
-                    .flatMap(req -> executeRequestFunc.apply(req)), finalRetryPolicy);
+                        return executeRequestFunc.apply(req);
+                    }), finalRetryPolicy);
         };
 
         this.correlatedActivityId = correlatedActivityId;

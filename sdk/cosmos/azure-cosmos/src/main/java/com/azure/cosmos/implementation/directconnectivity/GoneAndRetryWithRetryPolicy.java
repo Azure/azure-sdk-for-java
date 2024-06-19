@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -193,7 +192,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             Duration backoffTime = Duration.ofSeconds(0);
             Duration timeout;
             boolean forceRefreshAddressCache;
-
             if (isNonRetryableException(exception)) {
                 logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);

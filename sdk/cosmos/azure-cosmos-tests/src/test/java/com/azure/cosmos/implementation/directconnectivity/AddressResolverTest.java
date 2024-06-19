@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
 import com.azure.cosmos.implementation.InvalidPartitionException;
@@ -64,15 +63,13 @@ public class AddressResolverTest {
     private RxCollectionCache collectionCache;
     private ICollectionRoutingMapCache collectionRoutingMapCache;
     private IAddressCache fabricAddressCache;
-    private GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager;
     private int collectionCacheRefreshedCount;
     private Map<String, Integer> routingMapRefreshCount;
     private Map<ServiceIdentity, Integer> addressesRefreshCount;
 
     @BeforeClass(groups = "unit")
     public void before_AddressResolverTest() throws Exception {
-        this.globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
-        this.addressResolver = new AddressResolver(this.globalPartitionEndpointManager);
+        this.addressResolver = new AddressResolver();
         this.collectionCache = Mockito.mock(RxCollectionCache.class);
         this.collectionRoutingMapCache = Mockito.mock(ICollectionRoutingMapCache.class);
         this.fabricAddressCache = Mockito.mock(IAddressCache.class);
