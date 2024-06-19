@@ -17,6 +17,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -110,7 +112,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyStatus(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void recordHealthyStatus(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
@@ -134,16 +136,30 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         globalPartitionEndpointManagerForCircuitBreaker
             .handleLocationSuccessForPartitionKeyRange(request);
 
-        Method getLocationToLocationSpecificContextMappingsMethod
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredMethod("getLocationToLocationSpecificContextMappings", PartitionKeyRangeWrapper.class);
-        getLocationToLocationSpecificContextMappingsMethod.setAccessible(true);
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?> partitionLevelUnavailabilityInfoClass
+            = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
+        assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
-        Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = (Map<URI, LocationSpecificContext>) getLocationToLocationSpecificContextMappingsMethod.invoke(globalPartitionEndpointManagerForCircuitBreaker, new PartitionKeyRangeWrapper(
-                new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
+        Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
+            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+        partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
+
+        Field locationEndpointToLocationSpecificContextForPartitionField
+            = partitionLevelUnavailabilityInfoClass.getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+        locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
+
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+
+        Object partitionAndLocationSpecificUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
+
+        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificContext locationSpecificContext
-            = locationToLocationSpecificContextMappings.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isTrue();
         assertThat(locationSpecificContext.isExceptionThresholdBreached()).isFalse();
@@ -152,7 +168,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyToHealthyWithFailuresStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void recordHealthyToHealthyWithFailuresStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
@@ -187,16 +203,30 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         globalPartitionEndpointManagerForCircuitBreaker
             .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
 
-        Method getLocationToLocationSpecificContextMappingsMethod
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredMethod("getLocationToLocationSpecificContextMappings", PartitionKeyRangeWrapper.class);
-        getLocationToLocationSpecificContextMappingsMethod.setAccessible(true);
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?> partitionLevelUnavailabilityInfoClass
+            = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
+        assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
-        Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = (Map<URI, LocationSpecificContext>) getLocationToLocationSpecificContextMappingsMethod.invoke(globalPartitionEndpointManagerForCircuitBreaker, new PartitionKeyRangeWrapper(
-            new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
+        Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
+            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+        partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
+
+        Field locationEndpointToLocationSpecificContextForPartitionField
+            = partitionLevelUnavailabilityInfoClass.getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+        locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
+
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+
+        Object partitionAndLocationSpecificUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
+
+        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificContext locationSpecificContext
-            = locationToLocationSpecificContextMappings.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isTrue();
         assertThat(locationSpecificContext.isExceptionThresholdBreached()).isFalse();
@@ -205,7 +235,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyWithFailuresToUnavailableStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void recordHealthyWithFailuresToUnavailableStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
@@ -245,16 +275,30 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
 
-        Method getLocationToLocationSpecificContextMappingsMethod
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredMethod("getLocationToLocationSpecificContextMappings", PartitionKeyRangeWrapper.class);
-        getLocationToLocationSpecificContextMappingsMethod.setAccessible(true);
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?> partitionLevelUnavailabilityInfoClass
+            = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
+        assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
-        Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = (Map<URI, LocationSpecificContext>) getLocationToLocationSpecificContextMappingsMethod.invoke(globalPartitionEndpointManagerForCircuitBreaker, new PartitionKeyRangeWrapper(
-            new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
+        Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
+            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+        partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
+
+        Field locationEndpointToLocationSpecificContextForPartitionField
+            = partitionLevelUnavailabilityInfoClass.getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+        locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
+
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+
+        Object partitionAndLocationSpecificUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
+
+        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificContext locationSpecificContext
-            = locationToLocationSpecificContextMappings.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificContext.isExceptionThresholdBreached()).isTrue();
@@ -263,7 +307,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordUnavailableToHealthyTentativeStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void recordUnavailableToHealthyTentativeStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
@@ -305,16 +349,30 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
 
-        Method getLocationToLocationSpecificContextMappingsMethod
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredMethod("getLocationToLocationSpecificContextMappings", PartitionKeyRangeWrapper.class);
-        getLocationToLocationSpecificContextMappingsMethod.setAccessible(true);
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?> partitionLevelUnavailabilityInfoClass
+            = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
+        assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
-        Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = (Map<URI, LocationSpecificContext>) getLocationToLocationSpecificContextMappingsMethod.invoke(globalPartitionEndpointManagerForCircuitBreaker, new PartitionKeyRangeWrapper(
-            new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
+        Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
+            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+        partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
+
+        Field locationEndpointToLocationSpecificContextForPartitionField
+            = partitionLevelUnavailabilityInfoClass.getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+        locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
+
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+
+        Object partitionAndLocationSpecificUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
+
+        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificContext locationSpecificContext
-            = locationToLocationSpecificContextMappings.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificContext.isExceptionThresholdBreached()).isTrue();
@@ -325,7 +383,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             throw new RuntimeException(ex);
         }
 
-        locationSpecificContext = locationToLocationSpecificContextMappings.get(LocationEastUs2EndpointToLocationPair.getKey());
+        locationSpecificContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isTrue();
         assertThat(locationSpecificContext.isExceptionThresholdBreached()).isFalse();
@@ -334,7 +392,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyTentativeToHealthyStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void recordHealthyTentativeToHealthyStatusTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
@@ -376,16 +434,30 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
 
-        Method getLocationToLocationSpecificContextMappingsMethod
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredMethod("getLocationToLocationSpecificContextMappings", PartitionKeyRangeWrapper.class);
-        getLocationToLocationSpecificContextMappingsMethod.setAccessible(true);
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?> partitionLevelUnavailabilityInfoClass
+            = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
+        assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
-        Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = (Map<URI, LocationSpecificContext>) getLocationToLocationSpecificContextMappingsMethod.invoke(globalPartitionEndpointManagerForCircuitBreaker, new PartitionKeyRangeWrapper(
-            new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
+        Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
+            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+        partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
+
+        Field locationEndpointToLocationSpecificContextForPartitionField
+            = partitionLevelUnavailabilityInfoClass.getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+        locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
+
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+
+        Object partitionAndLocationSpecificUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
+
+        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificContext locationSpecificContext
-            = locationToLocationSpecificContextMappings.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificContext.isExceptionThresholdBreached()).isTrue();
@@ -396,7 +468,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             throw new RuntimeException(ex);
         }
 
-        locationSpecificContext = locationToLocationSpecificContextMappings.get(LocationEastUs2EndpointToLocationPair.getKey());
+        locationSpecificContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         int successCountToUpgradeStatus = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getMinimumSuccessCountForStatusUpgrade(LocationHealthStatus.HealthyTentative, readOperationTrue);
 
@@ -412,7 +484,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void recordHealthyTentativeToUnavailableTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void recordHealthyTentativeToUnavailableTransition(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
 
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
@@ -453,16 +525,31 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             globalPartitionEndpointManagerForCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
-        Method getLocationToLocationSpecificContextMappingsMethod
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredMethod("getLocationToLocationSpecificContextMappings", PartitionKeyRangeWrapper.class);
-        getLocationToLocationSpecificContextMappingsMethod.setAccessible(true);
 
-        Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = (Map<URI, LocationSpecificContext>) getLocationToLocationSpecificContextMappingsMethod.invoke(globalPartitionEndpointManagerForCircuitBreaker, new PartitionKeyRangeWrapper(
-            new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?> partitionLevelUnavailabilityInfoClass
+            = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
+        assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
+
+        Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
+            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+        partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
+
+        Field locationEndpointToLocationSpecificContextForPartitionField
+            = partitionLevelUnavailabilityInfoClass.getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+        locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
+
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+
+        Object partitionAndLocationSpecificUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
+
+        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         LocationSpecificContext locationSpecificContext
-            = locationToLocationSpecificContextMappings.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificContext.isExceptionThresholdBreached()).isTrue();
@@ -480,7 +567,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
 
-        locationSpecificContext = locationToLocationSpecificContextMappings.get(LocationEastUs2EndpointToLocationPair.getKey());
+        locationSpecificContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificContext.isExceptionThresholdBreached()).isTrue();
@@ -489,7 +576,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
     }
 
     @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void allRegionsUnavailableHandling(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void allRegionsUnavailableHandling(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws IllegalAccessException, NoSuchFieldException {
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
@@ -536,21 +623,32 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 .handleLocationExceptionForPartitionKeyRange(request, LocationCentralUsEndpointToLocationPair.getKey());
         }
 
-        Method getLocationToLocationSpecificContextMappingsMethod
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredMethod("getLocationToLocationSpecificContextMappings", PartitionKeyRangeWrapper.class);
-        getLocationToLocationSpecificContextMappingsMethod.setAccessible(true);
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?> partitionLevelUnavailabilityInfoClass
+            = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
+        assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
-        Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappings
-            = (Map<URI, LocationSpecificContext>) getLocationToLocationSpecificContextMappingsMethod.invoke(globalPartitionEndpointManagerForCircuitBreaker, new PartitionKeyRangeWrapper(
-            new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId));
+        Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
+            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+        partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
 
-        assertThat(locationToLocationSpecificContextMappings).isNull();
+        Field locationEndpointToLocationSpecificContextForPartitionField
+            = partitionLevelUnavailabilityInfoClass.getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+        locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
+
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+
+        Object partitionAndLocationSpecificUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
+
+        assertThat(partitionAndLocationSpecificUnavailabilityInfo).isNull();
 
         System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
     @Test(groups = {"unit"}, dataProvider = "partitionLevelCircuitBreakerConfigs")
-    public void multiContainerBothWithSinglePartitionHealthyToUnavailableHandling(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void multiContainerBothWithSinglePartitionHealthyToUnavailableHandling(String partitionLevelCircuitBreakerConfigAsJsonString, boolean readOperationTrue) throws NoSuchFieldException, IllegalAccessException {
         System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", partitionLevelCircuitBreakerConfigAsJsonString);
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
@@ -601,23 +699,41 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
         globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request2);
 
-        Method getLocationToLocationSpecificContextMappingsMethod
-            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredMethod("getLocationToLocationSpecificContextMappings", PartitionKeyRangeWrapper.class);
-        getLocationToLocationSpecificContextMappingsMethod.setAccessible(true);
+        Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+        Class<?> partitionLevelUnavailabilityInfoClass
+            = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
+        assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
 
-        Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappingsForColl1
-            = (Map<URI, LocationSpecificContext>) getLocationToLocationSpecificContextMappingsMethod.invoke(globalPartitionEndpointManagerForCircuitBreaker, new PartitionKeyRangeWrapper(
+        Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
+            = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+        partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
+
+        Field locationEndpointToLocationSpecificContextForPartitionField
+            = partitionLevelUnavailabilityInfoClass.getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+        locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
+
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
+            = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
+
+        Object partitionLevelLocationUnavailabilityInfoSnapshotForColl1
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId1));
 
-        Map<URI, LocationSpecificContext> locationToLocationSpecificContextMappingsForColl2
-            = (Map<URI, LocationSpecificContext>) getLocationToLocationSpecificContextMappingsMethod.invoke(globalPartitionEndpointManagerForCircuitBreaker, new PartitionKeyRangeWrapper(
+        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartitionForColl1
+            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfoSnapshotForColl1);
+
+        Object partitionLevelLocationUnavailabilityInfoSnapshotForColl2
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId2));
 
+        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartitionForColl2
+            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfoSnapshotForColl2);
+
         LocationSpecificContext locationSpecificContext1
-            = locationToLocationSpecificContextMappingsForColl1.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartitionForColl1.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         LocationSpecificContext locationSpecificContext2
-            = locationToLocationSpecificContextMappingsForColl2.get(LocationEastUs2EndpointToLocationPair.getKey());
+            = locationEndpointToLocationSpecificContextForPartitionForColl2.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         assertThat(locationSpecificContext1.isRegionAvailableToProcessRequests()).isFalse();
         assertThat(locationSpecificContext1.isExceptionThresholdBreached()).isTrue();
@@ -810,5 +926,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    private static Class<?> getClassBySimpleName(Class<?>[] classes, String classSimpleName) {
+        for (Class<?> clazz : classes) {
+            if (clazz.getSimpleName().equals(classSimpleName)) {
+                return clazz;
+            }
+        }
+
+        logger.warn("Class with simple name {} does not exist!", classSimpleName);
+        return null;
     }
 }

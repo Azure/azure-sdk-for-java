@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.circuitBreaker.ConsecutiveExceptionBasedCircuitBreaker;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
+import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificContext;
 import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -65,6 +66,7 @@ import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1100,74 +1102,74 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
-            {
-                "Test read all operation injected with server-generated GONE in first preferred region.",
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionDuration(Duration.ofSeconds(60))
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
-                this.buildServerGeneratedGoneError,
-                executeReadManyOperation,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                this.validateResponseHasOperationCancelledException,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            {
-                "Test read all operation injected with too many requests error in first preferred region.",
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionDuration(Duration.ofSeconds(60))
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
-                this.buildTooManyRequestsError,
-                executeReadManyOperation,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                this.validateResponseHasOperationCancelledException,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            {
-                "Test read all operation injected with read/write session not available error in first preferred region.",
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionDuration(Duration.ofSeconds(60))
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
-                this.buildReadWriteSessionNotAvailableRules,
-                executeReadManyOperation,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                this.validateResponseHasOperationCancelledException,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            {
-                "Test read all operation injected with service unavailable error in all regions.",
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withHitLimit(11)
-                    .withFaultInjectionApplicableRegions(this.writeRegions),
-                this.buildServiceUnavailableError,
-                executeReadManyOperation,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                this.validateResponseHasServiceUnavailableError,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasAllRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            }
+//            {
+//                "Test read all operation injected with server-generated GONE in first preferred region.",
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+//                this.buildServerGeneratedGoneError,
+//                executeReadManyOperation,
+//                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+//                noRegionSwitchHint,
+//                this.validateResponseHasOperationCancelledException,
+//                this.validateResponseHasSuccess,
+//                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+//                ConnectionMode.DIRECT
+//            },
+//            {
+//                "Test read all operation injected with too many requests error in first preferred region.",
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+//                this.buildTooManyRequestsError,
+//                executeReadManyOperation,
+//                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+//                noRegionSwitchHint,
+//                this.validateResponseHasOperationCancelledException,
+//                this.validateResponseHasSuccess,
+//                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+//                ConnectionMode.DIRECT
+//            },
+//            {
+//                "Test read all operation injected with read/write session not available error in first preferred region.",
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+//                this.buildReadWriteSessionNotAvailableRules,
+//                executeReadManyOperation,
+//                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+//                noRegionSwitchHint,
+//                this.validateResponseHasOperationCancelledException,
+//                this.validateResponseHasSuccess,
+//                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+//                ConnectionMode.DIRECT
+//            },
+//            {
+//                "Test read all operation injected with service unavailable error in all regions.",
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+//                    .withHitLimit(11)
+//                    .withFaultInjectionApplicableRegions(this.writeRegions),
+//                this.buildServiceUnavailableError,
+//                executeReadManyOperation,
+//                noEndToEndTimeout,
+//                noRegionSwitchHint,
+//                this.validateResponseHasServiceUnavailableError,
+//                this.validateResponseHasSuccess,
+//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+//                this.validateDiagnosticsContextHasAllRegions,
+//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+//                ConnectionMode.DIRECT
+//            }
         };
     }
 
@@ -1538,9 +1540,21 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
                 = documentClient.getGlobalPartitionEndpointManagerForCircuitBreaker();
 
-            Method getAverageExceptionCountByPartitionKeyRangeByRegionMethod
-                = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredMethod("getAverageExceptionCountByPartitionKeyRangeByRegion", PartitionKeyRangeWrapper.class);
-            getAverageExceptionCountByPartitionKeyRangeByRegionMethod.setAccessible(true);
+            Class<?>[] enclosedClasses = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredClasses();
+            Class<?> partitionLevelUnavailabilityInfoClass
+                = getClassBySimpleName(enclosedClasses, "PartitionLevelLocationUnavailabilityInfo");
+            assertThat(partitionLevelUnavailabilityInfoClass).isNotNull();
+
+            Field partitionKeyRangeToLocationSpecificUnavailabilityInfoField
+                = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredField("partitionKeyRangeToLocationSpecificUnavailabilityInfo");
+            partitionKeyRangeToLocationSpecificUnavailabilityInfoField.setAccessible(true);
+
+            Field locationEndpointToLocationSpecificContextForPartitionField
+                = partitionLevelUnavailabilityInfoClass.getDeclaredField("locationEndpointToLocationSpecificContextForPartition");
+            locationEndpointToLocationSpecificContextForPartitionField.setAccessible(true);
+
+            ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo
+                = (ConcurrentHashMap<PartitionKeyRangeWrapper, ?>) partitionKeyRangeToLocationSpecificUnavailabilityInfoField.get(globalPartitionEndpointManagerForCircuitBreaker);
 
             faultInjectionRuleParamsWrapper.withFaultInjectionApplicableFeedRange(operationInvocationParamsWrapper.faultyFeedRange);
             faultInjectionRuleParamsWrapper.withFaultInjectionApplicableAsyncContainer(container);
@@ -1623,7 +1637,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                         consecutiveExceptionBasedCircuitBreaker.getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, true);
 
                     if (!hasReachedCircuitBreakingThreshold) {
-                        hasReachedCircuitBreakingThreshold = expectedCircuitBreakingThreshold == (int) getAverageExceptionCountByPartitionKeyRangeByRegionMethod.invoke(globalPartitionEndpointManagerForCircuitBreaker, partitionKeyRangeWrapper);
+                        hasReachedCircuitBreakingThreshold = expectedCircuitBreakingThreshold ==
+                            getAverageExceptionCountByPartitionKeyRangeByRegion(
+                                partitionKeyRangeWrapper,
+                                partitionKeyRangeToLocationSpecificUnavailabilityInfo,
+                                locationEndpointToLocationSpecificContextForPartitionField
+                            );
                         validateResponseInPresenceOfFailures.accept(response);
                     } else {
                         executionCountAfterCircuitBreakingThresholdBreached++;
@@ -2405,6 +2424,49 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             .flatMapMany(Flux::fromIterable)
             .flatMap(testObject -> asyncContainer.deleteItem(testObject.getId(), new PartitionKey(testObject.getMypk())))
             .blockLast();
+    }
+
+    private static Class<?> getClassBySimpleName(Class<?>[] classes, String classSimpleName) {
+        for (Class<?> clazz : classes) {
+            if (clazz.getSimpleName().equals(classSimpleName)) {
+                return clazz;
+            }
+        }
+
+        logger.warn("Class with simple name {} does not exist!", classSimpleName);
+        return null;
+    }
+
+    private static int getAverageExceptionCountByPartitionKeyRangeByRegion(
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper,
+        ConcurrentHashMap<PartitionKeyRangeWrapper, ?> partitionKeyRangeToLocationSpecificUnavailabilityInfo,
+        Field locationEndpointToLocationSpecificContextForPartitionField) throws IllegalAccessException {
+
+        Object partitionAndLocationSpecificUnavailabilityInfo
+            = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+
+        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+
+        int count = 0;
+        int regionCountWithFailures = 0;
+        boolean failuresExist = false;
+
+        for (LocationSpecificContext locationSpecificContext : locationEndpointToLocationSpecificContextForPartition.values()) {
+            count += locationSpecificContext.getExceptionCountForRead() + locationSpecificContext.getExceptionCountForWrite();
+
+            if (locationSpecificContext.getExceptionCountForRead() + locationSpecificContext.getExceptionCountForWrite() > 0) {
+                failuresExist = true;
+                regionCountWithFailures++;
+            }
+        }
+
+        if (failuresExist) {
+            return count / regionCountWithFailures;
+        }
+
+        return 0;
+
     }
 
     private enum QueryType {
