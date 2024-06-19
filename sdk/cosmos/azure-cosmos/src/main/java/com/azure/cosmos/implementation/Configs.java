@@ -209,7 +209,8 @@ public class Configs {
     private static final int DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT = 2;
     private static final String STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS = "COSMOS.STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS";
     private static final int DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS = 1;
-
+    private static final String STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS = "COSMOS.STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS";
+    private static final int DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS = 60;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -642,5 +643,20 @@ public class Configs {
         }
 
         return DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS;
+    }
+
+    public static int getStalePartitionUnavailabilityRefreshIntervalInSeconds() {
+        String valueFromSystemProperty = System.getProperty(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
+
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.valueOf(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.valueOf(valueFromEnvVariable);
+        }
+
+        return DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS;
     }
 }

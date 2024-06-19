@@ -893,7 +893,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         List<URI> unavailableLocations
             = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableLocationEndpointsForPartitionKeyRange(collectionResourceId, partitionKeyRange);
 
-        logger.info("Assert for all regions are not Unavailable!");
+        logger.info("Assert that all regions are not Unavailable!");
         assertThat(unavailableLocations.size()).isLessThan(applicableReadWriteLocations.size());
     }
 

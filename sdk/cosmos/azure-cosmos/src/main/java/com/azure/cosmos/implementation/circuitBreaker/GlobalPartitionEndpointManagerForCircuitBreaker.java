@@ -49,7 +49,9 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
     }
 
     public void init() {
-        this.updateStaleLocationInfo().subscribeOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE).subscribe();
+        if (this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled()) {
+            this.updateStaleLocationInfo().subscribeOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE).subscribe();
+        }
     }
 
     public void handleLocationExceptionForPartitionKeyRange(RxDocumentServiceRequest request, URI failedLocation) {
@@ -173,7 +175,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
     private Flux<Object> updateStaleLocationInfo() {
         return Mono.just(1)
-            .delayElement(Duration.ofSeconds(60))
+            .delayElement(Duration.ofSeconds(Configs.getStalePartitionUnavailabilityRefreshIntervalInSeconds()))
             .repeat()
             .flatMap(ignore -> Flux.fromIterable(this.partitionKeyRangesWithPossibleUnavailableRegions.entrySet()))
             .publishOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE)
