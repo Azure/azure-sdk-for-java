@@ -6,6 +6,8 @@ package com.azure.messaging.eventgrid.namespaces;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.test.TestProxyTestBase;
@@ -22,7 +24,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class EventGridClientTestBase extends TestProxyTestBase {
+public class EventGridClientTestBase extends TestProxyTestBase {
     static final String EVENTGRID_TOPIC_NAME = "EVENTGRID_TOPIC_NAME";
 
     static final String EVENTGRID_EVENT_SUBSCRIPTION_NAME = "EVENTGRID_EVENT_SUBSCRIPTION_NAME";
@@ -38,6 +40,36 @@ class EventGridClientTestBase extends TestProxyTestBase {
 
     static final String DUMMY_CHANNEL_NAME = "dummy-channel";
 
+    public static final String TOPIC_NAME = Configuration.getGlobalConfiguration().get(EVENTGRID_TOPIC_NAME, "testtopic1");
+    public static final String EVENT_SUBSCRIPTION_NAME = Configuration.getGlobalConfiguration().get(EVENTGRID_EVENT_SUBSCRIPTION_NAME, "testsubscription1");
+
+    EventGridReceiverClientBuilder receiverBuilder;
+    EventGridSenderClientBuilder senderBuilder;
+
+
+    protected void makeBuilders(boolean sync) {
+        receiverBuilder = buildReceiverClientBuilder();
+        senderBuilder = buildSenderClientBuilder();
+        if (interceptorManager.isPlaybackMode()) {
+            receiverBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), sync));
+            senderBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), sync));
+        } else { // both record and live will use these clients
+            receiverBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), sync));
+            senderBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), sync));
+        }
+
+        if (interceptorManager.isRecordMode()) {
+            receiverBuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .retryPolicy(new RetryPolicy());
+            senderBuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .retryPolicy(new RetryPolicy());
+        }
+        setupSanitizers();
+    }
+
+
+
+
     @Override
     protected void afterTest() {
         StepVerifier.resetDefaultTimeout();
@@ -51,6 +83,23 @@ class EventGridClientTestBase extends TestProxyTestBase {
             sanitizers.add(new TestProxySanitizer("aeg-channel-name", null, "REDACTED", TestProxySanitizerType.HEADER));
             interceptorManager.addSanitizers(sanitizers);
         }
+    }
+
+    EventGridReceiverClientBuilder buildReceiverClientBuilder() {
+        return new EventGridReceiverClientBuilder()
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions())
+            .subscriptionName(EVENT_SUBSCRIPTION_NAME)
+            .topicName(TOPIC_NAME)
+            .endpoint(getTopicEndpoint(EVENTGRID_ENDPOINT));
+    }
+
+    EventGridSenderClientBuilder buildSenderClientBuilder() {
+        return new EventGridSenderClientBuilder()
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions())
+            .topicName(TOPIC_NAME)
+            .endpoint(getTopicEndpoint(EVENTGRID_ENDPOINT));
     }
 
     BinaryData getCustomEvent() {
@@ -79,24 +128,24 @@ class EventGridClientTestBase extends TestProxyTestBase {
 
     CloudEvent getCloudEvent() {
         return new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
-                BinaryData.fromObject(new HashMap<String, String>() {
-                    {
-                        put("Field1", "Value1");
-                        put("Field2", "Value2");
-                        put("Field3", "Value3");
-                    }
-                }), CloudEventDataFormat.JSON, "application/json")
-                .setSubject("Test")
-                .setTime(testResourceNamer.now())
-                .setId(testResourceNamer.randomUuid());
+            BinaryData.fromObject(new HashMap<String, String>() {
+                {
+                    put("Field1", "Value1");
+                    put("Field2", "Value2");
+                    put("Field3", "Value3");
+                }
+            }), CloudEventDataFormat.JSON, "application/json")
+            .setSubject("Test")
+            .setTime(testResourceNamer.now())
+            .setId(testResourceNamer.randomUuid());
     }
 
     CloudEvent getCloudEvent(int i) {
         return new CloudEvent("/microsoft/testEvent", "Microsoft.MockPublisher.TestEvent",
-                BinaryData.fromObject(new TestData().setName("Hello " + i)), CloudEventDataFormat.JSON, null)
-                .setSubject("Test " + i)
-                .setTime(testResourceNamer.now())
-                .setId(testResourceNamer.randomUuid());
+            BinaryData.fromObject(new TestData().setName("Hello " + i)), CloudEventDataFormat.JSON, null)
+            .setSubject("Test " + i)
+            .setTime(testResourceNamer.now())
+            .setId(testResourceNamer.randomUuid());
     }
 
 
@@ -129,7 +178,7 @@ class EventGridClientTestBase extends TestProxyTestBase {
 
     HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
         AssertingHttpClientBuilder builder = new AssertingHttpClientBuilder(httpClient)
-                .skipRequest((ignored1, ignored2) -> false);
+            .skipRequest((ignored1, ignored2) -> false);
         if (sync) {
             builder.assertSync();
         } else {
@@ -151,5 +200,4 @@ class EventGridClientTestBase extends TestProxyTestBase {
             return this.name;
         }
     }
-
 }

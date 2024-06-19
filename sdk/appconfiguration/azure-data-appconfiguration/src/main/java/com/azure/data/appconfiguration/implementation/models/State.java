@@ -4,38 +4,24 @@
 
 package com.azure.data.appconfiguration.implementation.models;
 
-/**
- * The current status of the operation.
- */
+/** The current status of the operation. */
 public enum State {
-    /**
-     * Enum value NotStarted.
-     */
+    /** Enum value NotStarted. */
     NOT_STARTED("NotStarted"),
 
-    /**
-     * Enum value Running.
-     */
+    /** Enum value Running. */
     RUNNING("Running"),
 
-    /**
-     * Enum value Succeeded.
-     */
+    /** Enum value Succeeded. */
     SUCCEEDED("Succeeded"),
 
-    /**
-     * Enum value Failed.
-     */
+    /** Enum value Failed. */
     FAILED("Failed"),
 
-    /**
-     * Enum value Canceled.
-     */
+    /** Enum value Canceled. */
     CANCELED("Canceled");
 
-    /**
-     * The actual serialized value for a State instance.
-     */
+    /** The actual serialized value for a State instance. */
     private final String value;
 
     State(String value) {
@@ -44,7 +30,7 @@ public enum State {
 
     /**
      * Parses a serialized value to a State instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed State object, or null if unable to parse.
      */
@@ -61,9 +47,7 @@ public enum State {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;
