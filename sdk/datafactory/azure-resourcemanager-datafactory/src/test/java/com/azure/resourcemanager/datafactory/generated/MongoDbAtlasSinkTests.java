@@ -11,19 +11,19 @@ public final class MongoDbAtlasSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbAtlasSink model = BinaryData.fromString(
-            "{\"type\":\"eftcinjcrayoasku\",\"writeBehavior\":\"datauxvujuxvl\",\"writeBatchSize\":\"dataqweoob\",\"writeBatchTimeout\":\"datagymbzaw\",\"sinkRetryCount\":\"datatzxqbqzplzyjktc\",\"sinkRetryWait\":\"datawvhiaxkmditcz\",\"maxConcurrentConnections\":\"datacqobujfxyfhlw\",\"disableMetricsCollection\":\"dataaaxpwkm\",\"\":{\"ccbduwsw\":\"dataccmjo\",\"gmewdmlk\":\"databqycubmeih\",\"pts\":\"datawchslb\"}}")
+            "{\"type\":\"MongoDbAtlasSink\",\"writeBehavior\":\"datapmathiydmkyvsx\",\"writeBatchSize\":\"dataivghajpddgfozn\",\"writeBatchTimeout\":\"datamkpjoesozcuhunm\",\"sinkRetryCount\":\"databmwptdrrruy\",\"sinkRetryWait\":\"dataoiumuxna\",\"maxConcurrentConnections\":\"datavgmckxh\",\"disableMetricsCollection\":\"datazsmpoiu\",\"\":{\"vo\":\"datatvpbiojncgjog\"}}")
             .toObject(MongoDbAtlasSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbAtlasSink model = new MongoDbAtlasSink().withWriteBatchSize("dataqweoob")
-            .withWriteBatchTimeout("datagymbzaw")
-            .withSinkRetryCount("datatzxqbqzplzyjktc")
-            .withSinkRetryWait("datawvhiaxkmditcz")
-            .withMaxConcurrentConnections("datacqobujfxyfhlw")
-            .withDisableMetricsCollection("dataaaxpwkm")
-            .withWriteBehavior("datauxvujuxvl");
+        MongoDbAtlasSink model = new MongoDbAtlasSink().withWriteBatchSize("dataivghajpddgfozn")
+            .withWriteBatchTimeout("datamkpjoesozcuhunm")
+            .withSinkRetryCount("databmwptdrrruy")
+            .withSinkRetryWait("dataoiumuxna")
+            .withMaxConcurrentConnections("datavgmckxh")
+            .withDisableMetricsCollection("datazsmpoiu")
+            .withWriteBehavior("datapmathiydmkyvsx");
         model = BinaryData.fromObject(model).toObject(MongoDbAtlasSink.class);
     }
 }

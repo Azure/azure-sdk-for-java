@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MariaDBLinkedServiceTypeProperties {
     /*
-     * The version of the MariaDB driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can support connection string and property bag, V2 can only support connection string.
+     * The version of the MariaDB driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can support
+     * connection string and property bag, V2 can only support connection string.
      */
     @JsonProperty(value = "driverVersion")
     private Object driverVersion;
@@ -56,7 +57,8 @@ public final class MariaDBLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

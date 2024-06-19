@@ -33,31 +33,36 @@ public final class AzureMLServiceLinkedServiceTypeProperties {
     private Object mlWorkspaceName;
 
     /*
-     * Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with resultType string).
+     * Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "authentication")
     private Object authentication;
 
     /*
-     * The ID of the service principal used to authenticate against the endpoint of a published Azure ML Service pipeline. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against the endpoint of a published Azure ML Service
+     * pipeline. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against the endpoint of a published Azure ML Service pipeline.
+     * The key of the service principal used to authenticate against the endpoint of a published Azure ML Service
+     * pipeline.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

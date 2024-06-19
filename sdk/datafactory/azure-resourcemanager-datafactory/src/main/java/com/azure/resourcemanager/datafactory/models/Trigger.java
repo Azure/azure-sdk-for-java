@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class Trigger {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "Trigger";
 
     /*
      * Trigger description.
@@ -64,7 +64,6 @@ public class Trigger {
      * Creates an instance of Trigger class.
      */
     public Trigger() {
-        this.type = "Trigger";
     }
 
     /**
@@ -152,7 +151,7 @@ public class Trigger {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

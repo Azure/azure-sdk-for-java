@@ -39,13 +39,15 @@ public final class AmazonRedshiftLinkedServiceTypeProperties {
     private Object database;
 
     /*
-     * The TCP port number that the Amazon Redshift server uses to listen for client connections. The default value is 5439. Type: integer (or Expression with resultType integer).
+     * The TCP port number that the Amazon Redshift server uses to listen for client connections. The default value is
+     * 5439. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "port")
     private Object port;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
