@@ -76,7 +76,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
         EventGridPublisherAsyncClient<EventGridEvent> egClient = builder
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
-//            .credential(getKey(EVENTGRID_KEY))
             .buildEventGridEventPublisherAsyncClient();
 
         List<EventGridEvent> events = new ArrayList<>();
@@ -97,7 +96,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
         EventGridPublisherAsyncClient<EventGridEvent> egClient = builder
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
-//            .credential(getKey(EVENTGRID_KEY))
             .buildEventGridEventPublisherAsyncClient();
 
         EventGridEvent event = getEventGridEvent();
@@ -134,7 +132,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
         DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         EventGridPublisherAsyncClient<CloudEvent> egClient = builder
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
-//            .credential(defaultCredential)
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildCloudEventPublisherAsyncClient();
 
@@ -152,7 +149,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
         EventGridPublisherAsyncClient<CloudEvent> egClient = builder
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
-//            .credential(getKey(CLOUD_KEY))
             .buildCloudEventPublisherAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
@@ -169,7 +165,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
         EventGridPublisherAsyncClient<CloudEvent> egClient = builder
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
-//            .credential(getKey(CLOUD_KEY))
             .buildCloudEventPublisherAsyncClient();
 
         CloudEvent event = getCloudEvent();
@@ -206,7 +201,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
         EventGridPublisherAsyncClient<EventGridEvent> egClient = builder
                 .endpoint(getEndpoint(EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT))
                 .credential(TestUtil.getTestTokenCredential(interceptorManager))
-//            .credential(getKey(EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY))
                 .buildEventGridEventPublisherAsyncClient();
 
         EventGridEvent event = getEventGridEvent();
@@ -252,7 +246,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
             }));
 
         EventGridPublisherAsyncClient<CloudEvent> egClient = builder
-//            .credential(getKey(CLOUD_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildCloudEventPublisherAsyncClient();
@@ -273,7 +266,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEvents() {
         EventGridPublisherAsyncClient<BinaryData> egClient = builder
-//            .credential(getKey(CUSTOM_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherAsyncClient();
@@ -291,7 +283,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEventsWithSerializer() {
         EventGridPublisherAsyncClient<BinaryData> egClient = builder
-//            .credential(getKey(CUSTOM_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherAsyncClient();
@@ -309,7 +300,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEvent() {
         EventGridPublisherAsyncClient<BinaryData> egClient = builder
-//            .credential(getKey(CUSTOM_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherAsyncClient();
@@ -323,7 +313,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishEventGridEventsSync() {
         EventGridPublisherClient<EventGridEvent> egClient = syncBuilder
-//            .credential(getKey(EVENTGRID_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .buildEventGridEventPublisherClient();
@@ -340,7 +329,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishEventGridEventSync() {
         EventGridPublisherClient<EventGridEvent> egClient = syncBuilder
-//            .credential(getKey(EVENTGRID_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .buildEventGridEventPublisherClient();
@@ -386,7 +374,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCloudEventsSync() {
         EventGridPublisherClient<CloudEvent> egClient = syncBuilder
-//            .credential(getKey(CLOUD_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildCloudEventPublisherClient();
@@ -403,7 +390,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCloudEventSync() {
         EventGridPublisherClient<CloudEvent> egClient = syncBuilder
-//            .credential(getKey(CLOUD_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildCloudEventPublisherClient();
@@ -417,7 +403,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
         EventGridPublisherClient<CloudEvent> egClient = syncBuilder
             .endpoint(getEndpoint(EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
-//            .credential(getKey(EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY))
             .addPolicy((httpPipelineCallContext, httpPipelineNextPolicy) -> {
                 HttpHeader httpHeader = httpPipelineCallContext.getHttpRequest().getHeaders().get("aeg-channel-name");
                 assertNotNull(httpHeader);
@@ -437,7 +422,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
         EventGridPublisherClient<EventGridEvent> egClient = syncBuilder
             .endpoint(getEndpoint(EVENTGRID_PARTNER_NAMESPACE_TOPIC_ENDPOINT))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
-//            .credential(getKey(EVENTGRID_PARTNER_NAMESPACE_TOPIC_KEY))
             .buildEventGridEventPublisherClient();
 
         EventGridEvent event = getEventGridEvent();
@@ -466,7 +450,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
             }));
 
         EventGridPublisherClient<CloudEvent> egClient = syncBuilder
-//            .credential(getKey(CLOUD_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
             .buildCloudEventPublisherClient();
@@ -483,7 +466,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEventsSync() {
         EventGridPublisherClient<BinaryData> egClient = syncBuilder
-//            .credential(getKey(CUSTOM_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherClient();
@@ -501,7 +483,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEventsWithSerializerSync() {
         EventGridPublisherClient<BinaryData> egClient = syncBuilder
-//            .credential(getKey(CUSTOM_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherClient();
@@ -517,7 +498,6 @@ public class EventGridPublisherClientTests extends EventGridTestBase {
     @Test
     public void publishCustomEventSync() {
         EventGridPublisherClient<BinaryData> egClient = syncBuilder
-//            .credential(getKey(CUSTOM_KEY))
             .credential(TestUtil.getTestTokenCredential(interceptorManager))
             .endpoint(getEndpoint(CUSTOM_ENDPOINT))
             .buildCustomEventPublisherClient();

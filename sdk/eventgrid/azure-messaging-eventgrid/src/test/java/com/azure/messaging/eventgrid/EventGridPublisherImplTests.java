@@ -3,6 +3,9 @@
 
 package com.azure.messaging.eventgrid;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddHeadersPolicy;
@@ -26,12 +29,18 @@ public class EventGridPublisherImplTests extends EventGridTestBase {
 
     private EventGridPublisherClientImplBuilder clientBuilder;
 
+    private TokenCredential tokenCredential;
+    private TokenRequestContext trc;
+
     @Override
     protected void beforeTest() {
 
         pipelineBuilder = new HttpPipelineBuilder();
 
         clientBuilder = new EventGridPublisherClientImplBuilder();
+
+        tokenCredential =  TestUtil.getTestTokenCredential(interceptorManager);
+        trc = new TokenRequestContext().addScopes("https://eventgrid.azure.net/.default");
 
         if (interceptorManager.isPlaybackMode()) {
             pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -45,7 +54,7 @@ public class EventGridPublisherImplTests extends EventGridTestBase {
     public void publishEventGridEventsImpl() {
         EventGridPublisherClientImpl egClient = clientBuilder
             .pipeline(pipelineBuilder.policies(
-                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(EVENTGRID_KEY).getKey())))
+                new AddHeadersPolicy(new HttpHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer " + tokenCredential.getTokenSync(trc).getToken())))
                 .build())
             .buildClient();
 
@@ -61,7 +70,7 @@ public class EventGridPublisherImplTests extends EventGridTestBase {
     public void publishCloudEventsImpl() {
         EventGridPublisherClientImpl egClient = clientBuilder
             .pipeline(pipelineBuilder.policies(
-                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(CLOUD_KEY).getKey())))
+                new AddHeadersPolicy(new HttpHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer " + tokenCredential.getTokenSync(trc).getToken())))
                 .build())
             .buildClient();
 
@@ -77,7 +86,7 @@ public class EventGridPublisherImplTests extends EventGridTestBase {
     public void publishCustomEventsImpl() {
         EventGridPublisherClientImpl egClient = clientBuilder
             .pipeline(pipelineBuilder.policies(
-                new AddHeadersPolicy(new HttpHeaders().put("aeg-sas-key", getKey(CUSTOM_KEY).getKey())))
+                new AddHeadersPolicy(new HttpHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer " + tokenCredential.getTokenSync(trc).getToken())))
                 .build())
             .buildClient();
 
