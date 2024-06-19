@@ -1102,74 +1102,74 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
-//            {
-//                "Test read all operation injected with server-generated GONE in first preferred region.",
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60))
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
-//                this.buildServerGeneratedGoneError,
-//                executeReadManyOperation,
-//                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                this.validateResponseHasOperationCancelledException,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ConnectionMode.DIRECT
-//            },
-//            {
-//                "Test read all operation injected with too many requests error in first preferred region.",
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60))
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
-//                this.buildTooManyRequestsError,
-//                executeReadManyOperation,
-//                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                this.validateResponseHasOperationCancelledException,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ConnectionMode.DIRECT
-//            },
-//            {
-//                "Test read all operation injected with read/write session not available error in first preferred region.",
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60))
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
-//                this.buildReadWriteSessionNotAvailableRules,
-//                executeReadManyOperation,
-//                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-//                noRegionSwitchHint,
-//                this.validateResponseHasOperationCancelledException,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ConnectionMode.DIRECT
-//            },
-//            {
-//                "Test read all operation injected with service unavailable error in all regions.",
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-//                    .withHitLimit(11)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions),
-//                this.buildServiceUnavailableError,
-//                executeReadManyOperation,
-//                noEndToEndTimeout,
-//                noRegionSwitchHint,
-//                this.validateResponseHasServiceUnavailableError,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasAllRegions,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ConnectionMode.DIRECT
-//            }
+            {
+                "Test read all operation injected with server-generated GONE in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                this.buildServerGeneratedGoneError,
+                executeReadManyOperation,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ConnectionMode.DIRECT
+            },
+            {
+                "Test read all operation injected with too many requests error in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                this.buildTooManyRequestsError,
+                executeReadManyOperation,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ConnectionMode.DIRECT
+            },
+            {
+                "Test read all operation injected with read/write session not available error in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                this.buildReadWriteSessionNotAvailableRules,
+                executeReadManyOperation,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ConnectionMode.DIRECT
+            },
+            {
+                "Test read all operation injected with service unavailable error in all regions.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withHitLimit(11)
+                    .withFaultInjectionApplicableRegions(this.writeRegions),
+                this.buildServiceUnavailableError,
+                executeReadManyOperation,
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                this.validateResponseHasServiceUnavailableError,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ConnectionMode.DIRECT
+            }
         };
     }
 
