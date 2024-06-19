@@ -37,7 +37,8 @@ public final class AzureBlobFSSource extends CopySource {
     private Object skipHeaderLineCount;
 
     /*
-     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;

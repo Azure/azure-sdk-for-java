@@ -46,7 +46,8 @@ public final class HDInsightLinkedServiceTypeProperties {
     private LinkedServiceReference hcatalogLinkedServiceName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -58,7 +59,8 @@ public final class HDInsightLinkedServiceTypeProperties {
     private Object isEspEnabled;
 
     /*
-     * Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type: string (or Expression with resultType string).
+     * Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "fileSystem")
     private Object fileSystem;

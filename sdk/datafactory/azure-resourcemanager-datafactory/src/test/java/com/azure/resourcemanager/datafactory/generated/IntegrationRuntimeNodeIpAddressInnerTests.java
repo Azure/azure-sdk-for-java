@@ -11,7 +11,7 @@ public final class IntegrationRuntimeNodeIpAddressInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeNodeIpAddressInner model
-            = BinaryData.fromString("{\"ipAddress\":\"mv\"}").toObject(IntegrationRuntimeNodeIpAddressInner.class);
+            = BinaryData.fromString("{\"ipAddress\":\"nr\"}").toObject(IntegrationRuntimeNodeIpAddressInner.class);
     }
 
     @org.junit.jupiter.api.Test
