@@ -298,6 +298,10 @@ public class DataLakeFileSystemAsyncClient {
         return azureDataLakeStorage.getHttpPipeline();
     }
 
+    BlobContainerAsyncClient getBlobContainerAsyncClient() {
+        return blobContainerAsyncClient;
+    }
+
     /**
      * Creates a new file system within a storage account. If a file system with the same name already exists, the
      * operation fails. For more information, see the

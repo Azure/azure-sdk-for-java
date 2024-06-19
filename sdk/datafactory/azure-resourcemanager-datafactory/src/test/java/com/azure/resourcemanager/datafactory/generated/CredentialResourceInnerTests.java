@@ -16,21 +16,21 @@ public final class CredentialResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CredentialResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"jlrxwtoaukhfk\",\"description\":\"isizm\",\"annotations\":[\"datadsxjwuivedw\"],\"\":{\"mguaml\":\"dataeewxeiqbpsmg\"}},\"name\":\"l\",\"type\":\"msplzgaufcshhvn\",\"etag\":\"gnxkympqan\",\"id\":\"jk\"}")
+            "{\"properties\":{\"type\":\"Credential\",\"description\":\"uzk\",\"annotations\":[\"datazolxrzvhqjwtr\",\"datatgvgzp\",\"datarrkolawjmjs\"],\"\":{\"tlhguynuchl\":\"dataokcdxfzzzwyjaf\",\"whmozusgzvlnsnnj\":\"datamltx\",\"rag\":\"datafpafolpymwamxq\",\"vl\":\"datagdphtvdula\"}},\"name\":\"c\",\"type\":\"srlzknmzlan\",\"etag\":\"pdwvnphcn\",\"id\":\"tpjhm\"}")
             .toObject(CredentialResourceInner.class);
-        Assertions.assertEquals("jk", model.id());
-        Assertions.assertEquals("isizm", model.properties().description());
+        Assertions.assertEquals("tpjhm", model.id());
+        Assertions.assertEquals("uzk", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CredentialResourceInner model = new CredentialResourceInner().withId("jk")
-            .withProperties(new Credential().withDescription("isizm")
-                .withAnnotations(Arrays.asList("datadsxjwuivedw"))
-                .withAdditionalProperties(mapOf("type", "jlrxwtoaukhfk")));
+        CredentialResourceInner model = new CredentialResourceInner().withId("tpjhm")
+            .withProperties(new Credential().withDescription("uzk")
+                .withAnnotations(Arrays.asList("datazolxrzvhqjwtr", "datatgvgzp", "datarrkolawjmjs"))
+                .withAdditionalProperties(mapOf("type", "Credential")));
         model = BinaryData.fromObject(model).toObject(CredentialResourceInner.class);
-        Assertions.assertEquals("jk", model.id());
-        Assertions.assertEquals("isizm", model.properties().description());
+        Assertions.assertEquals("tpjhm", model.id());
+        Assertions.assertEquals("uzk", model.properties().description());
     }
 
     // Use "Map.of" if available

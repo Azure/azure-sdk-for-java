@@ -12,14 +12,14 @@ public final class DeleteDataFlowDebugSessionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeleteDataFlowDebugSessionRequest model
-            = BinaryData.fromString("{\"sessionId\":\"oucs\"}").toObject(DeleteDataFlowDebugSessionRequest.class);
-        Assertions.assertEquals("oucs", model.sessionId());
+            = BinaryData.fromString("{\"sessionId\":\"pnwjfujq\"}").toObject(DeleteDataFlowDebugSessionRequest.class);
+        Assertions.assertEquals("pnwjfujq", model.sessionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeleteDataFlowDebugSessionRequest model = new DeleteDataFlowDebugSessionRequest().withSessionId("oucs");
+        DeleteDataFlowDebugSessionRequest model = new DeleteDataFlowDebugSessionRequest().withSessionId("pnwjfujq");
         model = BinaryData.fromObject(model).toObject(DeleteDataFlowDebugSessionRequest.class);
-        Assertions.assertEquals("oucs", model.sessionId());
+        Assertions.assertEquals("pnwjfujq", model.sessionId());
     }
 }

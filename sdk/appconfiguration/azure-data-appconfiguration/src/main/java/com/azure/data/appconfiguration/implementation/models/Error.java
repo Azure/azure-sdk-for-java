@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * Azure App Configuration error object.
- */
+/** Azure App Configuration error object. */
 @Fluent
 public final class Error implements JsonSerializable<Error> {
     /*
@@ -41,15 +39,12 @@ public final class Error implements JsonSerializable<Error> {
      */
     private Integer status;
 
-    /**
-     * Creates an instance of Error class.
-     */
-    public Error() {
-    }
+    /** Creates an instance of Error class. */
+    public Error() {}
 
     /**
      * Get the type property: The type of the error.
-     * 
+     *
      * @return the type value.
      */
     public String getType() {
@@ -58,7 +53,7 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Set the type property: The type of the error.
-     * 
+     *
      * @param type the type value to set.
      * @return the Error object itself.
      */
@@ -69,7 +64,7 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Get the title property: A brief summary of the error.
-     * 
+     *
      * @return the title value.
      */
     public String getTitle() {
@@ -78,7 +73,7 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Set the title property: A brief summary of the error.
-     * 
+     *
      * @param title the title value to set.
      * @return the Error object itself.
      */
@@ -89,7 +84,7 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Get the name property: The name of the parameter that resulted in the error.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -98,7 +93,7 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Set the name property: The name of the parameter that resulted in the error.
-     * 
+     *
      * @param name the name value to set.
      * @return the Error object itself.
      */
@@ -109,7 +104,7 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Get the detail property: A detailed description of the error.
-     * 
+     *
      * @return the detail value.
      */
     public String getDetail() {
@@ -118,7 +113,7 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Set the detail property: A detailed description of the error.
-     * 
+     *
      * @param detail the detail value to set.
      * @return the Error object itself.
      */
@@ -129,7 +124,7 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Get the status property: The HTTP status code that the error maps to.
-     * 
+     *
      * @return the status value.
      */
     public Integer getStatus() {
@@ -138,7 +133,7 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Set the status property: The HTTP status code that the error maps to.
-     * 
+     *
      * @param status the status value to set.
      * @return the Error object itself.
      */
@@ -147,9 +142,6 @@ public final class Error implements JsonSerializable<Error> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -163,35 +155,36 @@ public final class Error implements JsonSerializable<Error> {
 
     /**
      * Reads an instance of Error from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
+     *     JSON null.
      * @throws IOException If an error occurs while reading the Error.
      */
     public static Error fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Error deserializedError = new Error();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    Error deserializedError = new Error();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("type".equals(fieldName)) {
-                    deserializedError.type = reader.getString();
-                } else if ("title".equals(fieldName)) {
-                    deserializedError.title = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedError.name = reader.getString();
-                } else if ("detail".equals(fieldName)) {
-                    deserializedError.detail = reader.getString();
-                } else if ("status".equals(fieldName)) {
-                    deserializedError.status = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("type".equals(fieldName)) {
+                            deserializedError.type = reader.getString();
+                        } else if ("title".equals(fieldName)) {
+                            deserializedError.title = reader.getString();
+                        } else if ("name".equals(fieldName)) {
+                            deserializedError.name = reader.getString();
+                        } else if ("detail".equals(fieldName)) {
+                            deserializedError.detail = reader.getString();
+                        } else if ("status".equals(fieldName)) {
+                            deserializedError.status = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedError;
-        });
+                    return deserializedError;
+                });
     }
 }

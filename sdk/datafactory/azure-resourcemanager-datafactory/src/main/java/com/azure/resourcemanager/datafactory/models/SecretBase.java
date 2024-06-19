@@ -26,13 +26,12 @@ public class SecretBase {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "SecretBase";
 
     /**
      * Creates an instance of SecretBase class.
      */
     public SecretBase() {
-        this.type = "SecretBase";
     }
 
     /**
