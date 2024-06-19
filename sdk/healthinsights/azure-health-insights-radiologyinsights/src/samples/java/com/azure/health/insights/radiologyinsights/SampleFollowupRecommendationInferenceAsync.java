@@ -100,7 +100,7 @@ public class SampleFollowupRecommendationInferenceAsync {
         }
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
-        PollerFlux<RadiologyInsightsJob, RadiologyInsightsJob> asyncPoller = radiologyInsightsAsyncClient
+        PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
         
         CountDownLatch latch = new CountDownLatch(1);
@@ -379,7 +379,7 @@ public class SampleFollowupRecommendationInferenceAsync {
         return inferenceOptions;
     }
 
-    private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsJob>> isComplete = response -> {
+    private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsInferenceResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
             && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
     };

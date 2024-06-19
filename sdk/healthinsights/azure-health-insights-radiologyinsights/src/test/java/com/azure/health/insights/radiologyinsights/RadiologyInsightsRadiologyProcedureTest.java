@@ -12,11 +12,10 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Extension;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyProcedureInference;
 
@@ -59,10 +58,10 @@ public class RadiologyInsightsRadiologyProcedureTest extends RadiologyInsightsCl
         
         try {
             testRadiologyInsightsWithResponse(request -> {
-                RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
+            	RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
                         getClient().beginInferRadiologyInsights("job1715007662332", request)).getFinalResult();
 
-                List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
+                List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());
                 
                 RadiologyInsightsPatientResult patient = patients.get(0);
@@ -84,11 +83,5 @@ public class RadiologyInsightsRadiologyProcedureTest extends RadiologyInsightsCl
             return;
         }
     }
-
-    private void assertFhirR4Coding(FhirR4Coding fhirR4Coding, String code, String display, String system) {
-        assertEquals(code, fhirR4Coding.getCode());
-        assertEquals(display, fhirR4Coding.getDisplay());
-        assertEquals(system, fhirR4Coding.getSystem());
-    }
-    
+   
 }
