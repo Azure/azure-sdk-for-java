@@ -164,7 +164,7 @@ public final class ImageAnalysisClientImpl {
         Mono<Response<BinaryData>> analyzeFromImageData(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @QueryParam("features") String visualFeatures, @HeaderParam("accept") String accept,
-            @BodyParam("application/octet-stream") BinaryData imageContent, RequestOptions requestOptions,
+            @BodyParam("application/octet-stream") BinaryData imageData, RequestOptions requestOptions,
             Context context);
 
         @Post("/imageanalysis:analyze")
@@ -176,7 +176,7 @@ public final class ImageAnalysisClientImpl {
         Response<BinaryData> analyzeFromImageDataSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @QueryParam("features") String visualFeatures, @HeaderParam("accept") String accept,
-            @BodyParam("application/octet-stream") BinaryData imageContent, RequestOptions requestOptions,
+            @BodyParam("application/octet-stream") BinaryData imageData, RequestOptions requestOptions,
             Context context);
 
         @Post("/imageanalysis:analyze")
@@ -188,7 +188,7 @@ public final class ImageAnalysisClientImpl {
         Mono<Response<BinaryData>> analyzeFromUrl(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @QueryParam("features") String visualFeatures, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData imageContent, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData imageUrl, RequestOptions requestOptions, Context context);
 
         @Post("/imageanalysis:analyze")
         @ExpectedResponses({ 200 })
@@ -199,7 +199,7 @@ public final class ImageAnalysisClientImpl {
         Response<BinaryData> analyzeFromUrlSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @QueryParam("features") String visualFeatures, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData imageContent, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData imageUrl, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -330,7 +330,7 @@ public final class ImageAnalysisClientImpl {
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
-     * @param imageContent The image to be analyzed.
+     * @param imageData The image to be analyzed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -341,7 +341,7 @@ public final class ImageAnalysisClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> analyzeFromImageDataWithResponseAsync(List<String> visualFeatures,
-        BinaryData imageContent, RequestOptions requestOptions) {
+        BinaryData imageData, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
         String visualFeaturesConverted = visualFeatures.stream()
@@ -349,7 +349,7 @@ public final class ImageAnalysisClientImpl {
             .collect(Collectors.joining(","));
         return FluxUtil.withContext(
             context -> service.analyzeFromImageData(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, visualFeaturesConverted, accept, imageContent, requestOptions, context));
+                contentType, visualFeaturesConverted, accept, imageData, requestOptions, context));
     }
 
     /**
@@ -480,7 +480,7 @@ public final class ImageAnalysisClientImpl {
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
-     * @param imageContent The image to be analyzed.
+     * @param imageData The image to be analyzed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -489,7 +489,7 @@ public final class ImageAnalysisClientImpl {
      * @return represents the outcome of an Image Analysis operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> analyzeFromImageDataWithResponse(List<String> visualFeatures, BinaryData imageContent,
+    public Response<BinaryData> analyzeFromImageDataWithResponse(List<String> visualFeatures, BinaryData imageData,
         RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
@@ -497,7 +497,7 @@ public final class ImageAnalysisClientImpl {
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.joining(","));
         return service.analyzeFromImageDataSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            visualFeaturesConverted, accept, imageContent, requestOptions, Context.NONE);
+            visualFeaturesConverted, accept, imageData, requestOptions, Context.NONE);
     }
 
     /**
@@ -630,7 +630,7 @@ public final class ImageAnalysisClientImpl {
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
-     * @param imageContent The image to be analyzed.
+     * @param imageUrl The image to be analyzed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -640,8 +640,8 @@ public final class ImageAnalysisClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> analyzeFromUrlWithResponseAsync(List<String> visualFeatures,
-        BinaryData imageContent, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> analyzeFromUrlWithResponseAsync(List<String> visualFeatures, BinaryData imageUrl,
+        RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
         String visualFeaturesConverted = visualFeatures.stream()
@@ -649,7 +649,7 @@ public final class ImageAnalysisClientImpl {
             .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeFromUrl(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                contentType, visualFeaturesConverted, accept, imageContent, requestOptions, context));
+                contentType, visualFeaturesConverted, accept, imageUrl, requestOptions, context));
     }
 
     /**
@@ -782,7 +782,7 @@ public final class ImageAnalysisClientImpl {
      * @param visualFeatures A list of visual features to analyze.
      * Seven visual features are supported: Caption, DenseCaptions, Read (OCR), Tags, Objects, SmartCrops, and People.
      * At least one visual feature must be specified.
-     * @param imageContent The image to be analyzed.
+     * @param imageUrl The image to be analyzed.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -791,7 +791,7 @@ public final class ImageAnalysisClientImpl {
      * @return represents the outcome of an Image Analysis operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> analyzeFromUrlWithResponse(List<String> visualFeatures, BinaryData imageContent,
+    public Response<BinaryData> analyzeFromUrlWithResponse(List<String> visualFeatures, BinaryData imageUrl,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
@@ -799,6 +799,6 @@ public final class ImageAnalysisClientImpl {
             .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.joining(","));
         return service.analyzeFromUrlSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
-            visualFeaturesConverted, accept, imageContent, requestOptions, Context.NONE);
+            visualFeaturesConverted, accept, imageUrl, requestOptions, Context.NONE);
     }
 }

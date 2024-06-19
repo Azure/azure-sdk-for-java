@@ -4,82 +4,88 @@
 
 package com.azure.ai.vision.imageanalysis.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * The visual features supported by the Image Analysis service.
  */
-public enum VisualFeatures {
+public final class VisualFeatures extends ExpandableStringEnum<VisualFeatures> {
     /**
      * Extract content tags for thousands of recognizable objects, living beings, scenery, and actions that appear in
      * the image.
      */
-    TAGS("tags"),
+    @Generated
+    public static final VisualFeatures TAGS = fromString("tags");
 
     /**
      * Generate a human-readable caption sentence that describes the content of the image.
      */
-    CAPTION("caption"),
+    @Generated
+    public static final VisualFeatures CAPTION = fromString("caption");
 
     /**
      * Generate human-readable caption sentences for up to 10 different regions in the image, including one for the
      * whole image.
      */
-    DENSE_CAPTIONS("denseCaptions"),
+    @Generated
+    public static final VisualFeatures DENSE_CAPTIONS = fromString("denseCaptions");
 
     /**
      * Object detection. This is similar to tags, but focused on detecting physical objects in the image and returning
      * their location.
      */
-    OBJECTS("objects"),
+    @Generated
+    public static final VisualFeatures OBJECTS = fromString("objects");
 
     /**
      * Extract printed or handwritten text from the image. Also known as Optical Character Recognition (OCR).
      */
-    READ("read"),
+    @Generated
+    public static final VisualFeatures READ = fromString("read");
 
     /**
      * Find representative sub-regions of the image for thumbnail generation, at desired aspect ratios, with priority
      * given to detected faces.
      */
-    SMART_CROPS("smartCrops"),
+    @Generated
+    public static final VisualFeatures SMART_CROPS = fromString("smartCrops");
 
     /**
      * Detect people in the image and return their location.
      */
-    PEOPLE("people");
+    @Generated
+    public static final VisualFeatures PEOPLE = fromString("people");
 
     /**
-     * The actual serialized value for a VisualFeatures instance.
-     */
-    private final String value;
-
-    VisualFeatures(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a VisualFeatures instance.
+     * Creates a new instance of VisualFeatures value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed VisualFeatures object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static VisualFeatures fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        VisualFeatures[] items = VisualFeatures.values();
-        for (VisualFeatures item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public VisualFeatures() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a VisualFeatures from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding VisualFeatures.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static VisualFeatures fromString(String name) {
+        return fromString(name, VisualFeatures.class);
+    }
+
+    /**
+     * Gets known VisualFeatures values.
+     * 
+     * @return known VisualFeatures values.
+     */
+    @Generated
+    public static Collection<VisualFeatures> values() {
+        return values(VisualFeatures.class);
     }
 }

@@ -10,12 +10,16 @@ package com.azure.ai.vision.imageanalysis.generated;
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.time.OffsetDateTime;
+import reactor.core.publisher.Mono;
 
 class ImageAnalysisClientTestBase extends TestProxyTestBase {
     protected ImageAnalysisClient imageAnalysisClient;
@@ -27,9 +31,13 @@ class ImageAnalysisClientTestBase extends TestProxyTestBase {
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            imageAnalysisClientbuilder.httpClient(interceptorManager.getPlaybackClient());
+            imageAnalysisClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            imageAnalysisClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
+            imageAnalysisClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            imageAnalysisClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         imageAnalysisClient = imageAnalysisClientbuilder.buildClient();
 

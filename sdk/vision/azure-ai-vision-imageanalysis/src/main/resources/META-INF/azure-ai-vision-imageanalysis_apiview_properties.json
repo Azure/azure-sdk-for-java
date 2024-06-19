@@ -1,5 +1,5 @@
 {
-  "flavor": "Azure", 
+  "flavor": "azure", 
   "CrossLanguageDefinitionId": {
     "com.azure.ai.vision.imageanalysis.ImageAnalysisAsyncClient": "ImageAnalysis.ImageAnalysisClient",
     "com.azure.ai.vision.imageanalysis.ImageAnalysisAsyncClient.analyzeFromImageData": "ImageAnalysis.analyzeFromImageData",
