@@ -18,19 +18,22 @@ import java.util.Map;
 @Fluent
 public final class AzureDatabricksLinkedServiceTypeProperties {
     /*
-     * <REGION>.azuredatabricks.net, domain name of your Databricks deployment. Type: string (or Expression with resultType string).
+     * <REGION>.azuredatabricks.net, domain name of your Databricks deployment. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "domain", required = true)
     private Object domain;
 
     /*
-     * Access token for databricks REST API. Refer to https://docs.azuredatabricks.net/api/latest/authentication.html. Type: string (or Expression with resultType string).
+     * Access token for databricks REST API. Refer to https://docs.azuredatabricks.net/api/latest/authentication.html.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "accessToken")
     private SecretBase accessToken;
 
     /*
-     * Required to specify MSI, if using Workspace resource id for databricks REST API. Type: string (or Expression with resultType string).
+     * Required to specify MSI, if using Workspace resource id for databricks REST API. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "authentication")
     private Object authentication;
@@ -42,31 +45,41 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
     private Object workspaceResourceId;
 
     /*
-     * The id of an existing interactive cluster that will be used for all runs of this activity. Type: string (or Expression with resultType string).
+     * The id of an existing interactive cluster that will be used for all runs of this activity. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "existingClusterId")
     private Object existingClusterId;
 
     /*
-     * The id of an existing instance pool that will be used for all runs of this activity. Type: string (or Expression with resultType string).
+     * The id of an existing instance pool that will be used for all runs of this activity. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "instancePoolId")
     private Object instancePoolId;
 
     /*
-     * If not using an existing interactive cluster, this specifies the Spark version of a new job cluster or instance pool nodes created for each run of this activity. Required if instancePoolId is specified. Type: string (or Expression with resultType string).
+     * If not using an existing interactive cluster, this specifies the Spark version of a new job cluster or instance
+     * pool nodes created for each run of this activity. Required if instancePoolId is specified. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "newClusterVersion")
     private Object newClusterVersion;
 
     /*
-     * If not using an existing interactive cluster, this specifies the number of worker nodes to use for the new job cluster or instance pool. For new job clusters, this a string-formatted Int32, like '1' means numOfWorker is 1 or '1:10' means auto-scale from 1 (min) to 10 (max). For instance pools, this is a string-formatted Int32, and can only specify a fixed number of worker nodes, such as '2'. Required if newClusterVersion is specified. Type: string (or Expression with resultType string).
+     * If not using an existing interactive cluster, this specifies the number of worker nodes to use for the new job
+     * cluster or instance pool. For new job clusters, this a string-formatted Int32, like '1' means numOfWorker is 1 or
+     * '1:10' means auto-scale from 1 (min) to 10 (max). For instance pools, this is a string-formatted Int32, and can
+     * only specify a fixed number of worker nodes, such as '2'. Required if newClusterVersion is specified. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "newClusterNumOfWorker")
     private Object newClusterNumOfWorker;
 
     /*
-     * The node type of the new job cluster. This property is required if newClusterVersion is specified and instancePoolId is not specified. If instancePoolId is specified, this property is ignored. Type: string (or Expression with resultType string).
+     * The node type of the new job cluster. This property is required if newClusterVersion is specified and
+     * instancePoolId is not specified. If instancePoolId is specified, this property is ignored. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "newClusterNodeType")
     private Object newClusterNodeType;
@@ -93,37 +106,43 @@ public final class AzureDatabricksLinkedServiceTypeProperties {
     private Map<String, Object> newClusterCustomTags;
 
     /*
-     * Specify a location to deliver Spark driver, worker, and event logs. Type: string (or Expression with resultType string).
+     * Specify a location to deliver Spark driver, worker, and event logs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "newClusterLogDestination")
     private Object newClusterLogDestination;
 
     /*
-     * The driver node type for the new job cluster. This property is ignored in instance pool configurations. Type: string (or Expression with resultType string).
+     * The driver node type for the new job cluster. This property is ignored in instance pool configurations. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "newClusterDriverNodeType")
     private Object newClusterDriverNodeType;
 
     /*
-     * User-defined initialization scripts for the new cluster. Type: array of strings (or Expression with resultType array of strings).
+     * User-defined initialization scripts for the new cluster. Type: array of strings (or Expression with resultType
+     * array of strings).
      */
     @JsonProperty(value = "newClusterInitScripts")
     private Object newClusterInitScripts;
 
     /*
-     * Enable the elastic disk on the new cluster. This property is now ignored, and takes the default elastic disk behavior in Databricks (elastic disks are always enabled). Type: boolean (or Expression with resultType boolean).
+     * Enable the elastic disk on the new cluster. This property is now ignored, and takes the default elastic disk
+     * behavior in Databricks (elastic disks are always enabled). Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "newClusterEnableElasticDisk")
     private Object newClusterEnableElasticDisk;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
-     * The policy id for limiting the ability to configure clusters based on a user defined set of rules. Type: string (or Expression with resultType string).
+     * The policy id for limiting the ability to configure clusters based on a user defined set of rules. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "policyId")
     private Object policyId;

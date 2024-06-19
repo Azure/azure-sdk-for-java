@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 public final class DataFlowDebugSessionsExecuteCommandMockTests {
     @Test
     public void testExecuteCommand() throws Exception {
-        String responseStr = "{\"status\":\"fvx\",\"data\":\"cribmslcgntxdkq\"}";
+        String responseStr = "{\"status\":\"klnrzoafxoyddush\",\"data\":\"jhh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,16 +34,16 @@ public final class DataFlowDebugSessionsExecuteCommandMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataFlowDebugCommandResponse response = manager.dataFlowDebugSessions()
-            .executeCommand("rzqkwmmci", "qejbuhspqysdi",
-                new DataFlowDebugCommandRequest().withSessionId("cbuvhdpi")
-                    .withCommand(DataFlowDebugCommandType.EXECUTE_PREVIEW_QUERY)
-                    .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("vcrrenrbums")
-                        .withRowLimits(1574150737)
-                        .withColumns(Arrays.asList("kyaldb", "skfstdt", "hhrvsgutugjsjmv", "asisnfwpnikr"))
-                        .withExpression("lykmgjf")),
+            .executeCommand("psbdcheydctsqxw", "sszdw",
+                new DataFlowDebugCommandRequest().withSessionId("gbzmcprtanag")
+                    .withCommand(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY)
+                    .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("hwkaatjssebyd")
+                        .withRowLimits(2122847597)
+                        .withColumns(Arrays.asList("lpiccx"))
+                        .withExpression("twstqgc")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fvx", response.status());
-        Assertions.assertEquals("cribmslcgntxdkq", response.data());
+        Assertions.assertEquals("klnrzoafxoyddush", response.status());
+        Assertions.assertEquals("jhh", response.data());
     }
 }

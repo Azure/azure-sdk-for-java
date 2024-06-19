@@ -13,6 +13,13 @@
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
     },
+    "azsdkPipelineSubnetList": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Subnets used by azure pipeline VMs. Required for SQL resource access."
+      }
+    },
     "serverName": {
       "type": "string",
       "defaultValue": "[concat(parameters('baseName'),'-passwordless-mysql-singleserver-it')]",
@@ -202,6 +209,22 @@
         "startIpAddress": "0.0.0.0",
         "endIpAddress": "255.255.255.255"
       }
+    },
+    {
+      "copy": {
+        "name": "serverName_vnetrule",
+        "count": "[length(parameters('azsdkPipelineSubnetList'))]"
+      },
+      "condition": "[variables('notSkipCondition')]",
+      "type": "Microsoft.DBforMySQL/servers/virtualNetworkRules",
+      "apiVersion": "2017-12-01",
+      "name": "[format('{0}/{1}-{2}', parameters('serverName'), 'vnetrule', copyIndex())]",
+      "properties": {
+        "virtualNetworkSubnetId": "[parameters('azsdkPipelineSubnetList')[copyIndex()]]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforMySQL/servers', parameters('serverName'))]"
+      ]
     },
     {
       "condition": "[variables('notSkipCondition')]",

@@ -122,6 +122,31 @@ public final class LakeHouseTableDataset extends Dataset {
     }
 
     /**
+     * Get the schema property: The schema name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the schema value.
+     */
+    public Object schemaTypePropertiesSchema() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().schema();
+    }
+
+    /**
+     * Set the schema property: The schema name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param schema the schema value to set.
+     * @return the LakeHouseTableDataset object itself.
+     */
+    public LakeHouseTableDataset withSchemaTypePropertiesSchema(Object schema) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new LakeHouseTableDatasetTypeProperties();
+        }
+        this.innerTypeProperties().withSchema(schema);
+        return this;
+    }
+
+    /**
      * Get the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType
      * string).
      * 

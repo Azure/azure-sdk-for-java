@@ -115,10 +115,12 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     }
 
     private static Stream<Arguments> createShareWithArgsSupplier() {
-        return Stream.of(Arguments.of(null, null),
+        return Stream.of(
+            Arguments.of(null, null),
             Arguments.of(null, 1),
             Arguments.of(testMetadata, null),
-            Arguments.of(testMetadata, 1));
+            Arguments.of(testMetadata, 1),
+            Arguments.of(testMetadata, 6000));
     }
 
     @ParameterizedTest
@@ -132,8 +134,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     private static Stream<Arguments> createShareWithInvalidArgsSupplier() {
         return Stream.of(
             Arguments.of(Collections.singletonMap("", "value"), 1, 400, ShareErrorCode.EMPTY_METADATA_KEY),
-            Arguments.of(Collections.singletonMap("metadata!", "value"), 1, 400, ShareErrorCode.INVALID_METADATA),
-            Arguments.of(testMetadata, 6000, 400, ShareErrorCode.INVALID_HEADER_VALUE));
+            Arguments.of(Collections.singletonMap("metadata!", "value"), 1, 400, ShareErrorCode.INVALID_METADATA));
     }
 
     @Test

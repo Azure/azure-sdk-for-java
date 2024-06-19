@@ -6,19 +6,33 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeStatus;
-import com.azure.resourcemanager.datafactory.models.ManagedIntegrationRuntimeStatus;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class IntegrationRuntimeStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeStatus model = BinaryData.fromString(
-            "{\"type\":\"Managed\",\"dataFactoryName\":\"skrdqmhjj\",\"state\":\"AccessDenied\",\"\":{\"xuutkncwscwsv\":\"datawky\",\"micykvceoveilo\":\"dataxotogtwrupqsxv\"}}")
+            "{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"bjtazqugxywpmu\",\"state\":\"Started\",\"\":{\"dsuyonobgla\":\"datawfqkquj\",\"tcc\":\"datacq\",\"udxytlmoyrx\":\"datag\",\"qj\":\"datawfudwpzntxhdzhl\"}}")
             .toObject(IntegrationRuntimeStatus.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeStatus model = new ManagedIntegrationRuntimeStatus();
+        IntegrationRuntimeStatus model = new IntegrationRuntimeStatus().withAdditionalProperties(
+            mapOf("dataFactoryName", "bjtazqugxywpmu", "state", "Started", "type", "IntegrationRuntimeStatus"));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeStatus.class);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
