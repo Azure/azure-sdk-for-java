@@ -749,21 +749,19 @@ final class WebPubSubAsyncClient implements Closeable {
 
                 // reconnect
                 handleNoRecovery().subscribe(null,
-                    thr -> logger.atWarning().log("Failed to auto reconnect session: " + thr.getMessage()));
+                    thr -> logger.atWarning().log("Failed to auto reconnect session.", thr));
             } else {
                 // connection not close, attempt recover
                 handleRecovery(connectionId, reconnectionToken).timeout(RECOVER_TIMEOUT, Mono.defer(() -> {
-                        // fallback to reconnect
+                    // fallback to reconnect
 
-                        // client should be RECOVERING, after timeout
-                        clientState.changeState(WebPubSubClientState.DISCONNECTED);
-                        // connection close, send DisconnectedEvent
-                        handleConnectionClose();
+                    // client should be RECOVERING, after timeout
+                    clientState.changeState(WebPubSubClientState.DISCONNECTED);
+                    // connection close, send DisconnectedEvent
+                    handleConnectionClose();
 
-                        return handleNoRecovery();
-                    }))
-                    .subscribe(null,
-                        thr -> logger.atWarning().log("Failed to recover or reconnect session: " + thr.getMessage()));
+                    return handleNoRecovery();
+                })).subscribe(null, thr -> logger.atWarning().log("Failed to recover or reconnect session.", thr));
             }
         }
     }
@@ -862,10 +860,10 @@ final class WebPubSubAsyncClient implements Closeable {
                     } else {
                         return Mono.empty();
                     }
-                }).then(clientAccessUrlProvider.flatMap(url -> Mono.<Void>fromRunnable(() ->
-                    this.webSocketSession = webSocketClient.connectToServer(clientEndpointConfiguration, url,
+                }).then(clientAccessUrlProvider.flatMap(url -> Mono.<Void>fromRunnable(
+                    () -> this.webSocketSession = webSocketClient.connectToServer(clientEndpointConfiguration, url,
                         loggerReference, this::handleMessage, this::handleSessionOpen, this::handleSessionClose))
-                    .subscribeOn(Schedulers.boundedElastic())))
+                        .subscribeOn(Schedulers.boundedElastic())))
                     .retryWhen(RECONNECT_RETRY_SPEC)
                     .doOnError(error -> handleClientStop()); // stopped by user
             } else {

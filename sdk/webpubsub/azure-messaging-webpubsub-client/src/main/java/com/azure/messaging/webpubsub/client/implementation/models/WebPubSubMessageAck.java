@@ -3,7 +3,7 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
-public abstract class WebPubSubMessageAck extends WebPubSubMessage {
+public class WebPubSubMessageAck extends WebPubSubMessage {
     private Long ackId;
 
     public Long getAckId() {

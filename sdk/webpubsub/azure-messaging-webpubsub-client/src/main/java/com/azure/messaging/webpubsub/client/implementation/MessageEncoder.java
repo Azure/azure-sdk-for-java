@@ -4,23 +4,20 @@
 package com.azure.messaging.webpubsub.client.implementation;
 
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import com.azure.messaging.webpubsub.client.implementation.models.SendEventMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.SendToGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Base64;
 import java.util.function.Consumer;
 
 public final class MessageEncoder {
-
-    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
-
     public String encode(WebPubSubMessage object) {
         if (object instanceof SendToGroupMessage) {
             updateDataForType((SendToGroupMessage) object);
@@ -28,8 +25,10 @@ public final class MessageEncoder {
             updateDataForType((SendEventMessage) object);
         }
 
-        try {
-            return SERIALIZER_ADAPTER.serialize(object, SerializerEncoding.JSON);
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            object.toJson(writer).flush();
+            return outputStream.toString();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

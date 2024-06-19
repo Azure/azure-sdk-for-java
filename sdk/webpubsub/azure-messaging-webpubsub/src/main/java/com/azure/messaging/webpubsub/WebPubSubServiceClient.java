@@ -16,13 +16,14 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
 import com.azure.messaging.webpubsub.implementation.WebPubSubUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
+
+import static com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient.configureClientAccessTokenRequestOptions;
 
 /** Initializes a new instance of the synchronous AzureWebPubSubServiceRestAPI type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class)
@@ -54,26 +55,9 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubClientAccessToken getClientAccessToken(GetClientAccessTokenOptions options) {
         if (this.keyCredential == null) {
-            RequestOptions requestOptions = new RequestOptions();
-            if (options.getUserId() != null) {
-                requestOptions.addQueryParam("userId", options.getUserId());
-            }
-            if (options.getExpiresAfter() != null) {
-                requestOptions.addQueryParam("minutesToExpire", String.valueOf(options.getExpiresAfter().toMinutes()));
-            }
-            if (!CoreUtils.isNullOrEmpty(options.getRoles())) {
-                options.getRoles().stream().forEach(roleName -> requestOptions.addQueryParam("role", roleName));
-            }
-            if (!CoreUtils.isNullOrEmpty(options.getGroups())) {
-                options.getGroups().stream().forEach(groupName -> requestOptions.addQueryParam("group", groupName));
-            }
-            return this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions)
-                .map(Response::getValue)
-                .map(binaryData -> {
-                    String token = WebPubSubUtil.getToken(binaryData);
-                    return WebPubSubUtil.createToken(token, endpoint, hub);
-                })
-                .block();
+            Response<BinaryData> response = serviceClient.generateClientTokenWithResponse(hub,
+                configureClientAccessTokenRequestOptions(options));
+            return WebPubSubUtil.createToken(WebPubSubUtil.getToken(response.getValue()), endpoint, hub);
         }
         final String audience = endpoint + (endpoint.endsWith("/") ? "" : "/") + "client/hubs/" + hub;
         final String token = WebPubSubAuthenticationPolicy.getAuthenticationToken(audience, options, keyCredential);

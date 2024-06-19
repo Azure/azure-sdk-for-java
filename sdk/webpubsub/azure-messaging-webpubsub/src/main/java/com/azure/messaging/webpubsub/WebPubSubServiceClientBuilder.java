@@ -34,7 +34,7 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.webpubsub.implementation.AzureWebPubSubServiceRestApiImpl;
+import com.azure.messaging.webpubsub.implementation.WebPubSubServiceClientImpl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -409,7 +409,7 @@ public final class WebPubSubServiceClientBuilder implements
     }
 
 
-    private AzureWebPubSubServiceRestApiImpl buildInnerClient() {
+    private WebPubSubServiceClientImpl buildInnerClient() {
         if (hub == null || hub.isEmpty()) {
             logger.logThrowableAsError(
                 new IllegalStateException("hub is not valid - it must be non-null and non-empty."));
@@ -452,7 +452,7 @@ public final class WebPubSubServiceClientBuilder implements
 
 
         if (pipeline != null) {
-            return new AzureWebPubSubServiceRestApiImpl(pipeline, endpoint, serviceVersion);
+            return new WebPubSubServiceClientImpl(pipeline, endpoint, serviceVersion);
         }
 
         // Global Env configuration store
@@ -499,7 +499,7 @@ public final class WebPubSubServiceClientBuilder implements
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-        return new AzureWebPubSubServiceRestApiImpl(buildPipeline, endpoint, serviceVersion);
+        return new WebPubSubServiceClientImpl(buildPipeline, endpoint, serviceVersion);
     }
 
 

@@ -37,6 +37,7 @@ import static java.time.LocalDateTime.now;
  */
 public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(WebPubSubAuthenticationPolicy.class);
+    private static final Duration DEFAULT_EXPIRATION = Duration.ofHours(1);
 
     private final AzureKeyCredential credential;
 
@@ -54,10 +55,6 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
      */
     public WebPubSubAuthenticationPolicy(final AzureKeyCredential credential) {
         this.credential = credential;
-    }
-
-    AzureKeyCredential getCredential() {
-        return credential;
     }
 
     /**
@@ -78,7 +75,7 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
     static String getAuthenticationToken(String audienceUrl, GetClientAccessTokenOptions options,
         AzureKeyCredential credential) {
         try {
-            Duration expiresAfter = Duration.ofHours(1);
+            Duration expiresAfter = DEFAULT_EXPIRATION;
             final JWTClaimsSet.Builder claimsBuilder = new JWTClaimsSet.Builder().audience(audienceUrl);
 
             if (options != null) {

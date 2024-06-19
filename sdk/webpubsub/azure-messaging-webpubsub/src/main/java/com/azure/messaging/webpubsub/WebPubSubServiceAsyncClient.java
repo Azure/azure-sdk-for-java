@@ -56,32 +56,35 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
         if (this.keyCredential == null) {
-            RequestOptions requestOptions = new RequestOptions();
-            if (options.getUserId() != null) {
-                requestOptions.addQueryParam("userId", options.getUserId());
-            }
-            if (options.getExpiresAfter() != null) {
-                requestOptions.addQueryParam("minutesToExpire", String.valueOf(options.getExpiresAfter().toMinutes()));
-            }
-            if (!CoreUtils.isNullOrEmpty(options.getRoles())) {
-                options.getRoles().stream().forEach(roleName -> requestOptions.addQueryParam("role", roleName));
-            }
-            if (!CoreUtils.isNullOrEmpty(options.getGroups())) {
-                options.getGroups().stream().forEach(groupName -> requestOptions.addQueryParam("group", groupName));
-            }
-            return this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions)
-                .map(Response::getValue)
-                .map(binaryData -> {
-                    String token = WebPubSubUtil.getToken(binaryData);
+            return this.serviceClient.generateClientTokenWithResponseAsync(hub,
+                    configureClientAccessTokenRequestOptions(options))
+                .map(response -> {
+                    String token = WebPubSubUtil.getToken(response.getValue());
                     return WebPubSubUtil.createToken(token, endpoint, hub);
                 });
         }
-        return Mono.defer(() -> {
+        return Mono.fromCallable(() -> {
             final String audience = endpoint + (endpoint.endsWith("/") ? "" : "/") + "client/hubs/" + hub;
             final String token = WebPubSubAuthenticationPolicy.getAuthenticationToken(audience, options, keyCredential);
-            return Mono.just(WebPubSubUtil.createToken(token, endpoint, hub));
+            return WebPubSubUtil.createToken(token, endpoint, hub);
         });
+    }
 
+    static RequestOptions configureClientAccessTokenRequestOptions(GetClientAccessTokenOptions options) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (options.getUserId() != null) {
+            requestOptions.addQueryParam("userId", options.getUserId());
+        }
+        if (options.getExpiresAfter() != null) {
+            requestOptions.addQueryParam("minutesToExpire", String.valueOf(options.getExpiresAfter().toMinutes()));
+        }
+        if (!CoreUtils.isNullOrEmpty(options.getRoles())) {
+            options.getRoles().stream().forEach(roleName -> requestOptions.addQueryParam("role", roleName));
+        }
+        if (!CoreUtils.isNullOrEmpty(options.getGroups())) {
+            options.getGroups().stream().forEach(groupName -> requestOptions.addQueryParam("group", groupName));
+        }
+        return requestOptions;
     }
 
     /**
