@@ -25,7 +25,7 @@ import java.util.function.Function;
 public class RelationshipsSyncSamples {
     private static DigitalTwinsClient client;
 
-    private static final Function<Integer, String> randomIntegerStringGenerator = (maxLength) -> String.valueOf(
+    private static final Function<Integer, String> RANDOM_INTEGER_STRING_GENERATOR = (maxLength) -> String.valueOf(
         ThreadLocalRandom.current().nextInt((int) Math.pow(10, 8) - 1) + 1);
 
     public static void main(String[] args) {
@@ -53,13 +53,14 @@ public class RelationshipsSyncSamples {
         // out of context for the user when making API calls that accept Ids as parameters.
 
         String sampleBuildingModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.BUILDING_MODEL_ID, client,
-            randomIntegerStringGenerator);
+            RANDOM_INTEGER_STRING_GENERATOR);
         String sampleFloorModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.FLOOR_MODEL_ID, client,
-            randomIntegerStringGenerator);
+            RANDOM_INTEGER_STRING_GENERATOR);
 
         String buildingTwinId = UniqueIdHelper.getUniqueDigitalTwinId("buildingTwinId", client,
-            randomIntegerStringGenerator);
-        String floorTwinId = UniqueIdHelper.getUniqueDigitalTwinId("floorTwinId", client, randomIntegerStringGenerator);
+            RANDOM_INTEGER_STRING_GENERATOR);
+        String floorTwinId = UniqueIdHelper.getUniqueDigitalTwinId("floorTwinId", client,
+            RANDOM_INTEGER_STRING_GENERATOR);
 
         final String buildingFloorRelationshipId = "buildingFloorRelationshipId";
 

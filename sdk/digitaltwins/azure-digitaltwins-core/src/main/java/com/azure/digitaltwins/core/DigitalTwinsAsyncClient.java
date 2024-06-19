@@ -21,6 +21,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl;
 import com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder;
 import com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDataConverter;
@@ -29,7 +30,6 @@ import com.azure.digitaltwins.core.implementation.converters.IncomingRelationshi
 import com.azure.digitaltwins.core.implementation.converters.OptionsConverter;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
 import com.azure.digitaltwins.core.implementation.serializer.DeserializationHelpers;
-import com.azure.digitaltwins.core.implementation.serializer.DigitalTwinsStringSerializer;
 import com.azure.digitaltwins.core.implementation.serializer.SerializationHelpers;
 import com.azure.digitaltwins.core.models.CreateOrReplaceDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.CreateOrReplaceRelationshipOptions;
@@ -48,8 +48,6 @@ import com.azure.digitaltwins.core.models.QueryOptions;
 import com.azure.digitaltwins.core.models.UpdateComponentOptions;
 import com.azure.digitaltwins.core.models.UpdateDigitalTwinOptions;
 import com.azure.digitaltwins.core.models.UpdateRelationshipOptions;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -88,20 +86,20 @@ public final class DigitalTwinsAsyncClient {
     private static final Boolean INCLUDE_MODEL_DEFINITION_ON_GET = true;
 
     private static final SerializerAdapter SERIALIZER_ADAPTER;
-    private static final ObjectMapper MAPPER;
+//    private static final ObjectMapper MAPPER;
 
     private final DigitalTwinsServiceVersion serviceVersion;
     private final AzureDigitalTwinsAPIImpl protocolLayer;
     private final JsonSerializer serializer;
 
     static {
-        final SimpleModule stringModule = new SimpleModule("String Serializer");
-        JacksonAdapter jacksonAdapter = new JacksonAdapter();
-        MAPPER = jacksonAdapter.serializer(); // Use the same mapper in this layer that the generated layer will use
-        stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, MAPPER));
-        jacksonAdapter.serializer().registerModule(stringModule);
+//        final SimpleModule stringModule = new SimpleModule("String Serializer");
+//        JacksonAdapter jacksonAdapter = new JacksonAdapter();
+//        MAPPER = jacksonAdapter.serializer(); // Use the same mapper in this layer that the generated layer will use
+//        stringModule.addSerializer(new DigitalTwinsStringSerializer(String.class, MAPPER));
+//        jacksonAdapter.serializer().registerModule(stringModule);
 
-        SERIALIZER_ADAPTER = jacksonAdapter;
+        SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     }
 
     DigitalTwinsAsyncClient(String serviceEndpoint, HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion,
@@ -236,8 +234,8 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse;
                 try {
-                    genericResponse = DeserializationHelpers.deserializeObject(MAPPER, response.getValue(), clazz,
-                        this.serializer);
+                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(),
+                        clazz, this.serializer);
                 } catch (IOException e) {
                     return Mono.error(LOGGER.atError().log(e));
                 }
@@ -337,8 +335,8 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse;
                 try {
-                    genericResponse = DeserializationHelpers.deserializeObject(MAPPER, response.getValue(), clazz,
-                        this.serializer);
+                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(),
+                        clazz, this.serializer);
                 } catch (IOException e) {
                     return Mono.error(LOGGER.atError().log(e));
                 }
@@ -593,8 +591,8 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse;
                 try {
-                    genericResponse = DeserializationHelpers.deserializeObject(MAPPER, response.getValue(), clazz,
-                        this.serializer);
+                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(),
+                        clazz, this.serializer);
                 } catch (IOException e) {
                     return Mono.error(LOGGER.atError().log(e));
                 }
@@ -697,8 +695,8 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse;
                 try {
-                    genericResponse = DeserializationHelpers.deserializeObject(MAPPER, response.getValue(), clazz,
-                        this.serializer);
+                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(),
+                        clazz, this.serializer);
                 } catch (IOException e) {
                     return Mono.error(LOGGER.atError().log(e));
                 }
@@ -923,7 +921,7 @@ public final class DigitalTwinsAsyncClient {
             .map(objectPagedResponse -> {
                 List<T> list = objectPagedResponse.getValue().stream().map(object -> {
                     try {
-                        return DeserializationHelpers.deserializeObject(MAPPER, object, clazz, this.serializer);
+                        return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, serializer);
                     } catch (IOException e) {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
                     }
@@ -944,7 +942,7 @@ public final class DigitalTwinsAsyncClient {
             .map(objectPagedResponse -> {
                 List<T> stringList = objectPagedResponse.getValue().stream().map(object -> {
                     try {
-                        return DeserializationHelpers.deserializeObject(MAPPER, object, clazz, this.serializer);
+                        return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, serializer);
                     } catch (IOException e) {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
                     }
@@ -1080,7 +1078,7 @@ public final class DigitalTwinsAsyncClient {
         List<Object> modelsPayload = new ArrayList<>();
         for (String model : dtdlModels) {
             try {
-                modelsPayload.add(MAPPER.readValue(model, Object.class));
+                modelsPayload.add(SERIALIZER_ADAPTER.deserialize(model, Object.class, SerializerEncoding.JSON));
             } catch (IOException e) {
                 LOGGER.atError()
                     .addKeyValue("model", model)
@@ -1423,8 +1421,8 @@ public final class DigitalTwinsAsyncClient {
             .flatMap(response -> {
                 T genericResponse;
                 try {
-                    genericResponse = DeserializationHelpers.deserializeObject(MAPPER, response.getValue(), clazz,
-                        this.serializer);
+                    genericResponse = DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, response.getValue(),
+                        clazz, this.serializer);
                 } catch (IOException e) {
                     return Mono.error(LOGGER.atError().log(e));
                 }
@@ -1614,7 +1612,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(), objectPagedResponse.getHeaders(),
                 objectPagedResponse.getValue().getValue().stream().map(object -> {
                     try {
-                        return DeserializationHelpers.deserializeObject(MAPPER, object, clazz, this.serializer);
+                        return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, serializer);
                     } catch (IOException e) {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
                     }
@@ -1636,7 +1634,7 @@ public final class DigitalTwinsAsyncClient {
                 objectPagedResponse.getStatusCode(), objectPagedResponse.getHeaders(),
                 objectPagedResponse.getValue().getValue().stream().map(object -> {
                     try {
-                        return DeserializationHelpers.deserializeObject(MAPPER, object, clazz, this.serializer);
+                        return DeserializationHelpers.deserializeObject(SERIALIZER_ADAPTER, object, clazz, serializer);
                     } catch (IOException e) {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
                     }

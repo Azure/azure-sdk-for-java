@@ -68,14 +68,16 @@ public class QueryAsyncTests extends QueryTestBase {
             AtomicInteger pageCount = new AtomicInteger(0);
             StepVerifier.create(
                 asyncClient.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize))
-                    .byPage()).thenConsumeWhile(digitalTwinsPage -> {
-                pageCount.incrementAndGet();
-                if (digitalTwinsPage.getContinuationToken() != null) {
-                    assertFalse(digitalTwinsPage.getValue().size() < pageSize,
-                        "Unexpected page size for a non-terminal page");
-                }
-                return true;
-            }).verifyComplete();
+                    .byPage())
+                .thenConsumeWhile(digitalTwinsPage -> {
+                    pageCount.incrementAndGet();
+                    if (digitalTwinsPage.getContinuationToken() != null) {
+                        assertFalse(digitalTwinsPage.getValue().size() < pageSize,
+                            "Unexpected page size for a non-terminal page");
+                    }
+                    return true;
+                })
+                .verifyComplete();
 
             assertTrue(pageCount.get() > 1, "Expected more than one page of query results");
         } finally {

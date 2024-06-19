@@ -20,12 +20,11 @@ import java.util.UUID;
  * delete that newly created event route.
  */
 public class EventRoutesSyncSamples {
-    private static DigitalTwinsClient client;
 
     public static void main(String[] args) {
         SamplesArguments parsedArguments = new SamplesArguments(args);
 
-        client = new DigitalTwinsClientBuilder().credential(
+        DigitalTwinsClient client = new DigitalTwinsClientBuilder().credential(
                 new ClientSecretCredentialBuilder().tenantId(parsedArguments.getTenantId())
                     .clientId(parsedArguments.getClientId())
                     .clientSecret(parsedArguments.getClientSecret())

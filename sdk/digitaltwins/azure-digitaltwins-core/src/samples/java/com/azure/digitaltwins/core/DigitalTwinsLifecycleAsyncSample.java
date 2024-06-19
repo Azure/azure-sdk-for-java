@@ -11,9 +11,13 @@ import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.QueryChargeHelper;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+import com.azure.json.ReadValueCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
@@ -59,7 +63,6 @@ import static java.util.Arrays.asList;
 public class DigitalTwinsLifecycleAsyncSample {
 
     private static final int MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS = 10;
-    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private static final URL DTDL_DIRECTORY_URL = DigitalTwinsLifecycleAsyncSample.class.getClassLoader()
         .getResource("DTDL");
@@ -157,7 +160,7 @@ public class DigitalTwinsLifecycleAsyncSample {
 
             // Call APIs to retrieve all incoming relationships.
             client.listIncomingRelationships(twinId)
-                .doOnNext(e -> relationshipList.add(MAPPER.convertValue(e, BasicRelationship.class)))
+                .doOnNext(e -> relationshipList.add(convertFrom(e, BasicRelationship::fromJson)))
                 .doOnError(IGNORE_NOT_FOUND_ERROR)
                 .doOnTerminate(listRelationshipSemaphore::countDown)
                 .subscribe();
@@ -194,6 +197,22 @@ public class DigitalTwinsLifecycleAsyncSample {
                 // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
                 deleteTwinsLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
             }
+        }
+    }
+
+    private static <T extends JsonSerializable<T>> T convertFrom(JsonSerializable<?> other,
+        ReadValueCallback<JsonReader, T> deserializer) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            jsonWriter.writeJson(other).flush();
+        } catch (IOException ex) {
+            throw new UncheckedIOException("Error while serializing other to string ", ex);
+        }
+
+        try (JsonReader jsonReader = JsonProviders.createReader(outputStream.toByteArray())) {
+            return deserializer.read(jsonReader);
+        } catch (IOException ex) {
+            throw new UncheckedIOException("Error while deserializing relationship string to BasicRelationship", ex);
         }
     }
 
@@ -308,17 +327,15 @@ public class DigitalTwinsLifecycleAsyncSample {
         // For each relationship array we deserialize it first.
         // We deserialize as BasicRelationship to get the entire custom relationship (custom relationship properties).
         allRelationships.values().forEach(relationshipContent -> {
-            try {
-                List<BasicRelationship> relationships = MAPPER.readValue(relationshipContent,
-                    new TypeReference<List<BasicRelationship>>() {
-                    });
+            try (JsonReader jsonReader = JsonProviders.createReader(relationshipContent)) {
+                List<BasicRelationship> relationships = jsonReader.readArray(BasicRelationship::fromJson);
 
                 // From loaded relationships, get the source Id and Id from each one, and create it with full
                 // relationship payload.
                 relationships.forEach(relationship -> {
                     try {
                         client.createOrReplaceRelationship(relationship.getSourceId(), relationship.getId(),
-                                MAPPER.writeValueAsString(relationship), String.class)
+                                serializeToString(relationship), String.class)
                             .doOnSuccess(s -> ConsoleLogger.printSuccess(
                                 "Linked twin " + relationship.getSourceId() + " to twin " + relationship.getTargetId()
                                     + " as " + relationship.getName()))
@@ -337,6 +354,14 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
         connectTwinsLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
+    }
+
+    private static String serializeToString(JsonSerializable<?> jsonSerializable) throws IOException {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            jsonSerializable.toJson(jsonWriter).flush();
+            return outputStream.toString();
+        }
     }
 
     /**

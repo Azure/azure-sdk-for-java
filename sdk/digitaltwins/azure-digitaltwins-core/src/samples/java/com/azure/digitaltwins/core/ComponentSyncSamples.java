@@ -14,33 +14,27 @@ import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 
 public class ComponentSyncSamples {
     private static DigitalTwinsClient client;
-    private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    private static Function<Integer, String> randomIntegerStringGenerator;
-
-    static {
-        randomIntegerStringGenerator = (maxLength) -> {
-            int randInt = new Random().nextInt((int) Math.pow(10, 8) - 1) + 1;
-            return String.valueOf(randInt);
-        };
-    }
+    private static final Function<Integer, String> RANDOM_INTEGER_STRING_GENERATOR = (maxLength) -> String.valueOf(
+        ThreadLocalRandom.current().nextInt((int) Math.pow(10, 8) - 1) + 1);
 
     public static void main(String[] args) throws IOException {
 
@@ -55,15 +49,11 @@ public class ComponentSyncSamples {
             .httpLogOptions(new HttpLogOptions().setLogLevel(parsedArguments.getHttpLogDetailLevel()))
             .buildClient();
 
-        // This mapper gets used to deserialize a digital twin that has a date time within a property metadata, so it
-        // needs to have this module in order to correctly deserialize that date time
-        MAPPER.registerModule(new JavaTimeModule());
-
         runComponentSample();
     }
 
     @SuppressWarnings("rawtypes")
-    public static void runComponentSample() throws JsonProcessingException {
+    public static void runComponentSample() throws IOException {
 
         ConsoleLogger.printHeader("COMPONENT SAMPLES");
 
@@ -71,11 +61,11 @@ public class ComponentSyncSamples {
         // We have to make sure these model Ids are unique within the DT instance.
 
         String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_COMPONENT_MODEL_PREFIX,
-            client, randomIntegerStringGenerator);
+            client, RANDOM_INTEGER_STRING_GENERATOR);
         String modelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_MODEL_PREFIX, client,
-            randomIntegerStringGenerator);
+            RANDOM_INTEGER_STRING_GENERATOR);
         String basicDigitalTwinId = UniqueIdHelper.getUniqueDigitalTwinId(SamplesConstants.TEMPORARY_TWIN_PREFIX,
-            client, randomIntegerStringGenerator);
+            client, RANDOM_INTEGER_STRING_GENERATOR);
 
         String newComponentModelPayload = SamplesConstants.TEMPORARY_COMPONENT_MODEL_PAYLOAD.replace(
             SamplesConstants.COMPONENT_ID, componentModelId);
@@ -118,10 +108,11 @@ public class ComponentSyncSamples {
         ConsoleLogger.print(
             "Successfully retrieved digital twin as a json string \n" + getStringDigitalTwinResponse.getValue());
 
-        BasicDigitalTwin deserializedDigitalTwin = MAPPER.readValue(getStringDigitalTwinResponse.getValue(),
-            BasicDigitalTwin.class);
-        ConsoleLogger.print(
-            "Deserialized the string response into a BasicDigitalTwin with Id: " + deserializedDigitalTwin.getId());
+        try (JsonReader jsonReader = JsonProviders.createReader(getStringDigitalTwinResponse.getValue())) {
+            BasicDigitalTwin deserializedDigitalTwin = BasicDigitalTwin.fromJson(jsonReader);
+            ConsoleLogger.print(
+                "Deserialized the string response into a BasicDigitalTwin with Id: " + deserializedDigitalTwin.getId());
+        }
 
         // You can also get a digital twin using the built in deserializer into a BasicDigitalTwin.
         // It works well for basic stuff, but as you can see it gets more difficult when delving into
@@ -133,20 +124,24 @@ public class ComponentSyncSamples {
 
             BasicDigitalTwin basicDigitalTwin = basicDigitalTwinResponse.getValue();
 
-            String component1RawText = MAPPER.writeValueAsString(basicDigitalTwin.getContents().get("Component1"));
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            try (JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
+                jsonWriter.writeUntyped(basicDigitalTwin.getContents().get("Component1"));
+            }
 
-            HashMap component1 = MAPPER.readValue(component1RawText, HashMap.class);
+            try (JsonReader jsonReader = JsonProviders.createReader(stream.toByteArray())) {
+                Map<String, Object> component1 = jsonReader.readMap(JsonReader::readUntyped);
 
-            ConsoleLogger.print(
-                "Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: "
-                    + basicDigitalTwin.getId() + ":\n\t" + "ETag: " + basicDigitalTwin.getETag() + "\n\t"
-                    + "Last Updated: " + basicDigitalTwin.getLastUpdatedOn() + "\n\t" + "Prop1: "
-                    + basicDigitalTwin.getContents().get("Prop1") + "\n\t" + "Prop2: " + basicDigitalTwin.getContents()
-                    .get("Prop2") + " with sourceTime " + basicDigitalTwin.getMetadata()
-                    .getPropertyMetadata()
-                    .get("Prop2")
-                    .getSourceTime() + "\n\t" + "ComponentProp1: " + component1.get("ComponentProp1") + "\n\t"
-                    + "ComponentProp2: " + component1.get("ComponentProp2") + "\n\t");
+                ConsoleLogger.print(
+                    "Retrieved digital twin using generic API to use built in deserialization into a BasicDigitalTwin with Id: "
+                        + basicDigitalTwin.getId() + ":\n\t" + "ETag: " + basicDigitalTwin.getETag() + "\n\t"
+                        + "Last Updated: " + basicDigitalTwin.getLastUpdatedOn() + "\n\t" + "Prop1: "
+                        + basicDigitalTwin.getContents().get("Prop1") + "\n\t" + "Prop2: "
+                        + basicDigitalTwin.getContents().get("Prop2") + " with sourceTime "
+                        + basicDigitalTwin.getMetadata().getPropertyMetadata().get("Prop2").getSourceTime() + "\n\t"
+                        + "ComponentProp1: " + component1.get("ComponentProp1") + "\n\t" + "ComponentProp2: "
+                        + component1.get("ComponentProp2") + "\n\t");
+            }
         }
 
         ConsoleLogger.printHeader("Update Component");

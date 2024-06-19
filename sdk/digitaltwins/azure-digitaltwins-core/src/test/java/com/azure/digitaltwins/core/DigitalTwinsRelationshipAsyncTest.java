@@ -100,27 +100,31 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Create relationship from Hvac -> Floor
             StepVerifier.create(asyncClient.createOrReplaceRelationship(hvacTwinId, HVAC_COOLS_FLOOR_RELATIONSHIP_ID,
                 deserializeJsonString(floorTwinCoolsRelationshipPayload, BasicRelationship::fromJson),
-                BasicRelationship.class)).assertNext(basicRelationship -> {
-                assertEquals(HVAC_COOLS_FLOOR_RELATIONSHIP_ID, basicRelationship.getId());
-                logger.info("Created {} relationship between source = {} and target = {}", basicRelationship.getId(),
-                    basicRelationship.getSourceId(), basicRelationship.getTargetId());
-            }).verifyComplete();
+                BasicRelationship.class))
+                .assertNext(basicRelationship -> {
+                    assertEquals(HVAC_COOLS_FLOOR_RELATIONSHIP_ID, basicRelationship.getId());
+                    logger.info("Created {} relationship between source = {} and target = {}",
+                        basicRelationship.getId(), basicRelationship.getSourceId(), basicRelationship.getTargetId());
+                })
+                .verifyComplete();
 
             // Create relationship from Room -> Floor
             StepVerifier.create(
                 asyncClient.createOrReplaceRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
                     deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship::fromJson),
-                    BasicRelationship.class)).assertNext(basicRelationship -> {
-                assertEquals(ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, basicRelationship.getId());
-                logger.info("Created {} relationship between source = {} and target = {}", basicRelationship.getId(),
-                    basicRelationship.getSourceId(), basicRelationship.getTargetId());
-            }).verifyComplete();
+                    BasicRelationship.class))
+                .assertNext(basicRelationship -> {
+                    assertEquals(ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID, basicRelationship.getId());
+                    logger.info("Created {} relationship between source = {} and target = {}",
+                        basicRelationship.getId(), basicRelationship.getSourceId(), basicRelationship.getTargetId());
+                })
+                .verifyComplete();
 
             // Create a relation which already exists - should return status code 409 (Conflict).
             StepVerifier.create(
-                    asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
-                        floorTwinContainedInRelationshipPayload, String.class,
-                        new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
+                asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+                    floorTwinContainedInRelationshipPayload, String.class,
+                    new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_PRECON_FAILED));
 
             // Update relationships
@@ -128,15 +132,17 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             // Create relationship from Floor -> Room
             StepVerifier.create(
                 asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorContainsRoomUpdatePayload, null)).assertNext(voidDigitalTwinsResponse -> {
-                assertEquals(HTTP_NO_CONTENT, voidDigitalTwinsResponse.getStatusCode());
-                logger.info("Updated {} relationship successfully in source {}", FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorTwinId);
-            }).verifyComplete();
+                    floorContainsRoomUpdatePayload, null))
+                .assertNext(voidDigitalTwinsResponse -> {
+                    assertEquals(HTTP_NO_CONTENT, voidDigitalTwinsResponse.getStatusCode());
+                    logger.info("Updated {} relationship successfully in source {}",
+                        FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId);
+                })
+                .verifyComplete();
 
             // GET relationship
             StepVerifier.create(
-                    asyncClient.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, BasicRelationship.class))
+                asyncClient.getRelationship(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, BasicRelationship.class))
                 .assertNext(basicRelationship -> {
                     assertEquals(FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, basicRelationship.getId());
                     logger.info("Retrieved {} relationship under source {}", basicRelationship.getId(),
@@ -401,15 +407,16 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             StepVerifier.create(
                 asyncClient.createOrReplaceRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
                     deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship::fromJson),
-                    BasicRelationship.class)).assertNext(basicRelationship -> {
-                logger.info("Created {} relationship between source = {} and target = {}", basicRelationship.getId(),
-                    basicRelationship.getSourceId(), basicRelationship.getTargetId());
-            }).verifyComplete();
+                    BasicRelationship.class))
+                .assertNext(basicRelationship -> logger.info(
+                    "Created {} relationship between source = {} and target = {}", basicRelationship.getId(),
+                    basicRelationship.getSourceId(), basicRelationship.getTargetId()))
+                .verifyComplete();
 
             StepVerifier.create(
-                    asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
-                        floorTwinContainedInRelationshipPayload, String.class,
-                        new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
+                asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+                    floorTwinContainedInRelationshipPayload, String.class,
+                    new CreateOrReplaceRelationshipOptions().setIfNoneMatch("*")))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HTTP_PRECON_FAILED));
 
             StepVerifier.create(asyncClient.deleteRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID))
@@ -483,15 +490,16 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             StepVerifier.create(
                 asyncClient.createOrReplaceRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
                     deserializeJsonString(floorTwinContainedInRelationshipPayload, BasicRelationship::fromJson),
-                    BasicRelationship.class)).assertNext(basicRelationship -> {
-                logger.info("Created {} relationship between source = {} and target = {}", basicRelationship.getId(),
-                    basicRelationship.getSourceId(), basicRelationship.getTargetId());
-            }).verifyComplete();
+                    BasicRelationship.class))
+                .assertNext(basicRelationship -> logger.info(
+                    "Created {} relationship between source = {} and target = {}", basicRelationship.getId(),
+                    basicRelationship.getSourceId(), basicRelationship.getTargetId()))
+                .verifyComplete();
 
             StepVerifier.create(
-                    asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
-                        floorTwinContainedInRelationshipPayload, String.class, null)) // don't set ifMatchNone header
-                .assertNext(stringDigitalTwinsResponse -> { /* don't care as long as it is a success status code */ })
+                asyncClient.createOrReplaceRelationshipWithResponse(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID,
+                    floorTwinContainedInRelationshipPayload, String.class, null)) // don't set ifMatchNone header
+                .expectNextCount(1) /* don't care as long as it is a success status code */
                 .verifyComplete();
 
             StepVerifier.create(asyncClient.deleteRelationship(roomTwinId, ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID))
@@ -568,29 +576,32 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             StepVerifier.create(
                 asyncClient.createOrReplaceRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     deserializeJsonString(floorContainsRoomPayload, BasicRelationship::fromJson),
-                    BasicRelationship.class, null)).assertNext(basicRelationshipResponse -> {
-                etagBeforeUpdate.set(basicRelationshipResponse.getDeserializedHeaders().getETag());
-                logger.info("Created {} relationship between source = {} and target = {}",
-                    basicRelationshipResponse.getValue().getId(), basicRelationshipResponse.getValue().getSourceId(),
-                    basicRelationshipResponse.getValue().getTargetId());
-            }).verifyComplete();
+                    BasicRelationship.class, null))
+                .assertNext(basicRelationshipResponse -> {
+                    etagBeforeUpdate.set(basicRelationshipResponse.getDeserializedHeaders().getETag());
+                    logger.info("Created {} relationship between source = {} and target = {}",
+                        basicRelationshipResponse.getValue().getId(),
+                        basicRelationshipResponse.getValue().getSourceId(),
+                        basicRelationshipResponse.getValue().getTargetId());
+                })
+                .verifyComplete();
 
             // Update relationship to make etag fall out of date
             StepVerifier.create(
                 asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorContainsRoomUpdatePayload, null)).assertNext(voidDigitalTwinsResponse -> {
-                logger.info("Updated {} relationship successfully in source {}", FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorTwinId);
-            }).verifyComplete();
+                    floorContainsRoomUpdatePayload, null))
+                .assertNext(voidDigitalTwinsResponse -> logger.info("Updated {} relationship successfully in source {}",
+                    FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId))
+                .verifyComplete();
 
             JsonPatchDocument floorContainsRoomSecondUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload(
                 "/isAccessRestricted", true);
 
             // Try to update the relationship with the now out of date etag, expect it to throw a 412
             StepVerifier.create(
-                    asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                        floorContainsRoomSecondUpdatePayload,
-                        new UpdateRelationshipOptions().setIfMatch(etagBeforeUpdate.get())))
+                asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                    floorContainsRoomSecondUpdatePayload,
+                    new UpdateRelationshipOptions().setIfMatch(etagBeforeUpdate.get())))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
 
             // DELETE the created relationships
@@ -666,30 +677,33 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             StepVerifier.create(
                 asyncClient.createOrReplaceRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     deserializeJsonString(floorContainsRoomPayload, BasicRelationship::fromJson),
-                    BasicRelationship.class, null)).assertNext(basicRelationshipResponse -> {
-                logger.info("Created {} relationship between source = {} and target = {}",
+                    BasicRelationship.class, null))
+                .assertNext(basicRelationshipResponse -> logger.info(
+                    "Created {} relationship between source = {} and target = {}",
                     basicRelationshipResponse.getValue().getId(), basicRelationshipResponse.getValue().getSourceId(),
-                    basicRelationshipResponse.getValue().getTargetId());
-            }).verifyComplete();
+                    basicRelationshipResponse.getValue().getTargetId()))
+                .verifyComplete();
 
             AtomicReference<String> upToDateETag = new AtomicReference<>();
             StepVerifier.create(
                 asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorContainsRoomUpdatePayload, null)).assertNext(voidDigitalTwinsResponse -> {
-                upToDateETag.set(voidDigitalTwinsResponse.getDeserializedHeaders().getETag());
-                logger.info("Updated {} relationship successfully in source {}", FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorTwinId);
-            }).verifyComplete();
+                    floorContainsRoomUpdatePayload, null))
+                .assertNext(voidDigitalTwinsResponse -> {
+                    upToDateETag.set(voidDigitalTwinsResponse.getDeserializedHeaders().getETag());
+                    logger.info("Updated {} relationship successfully in source {}",
+                        FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId);
+                })
+                .verifyComplete();
 
             JsonPatchDocument floorContainsRoomSecondUpdatePayload = TestAssetsHelper.getRelationshipUpdatePayload(
                 "/isAccessRestricted", true);
 
             // Try to update the relationship with an up to date ETag
             StepVerifier.create(
-                    asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                        floorContainsRoomSecondUpdatePayload,
-                        new UpdateRelationshipOptions().setIfMatch(upToDateETag.get())))
-                .assertNext(response -> { /* don't care as long as it is a success status code */ })
+                asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                    floorContainsRoomSecondUpdatePayload,
+                    new UpdateRelationshipOptions().setIfMatch(upToDateETag.get())))
+                .expectNextCount(1) /* don't care as long as it is a success status code */
                 .verifyComplete();
 
             // DELETE the created relationships
@@ -766,25 +780,28 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             StepVerifier.create(
                 asyncClient.createOrReplaceRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     deserializeJsonString(floorContainsRoomPayload, BasicRelationship::fromJson),
-                    BasicRelationship.class, null)).assertNext(basicRelationshipResponse -> {
-                etagBeforeUpdate.set(basicRelationshipResponse.getDeserializedHeaders().getETag());
-                logger.info("Created {} relationship between source = {} and target = {}",
-                    basicRelationshipResponse.getValue().getId(), basicRelationshipResponse.getValue().getSourceId(),
-                    basicRelationshipResponse.getValue().getTargetId());
-            }).verifyComplete();
+                    BasicRelationship.class, null))
+                .assertNext(basicRelationshipResponse -> {
+                    etagBeforeUpdate.set(basicRelationshipResponse.getDeserializedHeaders().getETag());
+                    logger.info("Created {} relationship between source = {} and target = {}",
+                        basicRelationshipResponse.getValue().getId(),
+                        basicRelationshipResponse.getValue().getSourceId(),
+                        basicRelationshipResponse.getValue().getTargetId());
+                })
+                .verifyComplete();
 
             // Update relationship to make etag fall out of date
             StepVerifier.create(
                 asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorContainsRoomUpdatePayload, null)).assertNext(voidDigitalTwinsResponse -> {
-                logger.info("Updated {} relationship successfully in source {}", FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorTwinId);
-            }).verifyComplete();
+                    floorContainsRoomUpdatePayload, null))
+                .assertNext(voidDigitalTwinsResponse -> logger.info("Updated {} relationship successfully in source {}",
+                    FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId))
+                .verifyComplete();
 
             // Try to delete the relationship with the now out of date etag, expect it to throw a 412
             StepVerifier.create(
-                    asyncClient.deleteRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                        new DeleteRelationshipOptions().setIfMatch(etagBeforeUpdate.get())))
+                asyncClient.deleteRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                    new DeleteRelationshipOptions().setIfMatch(etagBeforeUpdate.get())))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpURLConnection.HTTP_PRECON_FAILED));
 
             logger.info("Deleted relationship {} for twin {}", FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId);
@@ -857,26 +874,29 @@ public class DigitalTwinsRelationshipAsyncTest extends DigitalTwinsRelationshipT
             StepVerifier.create(
                 asyncClient.createOrReplaceRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
                     deserializeJsonString(floorContainsRoomPayload, BasicRelationship::fromJson),
-                    BasicRelationship.class, null)).assertNext(basicRelationshipResponse -> {
-                logger.info("Created {} relationship between source = {} and target = {}",
+                    BasicRelationship.class, null))
+                .assertNext(basicRelationshipResponse -> logger.info(
+                    "Created {} relationship between source = {} and target = {}",
                     basicRelationshipResponse.getValue().getId(), basicRelationshipResponse.getValue().getSourceId(),
-                    basicRelationshipResponse.getValue().getTargetId());
-            }).verifyComplete();
+                    basicRelationshipResponse.getValue().getTargetId()))
+                .verifyComplete();
 
             AtomicReference<String> upToDateETag = new AtomicReference<>();
             StepVerifier.create(
                 asyncClient.updateRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorContainsRoomUpdatePayload, null)).assertNext(voidDigitalTwinsResponse -> {
-                upToDateETag.set(voidDigitalTwinsResponse.getDeserializedHeaders().getETag());
-                logger.info("Updated {} relationship successfully in source {}", FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                    floorTwinId);
-            }).verifyComplete();
+                    floorContainsRoomUpdatePayload, null))
+                .assertNext(voidDigitalTwinsResponse -> {
+                    upToDateETag.set(voidDigitalTwinsResponse.getDeserializedHeaders().getETag());
+                    logger.info("Updated {} relationship successfully in source {}",
+                        FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId);
+                })
+                .verifyComplete();
 
             // Try to delete the relationship with an up to date ETag
             StepVerifier.create(
-                    asyncClient.deleteRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
-                        new DeleteRelationshipOptions().setIfMatch(upToDateETag.get())))
-                .assertNext(response -> { /* don't care as long as it is a success status code */ })
+                asyncClient.deleteRelationshipWithResponse(floorTwinId, FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID,
+                    new DeleteRelationshipOptions().setIfMatch(upToDateETag.get())))
+                .expectNextCount(1) /* don't care as long as it is a success status code */
                 .verifyComplete();
 
             logger.info("Deleted relationship {} for twin {}", FLOOR_CONTAINS_ROOM_RELATIONSHIP_ID, floorTwinId);

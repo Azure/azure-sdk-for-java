@@ -7,6 +7,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
 import com.azure.digitaltwins.core.DigitalTwinsClient;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 // This class exists so that the public APIs don't directly consume a generated type and so that we can avoid exposing a
 // validate() method that the generated type comes with when client side validation is enabled.
@@ -18,7 +24,7 @@ import com.azure.digitaltwins.core.DigitalTwinsClient;
  * types for deserialization. This class will capture the full service response when listing incoming relationships.
  */
 @Fluent
-public final class IncomingRelationship {
+public final class IncomingRelationship implements JsonSerializable<IncomingRelationship> {
     /*
      * A user-provided string representing the id of this relationship, unique in the context of the source digital
      * twin, i.e. sourceId + relationshipId is unique in the context of the service.
@@ -92,5 +98,51 @@ public final class IncomingRelationship {
      */
     public String getRelationshipLink() {
         return this.relationshipLink;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField(DigitalTwinsJsonPropertyNames.RELATIONSHIP_ID, relationshipId)
+            .writeStringField(DigitalTwinsJsonPropertyNames.RELATIONSHIP_SOURCE_ID, sourceId)
+            .writeStringField(DigitalTwinsJsonPropertyNames.RELATIONSHIP_NAME, relationshipName)
+            .writeStringField("$relationshipLink", relationshipLink)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncomingRelationship from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncomingRelationship if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IncomingRelationship.
+     */
+    public static IncomingRelationship fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String relationshipId = null;
+            String sourceId = null;
+            String relationshipName = null;
+            String relationshipLink = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if (DigitalTwinsJsonPropertyNames.RELATIONSHIP_ID.equals(fieldName)) {
+                    relationshipId = reader.getString();
+                } else if (DigitalTwinsJsonPropertyNames.RELATIONSHIP_SOURCE_ID.equals(fieldName)) {
+                    sourceId = reader.getString();
+                } else if (DigitalTwinsJsonPropertyNames.RELATIONSHIP_NAME.equals(fieldName)) {
+                    relationshipName = reader.getString();
+                } else if ("$relationshipLink".equals(fieldName)) {
+                    relationshipLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new IncomingRelationship(relationshipId, sourceId, relationshipName, relationshipLink);
+        });
     }
 }

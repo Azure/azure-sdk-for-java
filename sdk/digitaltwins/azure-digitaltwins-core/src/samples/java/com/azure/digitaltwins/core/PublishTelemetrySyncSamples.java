@@ -26,7 +26,7 @@ import java.util.function.Function;
 public class PublishTelemetrySyncSamples {
     private static DigitalTwinsClient client;
 
-    private static final Function<Integer, String> randomIntegerStringGenerator = (maxLength) -> String.valueOf(
+    private static final Function<Integer, String> RANDOM_INTEGER_STRING_GENERATOR = (maxLength) -> String.valueOf(
         ThreadLocalRandom.current().nextInt((int) Math.pow(10, 8) - 1) + 1);
 
     public static void main(String[] args) {
@@ -53,11 +53,11 @@ public class PublishTelemetrySyncSamples {
         // We have to make sure these model Ids are unique within the DT instance.
 
         String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_COMPONENT_MODEL_PREFIX,
-            client, randomIntegerStringGenerator);
+            client, RANDOM_INTEGER_STRING_GENERATOR);
         String modelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_MODEL_PREFIX, client,
-            randomIntegerStringGenerator);
+            RANDOM_INTEGER_STRING_GENERATOR);
         String digitalTwinId = UniqueIdHelper.getUniqueDigitalTwinId(SamplesConstants.TEMPORARY_TWIN_PREFIX, client,
-            randomIntegerStringGenerator);
+            RANDOM_INTEGER_STRING_GENERATOR);
 
         String newComponentModelPayload = SamplesConstants.TEMPORARY_COMPONENT_MODEL_PAYLOAD.replace(
             SamplesConstants.COMPONENT_ID, componentModelId);
