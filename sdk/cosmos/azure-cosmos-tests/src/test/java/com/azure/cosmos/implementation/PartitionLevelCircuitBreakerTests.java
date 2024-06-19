@@ -63,6 +63,8 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1536,6 +1538,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
                 = documentClient.getGlobalPartitionEndpointManagerForCircuitBreaker();
 
+            Method getAverageExceptionCountByPartitionKeyRangeByRegionMethod
+                = GlobalPartitionEndpointManagerForCircuitBreaker.class.getDeclaredMethod("getAverageExceptionCountByPartitionKeyRangeByRegion", PartitionKeyRangeWrapper.class);
+            getAverageExceptionCountByPartitionKeyRangeByRegionMethod.setAccessible(true);
+
             faultInjectionRuleParamsWrapper.withFaultInjectionApplicableFeedRange(operationInvocationParamsWrapper.faultyFeedRange);
             faultInjectionRuleParamsWrapper.withFaultInjectionApplicableAsyncContainer(container);
 
@@ -1595,6 +1601,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 int executionCountAfterCircuitBreakingThresholdBreached = 0;
 
                 List<TestObject> testObjects = operationInvocationParamsWrapper.testObjectsForDataPlaneOperationToWorkWith;
+                PartitionKeyRangeWrapper partitionKeyRangeWrapper
+                    = new PartitionKeyRangeWrapper(faultyPartitionKeyRanges.v.get(0), faultyDocumentCollection.v.getResourceId());
 
                 for (int i = 1; i <= operationIterationCountInFailureFlow; i++) {
 
@@ -1615,8 +1623,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                         consecutiveExceptionBasedCircuitBreaker.getAllowedExceptionCountToMaintainStatus(LocationHealthStatus.HealthyWithFailures, true);
 
                     if (!hasReachedCircuitBreakingThreshold) {
-                        hasReachedCircuitBreakingThreshold = expectedCircuitBreakingThreshold == globalPartitionEndpointManagerForCircuitBreaker.getExceptionCountByPartitionKeyRange(
-                            new PartitionKeyRangeWrapper(faultyPartitionKeyRanges.v.get(0), faultyDocumentCollection.v.getResourceId()));
+                        hasReachedCircuitBreakingThreshold = expectedCircuitBreakingThreshold == (int) getAverageExceptionCountByPartitionKeyRangeByRegionMethod.invoke(globalPartitionEndpointManagerForCircuitBreaker, partitionKeyRangeWrapper);
                         validateResponseInPresenceOfFailures.accept(response);
                     } else {
                         executionCountAfterCircuitBreakingThresholdBreached++;

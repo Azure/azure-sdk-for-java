@@ -342,8 +342,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         }
     }
 
-    // todo: keep private and access through reflection
-    public int getExceptionCountByPartitionKeyRange(PartitionKeyRangeWrapper partitionKeyRangeWrapper) {
+    // note: used by reflection in PartitionLevelCircuitBreakerTests
+    private int getAverageExceptionCountByPartitionKeyRangeByRegion(PartitionKeyRangeWrapper partitionKeyRangeWrapper) {
 
         PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfoSnapshot =
             this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
@@ -369,8 +369,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         return 0;
     }
 
-    // todo: keep private and access through reflection
-    public Map<URI, LocationSpecificContext> getLocationToLocationSpecificContextMappings(PartitionKeyRangeWrapper partitionKeyRangeWrapper) {
+    // note: used by reflection in GlobalPartitionEndpointManagerForCircuitBreakerTests
+    private Map<URI, LocationSpecificContext> getLocationToLocationSpecificContextMappings(PartitionKeyRangeWrapper partitionKeyRangeWrapper) {
         PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfoSnapshot =
             this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
 
