@@ -186,7 +186,7 @@ public class KeyVaultClient {
      * @return The access token.
      */
     private AccessToken getAccessTokenByHttpRequest() {
-        LOGGER.entering("KeyVaultClient", "getAccessToken");
+        LOGGER.entering("KeyVaultClient", "getAccessTokenByHttpRequest");
 
         AccessToken accessToken = null;
 
@@ -199,7 +199,8 @@ public class KeyVaultClient {
 
             if (tenantId != null && clientId != null && clientSecret != null) {
                 String aadAuthenticationUri =
-                    getLoginUri(new URI(keyVaultUri), disableChallengeResourceVerification);
+                    getLoginUri(new URI(String.format("%scertificates%s", keyVaultUri, API_VERSION_POSTFIX)),
+                        disableChallengeResourceVerification);
                 accessToken =
                     AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
             } else {
@@ -209,7 +210,7 @@ public class KeyVaultClient {
             LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", t);
         }
 
-        LOGGER.exiting("KeyVaultClient", "getAccessToken", accessToken);
+        LOGGER.exiting("KeyVaultClient", "getAccessTokenByHttpRequest", accessToken);
 
         return accessToken;
     }
@@ -225,10 +226,10 @@ public class KeyVaultClient {
 
         headers.put("Authorization", "Bearer " + getAccessToken());
 
-        String url = String.format("%scertificates%s", keyVaultUri, API_VERSION_POSTFIX);
+        String uri = String.format("%scertificates%s", keyVaultUri, API_VERSION_POSTFIX);
 
-        while (url != null && url.length() != 0) {
-            String response = HttpUtil.get(url, headers);
+        while (uri != null && !uri.isEmpty()) {
+            String response = HttpUtil.get(uri, headers);
             CertificateListResult certificateListResult = null;
 
             if (response != null) {
@@ -237,7 +238,7 @@ public class KeyVaultClient {
             }
 
             if (certificateListResult != null) {
-                url = certificateListResult.getNextLink();
+                uri = certificateListResult.getNextLink();
 
                 for (CertificateItem certificateItem : certificateListResult.getValue()) {
                     String id = certificateItem.getId();
@@ -246,7 +247,7 @@ public class KeyVaultClient {
                     result.add(alias);
                 }
             } else {
-                url = null;
+                uri = null;
             }
         }
 

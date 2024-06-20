@@ -20,7 +20,6 @@ import static java.util.logging.Level.INFO;
  * The REST client specific to getting an access token for Azure REST APIs.
  */
 public final class AccessTokenUtil {
-
     /**
      * Stores the Client ID fragment.
      */
@@ -106,17 +105,21 @@ public final class AccessTokenUtil {
     public static AccessToken getAccessToken(String resource, String aadAuthenticationUrl, String tenantId,
         String clientId, String clientSecret) {
 
-        LOGGER.entering("AccessTokenUtil", "getAccessToken", new Object[]{
-            resource, tenantId, clientId, clientSecret});
+        LOGGER.entering("AccessTokenUtil", "getAccessToken",
+            new Object[] { resource, tenantId, clientId, clientSecret });
         LOGGER.info("Getting access token using client ID / client secret");
 
         AccessToken result = null;
 
         StringBuilder oauth2Url = new StringBuilder();
 
-        oauth2Url.append(aadAuthenticationUrl == null ? OAUTH2_TOKEN_BASE_URL : aadAuthenticationUrl)
-            .append(tenantId)
-            .append(OAUTH2_TOKEN_POSTFIX);
+        if (aadAuthenticationUrl == null) {
+            oauth2Url.append(OAUTH2_TOKEN_BASE_URL).append(tenantId);
+        } else {
+            oauth2Url.append(aadAuthenticationUrl);
+        }
+
+        oauth2Url.append(OAUTH2_TOKEN_POSTFIX);
 
         StringBuilder requestBody = new StringBuilder();
 
@@ -125,8 +128,8 @@ public final class AccessTokenUtil {
             .append(CLIENT_SECRET_FRAGMENT).append(clientSecret)
             .append(RESOURCE_FRAGMENT).append(resource);
 
-        String body = HttpUtil
-            .post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
+        String body =
+            HttpUtil.post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
 
         if (body != null) {
             result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
@@ -152,11 +155,12 @@ public final class AccessTokenUtil {
         StringBuilder url = new StringBuilder();
 
         url.append(System.getenv("MSI_ENDPOINT"))
-           .append("?api-version=2017-09-01")
-           .append(RESOURCE_FRAGMENT).append(resource);
+            .append("?api-version=2017-09-01")
+            .append(RESOURCE_FRAGMENT).append(resource);
 
         if (clientId != null) {
             url.append("&clientid=").append(clientId);
+
             LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
         }
 
@@ -219,9 +223,9 @@ public final class AccessTokenUtil {
 
     public static String getLoginUri(URI resourceUri, boolean disableChallengeResourceVerification) {
         LOGGER.entering("AccessTokenUtil", "getLoginUri", resourceUri);
-        LOGGER.log(INFO, "Getting login URI for Key Vault: {0}", resourceUri.toString());
+        LOGGER.log(INFO, "Getting login URI using: {0}", resourceUri.toString());
 
-        HttpResponse response = HttpUtil.getWithResponse(resourceUri + "certificates", null);
+        HttpResponse response = HttpUtil.getWithResponse(resourceUri.toString(), null);
         Map<String, String> challengeAttributes =
             extractChallengeAttributes(response.getFirstHeader(WWW_AUTHENTICATE).getValue());
         String scope = challengeAttributes.get("resource");
