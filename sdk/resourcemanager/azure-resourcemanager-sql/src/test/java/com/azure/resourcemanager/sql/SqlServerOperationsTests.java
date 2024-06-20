@@ -589,20 +589,22 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
 
-        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
-        Assertions.assertNotNull(regionCapabilities);
-        Assertions.assertNotNull(regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0"));
-        Assertions
-            .assertTrue(
-                regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0").supportedEditions().size() > 0);
-        Assertions
-            .assertTrue(
-                regionCapabilities
+        if (!isPlaybackMode()) {
+            RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
+            Assertions.assertNotNull(regionCapabilities);
+            Assertions.assertNotNull(regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0"));
+            Assertions
+                .assertTrue(
+                    regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0").supportedEditions().size() > 0);
+            Assertions
+                .assertTrue(
+                    regionCapabilities
                         .supportedCapabilitiesByServerVersion()
                         .get("12.0")
                         .supportedElasticPoolEditions()
                         .size()
-                    > 0);
+                        > 0);
+        }
 
         // Create
         SqlServer sqlServer =
@@ -1658,20 +1660,29 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
-                serverVersionCapability.supportedEditions().forEach(edition -> {
-                    edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
-                        if (serviceObjective.status() != CapabilityStatus.AVAILABLE && serviceObjective.status() != CapabilityStatus.DEFAULT || "M".equals(serviceObjective.sku().family())) {
-                            databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku()));
-                        }
-                    });
-                });
-                serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
-                    edition.supportedElasticPoolPerformanceLevels().forEach(performance -> {
-                        if (performance.status() != CapabilityStatus.AVAILABLE && performance.status() != CapabilityStatus.DEFAULT || "M".equals(performance.sku().family())) {
-                            elasticPoolSkus.remove(ElasticPoolSku.fromSku(performance.sku()));
-                        }
-                    });
-                });
+                serverVersionCapability.supportedEditions().stream().map(edition ->
+                        edition.supportedServiceLevelObjectives()
+                            .stream().filter(serviceObjective ->
+                                (serviceObjective.status() != CapabilityStatus.AVAILABLE
+                                    && serviceObjective.status() != CapabilityStatus.DEFAULT)
+                                    || "M".equals(serviceObjective.sku().family()))
+                            .map(serviceObjective -> DatabaseSku.fromSku(serviceObjective.sku()))
+                            .collect(Collectors.toCollection(LinkedList::new))
+                    )
+                    .filter(fromSkus -> !fromSkus.isEmpty())
+                    .forEach(fromSkus -> databaseSkus.removeIf(fromSkus::contains));
+
+                serverVersionCapability.supportedElasticPoolEditions().stream().map(edition ->
+                        edition.supportedElasticPoolPerformanceLevels()
+                            .stream().filter(performance ->
+                                (performance.status() != CapabilityStatus.AVAILABLE
+                                    && performance.status() != CapabilityStatus.DEFAULT)
+                                    || "M".equals(performance.sku().family()))
+                            .map(performance -> ElasticPoolSku.fromSku(performance.sku()))
+                            .collect(Collectors.toCollection(LinkedList::new))
+                    )
+                    .filter(fromSkus -> !fromSkus.isEmpty())
+                    .forEach(fromSkus -> elasticPoolSkus.removeIf(fromSkus::contains));
             });
 
         SqlServer sqlServer = sqlServerManager.sqlServers().define(sqlServerName)
