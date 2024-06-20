@@ -58,8 +58,7 @@ Build a **synchronous** client:
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
 String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
 
-RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
-        .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
+RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
 if (apiKey != null && !apiKey.equals("")) {
     clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
 }
@@ -72,8 +71,7 @@ Build an **asynchronous** client:
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
 String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
 
-RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
-        .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
+RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
 if (apiKey != null && !apiKey.equals("")) {
     clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
 }
@@ -87,11 +85,11 @@ DefaultAzureCredential provides an alternative way to authenticate with the serv
 ```java com.azure.health.insights.radiologyinsights.defaultazurecredential
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
 
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
-        .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
-DefaultAzureCredential c = new DefaultAzureCredentialBuilder().build();
-
-clientBuilder = clientBuilder.credential(c);
+        .endpoint(endpoint)
+        .credential(credential);
+RadiologyInsightsClient radiologyInsightsClient = clientBuilder.buildClient();
 ```
 
 ## Key concepts

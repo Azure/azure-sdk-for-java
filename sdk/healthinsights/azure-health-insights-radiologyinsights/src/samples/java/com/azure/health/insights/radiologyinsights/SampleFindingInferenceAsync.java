@@ -91,8 +91,7 @@ public class SampleFindingInferenceAsync {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
         
-        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
-                .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
+        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
         if (apiKey != null && !apiKey.equals("")) {
             clientBuilder = clientBuilder.credential(new AzureKeyCredential(apiKey));
         }
