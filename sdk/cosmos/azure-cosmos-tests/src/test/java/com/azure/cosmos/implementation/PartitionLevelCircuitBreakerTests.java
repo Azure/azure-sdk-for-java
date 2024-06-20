@@ -1208,7 +1208,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             // Expectation is for the operation to see a success for all runs (due to threshold-based availability strategy enabled)
             // and only from the second preferred region once short-circuiting has kicked in for the first preferred region.
             new Object[]{
-                String.format("Test with faulty %s with too many requests error in first preferred region with threshold-based availability strategy enabled.", FaultInjectionOperationType.QUERY_ITEM),
+                "Test faulty read many operation with too many requests error in first preferred region with threshold-based availability strategy enabled.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
@@ -1370,7 +1370,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             // Expectation is for the operation to see a success for all runs (due to threshold-based availability strategy enabled)
             // and only from the second preferred region once short-circuiting has kicked in for the first preferred region.
             new Object[]{
-                String.format("Test with faulty %s with too many requests error in first preferred region with threshold-based availability strategy enabled.", FaultInjectionOperationType.QUERY_ITEM),
+                "Test faulty read all operation with too many requests error in first preferred region with threshold-based availability strategy enabled.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
