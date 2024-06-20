@@ -48,10 +48,20 @@ steps:
 #     runProxy: true
 #     targetVersion: 1.0.0-dev.20230908.1
 
-- bash: |
-    tsp-client init --debug --tsp-config $(TSP_CONFIG)
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: $(sdkautomation-connection-name)
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      tsp-client init --debug --tsp-config $(TSP_CONFIG)
   displayName: '[Experiment] Directly run tsp-client init command'
   condition: eq(variables.fromTypeSpec, true)
+
+#- bash: |
+#    tsp-client init --debug --tsp-config $(TSP_CONFIG)
+#  displayName: '[Experiment] Directly run tsp-client init command'
+#  condition: eq(variables.fromTypeSpec, true)
 
 - bash: |
     export PATH=$JAVA_HOME_11_X64/bin:$PATH
