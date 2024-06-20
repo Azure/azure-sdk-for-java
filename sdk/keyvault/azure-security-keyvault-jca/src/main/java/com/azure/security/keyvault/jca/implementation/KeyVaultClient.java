@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -134,13 +135,9 @@ public class KeyVaultClient {
 
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
 
-        if (!keyVaultUri.endsWith("/")) {
-            keyVaultUri = keyVaultUri + "/";
-        }
-
-        this.keyVaultUri = keyVaultUri;
+        this.keyVaultUri = addTrailingSlashIfRequired(keyVaultUri);
         // Base Uri shouldn't end with a slash.
-        String domainNameSuffix = Optional.of(keyVaultUri)
+        String domainNameSuffix = Optional.of(this.keyVaultUri)
                 .map(uri -> uri.split("\\.", 2)[1])
                 .map(suffix -> suffix.substring(0, suffix.length() - 1))
                 .orElse(null);
@@ -153,7 +150,7 @@ public class KeyVaultClient {
     }
 
     public static KeyVaultClient createKeyVaultClientBySystemProperty() {
-        String keyVaultUri = System.getProperty("azure.keyvault.uri");
+        String keyVaultUri = validateUri(System.getProperty("azure.keyvault.uri"), "Azure Key Vault URI");
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
@@ -163,6 +160,42 @@ public class KeyVaultClient {
 
         return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
             disableChallengeResourceVerification);
+    }
+
+    private static String validateUri(String uri, String propertyName) {
+        if (uri == null) {
+            StringBuilder messageBuilder = new StringBuilder();
+
+            if (propertyName != null) {
+                messageBuilder.append(propertyName);
+            } else {
+                messageBuilder.append("Provided URI ");
+            }
+
+            messageBuilder.append("cannot be null.");
+
+            throw new NullPointerException(messageBuilder.toString());
+        }
+
+        if (!uri.startsWith(HTTPS_PREFIX)) {
+            throw new IllegalArgumentException("Provided URI '" + uri + "' must start with 'https://'.");
+        }
+
+        try {
+            new URI(uri);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Provided URI '" + uri + "' is not a valid URI.");
+        }
+
+        return uri;
+    }
+
+    private String addTrailingSlashIfRequired(String uri) {
+        if (!uri.endsWith("/")) {
+            return uri + "/";
+        }
+
+        return uri;
     }
 
     /**

@@ -239,14 +239,11 @@ public final class AccessTokenUtil {
         if (scope == null) {
             return null;
         } else {
-            if (!disableChallengeResourceVerification) {
-                if (!isChallengeResourceValid(resourceUri, scope)) {
-                    throw new IllegalStateException(String.format(
-                        "The challenge resource '%s' does not match the requested domain. If you wish to disable "
-                            + "this check, set the environment property "
-                            + "'azure.keyvault.disable-challenge-resource-verification' to 'true'. See "
-                            + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope));
-                }
+            if (!disableChallengeResourceVerification && !isChallengeResourceValid(resourceUri, scope)) {
+                throw new IllegalStateException("The challenge resource " + scope + " does not match the requested "
+                    + "domain. If you wish to disable this check, set the environment property "
+                    + "'azure.keyvault.disable-challenge-resource-verification' to 'true'. See "
+                    + "https://aka.ms/azsdk/blog/vault-uri for more information.");
             }
 
             String authorization = challengeAttributes.get("authorization");
@@ -263,8 +260,7 @@ public final class AccessTokenUtil {
 
                 return authorization;
             } catch (URISyntaxException e) {
-                throw new IllegalStateException(
-                    String.format("The challenge authorization URI '%s' is invalid.", authorization), e);
+                throw new IllegalStateException("The challenge authorization URI " + authorization + " is invalid.", e);
             }
         }
     }
@@ -322,7 +318,7 @@ public final class AccessTokenUtil {
         try {
             scopeUri = new URI(scope);
         } catch (URISyntaxException e) {
-            throw new IllegalStateException(String.format("The challenge resource '%s' is not a valid URI.", scope), e);
+            throw new IllegalStateException("The challenge resource " + scope + " is not a valid URI.", e);
         }
 
         // Returns false if the host specified in the scope does not match the requested domain.
