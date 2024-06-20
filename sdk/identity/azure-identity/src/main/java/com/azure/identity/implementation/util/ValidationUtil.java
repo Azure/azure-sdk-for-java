@@ -8,6 +8,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.File;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.nio.file.Path;
