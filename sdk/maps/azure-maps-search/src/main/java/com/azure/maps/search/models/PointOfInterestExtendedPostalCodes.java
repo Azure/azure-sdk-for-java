@@ -5,31 +5,44 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PointOfInterestExtendedPostalCodes. */
+/**
+ * Defines values for PointOfInterestExtendedPostalCodes.
+ */
 public final class PointOfInterestExtendedPostalCodes extends ExpandableStringEnum<PointOfInterestExtendedPostalCodes> {
-    /** Static value POI for PointOfInterestExtendedPostalCodes. */
+    /**
+     * Static value POI for PointOfInterestExtendedPostalCodes.
+     */
     public static final PointOfInterestExtendedPostalCodes POI = fromString("POI");
 
-    /** Static value None for PointOfInterestExtendedPostalCodes. */
+    /**
+     * Static value None for PointOfInterestExtendedPostalCodes.
+     */
     public static final PointOfInterestExtendedPostalCodes NONE = fromString("None");
 
     /**
+     * Creates a new instance of PointOfInterestExtendedPostalCodes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PointOfInterestExtendedPostalCodes() {
+    }
+
+    /**
      * Creates or finds a PointOfInterestExtendedPostalCodes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PointOfInterestExtendedPostalCodes.
      */
-    @JsonCreator
     public static PointOfInterestExtendedPostalCodes fromString(String name) {
         return fromString(name, PointOfInterestExtendedPostalCodes.class);
     }
 
     /**
      * Gets known PointOfInterestExtendedPostalCodes values.
-     *
+     * 
      * @return known PointOfInterestExtendedPostalCodes values.
      */
     public static Collection<PointOfInterestExtendedPostalCodes> values() {
