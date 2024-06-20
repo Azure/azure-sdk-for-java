@@ -13,52 +13,52 @@ import java.util.Collection;
  * Defines the sequence of characters to use between the lines of text recognized by the OCR skill. The default value is
  * "space".
  */
-public final class LineEnding extends ExpandableStringEnum<LineEnding> {
+public final class OcrLineEnding extends ExpandableStringEnum<OcrLineEnding> {
     /**
      * Lines are separated by a single space character.
      */
-    public static final LineEnding SPACE = fromString("space");
+    public static final OcrLineEnding SPACE = fromString("space");
 
     /**
      * Lines are separated by a carriage return ('\r') character.
      */
-    public static final LineEnding CARRIAGE_RETURN = fromString("carriageReturn");
+    public static final OcrLineEnding CARRIAGE_RETURN = fromString("carriageReturn");
 
     /**
      * Lines are separated by a single line feed ('\n') character.
      */
-    public static final LineEnding LINE_FEED = fromString("lineFeed");
+    public static final OcrLineEnding LINE_FEED = fromString("lineFeed");
 
     /**
      * Lines are separated by a carriage return and a line feed ('\r\n') character.
      */
-    public static final LineEnding CARRIAGE_RETURN_LINE_FEED = fromString("carriageReturnLineFeed");
+    public static final OcrLineEnding CARRIAGE_RETURN_LINE_FEED = fromString("carriageReturnLineFeed");
 
     /**
-     * Creates a new instance of LineEnding value.
+     * Creates a new instance of OcrLineEnding value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public LineEnding() {
+    public OcrLineEnding() {
     }
 
     /**
-     * Creates or finds a LineEnding from its string representation.
+     * Creates or finds a OcrLineEnding from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding LineEnding.
+     * @return the corresponding OcrLineEnding.
      */
-    public static LineEnding fromString(String name) {
-        return fromString(name, LineEnding.class);
+    public static OcrLineEnding fromString(String name) {
+        return fromString(name, OcrLineEnding.class);
     }
 
     /**
-     * Gets known LineEnding values.
+     * Gets known OcrLineEnding values.
      * 
-     * @return known LineEnding values.
+     * @return known OcrLineEnding values.
      */
-    public static Collection<LineEnding> values() {
-        return values(LineEnding.class);
+    public static Collection<OcrLineEnding> values() {
+        return values(OcrLineEnding.class);
     }
 }

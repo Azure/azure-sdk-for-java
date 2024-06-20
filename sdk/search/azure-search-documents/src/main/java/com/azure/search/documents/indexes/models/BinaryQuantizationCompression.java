@@ -17,13 +17,13 @@ import java.io.IOException;
  * querying.
  */
 @Fluent
-public final class BinaryQuantizationCompressionConfiguration extends VectorSearchCompression {
+public final class BinaryQuantizationCompression extends VectorSearchCompression {
     /**
-     * Creates an instance of BinaryQuantizationCompressionConfiguration class.
+     * Creates an instance of BinaryQuantizationCompression class.
      * 
      * @param compressionName the compressionName value to set.
      */
-    public BinaryQuantizationCompressionConfiguration(String compressionName) {
+    public BinaryQuantizationCompression(String compressionName) {
         super(compressionName);
     }
 
@@ -31,7 +31,7 @@ public final class BinaryQuantizationCompressionConfiguration extends VectorSear
      * {@inheritDoc}
      */
     @Override
-    public BinaryQuantizationCompressionConfiguration setRerankWithOriginalVectors(Boolean rerankWithOriginalVectors) {
+    public BinaryQuantizationCompression setRerankWithOriginalVectors(Boolean rerankWithOriginalVectors) {
         super.setRerankWithOriginalVectors(rerankWithOriginalVectors);
         return this;
     }
@@ -40,7 +40,7 @@ public final class BinaryQuantizationCompressionConfiguration extends VectorSear
      * {@inheritDoc}
      */
     @Override
-    public BinaryQuantizationCompressionConfiguration setDefaultOversampling(Double defaultOversampling) {
+    public BinaryQuantizationCompression setDefaultOversampling(Double defaultOversampling) {
         super.setDefaultOversampling(defaultOversampling);
         return this;
     }
@@ -57,16 +57,16 @@ public final class BinaryQuantizationCompressionConfiguration extends VectorSear
     }
 
     /**
-     * Reads an instance of BinaryQuantizationCompressionConfiguration from the JsonReader.
+     * Reads an instance of BinaryQuantizationCompression from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of BinaryQuantizationCompressionConfiguration if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
+     * @return An instance of BinaryQuantizationCompression if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
      * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the BinaryQuantizationCompressionConfiguration.
+     * @throws IOException If an error occurs while reading the BinaryQuantizationCompression.
      */
-    public static BinaryQuantizationCompressionConfiguration fromJson(JsonReader jsonReader) throws IOException {
+    public static BinaryQuantizationCompression fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean compressionNameFound = false;
             String compressionName = null;
@@ -95,13 +95,12 @@ public final class BinaryQuantizationCompressionConfiguration extends VectorSear
                 }
             }
             if (compressionNameFound) {
-                BinaryQuantizationCompressionConfiguration deserializedBinaryQuantizationCompressionConfiguration
-                    = new BinaryQuantizationCompressionConfiguration(compressionName);
-                deserializedBinaryQuantizationCompressionConfiguration
-                    .setRerankWithOriginalVectors(rerankWithOriginalVectors);
-                deserializedBinaryQuantizationCompressionConfiguration.setDefaultOversampling(defaultOversampling);
+                BinaryQuantizationCompression deserializedBinaryQuantizationCompression
+                    = new BinaryQuantizationCompression(compressionName);
+                deserializedBinaryQuantizationCompression.setRerankWithOriginalVectors(rerankWithOriginalVectors);
+                deserializedBinaryQuantizationCompression.setDefaultOversampling(defaultOversampling);
 
-                return deserializedBinaryQuantizationCompressionConfiguration;
+                return deserializedBinaryQuantizationCompression;
             }
             throw new IllegalStateException("Missing required property: name");
         });

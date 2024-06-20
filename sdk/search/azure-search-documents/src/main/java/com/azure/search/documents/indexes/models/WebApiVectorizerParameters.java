@@ -20,11 +20,11 @@ import java.util.Map;
  * Specifies the properties for connecting to a user-defined vectorizer.
  */
 @Fluent
-public class WebApiParameters implements JsonSerializable<WebApiParameters> {
+public class WebApiVectorizerParameters implements JsonSerializable<WebApiVectorizerParameters> {
     /*
      * The URI of the Web API providing the vectorizer.
      */
-    private String uri;
+    private String url;
 
     /*
      * The headers required to make the HTTP request.
@@ -58,28 +58,28 @@ public class WebApiParameters implements JsonSerializable<WebApiParameters> {
     private SearchIndexerDataIdentity authIdentity;
 
     /**
-     * Creates an instance of WebApiParameters class.
+     * Creates an instance of WebApiVectorizerParameters class.
      */
-    public WebApiParameters() {
+    public WebApiVectorizerParameters() {
     }
 
     /**
-     * Get the uri property: The URI of the Web API providing the vectorizer.
+     * Get the url property: The URI of the Web API providing the vectorizer.
      * 
-     * @return the uri value.
+     * @return the url value.
      */
-    public String getUri() {
-        return this.uri;
+    public String getUrl() {
+        return this.url;
     }
 
     /**
-     * Set the uri property: The URI of the Web API providing the vectorizer.
+     * Set the url property: The URI of the Web API providing the vectorizer.
      * 
-     * @param uri the uri value to set.
-     * @return the WebApiParameters object itself.
+     * @param url the url value to set.
+     * @return the WebApiVectorizerParameters object itself.
      */
-    public WebApiParameters setUri(String uri) {
-        this.uri = uri;
+    public WebApiVectorizerParameters setUrl(String url) {
+        this.url = url;
         return this;
     }
 
@@ -96,9 +96,9 @@ public class WebApiParameters implements JsonSerializable<WebApiParameters> {
      * Set the httpHeaders property: The headers required to make the HTTP request.
      * 
      * @param httpHeaders the httpHeaders value to set.
-     * @return the WebApiParameters object itself.
+     * @return the WebApiVectorizerParameters object itself.
      */
-    public WebApiParameters setHttpHeaders(Map<String, String> httpHeaders) {
+    public WebApiVectorizerParameters setHttpHeaders(Map<String, String> httpHeaders) {
         this.httpHeaders = httpHeaders;
         return this;
     }
@@ -116,9 +116,9 @@ public class WebApiParameters implements JsonSerializable<WebApiParameters> {
      * Set the httpMethod property: The method for the HTTP request.
      * 
      * @param httpMethod the httpMethod value to set.
-     * @return the WebApiParameters object itself.
+     * @return the WebApiVectorizerParameters object itself.
      */
-    public WebApiParameters setHttpMethod(String httpMethod) {
+    public WebApiVectorizerParameters setHttpMethod(String httpMethod) {
         this.httpMethod = httpMethod;
         return this;
     }
@@ -136,9 +136,9 @@ public class WebApiParameters implements JsonSerializable<WebApiParameters> {
      * Set the timeout property: The desired timeout for the request. Default is 30 seconds.
      * 
      * @param timeout the timeout value to set.
-     * @return the WebApiParameters object itself.
+     * @return the WebApiVectorizerParameters object itself.
      */
-    public WebApiParameters setTimeout(Duration timeout) {
+    public WebApiVectorizerParameters setTimeout(Duration timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -166,9 +166,9 @@ public class WebApiParameters implements JsonSerializable<WebApiParameters> {
      * access token.
      * 
      * @param authResourceId the authResourceId value to set.
-     * @return the WebApiParameters object itself.
+     * @return the WebApiVectorizerParameters object itself.
      */
-    public WebApiParameters setAuthResourceId(String authResourceId) {
+    public WebApiVectorizerParameters setAuthResourceId(String authResourceId) {
         this.authResourceId = authResourceId;
         return this;
     }
@@ -192,9 +192,9 @@ public class WebApiParameters implements JsonSerializable<WebApiParameters> {
      * property is cleared.
      * 
      * @param authIdentity the authIdentity value to set.
-     * @return the WebApiParameters object itself.
+     * @return the WebApiVectorizerParameters object itself.
      */
-    public WebApiParameters setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
+    public WebApiVectorizerParameters setAuthIdentity(SearchIndexerDataIdentity authIdentity) {
         this.authIdentity = authIdentity;
         return this;
     }
@@ -202,7 +202,7 @@ public class WebApiParameters implements JsonSerializable<WebApiParameters> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("uri", this.url);
         jsonWriter.writeMapField("httpHeaders", this.httpHeaders, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("httpMethod", this.httpMethod);
         jsonWriter.writeStringField("timeout", CoreToCodegenBridgeUtils.durationToStringWithDays(this.timeout));
@@ -212,40 +212,40 @@ public class WebApiParameters implements JsonSerializable<WebApiParameters> {
     }
 
     /**
-     * Reads an instance of WebApiParameters from the JsonReader.
+     * Reads an instance of WebApiVectorizerParameters from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of WebApiParameters if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the WebApiParameters.
+     * @return An instance of WebApiVectorizerParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebApiVectorizerParameters.
      */
-    public static WebApiParameters fromJson(JsonReader jsonReader) throws IOException {
+    public static WebApiVectorizerParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            WebApiParameters deserializedWebApiParameters = new WebApiParameters();
+            WebApiVectorizerParameters deserializedWebApiVectorizerParameters = new WebApiVectorizerParameters();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("uri".equals(fieldName)) {
-                    deserializedWebApiParameters.uri = reader.getString();
+                    deserializedWebApiVectorizerParameters.url = reader.getString();
                 } else if ("httpHeaders".equals(fieldName)) {
                     Map<String, String> httpHeaders = reader.readMap(reader1 -> reader1.getString());
-                    deserializedWebApiParameters.httpHeaders = httpHeaders;
+                    deserializedWebApiVectorizerParameters.httpHeaders = httpHeaders;
                 } else if ("httpMethod".equals(fieldName)) {
-                    deserializedWebApiParameters.httpMethod = reader.getString();
+                    deserializedWebApiVectorizerParameters.httpMethod = reader.getString();
                 } else if ("timeout".equals(fieldName)) {
-                    deserializedWebApiParameters.timeout
+                    deserializedWebApiVectorizerParameters.timeout
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("authResourceId".equals(fieldName)) {
-                    deserializedWebApiParameters.authResourceId = reader.getString();
+                    deserializedWebApiVectorizerParameters.authResourceId = reader.getString();
                 } else if ("authIdentity".equals(fieldName)) {
-                    deserializedWebApiParameters.authIdentity = SearchIndexerDataIdentity.fromJson(reader);
+                    deserializedWebApiVectorizerParameters.authIdentity = SearchIndexerDataIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedWebApiParameters;
+            return deserializedWebApiVectorizerParameters;
         });
     }
 }

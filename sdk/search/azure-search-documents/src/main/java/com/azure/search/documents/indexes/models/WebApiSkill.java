@@ -35,7 +35,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
     /*
      * The URI of the Web API providing the vectorizer.
      */
-    private String uri;
+    private String url;
 
     /*
      * The headers required to make the HTTP request.
@@ -74,9 +74,9 @@ public final class WebApiSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
-    public WebApiSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, String uri) {
+    public WebApiSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, String url) {
         super(inputs, outputs);
-        this.uri = uri;
+        this.url = url;
     }
 
     /**
@@ -120,22 +120,22 @@ public final class WebApiSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the uri property: The URI of the Web API providing the vectorizer.
+     * Get the url property: The URI of the Web API providing the vectorizer.
      *
-     * @return the uri value.
+     * @return the url value.
      */
-    public String getUri() {
-        return this.uri;
+    public String getUrl() {
+        return this.url;
     }
 
     /**
-     * Set the uri property: The URI of the Web API providing the vectorizer.
+     * Set the url property: The URI of the Web API providing the vectorizer.
      *
-     * @param uri the uri value to set.
+     * @param url the url value to set.
      * @return the WebApiSkill object itself.
      */
-    public WebApiSkill setUri(String uri) {
-        this.uri = uri;
+    public WebApiSkill setUrl(String url) {
+        this.url = url;
         return this;
     }
 
@@ -293,7 +293,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("context", getContext());
         jsonWriter.writeNumberField("batchSize", this.batchSize);
         jsonWriter.writeNumberField("degreeOfParallelism", this.degreeOfParallelism);
-        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("uri", this.url);
         jsonWriter.writeMapField("httpHeaders", this.httpHeaders, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("httpMethod", this.httpMethod);
         jsonWriter.writeStringField("timeout", CoreToCodegenBridgeUtils.durationToStringWithDays(this.timeout));
@@ -323,7 +323,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
             String context = null;
             Integer batchSize = null;
             Integer degreeOfParallelism = null;
-            String uri = null;
+            String url = null;
             Map<String, String> httpHeaders = null;
             String httpMethod = null;
             Duration timeout = null;
@@ -356,7 +356,7 @@ public final class WebApiSkill extends SearchIndexerSkill {
                 } else if ("degreeOfParallelism".equals(fieldName)) {
                     degreeOfParallelism = reader.getNullable(JsonReader::getInt);
                 } else if ("uri".equals(fieldName)) {
-                    uri = reader.getString();
+                    url = reader.getString();
                 } else if ("httpHeaders".equals(fieldName)) {
                     httpHeaders = reader.readMap(reader1 -> reader1.getString());
                 } else if ("httpMethod".equals(fieldName)) {
@@ -372,13 +372,12 @@ public final class WebApiSkill extends SearchIndexerSkill {
                 }
             }
             if (inputsFound && outputsFound) {
-                WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs, uri);
+                WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs, url);
                 deserializedWebApiSkill.setName(name);
                 deserializedWebApiSkill.setDescription(description);
                 deserializedWebApiSkill.setContext(context);
                 deserializedWebApiSkill.batchSize = batchSize;
                 deserializedWebApiSkill.degreeOfParallelism = degreeOfParallelism;
-                deserializedWebApiSkill.uri = uri;
                 deserializedWebApiSkill.httpHeaders = httpHeaders;
                 deserializedWebApiSkill.httpMethod = httpMethod;
                 deserializedWebApiSkill.timeout = timeout;

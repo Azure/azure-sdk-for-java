@@ -769,6 +769,7 @@ public class SearchServiceCustomizations extends Customization {
 
             addVarArgsOverload(clazz, "profiles", "VectorSearchProfile");
             addVarArgsOverload(clazz, "algorithms", "VectorSearchAlgorithmConfiguration");
+            addVarArgsOverload(clazz, "compressions", "VectorSearchCompression");
         });
     }
 
@@ -812,11 +813,9 @@ public class SearchServiceCustomizations extends Customization {
     }
 
     private void customizeWebApiSkill(ClassCustomization classCustomization) {
-        customizeAst(classCustomization, clazz -> {
-            clazz.getConstructors().getFirst().addParameter("String", "uri");
-            });
+        customizeAst(classCustomization, clazz -> clazz.getConstructors().getFirst().addParameter("String", "url"));
         classCustomization.getConstructor("WebApiSkill").replaceBody("super(inputs, outputs);\n" +
-            "        this.uri = uri;");
+            "        this.url = url;");
 
         classCustomization.getMethod("fromJson").replaceBody("return jsonReader.readObject(reader -> {\n" +
             "            boolean inputsFound = false;\n" +
@@ -828,7 +827,7 @@ public class SearchServiceCustomizations extends Customization {
             "            String context = null;\n" +
             "            Integer batchSize = null;\n" +
             "            Integer degreeOfParallelism = null;\n" +
-            "            String uri = null;\n" +
+            "            String url = null;\n" +
             "            Map<String, String> httpHeaders = null;\n" +
             "            String httpMethod = null;\n" +
             "            Duration timeout = null;\n" +
@@ -861,7 +860,7 @@ public class SearchServiceCustomizations extends Customization {
             "                } else if (\"degreeOfParallelism\".equals(fieldName)) {\n" +
             "                    degreeOfParallelism = reader.getNullable(JsonReader::getInt);\n" +
             "                } else if (\"uri\".equals(fieldName)) {\n" +
-            "                    uri = reader.getString();\n" +
+            "                    url = reader.getString();\n" +
             "                } else if (\"httpHeaders\".equals(fieldName)) {\n" +
             "                    httpHeaders = reader.readMap(reader1 -> reader1.getString());\n" +
             "                } else if (\"httpMethod\".equals(fieldName)) {\n" +
@@ -877,13 +876,12 @@ public class SearchServiceCustomizations extends Customization {
             "                }\n" +
             "            }\n" +
             "            if (inputsFound && outputsFound) {\n" +
-            "                WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs, uri);\n" +
+            "                WebApiSkill deserializedWebApiSkill = new WebApiSkill(inputs, outputs, url);\n" +
             "                deserializedWebApiSkill.setName(name);\n" +
             "                deserializedWebApiSkill.setDescription(description);\n" +
             "                deserializedWebApiSkill.setContext(context);\n" +
             "                deserializedWebApiSkill.batchSize = batchSize;\n" +
             "                deserializedWebApiSkill.degreeOfParallelism = degreeOfParallelism;\n" +
-            "                deserializedWebApiSkill.uri = uri;\n" +
             "                deserializedWebApiSkill.httpHeaders = httpHeaders;\n" +
             "                deserializedWebApiSkill.httpMethod = httpMethod;\n" +
             "                deserializedWebApiSkill.timeout = timeout;\n" +

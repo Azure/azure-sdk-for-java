@@ -80,7 +80,7 @@
       <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
       <Class name="com.azure.search.documents.indexes.models.SearchIndexer" />
       <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionSelector" />
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjections" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjection" />
       <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionsParameters" />
       <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStore" />
       <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreParameters" />
@@ -188,7 +188,7 @@
       <Class name="com.azure.search.documents.indexes.models.SearchIndex" />
       <Class name="com.azure.search.documents.indexes.models.SearchIndexer" />
       <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionSelector" />
-      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjections" />
+      <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjection" />
       <Class name="com.azure.search.documents.indexes.models.SearchIndexerIndexProjectionsParameters" />
       <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStore" />
       <Class name="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreParameters" />
