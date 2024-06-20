@@ -8,6 +8,8 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
+import com.azure.core.amqp.implementation.CreditFlowMode;
+import com.azure.core.amqp.implementation.MessageFlux;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
@@ -86,7 +88,7 @@ class EventHubPartitionAsyncConsumerTest {
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink();
 
-    private AmqpReceiveLinkProcessor linkProcessor;
+    private MessageFluxWrapper linkProcessor;
     private EventHubPartitionAsyncConsumer consumer;
 
     @BeforeEach
@@ -117,8 +119,7 @@ class EventHubPartitionAsyncConsumerTest {
     @ValueSource(strings = {"true", "false"})
     void receivesMessages(boolean trackLastEnqueuedProperties) {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
-            PREFETCH, PARTITION_ID, parentConnection, DEFAULT_INSTRUMENTATION));
+        linkProcessor = createLinkProcessor(false);
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, trackLastEnqueuedProperties);
 
@@ -166,8 +167,7 @@ class EventHubPartitionAsyncConsumerTest {
     @Test
     void receiveMultipleTimes() {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("foo-bar",
-            PREFETCH, PARTITION_ID, parentConnection, DEFAULT_INSTRUMENTATION));
+        linkProcessor = createLinkProcessor(false);
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
@@ -233,7 +233,7 @@ class EventHubPartitionAsyncConsumerTest {
     @Test
     void listensToShutdownSignals() throws InterruptedException {
         // Arrange
-        linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, PARTITION_ID, parentConnection, DEFAULT_INSTRUMENTATION));
+        linkProcessor = createLinkProcessor(false);
         consumer = new EventHubPartitionAsyncConsumer(linkProcessor, messageSerializer, HOSTNAME, EVENT_HUB_NAME,
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
@@ -341,5 +341,16 @@ class EventHubPartitionAsyncConsumerTest {
             .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), TEST_DATE);
 
         return new SystemProperties(amqpAnnotatedMessage, offset, TEST_DATE, sequenceNumber, null);
+    }
+
+
+    private MessageFluxWrapper createLinkProcessor(boolean isV2) {
+        if (isV2) {
+            final MessageFlux messageFlux = new MessageFlux(createSink(link1, link2), PREFETCH, CreditFlowMode.EmissionDriven, MessageFlux.NULL_RETRY_POLICY);
+            return new MessageFluxWrapper(messageFlux);
+        } else {
+            final AmqpReceiveLinkProcessor receiveLinkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor("path", PREFETCH, PARTITION_ID, parentConnection, DEFAULT_INSTRUMENTATION));
+            return new MessageFluxWrapper(receiveLinkProcessor);
+        }
     }
 }
