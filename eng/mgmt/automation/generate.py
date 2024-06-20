@@ -6,6 +6,7 @@ import json
 import glob
 import logging
 import argparse
+import subprocess
 from typing import List
 
 pwd = os.getcwd()
@@ -287,6 +288,17 @@ def main():
 
     if args.get("config"):
         return sdk_automation(args["config"][0], args["config"][1])
+
+    # find the python command
+    python_cmd = "python"
+    try:
+        subprocess.check_call([python_cmd, "--version"])
+    except subprocess.CalledProcessError:
+        python_cmd = "python3"
+        try:
+            subprocess.check_call([python_cmd, "--version"])
+        except subprocess.CalledProcessError:
+            raise Exception("python or python3 not found")
 
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))

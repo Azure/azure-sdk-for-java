@@ -13,10 +13,15 @@ variables:
   value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 - name: NodeVersion
   value: '18.x'
+- name: pythonVersion
+  value: '3.10'
 - name: fromTypeSpec
   value: $[ne(variables['TSP_CONFIG'], '')]
 
 steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: ${{ variables.pythonVersion }}
 - bash: |
     sudo apt-get install -y --upgrade python3-pip python3-setuptools
     pip3 install --upgrade wheel
