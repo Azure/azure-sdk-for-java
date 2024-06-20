@@ -198,7 +198,7 @@ public class GroupMessageTests extends TestBase {
         }
     }
 
-    private static class JsonModel implements JsonSerializable<JsonModel> {
+    public static class JsonModel implements JsonSerializable<JsonModel> {
         private String name;
         private String description;
 
