@@ -11,7 +11,6 @@ import com.azure.cosmos.test.faultinjection.{CosmosFaultInjectionHelper, FaultIn
 
 import java.time.Duration
 import java.util
-import java.util.{ArrayList, List}
 import java.util.concurrent.atomic.AtomicLong
 
 class SparkE2EFaultInjectionITest extends IntegrationSpec
