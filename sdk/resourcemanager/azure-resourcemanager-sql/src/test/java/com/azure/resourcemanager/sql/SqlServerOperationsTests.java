@@ -1665,7 +1665,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                                     || "M".equals(serviceObjective.sku().family()))
                             .map(serviceObjective -> DatabaseSku.fromSku(serviceObjective.sku()))
                             .forEach(fromSku -> databaseSkus.removeIf(databaseSku -> databaseSku.equals(fromSku)))
-                    );
+                );
 
                 serverVersionCapability.supportedElasticPoolEditions().forEach(edition ->
                         edition.supportedElasticPoolPerformanceLevels()
@@ -1675,7 +1675,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                                     || "M".equals(performance.sku().family()))
                             .map(performance -> ElasticPoolSku.fromSku(performance.sku()))
                             .forEach(fromSku -> elasticPoolSkus.removeIf(elasticPoolSku -> elasticPoolSku.equals(fromSku)))
-                    );
+                );
             });
 
         SqlServer sqlServer = sqlServerManager.sqlServers().define(sqlServerName)
