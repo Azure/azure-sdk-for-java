@@ -221,8 +221,8 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
         return this.diagnosticsTracker;
     }
 
-    public void setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.keywordIdentifiers = customCorrelatedIds;
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
     }
 
     @Override

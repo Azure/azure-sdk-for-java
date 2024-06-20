@@ -223,9 +223,9 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
     }
 
     /**
-     * Sets the CustomCorrelatedIds.
+     * Sets the keywordIdentifiers.
      *
-     * @param keywordIdentifiers the CustomCorrelatedIds.
+     * @param keywordIdentifiers the keywordIdentifiers.
      * @return current CosmosCommonRequestOptions.
      */
     public CosmosRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {

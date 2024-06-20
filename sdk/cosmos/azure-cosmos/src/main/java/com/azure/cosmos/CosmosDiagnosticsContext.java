@@ -915,7 +915,7 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    public Set<String> getCustomCorrelatedId() {
+    public Set<String> getKeywordIdentifiers() {
         return this.requestOptions.getKeywordIdentifiers();
     }
 

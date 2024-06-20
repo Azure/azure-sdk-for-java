@@ -6,6 +6,8 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.collections.set.UnmodifiableSet;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -326,11 +328,11 @@ public final class CosmosBulkExecutionOptions {
     /**
      * Sets the custom ids.
      *
-     * @param customCorrelatedIds the custom ids.
+     * @param keywordIdentifiers the custom ids.
      * @return the current request options.
      */
-    public CosmosBulkExecutionOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.actualRequestOptions.setCustomCorrelatedIds(customCorrelatedIds);
+    public CosmosBulkExecutionOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
         return this;
     }
 
@@ -339,8 +341,8 @@ public final class CosmosBulkExecutionOptions {
      *
      * @return set of custom ids.
      */
-    public Set<String> getCustomCorrelatedIds() {
-        return this.actualRequestOptions.getKeywordIdentifiers();
+    public Set<String> getKeywordIdentifiers() {
+        return UnmodifiableSet.unmodifiableSet(this.actualRequestOptions.getKeywordIdentifiers());
     }
 
     CosmosBulkExecutionOptionsImpl getImpl() {

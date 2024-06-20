@@ -45,7 +45,7 @@ public class CosmosItemRequestOptions {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
-    private Set<String> customCorrelatedIds;
+    private Set<String> keywordIdentifiers;
 
     /**
      * copy constructor
@@ -453,7 +453,7 @@ public class CosmosItemRequestOptions {
         }
         requestOptions.setEffectiveItemSerializer(this.customSerializer);
         requestOptions.setUseTrackingIds(this.useTrackingIds);
-        requestOptions.setKeywordIdentifiers(customCorrelatedIds);
+        requestOptions.setKeywordIdentifiers(keywordIdentifiers);
         return requestOptions;
     }
 
@@ -565,11 +565,11 @@ public class CosmosItemRequestOptions {
     /**
      * Sets the custom ids.
      *
-     * @param customCorrelatedIds the custom ids.
+     * @param keywordIdentifiers the custom ids.
      * @return the current request options.
      */
-    public CosmosItemRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.customCorrelatedIds = customCorrelatedIds;
+    public CosmosItemRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
         return this;
     }
 
