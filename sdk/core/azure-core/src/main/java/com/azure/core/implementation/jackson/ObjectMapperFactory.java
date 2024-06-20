@@ -56,7 +56,7 @@ final class ObjectMapperFactory {
             .addModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
             .addModule(FlatteningSerializer.getModule(innerMapper))
             .addModule(FlatteningDeserializer.getModule(innerMapper))
-            .addModule(JsonSerializableSerializer.getModule())
+            .addModule(JsonSerializableSerializer.getModule(innerMapper))
             .addModule(JsonSerializableDeserializer.getModule())
             .addModule(ResponseErrorDeserializer.getModule(innerMapper))
             .build());
@@ -78,10 +78,10 @@ final class ObjectMapperFactory {
         return attemptJackson215Mutation(new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT));
     }
 
-    public ObjectMapper createHeaderMapper() {
+    public ObjectMapper createHeaderMapper(ObjectMapper innerMapper) {
         return attemptJackson215Mutation(
             initializeMapperBuilder(JsonMapper.builder()).enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-                .addModule(JsonSerializableSerializer.getModule())
+                .addModule(JsonSerializableSerializer.getModule(innerMapper))
                 .addModule(JsonSerializableDeserializer.getModule())
                 .build());
     }

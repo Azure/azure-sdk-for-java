@@ -135,12 +135,13 @@ public final class ObjectMapperShim {
     /**
      * Creates and configures JSON {@code ObjectMapper} for headers serialization.
      *
+     * @param innerMapperShim inner mapper to use for non-azure specific serialization.
      * @return Instance of shimmed {@code ObjectMapperShim}.
      * @throws LinkageError if Jackson version mismatch is detected.
      */
-    public static ObjectMapperShim createHeaderMapper() {
+    public static ObjectMapperShim createHeaderMapper(ObjectMapperShim innerMapperShim) {
         try {
-            ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createHeaderMapper();
+            ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createHeaderMapper(innerMapperShim.mapper);
             return new ObjectMapperShim(mapper);
         } catch (LinkageError ex) {
             throw LOGGER.logThrowableAsError(new LinkageError(JacksonVersion.getHelpInfo(), ex));
