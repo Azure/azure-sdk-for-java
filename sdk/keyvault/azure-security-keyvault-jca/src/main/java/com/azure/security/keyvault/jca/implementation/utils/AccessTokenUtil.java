@@ -103,9 +103,9 @@ public final class AccessTokenUtil {
         StringBuilder requestBody = new StringBuilder();
         try {
             requestBody.append(GRANT_TYPE_FRAGMENT)
-                .append(CLIENT_ID_FRAGMENT).append(URLEncoder.encode(clientId, "UTF-8"))
+                .append(CLIENT_ID_FRAGMENT).append(clientId)
                 .append(CLIENT_SECRET_FRAGMENT).append(URLEncoder.encode(clientSecret, "UTF-8"))
-                .append(RESOURCE_FRAGMENT).append(URLEncoder.encode(resource, "UTF-8"));
+                .append(RESOURCE_FRAGMENT).append(resource);
         } catch (UnsupportedEncodingException e) {
             LOGGER.warning("Failed to construct requestBody");
         }
