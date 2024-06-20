@@ -5,6 +5,9 @@
 ### Features Added
 - GA for `AzurePipelinesCredential`
 
+### Bugs Fixed
+- Fixed an issue which may block `AzurePowershellCredential` from functioning correctly. [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files)
+
 ## 1.13.0-beta.2 (2024-06-10)
 
 ### Features Added
