@@ -85,7 +85,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
     @BeforeAll
     static void beforeAll() {
-        importImage(TestUtils.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Collections.singletonList("latest"));
+        importImage(HELLO_WORLD_REPOSITORY_NAME, Collections.singletonList("latest"));
     }
 
     @AfterEach

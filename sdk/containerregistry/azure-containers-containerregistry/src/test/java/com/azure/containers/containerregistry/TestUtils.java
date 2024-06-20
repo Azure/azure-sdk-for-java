@@ -8,24 +8,21 @@ import com.azure.containers.containerregistry.models.ManifestMediaType;
 import com.azure.containers.containerregistry.models.OciAnnotations;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.containers.containerregistry.models.OciImageManifest;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.models.ImportImageParameters;
 import com.azure.resourcemanager.containerregistry.models.ImportMode;
 import com.azure.resourcemanager.containerregistry.models.ImportSource;
-import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -60,7 +57,6 @@ public class TestUtils {
     public static final String RESOURCE_GROUP = CONFIGURATION.get("CONTAINERREGISTRY_RESOURCE_GROUP");
     public static final String SUBSCRIPTION_ID = CONFIGURATION.get("CONTAINERREGISTRY_SUBSCRIPTION_ID");
     public static final String TENANT_ID = CONFIGURATION.get("CONTAINERREGISTRY_TENANT_ID");
-    public static final String CLIENT_ID = CONFIGURATION.get("CONTAINERREGISTRY_CLIENT_ID");
     public static final String REGISTRY_URI = "registry.hub.docker.com";
     public static final String REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ENDPOINT");
     public static final String ANONYMOUS_REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_ENDPOINT");
@@ -69,17 +65,9 @@ public class TestUtils {
     public static final String REGISTRY_ENDPOINT_PLAYBACK = "https://REDACTED";
     public static final String REGISTRY_NAME_PLAYBACK = "REDACTED";
     public static final int HTTP_STATUS_CODE_202 = 202;
-    public static final String CONTAINERREGISTRY_CLIENT_SECRET = CONFIGURATION.get("CONTAINERREGISTRY_CLIENT_SECRET");
 
     public static final ManifestMediaType OCI_INDEX_MEDIA_TYPE = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
     public static final ManifestMediaType DOCKER_MANIFEST_LIST_TYPE = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
-
-    static class FakeCredentials implements TokenCredential {
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
-        }
-    }
 
     static <T extends Comparable<? super T>> boolean isSorted(Iterable<T> iterable) {
         Iterator<T> iter = iterable.iterator();
@@ -97,34 +85,23 @@ public class TestUtils {
         return true;
     }
 
-    static TokenCredential getCredentialsByEndpoint(TestMode testMode, String endpoint) {
-        if (testMode == TestMode.PLAYBACK) {
-            return new FakeCredentials();
-        }
-
-        String authority = getAuthority(endpoint);
-        return getCredentialByAuthority(testMode, authority);
-    }
-
     static TokenCredential getCredentialByAuthority(TestMode testMode, String authority) {
-        if (testMode == TestMode.PLAYBACK) {
-            return new FakeCredentials();
-        }
-
-        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.equals(authority)) {
-            return new DefaultAzureCredentialBuilder().build();
-        } else {
-            return new ClientSecretCredentialBuilder()
-                .tenantId(TENANT_ID)
-                .clientId(CLIENT_ID)
-                .clientSecret(CONTAINERREGISTRY_CLIENT_SECRET)
-                .authorityHost(authority).build();
+        switch (testMode) {
+            case LIVE:
+                return new AzurePowerShellCredentialBuilder()
+                    .build();
+            case RECORD:
+                return new DefaultAzureCredentialBuilder()
+                    .authorityHost(authority)
+                    .build();
+            default:
+                return new MockTokenCredential();
         }
     }
 
-    static void importImage(TestMode mode, String repository, List<String> tags) {
+    static void importImage(String repository, List<String> tags) {
         try {
-            importImage(mode, REGISTRY_NAME, repository, tags, REGISTRY_ENDPOINT);
+            importImage(getTestMode(), REGISTRY_NAME, repository, tags, REGISTRY_ENDPOINT);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -160,14 +137,14 @@ public class TestUtils {
         }
     }
 
-    static void importImage(TestMode mode, String registryName, String repository, List<String> tags, String endpoint) throws InterruptedException {
-        if (mode == TestMode.PLAYBACK) {
+    static void importImage(TestMode testMode, String registryName, String repository, List<String> tags, String endpoint) throws InterruptedException {
+        if (testMode == TestMode.PLAYBACK) {
             return;
         }
 
         String authority = getAuthority(endpoint);
 
-        TokenCredential credential = getCredentialByAuthority(mode, authority);
+        TokenCredential credential = getCredentialByAuthority(testMode, authority);
         tags = tags.stream().map(tag -> String.format("%1$s:%2$s", repository, tag)).collect(Collectors.toList());
         AzureProfile profile = getAzureProfile(authority);
 
@@ -217,7 +194,6 @@ public class TestUtils {
 
     public static TestMode getTestMode() {
         final String azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
-
         return azureTestMode != null ? TestMode.valueOf(azureTestMode.toUpperCase(Locale.US)) : TestMode.PLAYBACK;
     }
 }

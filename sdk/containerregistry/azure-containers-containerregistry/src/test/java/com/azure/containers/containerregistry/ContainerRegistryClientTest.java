@@ -53,7 +53,7 @@ public class ContainerRegistryClientTest extends ContainerRegistryClientsTestBas
 
     @BeforeEach
     void beforeEach() {
-        TestUtils.importImage(getTestMode(), repositoryName, Collections.singletonList("latest"));
+        TestUtils.importImage(repositoryName, Collections.singletonList("latest"));
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         } else {

@@ -43,7 +43,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
 
     @BeforeEach
     void beforeEach() {
-        TestUtils.importImage(getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
+        TestUtils.importImage(HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"));
     }
 
     @AfterEach

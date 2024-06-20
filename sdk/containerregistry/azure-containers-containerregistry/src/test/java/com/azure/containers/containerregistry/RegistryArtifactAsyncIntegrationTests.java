@@ -50,7 +50,6 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
     @BeforeEach
     void beforeEach() {
         TestUtils.importImage(
-            getTestMode(),
             HELLO_WORLD_REPOSITORY_NAME,
             Arrays.asList(
                 LATEST_TAG_NAME,

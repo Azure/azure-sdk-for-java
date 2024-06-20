@@ -41,7 +41,6 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
     @BeforeEach
     void beforeEach() {
         TestUtils.importImage(
-            getTestMode(),
             repositoryName,
             Arrays.asList(
                 LATEST_TAG_NAME,
