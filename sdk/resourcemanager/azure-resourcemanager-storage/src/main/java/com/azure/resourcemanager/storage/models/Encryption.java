@@ -19,13 +19,14 @@ public final class Encryption {
     private EncryptionServices services;
 
     /*
-     * The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Storage, Microsoft.Keyvault
+     * The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Storage, Microsoft.Keyvault
      */
     @JsonProperty(value = "keySource")
     private KeySource keySource;
 
     /*
-     * A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest.
+     * A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed
+     * keys for data at rest.
      */
     @JsonProperty(value = "requireInfrastructureEncryption")
     private Boolean requireInfrastructureEncryption;
