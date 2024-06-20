@@ -616,11 +616,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withAdministratorLogin(sqlServerAdminName)
                 .withAdministratorPassword(sqlServerAdminPassword)
                 .withSystemAssignedManagedServiceIdentity()
-                .defineDatabase(databaseName)
-                .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                .withBasicEdition()
-                .attach()
                 .create();
+        sqlServer.databases().define(databaseName).fromSample(SampleName.ADVENTURE_WORKS_LT).withBasicEdition().create();
         SqlDatabase dbFromSample = sqlServer.databases().get(databaseName);
         Assertions.assertNotNull(dbFromSample);
         Assertions.assertEquals(DatabaseEdition.BASIC, dbFromSample.edition());
@@ -1660,29 +1657,25 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
-                serverVersionCapability.supportedEditions().stream().map(edition ->
+                serverVersionCapability.supportedEditions().forEach(edition ->
                         edition.supportedServiceLevelObjectives()
                             .stream().filter(serviceObjective ->
                                 (serviceObjective.status() != CapabilityStatus.AVAILABLE
                                     && serviceObjective.status() != CapabilityStatus.DEFAULT)
                                     || "M".equals(serviceObjective.sku().family()))
                             .map(serviceObjective -> DatabaseSku.fromSku(serviceObjective.sku()))
-                            .collect(Collectors.toCollection(LinkedList::new))
-                    )
-                    .filter(fromSkus -> !fromSkus.isEmpty())
-                    .forEach(fromSkus -> databaseSkus.removeIf(fromSkus::contains));
+                            .forEach(fromSku -> databaseSkus.removeIf(databaseSku -> databaseSku.equals(fromSku)))
+                    );
 
-                serverVersionCapability.supportedElasticPoolEditions().stream().map(edition ->
+                serverVersionCapability.supportedElasticPoolEditions().forEach(edition ->
                         edition.supportedElasticPoolPerformanceLevels()
                             .stream().filter(performance ->
                                 (performance.status() != CapabilityStatus.AVAILABLE
                                     && performance.status() != CapabilityStatus.DEFAULT)
                                     || "M".equals(performance.sku().family()))
                             .map(performance -> ElasticPoolSku.fromSku(performance.sku()))
-                            .collect(Collectors.toCollection(LinkedList::new))
-                    )
-                    .filter(fromSkus -> !fromSkus.isEmpty())
-                    .forEach(fromSkus -> elasticPoolSkus.removeIf(fromSkus::contains));
+                            .forEach(fromSku -> elasticPoolSkus.removeIf(elasticPoolSku -> elasticPoolSku.equals(fromSku)))
+                    );
             });
 
         SqlServer sqlServer = sqlServerManager.sqlServers().define(sqlServerName)
