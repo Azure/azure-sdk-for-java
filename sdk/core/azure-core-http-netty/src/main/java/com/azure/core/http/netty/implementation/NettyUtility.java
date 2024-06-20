@@ -6,20 +6,19 @@ package com.azure.core.http.netty.implementation;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.Version;
 import reactor.netty.Connection;
 import reactor.netty.channel.ChannelOperations;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
+import java.util.Objects;
 
 /**
  * Helper class containing utility methods.
@@ -94,30 +93,32 @@ public final class NettyUtility {
      */
     public static void validateNettyVersions() {
         if (LOGGER.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-            validateNettyVersions(LOGGER::info);
+            NettyVersionLogInformation versionLogInformation = createNettyVersionLogInformation();
+            if (versionLogInformation.shouldLog()) {
+                versionLogInformation.log();
+            }
         }
     }
 
-    static void validateNettyVersions(Consumer<String> logger) {
+    static NettyVersionLogInformation createNettyVersionLogInformation() {
         Map<String, String> pomVersions = CoreUtils.getProperties(PROPERTIES_FILE_NAME);
-        String nettyVersion = pomVersions.get(NETTY_VERSION_PROPERTY);
-        String nettyTcnativeVersion = pomVersions.get(NETTY_TCNATIVE_VERSION_PROPERTY);
+        String azureNettyVersion = pomVersions.get(NETTY_VERSION_PROPERTY);
+        String azureNativeNettyVersion = pomVersions.get(NETTY_TCNATIVE_VERSION_PROPERTY);
+        Map<String, String> classpathNettyVersions = new LinkedHashMap<>();
+        Map<String, String> classPathNativeNettyVersions = new LinkedHashMap<>();
 
         Map<String, Version> nettyVersions = Version.identify();
-        List<String> versionInformation = new ArrayList<>(11); // There are 11 Netty dependencies in the pom.xml file.
 
-        Set<String> nonNativeNettyVersions = new HashSet<>();
         for (String artifact : REQUIRED_NETTY_VERSION_ARTIFACTS) {
             Version version = nettyVersions.get(artifact);
 
             // Version shouldn't be null as azure-core-http-netty has it as a dependency, but it could have been
             // excluded. Include it as a warning.
             if (version == null) {
-                versionInformation.add("'io.netty:" + artifact + "' (not found and is required)");
-                nonNativeNettyVersions.add("unknown");
+                classpathNettyVersions.put("io.netty:" + artifact, "unknown (not found and is required)");
             } else {
-                versionInformation.add("'io.netty:" + artifact + "' version: " + version.artifactVersion());
-                nonNativeNettyVersions.add(version.artifactVersion());
+                classpathNettyVersions.put(version.artifactId() + ":" + version.artifactId(),
+                    version.artifactVersion());
             }
         }
 
@@ -127,8 +128,8 @@ public final class NettyUtility {
             // Version shouldn't be null as azure-core-http-netty has it as a dependency, but it could have been
             // excluded. Don't include it as a warning for native dependencies as it is optional.
             if (version != null) {
-                versionInformation.add("'io.netty:" + artifact + "' version: " + version.artifactVersion());
-                nonNativeNettyVersions.add(version.artifactVersion());
+                classpathNettyVersions.put(version.artifactId() + ":" + version.artifactId(),
+                    version.artifactVersion());
             }
         }
 
@@ -138,29 +139,59 @@ public final class NettyUtility {
             // Version shouldn't be null as azure-core-http-netty has it as a dependency, but it could have been
             // excluded. Don't include it as a warning for native dependencies as it is optional.
             if (version != null) {
-                versionInformation.add("'io.netty:" + artifact + "' version: " + version.artifactVersion());
+                classPathNativeNettyVersions.put(version.artifactId() + ":" + version.artifactId(),
+                    version.artifactVersion());
             }
         }
 
-        String versionInformationString = CoreUtils.stringJoin(", ", versionInformation);
-        StringBuilder stringBuilder
-            = new StringBuilder().append("The following is Netty version information that was found on the classpath: ")
-                .append(versionInformationString)
-                .append(". ");
+        return new NettyVersionLogInformation(azureNettyVersion, azureNativeNettyVersion, classpathNettyVersions,
+            classPathNativeNettyVersions);
+    }
 
-        if (nonNativeNettyVersions.size() > 1) {
-            stringBuilder.append(NETTY_VERSION_MISMATCH_LOG);
+    static final class NettyVersionLogInformation {
+        private final String azureNettyVersion;
+        private final String azureNativeNettyVersion;
+        private final Map<String, String> classpathNettyVersions;
+        private final Map<String, String> classPathNativeNettyVersions;
+
+        NettyVersionLogInformation(String azureNettyVersion, String azureNativeNettyVersion,
+            Map<String, String> classpathNettyVersions, Map<String, String> classPathNativeNettyVersions) {
+            this.azureNettyVersion = azureNettyVersion;
+            this.azureNativeNettyVersion = azureNativeNettyVersion;
+            this.classpathNettyVersions = classpathNettyVersions;
+            this.classPathNativeNettyVersions = classPathNativeNettyVersions;
         }
 
-        stringBuilder.append("The version of azure-core-http-netty being used was built with Netty version ")
-            .append(nettyVersion)
-            .append(" and Netty Tcnative version ")
-            .append(nettyTcnativeVersion)
-            .append(". If your application runs without issue this message can be ignored, otherwise please align the "
-                + "Netty versions used in your application. For more information, see "
-                + "https://aka.ms/azsdk/java/dependency/troubleshoot.");
+        boolean shouldLog() {
+            boolean hasNettyVersionMismatch = classpathNettyVersions.values()
+                .stream()
+                .anyMatch(version -> !Objects.equals(version, azureNettyVersion));
+            boolean hasNativeNettyVersionMismatch = classPathNativeNettyVersions.values()
+                .stream()
+                .anyMatch(version -> !Objects.equals(version, azureNativeNettyVersion));
 
-        logger.accept(stringBuilder.toString());
+            return hasNettyVersionMismatch || hasNativeNettyVersionMismatch;
+        }
+
+        private void log() {
+            LoggingEventBuilder loggingEventBuilder = LOGGER.atInfo();
+
+            loggingEventBuilder.addKeyValue("azure-netty-version", azureNettyVersion)
+                .addKeyValue("azure-netty-native-version", azureNativeNettyVersion);
+
+            for (Map.Entry<String, String> entry : classpathNettyVersions.entrySet()) {
+                loggingEventBuilder.addKeyValue("classpath-netty-version-" + entry.getKey(), entry.getValue());
+            }
+
+            for (Map.Entry<String, String> entry : classPathNativeNettyVersions.entrySet()) {
+                loggingEventBuilder.addKeyValue("classpath-native-netty-version-" + entry.getKey(), entry.getValue());
+            }
+
+            loggingEventBuilder.log("The following Netty versions were found on the classpath and have a mismatch with "
+                + "the versions used by azure-core-http-netty. If your application runs without issue this message "
+                + "can be ignored, otherwise please align the Netty versions used in your application. For more "
+                + "information, see https://aka.ms/azsdk/java/dependency/troubleshoot.");
+        }
     }
 
     private NettyUtility() {

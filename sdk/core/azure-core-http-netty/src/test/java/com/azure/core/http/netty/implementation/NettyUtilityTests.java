@@ -9,16 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class NettyUtilityTests {
     @Test
     public void validateNettyVersions() {
-        StringBuilder logger = new StringBuilder();
-        NettyUtility.validateNettyVersions(logger::append);
+        NettyUtility.NettyVersionLogInformation logInformation = NettyUtility.createNettyVersionLogInformation();
 
-        String logMessage = logger.toString();
-
-        // Version information is always logged.
-        assertFalse(logMessage.isEmpty(), "Version logs are always expected.");
-
-        // But azure-core-http-netty shouldn't have version mismatches.
-        assertFalse(logMessage.contains(NettyUtility.NETTY_VERSION_MISMATCH_LOG),
-            "Unexpected Netty version mismatch logs.");
+        // Should never have version mismatches when running tests, that would mean either the version properties are
+        // wrong or there is a dependency diamond within azure-core-http-netty. Either way, it should be fixed.
+        assertFalse(logInformation.shouldLog());
     }
 }
