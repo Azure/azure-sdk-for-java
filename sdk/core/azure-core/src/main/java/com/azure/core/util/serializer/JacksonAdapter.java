@@ -131,9 +131,8 @@ public class JacksonAdapter implements SerializerAdapter {
     @Deprecated
     public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
         Objects.requireNonNull(configureSerialization, "'configureSerialization' cannot be null.");
-        ObjectMapperShim innerMapperShim = ObjectMapperShim.createSimpleMapper();
-        this.headerMapper = ObjectMapperShim.createHeaderMapper(innerMapperShim);
-        this.mapper = ObjectMapperShim.createJsonMapper(innerMapperShim, (outerMapper,
+        this.headerMapper = ObjectMapperShim.createHeaderMapper();
+        this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(), (outerMapper,
             innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper, configureSerialization));
     }
 
