@@ -1700,7 +1700,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             Flux.range(0, 3)
                 .flatMap(i -> sqlServer.elasticPools().define("elasticPool" + i).withSku(elasticPoolSkus.get(i)).createAsync().cast(Indexable.class))
         )
-            .blockLast();
+            .blockLast(Duration.ofMinutes(15));
     }
 
     @Test
@@ -1759,16 +1759,16 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .append("\n    ").append("/** ").append(edition).append(" Edition with ").append(detailName).append(" sku. */")
             .append("\n    ").append("public static final ").append(className).append(" ").append(String.format("%s_%s", edition.toUpperCase(Locale.ROOT), detailName.toUpperCase(Locale.ROOT))).append(" =")
             .append("\n        new ").append(className).append("(")
-                .append(sku.name() == null ? null : "\"" + sku.name() + "\"")
-                .append(", ")
-                .append(sku.tier() == null ? null : "\"" + sku.tier() + "\"")
-                .append(", ")
-                .append(sku.family() == null ? null : "\"" + sku.family() + "\"")
-                .append(", ")
-                .append(sku.capacity())
-                .append(", ")
-                .append(sku.size() == null ? null : "\"" + sku.size() + "\"")
-                .append(");");
+            .append(sku.name() == null ? null : "\"" + sku.name() + "\"")
+            .append(", ")
+            .append(sku.tier() == null ? null : "\"" + sku.tier() + "\"")
+            .append(", ")
+            .append(sku.family() == null ? null : "\"" + sku.family() + "\"")
+            .append(", ")
+            .append(sku.capacity())
+            .append(", ")
+            .append(sku.size() == null ? null : "\"" + sku.size() + "\"")
+            .append(");");
     }
 
     @Test
