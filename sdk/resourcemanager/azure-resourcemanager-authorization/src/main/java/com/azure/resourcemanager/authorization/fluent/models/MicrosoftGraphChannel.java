@@ -149,8 +149,9 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the isFavoriteByDefault property: Indicates whether the channel should automatically be marked 'favorite' for
-     * all members of the team. Can only be set programmatically with Create team. Default: false.
+     * Get the isFavoriteByDefault property: Indicates if the channel is marked 'recommended' for all
+     * members of the team to show in their channel list.
+     * NOTE: All recommended channels will automatically show in channels list for EDU and FLW users.
      *
      * @return the isFavoriteByDefault value.
      */
@@ -159,8 +160,10 @@ public final class MicrosoftGraphChannel extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the isFavoriteByDefault property: Indicates whether the channel should automatically be marked 'favorite' for
-     * all members of the team. Can only be set programmatically with Create team. Default: false.
+     * Set the isFavoriteByDefault property: Indicates whether the channel should be marked 'recommended' for all
+     * members of the team to show in their channel list. Can only be set programmatically with Create team.
+     * Default: false.
+     * NOTE: All recommended channels will automatically show in channels list for EDU and FLW users.
      *
      * @param isFavoriteByDefault the isFavoriteByDefault value to set.
      * @return the MicrosoftGraphChannel object itself.

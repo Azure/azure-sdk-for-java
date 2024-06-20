@@ -15,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GoogleAdWordsLinkedServiceTypeProperties {
     /*
-     * (Deprecated) Properties used to connect to GoogleAds. It is mutually exclusive with any other properties in the linked service. Type: object.
+     * (Deprecated) Properties used to connect to GoogleAds. It is mutually exclusive with any other properties in the
+     * linked service. Type: object.
      */
     @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
 
     /*
-     * The Client customer ID of the AdWords account that you want to fetch report data for. Type: string (or Expression with resultType string).
+     * The Client customer ID of the AdWords account that you want to fetch report data for. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "clientCustomerID")
     private Object clientCustomerId;
@@ -33,7 +35,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     private SecretBase developerToken;
 
     /*
-     * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on self-hosted IR.
+     * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on
+     * self-hosted IR.
      */
     @JsonProperty(value = "authenticationType")
     private GoogleAdWordsAuthenticationType authenticationType;
@@ -45,7 +48,8 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     private SecretBase refreshToken;
 
     /*
-     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with resultType string).
+     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "clientId")
     private Object clientId;
@@ -57,55 +61,67 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     private SecretBase clientSecret;
 
     /*
-     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
+     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "email")
     private Object email;
 
     /*
-     * (Deprecated) The full path to the .p12 key file that is used to authenticate the service account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
+     * (Deprecated) The full path to the .p12 key file that is used to authenticate the service account email address
+     * and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "keyFilePath")
     private Object keyFilePath;
 
     /*
-     * (Deprecated) The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType string).
+     * (Deprecated) The full path of the .pem file containing trusted CA certificates for verifying the server when
+     * connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default value is the
+     * cacerts.pem file installed with the IR. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * (Deprecated) Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is false. Type: boolean (or Expression with resultType boolean).
+     * (Deprecated) Specifies whether to use a CA certificate from the system trust store or from a specified PEM file.
+     * The default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
-     * The private key that is used to authenticate the service account email address and can only be used on self-hosted IR.
+     * The private key that is used to authenticate the service account email address and can only be used on
+     * self-hosted IR.
      */
     @JsonProperty(value = "privateKey")
     private SecretBase privateKey;
 
     /*
-     * The customer ID of the Google Ads Manager account through which you want to fetch report data of specific Customer. Type: string (or Expression with resultType string).
+     * The customer ID of the Google Ads Manager account through which you want to fetch report data of specific
+     * Customer. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "loginCustomerID")
     private Object loginCustomerId;
 
     /*
-     * The Google Ads API major version such as v14. The supported major versions could be found on https://developers.google.com/google-ads/api/docs/release-notes. Type: string (or Expression with resultType string).
+     * The Google Ads API major version such as v14. The supported major versions could be found on
+     * https://developers.google.com/google-ads/api/docs/release-notes. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "googleAdsApiVersion")
     private Object googleAdsApiVersion;
 
     /*
-     * Specifies whether to use the legacy data type mappings, which maps float, int32 and int64 from Google to string. Do not set this to true unless you want to keep backward compatibility with legacy driver's data type mappings. Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to use the legacy data type mappings, which maps float, int32 and int64 from Google to string.
+     * Do not set this to true unless you want to keep backward compatibility with legacy driver's data type mappings.
+     * Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "supportLegacyDataTypes")
     private Object supportLegacyDataTypes;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

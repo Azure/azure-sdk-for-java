@@ -17,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Properties of the blob container, including Id, resource name, resource type, Etag. */
+/**
+ * Properties of the blob container, including Id, resource name, resource type, Etag.
+ */
 @Fluent
 public final class BlobContainerInner extends AzureEntityResource {
     /*
@@ -26,13 +28,15 @@ public final class BlobContainerInner extends AzureEntityResource {
     @JsonProperty(value = "properties")
     private ContainerProperties innerContainerProperties;
 
-    /** Creates an instance of BlobContainerInner class. */
+    /**
+     * Creates an instance of BlobContainerInner class.
+     */
     public BlobContainerInner() {
     }
 
     /**
      * Get the innerContainerProperties property: Properties of the blob container.
-     *
+     * 
      * @return the innerContainerProperties value.
      */
     private ContainerProperties innerContainerProperties() {
@@ -41,7 +45,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the version property: The version of the deleted blob container.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -50,7 +54,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the deleted property: Indicates whether the blob container was deleted.
-     *
+     * 
      * @return the deleted value.
      */
     public Boolean deleted() {
@@ -59,7 +63,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the deletedTime property: Blob container deletion time.
-     *
+     * 
      * @return the deletedTime value.
      */
     public OffsetDateTime deletedTime() {
@@ -68,7 +72,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the remainingRetentionDays property: Remaining retention days for soft deleted blob container.
-     *
+     * 
      * @return the remainingRetentionDays value.
      */
     public Integer remainingRetentionDays() {
@@ -79,7 +83,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the defaultEncryptionScope property: Default the container to use specified encryption scope for all writes.
-     *
+     * 
      * @return the defaultEncryptionScope value.
      */
     public String defaultEncryptionScope() {
@@ -90,7 +94,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Set the defaultEncryptionScope property: Default the container to use specified encryption scope for all writes.
-     *
+     * 
      * @param defaultEncryptionScope the defaultEncryptionScope value to set.
      * @return the BlobContainerInner object itself.
      */
@@ -104,7 +108,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the denyEncryptionScopeOverride property: Block override of encryption scope from the container default.
-     *
+     * 
      * @return the denyEncryptionScopeOverride value.
      */
     public Boolean denyEncryptionScopeOverride() {
@@ -115,7 +119,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Set the denyEncryptionScopeOverride property: Block override of encryption scope from the container default.
-     *
+     * 
      * @param denyEncryptionScopeOverride the denyEncryptionScopeOverride value to set.
      * @return the BlobContainerInner object itself.
      */
@@ -130,7 +134,7 @@ public final class BlobContainerInner extends AzureEntityResource {
     /**
      * Get the publicAccess property: Specifies whether data in the container may be accessed publicly and the level of
      * access.
-     *
+     * 
      * @return the publicAccess value.
      */
     public PublicAccess publicAccess() {
@@ -140,7 +144,7 @@ public final class BlobContainerInner extends AzureEntityResource {
     /**
      * Set the publicAccess property: Specifies whether data in the container may be accessed publicly and the level of
      * access.
-     *
+     * 
      * @param publicAccess the publicAccess value to set.
      * @return the BlobContainerInner object itself.
      */
@@ -154,7 +158,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the lastModifiedTime property: Returns the date and time the container was last modified.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -163,7 +167,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the leaseStatus property: The lease status of the container.
-     *
+     * 
      * @return the leaseStatus value.
      */
     public LeaseStatus leaseStatus() {
@@ -172,7 +176,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the leaseState property: Lease state of the container.
-     *
+     * 
      * @return the leaseState value.
      */
     public LeaseState leaseState() {
@@ -182,7 +186,7 @@ public final class BlobContainerInner extends AzureEntityResource {
     /**
      * Get the leaseDuration property: Specifies whether the lease on a container is of infinite or fixed duration, only
      * when the container is leased.
-     *
+     * 
      * @return the leaseDuration value.
      */
     public LeaseDuration leaseDuration() {
@@ -191,7 +195,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the metadata property: A name-value pair to associate with the container as metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -200,7 +204,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Set the metadata property: A name-value pair to associate with the container as metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the BlobContainerInner object itself.
      */
@@ -214,7 +218,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the immutabilityPolicy property: The ImmutabilityPolicy property of the container.
-     *
+     * 
      * @return the immutabilityPolicy value.
      */
     public ImmutabilityPolicyProperties immutabilityPolicy() {
@@ -223,7 +227,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the legalHold property: The LegalHold property of the container.
-     *
+     * 
      * @return the legalHold value.
      */
     public LegalHoldProperties legalHold() {
@@ -234,7 +238,7 @@ public final class BlobContainerInner extends AzureEntityResource {
      * Get the hasLegalHold property: The hasLegalHold public property is set to true by SRP if there are at least one
      * existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared
      * out. There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
-     *
+     * 
      * @return the hasLegalHold value.
      */
     public Boolean hasLegalHold() {
@@ -245,7 +249,7 @@ public final class BlobContainerInner extends AzureEntityResource {
      * Get the hasImmutabilityPolicy property: The hasImmutabilityPolicy public property is set to true by SRP if
      * ImmutabilityPolicy has been created for this container. The hasImmutabilityPolicy public property is set to false
      * by SRP if ImmutabilityPolicy has not been created for this container.
-     *
+     * 
      * @return the hasImmutabilityPolicy value.
      */
     public Boolean hasImmutabilityPolicy() {
@@ -256,7 +260,7 @@ public final class BlobContainerInner extends AzureEntityResource {
      * Get the immutableStorageWithVersioning property: The object level immutability property of the container. The
      * property is immutable and can only be set to true at the container creation time. Existing containers must
      * undergo a migration process.
-     *
+     * 
      * @return the immutableStorageWithVersioning value.
      */
     public ImmutableStorageWithVersioning immutableStorageWithVersioning() {
@@ -269,12 +273,12 @@ public final class BlobContainerInner extends AzureEntityResource {
      * Set the immutableStorageWithVersioning property: The object level immutability property of the container. The
      * property is immutable and can only be set to true at the container creation time. Existing containers must
      * undergo a migration process.
-     *
+     * 
      * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
      * @return the BlobContainerInner object itself.
      */
-    public BlobContainerInner withImmutableStorageWithVersioning(
-        ImmutableStorageWithVersioning immutableStorageWithVersioning) {
+    public BlobContainerInner
+        withImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
         if (this.innerContainerProperties() == null) {
             this.innerContainerProperties = new ContainerProperties();
         }
@@ -284,7 +288,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the enableNfsV3RootSquash property: Enable NFSv3 root squash on blob container.
-     *
+     * 
      * @return the enableNfsV3RootSquash value.
      */
     public Boolean enableNfsV3RootSquash() {
@@ -293,7 +297,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Set the enableNfsV3RootSquash property: Enable NFSv3 root squash on blob container.
-     *
+     * 
      * @param enableNfsV3RootSquash the enableNfsV3RootSquash value to set.
      * @return the BlobContainerInner object itself.
      */
@@ -307,7 +311,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the enableNfsV3AllSquash property: Enable NFSv3 all squash on blob container.
-     *
+     * 
      * @return the enableNfsV3AllSquash value.
      */
     public Boolean enableNfsV3AllSquash() {
@@ -316,7 +320,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Set the enableNfsV3AllSquash property: Enable NFSv3 all squash on blob container.
-     *
+     * 
      * @param enableNfsV3AllSquash the enableNfsV3AllSquash value to set.
      * @return the BlobContainerInner object itself.
      */
@@ -330,7 +334,7 @@ public final class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

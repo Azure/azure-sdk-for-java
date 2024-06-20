@@ -6,6 +6,8 @@ package io.clientcore.core.implementation.util;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+
 /**
  * Encodes and decodes using Base64 URL encoding.
  */
@@ -52,7 +54,7 @@ public final class Base64Url {
     }
 
     private static String unquote(String string) {
-        if (!CoreUtils.isNullOrEmpty(string)) {
+        if (!isNullOrEmpty(string)) {
             final char firstCharacter = string.charAt(0);
             if (firstCharacter == '\"' || firstCharacter == '\'') {
                 final int base64UrlStringLength = string.length();

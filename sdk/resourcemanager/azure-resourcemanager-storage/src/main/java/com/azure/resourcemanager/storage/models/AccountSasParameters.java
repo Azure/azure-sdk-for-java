@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The parameters to list SAS credentials of a storage account. */
+/**
+ * The parameters to list SAS credentials of a storage account.
+ */
 @Fluent
 public final class AccountSasParameters {
     /*
@@ -21,8 +23,8 @@ public final class AccountSasParameters {
 
     /*
      * The signed resource types that are accessible with the account SAS. Service (s): Access to service-level APIs;
-     * Container (c): Access to container-level APIs; Object (o): Access to object-level APIs for blobs, queue
-     * messages, table entities, and files.
+     * Container (c): Access to container-level APIs; Object (o): Access to object-level APIs for blobs, queue messages,
+     * table entities, and files.
      */
     @JsonProperty(value = "signedResourceTypes", required = true)
     private SignedResourceTypes resourceTypes;
@@ -64,14 +66,16 @@ public final class AccountSasParameters {
     @JsonProperty(value = "keyToSign")
     private String keyToSign;
 
-    /** Creates an instance of AccountSasParameters class. */
+    /**
+     * Creates an instance of AccountSasParameters class.
+     */
     public AccountSasParameters() {
     }
 
     /**
      * Get the services property: The signed services accessible with the account SAS. Possible values include: Blob
      * (b), Queue (q), Table (t), File (f).
-     *
+     * 
      * @return the services value.
      */
     public Services services() {
@@ -81,7 +85,7 @@ public final class AccountSasParameters {
     /**
      * Set the services property: The signed services accessible with the account SAS. Possible values include: Blob
      * (b), Queue (q), Table (t), File (f).
-     *
+     * 
      * @param services the services value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -94,7 +98,7 @@ public final class AccountSasParameters {
      * Get the resourceTypes property: The signed resource types that are accessible with the account SAS. Service (s):
      * Access to service-level APIs; Container (c): Access to container-level APIs; Object (o): Access to object-level
      * APIs for blobs, queue messages, table entities, and files.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public SignedResourceTypes resourceTypes() {
@@ -105,7 +109,7 @@ public final class AccountSasParameters {
      * Set the resourceTypes property: The signed resource types that are accessible with the account SAS. Service (s):
      * Access to service-level APIs; Container (c): Access to container-level APIs; Object (o): Access to object-level
      * APIs for blobs, queue messages, table entities, and files.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -117,7 +121,7 @@ public final class AccountSasParameters {
     /**
      * Get the permissions property: The signed permissions for the account SAS. Possible values include: Read (r),
      * Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p).
-     *
+     * 
      * @return the permissions value.
      */
     public Permissions permissions() {
@@ -127,7 +131,7 @@ public final class AccountSasParameters {
     /**
      * Set the permissions property: The signed permissions for the account SAS. Possible values include: Read (r),
      * Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p).
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -138,7 +142,7 @@ public final class AccountSasParameters {
 
     /**
      * Get the ipAddressOrRange property: An IP address or a range of IP addresses from which to accept requests.
-     *
+     * 
      * @return the ipAddressOrRange value.
      */
     public String ipAddressOrRange() {
@@ -147,7 +151,7 @@ public final class AccountSasParameters {
 
     /**
      * Set the ipAddressOrRange property: An IP address or a range of IP addresses from which to accept requests.
-     *
+     * 
      * @param ipAddressOrRange the ipAddressOrRange value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -158,7 +162,7 @@ public final class AccountSasParameters {
 
     /**
      * Get the protocols property: The protocol permitted for a request made with the account SAS.
-     *
+     * 
      * @return the protocols value.
      */
     public HttpProtocol protocols() {
@@ -167,7 +171,7 @@ public final class AccountSasParameters {
 
     /**
      * Set the protocols property: The protocol permitted for a request made with the account SAS.
-     *
+     * 
      * @param protocols the protocols value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -178,7 +182,7 @@ public final class AccountSasParameters {
 
     /**
      * Get the sharedAccessStartTime property: The time at which the SAS becomes valid.
-     *
+     * 
      * @return the sharedAccessStartTime value.
      */
     public OffsetDateTime sharedAccessStartTime() {
@@ -187,7 +191,7 @@ public final class AccountSasParameters {
 
     /**
      * Set the sharedAccessStartTime property: The time at which the SAS becomes valid.
-     *
+     * 
      * @param sharedAccessStartTime the sharedAccessStartTime value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -198,7 +202,7 @@ public final class AccountSasParameters {
 
     /**
      * Get the sharedAccessExpiryTime property: The time at which the shared access signature becomes invalid.
-     *
+     * 
      * @return the sharedAccessExpiryTime value.
      */
     public OffsetDateTime sharedAccessExpiryTime() {
@@ -207,7 +211,7 @@ public final class AccountSasParameters {
 
     /**
      * Set the sharedAccessExpiryTime property: The time at which the shared access signature becomes invalid.
-     *
+     * 
      * @param sharedAccessExpiryTime the sharedAccessExpiryTime value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -218,7 +222,7 @@ public final class AccountSasParameters {
 
     /**
      * Get the keyToSign property: The key to sign the account SAS token with.
-     *
+     * 
      * @return the keyToSign value.
      */
     public String keyToSign() {
@@ -227,7 +231,7 @@ public final class AccountSasParameters {
 
     /**
      * Set the keyToSign property: The key to sign the account SAS token with.
-     *
+     * 
      * @param keyToSign the keyToSign value to set.
      * @return the AccountSasParameters object itself.
      */
@@ -238,32 +242,28 @@ public final class AccountSasParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (services() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property services in model AccountSasParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property services in model AccountSasParameters"));
         }
         if (resourceTypes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceTypes in model AccountSasParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceTypes in model AccountSasParameters"));
         }
         if (permissions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property permissions in model AccountSasParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property permissions in model AccountSasParameters"));
         }
         if (sharedAccessExpiryTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sharedAccessExpiryTime in model AccountSasParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sharedAccessExpiryTime in model AccountSasParameters"));
         }
     }
 

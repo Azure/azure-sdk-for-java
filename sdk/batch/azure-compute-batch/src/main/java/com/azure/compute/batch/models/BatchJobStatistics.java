@@ -339,8 +339,8 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchJobStatistics.
      */
-    @Generated
     public static BatchJobStatistics fromJson(JsonReader jsonReader) throws IOException {
+        // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
         return jsonReader.readObject(reader -> {
             String url = null;
             OffsetDateTime startTime = null;
@@ -374,19 +374,78 @@ public final class BatchJobStatistics implements JsonSerializable<BatchJobStatis
                 } else if ("wallClockTime".equals(fieldName)) {
                     wallClockTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("readIOps".equals(fieldName)) {
-                    readIOps = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String readIOpsStr = reader.getString();
+                        try {
+                            readIOps = Long.parseLong(readIOpsStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric readIOps, but found: " + readIOpsStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        readIOps = reader.getLong();
+                    } else {
+                        throw new IOException("Expected readIOps to be a number or string, but found other type");
+                    }
                 } else if ("writeIOps".equals(fieldName)) {
-                    writeIOps = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String writeIOpsStr = reader.getString();
+                        try {
+                            writeIOps = Long.parseLong(writeIOpsStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric writeIOps, but found: " + writeIOpsStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        writeIOps = reader.getLong();
+                    } else {
+                        throw new IOException("Expected writeIOps to be a number or string, but found other type");
+                    }
                 } else if ("readIOGiB".equals(fieldName)) {
                     readIOGiB = reader.getDouble();
                 } else if ("writeIOGiB".equals(fieldName)) {
                     writeIOGiB = reader.getDouble();
                 } else if ("numSucceededTasks".equals(fieldName)) {
-                    numSucceededTasks = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String numSucceededTasksStr = reader.getString();
+                        try {
+                            numSucceededTasks = Long.parseLong(numSucceededTasksStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException(
+                                "Expected numeric numSucceededTasks, but found: " + numSucceededTasksStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        numSucceededTasks = reader.getLong();
+                    } else {
+                        throw new IOException(
+                            "Expected numSucceededTasks to be a number or string, but found other type");
+                    }
                 } else if ("numFailedTasks".equals(fieldName)) {
-                    numFailedTasks = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String numFailedTasksStr = reader.getString();
+                        try {
+                            numFailedTasks = Long.parseLong(numFailedTasksStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric numFailedTasks, but found: " + numFailedTasksStr,
+                                e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        numFailedTasks = reader.getLong();
+                    } else {
+                        throw new IOException("Expected numFailedTasks to be a number or string, but found other type");
+                    }
                 } else if ("numTaskRetries".equals(fieldName)) {
-                    numTaskRetries = reader.getLong();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String numTaskRetriesStr = reader.getString();
+                        try {
+                            numTaskRetries = Long.parseLong(numTaskRetriesStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric numTaskRetries, but found: " + numTaskRetriesStr,
+                                e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        numTaskRetries = reader.getLong();
+                    } else {
+                        throw new IOException("Expected numTaskRetries to be a number or string, but found other type");
+                    }
                 } else if ("waitTime".equals(fieldName)) {
                     waitTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else {

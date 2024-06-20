@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-/** Samples for FileShares Delete. */
+/**
+ * Samples for FileShares Delete.
+ */
 public final class FileSharesDeleteSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/FileSharesDelete.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileSharesDelete.json
      */
     /**
      * Sample code: DeleteShares.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteShares(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getFileShares()

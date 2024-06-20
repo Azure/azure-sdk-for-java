@@ -6,20 +6,23 @@ package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Definition of the authentication mechanism for the southbound connector.
  */
 @Fluent
-public final class TransportAuthentication {
+public final class TransportAuthentication implements JsonSerializable<TransportAuthentication> {
     /*
      * Defines a reference to a secret which contains all certificates and private keys that can be used by the
      * southbound connector connecting to the shop floor/OT device. The accepted extensions are .der for certificates
      * and .pfx/.pem for private keys.
      */
-    @JsonProperty(value = "ownCertificates", required = true)
     private List<OwnCertificate> ownCertificates;
 
     /**
@@ -68,4 +71,44 @@ public final class TransportAuthentication {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TransportAuthentication.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ownCertificates", this.ownCertificates,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransportAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransportAuthentication if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TransportAuthentication.
+     */
+    public static TransportAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransportAuthentication deserializedTransportAuthentication = new TransportAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ownCertificates".equals(fieldName)) {
+                    List<OwnCertificate> ownCertificates
+                        = reader.readArray(reader1 -> OwnCertificate.fromJson(reader1));
+                    deserializedTransportAuthentication.ownCertificates = ownCertificates;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransportAuthentication;
+        });
+    }
 }

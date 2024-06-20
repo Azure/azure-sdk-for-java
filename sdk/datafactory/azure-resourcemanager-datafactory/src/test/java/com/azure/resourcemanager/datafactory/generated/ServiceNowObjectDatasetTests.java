@@ -19,36 +19,35 @@ public final class ServiceNowObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceNowObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"yciwbnqinr\",\"typeProperties\":{\"tableName\":\"datamjogxgr\"},\"description\":\"vvmrn\",\"structure\":\"datadijoxqswsychdc\",\"schema\":\"datagcmpnc\",\"linkedServiceName\":{\"referenceName\":\"qbgbnoqnow\",\"parameters\":{\"wjekyq\":\"dataeytz\",\"polnvgpppdilbdvx\":\"datarv\",\"x\":\"datafhlzzgaps\"}},\"parameters\":{\"roy\":{\"type\":\"Float\",\"defaultValue\":\"datacrmzquuzywkgoux\"},\"scifrzcwuejmxlfz\":{\"type\":\"String\",\"defaultValue\":\"dataesywywnvgy\"},\"hchraunjovlx\":{\"type\":\"Int\",\"defaultValue\":\"datayrgr\"},\"tlhzkrazk\":{\"type\":\"String\",\"defaultValue\":\"datamvzpniqwxmrgmnk\"}},\"annotations\":[\"datayecznvzmsvznghe\"],\"folder\":{\"name\":\"ehgvmmnoyz\"},\"\":{\"fu\":\"datanypluzypkfc\"}}")
+            "{\"type\":\"ServiceNowObject\",\"typeProperties\":{\"tableName\":\"datannmjun\"},\"description\":\"lxcltjhbcycg\",\"structure\":\"datakcsihxvta\",\"schema\":\"datawf\",\"linkedServiceName\":{\"referenceName\":\"pxpry\",\"parameters\":{\"gugwlux\":\"databubwhzq\",\"mkdhwqcqweba\":\"datahtq\",\"phujeucosvk\":\"datamfpk\",\"llgnueezfpffb\":\"dataeergvypaxpjpy\"}},\"parameters\":{\"gzyojfchicpare\":{\"type\":\"Array\",\"defaultValue\":\"datavmcgm\"},\"ojuxil\":{\"type\":\"Bool\",\"defaultValue\":\"dataksgqhb\"},\"fldfljwt\":{\"type\":\"Object\",\"defaultValue\":\"datalkc\"}},\"annotations\":[\"datatsflotumbm\",\"datagftshfgmuxuqiags\",\"dataoikuqirhsk\",\"datapaowkgvnlfueyxfz\"],\"folder\":{\"name\":\"lrjugcfebpiucenb\"},\"\":{\"lsxr\":\"datalldfknbdzw\"}}")
             .toObject(ServiceNowObjectDataset.class);
-        Assertions.assertEquals("vvmrn", model.description());
-        Assertions.assertEquals("qbgbnoqnow", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("roy").type());
-        Assertions.assertEquals("ehgvmmnoyz", model.folder().name());
+        Assertions.assertEquals("lxcltjhbcycg", model.description());
+        Assertions.assertEquals("pxpry", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("gzyojfchicpare").type());
+        Assertions.assertEquals("lrjugcfebpiucenb", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceNowObjectDataset model = new ServiceNowObjectDataset().withDescription("vvmrn")
-            .withStructure("datadijoxqswsychdc")
-            .withSchema("datagcmpnc")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("qbgbnoqnow")
-                .withParameters(mapOf("wjekyq", "dataeytz", "polnvgpppdilbdvx", "datarv", "x", "datafhlzzgaps")))
-            .withParameters(mapOf("roy",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datacrmzquuzywkgoux"),
-                "scifrzcwuejmxlfz",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataesywywnvgy"),
-                "hchraunjovlx", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datayrgr"),
-                "tlhzkrazk",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datamvzpniqwxmrgmnk")))
-            .withAnnotations(Arrays.asList("datayecznvzmsvznghe"))
-            .withFolder(new DatasetFolder().withName("ehgvmmnoyz"))
-            .withTableName("datamjogxgr");
+        ServiceNowObjectDataset model = new ServiceNowObjectDataset().withDescription("lxcltjhbcycg")
+            .withStructure("datakcsihxvta")
+            .withSchema("datawf")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("pxpry")
+                .withParameters(mapOf("gugwlux", "databubwhzq", "mkdhwqcqweba", "datahtq", "phujeucosvk", "datamfpk",
+                    "llgnueezfpffb", "dataeergvypaxpjpy")))
+            .withParameters(mapOf("gzyojfchicpare",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datavmcgm"), "ojuxil",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataksgqhb"), "fldfljwt",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datalkc")))
+            .withAnnotations(
+                Arrays.asList("datatsflotumbm", "datagftshfgmuxuqiags", "dataoikuqirhsk", "datapaowkgvnlfueyxfz"))
+            .withFolder(new DatasetFolder().withName("lrjugcfebpiucenb"))
+            .withTableName("datannmjun");
         model = BinaryData.fromObject(model).toObject(ServiceNowObjectDataset.class);
-        Assertions.assertEquals("vvmrn", model.description());
-        Assertions.assertEquals("qbgbnoqnow", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("roy").type());
-        Assertions.assertEquals("ehgvmmnoyz", model.folder().name());
+        Assertions.assertEquals("lxcltjhbcycg", model.description());
+        Assertions.assertEquals("pxpry", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("gzyojfchicpare").type());
+        Assertions.assertEquals("lrjugcfebpiucenb", model.folder().name());
     }
 
     // Use "Map.of" if available

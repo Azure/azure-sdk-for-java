@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ListContainersInclude. */
+/**
+ * Defines values for ListContainersInclude.
+ */
 public final class ListContainersInclude extends ExpandableStringEnum<ListContainersInclude> {
-    /** Static value deleted for ListContainersInclude. */
+    /**
+     * Static value deleted for ListContainersInclude.
+     */
     public static final ListContainersInclude DELETED = fromString("deleted");
 
     /**
      * Creates a new instance of ListContainersInclude value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class ListContainersInclude extends ExpandableStringEnum<ListContai
 
     /**
      * Creates or finds a ListContainersInclude from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ListContainersInclude.
      */
@@ -35,7 +39,7 @@ public final class ListContainersInclude extends ExpandableStringEnum<ListContai
 
     /**
      * Gets known ListContainersInclude values.
-     *
+     * 
      * @return known ListContainersInclude values.
      */
     public static Collection<ListContainersInclude> values() {

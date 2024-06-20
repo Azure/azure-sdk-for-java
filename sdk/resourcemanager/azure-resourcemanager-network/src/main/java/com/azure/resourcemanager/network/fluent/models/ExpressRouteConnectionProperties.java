@@ -53,8 +53,7 @@ public final class ExpressRouteConnectionProperties {
     private Boolean expressRouteGatewayBypass;
 
     /*
-     * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass)
-     * must be enabled.
+     * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
      */
     @JsonProperty(value = "enablePrivateLinkFastPath")
     private Boolean enablePrivateLinkFastPath;
@@ -232,8 +231,9 @@ public final class ExpressRouteConnectionProperties {
      */
     public void validate() {
         if (expressRouteCircuitPeering() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property expressRouteCircuitPeering in model ExpressRouteConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property expressRouteCircuitPeering in model ExpressRouteConnectionProperties"));
         } else {
             expressRouteCircuitPeering().validate();
         }

@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class ProcedureRecommendation {
 
     /*
-     * The kind property.
+     * Discriminator property for ProcedureRecommendation.
      */
     @Generated
     @JsonTypeId
@@ -42,7 +42,7 @@ public class ProcedureRecommendation {
     }
 
     /**
-     * Get the kind property: The kind property.
+     * Get the kind property: Discriminator property for ProcedureRecommendation.
      *
      * @return the kind value.
      */

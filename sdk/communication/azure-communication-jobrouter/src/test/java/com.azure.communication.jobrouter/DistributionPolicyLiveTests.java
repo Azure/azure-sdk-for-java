@@ -23,6 +23,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -49,14 +50,9 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
                 .setBypassSelectors(true)
                 .setScoringRuleOptions(new ScoringRuleOptions()
                     .setBatchScoringEnabled(true)
-                    .setScoringParameters(new ArrayList<ScoringRuleParameterSelector>() {
-                        {
-                            add(ScoringRuleParameterSelector.JOB_LABELS);
-                        }
-                    })
+                    .setScoringParameters(Collections.singletonList(ScoringRuleParameterSelector.JOB_LABELS))
                     .setBatchSize(30)
-                    .setDescendingOrder(true))
-        )
+                    .setDescendingOrder(true)))
             .setName(bestWorkerModeDistributionPolicyName);
 
         // Action
@@ -136,8 +132,7 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
             new BestWorkerMode()
                 .setScoringRule(azureFunctionRule)
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
+                .setMaxConcurrentOffers(10))
             .setName(bestWorkerModeDistributionPolicyName);
 
         // Action
@@ -163,8 +158,7 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
             Duration.ofSeconds(10),
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-            )
+                .setMaxConcurrentOffers(10))
             .setName(longestIdleModeDistributionPolicyName);
 
         // Action
@@ -190,8 +184,7 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
             Duration.ofSeconds(10),
             new RoundRobinMode()
                 .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
+                .setMaxConcurrentOffers(10))
             .setName(roundRobinModeDistributionPolicyName);
 
         // Action

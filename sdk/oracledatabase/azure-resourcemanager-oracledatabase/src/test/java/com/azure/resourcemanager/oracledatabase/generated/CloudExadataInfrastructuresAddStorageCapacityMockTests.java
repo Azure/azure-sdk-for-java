@@ -25,7 +25,7 @@ public final class CloudExadataInfrastructuresAddStorageCapacityMockTests {
     @Test
     public void testAddStorageCapacity() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"alxlllchp\",\"computeCount\":1628077523,\"storageCount\":482170286,\"totalStorageSizeInGbs\":653951731,\"availableStorageSizeInGbs\":1468769987,\"timeCreated\":\"hfuk\",\"lifecycleDetails\":\"sjcswsmystuluqyp\",\"maintenanceWindow\":{\"preference\":\"NoPreference\",\"months\":[{\"name\":\"October\"},{\"name\":\"July\"},{\"name\":\"April\"},{\"name\":\"June\"}],\"weeksOfMonth\":[131662933,398550087],\"daysOfWeek\":[{\"name\":\"Friday\"},{\"name\":\"Wednesday\"},{\"name\":\"Monday\"}],\"hoursOfDay\":[1203078743],\"leadTimeInWeeks\":1095864620,\"patchingMode\":\"NonRolling\",\"customActionTimeoutInMins\":1553393250,\"isCustomActionTimeoutEnabled\":false,\"isMonthlyPatchingEnabled\":true},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":598687748,\"estimatedNetworkSwitchesPatchingTime\":2142762824,\"estimatedStorageServerPatchingTime\":1875486433,\"totalEstimatedPatchingTime\":2125678810},\"customerContacts\":[{\"email\":\"hp\"}],\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Provisioning\",\"shape\":\"aaewdaomdjv\",\"ociUrl\":\"jxxkzbrmsgei\",\"cpuCount\":704618732,\"maxCpuCount\":1129591709,\"memorySizeInGbs\":1299849927,\"maxMemoryInGbs\":728133751,\"dbNodeStorageSizeInGbs\":1333047825,\"maxDbNodeStorageSizeInGbs\":1416610190,\"dataStorageSizeInTbs\":1933240221,\"maxDataStorageInTbs\":58.162770479526,\"dbServerVersion\":\"gculap\",\"storageServerVersion\":\"y\",\"activatedStorageCount\":1152319383,\"additionalStorageCount\":1569571564,\"displayName\":\"tqxepn\",\"lastMaintenanceRunId\":\"b\",\"nextMaintenanceRunId\":\"ajlyjtlvofqzhv\",\"monthlyDbServerVersion\":\"ibyfmo\",\"monthlyStorageServerVersion\":\"xrkjpvdw\"},\"zones\":[\"zwiivwzjbhyzs\",\"jrkambtrnegvmnv\",\"q\",\"qvldspastjbkkd\"],\"location\":\"lves\",\"tags\":{\"ril\":\"lx\"},\"id\":\"zapeewchpx\",\"name\":\"ktwkuziyc\",\"type\":\"levufuztcktyhj\"}";
+            = "{\"properties\":{\"ocid\":\"epr\",\"computeCount\":108809884,\"storageCount\":479918870,\"totalStorageSizeInGbs\":2045022432,\"availableStorageSizeInGbs\":1783841206,\"timeCreated\":\"mov\",\"lifecycleDetails\":\"fvaawzqa\",\"maintenanceWindow\":{\"preference\":\"CustomPreference\",\"months\":[{\"name\":\"January\"}],\"weeksOfMonth\":[1011788429],\"daysOfWeek\":[{\"name\":\"Sunday\"}],\"hoursOfDay\":[566063527,103057298],\"leadTimeInWeeks\":1221508981,\"patchingMode\":\"Rolling\",\"customActionTimeoutInMins\":675680646,\"isCustomActionTimeoutEnabled\":true,\"isMonthlyPatchingEnabled\":false},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":412723764,\"estimatedNetworkSwitchesPatchingTime\":763019330,\"estimatedStorageServerPatchingTime\":403916626,\"totalEstimatedPatchingTime\":1135591058},\"customerContacts\":[{\"email\":\"clnpkci\"},{\"email\":\"yzriykhy\"}],\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Terminated\",\"shape\":\"lboxqvkjl\",\"ociUrl\":\"ho\",\"cpuCount\":298942523,\"maxCpuCount\":1117354707,\"memorySizeInGbs\":1302375239,\"maxMemoryInGbs\":638540766,\"dbNodeStorageSizeInGbs\":653732445,\"maxDbNodeStorageSizeInGbs\":1988980812,\"dataStorageSizeInTbs\":44.79771076530682,\"maxDataStorageInTbs\":73.39891966228774,\"dbServerVersion\":\"p\",\"storageServerVersion\":\"a\",\"activatedStorageCount\":2034990044,\"additionalStorageCount\":288069946,\"displayName\":\"hezwwvaiq\",\"lastMaintenanceRunId\":\"vv\",\"nextMaintenanceRunId\":\"nk\",\"monthlyDbServerVersion\":\"hqyikvy\",\"monthlyStorageServerVersion\":\"uyav\"},\"zones\":[\"wmn\",\"sttijfybvp\"],\"location\":\"krsgsgb\",\"tags\":{\"njdgkynscliq\":\"zq\",\"mtk\":\"zvhxnk\",\"ppnvdxz\":\"bo\",\"hlfkqojpy\":\"hihfrbbcevqagtlt\"},\"id\":\"vgtrdcnifmzzs\",\"name\":\"ymbrnysuxmpraf\",\"type\":\"g\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,26 +35,26 @@ public final class CloudExadataInfrastructuresAddStorageCapacityMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CloudExadataInfrastructure response = manager.cloudExadataInfrastructures()
-            .addStorageCapacity("m", "tfpmvmemfnczdw", com.azure.core.util.Context.NONE);
+            .addStorageCapacity("rqzz", "rjvpglydzgkrvqee", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lves", response.location());
-        Assertions.assertEquals("lx", response.tags().get("ril"));
-        Assertions.assertEquals(1628077523, response.properties().computeCount());
-        Assertions.assertEquals(482170286, response.properties().storageCount());
-        Assertions.assertEquals(Preference.NO_PREFERENCE, response.properties().maintenanceWindow().preference());
-        Assertions.assertEquals(MonthName.OCTOBER, response.properties().maintenanceWindow().months().get(0).name());
-        Assertions.assertEquals(131662933, response.properties().maintenanceWindow().weeksOfMonth().get(0));
-        Assertions.assertEquals(DayOfWeekName.FRIDAY,
+        Assertions.assertEquals("krsgsgb", response.location());
+        Assertions.assertEquals("zq", response.tags().get("njdgkynscliq"));
+        Assertions.assertEquals(108809884, response.properties().computeCount());
+        Assertions.assertEquals(479918870, response.properties().storageCount());
+        Assertions.assertEquals(Preference.CUSTOM_PREFERENCE, response.properties().maintenanceWindow().preference());
+        Assertions.assertEquals(MonthName.JANUARY, response.properties().maintenanceWindow().months().get(0).name());
+        Assertions.assertEquals(1011788429, response.properties().maintenanceWindow().weeksOfMonth().get(0));
+        Assertions.assertEquals(DayOfWeekName.SUNDAY,
             response.properties().maintenanceWindow().daysOfWeek().get(0).name());
-        Assertions.assertEquals(1203078743, response.properties().maintenanceWindow().hoursOfDay().get(0));
-        Assertions.assertEquals(1095864620, response.properties().maintenanceWindow().leadTimeInWeeks());
-        Assertions.assertEquals(PatchingMode.NON_ROLLING, response.properties().maintenanceWindow().patchingMode());
-        Assertions.assertEquals(1553393250, response.properties().maintenanceWindow().customActionTimeoutInMins());
-        Assertions.assertEquals(false, response.properties().maintenanceWindow().isCustomActionTimeoutEnabled());
-        Assertions.assertEquals(true, response.properties().maintenanceWindow().isMonthlyPatchingEnabled());
-        Assertions.assertEquals("hp", response.properties().customerContacts().get(0).email());
-        Assertions.assertEquals("aaewdaomdjv", response.properties().shape());
-        Assertions.assertEquals("tqxepn", response.properties().displayName());
-        Assertions.assertEquals("zwiivwzjbhyzs", response.zones().get(0));
+        Assertions.assertEquals(566063527, response.properties().maintenanceWindow().hoursOfDay().get(0));
+        Assertions.assertEquals(1221508981, response.properties().maintenanceWindow().leadTimeInWeeks());
+        Assertions.assertEquals(PatchingMode.ROLLING, response.properties().maintenanceWindow().patchingMode());
+        Assertions.assertEquals(675680646, response.properties().maintenanceWindow().customActionTimeoutInMins());
+        Assertions.assertEquals(true, response.properties().maintenanceWindow().isCustomActionTimeoutEnabled());
+        Assertions.assertEquals(false, response.properties().maintenanceWindow().isMonthlyPatchingEnabled());
+        Assertions.assertEquals("clnpkci", response.properties().customerContacts().get(0).email());
+        Assertions.assertEquals("lboxqvkjl", response.properties().shape());
+        Assertions.assertEquals("hezwwvaiq", response.properties().displayName());
+        Assertions.assertEquals("wmn", response.zones().get(0));
     }
 }

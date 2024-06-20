@@ -20,9 +20,6 @@
     "allPublicMethods": true
   },
   {
-    "name":"io.clientcore.core.util.CoreUtils"
-  },
-  {
     "name":"io.clientcore.core.http.rest.ResponseBase",
     "allDeclaredConstructors": true,
     "allPublicConstructors": true,

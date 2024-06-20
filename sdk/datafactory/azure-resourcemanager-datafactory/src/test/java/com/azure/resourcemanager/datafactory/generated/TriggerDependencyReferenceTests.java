@@ -14,18 +14,18 @@ public final class TriggerDependencyReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TriggerDependencyReference model = BinaryData.fromString(
-            "{\"type\":\"ihwiezc\",\"referenceTrigger\":{\"type\":\"TriggerReference\",\"referenceName\":\"riottzyru\"}}")
+            "{\"type\":\"TriggerDependencyReference\",\"referenceTrigger\":{\"type\":\"TriggerReference\",\"referenceName\":\"sjaaedsqf\"}}")
             .toObject(TriggerDependencyReference.class);
         Assertions.assertEquals(TriggerReferenceType.TRIGGER_REFERENCE, model.referenceTrigger().type());
-        Assertions.assertEquals("riottzyru", model.referenceTrigger().referenceName());
+        Assertions.assertEquals("sjaaedsqf", model.referenceTrigger().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TriggerDependencyReference model = new TriggerDependencyReference().withReferenceTrigger(
-            new TriggerReference().withType(TriggerReferenceType.TRIGGER_REFERENCE).withReferenceName("riottzyru"));
+            new TriggerReference().withType(TriggerReferenceType.TRIGGER_REFERENCE).withReferenceName("sjaaedsqf"));
         model = BinaryData.fromObject(model).toObject(TriggerDependencyReference.class);
         Assertions.assertEquals(TriggerReferenceType.TRIGGER_REFERENCE, model.referenceTrigger().type());
-        Assertions.assertEquals("riottzyru", model.referenceTrigger().referenceName());
+        Assertions.assertEquals("sjaaedsqf", model.referenceTrigger().referenceName());
     }
 }

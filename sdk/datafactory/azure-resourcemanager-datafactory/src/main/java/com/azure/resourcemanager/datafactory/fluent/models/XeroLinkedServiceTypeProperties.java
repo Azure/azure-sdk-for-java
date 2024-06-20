@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class XeroLinkedServiceTypeProperties {
     /*
-     * Properties used to connect to Xero. It is mutually exclusive with any other properties in the linked service. Type: object.
+     * Properties used to connect to Xero. It is mutually exclusive with any other properties in the linked service.
+     * Type: object.
      */
     @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
@@ -32,7 +33,8 @@ public final class XeroLinkedServiceTypeProperties {
     private SecretBase consumerKey;
 
     /*
-     * The private key from the .pem file that was generated for your Xero private application. You must include all the text from the .pem file, including the Unix line endings(
+     * The private key from the .pem file that was generated for your Xero private application. You must include all the
+     * text from the .pem file, including the Unix line endings(
      * ).
      */
     @JsonProperty(value = "privateKey")
@@ -45,7 +47,8 @@ public final class XeroLinkedServiceTypeProperties {
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting over SSL. The default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
@@ -57,7 +60,8 @@ public final class XeroLinkedServiceTypeProperties {
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

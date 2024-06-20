@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListTableServices model. */
+/**
+ * The ListTableServices model.
+ */
 @Immutable
 public final class ListTableServicesInner {
     /*
@@ -17,13 +19,15 @@ public final class ListTableServicesInner {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<TableServicePropertiesInner> value;
 
-    /** Creates an instance of ListTableServicesInner class. */
+    /**
+     * Creates an instance of ListTableServicesInner class.
+     */
     public ListTableServicesInner() {
     }
 
     /**
      * Get the value property: List of table services returned.
-     *
+     * 
      * @return the value value.
      */
     public List<TableServicePropertiesInner> value() {
@@ -32,7 +36,7 @@ public final class ListTableServicesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

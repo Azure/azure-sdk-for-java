@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsListMultiRolePoolsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * AppServiceEnvironments_ListMultiRolePools.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ListMultiRolePools.json
      */
     /**
      * Sample code: Get all multi-role pools.
@@ -18,7 +17,10 @@ public final class AppServiceEnvironmentsListMultiRolePoolsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAllMultiRolePools(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().listMultiRolePools("test-rg", "test-ase",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .listMultiRolePools("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

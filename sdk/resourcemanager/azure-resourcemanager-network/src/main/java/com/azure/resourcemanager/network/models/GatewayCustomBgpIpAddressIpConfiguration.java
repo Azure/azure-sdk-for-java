@@ -78,12 +78,14 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
      */
     public void validate() {
         if (ipConfigurationId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ipConfigurationId in model GatewayCustomBgpIpAddressIpConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ipConfigurationId in model GatewayCustomBgpIpAddressIpConfiguration"));
         }
         if (customBgpIpAddress() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property customBgpIpAddress in model GatewayCustomBgpIpAddressIpConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customBgpIpAddress in model GatewayCustomBgpIpAddressIpConfiguration"));
         }
     }
 

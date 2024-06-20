@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** An update history of the ImmutabilityPolicy of a blob container. */
+/**
+ * An update history of the ImmutabilityPolicy of a blob container.
+ */
 @Fluent
 public final class UpdateHistoryProperty {
     /*
@@ -58,22 +60,24 @@ public final class UpdateHistoryProperty {
 
     /*
      * This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be
-     * written to both 'Append and Bock Blobs' while maintaining immutability protection and compliance. Only new
-     * blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with
-     * ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and 'allowProtectedAppendWritesAll' properties
-     * are mutually exclusive.
+     * written to both 'Append and Bock Blobs' while maintaining immutability protection and compliance. Only new blocks
+     * can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with
+     * ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and 'allowProtectedAppendWritesAll' properties are
+     * mutually exclusive.
      */
     @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;
 
-    /** Creates an instance of UpdateHistoryProperty class. */
+    /**
+     * Creates an instance of UpdateHistoryProperty class.
+     */
     public UpdateHistoryProperty() {
     }
 
     /**
      * Get the update property: The ImmutabilityPolicy update type of a blob container, possible values include: put,
      * lock and extend.
-     *
+     * 
      * @return the update value.
      */
     public ImmutabilityPolicyUpdateType update() {
@@ -83,7 +87,7 @@ public final class UpdateHistoryProperty {
     /**
      * Get the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
      * since the policy creation, in days.
-     *
+     * 
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
     public Integer immutabilityPeriodSinceCreationInDays() {
@@ -92,7 +96,7 @@ public final class UpdateHistoryProperty {
 
     /**
      * Get the timestamp property: Returns the date and time the ImmutabilityPolicy was updated.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -101,7 +105,7 @@ public final class UpdateHistoryProperty {
 
     /**
      * Get the objectIdentifier property: Returns the Object ID of the user who updated the ImmutabilityPolicy.
-     *
+     * 
      * @return the objectIdentifier value.
      */
     public String objectIdentifier() {
@@ -111,7 +115,7 @@ public final class UpdateHistoryProperty {
     /**
      * Get the tenantId property: Returns the Tenant ID that issued the token for the user who updated the
      * ImmutabilityPolicy.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -120,7 +124,7 @@ public final class UpdateHistoryProperty {
 
     /**
      * Get the upn property: Returns the User Principal Name of the user who updated the ImmutabilityPolicy.
-     *
+     * 
      * @return the upn value.
      */
     public String upn() {
@@ -132,7 +136,7 @@ public final class UpdateHistoryProperty {
      * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
      * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      * cannot be changed with ExtendImmutabilityPolicy API.
-     *
+     * 
      * @return the allowProtectedAppendWrites value.
      */
     public Boolean allowProtectedAppendWrites() {
@@ -144,7 +148,7 @@ public final class UpdateHistoryProperty {
      * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
      * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
      * cannot be changed with ExtendImmutabilityPolicy API.
-     *
+     * 
      * @param allowProtectedAppendWrites the allowProtectedAppendWrites value to set.
      * @return the UpdateHistoryProperty object itself.
      */
@@ -159,7 +163,7 @@ public final class UpdateHistoryProperty {
      * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
      * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
      * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
-     *
+     * 
      * @return the allowProtectedAppendWritesAll value.
      */
     public Boolean allowProtectedAppendWritesAll() {
@@ -172,7 +176,7 @@ public final class UpdateHistoryProperty {
      * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
      * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
      * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
-     *
+     * 
      * @param allowProtectedAppendWritesAll the allowProtectedAppendWritesAll value to set.
      * @return the UpdateHistoryProperty object itself.
      */
@@ -183,7 +187,7 @@ public final class UpdateHistoryProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

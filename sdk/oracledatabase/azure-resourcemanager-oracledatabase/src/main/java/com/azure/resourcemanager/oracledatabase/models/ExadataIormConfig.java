@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * ExadataIormConfig for cloud vm cluster.
  */
 @Fluent
-public final class ExadataIormConfig {
+public final class ExadataIormConfig implements JsonSerializable<ExadataIormConfig> {
     /*
      * An array of IORM settings for all the database in the Exadata DB system.
      */
-    @JsonProperty(value = "dbPlans")
     private List<DbIormConfig> dbPlans;
 
     /*
      * Additional information about the current lifecycleState.
      */
-    @JsonProperty(value = "lifecycleDetails")
     private String lifecycleDetails;
 
     /*
      * The current state of IORM configuration for the Exadata DB system.
      */
-    @JsonProperty(value = "lifecycleState")
     private IormLifecycleState lifecycleState;
 
     /*
      * The current value for the IORM objective. The default is AUTO.
      */
-    @JsonProperty(value = "objective")
     private Objective objective;
 
     /**
@@ -132,5 +132,52 @@ public final class ExadataIormConfig {
         if (dbPlans() != null) {
             dbPlans().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dbPlans", this.dbPlans, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("lifecycleDetails", this.lifecycleDetails);
+        jsonWriter.writeStringField("lifecycleState",
+            this.lifecycleState == null ? null : this.lifecycleState.toString());
+        jsonWriter.writeStringField("objective", this.objective == null ? null : this.objective.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExadataIormConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExadataIormConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExadataIormConfig.
+     */
+    public static ExadataIormConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExadataIormConfig deserializedExadataIormConfig = new ExadataIormConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dbPlans".equals(fieldName)) {
+                    List<DbIormConfig> dbPlans = reader.readArray(reader1 -> DbIormConfig.fromJson(reader1));
+                    deserializedExadataIormConfig.dbPlans = dbPlans;
+                } else if ("lifecycleDetails".equals(fieldName)) {
+                    deserializedExadataIormConfig.lifecycleDetails = reader.getString();
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedExadataIormConfig.lifecycleState = IormLifecycleState.fromString(reader.getString());
+                } else if ("objective".equals(fieldName)) {
+                    deserializedExadataIormConfig.objective = Objective.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExadataIormConfig;
+        });
     }
 }

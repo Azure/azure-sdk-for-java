@@ -6,23 +6,25 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Private Ip Addresses filter.
  */
 @Fluent
-public final class PrivateIpAddressesFilter {
+public final class PrivateIpAddressesFilter implements JsonSerializable<PrivateIpAddressesFilter> {
     /*
      * Subnet OCID
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
      * VCN OCID
      */
-    @JsonProperty(value = "vnicId", required = true)
     private String vnicId;
 
     /**
@@ -90,4 +92,44 @@ public final class PrivateIpAddressesFilter {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateIpAddressesFilter.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("vnicId", this.vnicId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateIpAddressesFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateIpAddressesFilter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateIpAddressesFilter.
+     */
+    public static PrivateIpAddressesFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateIpAddressesFilter deserializedPrivateIpAddressesFilter = new PrivateIpAddressesFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedPrivateIpAddressesFilter.subnetId = reader.getString();
+                } else if ("vnicId".equals(fieldName)) {
+                    deserializedPrivateIpAddressesFilter.vnicId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateIpAddressesFilter;
+        });
+    }
 }

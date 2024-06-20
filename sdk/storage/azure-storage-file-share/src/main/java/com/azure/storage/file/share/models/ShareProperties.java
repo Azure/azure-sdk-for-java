@@ -121,6 +121,11 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      */
     private Integer provisionedBandwidthMiBps;
 
+    /*
+     * The EnableSnapshotVirtualDirectoryAccess property.
+     */
+    private Boolean enableSnapshotVirtualDirectoryAccess;
+
     /**
      * Get the lastModified property: The lastModified property.
      *
@@ -556,6 +561,33 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      */
     public ShareProperties setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the enableSnapshotVirtualDirectoryAccess property:
+     * Optional. Supported in version 2023-08-03 and above. Only applicable for premium file storage accounts.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
+     * If not specified, the default is true.
+     *
+     * @return the enableSnapshotVirtualDirectoryAccess value.
+     */
+    public Boolean isSnapshotVirtualDirectoryAccessEnabled() {
+        return this.enableSnapshotVirtualDirectoryAccess;
+    }
+
+    /**
+     * Set the enableSnapshotVirtualDirectoryAccess property:
+     * Optional. Supported in version 2023-08-03 and above. Only applicable for premium file storage accounts.
+     * Specifies whether the snapshot virtual directory should be accessible at the root of share mount point when NFS is enabled.
+     * If not specified, the default is true.
+     *
+     * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setSnapshotVirtualDirectoryAccessEnabled(
+        Boolean enableSnapshotVirtualDirectoryAccess) {
+        this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
         return this;
     }
 

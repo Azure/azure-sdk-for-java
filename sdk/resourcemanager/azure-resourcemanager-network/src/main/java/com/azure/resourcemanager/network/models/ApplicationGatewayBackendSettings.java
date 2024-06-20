@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackendSettingsPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Get the innerProperties property: Properties of the application gateway backend settings.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ApplicationGatewayBackendSettingsPropertiesFormat innerProperties() {
@@ -56,7 +57,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Get the name property: Name of the backend settings that is unique within an Application Gateway.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -65,7 +66,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Set the name property: Name of the backend settings that is unique within an Application Gateway.
-     * 
+     *
      * @param name the name value to set.
      * @return the ApplicationGatewayBackendSettings object itself.
      */
@@ -76,7 +77,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -85,7 +86,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -103,7 +104,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Get the port property: The destination port on the backend.
-     * 
+     *
      * @return the port value.
      */
     public Integer port() {
@@ -112,7 +113,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Set the port property: The destination port on the backend.
-     * 
+     *
      * @param port the port value to set.
      * @return the ApplicationGatewayBackendSettings object itself.
      */
@@ -126,7 +127,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Get the protocol property: The protocol used to communicate with the backend.
-     * 
+     *
      * @return the protocol value.
      */
     public ApplicationGatewayProtocol protocol() {
@@ -135,7 +136,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Set the protocol property: The protocol used to communicate with the backend.
-     * 
+     *
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayBackendSettings object itself.
      */
@@ -148,9 +149,9 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
     }
 
     /**
-     * Get the timeout property: Connection timeout in seconds. Application Gateway will fail the request if response
-     * is not received within ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
-     * 
+     * Get the timeout property: Connection timeout in seconds. Application Gateway will fail the request if response is
+     * not received within ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
+     *
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -158,9 +159,9 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
     }
 
     /**
-     * Set the timeout property: Connection timeout in seconds. Application Gateway will fail the request if response
-     * is not received within ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
-     * 
+     * Set the timeout property: Connection timeout in seconds. Application Gateway will fail the request if response is
+     * not received within ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
+     *
      * @param timeout the timeout value to set.
      * @return the ApplicationGatewayBackendSettings object itself.
      */
@@ -174,7 +175,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Get the probe property: Probe resource of an application gateway.
-     * 
+     *
      * @return the probe value.
      */
     public SubResource probe() {
@@ -183,7 +184,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Set the probe property: Probe resource of an application gateway.
-     * 
+     *
      * @param probe the probe value to set.
      * @return the ApplicationGatewayBackendSettings object itself.
      */
@@ -197,7 +198,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Get the trustedRootCertificates property: Array of references to application gateway trusted root certificates.
-     * 
+     *
      * @return the trustedRootCertificates value.
      */
     public List<SubResource> trustedRootCertificates() {
@@ -206,7 +207,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Set the trustedRootCertificates property: Array of references to application gateway trusted root certificates.
-     * 
+     *
      * @param trustedRootCertificates the trustedRootCertificates value to set.
      * @return the ApplicationGatewayBackendSettings object itself.
      */
@@ -220,7 +221,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Get the hostname property: Server name indication to be sent to the backend servers for Tls protocol.
-     * 
+     *
      * @return the hostname value.
      */
     public String hostname() {
@@ -229,7 +230,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Set the hostname property: Server name indication to be sent to the backend servers for Tls protocol.
-     * 
+     *
      * @param hostname the hostname value to set.
      * @return the ApplicationGatewayBackendSettings object itself.
      */
@@ -242,9 +243,9 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
     }
 
     /**
-     * Get the pickHostnameFromBackendAddress property: Whether to pick server name indication from the host name of
-     * the backend server for Tls protocol. Default value is false.
-     * 
+     * Get the pickHostnameFromBackendAddress property: Whether to pick server name indication from the host name of the
+     * backend server for Tls protocol. Default value is false.
+     *
      * @return the pickHostnameFromBackendAddress value.
      */
     public Boolean pickHostnameFromBackendAddress() {
@@ -252,9 +253,9 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
     }
 
     /**
-     * Set the pickHostnameFromBackendAddress property: Whether to pick server name indication from the host name of
-     * the backend server for Tls protocol. Default value is false.
-     * 
+     * Set the pickHostnameFromBackendAddress property: Whether to pick server name indication from the host name of the
+     * backend server for Tls protocol. Default value is false.
+     *
      * @param pickHostnameFromBackendAddress the pickHostnameFromBackendAddress value to set.
      * @return the ApplicationGatewayBackendSettings object itself.
      */
@@ -269,7 +270,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the backend HTTP settings resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -278,7 +279,7 @@ public final class ApplicationGatewayBackendSettings extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

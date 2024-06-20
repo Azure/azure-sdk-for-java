@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobInventoryPolicyName. */
+/**
+ * Defines values for BlobInventoryPolicyName.
+ */
 public final class BlobInventoryPolicyName extends ExpandableStringEnum<BlobInventoryPolicyName> {
-    /** Static value default for BlobInventoryPolicyName. */
+    /**
+     * Static value default for BlobInventoryPolicyName.
+     */
     public static final BlobInventoryPolicyName DEFAULT = fromString("default");
 
     /**
      * Creates a new instance of BlobInventoryPolicyName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class BlobInventoryPolicyName extends ExpandableStringEnum<BlobInve
 
     /**
      * Creates or finds a BlobInventoryPolicyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BlobInventoryPolicyName.
      */
@@ -35,7 +39,7 @@ public final class BlobInventoryPolicyName extends ExpandableStringEnum<BlobInve
 
     /**
      * Gets known BlobInventoryPolicyName values.
-     *
+     * 
      * @return known BlobInventoryPolicyName values.
      */
     public static Collection<BlobInventoryPolicyName> values() {

@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Credential resource type.
  */
 @Fluent
-public class CredentialResourceInner extends SubResource {
+public final class CredentialResourceInner extends SubResource {
     /*
      * Properties of credentials.
      */

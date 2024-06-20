@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.informaticadatamanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class PlatformType extends ExpandableStringEnum<PlatformType> {
      * @param name a name to look for.
      * @return the corresponding PlatformType.
      */
-    @JsonCreator
     public static PlatformType fromString(String name) {
         return fromString(name, PlatformType.class);
     }

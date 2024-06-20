@@ -6,7 +6,6 @@ package io.clientcore.core.shared;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import org.eclipse.jetty.server.Response;
@@ -29,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
  * Server used when running {@link HttpClient tests}.
@@ -225,7 +226,7 @@ public class HttpClientTestsServer {
             responseBody.headers(headers);
         }
 
-        if (!CoreUtils.isNullOrEmpty(req.getQueryString())) {
+        if (!isNullOrEmpty(req.getQueryString())) {
             Map<String, List<String>> queryParams = parseQueryParams(req);
 
             responseBody.queryParams(queryParams);
@@ -245,7 +246,7 @@ public class HttpClientTestsServer {
 
             List<String> currentValues = queryParamsMap.get(paramName);
 
-            if (!CoreUtils.isNullOrEmpty(paramValue)) {
+            if (!isNullOrEmpty(paramValue)) {
                 if (currentValues == null) {
                     currentValues = new ArrayList<>();
                 }

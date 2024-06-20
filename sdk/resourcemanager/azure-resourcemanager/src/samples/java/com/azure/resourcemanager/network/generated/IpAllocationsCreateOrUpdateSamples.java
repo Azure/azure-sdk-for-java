@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.IpAllocationInner;
 import com.azure.resourcemanager.network.models.IpAllocationType;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,21 +15,24 @@ import java.util.Map;
  */
 public final class IpAllocationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/IpAllocationCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/IpAllocationCreate.json
      */
     /**
      * Sample code: Create IpAllocation.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createIpAllocation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getIpAllocations().createOrUpdate("rg1", "test-ipallocation",
-            new IpAllocationInner().withLocation("centraluseuap").withTypePropertiesType(IpAllocationType.HYPERNET)
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getIpAllocations()
+            .createOrUpdate("rg1", "test-ipallocation", new IpAllocationInner().withLocation("centraluseuap")
+                .withTypePropertiesType(IpAllocationType.HYPERNET)
                 .withPrefix("3.2.5.0/24")
                 .withAllocationTags(mapOf("VNetID",
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/HypernetVnet1")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

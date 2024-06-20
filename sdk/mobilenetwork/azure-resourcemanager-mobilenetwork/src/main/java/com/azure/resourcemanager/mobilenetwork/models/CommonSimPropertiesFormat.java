@@ -48,8 +48,7 @@ public class CommonSimPropertiesFormat {
     private String integratedCircuitCardIdentifier;
 
     /*
-     * An optional free-form text field that can be used to record the device type this SIM is associated with, for
-     * example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on this value.
+     * An optional free-form text field that can be used to record the device type this SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on this value.
      */
     @JsonProperty(value = "deviceType")
     private String deviceType;
@@ -61,8 +60,7 @@ public class CommonSimPropertiesFormat {
     private SimPolicyResourceId simPolicy;
 
     /*
-     * A list of static IP addresses assigned to this SIM. Each address is assigned at a defined network scope, made up
-     * of {attached data network, slice}.
+     * A list of static IP addresses assigned to this SIM. Each address is assigned at a defined network scope, made up of {attached data network, slice}.
      */
     @JsonProperty(value = "staticIpConfiguration")
     private List<SimStaticIpProperties> staticIpConfiguration;
@@ -104,8 +102,7 @@ public class CommonSimPropertiesFormat {
     }
 
     /**
-     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that
-     * site.
+     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that site.
      * 
      * @return the siteProvisioningState value.
      */
@@ -157,9 +154,9 @@ public class CommonSimPropertiesFormat {
     }
 
     /**
-     * Get the deviceType property: An optional free-form text field that can be used to record the device type this
-     * SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered
-     * based on this value.
+     * Get the deviceType property: An optional free-form text field that can be used to record the device type this SIM
+     * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
+     * this value.
      * 
      * @return the deviceType value.
      */
@@ -168,9 +165,9 @@ public class CommonSimPropertiesFormat {
     }
 
     /**
-     * Set the deviceType property: An optional free-form text field that can be used to record the device type this
-     * SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered
-     * based on this value.
+     * Set the deviceType property: An optional free-form text field that can be used to record the device type this SIM
+     * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
+     * this value.
      * 
      * @param deviceType the deviceType value to set.
      * @return the CommonSimPropertiesFormat object itself.
@@ -250,8 +247,9 @@ public class CommonSimPropertiesFormat {
      */
     public void validate() {
         if (internationalMobileSubscriberIdentity() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property internationalMobileSubscriberIdentity in model CommonSimPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property internationalMobileSubscriberIdentity in model CommonSimPropertiesFormat"));
         }
         if (simPolicy() != null) {
             simPolicy().validate();

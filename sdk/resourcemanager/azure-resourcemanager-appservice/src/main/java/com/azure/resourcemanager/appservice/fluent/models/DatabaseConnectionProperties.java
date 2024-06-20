@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.StaticSiteDatabaseConnectionConfigurationFileOverview;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -22,9 +23,7 @@ public final class DatabaseConnectionProperties {
     private String resourceId;
 
     /*
-     * If present, the identity is used in conjunction with connection string to connect to the database. Use of the
-     * system-assigned managed identity is indicated with the string 'SystemAssigned', while use of a user-assigned
-     * managed identity is indicated with the resource id of the managed identity resource.
+     * If present, the identity is used in conjunction with connection string to connect to the database. Use of the system-assigned managed identity is indicated with the string 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed identity resource.
      */
     @JsonProperty(value = "connectionIdentity")
     private String connectionIdentity;
@@ -55,7 +54,7 @@ public final class DatabaseConnectionProperties {
 
     /**
      * Get the resourceId property: The resource id of the database.
-     * 
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -64,7 +63,7 @@ public final class DatabaseConnectionProperties {
 
     /**
      * Set the resourceId property: The resource id of the database.
-     * 
+     *
      * @param resourceId the resourceId value to set.
      * @return the DatabaseConnectionProperties object itself.
      */
@@ -78,7 +77,7 @@ public final class DatabaseConnectionProperties {
      * connect to the database. Use of the system-assigned managed identity is indicated with the string
      * 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed
      * identity resource.
-     * 
+     *
      * @return the connectionIdentity value.
      */
     public String connectionIdentity() {
@@ -90,7 +89,7 @@ public final class DatabaseConnectionProperties {
      * connect to the database. Use of the system-assigned managed identity is indicated with the string
      * 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed
      * identity resource.
-     * 
+     *
      * @param connectionIdentity the connectionIdentity value to set.
      * @return the DatabaseConnectionProperties object itself.
      */
@@ -101,7 +100,7 @@ public final class DatabaseConnectionProperties {
 
     /**
      * Get the connectionString property: The connection string to use to connect to the database.
-     * 
+     *
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -110,7 +109,7 @@ public final class DatabaseConnectionProperties {
 
     /**
      * Set the connectionString property: The connection string to use to connect to the database.
-     * 
+     *
      * @param connectionString the connectionString value to set.
      * @return the DatabaseConnectionProperties object itself.
      */
@@ -121,7 +120,7 @@ public final class DatabaseConnectionProperties {
 
     /**
      * Get the region property: The region of the database resource.
-     * 
+     *
      * @return the region value.
      */
     public String region() {
@@ -130,7 +129,7 @@ public final class DatabaseConnectionProperties {
 
     /**
      * Set the region property: The region of the database resource.
-     * 
+     *
      * @param region the region value to set.
      * @return the DatabaseConnectionProperties object itself.
      */
@@ -141,7 +140,7 @@ public final class DatabaseConnectionProperties {
 
     /**
      * Get the configurationFiles property: A list of configuration files associated with this database connection.
-     * 
+     *
      * @return the configurationFiles value.
      */
     public List<StaticSiteDatabaseConnectionConfigurationFileOverview> configurationFiles() {
@@ -150,17 +149,19 @@ public final class DatabaseConnectionProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resourceId in model DatabaseConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceId in model DatabaseConnectionProperties"));
         }
         if (region() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property region in model DatabaseConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property region in model DatabaseConnectionProperties"));
         }
         if (configurationFiles() != null) {
             configurationFiles().forEach(e -> e.validate());

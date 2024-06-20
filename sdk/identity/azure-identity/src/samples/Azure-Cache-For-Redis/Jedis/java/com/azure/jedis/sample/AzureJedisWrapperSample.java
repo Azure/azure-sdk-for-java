@@ -19,7 +19,6 @@ public class AzureJedisWrapperSample {
             .cacheHostName("<HOST_NAME>") // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
             .port(6380) // Port is requried.
             .useSSL(true) // SSL Connection is required.
-            .username("<USERNAME>") // Username is required.
             .credential(defaultAzureCredential) // A Token Credential is required to fetch Microsoft Entra access tokens.
             .build();
 

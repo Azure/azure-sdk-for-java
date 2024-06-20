@@ -9,9 +9,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class AttachedDataNetworksDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * AttachedDataNetworkDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/AttachedDataNetworkDelete.json
      */
     /**
      * Sample code: Delete attached data network resource.
@@ -20,7 +18,8 @@ public final class AttachedDataNetworksDeleteSamples {
      */
     public static void
         deleteAttachedDataNetworkResource(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.attachedDataNetworks().delete("rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork",
-            com.azure.core.util.Context.NONE);
+        manager.attachedDataNetworks()
+            .delete("rg1", "TestPacketCoreCP", "TestPacketCoreDP", "TestAttachedDataNetwork",
+                com.azure.core.util.Context.NONE);
     }
 }

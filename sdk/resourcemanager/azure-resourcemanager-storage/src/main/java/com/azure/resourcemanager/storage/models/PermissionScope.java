@@ -8,12 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PermissionScope model. */
+/**
+ * The PermissionScope model.
+ */
 @Fluent
 public final class PermissionScope {
     /*
-     * The permissions for the local user. Possible values include: Read (r), Write (w), Delete (d), List (l), and
-     * Create (c).
+     * The permissions for the local user. Possible values include: Read (r), Write (w), Delete (d), List (l), Create
+     * (c), Modify Ownership (o), and Modify Permissions (p).
      */
     @JsonProperty(value = "permissions", required = true)
     private String permissions;
@@ -30,14 +32,16 @@ public final class PermissionScope {
     @JsonProperty(value = "resourceName", required = true)
     private String resourceName;
 
-    /** Creates an instance of PermissionScope class. */
+    /**
+     * Creates an instance of PermissionScope class.
+     */
     public PermissionScope() {
     }
 
     /**
      * Get the permissions property: The permissions for the local user. Possible values include: Read (r), Write (w),
-     * Delete (d), List (l), and Create (c).
-     *
+     * Delete (d), List (l), Create (c), Modify Ownership (o), and Modify Permissions (p).
+     * 
      * @return the permissions value.
      */
     public String permissions() {
@@ -46,8 +50,8 @@ public final class PermissionScope {
 
     /**
      * Set the permissions property: The permissions for the local user. Possible values include: Read (r), Write (w),
-     * Delete (d), List (l), and Create (c).
-     *
+     * Delete (d), List (l), Create (c), Modify Ownership (o), and Modify Permissions (p).
+     * 
      * @param permissions the permissions value to set.
      * @return the PermissionScope object itself.
      */
@@ -58,7 +62,7 @@ public final class PermissionScope {
 
     /**
      * Get the service property: The service used by the local user, e.g. blob, file.
-     *
+     * 
      * @return the service value.
      */
     public String service() {
@@ -67,7 +71,7 @@ public final class PermissionScope {
 
     /**
      * Set the service property: The service used by the local user, e.g. blob, file.
-     *
+     * 
      * @param service the service value to set.
      * @return the PermissionScope object itself.
      */
@@ -79,7 +83,7 @@ public final class PermissionScope {
     /**
      * Get the resourceName property: The name of resource, normally the container name or the file share name, used by
      * the local user.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -89,7 +93,7 @@ public final class PermissionScope {
     /**
      * Set the resourceName property: The name of resource, normally the container name or the file share name, used by
      * the local user.
-     *
+     * 
      * @param resourceName the resourceName value to set.
      * @return the PermissionScope object itself.
      */
@@ -100,24 +104,21 @@ public final class PermissionScope {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (permissions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property permissions in model PermissionScope"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property permissions in model PermissionScope"));
         }
         if (service() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property service in model PermissionScope"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property service in model PermissionScope"));
         }
         if (resourceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceName in model PermissionScope"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resourceName in model PermissionScope"));
         }
     }
 

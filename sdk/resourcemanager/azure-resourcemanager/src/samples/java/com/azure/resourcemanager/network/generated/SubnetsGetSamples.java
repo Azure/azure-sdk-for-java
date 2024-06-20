@@ -9,8 +9,23 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class SubnetsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/SubnetGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/SubnetGetWithSharingScope.json
+     */
+    /**
+     * Sample code: Get subnet with sharing scope.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getSubnetWithSharingScope(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSubnets()
+            .getWithResponse("subnet-test", "vnetname", "subnet1", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/SubnetGet.json
      */
     /**
      * Sample code: Get subnet.
@@ -18,13 +33,15 @@ public final class SubnetsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSubnet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSubnets().getWithResponse("subnet-test", "vnetname", "subnet1",
-            null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSubnets()
+            .getWithResponse("subnet-test", "vnetname", "subnet1", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/SubnetGetWithDelegation.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/SubnetGetWithDelegation.json
      */
     /**
      * Sample code: Get subnet with a delegation.
@@ -32,7 +49,10 @@ public final class SubnetsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSubnetWithADelegation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSubnets().getWithResponse("subnet-test", "vnetname", "subnet1",
-            null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSubnets()
+            .getWithResponse("subnet-test", "vnetname", "subnet1", null, com.azure.core.util.Context.NONE);
     }
 }

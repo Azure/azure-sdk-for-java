@@ -46,24 +46,6 @@
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault-webkey</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-webkey;current} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault;current} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-keyvault-cryptography</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-cryptography;current} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-storage</artifactId>
       <version>1.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-mgmt-storage;external_dependency} -->
       <scope>test</scope>

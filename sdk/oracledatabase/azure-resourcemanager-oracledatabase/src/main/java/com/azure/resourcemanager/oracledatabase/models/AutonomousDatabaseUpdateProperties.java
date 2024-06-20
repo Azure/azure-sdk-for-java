@@ -5,144 +5,135 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The updatable properties of the AutonomousDatabase.
  */
 @Fluent
-public final class AutonomousDatabaseUpdateProperties {
+public final class AutonomousDatabaseUpdateProperties implements JsonSerializable<AutonomousDatabaseUpdateProperties> {
     /*
      * Admin password.
      */
-    @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
     /*
      * The maintenance schedule type of the Autonomous Database Serverless.
      */
-    @JsonProperty(value = "autonomousMaintenanceScheduleType")
     private AutonomousMaintenanceScheduleType autonomousMaintenanceScheduleType;
 
     /*
      * The compute amount (CPUs) available to the database.
      */
-    @JsonProperty(value = "computeCount")
     private Float computeCount;
 
     /*
      * The number of CPU cores to be made available to the database.
      */
-    @JsonProperty(value = "cpuCoreCount")
     private Integer cpuCoreCount;
 
     /*
      * Customer Contacts.
      */
-    @JsonProperty(value = "customerContacts")
     private List<CustomerContact> customerContacts;
 
     /*
      * The quantity of data in the database, in terabytes.
      */
-    @JsonProperty(value = "dataStorageSizeInTbs")
     private Integer dataStorageSizeInTbs;
 
     /*
      * The size, in gigabytes, of the data volume that will be created and attached to the database.
      */
-    @JsonProperty(value = "dataStorageSizeInGbs")
     private Integer dataStorageSizeInGbs;
 
     /*
      * The user-friendly name for the Autonomous Database.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Indicates if auto scaling is enabled for the Autonomous Database CPU core count.
      */
-    @JsonProperty(value = "isAutoScalingEnabled")
     private Boolean isAutoScalingEnabled;
 
     /*
      * Indicates if auto scaling is enabled for the Autonomous Database storage.
      */
-    @JsonProperty(value = "isAutoScalingForStorageEnabled")
     private Boolean isAutoScalingForStorageEnabled;
 
     /*
-     * The database OCID of the Disaster Recovery peer database, which is located in a different region from the current peer database.
+     * The database OCID of the Disaster Recovery peer database, which is located in a different region from the current
+     * peer database.
      */
-    @JsonProperty(value = "peerDbId")
     private String peerDbId;
 
     /*
      * Indicates whether the Autonomous Database has local or called in-region Data Guard enabled.
      */
-    @JsonProperty(value = "isLocalDataGuardEnabled")
     private Boolean isLocalDataGuardEnabled;
 
     /*
      * Specifies if the Autonomous Database requires mTLS connections.
      */
-    @JsonProperty(value = "isMtlsConnectionRequired")
     private Boolean isMtlsConnectionRequired;
 
     /*
      * The Oracle license model that applies to the Oracle Autonomous Database. The default is LICENSE_INCLUDED.
      */
-    @JsonProperty(value = "licenseModel")
     private LicenseModel licenseModel;
 
     /*
      * The list of scheduled operations.
      */
-    @JsonProperty(value = "scheduledOperations")
     private ScheduledOperationsTypeUpdate scheduledOperations;
 
     /*
      * The Oracle Database Edition that applies to the Autonomous databases.
      */
-    @JsonProperty(value = "databaseEdition")
     private DatabaseEditionType databaseEdition;
 
     /*
-     * Parameter that allows users to select an acceptable maximum data loss limit in seconds, up to which Automatic Failover will be triggered when necessary for a Local Autonomous Data Guard
+     * Details for the long-term backup schedule.
      */
-    @JsonProperty(value = "localAdgAutoFailoverMaxDataLossLimit")
+    private LongTermBackUpScheduleDetails longTermBackupSchedule;
+
+    /*
+     * Parameter that allows users to select an acceptable maximum data loss limit in seconds, up to which Automatic
+     * Failover will be triggered when necessary for a Local Autonomous Data Guard
+     */
     private Integer localAdgAutoFailoverMaxDataLossLimit;
 
     /*
      * Indicates the Autonomous Database mode.
      */
-    @JsonProperty(value = "openMode")
     private OpenModeType openMode;
 
     /*
      * The Autonomous Database permission level.
      */
-    @JsonProperty(value = "permissionLevel")
     private PermissionLevelType permissionLevel;
 
     /*
-     * The Data Guard role of the Autonomous Container Database or Autonomous Database, if Autonomous Data Guard is enabled.
+     * The Data Guard role of the Autonomous Container Database or Autonomous Database, if Autonomous Data Guard is
+     * enabled.
      */
-    @JsonProperty(value = "role")
     private RoleType role;
 
     /*
      * Retention period, in days, for long-term backups
      */
-    @JsonProperty(value = "backupRetentionPeriodInDays")
     private Integer backupRetentionPeriodInDays;
 
     /*
-     * The client IP access control list (ACL). This is an array of CIDR notations and/or IP addresses. Values should be separate strings, separated by commas. Example: ['1.1.1.1','1.1.1.0/24','1.1.2.25']
+     * The client IP access control list (ACL). This is an array of CIDR notations and/or IP addresses. Values should be
+     * separate strings, separated by commas. Example: ['1.1.1.1','1.1.1.0/24','1.1.2.25']
      */
-    @JsonProperty(value = "whitelistedIps")
     private List<String> whitelistedIps;
 
     /**
@@ -489,6 +480,27 @@ public final class AutonomousDatabaseUpdateProperties {
     }
 
     /**
+     * Get the longTermBackupSchedule property: Details for the long-term backup schedule.
+     * 
+     * @return the longTermBackupSchedule value.
+     */
+    public LongTermBackUpScheduleDetails longTermBackupSchedule() {
+        return this.longTermBackupSchedule;
+    }
+
+    /**
+     * Set the longTermBackupSchedule property: Details for the long-term backup schedule.
+     * 
+     * @param longTermBackupSchedule the longTermBackupSchedule value to set.
+     * @return the AutonomousDatabaseUpdateProperties object itself.
+     */
+    public AutonomousDatabaseUpdateProperties
+        withLongTermBackupSchedule(LongTermBackUpScheduleDetails longTermBackupSchedule) {
+        this.longTermBackupSchedule = longTermBackupSchedule;
+        return this;
+    }
+
+    /**
      * Get the localAdgAutoFailoverMaxDataLossLimit property: Parameter that allows users to select an acceptable
      * maximum data loss limit in seconds, up to which Automatic Failover will be triggered when necessary for a Local
      * Autonomous Data Guard.
@@ -631,5 +643,136 @@ public final class AutonomousDatabaseUpdateProperties {
         if (scheduledOperations() != null) {
             scheduledOperations().validate();
         }
+        if (longTermBackupSchedule() != null) {
+            longTermBackupSchedule().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("adminPassword", this.adminPassword);
+        jsonWriter.writeStringField("autonomousMaintenanceScheduleType",
+            this.autonomousMaintenanceScheduleType == null ? null : this.autonomousMaintenanceScheduleType.toString());
+        jsonWriter.writeNumberField("computeCount", this.computeCount);
+        jsonWriter.writeNumberField("cpuCoreCount", this.cpuCoreCount);
+        jsonWriter.writeArrayField("customerContacts", this.customerContacts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("dataStorageSizeInTbs", this.dataStorageSizeInTbs);
+        jsonWriter.writeNumberField("dataStorageSizeInGbs", this.dataStorageSizeInGbs);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("isAutoScalingEnabled", this.isAutoScalingEnabled);
+        jsonWriter.writeBooleanField("isAutoScalingForStorageEnabled", this.isAutoScalingForStorageEnabled);
+        jsonWriter.writeStringField("peerDbId", this.peerDbId);
+        jsonWriter.writeBooleanField("isLocalDataGuardEnabled", this.isLocalDataGuardEnabled);
+        jsonWriter.writeBooleanField("isMtlsConnectionRequired", this.isMtlsConnectionRequired);
+        jsonWriter.writeStringField("licenseModel", this.licenseModel == null ? null : this.licenseModel.toString());
+        jsonWriter.writeJsonField("scheduledOperations", this.scheduledOperations);
+        jsonWriter.writeStringField("databaseEdition",
+            this.databaseEdition == null ? null : this.databaseEdition.toString());
+        jsonWriter.writeJsonField("longTermBackupSchedule", this.longTermBackupSchedule);
+        jsonWriter.writeNumberField("localAdgAutoFailoverMaxDataLossLimit", this.localAdgAutoFailoverMaxDataLossLimit);
+        jsonWriter.writeStringField("openMode", this.openMode == null ? null : this.openMode.toString());
+        jsonWriter.writeStringField("permissionLevel",
+            this.permissionLevel == null ? null : this.permissionLevel.toString());
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeNumberField("backupRetentionPeriodInDays", this.backupRetentionPeriodInDays);
+        jsonWriter.writeArrayField("whitelistedIps", this.whitelistedIps,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutonomousDatabaseUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutonomousDatabaseUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutonomousDatabaseUpdateProperties.
+     */
+    public static AutonomousDatabaseUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutonomousDatabaseUpdateProperties deserializedAutonomousDatabaseUpdateProperties
+                = new AutonomousDatabaseUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("adminPassword".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.adminPassword = reader.getString();
+                } else if ("autonomousMaintenanceScheduleType".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.autonomousMaintenanceScheduleType
+                        = AutonomousMaintenanceScheduleType.fromString(reader.getString());
+                } else if ("computeCount".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.computeCount
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("cpuCoreCount".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.cpuCoreCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("customerContacts".equals(fieldName)) {
+                    List<CustomerContact> customerContacts
+                        = reader.readArray(reader1 -> CustomerContact.fromJson(reader1));
+                    deserializedAutonomousDatabaseUpdateProperties.customerContacts = customerContacts;
+                } else if ("dataStorageSizeInTbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.dataStorageSizeInTbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("dataStorageSizeInGbs".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.dataStorageSizeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.displayName = reader.getString();
+                } else if ("isAutoScalingEnabled".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.isAutoScalingEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isAutoScalingForStorageEnabled".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.isAutoScalingForStorageEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("peerDbId".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.peerDbId = reader.getString();
+                } else if ("isLocalDataGuardEnabled".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.isLocalDataGuardEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isMtlsConnectionRequired".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.isMtlsConnectionRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("licenseModel".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.licenseModel
+                        = LicenseModel.fromString(reader.getString());
+                } else if ("scheduledOperations".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.scheduledOperations
+                        = ScheduledOperationsTypeUpdate.fromJson(reader);
+                } else if ("databaseEdition".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.databaseEdition
+                        = DatabaseEditionType.fromString(reader.getString());
+                } else if ("longTermBackupSchedule".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.longTermBackupSchedule
+                        = LongTermBackUpScheduleDetails.fromJson(reader);
+                } else if ("localAdgAutoFailoverMaxDataLossLimit".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.localAdgAutoFailoverMaxDataLossLimit
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("openMode".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.openMode
+                        = OpenModeType.fromString(reader.getString());
+                } else if ("permissionLevel".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.permissionLevel
+                        = PermissionLevelType.fromString(reader.getString());
+                } else if ("role".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.role = RoleType.fromString(reader.getString());
+                } else if ("backupRetentionPeriodInDays".equals(fieldName)) {
+                    deserializedAutonomousDatabaseUpdateProperties.backupRetentionPeriodInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("whitelistedIps".equals(fieldName)) {
+                    List<String> whitelistedIps = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAutonomousDatabaseUpdateProperties.whitelistedIps = whitelistedIps;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutonomousDatabaseUpdateProperties;
+        });
     }
 }

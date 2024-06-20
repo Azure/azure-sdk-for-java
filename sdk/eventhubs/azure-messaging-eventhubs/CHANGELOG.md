@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Add support for local emulator.
+
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -645,7 +647,7 @@ by calling `EventHubPublisher.close()` or `EventHubConsumer.close()`.
 Version 5.0.0-preview.1 is a preview of our efforts in creating a client library that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
 our efforts can be found in the [Azure SDK Design Guidelines for
-.Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+.Java](https://aka.ms/azsdk/guide/java).
 
 For release notes and more information please visit https://aka.ms/azure-sdk-preview1-java
 

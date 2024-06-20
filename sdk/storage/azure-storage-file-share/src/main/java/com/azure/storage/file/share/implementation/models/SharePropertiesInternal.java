@@ -118,6 +118,11 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
     private ShareRootSquash rootSquash;
 
     /*
+     * The EnableSnapshotVirtualDirectoryAccess property.
+     */
+    private Boolean enableSnapshotVirtualDirectoryAccess;
+
+    /*
      * Dictionary of <string>
      */
     private Map<String, String> metadata;
@@ -519,6 +524,27 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
     }
 
     /**
+     * Get the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     * 
+     * @return the enableSnapshotVirtualDirectoryAccess value.
+     */
+    public Boolean isEnableSnapshotVirtualDirectoryAccess() {
+        return this.enableSnapshotVirtualDirectoryAccess;
+    }
+
+    /**
+     * Set the enableSnapshotVirtualDirectoryAccess property: The EnableSnapshotVirtualDirectoryAccess property.
+     * 
+     * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
+     * @return the SharePropertiesInternal object itself.
+     */
+    public SharePropertiesInternal
+        setEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {
+        this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
+        return this;
+    }
+
+    /**
      * Get the metadata property: Dictionary of &lt;string&gt;.
      * 
      * @return the metadata value.
@@ -567,6 +593,8 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
             this.leaseDuration == null ? null : this.leaseDuration.toString());
         xmlWriter.writeStringElement("EnabledProtocols", this.enabledProtocols);
         xmlWriter.writeStringElement("RootSquash", this.rootSquash == null ? null : this.rootSquash.toString());
+        xmlWriter.writeBooleanElement("EnableSnapshotVirtualDirectoryAccess",
+            this.enableSnapshotVirtualDirectoryAccess);
         if (this.metadata != null) {
             xmlWriter.writeStartElement("Metadata");
             for (Map.Entry<String, String> entry : this.metadata.entrySet()) {
@@ -656,6 +684,9 @@ public final class SharePropertiesInternal implements XmlSerializable<SharePrope
                 } else if ("RootSquash".equals(elementName.getLocalPart())) {
                     deserializedSharePropertiesInternal.rootSquash
                         = ShareRootSquash.fromString(reader.getStringElement());
+                } else if ("EnableSnapshotVirtualDirectoryAccess".equals(elementName.getLocalPart())) {
+                    deserializedSharePropertiesInternal.enableSnapshotVirtualDirectoryAccess
+                        = reader.getNullableElement(Boolean::parseBoolean);
                 } else if ("Metadata".equals(elementName.getLocalPart())) {
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         if (deserializedSharePropertiesInternal.metadata == null) {

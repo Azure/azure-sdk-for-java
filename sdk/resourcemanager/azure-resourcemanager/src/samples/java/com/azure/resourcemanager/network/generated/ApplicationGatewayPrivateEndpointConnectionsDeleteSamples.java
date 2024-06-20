@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ApplicationGatewayPrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * ApplicationGatewayPrivateEndpointConnectionDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ApplicationGatewayPrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: Delete Application Gateway Private Endpoint Connection.
@@ -19,7 +18,10 @@ public final class ApplicationGatewayPrivateEndpointConnectionsDeleteSamples {
      */
     public static void
         deleteApplicationGatewayPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getApplicationGatewayPrivateEndpointConnections().delete("rg1",
-            "appgw", "connection1", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getApplicationGatewayPrivateEndpointConnections()
+            .delete("rg1", "appgw", "connection1", com.azure.core.util.Context.NONE);
     }
 }

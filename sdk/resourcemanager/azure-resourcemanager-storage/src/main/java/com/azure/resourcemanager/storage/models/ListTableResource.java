@@ -9,7 +9,9 @@ import com.azure.resourcemanager.storage.fluent.models.TableInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response schema. Contains list of tables returned. */
+/**
+ * Response schema. Contains list of tables returned.
+ */
 @Immutable
 public final class ListTableResource {
     /*
@@ -24,13 +26,15 @@ public final class ListTableResource {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ListTableResource class. */
+    /**
+     * Creates an instance of ListTableResource class.
+     */
     public ListTableResource() {
     }
 
     /**
      * Get the value property: List of tables returned.
-     *
+     * 
      * @return the value value.
      */
     public List<TableInner> value() {
@@ -39,7 +43,7 @@ public final class ListTableResource {
 
     /**
      * Get the nextLink property: Request URL that can be used to query next page of tables.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ListTableResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

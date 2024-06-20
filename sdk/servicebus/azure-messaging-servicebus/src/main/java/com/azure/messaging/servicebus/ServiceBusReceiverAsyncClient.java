@@ -1932,7 +1932,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     Flux<ServiceBusReceivedMessage> nonSessionSyncReceiveV2() {
         assert isOnV2 && !isSessionEnabled;
-        return getOrCreateConsumer().receive();
+        final Flux<ServiceBusReceivedMessage> messages = getOrCreateConsumer().receive();
+        return receiverOptions.isAutoLockRenewEnabled() ? messages.doOnNext(this::beginLockRenewal) : messages;
     }
 
     private Flux<ServiceBusReceivedMessage> sessionReactiveReceiveV2() {
