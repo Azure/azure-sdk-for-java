@@ -3,6 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: metricsadvisor
     Artifacts:
       - name: azure-ai-metricsadvisor
@@ -11,7 +12,6 @@ extends:
     EnvVars:
       AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
       AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
-      AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
       AZURE_METRICS_ADVISOR_ENDPOINT: $(metricsadvisor-test-service-endpoint)
       AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY: $(metricsadvisor-test-subscription-key)
       AZURE_METRICS_ADVISOR_API_KEY: $(java-metricsadvisor-test-api-key)

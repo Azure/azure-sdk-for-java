@@ -3,14 +3,12 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.BodilessMatcher;
-import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -48,46 +46,25 @@ public abstract class MetricsAdvisorClientTestBase extends TestProxyTestBase {
         } else {
             httpClient1 = buildAsyncAssertingClient(httpClient1);
         }
-        return getMetricsAdvisorBuilderInternal(httpClient1, serviceVersion, true);
+        return getMetricsAdvisorBuilderInternal(httpClient1, serviceVersion);
     }
 
     MetricsAdvisorClientBuilder getMetricsAdvisorBuilderInternal(HttpClient httpClient,
-                                                         MetricsAdvisorServiceVersion serviceVersion,
-                                                         boolean useKeyCredential) {
+                                                         MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorClientBuilder builder = new MetricsAdvisorClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .credential(TestUtils.getTestTokenCredential(interceptorManager))
             .serviceVersion(serviceVersion);
 
-        if (useKeyCredential) {
-            if (!interceptorManager.isPlaybackMode()) {
-                if (interceptorManager.isRecordMode()) {
-                    builder.addPolicy(interceptorManager.getRecordPolicy());
-                }
-                builder
-                    .credential(new MetricsAdvisorKeyCredential(
-                        Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY"),
-                        Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY")));
-
-            } else {
-                builder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
-                // setting bodiless matcher to "exclude" matching request bodies with UUID's
-                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(), new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
+        if (!interceptorManager.isPlaybackMode()) {
+            if (interceptorManager.isRecordMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
             }
         } else {
-            if (!interceptorManager.isPlaybackMode()) {
-                if (interceptorManager.isRecordMode()) {
-                    builder.addPolicy(interceptorManager.getRecordPolicy());
-                }
-                builder
-                    .credential(new DefaultAzureCredentialBuilder().build());
-            } else {
-                builder.credential(new MockTokenCredential());
-                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
-            }
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
         }
-
         return builder;
     }
 

@@ -4,25 +4,25 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClientBuilder;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.Duration;
 import java.util.Arrays;
 
 import static com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilderTest.PLAYBACK_ENDPOINT;
-import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
-import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
-import static com.azure.ai.metricsadvisor.TestUtils.REMOVE_SANITIZER_ID;
+import static com.azure.ai.metricsadvisor.TestUtils.*;
 
 public abstract class MetricsAdvisorAdministrationClientTestBase extends TestProxyTestBase {
     protected static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS);
@@ -52,50 +52,30 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestPro
         } else {
             httpClient1 = buildAsyncAssertingClient(httpClient1);
         }
-        return getMetricsAdvisorAdministrationBuilderInternal(httpClient1, serviceVersion, true);
+        return getMetricsAdvisorAdministrationBuilderInternal(httpClient1, serviceVersion);
     }
 
-    static MetricsAdvisorAdministrationClientBuilder getNonRecordAdminClient() {
+    MetricsAdvisorAdministrationClientBuilder getNonRecordAdminClient() {
         return new MetricsAdvisorAdministrationClientBuilder()
             .endpoint(PLAYBACK_ENDPOINT)
-            .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
+            .credential(getTestTokenCredential(interceptorManager));
     }
 
     MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilderInternal(HttpClient httpClient,
-                                                                                     MetricsAdvisorServiceVersion serviceVersion,
-                                                                                     boolean useKeyCredential) {
+                                                                                     MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationClientBuilder builder = new MetricsAdvisorAdministrationClientBuilder()
             .endpoint(getEndpoint())
             .httpClient(httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .credential(getTestTokenCredential(interceptorManager))
             .serviceVersion(serviceVersion);
 
-        if (useKeyCredential) {
-            if (!interceptorManager.isPlaybackMode()) {
-                if (interceptorManager.isRecordMode()) {
-                    builder.addPolicy(interceptorManager.getRecordPolicy());
-                }
-                builder
-                    .credential(new MetricsAdvisorKeyCredential(
-                        Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY"),
-                        Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY")));
-
-            } else {
-                builder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
-                // setting bodiless matcher to "exclude" matching request bodies with UUID's
-                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(), new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
+        if (!interceptorManager.isPlaybackMode()) {
+            if (interceptorManager.isRecordMode()) {
+                builder.addPolicy(interceptorManager.getRecordPolicy());
             }
         } else {
-            if (!interceptorManager.isPlaybackMode()) {
-                if (interceptorManager.isRecordMode()) {
-                    builder.addPolicy(interceptorManager.getRecordPolicy());
-                }
-                builder
-                    .credential(new DefaultAzureCredentialBuilder().build());
-            } else {
-                builder.credential(new MockTokenCredential());
-                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
-            }
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
         }
 
         if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
