@@ -85,7 +85,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      * elsewhere this method will return right away as <b>false</b>.
      */
     public void refreshAsync() {
-        new Thread(new RunnableRefresh()).start();
+        new Thread(() -> refreshStores()).start();
     }
 
     /**
@@ -135,17 +135,4 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
     public Map<String, AppConfigurationStoreHealth> getAppConfigurationStoresHealth() {
         return clientFactory.getHealth();
     }
-    
-    /**
-     * Runnable refresh. Created so Async only application can use refresh, such as WebFlux.
-     */
-    private class RunnableRefresh implements Runnable {
-
-        @Override
-        public void run() {
-            refreshStores();
-        }
-        
-    }
-
 }
