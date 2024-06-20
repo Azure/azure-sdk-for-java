@@ -4,7 +4,8 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     ServiceDirectory: keyvault
-    TestResourcesDirectory: keyvault/azure-security-keyvault-jca
+    TestResourceDirectories:
+      - keyvault/test-resources-jca
     TimeoutInMinutes: 240
     SupportedClouds: 'Public,UsGov,China,Canary'
     EnvVars:

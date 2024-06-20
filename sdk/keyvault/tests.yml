@@ -5,7 +5,8 @@ extends:
   parameters:
     UseFederatedAuth: true
     ServiceDirectory: keyvault
-    TestResourcesDirectory: keyvault/test-resources
+    TestResourceDirectories:
+      - keyvault/test-resources
     TimeoutInMinutes: 240
     SupportedClouds: 'Public,UsGov,China,Canary'
     EnvVars:
