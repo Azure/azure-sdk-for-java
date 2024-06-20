@@ -4,10 +4,15 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
 
 /** The CallDisconnected model. */
 @Immutable
 public final class CallDisconnected extends CallAutomationEventBase {
     private CallDisconnected() {
+    }
+
+    static CallDisconnected fromJsonImpl(JsonReader jsonReader) {
+        return new CallDisconnected();
     }
 }

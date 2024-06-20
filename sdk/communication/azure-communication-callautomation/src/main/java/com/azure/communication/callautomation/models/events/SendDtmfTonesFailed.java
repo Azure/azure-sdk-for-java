@@ -4,7 +4,11 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The SendDtmfTonesFailed model. */
 @Fluent
@@ -14,7 +18,7 @@ public final class SendDtmfTonesFailed extends CallAutomationEventBase {
      * Contains the resulting SIP code, sub-code and message.
      */
     @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
+    private ResultInformation resultInformation;
 
     /**
      * Constructor for SendDtmfTonesFailed
@@ -30,5 +34,21 @@ public final class SendDtmfTonesFailed extends CallAutomationEventBase {
      */
     public ResultInformation getResultInformation() {
         return this.resultInformation;
+    }
+
+    static SendDtmfTonesFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final SendDtmfTonesFailed event = new SendDtmfTonesFailed();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

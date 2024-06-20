@@ -5,7 +5,11 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The ContinuousDtmfRecognitionToneReceived model. */
 @Immutable
@@ -15,19 +19,19 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
      * The sequence id which can be used to determine if the same tone was played multiple times or if any tones were missed.
      */
     @JsonProperty(value = "sequenceId", required = true)
-    private final Integer sequenceId;
+    private Integer sequenceId;
 
     /*
      * The tone property.
      */
     @JsonProperty(value = "tone", required = true)
-    private final DtmfTone tone;
+    private DtmfTone tone;
 
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
     @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
+    private ResultInformation resultInformation;
 
     /**
      * Constructor for ContinuousDtmfRecognitionToneReceived
@@ -36,6 +40,26 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
         resultInformation = null;
         sequenceId = 0;
         tone = null;
+    }
+
+    static ContinuousDtmfRecognitionToneReceived fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final ContinuousDtmfRecognitionToneReceived event = new ContinuousDtmfRecognitionToneReceived();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("sequenceId".equals(fieldName)) {
+                    event.sequenceId = reader.getInt();
+                } else if ("tone".equals(fieldName)) {
+                   event.tone = DtmfTone.fromString(reader.getString());
+                } else if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 
     /**

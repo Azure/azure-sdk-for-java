@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import com.azure.communication.callautomation.models.CallMediaRecognitionType;
@@ -10,6 +11,8 @@ import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.SpeechResult;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.core.annotation.Immutable;
 
@@ -59,5 +62,29 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
         }
 
         return Optional.empty();
+    }
+
+    static RecognizeCompleted fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final RecognizeCompleted event = new RecognizeCompleted();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("recognitionType".equals(fieldName)) {
+                    event.recognitionType = CallMediaRecognitionType.fromString(reader.getString());
+                } else if ("dtmfResult".equals(fieldName)) {
+                    event.dtmfResult = DtmfResult.fromJson(reader);
+                } else if ("speechResult".equals(fieldName)) {
+                    event.speechResult = SpeechResult.fromJson(reader);
+                } else if ("choiceResult".equals(fieldName)) {
+                    event.collectChoiceResult = ChoiceResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

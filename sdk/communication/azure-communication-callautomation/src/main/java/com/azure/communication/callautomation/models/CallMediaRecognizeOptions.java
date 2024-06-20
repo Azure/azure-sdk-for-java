@@ -5,13 +5,19 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.time.Duration;
 
 /** Options to configure the Recognize operation **/
 @Fluent
-public abstract class CallMediaRecognizeOptions {
+public abstract class CallMediaRecognizeOptions implements JsonSerializable<CallMediaRecognizeOptions> {
     /*
      * Determines the type of the recognition.
      */
@@ -280,4 +286,88 @@ public abstract class CallMediaRecognizeOptions {
         return this;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        this.writeJsonImpl(jsonWriter);
+        jsonWriter.writeStringField("recognizeInputType", this.recognizeInputType == null ? null : this.recognizeInputType.toString());
+        jsonWriter.writeJsonField("playPrompt", this.playPrompt);
+        jsonWriter.writeBooleanField("interruptCallMediaOperation", this.interruptCallMediaOperation);
+        jsonWriter.writeBooleanField("stopCurrentOperations", this.stopCurrentOperations);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
+        jsonWriter.writeBooleanField("interruptPrompt", this.interruptPrompt);
+        jsonWriter.writeStringField("initialSilenceTimeout", CoreUtils.durationToStringWithDays(this.initialSilenceTimeout));
+        jsonWriter.writeStringField("speechModelEndpointId", this.speechModelEndpointId);
+        // TODO (anu): targetParticipant is of com.azure.communication.common.CommunicationIdentifier, which doesn't seem serializable.
+        // jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
+        jsonWriter.writeStringField("operationCallbackUrl", this.operationCallbackUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CallMediaRecognizeOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CallMediaRecognizeOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExternalStorage.
+     */
+    public static CallMediaRecognizeOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String type = null;
+            final JsonReader reader1 = reader.bufferObject();
+            reader1.nextToken(); // Prepare for reading
+            while (reader1.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader1.getFieldName();
+                reader1.nextToken();
+                if ("recognizeInputType".equals(fieldName)) {
+                    type = reader1.getString();
+                } else {
+                    reader1.skipChildren();
+                }
+            }
+            final CallMediaRecognizeOptions options;
+            if ("dtmf".equals(type)) {
+                options = CallMediaRecognizeDtmfOptions.readJsonImpl(reader1.reset());
+            } else if ("choices".equals(type)) {
+                options = CallMediaRecognizeChoiceOptions.readJsonImpl(reader1.reset());
+            } else if ("speech".equals(type)) {
+                options = CallMediaRecognizeSpeechOptions.readJsonImpl(reader1.reset());
+            } else if ("speechordtmf".equals(type)) {
+                options = CallMediaRecognizeSpeechOrDtmfOptions.readJsonImpl(reader1.reset());
+            } else {
+                options = null;
+            }
+            if (options != null) {
+                final JsonReader reader2 = reader1.reset();
+                while (reader2.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader1.getFieldName();
+                    reader2.nextToken();
+                    if ("interruptCallMediaOperation".equals(fieldName)) {
+                        options.interruptCallMediaOperation = reader2.getBoolean();
+                    } else if ("stopCurrentOperations".equals(fieldName)) {
+                        options.stopCurrentOperations = reader2.getBoolean();
+                    } else if ("operationContext".equals(fieldName)) {
+                        options.operationContext = reader2.getString();
+                    } else if ("interruptPrompt".equals(fieldName)) {
+                        options.interruptPrompt = reader2.getBoolean();
+                    } else if ("initialSilenceTimeout".equals(fieldName)) {
+                        options.initialSilenceTimeout = Duration.parse(reader2.getString());
+                    } else if ("speechModelEndpointId".equals(fieldName)) {
+                        options.speechModelEndpointId = reader2.getString();
+                    } else if ("operationCallbackUrl".equals(fieldName)) {
+                        options.operationCallbackUrl = reader2.getString();
+                    } else if ("targetParticipant".equals(fieldName)) {
+                        // TODO (anu): targetParticipant is of com.azure.communication.common.CommunicationIdentifier, which doesn't seem de-serializable.
+                        options.targetParticipant = null;
+                    } else {
+                        reader2.skipChildren();
+                    }
+                }
+            }
+            return options;
+        });
+    }
+
+    abstract void writeJsonImpl(JsonWriter jsonWriter) throws IOException;
 }

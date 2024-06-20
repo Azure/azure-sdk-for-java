@@ -5,8 +5,13 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -179,5 +184,34 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
         super(RecognizeInputType.DTMF, targetParticipant);
         this.interToneTimeout = Duration.ofSeconds(2);
         this.maxTonesToCollect = maxTonesToCollect;
+    }
+
+    @Override
+    void writeJsonImpl(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("interToneTimeout", CoreUtils.durationToStringWithDays(this.interToneTimeout));
+        if (this.maxTonesToCollect != null) {
+            jsonWriter.writeIntField("maxTonesToCollect", this.maxTonesToCollect);
+        }
+        jsonWriter.writeArrayField("stopTones", this.stopDtmfTones, (writer, element) -> writer.writeString(element.toString()));
+    }
+
+    static CallMediaRecognizeDtmfOptions readJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CallMediaRecognizeDtmfOptions options = new CallMediaRecognizeDtmfOptions(null, 0);
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("interToneTimeout".equals(fieldName)) {
+                    options.interToneTimeout = Duration.parse(reader.getString());
+                } else if ("maxTonesToCollect".equals(fieldName)) {
+                    options.maxTonesToCollect = reader.getInt();
+                } else if ("stopTones".equals(fieldName)) {
+                    options.stopDtmfTones = reader.readArray(r -> DtmfTone.fromString(r.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return options;
+        });
     }
 }

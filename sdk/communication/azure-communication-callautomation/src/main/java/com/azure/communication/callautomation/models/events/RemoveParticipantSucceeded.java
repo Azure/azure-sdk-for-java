@@ -7,12 +7,15 @@ import com.azure.communication.callautomation.implementation.converters.Communic
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.Map;
 
 /** The RemoveParticipantSucceeded model. */
@@ -22,13 +25,13 @@ public final class RemoveParticipantSucceeded extends CallAutomationEventBase {
      * Participant removed
      */
     @JsonIgnore
-    private final CommunicationIdentifier participant;
+    private CommunicationIdentifier participant;
 
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
     @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
+    private ResultInformation resultInformation;
 
     @JsonCreator
     private RemoveParticipantSucceeded(@JsonProperty("participant") Map<String, Object> participant) {
@@ -36,6 +39,10 @@ public final class RemoveParticipantSucceeded extends CallAutomationEventBase {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.participant = CommunicationIdentifierConverter.convert(mapper.convertValue(participant, CommunicationIdentifierModel.class));
+    }
+
+    private RemoveParticipantSucceeded() {
+
     }
 
     /**
@@ -54,5 +61,25 @@ public final class RemoveParticipantSucceeded extends CallAutomationEventBase {
      */
     public ResultInformation getResultInformation() {
         return this.resultInformation;
+    }
+
+    static RemoveParticipantSucceeded fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final RemoveParticipantSucceeded event = new RemoveParticipantSucceeded();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("participant".equals(fieldName)) {
+                    // TODO (anu): final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
+                    final CommunicationIdentifierModel inner = null;
+                    event.participant = CommunicationIdentifierConverter.convert(inner);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

@@ -5,8 +5,13 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -161,5 +166,43 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
         this.endSilenceTimeout = endSilenceTimeout;
         this.interToneTimeout = Duration.ofSeconds(2);
         this.maxTonesToCollect = maxTonesToCollect;
+    }
+
+    @Override
+    void writeJsonImpl(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("endSilenceTimeout", CoreUtils.durationToStringWithDays(endSilenceTimeout));
+        jsonWriter.writeStringField("speechLanguage", speechLanguage);
+        jsonWriter.writeStringField("speechRecognitionModelEndpointId", speechRecognitionModelEndpointId);
+        jsonWriter.writeStringField("interToneTimeout", CoreUtils.durationToStringWithDays(interToneTimeout));
+        if (maxTonesToCollect != null) {
+            jsonWriter.writeIntField("maxTonesToCollect", maxTonesToCollect);
+        }
+        jsonWriter.writeArrayField("stopTones", this.stopDtmfTones, (writer, element) -> writer.writeString(element.toString()));
+    }
+
+    static CallMediaRecognizeSpeechOrDtmfOptions readJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final CallMediaRecognizeSpeechOrDtmfOptions options = new CallMediaRecognizeSpeechOrDtmfOptions(null, 0, null);
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("endSilenceTimeout".equals(fieldName)) {
+                    options.endSilenceTimeout = Duration.parse(reader.getString());
+                } else if ("speechLanguage".equals(fieldName)) {
+                    options.speechLanguage = reader.getString();
+                } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
+                    options.speechRecognitionModelEndpointId = reader.getString();
+                } else if ("interToneTimeout".equals(fieldName)) {
+                    options.interToneTimeout = Duration.parse(reader.getString());
+                } else if ("maxTonesToCollect".equals(fieldName)) {
+                    options.maxTonesToCollect = reader.getInt();
+                } else if ("stopTones".equals(fieldName)) {
+                    options.stopDtmfTones = reader.readArray(r -> DtmfTone.fromString(r.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return options;
+        });
     }
 }

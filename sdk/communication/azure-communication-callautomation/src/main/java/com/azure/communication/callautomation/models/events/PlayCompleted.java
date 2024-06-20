@@ -4,7 +4,11 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The PlayCompleted model. */
 @Immutable
@@ -13,7 +17,7 @@ public final class PlayCompleted extends CallAutomationEventBaseWithReasonCode {
      * Contains the resulting SIP code, sub-code and message.
      */
     @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
+    private ResultInformation resultInformation;
 
     private PlayCompleted() {
         this.resultInformation = null;
@@ -26,5 +30,21 @@ public final class PlayCompleted extends CallAutomationEventBaseWithReasonCode {
      */
     public ResultInformation getResultInformation() {
         return this.resultInformation;
+    }
+
+    static PlayCompleted fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final PlayCompleted event = new PlayCompleted();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

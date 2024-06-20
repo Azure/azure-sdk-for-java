@@ -4,12 +4,16 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The MediaStreamingStopped model. */
 @Fluent
 public final class MediaStreamingStopped extends CallAutomationEventBase {
-    
+
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
@@ -48,5 +52,23 @@ public final class MediaStreamingStopped extends CallAutomationEventBase {
      */
     public MediaStreamingUpdate getMediaStreamingUpdateResult() {
         return this.mediaStreamingUpdateResult;
+    }
+
+    static MediaStreamingStopped fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final MediaStreamingStopped event = new MediaStreamingStopped();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("mediaStreamingUpdate".equals(fieldName)) {
+                    event.mediaStreamingUpdateResult = MediaStreamingUpdate.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

@@ -6,7 +6,11 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.communication.callautomation.models.UserConsent;
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The DialogConsent model. */
 @Immutable
@@ -73,5 +77,27 @@ public final class DialogConsent extends CallAutomationEventBase {
      */
     public String getDialogId() {
         return this.dialogId;
+    }
+
+    static DialogConsent fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final DialogConsent event = new DialogConsent();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("dialogInputType".equals(fieldName)) {
+                    event.dialogInputType = DialogInputType.fromString(reader.getString());
+                } else if ("userConsent".equals(fieldName)) {
+                    event.userConsent = UserConsent.fromJson(reader);
+                } else if ("dialogId".equals(fieldName)) {
+                    event.dialogId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

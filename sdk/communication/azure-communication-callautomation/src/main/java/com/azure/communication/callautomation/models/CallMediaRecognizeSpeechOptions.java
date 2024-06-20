@@ -5,8 +5,13 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.time.Duration;
 
 /** The Recognize configurations specific for Continuous Speech Recognition. **/
@@ -176,5 +181,32 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     public CallMediaRecognizeSpeechOptions(CommunicationIdentifier targetParticipant, Duration endSilenceTimeout) {
         super(RecognizeInputType.SPEECH, targetParticipant);
         this.endSilenceTimeout = endSilenceTimeout;
+    }
+
+    @Override
+    void writeJsonImpl(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("endSilenceTimeout", CoreUtils.durationToStringWithDays(this.endSilenceTimeout));
+        jsonWriter.writeStringField("speechLanguage", speechLanguage);
+        jsonWriter.writeStringField("speechRecognitionModelEndpointId", speechRecognitionModelEndpointId);
+    }
+
+    static CallMediaRecognizeSpeechOptions readJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final CallMediaRecognizeSpeechOptions options = new CallMediaRecognizeSpeechOptions(null, null);
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("endSilenceTimeout".equals(fieldName)) {
+                    options.endSilenceTimeout = Duration.parse(reader.getString());
+                } else if ("speechLanguage".equals(fieldName)) {
+                    options.speechLanguage = reader.getString();
+                } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
+                    options.speechRecognitionModelEndpointId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return options;
+        });
     }
 }

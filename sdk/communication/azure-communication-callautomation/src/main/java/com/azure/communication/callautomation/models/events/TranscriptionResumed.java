@@ -4,7 +4,11 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /**
  * The TranscriptionResumed model.
@@ -16,13 +20,13 @@ public final class TranscriptionResumed extends CallAutomationEventBase {
      * Contains the resulting SIP code/sub-code and message from NGC services.
      */
     @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
-    private final ResultInformation resultInformation;
+    private ResultInformation resultInformation;
 
     /*
      * Defines the result for TranscriptionUpdate with the current status and the details about the status
      */
     @JsonProperty(value = "transcriptionUpdate", access = JsonProperty.Access.WRITE_ONLY)
-    private final TranscriptionUpdate transcriptionUpdateResult;
+    private TranscriptionUpdate transcriptionUpdateResult;
 
     /**
      * Creates an instance of TranscriptionResumed class.
@@ -49,5 +53,23 @@ public final class TranscriptionResumed extends CallAutomationEventBase {
      */
     public TranscriptionUpdate getTranscriptionUpdateResult() {
         return this.transcriptionUpdateResult;
+    }
+
+    static TranscriptionResumed fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final TranscriptionResumed event = new TranscriptionResumed();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("transcriptionUpdate".equals(fieldName)) {
+                    event.transcriptionUpdateResult = TranscriptionUpdate.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

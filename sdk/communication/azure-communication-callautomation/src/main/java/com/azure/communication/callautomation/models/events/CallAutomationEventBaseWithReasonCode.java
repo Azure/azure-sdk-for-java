@@ -13,7 +13,7 @@ public abstract class CallAutomationEventBaseWithReasonCode extends CallAutomati
      * Contains the resulting SIP code, sub-code and message.
      */
     @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
+    ResultInformation resultInformation;
 
     CallAutomationEventBaseWithReasonCode() {
         this.resultInformation = null;

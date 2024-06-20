@@ -5,7 +5,11 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The DialogLanguageChange model. */
 @Fluent
@@ -87,5 +91,29 @@ public final class DialogLanguageChange extends CallAutomationEventBase {
      */
     public Object getIvrContext() {
         return this.ivrContext;
+    }
+
+    static DialogLanguageChange fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final DialogLanguageChange event = new DialogLanguageChange();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("dialogInputType".equals(fieldName)) {
+                    event.dialogInputType = DialogInputType.fromString(reader.getString());
+                } else if ("dialogId".equals(fieldName)) {
+                    event.dialogId = reader.getString();
+                } else if ("selectedLanguage".equals(fieldName)) {
+                    event.selectedLanguage = reader.getString();
+                } else if ("ivrContext".equals(fieldName)) {
+                    event.ivrContext = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

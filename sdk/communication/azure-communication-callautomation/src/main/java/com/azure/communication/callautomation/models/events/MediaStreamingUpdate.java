@@ -4,7 +4,11 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The MediaStreamingUpdate model. */
 @Fluent
@@ -86,5 +90,25 @@ public final class MediaStreamingUpdate {
             MediaStreamingStatusDetails mediaStreamingStatusDetails) {
         this.mediaStreamingStatusDetails = mediaStreamingStatusDetails;
         return this;
+    }
+
+    static MediaStreamingUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final MediaStreamingUpdate event = new MediaStreamingUpdate();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("contentType".equals(fieldName)) {
+                    event.contentType =  reader.getString();
+                } else if ("mediaStreamingStatus".equals(fieldName)) {
+                    event.mediaStreamingStatus = MediaStreamingStatus.fromString(reader.getString());
+                } else if ("mediaStreamingStatusDetails".equals(fieldName)) {
+                    event.mediaStreamingStatusDetails = MediaStreamingStatusDetails.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

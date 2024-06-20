@@ -7,12 +7,15 @@ import com.azure.communication.callautomation.implementation.converters.Communic
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.Map;
 
 /** The RemoveParticipantFailed model. */
@@ -22,13 +25,13 @@ public final class RemoveParticipantFailed extends CallAutomationEventBase {
      * Participant removed
      */
     @JsonIgnore
-    private final CommunicationIdentifier participant;
+    private CommunicationIdentifier participant;
 
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
     @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
+    private ResultInformation resultInformation;
 
     @JsonCreator
     private RemoveParticipantFailed(@JsonProperty("participant") Map<String, Object> participant) {
@@ -54,5 +57,25 @@ public final class RemoveParticipantFailed extends CallAutomationEventBase {
      */
     public ResultInformation getResultInformation() {
         return this.resultInformation;
+    }
+
+    static RemoveParticipantFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final RemoveParticipantFailed event = new RemoveParticipantFailed();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("participant".equals(fieldName)) {
+                    // TODO (anu): final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
+                    final CommunicationIdentifierModel inner = null;
+                    event.participant = CommunicationIdentifierConverter.convert(inner);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

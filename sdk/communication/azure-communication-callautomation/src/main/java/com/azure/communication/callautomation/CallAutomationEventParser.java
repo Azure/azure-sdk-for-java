@@ -50,11 +50,14 @@ import com.azure.communication.callautomation.models.events.MediaStreamingStoppe
 import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -100,6 +103,14 @@ public final class CallAutomationEventParser {
             return callAutomationBaseEvents;
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
+        }
+    }
+
+    private static CallAutomationEventBase parseSingleCloudEvent2(String data, String eventType) {
+        try (JsonReader jsonReader = JsonProviders.createReader(data)) {
+            return CallAutomationEventBase.fromJson(jsonReader, eventType);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

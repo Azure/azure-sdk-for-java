@@ -4,7 +4,11 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /**
  * The TranscriptionUpdate model.
@@ -67,5 +71,23 @@ public final class TranscriptionUpdate {
     public TranscriptionUpdate setTranscriptionStatusDetails(TranscriptionStatusDetails transcriptionStatusDetails) {
         this.transcriptionStatusDetails = transcriptionStatusDetails;
         return this;
+    }
+
+    static TranscriptionUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final TranscriptionUpdate event = new TranscriptionUpdate();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("transcriptionStatus".equals(fieldName)) {
+                    event.transcriptionStatus = TranscriptionStatus.fromString(reader.getString());
+                } else if ("transcriptionStatusDetails".equals(fieldName)) {
+                    event.transcriptionStatusDetails = TranscriptionStatusDetails.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

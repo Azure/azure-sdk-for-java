@@ -4,7 +4,12 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The SsmlSource model. */
 @Fluent
@@ -59,5 +64,37 @@ public final class SsmlSource extends PlaySource {
     public SsmlSource setCustomVoiceEndpointId(String customVoiceEndpointId) {
         this.customVoiceEndpointId = customVoiceEndpointId;
         return this;
+    }
+
+    @Override
+    void writeJsonImpl(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("ssmlText", this.ssmlText);
+        jsonWriter.writeStringField("customVoiceEndpointId", this.customVoiceEndpointId);
+    }
+
+    /**
+     * Reads an instance of SsmlSource from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsmlSource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsmlSource.
+     */
+    public static SsmlSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final SsmlSource source = new SsmlSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("ssmlText".equals(fieldName)) {
+                    source.ssmlText = reader.getString();
+                } else if ("customVoiceEndpointId".equals(fieldName)) {
+                    source.customVoiceEndpointId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return source;
+        });
     }
 }

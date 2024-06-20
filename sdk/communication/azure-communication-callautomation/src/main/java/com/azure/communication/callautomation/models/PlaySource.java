@@ -4,11 +4,16 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The PlaySource model. */
 @Fluent
-public abstract class PlaySource {
+public abstract class PlaySource implements JsonSerializable<PlaySource> {
     /*
      * Defines the identifier to be used for caching related media
      */
@@ -34,4 +39,14 @@ public abstract class PlaySource {
         this.playSourceCacheId = playSourceCacheId;
         return this;
     }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        this.writeJsonImpl(jsonWriter);
+        jsonWriter.writeStringField("playSourceCacheId", this.playSourceCacheId);
+        return jsonWriter.writeEndObject();
+    }
+
+    abstract void writeJsonImpl(JsonWriter jsonWriter) throws IOException;
 }

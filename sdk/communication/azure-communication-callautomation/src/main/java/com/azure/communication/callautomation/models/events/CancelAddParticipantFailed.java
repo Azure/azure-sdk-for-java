@@ -4,7 +4,11 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The CancelAddParticipantFailed model. */
 @Immutable
@@ -13,13 +17,13 @@ public final class CancelAddParticipantFailed extends CallAutomationEventBase {
      * The invitation ID used to cancel the add participant request.
      */
     @JsonProperty(value = "invitationId")
-    private final String invitationId;
+    private String invitationId;
 
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
     @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
+    private ResultInformation resultInformation;
 
     private CancelAddParticipantFailed() {
         invitationId = null;
@@ -43,5 +47,23 @@ public final class CancelAddParticipantFailed extends CallAutomationEventBase {
      */
     public ResultInformation getResultInformation() {
         return resultInformation;
+    }
+
+    static CancelAddParticipantFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final CancelAddParticipantFailed event = new CancelAddParticipantFailed();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("invitationId".equals(fieldName)) {
+                    event.invitationId = reader.getString();
+                } else if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

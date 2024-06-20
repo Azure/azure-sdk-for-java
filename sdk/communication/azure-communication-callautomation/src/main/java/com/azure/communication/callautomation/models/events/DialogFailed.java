@@ -4,7 +4,11 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.models.DialogInputType;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The DialogFailed model. */
 public final class DialogFailed extends CallAutomationEventBase {
@@ -54,5 +58,25 @@ public final class DialogFailed extends CallAutomationEventBase {
      */
     public String getDialogId() {
         return this.dialogId;
+    }
+
+    static DialogFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final DialogFailed event = new DialogFailed();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("dialogInputType".equals(fieldName)) {
+                    event.dialogInputType = DialogInputType.fromString(reader.getString());
+                } else if ("dialogId".equals(fieldName)) {
+                    event.dialogId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

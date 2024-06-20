@@ -5,7 +5,11 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The DialogTransfer model. */
 @Fluent
@@ -101,5 +105,31 @@ public final class DialogTransfer extends CallAutomationEventBase {
      */
     public Object getIvrContext() {
         return this.ivrContext;
+    }
+
+    static DialogTransfer fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final DialogTransfer event = new DialogTransfer();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("dialogInputType".equals(fieldName)) {
+                    event.dialogInputType = DialogInputType.fromString(reader.getString());
+                } else if ("dialogId".equals(fieldName)) {
+                    event.dialogId = reader.getString();
+                } else if ("transferType".equals(fieldName)) {
+                    event.transferType = reader.getString();
+                } else if ("transferDestination".equals(fieldName)) {
+                    event.transferDestination = reader.getString();
+                } else if ("ivrContext".equals(fieldName)) {
+                    event.ivrContext = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

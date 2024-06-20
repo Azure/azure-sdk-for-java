@@ -5,7 +5,11 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The DialogSensitivityUpdate model. */
 @Fluent
@@ -71,5 +75,27 @@ public final class DialogSensitivityUpdate extends CallAutomationEventBase {
      */
     public Boolean isSensitiveMask() {
         return this.sensitiveMask;
+    }
+
+    static DialogSensitivityUpdate fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final DialogSensitivityUpdate event = new DialogSensitivityUpdate();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resultInformation".equals(fieldName)) {
+                    event.resultInformation = ResultInformation.fromJson(reader);
+                } else if ("dialogInputType".equals(fieldName)) {
+                    event.dialogInputType = DialogInputType.fromString(reader.getString());
+                } else if ("dialogId".equals(fieldName)) {
+                    event.dialogId = reader.getString();
+                } else if ("sensitiveMask".equals(fieldName)) {
+                    event.sensitiveMask = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return event;
+        });
     }
 }

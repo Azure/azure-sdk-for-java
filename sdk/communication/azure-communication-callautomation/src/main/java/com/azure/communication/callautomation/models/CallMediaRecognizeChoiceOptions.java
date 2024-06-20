@@ -5,8 +5,12 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -16,7 +20,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     /*
      * List of recognition choices.
      */
-    private final List<RecognitionChoice> choices;
+    private List<RecognitionChoice> choices;
 
     /*
      * Speech language to be recognized, If not set default is en-US
@@ -174,5 +178,32 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant,  List<RecognitionChoice> choices) {
         super(RecognizeInputType.CHOICES, targetParticipant);
         this.choices = choices;
+    }
+
+    @Override
+    void writeJsonImpl(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStringField("speechLanguage", this.speechLanguage);
+        jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
+        jsonWriter.writeArrayField("choices", this.choices, (writer, choice) -> choice.toJson(writer));
+    }
+
+    static CallMediaRecognizeChoiceOptions readJsonImpl(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final CallMediaRecognizeChoiceOptions options = new CallMediaRecognizeChoiceOptions(null, null);
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("speechLanguage".equals(fieldName)) {
+                    options.speechLanguage = reader.getString();
+                } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
+                    options.speechRecognitionModelEndpointId = reader.getString();
+                } else if ("choices".equals(fieldName)) {
+                    options.choices = reader.readArray(RecognitionChoice::fromJson);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return options;
+        });
     }
 }
