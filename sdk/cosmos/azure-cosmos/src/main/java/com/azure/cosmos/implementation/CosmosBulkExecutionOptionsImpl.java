@@ -3,12 +3,16 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
+import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ReadOnlyRequestOptions;
 
 import java.time.Duration;
@@ -195,12 +199,88 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
         return this.throughputControlGroupName;
     }
 
+    @Override
+    public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
+        // @Todo: Implement this method and the relevant ones below
+        return null;
+    }
+
+    @Override
+    public Boolean isScanInQueryEnabled() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxDegreeOfParallelism() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxBufferedItemCount() {
+        return null;
+    }
+
+    @Override
+    public Integer getResponseContinuationTokenLimitInKb() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxItemCount() {
+        return null;
+    }
+
+    @Override
+    public Boolean isQueryMetricsEnabled() {
+        return null;
+    }
+
+    @Override
+    public Boolean isIndexMetricsEnabled() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxPrefetchPageCount() {
+        return null;
+    }
+
+    @Override
+    public String getQueryNameOrDefault(String defaultQueryName) {
+        return null;
+    }
+
     public void setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
     }
 
     public void setExcludedRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
+    }
+
+    @Override
+    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig() {
+        return null;
+    }
+
+    @Override
+    public ConsistencyLevel getConsistencyLevel() {
+        return null;
+    }
+
+    @Override
+    public Boolean isContentResponseOnWriteEnabled() {
+        return null;
+    }
+
+    @Override
+    public Boolean getNonIdempotentWriteRetriesEnabled() {
+        return null;
+    }
+
+    @Override
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return null;
     }
 
     @Override

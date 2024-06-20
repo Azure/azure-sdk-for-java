@@ -54,7 +54,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class OperationPoliciesTest extends TestSuiteBase {
-
     private CosmosAsyncClient client;
     private CosmosAsyncContainer container;
     private static final ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor
@@ -77,7 +76,6 @@ public class OperationPoliciesTest extends TestSuiteBase {
     private static final String INDEX_METRICS = "indexMetricsEnabled";
     private static final String MAX_PREFETCH_PAGE_COUNT = "maxPrefetchPageCount";
     private static final String QUERY_NAME = "queryName";
-
     private static final String[] optionLabels = {E2E_TIMEOUT, CONSISTENCY_LEVEL, CONTENT_RESPONSE_ON_WRITE, NON_IDEMPOTENT_WRITE_RETRIES, BYPASS_CACHE, THROUGHPUT_CONTROL_GROUP_NAME, REQUEST_CHARGE_THRESHOLD, SCAN_IN_QUERY, EXCLUDE_REGIONS, MAX_DEGREE_OF_PARALLELISM, MAX_BUFFERED_ITEM_COUNT, RESPONSE_CONTINUATION_TOKEN_LIMIT_KB, MAX_ITEM_COUNT, QUERY_METRICS, INDEX_METRICS, MAX_PREFETCH_PAGE_COUNT, QUERY_NAME};
     private static final String[] initialOptions = {"20", ConsistencyLevel.STRONG.toString().toUpperCase(), "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "true", "true", "10", "QueryName"};
 
@@ -133,6 +131,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
         }
     }
+
     private static void createReadManyOptions(String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (spanName.contains("readMany")) {
                 cosmosRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
@@ -166,6 +165,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setMaxItemCount(Integer.parseInt(prop.getProperty(MAX_ITEM_COUNT)));
         }
     }
+
     @DataProvider
     public static CosmosClientBuilder[] clientBuildersWithApplyPolicies() {
         CosmosOperationPolicy policy = (cosmosOperationDetails) -> {
@@ -217,14 +217,12 @@ public class OperationPoliciesTest extends TestSuiteBase {
     public void before_OperationPoliciesTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client);
-        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        container = getSharedMultiPartitionCosmosContainer(this.client);
     }
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.client).isNotNull();
-        this.client.close();
+        safeClose(client);
     }
 
     @AfterMethod()
@@ -261,9 +259,6 @@ public class OperationPoliciesTest extends TestSuiteBase {
         }
         validateOptions(changedOptions, itemResponse);
     }
-
-
-
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
     public void deleteItem(String[] changedOptions) throws Exception {
@@ -370,7 +365,6 @@ public class OperationPoliciesTest extends TestSuiteBase {
         validateOptions(changedOptions, patchResponse);
 
     }
-
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
     public void replaceItem(String[] changedOptions) throws Exception {
@@ -518,16 +512,12 @@ public class OperationPoliciesTest extends TestSuiteBase {
         assertThat(batchResponse.getRequestCharge()).isPositive();
         assertThat(batchResponse.getDiagnostics().toString()).isNotEmpty();
         validateOptions(changedOptions, batchResponse);
-
-
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions"/*, timeOut = TIMEOUT*/)
     public void query(String[] changedOptions) {
         String id = UUID.randomUUID().toString();
         container.createItem(getDocumentDefinition(id)).block();
-
-
 
         String query = String.format("SELECT * from c where c.id = '%s'", id);
         container.queryItems(query, InternalObjectNode.class).byPage()
@@ -539,11 +529,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 validateOptions(initialOptions, feedResponse, false, false);
                 return Flux.empty();
             }).blockLast();
-
-
         changeProperties(changedOptions);
-
-       container.queryItems(query, InternalObjectNode.class).byPage()
+        container.queryItems(query, InternalObjectNode.class).byPage()
             .flatMap(feedResponse -> {
                 List<InternalObjectNode> results = feedResponse.getResults();
                 assertThat(feedResponse.getRequestCharge()).isGreaterThan(0);
@@ -552,15 +539,12 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 validateOptions(changedOptions, feedResponse, false, false);
                 return Flux.empty();
             }).blockLast();
-
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
     public void readAllItems(String[] changedOptions) throws Exception {
         String id = UUID.randomUUID().toString();
         container.createItem(getDocumentDefinition(id)).block();
-
-
         container.readAllItems(InternalObjectNode.class).byPage()
             .flatMap(feedResponse -> {
                 List<InternalObjectNode> results = feedResponse.getResults();
@@ -587,7 +571,6 @@ public class OperationPoliciesTest extends TestSuiteBase {
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         Set<String> idSet = new HashSet<>();
         int numDocuments = 5;
-
         for (int i = 0; i < numDocuments; i++) {
             InternalObjectNode document = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(document).block();
@@ -609,9 +592,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             assertThat(idSet.contains(fetchedResult.getId())).isTrue();
         }
         validateOptions(initialOptions, feedResponse, false, true);
-
         changeProperties(changedOptions);
-
         feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class).block();
 
         assertThat(feedResponse).isNotNull();
@@ -624,7 +605,6 @@ public class OperationPoliciesTest extends TestSuiteBase {
         }
 
         validateOptions(changedOptions, feedResponse, false, true);
-
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -634,10 +614,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
             String id = UUID.randomUUID().toString();
             container.createItem(getDocumentDefinition(id)).block();
         }
-
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
             .createForProcessingFromBeginning(FeedRange.forFullRange());
-
         Iterator<FeedResponse<InternalObjectNode>> responseIterator = container.queryChangeFeed(options, InternalObjectNode.class).byPage()
             .toIterable().iterator();
         String continuationToken = "";
@@ -658,10 +636,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
         options = CosmosChangeFeedRequestOptions
             .createForProcessingFromContinuation(continuationToken);
-
         responseIterator = container.queryChangeFeed(options, InternalObjectNode.class).byPage()
             .toIterable().iterator();
-
         int totalResults = 0;
         while (responseIterator.hasNext()) {
             FeedResponse<InternalObjectNode> response = responseIterator.next();
@@ -669,7 +645,6 @@ public class OperationPoliciesTest extends TestSuiteBase {
             totalResults += response.getResults().size();
             validateOptions(changedOptions, response, true, false);
         }
-
         assertThat(totalResults).isEqualTo(numInserted);
     }
 
@@ -706,6 +681,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
        assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(options[6]));
        assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
     }
+
     private void validateOptions(String[] options, CosmosBatchResponse response) {
         OverridableRequestOptions requestOptions = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor().getRequestOptions(
             response.getDiagnostics().getDiagnosticsContext());
@@ -766,7 +742,4 @@ public class OperationPoliciesTest extends TestSuiteBase {
            prop.setProperty(optionLabels[i], values[i]);
        }
     }
-
-
-
 }

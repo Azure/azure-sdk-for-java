@@ -90,6 +90,16 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         return this;
     }
 
+    @Override
+    public Boolean isContentResponseOnWriteEnabled() {
+        return null;
+    }
+
+    @Override
+    public Boolean getNonIdempotentWriteRetriesEnabled() {
+        return null;
+    }
+
     /**
      * Gets the option to allow scan on the queries which couldn't be served as
      * indexing was opted out on the requested paths.
@@ -192,6 +202,11 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     @Override
     public Integer getMaxItemCount() {
         return this.maxItemCount;
+    }
+
+    @Override
+    public Integer getMaxPrefetchPageCount() {
+        return null;
     }
 
     /**

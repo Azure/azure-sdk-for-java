@@ -3,7 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
@@ -11,6 +13,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInte
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.ReadOnlyRequestOptions;
 import com.azure.cosmos.util.Beta;
@@ -108,6 +111,16 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         return this.maxItemCount;
     }
 
+    @Override
+    public Boolean isQueryMetricsEnabled() {
+        return null;
+    }
+
+    @Override
+    public Boolean isIndexMetricsEnabled() {
+        return null;
+    }
+
     public void setMaxItemCount(int maxItemCount) {
         this.maxItemCount = maxItemCount;
     }
@@ -115,6 +128,11 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     @Override
     public Integer getMaxPrefetchPageCount() {
         return this.maxPrefetchPageCount;
+    }
+
+    @Override
+    public String getQueryNameOrDefault(String defaultQueryName) {
+        return null;
     }
 
     public void setMaxPrefetchPageCount(int maxPrefetchPageCount) {
@@ -143,6 +161,26 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     @Override
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
         return this.thresholds;
+    }
+
+    @Override
+    public Boolean isScanInQueryEnabled() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxDegreeOfParallelism() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxBufferedItemCount() {
+        return null;
+    }
+
+    @Override
+    public Integer getResponseContinuationTokenLimitInKb() {
+        return null;
     }
 
     public CosmosItemSerializer getCustomItemSerializer() {
@@ -226,6 +264,32 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     public CosmosChangeFeedRequestOptionsImpl setExcludedRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
         return this;
+    }
+
+    @Override
+    public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig() {
+        // @TODO: Implement this and some of the others below
+        return null;
+    }
+
+    @Override
+    public ConsistencyLevel getConsistencyLevel() {
+        return null;
+    }
+
+    @Override
+    public Boolean isContentResponseOnWriteEnabled() {
+        return null;
+    }
+
+    @Override
+    public Boolean getNonIdempotentWriteRetriesEnabled() {
+        return null;
+    }
+
+    @Override
+    public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
+        return null;
     }
 
     @Override

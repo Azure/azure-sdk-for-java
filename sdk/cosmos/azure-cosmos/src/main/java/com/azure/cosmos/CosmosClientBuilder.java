@@ -238,7 +238,8 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Adds a policy for modifying request options dynamically.
+     * Adds a policy for modifying request options dynamically. The last policy defined aimed towards
+     * the same operation type will be the one ultimately applied.
      *
      * @param policy the policy to add
      * @return current cosmosClientBuilder
