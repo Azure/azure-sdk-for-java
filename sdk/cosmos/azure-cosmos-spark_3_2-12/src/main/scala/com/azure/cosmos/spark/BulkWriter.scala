@@ -952,6 +952,11 @@ private class BulkWriter(container: CosmosAsyncContainer,
     throwIfCapturedExceptionExists()
   }
 
+  def getFlushAndCloseIntervalInSeconds(): Int = {
+    val key = "COSMOS.FLUSH_CLOSE_INTERVAL_SEC"
+      sys.props.get(key).getOrElse(sys.env.get(key).getOrElse("60")).toInt
+  }
+
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
   // scalastyle:off method.length
   // scalastyle:off cyclomatic.complexity
@@ -980,7 +985,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   s"$pendingRetriesSnapshot,  Context: ${operationContext.toString} $getThreadInfo")
               val activeOperationsSnapshot = activeBulkWriteOperations.clone()
               val activeReadManyOperationsSnapshot = activeReadManyOperations.clone()
-              val awaitCompleted = pendingTasksCompleted.await(1, TimeUnit.MINUTES)
+              val awaitCompleted = pendingTasksCompleted.await(getFlushAndCloseIntervalInSeconds, TimeUnit.SECONDS)
               if (!awaitCompleted) {
                 throwIfProgressStaled(
                   "FlushAndClose",
