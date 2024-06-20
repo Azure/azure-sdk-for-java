@@ -26,9 +26,9 @@ import java.util.Objects;
 public final class NettyUtility {
     private static final ClientLogger LOGGER = new ClientLogger(NettyUtility.class);
 
-    private static final String PROPERTIES_FILE_NAME = "azure-core-http-netty.properties";
-    private static final String NETTY_VERSION_PROPERTY = "netty-version";
-    private static final String NETTY_TCNATIVE_VERSION_PROPERTY = "netty-tcnative-version";
+    static final String PROPERTIES_FILE_NAME = "azure-core-http-netty.properties";
+    static final String NETTY_VERSION_PROPERTY = "netty-version";
+    static final String NETTY_TCNATIVE_VERSION_PROPERTY = "netty-tcnative-version";
 
     // List of Netty artifacts that should match the 'netty.version' property in the pom.xml file.
     // Non-native dependencies are required while native dependencies are optional. Without the native dependencies
@@ -92,18 +92,20 @@ public final class NettyUtility {
      * warning will contain the versions found in runtime and the expected versions to be used by the SDK.
      */
     public static void validateNettyVersions() {
-        if (LOGGER.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-            NettyVersionLogInformation versionLogInformation = createNettyVersionLogInformation();
-            if (versionLogInformation.shouldLog()) {
-                versionLogInformation.log();
-            }
+        if (!LOGGER.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+            return;
+        }
+
+        Map<String, String> pomVersions = CoreUtils.getProperties(PROPERTIES_FILE_NAME);
+        NettyVersionLogInformation versionLogInformation = createNettyVersionLogInformation(
+            pomVersions.get(NETTY_VERSION_PROPERTY), pomVersions.get(NETTY_TCNATIVE_VERSION_PROPERTY));
+        if (versionLogInformation.shouldLog()) {
+            versionLogInformation.log();
         }
     }
 
-    static NettyVersionLogInformation createNettyVersionLogInformation() {
-        Map<String, String> pomVersions = CoreUtils.getProperties(PROPERTIES_FILE_NAME);
-        String azureNettyVersion = pomVersions.get(NETTY_VERSION_PROPERTY);
-        String azureNativeNettyVersion = pomVersions.get(NETTY_TCNATIVE_VERSION_PROPERTY);
+    static NettyVersionLogInformation createNettyVersionLogInformation(String azureNettyVersion,
+        String azureNativeNettyVersion) {
         Map<String, String> classpathNettyVersions = new LinkedHashMap<>();
         Map<String, String> classPathNativeNettyVersions = new LinkedHashMap<>();
 
