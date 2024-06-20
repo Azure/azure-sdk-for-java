@@ -16,6 +16,7 @@ import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.implementation.Constants;
 
@@ -301,8 +302,10 @@ public final class StorageCommonTestUtils {
     public static TokenCredential getTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isPlaybackMode()) {
             return new MockTokenCredential();
-        } else {
+        } else if (interceptorManager.isRecordMode()){
             return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new AzurePowerShellCredentialBuilder().build();
         }
     }
 }
