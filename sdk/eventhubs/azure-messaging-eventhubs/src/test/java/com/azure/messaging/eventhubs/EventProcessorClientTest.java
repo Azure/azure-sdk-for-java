@@ -559,7 +559,7 @@ public class EventProcessorClientTest {
         //Assert
         verify(tracer, never()).start(anyString(), any(), any(Context.class));
         assertEquals(0, meter.getCounters().get("messaging.client.consumed.messages").getMeasurements().size());
-        assertEquals(0, meter.getHistograms().get("messaging.consumer.process.duration").getMeasurements().size());
+        assertEquals(0, meter.getHistograms().get("messaging.process.duration").getMeasurements().size());
     }
 
     /**
@@ -1095,7 +1095,7 @@ public class EventProcessorClientTest {
         assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, expectedErrorType,
             PROCESS, eventCounter.getMeasurements().get(0).getAttributes());
 
-        TestHistogram processDuration = meter.getHistograms().get("messaging.consumer.process.duration");
+        TestHistogram processDuration = meter.getHistograms().get("messaging.process.duration");
         assertNotNull(processDuration);
         assertEquals(1, processDuration.getMeasurements().size());
         assertNotNull(processDuration.getMeasurements().get(0).getValue());

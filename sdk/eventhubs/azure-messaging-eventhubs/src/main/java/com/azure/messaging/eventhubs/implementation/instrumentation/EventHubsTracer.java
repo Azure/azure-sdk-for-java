@@ -32,11 +32,13 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Instr
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.TRACEPARENT_KEY;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getErrorType;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getOperationType;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.unwrap;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.EVENT;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
@@ -234,6 +236,11 @@ public class EventHubsTracer {
 
         if (partitionId != null) {
             startOptions.setAttribute(MESSAGING_DESTINATION_PARTITION_ID, partitionId);
+        }
+
+        String operationType = getOperationType(operationName);
+        if (operationType != null) {
+            startOptions.setAttribute(MESSAGING_OPERATION_TYPE, operationType);
         }
 
         return startOptions;

@@ -56,7 +56,7 @@ public final class InstrumentationScope implements AutoCloseable {
     }
 
     public InstrumentationScope setCancelled() {
-        // Complicated calls can result in can result in error followed by cancellation. We shouldn't track them twice.
+        // Complicated calls can result in error followed by cancellation. We shouldn't track them twice.
         // don't trust me? try this:
         // Flux.fromIterable(Collections.singletonList("event"))
         //     .flatMap(event -> Mono.error(new RuntimeException("boom"))

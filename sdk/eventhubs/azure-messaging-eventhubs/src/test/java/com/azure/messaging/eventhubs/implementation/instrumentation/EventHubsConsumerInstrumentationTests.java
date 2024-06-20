@@ -172,7 +172,7 @@ public class EventHubsConsumerInstrumentationTests {
         // sync consumer reports spans in different instrumentation point
         assertEquals(0, spanProcessor.getEndedSpans().size());
 
-        assertEquals(0, meter.getHistograms().get("messaging.consumer.process.duration").getMeasurements().size());
+        assertEquals(0, meter.getHistograms().get("messaging.process.duration").getMeasurements().size());
     }
 
     @Test
@@ -583,7 +583,7 @@ public class EventHubsConsumerInstrumentationTests {
     }
 
     private void assertProcessDuration(Duration duration, String partitionId, String expectedErrorType) {
-        TestHistogram processDuration = meter.getHistograms().get("messaging.consumer.process.duration");
+        TestHistogram processDuration = meter.getHistograms().get("messaging.process.duration");
         assertNotNull(processDuration);
         List<TestMeasurement<Double>> durationPerPartition = processDuration.getMeasurements().stream()
                         .filter(m -> partitionId.equals(m.getAttributes().get("messaging.destination.partition.id")))

@@ -87,7 +87,7 @@ public class EventHubsConsumerInstrumentation {
                         startOptions.setStartTimestamp(Instant.now());
                     }
 
-                    return createScope((m, s) -> meter.reportReceiveDuration(receivedCount[0], partitionId, s));
+                    return createScope((m, s) -> meter.reportReceive(receivedCount[0], partitionId, s));
                 },
                 scope -> events
                         .doOnNext(partitionEvent -> {

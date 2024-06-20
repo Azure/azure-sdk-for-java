@@ -19,6 +19,7 @@ public final class InstrumentationUtils {
     public static final String MESSAGING_DESTINATION_NAME = "messaging.destination.name";
     public static final String MESSAGING_DESTINATION_PARTITION_ID = "messaging.destination.partition.id";
     public static final String MESSAGING_OPERATION_NAME = "messaging.operation.name";
+    public static final String MESSAGING_OPERATION_TYPE = "messaging.operation.type";
     public static final String MESSAGING_SYSTEM = "messaging.system";
     public static final String MESSAGING_CONSUMER_GROUP_NAME = "messaging.consumer.group.name";
     public static final String MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME = "messaging.eventhubs.message.enqueued_time";
@@ -27,7 +28,7 @@ public final class InstrumentationUtils {
     public static final String MESSAGING_CLIENT_PUBLISHED_MESSAGES = "messaging.client.published.messages";
     public static final String MESSAGING_CLIENT_CONSUMED_MESSAGES = "messaging.client.consumed.messages";
     public static final String MESSAGING_CLIENT_OPERATION_DURATION = "messaging.client.operation.duration";
-    public static final String MESSAGING_CONSUMER_PROCESS_DURATION = "messaging.consumer.process.duration";
+    public static final String MESSAGING_PROCESS_DURATION = "messaging.process.duration";
 
     // custom metrics
     public static final String MESSAGING_EVENTHUBS_CONSUMER_LAG = "messaging.eventhubs.consumer.lag";
@@ -83,6 +84,21 @@ public final class InstrumentationUtils {
             return 0d;
         }
         return durationNanos / 1_000_000_000d;
+    }
+
+    public static String getOperationType(OperationName name) {
+        switch (name) {
+            case SEND:
+                return "publish";
+            case RECEIVE:
+                return "receive";
+            case CHECKPOINT:
+                return "settle";
+            case PROCESS:
+                return "process";
+            default:
+                return null;
+        }
     }
 
     private InstrumentationUtils() {

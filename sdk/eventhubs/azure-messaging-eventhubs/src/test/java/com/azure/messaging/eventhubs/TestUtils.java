@@ -41,11 +41,14 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Instr
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getOperationType;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Contains helper methods for working with AMQP messages
@@ -209,7 +212,13 @@ public final class TestUtils {
         assertEquals(entityName, attributes.get(MESSAGING_DESTINATION_NAME));
         assertEquals(partitionId, attributes.get(MESSAGING_DESTINATION_PARTITION_ID));
         assertEquals(consumerGroup, attributes.get(MESSAGING_CONSUMER_GROUP_NAME));
-        assertEquals(operationName == null ? null : operationName.toString(), attributes.get(MESSAGING_OPERATION_NAME));
+        if (operationName == null) {
+            assertNull(attributes.get(MESSAGING_OPERATION_NAME));
+            assertNull(attributes.get(MESSAGING_OPERATION_TYPE));
+        } else {
+            assertEquals(operationName.toString(), attributes.get(MESSAGING_OPERATION_NAME));
+            assertEquals(getOperationType(operationName), attributes.get(MESSAGING_OPERATION_TYPE));
+        }
         assertEquals(errorType, attributes.get(ERROR_TYPE));
     }
 

@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs.implementation.instrumentation;
 
 import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.Meter;
@@ -19,16 +20,18 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Instr
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CLIENT_CONSUMED_MESSAGES;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CLIENT_OPERATION_DURATION;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CLIENT_PUBLISHED_MESSAGES;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_PROCESS_DURATION;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_EVENTHUBS_CONSUMER_LAG;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_PROCESS_DURATION;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getDurationInSeconds;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getOperationType;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.CHECKPOINT;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.PROCESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
@@ -37,6 +40,7 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Opera
 public class EventHubsMetricsProvider {
     private final Meter meter;
     private final boolean isEnabled;
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubsMetricsProvider.class);
     private Map<String, Object> commonAttributes;
     private AttributeCache sendAttributeCacheSuccess;
     private AttributeCache receiveAttributeCacheSuccess;
@@ -53,29 +57,20 @@ public class EventHubsMetricsProvider {
         this.isEnabled = meter != null && meter.isEnabled();
         if (this.isEnabled) {
             this.commonAttributes = getCommonAttributes(namespace, entityName, consumerGroup);
-            this.sendAttributeCacheSuccess = createAttributeCache(meter, SEND, commonAttributes);
-            this.receiveAttributeCacheSuccess = createAttributeCache(meter, RECEIVE, commonAttributes);
-            this.checkpointAttributeCacheSuccess = createAttributeCache(meter, CHECKPOINT, commonAttributes);
-            this.processAttributeCacheSuccess = createAttributeCache(meter, PROCESS, commonAttributes);
+            this.sendAttributeCacheSuccess = AttributeCache.create(meter, SEND, commonAttributes);
+            this.receiveAttributeCacheSuccess = AttributeCache.create(meter, RECEIVE, commonAttributes);
+            this.checkpointAttributeCacheSuccess = AttributeCache.create(meter, CHECKPOINT, commonAttributes);
+            this.processAttributeCacheSuccess = AttributeCache.create(meter, PROCESS, commonAttributes);
             this.lagAttributeCache = new AttributeCache(meter, MESSAGING_DESTINATION_PARTITION_ID, commonAttributes);
 
             this.publishedEventCounter = meter.createLongCounter(MESSAGING_CLIENT_PUBLISHED_MESSAGES, "The number of published events", "{event}");
             this.consumedEventCounter = meter.createLongCounter(MESSAGING_CLIENT_CONSUMED_MESSAGES, "The number of consumed events", "{event}");
 
             this.operationDuration = meter.createDoubleHistogram(MESSAGING_CLIENT_OPERATION_DURATION, "The duration of client messaging operations involving communication with the Event Hubs namespace", "s");
-            this.processDuration = meter.createDoubleHistogram(MESSAGING_CONSUMER_PROCESS_DURATION, "The duration of the processing callback", "s");
+            this.processDuration = meter.createDoubleHistogram(MESSAGING_PROCESS_DURATION, "The duration of the processing callback", "s");
 
             this.consumerLag = meter.createDoubleHistogram(MESSAGING_EVENTHUBS_CONSUMER_LAG, "Difference between local time when event was received and the local time it was enqueued on broker", "s");
         }
-    }
-
-    private static AttributeCache createAttributeCache(
-        Meter meter,
-        OperationName operationName,
-        Map<String, Object> commonAttributes) {
-        Map<String, Object> attributes = new HashMap<>(commonAttributes);
-        attributes.put(MESSAGING_OPERATION_NAME, operationName.toString());
-        return new AttributeCache(meter, MESSAGING_DESTINATION_PARTITION_ID, attributes);
     }
 
     public boolean isEnabled() {
@@ -98,7 +93,7 @@ public class EventHubsMetricsProvider {
         }
     }
 
-    public void reportReceiveDuration(int receivedCount, String partitionId, InstrumentationScope scope) {
+    public void reportReceive(int receivedCount, String partitionId, InstrumentationScope scope) {
         if (isEnabled && (operationDuration.isEnabled() || consumedEventCounter.isEnabled())) {
             String errorType = scope.getErrorType();
             TelemetryAttributes attributes = getOrCreateAttributes(RECEIVE, partitionId, errorType);
@@ -136,6 +131,12 @@ public class EventHubsMetricsProvider {
                     return checkpointAttributeCacheSuccess.getOrCreate(partitionId);
                 case PROCESS:
                     return processAttributeCacheSuccess.getOrCreate(partitionId);
+                default:
+                    LOGGER.atVerbose()
+                        .addKeyValue("operationName", operationName)
+                        .log("Unknown operation name");
+                    // this should never happen
+                    return lagAttributeCache.getOrCreate(partitionId);
             }
         }
 
@@ -145,7 +146,8 @@ public class EventHubsMetricsProvider {
         if (partitionId != null) {
             attributes.put(MESSAGING_DESTINATION_PARTITION_ID, partitionId);
         }
-        attributes.put(MESSAGING_OPERATION_NAME, operationName.toString());
+
+        setOperation(attributes, operationName);
         attributes.put(ERROR_TYPE, errorType);
         return meter.createAttributes(attributes);
     }
@@ -162,14 +164,29 @@ public class EventHubsMetricsProvider {
         return Collections.unmodifiableMap(commonAttributesMap);
     }
 
-    static class AttributeCache {
+    private static void setOperation(Map<String, Object> attributes, OperationName name) {
+        String operationType = getOperationType(name);
+        if (operationType != null) {
+            attributes.put(MESSAGING_OPERATION_TYPE, operationType);
+        }
+
+        attributes.put(MESSAGING_OPERATION_NAME, name.toString());
+    }
+
+    private static final class AttributeCache {
         private final Map<String, TelemetryAttributes> attr = new ConcurrentHashMap<>();
         private final TelemetryAttributes commonAttr;
         private final Map<String, Object> commonMap;
         private final String dimensionName;
         private final Meter meter;
 
-        AttributeCache(Meter meter, String dimensionName, Map<String, Object> common) {
+        static AttributeCache create(Meter meter, OperationName operationName, Map<String, Object> commonAttributes) {
+            Map<String, Object> attributes = new HashMap<>(commonAttributes);
+            setOperation(attributes, operationName);
+            return new AttributeCache(meter, MESSAGING_DESTINATION_PARTITION_ID, attributes);
+        }
+
+        private AttributeCache(Meter meter, String dimensionName, Map<String, Object> common) {
             this.dimensionName = dimensionName;
             this.commonMap = common;
             this.meter = meter;
