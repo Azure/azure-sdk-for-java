@@ -9,10 +9,9 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.Arrays;
 
 /**
  * A request chat message representing user input to the assistant.
@@ -56,7 +55,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @param content The collection of structured content associated with the message.
      */
     public ChatRequestUserMessage(ChatMessageContentItem[] content) {
-        this(BinaryData.fromObject(Arrays.stream(content).map(BinaryData::fromObject).collect(Collectors.toList())));
+        this(BinaryData.fromObject(content));
     }
 
     /**
