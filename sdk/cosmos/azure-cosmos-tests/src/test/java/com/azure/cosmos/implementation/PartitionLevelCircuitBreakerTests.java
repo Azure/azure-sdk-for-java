@@ -173,6 +173,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         assertThat(responseWrapper.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
     };
 
+    Consumer<ResponseWrapper<?>> validateResponseHasRequestTimeoutException = (responseWrapper) -> {
+        assertThat(responseWrapper.cosmosException).isNotNull();
+        assertThat(responseWrapper.cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+        assertThat(responseWrapper.cosmosException.getSubStatusCode()).isNotEqualTo(HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT);
+    };
+
     private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildServiceUnavailableError
         = PartitionLevelCircuitBreakerTests::buildServiceUnavailableRules;
 
@@ -261,7 +267,18 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateRetryWithRules
             = PartitionLevelCircuitBreakerTests::buildRetryWithFaultInjectionRules;
 
+        // General testing flow:
+        // Below tests choose a fault type to inject, regions to inject the fault in
+        // and the operation type for which the fault is injected. The idea is to assert
+        // what happens when faults are being injected - should an exception bubble up
+        // in the process [or] should the operation succeed, region contacted when circuit
+        // breaking has kicked in and region contacted when region + partition combination is
+        // being marked back as UnhealthyTentative (eligible to accept requests)
         return new Object[][]{
+            // Server-generated 503 injected into first preferred region for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -279,6 +296,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 503 injected into first preferred region for UPSERT_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.UPSERT_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -296,6 +318,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 503 injected into first preferred region for REPLACE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -313,6 +340,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 503 injected into first preferred region for DELETE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.DELETE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -331,6 +363,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 503 injected into first preferred region for PATCH_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.PATCH_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -348,6 +385,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 503 injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -365,6 +407,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 503 injected into first preferred region for QUERY_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to succeed in all runs but include
+            // the second preferred region when the first preferred region has been short-circuited.
+            // For queries which require a QueryPlan, the first preferred region is contacted (not a data plane request
+            // which will hit a data partition so is not eligible for circuit breaking).
             new Object[]{
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -382,6 +430,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 503 injected into first preferred region for BATCH_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.BATCH_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -399,6 +452,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 503 injected into first preferred region for READ_FEED_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -416,6 +473,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 410 injected into first preferred region for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -433,6 +494,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 410 injected into first preferred region for UPSERT_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.UPSERT_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -450,6 +516,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 410 injected into first preferred region for REPLACE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -467,6 +538,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 410 injected into first preferred region for DELETE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.DELETE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -484,6 +560,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 410 injected into first preferred region for PATCH_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.PATCH_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -501,6 +582,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 410 injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -518,6 +604,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 410 injected into first preferred region for QUERY_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited. Even
+            // when short-circuiting of first preferred region has kicked in, the first preferred region is contacted
+            // to fetch the QueryPlan.
             new Object[]{
                 String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -535,6 +627,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Response-delay injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException (since end-to-end timeout is configured)
+            // and only to succeed once moved over to the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with response delay in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -553,6 +650,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Response-delay injected into first preferred region for REPLACE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException (since end-to-end timeout is configured)
+            // and only to succeed once moved over to the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with response delay in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -571,6 +673,58 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Response-delay injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit RequestTimeoutException (due to network request timeout of 5s kicking in)
+            // and because NonIdempotentWriteRetryPolicy isn't enabled
+            // and only to succeed once moved over to the second preferred region when the first preferred region has been short-circuited.
+            new Object[]{
+                String.format("Test with faulty %s with response delay in first preferred region and with no end-to-end operation timeout configured.", FaultInjectionOperationType.CREATE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+                    .withResponseDelay(Duration.ofSeconds(6)),
+                generateTransitTimeoutRules,
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasRequestTimeoutException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ConnectionMode.DIRECT
+            },
+            // Response-delay injected into first preferred region for REPLACE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit RequestTimeoutException (due to network request timeout of 5s kicking in)
+            // and because NonIdempotentWriteRetryPolicy isn't enabled
+            // and only to succeed once moved over to the second preferred region when the first preferred region has been short-circuited.
+            new Object[]{
+                String.format("Test with faulty %s with response delay in first preferred region and with no end-to-end operation timeout configured.", FaultInjectionOperationType.REPLACE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+                    .withResponseDelay(Duration.ofSeconds(6)),
+                generateTransitTimeoutRules,
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasRequestTimeoutException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ConnectionMode.DIRECT
+            },
+            // 500 (internal server error) injected into first preferred region for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
+            // should see a success from the second preferred region.
             {
                 String.format("Test with faulty %s with internal service error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -588,6 +742,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 500 (internal server error) injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
+            // should see a success from the second preferred region.
             {
                 String.format("Test with faulty %s with internal service error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -605,6 +764,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 500 (internal server error) injected into first preferred region for READ_FEED_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
+            // should see a success from the second preferred region.
             {
                 String.format("Test with faulty %s with internal service error in the first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -622,6 +785,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 500 (internal server error) injected into first preferred region for QUERY_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
+            // should see a success from the second preferred region. Although, after short-circuiting, a query operation
+            // will see request for QueryPlan from the short-circuited region.
             {
                 String.format("Test with faulty %s with internal service error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -639,6 +808,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 429 injected into first preferred region for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             {
                 String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -656,6 +829,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 429 injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             {
                 String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -673,6 +851,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 429 injected into first preferred region for QUERY_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
+            // QUERY_ITEM operation will see requests hit even for short-circuited region for fetching the QueryPlan.
             {
                 String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -690,6 +873,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 404/1002 injected into first preferred region for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             {
                 String.format("Test with faulty %s with read session not available in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -707,6 +894,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 404/1002 injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             {
                 String.format("Test with faulty %s with write session not available error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -724,6 +916,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 449 injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             {
                 String.format("Test with faulty %s with retry with service error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -741,6 +938,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 503 injected into all regions for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit 503 until fault injection has it its injection limits.
+            // After that, the operation should see a success from the first preferred region.
             new Object[]{
                 String.format("Test with faulty %s with service unavailable error in all regions.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -758,6 +959,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 503 injected into all regions for UPSERT_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit 503 until fault injection has it its injection limits.
+            // After that, the operation should see a success from the first preferred region.
             new Object[]{
                 String.format("Test with faulty %s with service unavailable error in in all regions.", FaultInjectionOperationType.UPSERT_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -775,6 +981,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 503 injected into all regions for QUERY_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit 503 until fault injection has it its injection limits.
+            // After that, the operation should see a success from the first preferred region.
             new Object[] {
                 String.format("Test with faulty %s with service unavailable error in all regions.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -792,95 +1002,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 429 injected into first preferred region for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to see a success for all runs (due to threshold-based availability strategy enabled)
+            // and only from the second preferred region once short-circuiting has kicked in for the first preferred region.
             new Object[]{
-                String.format("Test with faulty %s with response delay in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60))
-                    .withResponseDelay(Duration.ofSeconds(6)),
-                generateTransitTimeoutRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateResponseHasOperationCancelledException,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with response delay in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60))
-                    .withResponseDelay(Duration.ofSeconds(6)),
-                generateTransitTimeoutRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateResponseHasOperationCancelledException,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            {
-                String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
-                generateInternalServerErrorRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateResponseHasInternalServerError,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            {
-                String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withHitLimit(11),
-                generateInternalServerErrorRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateResponseHasInternalServerError,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            {
-                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                generateTooManyRequestsRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
-                this.validateResponseHasOperationCancelledException,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
-            },
-            new Object[]{
-                String.format("Test with faulty %s with too many requests error in first preferred region.", FaultInjectionOperationType.READ_ITEM),
+                String.format("Test with faulty %s with too many requests error in first preferred region with threshold-based availability strategy enabled.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
@@ -896,8 +1023,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 429 injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to see a success for all runs (due to threshold-based availability strategy enabled & non-idempotent write retry policy enabled)
+            // and only from the second preferred region once short-circuiting has kicked in for the first preferred region.
             new Object[]{
-                String.format("Test with faulty %s with too many requests error in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
+                String.format("Test with faulty %s with too many requests error in first preferred region with threshold-based availability strategy enabled.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
@@ -913,8 +1044,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 429 injected into first preferred region for QUERY_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to see a success for all runs (due to threshold-based availability strategy enabled & non-idempotent write retry policy enabled)
+            // and will have two regions contacted post circuit breaking (one for QueryPlan and the other for the data plane request).
             new Object[]{
-                String.format("Test with faulty %s with too many requests error in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
+                String.format("Test with faulty %s with too many requests error in first preferred region with threshold-based availability strategy enabled.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
@@ -962,6 +1097,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         };
 
         return new Object[][]{
+            // Server-generated 503 injected into first preferred region for read many operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
             {
                 "Test read many operation injected with service unavailable exception in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
@@ -979,8 +1118,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // Server-generated 410 injected into first preferred region for read many operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             {
-                "Test read many operation injected with server-generated GONE in first preferred region.",
+                "Test read many operation injected with server-generated gone in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
@@ -996,6 +1139,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 429 injected into first preferred region for read many operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             {
                 "Test read many operation injected with too many requests error in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
@@ -1013,8 +1160,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 404/1002 injected into first preferred region for read many operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             {
-                "Test read many operation injected with read/write session not available error in first preferred region.",
+                "Test read many operation injected with read session not available error in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
@@ -1030,6 +1181,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 503 injected into all region for read many operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit 503 and only to succeed once
+            // fault injection has hit its injection limits. Also, the success is
+            // from the first preferred region.
             {
                 "Test read many operation injected with service unavailable error in all regions.",
                 new FaultInjectionRuleParamsWrapper()
@@ -1046,6 +1202,28 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
+            },
+            // 429 injected into first preferred region for read many operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to see a success for all runs (due to threshold-based availability strategy enabled)
+            // and only from the second preferred region once short-circuiting has kicked in for the first preferred region.
+            new Object[]{
+                String.format("Test with faulty %s with too many requests error in first preferred region with threshold-based availability strategy enabled.", FaultInjectionOperationType.QUERY_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildTooManyRequestsError,
+                executeReadManyOperation,
+                twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
+                noRegionSwitchHint,
+                !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ConnectionMode.DIRECT
             }
         };
     }
@@ -1053,7 +1231,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
     @DataProvider(name = "readAllTestConfigs")
     public Object[][] readAllTestConfigs() {
 
-        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeReadManyOperation = (paramsWrapper) -> {
+        Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeReadAllOperation = (paramsWrapper) -> {
             CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
             PartitionKey partitionKey = paramsWrapper.partitionKeyForReadAllOperation;
             CosmosQueryRequestOptions queryRequestOptions = paramsWrapper.queryRequestOptions;
@@ -1081,6 +1259,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         };
 
         return new Object[][]{
+            // Server-generated 503 injected into first preferred region for read all operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
             {
                 "Test read all operation injected with service unavailable exception in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
@@ -1088,7 +1270,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withHitLimit(11)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildServiceUnavailableError,
-                executeReadManyOperation,
+                executeReadAllOperation,
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 this.validateResponseHasSuccess,
@@ -1098,6 +1280,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 429 injected into first preferred region for read all operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             {
                 "Test read all operation injected with server-generated GONE in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
@@ -1105,7 +1291,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildServerGeneratedGoneError,
-                executeReadManyOperation,
+                executeReadAllOperation,
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 this.validateResponseHasOperationCancelledException,
@@ -1115,6 +1301,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 429 injected into first preferred region for read all operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             {
                 "Test read all operation injected with too many requests error in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
@@ -1122,7 +1312,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildTooManyRequestsError,
-                executeReadManyOperation,
+                executeReadAllOperation,
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 this.validateResponseHasOperationCancelledException,
@@ -1132,6 +1322,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 404/1002 injected into first preferred region for read all operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed once
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             {
                 "Test read all operation injected with read/write session not available error in first preferred region.",
                 new FaultInjectionRuleParamsWrapper()
@@ -1139,7 +1333,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildReadWriteSessionNotAvailableRules,
-                executeReadManyOperation,
+                executeReadAllOperation,
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,
                 this.validateResponseHasOperationCancelledException,
@@ -1149,6 +1343,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
             },
+            // 503 injected into all region for read all operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit 503 and only to succeed once
+            // fault injection has hit its injection limits. Also, the success is
+            // from the first preferred region.
             {
                 "Test read all operation injected with service unavailable error in all regions.",
                 new FaultInjectionRuleParamsWrapper()
@@ -1156,12 +1355,34 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withHitLimit(11)
                     .withFaultInjectionApplicableRegions(this.writeRegions),
                 this.buildServiceUnavailableError,
-                executeReadManyOperation,
+                executeReadAllOperation,
                 noEndToEndTimeout,
                 noRegionSwitchHint,
                 this.validateResponseHasServiceUnavailableError,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ConnectionMode.DIRECT
+            },
+            // 429 injected into first preferred region for read all operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to see a success for all runs (due to threshold-based availability strategy enabled)
+            // and only from the second preferred region once short-circuiting has kicked in for the first preferred region.
+            new Object[]{
+                String.format("Test with faulty %s with too many requests error in first preferred region with threshold-based availability strategy enabled.", FaultInjectionOperationType.QUERY_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildTooManyRequestsError,
+                executeReadAllOperation,
+                twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
+                noRegionSwitchHint,
+                !nonIdempotentWriteRetriesEnabled,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ConnectionMode.DIRECT
