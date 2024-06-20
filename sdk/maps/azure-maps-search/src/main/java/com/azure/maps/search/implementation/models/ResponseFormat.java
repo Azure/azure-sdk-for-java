@@ -5,31 +5,44 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResponseFormat. */
+/**
+ * Defines values for ResponseFormat.
+ */
 public final class ResponseFormat extends ExpandableStringEnum<ResponseFormat> {
-    /** Static value json for ResponseFormat. */
+    /**
+     * [The JavaScript Object Notation Data Interchange Format](https://tools.ietf.org/html/rfc8259).
+     */
     public static final ResponseFormat JSON = fromString("json");
 
-    /** Static value xml for ResponseFormat. */
+    /**
+     * [The Extensible Markup Language](https://www.w3.org/TR/xml/).
+     */
     public static final ResponseFormat XML = fromString("xml");
 
     /**
+     * Creates a new instance of ResponseFormat value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResponseFormat() {
+    }
+
+    /**
      * Creates or finds a ResponseFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResponseFormat.
      */
-    @JsonCreator
     public static ResponseFormat fromString(String name) {
         return fromString(name, ResponseFormat.class);
     }
 
     /**
      * Gets known ResponseFormat values.
-     *
+     * 
      * @return known ResponseFormat values.
      */
     public static Collection<ResponseFormat> values() {

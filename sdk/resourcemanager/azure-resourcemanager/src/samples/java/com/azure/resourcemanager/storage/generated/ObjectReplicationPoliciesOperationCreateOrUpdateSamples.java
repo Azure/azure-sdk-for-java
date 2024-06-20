@@ -14,7 +14,8 @@ import java.util.Arrays;
  */
 public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountCreateObjectReplicationPolicyOnSource.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountCreateObjectReplicationPolicyOnSource.json
      */
     /**
      * Sample code: StorageAccountCreateObjectReplicationPolicyOnSource.
@@ -43,7 +44,8 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountUpdateObjectReplicationPolicyOnDestination.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountUpdateObjectReplicationPolicyOnDestination.json
      */
     /**
      * Sample code: StorageAccountUpdateObjectReplicationPolicyOnDestination.
@@ -72,7 +74,8 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountCreateObjectReplicationPolicyOnDestination.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountCreateObjectReplicationPolicyOnDestination.json
      */
     /**
      * Sample code: StorageAccountCreateObjectReplicationPolicyOnDestination.
@@ -96,7 +99,8 @@ public final class ObjectReplicationPoliciesOperationCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountUpdateObjectReplicationPolicyOnSource.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountUpdateObjectReplicationPolicyOnSource.json
      */
     /**
      * Sample code: StorageAccountUpdateObjectReplicationPolicyOnSource.

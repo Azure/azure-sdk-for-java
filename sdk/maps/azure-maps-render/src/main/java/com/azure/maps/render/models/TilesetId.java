@@ -5,91 +5,175 @@
 package com.azure.maps.render.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TilesetID. */
+/**
+ * Defines values for TilesetID.
+ */
 public final class TilesetId extends ExpandableStringEnum<TilesetId> {
-    /** Static value microsoft.base for TilesetID. */
+    /**
+     * A base map is a standard map that displays roads, natural and artificial features along with the labels for those
+     * features in a vector tile.&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 22. Format: vector (pbf).
+     */
     public static final TilesetId MICROSOFT_BASE = fromString("microsoft.base");
 
-    /** Static value microsoft.base.labels for TilesetID. */
+    /**
+     * Displays labels for roads, natural and artificial features in a vector tile.&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 22. Format: vector (pbf).
+     */
     public static final TilesetId MICROSOFT_BASE_LABELS = fromString("microsoft.base.labels");
 
-    /** Static value microsoft.base.hybrid for TilesetID. */
+    /**
+     * Displays road, boundary and label data in a vector tile.&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 22. Format: vector (pbf).
+     */
     public static final TilesetId MICROSOFT_BASE_HYBRID = fromString("microsoft.base.hybrid");
 
-    /** Static value microsoft.terra.main for TilesetID. */
+    /**
+     * Shaded relief and terra layers.&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 6. Format: raster (png).
+     */
     public static final TilesetId MICROSOFT_TERRA_MAIN = fromString("microsoft.terra.main");
 
-    /** Static value microsoft.base.road for TilesetID. */
+    /**
+     * All layers with our main style.&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 22. Format: raster (png).
+     */
     public static final TilesetId MICROSOFT_BASE_ROAD = fromString("microsoft.base.road");
 
-    /** Static value microsoft.base.darkgrey for TilesetID. */
+    /**
+     * All layers with our dark grey style.&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 22. Format: raster (png).
+     */
     public static final TilesetId MICROSOFT_BASE_DARKGREY = fromString("microsoft.base.darkgrey");
 
-    /** Static value microsoft.base.labels.road for TilesetID. */
+    /**
+     * Label data in our main style.&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 22. Format: raster (png).
+     */
     public static final TilesetId MICROSOFT_BASE_LABELS_ROAD = fromString("microsoft.base.labels.road");
 
-    /** Static value microsoft.base.labels.darkgrey for TilesetID. */
+    /**
+     * Label data in our dark grey style.&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 22. Format: raster (png).
+     */
     public static final TilesetId MICROSOFT_BASE_LABELS_DARKGREY = fromString("microsoft.base.labels.darkgrey");
 
-    /** Static value microsoft.base.hybrid.road for TilesetID. */
+    /**
+     * Road, boundary and label data in our main style.&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 22. Format: raster (png).
+     */
     public static final TilesetId MICROSOFT_BASE_HYBRID_ROAD = fromString("microsoft.base.hybrid.road");
 
-    /** Static value microsoft.base.hybrid.darkgrey for TilesetID. */
+    /**
+     * Road, boundary and label data in our dark grey style.&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 22. Format: raster (png).
+     */
     public static final TilesetId MICROSOFT_BASE_HYBRID_DARKGREY = fromString("microsoft.base.hybrid.darkgrey");
 
-    /** Static value microsoft.imagery for TilesetID. */
+    /**
+     * A combination of satellite and aerial imagery. Only available in S1 pricing SKU.&lt;br&gt;
+     * 
+     * Supports zoom levels 1 through 19. Format: raster (jpeg).
+     */
     public static final TilesetId MICROSOFT_IMAGERY = fromString("microsoft.imagery");
 
-    /** Static value microsoft.weather.radar.main for TilesetID. */
+    /**
+     * Weather radar tiles. Latest weather radar images including areas of rain, snow, ice and mixed conditions. Please
+     * see [coverage information](https://aka.ms/AzureMapsWeatherCoverage) for Azure Maps Weather service. To learn more
+     * about the Radar data, please see [Weather concepts](https://aka.ms/AzureMapsWeatherConcepts).&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 15. Format: raster (png).
+     */
     public static final TilesetId MICROSOFT_WEATHER_RADAR_MAIN = fromString("microsoft.weather.radar.main");
 
-    /** Static value microsoft.weather.infrared.main for TilesetID. */
+    /**
+     * Weather infrared tiles. Latest Infrared Satellite images shows clouds by their temperature. Please see [coverage
+     * information](https://aka.ms/AzureMapsWeatherCoverage) for Azure Maps Weather service. To learn more about the
+     * returned Satellite data, please see [Weather concepts](https://aka.ms/AzureMapsWeatherConcepts).&lt;br&gt;
+     * 
+     * Supports zoom levels 0 through 15. Format: raster (png).
+     */
     public static final TilesetId MICROSOFT_WEATHER_INFRARED_MAIN = fromString("microsoft.weather.infrared.main");
 
-    /** Static value microsoft.traffic.absolute for TilesetID. */
+    /**
+     * absolute traffic tiles in vector.
+     */
     public static final TilesetId MICROSOFT_TRAFFIC_ABSOLUTE = fromString("microsoft.traffic.absolute");
 
-    /** Static value microsoft.traffic.absolute.main for TilesetID. */
+    /**
+     * absolute traffic tiles in raster in our main style.
+     */
     public static final TilesetId MICROSOFT_TRAFFIC_ABSOLUTE_MAIN = fromString("microsoft.traffic.absolute.main");
 
-    /** Static value microsoft.traffic.relative for TilesetID. */
+    /**
+     * relative traffic tiles in vector.
+     */
     public static final TilesetId MICROSOFT_TRAFFIC_RELATIVE = fromString("microsoft.traffic.relative");
 
-    /** Static value microsoft.traffic.relative.main for TilesetID. */
+    /**
+     * relative traffic tiles in raster in our main style.
+     */
     public static final TilesetId MICROSOFT_TRAFFIC_RELATIVE_MAIN = fromString("microsoft.traffic.relative.main");
 
-    /** Static value microsoft.traffic.relative.dark for TilesetID. */
+    /**
+     * relative traffic tiles in raster in our dark style.
+     */
     public static final TilesetId MICROSOFT_TRAFFIC_RELATIVE_DARK = fromString("microsoft.traffic.relative.dark");
 
-    /** Static value microsoft.traffic.delay for TilesetID. */
+    /**
+     * traffic tiles in vector.
+     */
     public static final TilesetId MICROSOFT_TRAFFIC_DELAY = fromString("microsoft.traffic.delay");
 
-    /** Static value microsoft.traffic.delay.main for TilesetID. */
+    /**
+     * traffic tiles in raster in our main style.
+     */
     public static final TilesetId MICROSOFT_TRAFFIC_DELAY_MAIN = fromString("microsoft.traffic.delay.main");
 
-    /** Static value microsoft.traffic.reduced.main for TilesetID. */
+    /**
+     * reduced traffic tiles in raster in our main style.
+     */
     public static final TilesetId MICROSOFT_TRAFFIC_REDUCED_MAIN = fromString("microsoft.traffic.reduced.main");
 
-    /** Static value microsoft.traffic.incident for TilesetID. */
+    /**
+     * incident tiles in vector.
+     */
     public static final TilesetId MICROSOFT_TRAFFIC_INCIDENT = fromString("microsoft.traffic.incident");
 
     /**
+     * Creates a new instance of TilesetID value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TilesetId() {
+    }
+
+    /**
      * Creates or finds a TilesetID from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TilesetID.
      */
-    @JsonCreator
     public static TilesetId fromString(String name) {
         return fromString(name, TilesetId.class);
     }
 
     /**
      * Gets known TilesetID values.
-     *
+     * 
      * @return known TilesetID values.
      */
     public static Collection<TilesetId> values() {
