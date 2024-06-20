@@ -50,7 +50,7 @@ steps:
 
 - task: AzureCLI@2
   inputs:
-    azureSubscription: $(sdkautomation-connection-name)
+    azureSubscription: 'Azure SDK Test Resources - LiveTestSecrets'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
