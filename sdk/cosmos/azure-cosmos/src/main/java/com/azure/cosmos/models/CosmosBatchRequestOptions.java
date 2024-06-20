@@ -238,11 +238,6 @@ public final class CosmosBatchRequestOptions {
                 }
 
                 @Override
-                public List<String> getExcludeRegions(CosmosBatchRequestOptions cosmosBatchRequestOptions) {
-                    return cosmosBatchRequestOptions.excludeRegions;
-                }
-
-                @Override
                 public CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned) {
                     return new CosmosBatchRequestOptions(toBeCloned);
                 }

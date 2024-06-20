@@ -369,7 +369,6 @@ public class ImplementationBridgeHelpers {
             void setOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
-            List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions);
             CosmosChangeFeedRequestOptions createForProcessingFromContinuation(String continuation, FeedRange targetRange, String continuationLsn);
 
             CosmosChangeFeedRequestOptions clone(CosmosChangeFeedRequestOptions toBeCloned);
@@ -486,7 +485,6 @@ public class ImplementationBridgeHelpers {
             Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
 
             Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-            List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
             int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
             void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
             BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
@@ -1101,7 +1099,6 @@ public class ImplementationBridgeHelpers {
                                                           ConsistencyLevel consistencyLevel);
             CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosBatchRequestOptions cosmosItemRequestOptions);
-            List<String> getExcludeRegions(CosmosBatchRequestOptions cosmosBatchRequestOptions);
             CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned);
         }
     }

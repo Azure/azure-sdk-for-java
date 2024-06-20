@@ -441,11 +441,6 @@ public final class CosmosBulkExecutionOptions {
                 }
 
                 @Override
-                public List<String> getExcludeRegions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
-                    return cosmosBulkExecutionOptions.getExcludedRegions();
-                }
-
-                @Override
                 public int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
                     if (cosmosBulkExecutionOptions == null) {
                         return BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
