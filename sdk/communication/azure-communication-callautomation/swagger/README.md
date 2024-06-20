@@ -211,6 +211,15 @@ directive:
 - rename-model:
     from: StartDialogRequest
     to: StartDialogRequestInternal
+- rename-model:
+    from: HoldFailed
+    to: HoldFailedInternal
+- rename-model:
+    from: HoldRequest
+    to: HoldRequestInternal
+- rename-model:
+    from: UnholdRequest
+    to: UnholdRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed

@@ -6,7 +6,7 @@ package com.azure.communication.callautomation.implementation;
 
 import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
-import com.azure.communication.callautomation.implementation.models.HoldRequest;
+import com.azure.communication.callautomation.implementation.models.HoldRequestInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.callautomation.implementation.models.SendDtmfTonesRequestInternal;
@@ -15,7 +15,7 @@ import com.azure.communication.callautomation.implementation.models.StartHoldMus
 import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopHoldMusicRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
-import com.azure.communication.callautomation.implementation.models.UnholdRequest;
+import com.azure.communication.callautomation.implementation.models.UnholdRequestInternal;
 import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionRequestInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -173,7 +173,7 @@ public final class CallMediasImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") HoldRequest holdRequest,
+                @BodyParam("application/json") HoldRequestInternal holdRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -184,7 +184,7 @@ public final class CallMediasImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") UnholdRequest unholdRequest,
+                @BodyParam("application/json") UnholdRequestInternal unholdRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -1348,7 +1348,7 @@ public final class CallMediasImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> holdWithResponseAsync(String callConnectionId, HoldRequest holdRequest) {
+    public Mono<Response<Void>> holdWithResponseAsync(String callConnectionId, HoldRequestInternal holdRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1374,7 +1374,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> holdWithResponseAsync(
-            String callConnectionId, HoldRequest holdRequest, Context context) {
+            String callConnectionId, HoldRequestInternal holdRequest, Context context) {
         final String accept = "application/json";
         return service.hold(
                 this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), holdRequest, accept, context);
@@ -1391,7 +1391,7 @@ public final class CallMediasImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> holdAsync(String callConnectionId, HoldRequest holdRequest) {
+    public Mono<Void> holdAsync(String callConnectionId, HoldRequestInternal holdRequest) {
         return holdWithResponseAsync(callConnectionId, holdRequest).flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1407,7 +1407,7 @@ public final class CallMediasImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> holdAsync(String callConnectionId, HoldRequest holdRequest, Context context) {
+    public Mono<Void> holdAsync(String callConnectionId, HoldRequestInternal holdRequest, Context context) {
         return holdWithResponseAsync(callConnectionId, holdRequest, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -1422,7 +1422,7 @@ public final class CallMediasImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void hold(String callConnectionId, HoldRequest holdRequest) {
+    public void hold(String callConnectionId, HoldRequestInternal holdRequest) {
         holdAsync(callConnectionId, holdRequest).block();
     }
 
@@ -1438,7 +1438,7 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> holdWithResponse(String callConnectionId, HoldRequest holdRequest, Context context) {
+    public Response<Void> holdWithResponse(String callConnectionId, HoldRequestInternal holdRequest, Context context) {
         return holdWithResponseAsync(callConnectionId, holdRequest, context).block();
     }
 
@@ -1453,7 +1453,7 @@ public final class CallMediasImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> unholdWithResponseAsync(String callConnectionId, UnholdRequest unholdRequest) {
+    public Mono<Response<Void>> unholdWithResponseAsync(String callConnectionId, UnholdRequestInternal unholdRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1479,7 +1479,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> unholdWithResponseAsync(
-            String callConnectionId, UnholdRequest unholdRequest, Context context) {
+            String callConnectionId, UnholdRequestInternal unholdRequest, Context context) {
         final String accept = "application/json";
         return service.unhold(
                 this.client.getEndpoint(),
@@ -1501,7 +1501,7 @@ public final class CallMediasImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> unholdAsync(String callConnectionId, UnholdRequest unholdRequest) {
+    public Mono<Void> unholdAsync(String callConnectionId, UnholdRequestInternal unholdRequest) {
         return unholdWithResponseAsync(callConnectionId, unholdRequest).flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1517,7 +1517,7 @@ public final class CallMediasImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> unholdAsync(String callConnectionId, UnholdRequest unholdRequest, Context context) {
+    public Mono<Void> unholdAsync(String callConnectionId, UnholdRequestInternal unholdRequest, Context context) {
         return unholdWithResponseAsync(callConnectionId, unholdRequest, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
@@ -1532,7 +1532,7 @@ public final class CallMediasImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void unhold(String callConnectionId, UnholdRequest unholdRequest) {
+    public void unhold(String callConnectionId, UnholdRequestInternal unholdRequest) {
         unholdAsync(callConnectionId, unholdRequest).block();
     }
 
@@ -1548,7 +1548,8 @@ public final class CallMediasImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> unholdWithResponse(String callConnectionId, UnholdRequest unholdRequest, Context context) {
+    public Response<Void> unholdWithResponse(
+            String callConnectionId, UnholdRequestInternal unholdRequest, Context context) {
         return unholdWithResponseAsync(callConnectionId, unholdRequest, context).block();
     }
 
