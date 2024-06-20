@@ -55,7 +55,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: monitor
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-monitor-ingestion
         groupId: com.azure

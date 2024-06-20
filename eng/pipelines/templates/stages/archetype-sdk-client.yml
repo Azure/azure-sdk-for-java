@@ -43,9 +43,6 @@ parameters:
   - name: AdditionalStagesAfterBuild
     type: object
     default: []
-  - name: EnableBatchRelease
-    type: boolean
-    default: true
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
