@@ -133,10 +133,10 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "// rate\r\nlet runId = \"{runId}\";\r\nlet role_name=strcat(\"java-eventhubs-\", runId);\r\nlet send = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.client.published.messages\" and cloud_RoleName == role_name and cloud_RoleInstance==\"sender\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize message_send=sum(valueSum) by bin(timestamp, 1m);\r\nlet process = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.client.consumed.messages\"\r\n| where cloud_RoleName == role_name and cloud_RoleInstance==\"receiver\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize process = sum(valueSum) by bin(timestamp, 1m);\r\nlet settle = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.client.operation.duration\"\r\n| where cloud_RoleName == role_name and cloud_RoleInstance==\"receiver\"\r\n| where customDimensions[\"error.type\"] == \"\" and customDimensions[\"messaging.operation.name\"] == \"checkpoint\"\r\n| summarize settle = sum(valueCount) by bin(timestamp, 1m);\r\nsend \r\n| join kind = fullouter (process) on timestamp\r\n| join kind = fullouter (settle) on timestamp\r\n| project-away timestamp1, timestamp2\r\n| render timechart",
+        "query": "// rate\r\nlet runId = \"{runId}\";\r\nlet role_name=strcat(\"java-eventhubs-\", runId);\r\nlet send = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.client.published.messages\" and cloud_RoleName == role_name and cloud_RoleInstance==\"sender\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize message_send=sum(valueSum) by bin(timestamp, 1m);\r\nlet process = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.client.consumed.messages\"\r\n| where cloud_RoleName == role_name and cloud_RoleInstance==\"receiver\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize process = sum(valueSum) by bin(timestamp, 1m);\r\nlet checkpoint = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.client.operation.duration\"\r\n| where cloud_RoleName == role_name and cloud_RoleInstance==\"receiver\"\r\n| where customDimensions[\"error.type\"] == \"\" and customDimensions[\"messaging.operation.name\"] == \"checkpoint\"\r\n| summarize checkpoint = sum(valueCount) by bin(timestamp, 1m);\r\nsend \r\n| join kind = fullouter (process) on timestamp\r\n| join kind = fullouter (checkpoint) on timestamp\r\n| project-away timestamp1, timestamp2\r\n| render timechart",
         "size": 0,
         "aggregation": 3,
-        "title": "Send/receive/settle success rate (per minute)",
+        "title": "Send/process/checkpointsuccess rate (per minute)",
         "noDataMessageStyle": 5,
         "queryType": 0,
         "resourceType": "microsoft.insights/components"
@@ -152,7 +152,7 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "// duration\r\nlet runId = \"{runId}\";\r\nlet role_name=strcat(\"java-eventhubs-\", runId);\r\ncustomMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"messaging.client.operation.duration\"\r\n| where cloud_RoleName == role_name\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize durationMs = 1000 * avg(valueSum/valueCount) by tostring(customDimensions[\"messaging.operation.name\"]), bin(timestamp, 1m) // amqp_send_avg = avg(valueSum/valueCount), \r\n| render timechart\r\n",
+        "query": "// duration\r\nlet runId = \"{runId}\";\r\nlet role_name=strcat(\"java-eventhubs-\", runId);\r\ncustomMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| where name == \"messaging.client.operation.duration\" or name == \"messaging.process.duration\"\r\n| summarize durationMs = 1000 * avg(valueSum/valueCount) by tostring(customDimensions[\"messaging.operation.name\"]), bin(timestamp, 1m) \r\n| render timechart\r\n",
         "size": 0,
         "aggregation": 3,
         "title": "Duration (ms), average per minute",
@@ -170,9 +170,9 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"java-eventhubs-\", runId);\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name;\r\nmetrics\r\n| where name == \"messaging.client.operation.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| where errorType != \"\"\r\n| summarize errors = sum(valueCount) by errorType, bin(timestamp, 1m)\r\n| render timechart",
+        "query": "let runId = \"{runId}\";\r\nlet role_name=strcat(\"java-eventhubs-\", runId);\r\ncustomMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == role_name\r\n| where name == \"messaging.client.operation.duration\" or name == \"messaging.process.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| where errorType != \"\"\r\n| summarize errors = sum(valueCount) by errorType, bin(timestamp, 1m)\r\n| render timechart",
         "size": 0,
-        "title": "Send/receive/settle error rate (per minute)",
+        "title": "Send/process/checkpoint error rate (per minute)",
         "queryType": 0,
         "resourceType": "microsoft.insights/components"
       },
