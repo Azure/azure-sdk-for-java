@@ -26,11 +26,9 @@ import com.azure.resourcemanager.containerregistry.models.ImportSource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
-import static com.azure.core.test.implementation.TestingHelpers.AZURE_TEST_MODE;
 
 public class TestUtils {
     public static final BinaryData CONFIG_DATA = BinaryData.fromString("{}");
@@ -99,14 +97,6 @@ public class TestUtils {
         }
     }
 
-    static void importImage(String repository, List<String> tags) {
-        try {
-            importImage(getTestMode(), REGISTRY_NAME, repository, tags, REGISTRY_ENDPOINT);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static String getAuthority(String endpoint) {
         if (endpoint == null) {
             return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
@@ -137,14 +127,14 @@ public class TestUtils {
         }
     }
 
-    static void importImage(TestMode testMode, String registryName, String repository, List<String> tags, String endpoint) throws InterruptedException {
-        if (testMode == TestMode.PLAYBACK) {
+    static void importImage(TestMode mode, String registryName, String repository, List<String> tags, String endpoint) throws InterruptedException {
+        if (mode == TestMode.PLAYBACK) {
             return;
         }
 
         String authority = getAuthority(endpoint);
 
-        TokenCredential credential = getCredentialByAuthority(testMode, authority);
+        TokenCredential credential = getCredentialByAuthority(mode, authority);
         tags = tags.stream().map(tag -> String.format("%1$s:%2$s", repository, tag)).collect(Collectors.toList());
         AzureProfile profile = getAzureProfile(authority);
 
@@ -190,10 +180,5 @@ public class TestUtils {
 
         manifest.setLayers(layers);
         return manifest;
-    }
-
-    public static TestMode getTestMode() {
-        final String azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
-        return azureTestMode != null ? TestMode.valueOf(azureTestMode.toUpperCase(Locale.US)) : TestMode.PLAYBACK;
     }
 }

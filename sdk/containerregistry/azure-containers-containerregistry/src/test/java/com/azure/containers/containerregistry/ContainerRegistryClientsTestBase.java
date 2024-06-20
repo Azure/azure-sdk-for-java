@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.PAGESIZE_1;
@@ -231,7 +232,7 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
 
     boolean validateRepositories(Collection<String> repositories) {
         assertNotNull(repositories);
-        return repositories.containsAll(Arrays.asList(TestUtils.HELLO_WORLD_REPOSITORY_NAME, TestUtils.ALPINE_REPOSITORY_NAME));
+        return repositories.containsAll(Arrays.asList(HELLO_WORLD_REPOSITORY_NAME, ALPINE_REPOSITORY_NAME));
     }
 
     boolean validateRepositoriesByPage(Collection<PagedResponse<String>> pagedResList) {
