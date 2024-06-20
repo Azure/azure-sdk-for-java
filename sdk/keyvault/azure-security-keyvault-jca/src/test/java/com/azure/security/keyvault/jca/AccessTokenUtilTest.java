@@ -8,8 +8,6 @@ import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
-import java.net.URLEncoder;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -20,11 +18,9 @@ public class AccessTokenUtilTest {
 
     /**
      * Test getAuthorizationToken method.
-     *
-     * @throws Exception when a serious error occurs.
      */
     @Test
-    public void testGetAuthorizationToken() throws Exception {
+    public void testGetAuthorizationToken() {
         String tenantId = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID");
         String clientId = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID");
         String clientSecret = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET");
@@ -37,7 +33,7 @@ public class AccessTokenUtilTest {
             aadAuthenticationUrl,
             tenantId,
             clientId,
-            URLEncoder.encode(clientSecret, "UTF-8")
+            clientSecret
         );
         assertNotNull(result);
     }
