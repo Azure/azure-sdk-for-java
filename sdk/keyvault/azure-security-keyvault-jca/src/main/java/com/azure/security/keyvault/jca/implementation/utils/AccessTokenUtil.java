@@ -7,8 +7,8 @@ import static java.util.logging.Level.INFO;
 
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -101,10 +101,14 @@ public final class AccessTokenUtil {
                  .append(OAUTH2_TOKEN_POSTFIX);
 
         StringBuilder requestBody = new StringBuilder();
-        requestBody.append(GRANT_TYPE_FRAGMENT)
-            .append(CLIENT_ID_FRAGMENT).append(URLEncoder.encode(clientId, StandardCharsets.UTF_8))
-            .append(CLIENT_SECRET_FRAGMENT).append(URLEncoder.encode(clientSecret, StandardCharsets.UTF_8))
-            .append(RESOURCE_FRAGMENT).append(URLEncoder.encode(resource, StandardCharsets.UTF_8));
+        try {
+            requestBody.append(GRANT_TYPE_FRAGMENT)
+                .append(CLIENT_ID_FRAGMENT).append(URLEncoder.encode(clientId, "UTF-8"))
+                .append(CLIENT_SECRET_FRAGMENT).append(URLEncoder.encode(clientSecret, "UTF-8"))
+                .append(RESOURCE_FRAGMENT).append(URLEncoder.encode(resource, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.warning("Failed to construct requestBody");
+        }
 
         String body = HttpUtil
             .post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
