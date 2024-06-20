@@ -16,12 +16,12 @@ import com.azure.ai.openai.models.ChatRequestSystemMessage;
 import com.azure.ai.openai.models.ChatRequestToolMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.CompletionsFinishReason;
-import com.azure.ai.openai.models.FunctionArguments;
 import com.azure.ai.openai.models.FunctionDefinition;
-import com.azure.ai.openai.models.FutureTemperatureParameters;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,10 +75,10 @@ public class GetChatCompletionsToolCallAsyncSample {
 
                     // As an additional step, you may want to deserialize the parameters, so you can call your function
                     FunctionArguments parameters = BinaryData.fromString(functionArguments).toObject(FunctionArguments.class);
-                    System.out.println("Location Name: " + parameters.getLocationName());
-                    System.out.println("Date: " + parameters.getDate());
+                    System.out.println("Location Name: " + parameters.locationName);
+                    System.out.println("Date: " + parameters.date);
 
-                    String functionCallResult = futureTemperature(parameters.getLocationName(), parameters.getDate());
+                    String functionCallResult = futureTemperature(parameters.locationName, parameters.date);
 
                     ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage("");
                     assistantMessage.setToolCalls(choice.getMessage().getToolCalls());
@@ -125,5 +125,43 @@ public class GetChatCompletionsToolCallAsyncSample {
         FutureTemperatureParameters parameters = new FutureTemperatureParameters();
         functionDefinition.setParameters(BinaryData.fromObject(parameters));
         return functionDefinition;
+    }
+
+    private static class FunctionArguments {
+        @JsonProperty(value = "location_name")
+        private String locationName;
+
+        @JsonProperty(value = "date")
+        private String date;
+    }
+
+    private static class FutureTemperatureParameters {
+        @JsonProperty(value = "type")
+        private String type = "object";
+
+        @JsonProperty(value = "properties")
+        private FutureTemperatureProperties properties = new FutureTemperatureProperties();
+    }
+
+    private static class FutureTemperatureProperties {
+        @JsonProperty(value = "unit")
+        StringField unit = new StringField("Temperature unit. Can be either Celsius or Fahrenheit. Defaults to Celsius.");
+        @JsonProperty(value = "location_name")
+        StringField locationName = new StringField("The name of the location to get the future temperature for.");
+        @JsonProperty(value = "date")
+        StringField date = new StringField("The date to get the future temperature for. The format is YYYY-MM-DD.");
+    }
+
+    private static class StringField {
+        @JsonProperty(value = "type")
+        private final String type = "string";
+
+        @JsonProperty(value = "description")
+        private String description;
+
+        @JsonCreator
+        StringField(@JsonProperty(value = "description") String description) {
+            this.description = description;
+        }
     }
 }

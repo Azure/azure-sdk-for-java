@@ -4,6 +4,7 @@
 package com.azure.ai.openai.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * This is the property for creating the 'FunctionDefinition'.
@@ -17,6 +18,7 @@ public class FunctionProperties {
     // Description of the Property
     private String description;
     // Enum values for the Property
+    @JsonProperty("enum")
     private List<String> enumString;
 
     /**
