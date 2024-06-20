@@ -4,22 +4,20 @@
 package com.azure.messaging.webpubsub.client.implementation;
 
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import com.azure.messaging.webpubsub.client.implementation.models.SendEventMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.SendToGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Base64;
+import java.util.function.Consumer;
 
 public final class MessageEncoder {
-
-    private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
-
     public String encode(WebPubSubMessage object) {
         if (object instanceof SendToGroupMessage) {
             updateDataForType((SendToGroupMessage) object);
@@ -27,49 +25,36 @@ public final class MessageEncoder {
             updateDataForType((SendEventMessage) object);
         }
 
-        try {
-            return SERIALIZER_ADAPTER.serialize(object, SerializerEncoding.JSON);
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            object.toJson(writer).flush();
+            return outputStream.toString();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
     private static void updateDataForType(SendToGroupMessage message) {
-        String dataType = message.getDataType();
-        if (WebPubSubDataFormat.BINARY.toString().equals(dataType)
-            || WebPubSubDataFormat.PROTOBUF.toString().equals(dataType)) {
-            Object data = message.getData();
-            if (data instanceof BinaryData) {
-                BinaryData content = (BinaryData) data;
-                data = Base64.getEncoder().encodeToString(content.toBytes());
-                message.setData(data);
-            }
-        } else if (WebPubSubDataFormat.TEXT.toString().equals(dataType)) {
-            Object data = message.getData();
-            if (data instanceof BinaryData) {
-                BinaryData content = (BinaryData) data;
-                data = content.toString();
-                message.setData(data);
-            }
-        }
+        updateDataForType(message.getDataType(), message.getData(), message::setData);
     }
 
     private static void updateDataForType(SendEventMessage message) {
-        String dataType = message.getDataType();
+        updateDataForType(message.getDataType(), message.getData(), message::setData);
+    }
+
+    private static void updateDataForType(String dataType, Object data, Consumer<Object> dataUpdater) {
         if (WebPubSubDataFormat.BINARY.toString().equals(dataType)
             || WebPubSubDataFormat.PROTOBUF.toString().equals(dataType)) {
-            Object data = message.getData();
             if (data instanceof BinaryData) {
                 BinaryData content = (BinaryData) data;
                 data = Base64.getEncoder().encodeToString(content.toBytes());
-                message.setData(data);
+                dataUpdater.accept(data);
             }
         } else if (WebPubSubDataFormat.TEXT.toString().equals(dataType)) {
-            Object data = message.getData();
             if (data instanceof BinaryData) {
                 BinaryData content = (BinaryData) data;
                 data = content.toString();
-                message.setData(data);
+                dataUpdater.accept(data);
             }
         }
     }

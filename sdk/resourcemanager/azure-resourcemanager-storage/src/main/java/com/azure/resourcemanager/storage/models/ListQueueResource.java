@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.fluent.models.ListQueueInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public final class ListQueueResource {
 
     /**
      * Get the value property: List of queues returned.
-     *
+     * 
      * @return the value value.
      */
     public List<ListQueueInner> value() {
@@ -44,7 +43,7 @@ public final class ListQueueResource {
 
     /**
      * Get the nextLink property: Request URL that can be used to list next page of queues.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -53,7 +52,7 @@ public final class ListQueueResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

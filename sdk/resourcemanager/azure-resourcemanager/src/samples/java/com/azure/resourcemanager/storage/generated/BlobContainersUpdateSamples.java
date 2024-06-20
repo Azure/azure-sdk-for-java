@@ -14,7 +14,8 @@ import java.util.Map;
  */
 public final class BlobContainersUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/BlobContainersPatch.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/BlobContainersPatch.json
      */
     /**
      * Sample code: UpdateContainers.

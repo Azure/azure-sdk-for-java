@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -27,13 +26,15 @@ public final class LastAccessTimeTrackingPolicy {
     private Name name;
 
     /*
-     * The field specifies blob object tracking granularity in days, typically how often the blob object should be tracked.This field is currently read only with value as 1
+     * The field specifies blob object tracking granularity in days, typically how often the blob object should be
+     * tracked.This field is currently read only with value as 1
      */
     @JsonProperty(value = "trackingGranularityInDays")
     private Integer trackingGranularityInDays;
 
     /*
-     * An array of predefined supported blob types. Only blockBlob is the supported value. This field is currently read only
+     * An array of predefined supported blob types. Only blockBlob is the supported value. This field is currently read
+     * only
      */
     @JsonProperty(value = "blobType")
     private List<String> blobType;
@@ -46,7 +47,7 @@ public final class LastAccessTimeTrackingPolicy {
 
     /**
      * Get the enable property: When set to true last access time based tracking is enabled.
-     *
+     * 
      * @return the enable value.
      */
     public boolean enable() {
@@ -55,7 +56,7 @@ public final class LastAccessTimeTrackingPolicy {
 
     /**
      * Set the enable property: When set to true last access time based tracking is enabled.
-     *
+     * 
      * @param enable the enable value to set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
@@ -67,7 +68,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Get the name property: Name of the policy. The valid value is AccessTimeTracking. This field is currently read
      * only.
-     *
+     * 
      * @return the name value.
      */
     public Name name() {
@@ -77,7 +78,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Set the name property: Name of the policy. The valid value is AccessTimeTracking. This field is currently read
      * only.
-     *
+     * 
      * @param name the name value to set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
@@ -89,7 +90,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Get the trackingGranularityInDays property: The field specifies blob object tracking granularity in days,
      * typically how often the blob object should be tracked.This field is currently read only with value as 1.
-     *
+     * 
      * @return the trackingGranularityInDays value.
      */
     public Integer trackingGranularityInDays() {
@@ -99,7 +100,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Set the trackingGranularityInDays property: The field specifies blob object tracking granularity in days,
      * typically how often the blob object should be tracked.This field is currently read only with value as 1.
-     *
+     * 
      * @param trackingGranularityInDays the trackingGranularityInDays value to set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
@@ -111,7 +112,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Get the blobType property: An array of predefined supported blob types. Only blockBlob is the supported value.
      * This field is currently read only.
-     *
+     * 
      * @return the blobType value.
      */
     public List<String> blobType() {
@@ -121,7 +122,7 @@ public final class LastAccessTimeTrackingPolicy {
     /**
      * Set the blobType property: An array of predefined supported blob types. Only blockBlob is the supported value.
      * This field is currently read only.
-     *
+     * 
      * @param blobType the blobType value to set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
@@ -132,7 +133,7 @@ public final class LastAccessTimeTrackingPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

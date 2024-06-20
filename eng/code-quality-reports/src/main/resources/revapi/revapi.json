@@ -471,6 +471,20 @@
           "old" : ".*? com\\.azure\\.digitaltwins\\.core(\\.models)?.*",
           "new" : ".*? com\\.azure\\.digitaltwins\\.core(\\.models)?.*",
           "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
+          "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
+          "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
+          "justification": "Migration to azure-json"
         }
       ]
     }
