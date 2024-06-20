@@ -130,7 +130,7 @@ foreach ($packageDetail in $packageDetails) {
     $shouldPublishPackage = $ShouldPublish -and !$StageOnly
   }
   else {
-    throw "Repository URL must be either an Azure Artifacts feed, anything else must be published through ESRP."
+    throw "Repository URL must be an Azure Artifacts feed, anything else must be published through ESRP."
   }
 
   #Local GPG deployment is required when we're not going to publish a package, or when we're publishing to maven central
@@ -176,7 +176,6 @@ foreach ($packageDetail in $packageDetails) {
     continue
   }
 
-  # There is no else clause needed since, currently, any releaseType that's not AzureDevOps will throw above
   Write-Information "GPG Signing and deploying package in one step to devops feed: $packageReposityUrl"
   Write-Information "mvn $gpgSignAndDeployWithVer `"--batch-mode`" `"$pomOption`" `"$fileOption`" `"$javadocOption`" `"$sourcesOption`" `"$filesOption`" $classifiersOption `"$typesOption`" `"-Durl=$packageReposityUrl`" `"$gpgexeOption`" `"-DrepositoryId=target-repo`" `"-Drepo.password=[redacted]`" `"--settings=$PSScriptRoot\..\maven.publish.settings.xml`""
   mvn $gpgSignAndDeployWithVer "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$packageReposityUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.password=$RepositoryPassword" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
