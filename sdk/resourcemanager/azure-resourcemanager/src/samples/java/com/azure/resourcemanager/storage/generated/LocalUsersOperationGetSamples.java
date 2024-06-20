@@ -9,7 +9,8 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class LocalUsersOperationGetSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/LocalUserGet.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/LocalUserGet.json
      */
     /**
      * Sample code: GetLocalUser.
