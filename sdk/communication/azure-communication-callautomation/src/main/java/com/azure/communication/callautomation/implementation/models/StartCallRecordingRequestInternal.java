@@ -256,7 +256,7 @@ public final class StartCallRecordingRequestInternal {
      *
      * @return the pauseOnStart value.
      */
-    public Boolean isPauseOnStart() {
+    public Boolean getPauseOnStart() {
         return this.pauseOnStart;
     }
 

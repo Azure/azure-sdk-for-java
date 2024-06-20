@@ -139,7 +139,7 @@ public final class StartRecordingOptions {
      *
      * @return pause on start.
      */
-    public Boolean isPauseOnStart() {
+    public Boolean getPauseOnStart() {
         return pauseOnStart;
     }
 
