@@ -124,7 +124,7 @@ We no longer publish directly to Maven Central, any publishing is done through E
 - "com.azure"
 - "com.microsoft.azure"
 - "com.microsoft.azure.cognitiveservices"
-- "com.microsoft.azure.functions": "534d15ee3800f4",
+- "com.microsoft.azure.functions"
 - "com.microsoft.azure.kusto"
 - "com.microsoft.azure.sdk.iot"
 - "com.microsoft.azure.sdk.iot.provisioning"
