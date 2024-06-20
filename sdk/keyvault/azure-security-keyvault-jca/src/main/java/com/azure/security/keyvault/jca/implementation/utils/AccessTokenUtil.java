@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.addTrailingSlashIfRequired;
 import static java.util.logging.Level.FINER;
 import static java.util.logging.Level.INFO;
 
@@ -48,7 +49,7 @@ public final class AccessTokenUtil {
     /**
      * Stores the OAuth2 token postfix.
      */
-    private static final String OAUTH2_TOKEN_POSTFIX = "/oauth2/token";
+    private static final String OAUTH2_TOKEN_POSTFIX = "oauth2/token";
 
     /**
      * Stores the OAuth2 managed identity URL.
@@ -114,9 +115,9 @@ public final class AccessTokenUtil {
         StringBuilder oauth2Url = new StringBuilder();
 
         if (aadAuthenticationUrl == null) {
-            oauth2Url.append(OAUTH2_TOKEN_BASE_URL).append(tenantId);
+            oauth2Url.append(OAUTH2_TOKEN_BASE_URL).append(tenantId).append("/");
         } else {
-            oauth2Url.append(aadAuthenticationUrl);
+            oauth2Url.append(addTrailingSlashIfRequired(aadAuthenticationUrl));
         }
 
         oauth2Url.append(OAUTH2_TOKEN_POSTFIX);

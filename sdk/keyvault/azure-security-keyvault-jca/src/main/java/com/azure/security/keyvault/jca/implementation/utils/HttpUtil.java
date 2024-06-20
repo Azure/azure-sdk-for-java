@@ -25,6 +25,8 @@ import javax.net.ssl.SSLContext;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -40,15 +42,19 @@ import static java.util.logging.Level.WARNING;
  * The RestClient that uses the Apache HttpClient class.
  */
 public final class HttpUtil {
-
-    static final String USER_AGENT_KEY = "User-Agent";
-    static final String DEFAULT_USER_AGENT_VALUE_PREFIX = "az-se-kv-jca/";
     public static final String DEFAULT_VERSION = "unknown";
     public static final String VERSION = Optional.of(HttpUtil.class)
         .map(Class::getPackage)
         .map(Package::getImplementationVersion)
         .orElse(DEFAULT_VERSION);
+
+    public static final String HTTPS_PREFIX = "https://";
+    public static final String API_VERSION_POSTFIX = "?api-version=7.1";
     public static final String USER_AGENT_VALUE = getUserAgentPrefix() + VERSION;
+
+    static final String USER_AGENT_KEY = "User-Agent";
+    static final String DEFAULT_USER_AGENT_VALUE_PREFIX = "az-se-kv-jca/";
+
     private static final Logger LOGGER = Logger.getLogger(HttpUtil.class.getName());
 
     public static String get(String url, Map<String, String> headers) {
@@ -175,5 +181,41 @@ public final class HttpUtil {
                 .build());
 
         return HttpClients.custom().setConnectionManager(manager).build();
+    }
+
+    public static String validateUri(String uri, String propertyName) {
+        if (uri == null) {
+            StringBuilder messageBuilder = new StringBuilder();
+
+            if (propertyName != null) {
+                messageBuilder.append(propertyName);
+            } else {
+                messageBuilder.append("Provided URI ");
+            }
+
+            messageBuilder.append("cannot be null.");
+
+            throw new NullPointerException(messageBuilder.toString());
+        }
+
+        if (!uri.startsWith(HTTPS_PREFIX)) {
+            throw new IllegalArgumentException("Provided URI '" + uri + "' must start with 'https://'.");
+        }
+
+        try {
+            new URI(uri);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Provided URI '" + uri + "' is not a valid URI.");
+        }
+
+        return uri;
+    }
+
+    public static String addTrailingSlashIfRequired(String uri) {
+        if (!uri.endsWith("/")) {
+            return uri + "/";
+        }
+
+        return uri;
     }
 }

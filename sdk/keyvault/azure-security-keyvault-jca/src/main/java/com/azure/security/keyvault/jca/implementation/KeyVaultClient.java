@@ -19,7 +19,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -43,6 +42,10 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import static com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.getLoginUri;
+import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_VERSION_POSTFIX;
+import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.HTTPS_PREFIX;
+import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.addTrailingSlashIfRequired;
+import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.validateUri;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
@@ -51,8 +54,6 @@ import static java.util.logging.Level.WARNING;
  */
 public class KeyVaultClient {
     private static final Logger LOGGER = Logger.getLogger(KeyVaultClient.class.getName());
-    private static final String HTTPS_PREFIX = "https://";
-    private static final String API_VERSION_POSTFIX = "?api-version=7.1";
 
     /**
      * Stores the Key Vault cloud URI.
@@ -160,42 +161,6 @@ public class KeyVaultClient {
 
         return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
             disableChallengeResourceVerification);
-    }
-
-    private static String validateUri(String uri, String propertyName) {
-        if (uri == null) {
-            StringBuilder messageBuilder = new StringBuilder();
-
-            if (propertyName != null) {
-                messageBuilder.append(propertyName);
-            } else {
-                messageBuilder.append("Provided URI ");
-            }
-
-            messageBuilder.append("cannot be null.");
-
-            throw new NullPointerException(messageBuilder.toString());
-        }
-
-        if (!uri.startsWith(HTTPS_PREFIX)) {
-            throw new IllegalArgumentException("Provided URI '" + uri + "' must start with 'https://'.");
-        }
-
-        try {
-            new URI(uri);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Provided URI '" + uri + "' is not a valid URI.");
-        }
-
-        return uri;
-    }
-
-    private String addTrailingSlashIfRequired(String uri) {
-        if (!uri.endsWith("/")) {
-            return uri + "/";
-        }
-
-        return uri;
     }
 
     /**
