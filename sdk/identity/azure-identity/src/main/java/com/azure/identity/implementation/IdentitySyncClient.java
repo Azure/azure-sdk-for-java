@@ -140,7 +140,7 @@ public class IdentitySyncClient extends IdentityClientBase {
                 .createFromClientAssertion(clientAssertionSupplier.get()));
         } else if (clientAssertionSupplierWithHttpPipeline != null) {
             builder.clientCredential(ClientCredentialFactory
-                .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(httpPipeline)));
+                .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline())));
         }
         try {
             return new MsalToken(confidentialClient.acquireToken(builder.build()).get());

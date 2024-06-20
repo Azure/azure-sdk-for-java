@@ -572,7 +572,7 @@ public class IdentityClient extends IdentityClientBase {
                 .createFromClientAssertion(clientAssertionSupplier.get()));
         } else if (clientAssertionSupplierWithHttpPipeline != null) {
             builder.clientCredential(ClientCredentialFactory
-                .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(httpPipeline)));
+                .createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline())));
         }
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
