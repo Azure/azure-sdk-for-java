@@ -583,11 +583,6 @@ public final class CosmosChangeFeedRequestOptions {
                 }
 
                 @Override
-                public List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions) {
-                    return cosmosChangeFeedRequestOptions.getExcludedRegions();
-                }
-
-                @Override
                 public CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
                     String continuation,
                     FeedRange targetRange,
