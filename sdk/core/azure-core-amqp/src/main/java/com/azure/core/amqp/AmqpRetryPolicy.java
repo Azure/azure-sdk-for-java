@@ -4,6 +4,7 @@
 package com.azure.core.amqp;
 
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.RetryUtil;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -76,7 +77,7 @@ public abstract class AmqpRetryPolicy {
         }
 
         final Duration baseDelay;
-        if (lastException instanceof AmqpException && isRetriableException(lastException)) {
+        if (lastException instanceof AmqpException && RetryUtil.isRetriableException(lastException)) {
             baseDelay = ((AmqpException) lastException).getErrorCondition() == SERVER_BUSY_ERROR
                 ? retryOptions.getDelay().plus(SERVER_BUSY_WAIT_TIME)
                 : retryOptions.getDelay();
@@ -127,15 +128,5 @@ public abstract class AmqpRetryPolicy {
 
         final AmqpRetryPolicy other = (AmqpRetryPolicy) obj;
         return retryOptions.equals(other.retryOptions);
-    }
-
-    /**
-     * Check if the existing exception is a retriable exception.
-     *
-     * @param exception An exception that was observed for the operation to be retried.
-     * @return true if the exception is a retriable exception, otherwise false.
-     */
-    private static boolean isRetriableException(Throwable exception) {
-        return (exception instanceof AmqpException) && ((AmqpException) exception).isTransient();
     }
 }

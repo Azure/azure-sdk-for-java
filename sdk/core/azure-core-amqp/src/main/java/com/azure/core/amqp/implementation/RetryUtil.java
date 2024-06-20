@@ -9,10 +9,11 @@ import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
+import org.reactivestreams.Publisher;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
-import reactor.util.retry.RetryBackoffSpec;
 
 import java.time.Duration;
 import java.util.Locale;
@@ -22,14 +23,20 @@ import java.util.concurrent.TimeoutException;
  * Helper class to help with retry policies.
  */
 public final class RetryUtil {
-    private static final double JITTER_FACTOR = 0.08;
-    // Base sleep wait time.
-    private static final Duration SERVER_BUSY_WAIT_TIME = Duration.ofSeconds(4);
-
     private static final ClientLogger LOGGER = new ClientLogger(RetryUtil.class);
 
     // So this class can't be instantiated.
     private RetryUtil() {
+    }
+
+    /**
+     * Check if the existing exception is a retriable exception.
+     *
+     * @param exception An exception that was observed for the operation to be retried.
+     * @return true if the exception is a retriable exception, otherwise false.
+     */
+    public static boolean isRetriableException(Throwable exception) {
+        return (exception instanceof AmqpException) && ((AmqpException) exception).isTransient();
     }
 
     /**
@@ -106,27 +113,64 @@ public final class RetryUtil {
         return withRetry(source, retryOptions, timeoutMessage, false);
     }
 
+    /**
+     * Creates the Retry strategy from the AmqpRetryOptions.
+     *
+     * @param options AmqpRetryOptions.
+     * @return The retry strategy.
+     */
     static Retry createRetry(AmqpRetryOptions options) {
-        final Duration delay = options.getDelay().plus(SERVER_BUSY_WAIT_TIME);
-        final RetryBackoffSpec retrySpec;
-        switch (options.getMode()) {
-            case FIXED:
-                retrySpec = Retry.fixedDelay(options.getMaxRetries(), delay);
-                break;
+        return new AmqpRetrySpec(options);
+    }
 
-            case EXPONENTIAL:
-                retrySpec = Retry.backoff(options.getMaxRetries(), delay);
-                break;
+    /**
+     * {@link AmqpRetryPolicy} wrapped as a Retry.
+     */
+    static class AmqpRetrySpec extends Retry {
+        private final AmqpRetryPolicy retryPolicy;
 
-            default:
-                LOGGER.warning("Unknown: '{}'. Using exponential delay. Delay: {}. Max Delay: {}. Max Retries: {}.",
-                    options.getMode(), options.getDelay(), options.getMaxDelay(), options.getMaxRetries());
-                retrySpec = Retry.backoff(options.getMaxRetries(), delay);
-                break;
+        AmqpRetrySpec(AmqpRetryOptions options) {
+            switch (options.getMode()) {
+                case FIXED:
+                    retryPolicy = new FixedAmqpRetryPolicy(options);
+                    break;
+
+                case EXPONENTIAL:
+                    retryPolicy = new ExponentialAmqpRetryPolicy(options);
+                    break;
+
+                default:
+                    LOGGER.atWarning()
+                        .addKeyValue("retryMode", options.getMode())
+                        .addKeyValue("delay", options.getDelay())
+                        .addKeyValue("maxDelay", options.getMaxDelay())
+                        .addKeyValue("maxRetries", options.getMaxRetries())
+                        .log("Unknown retry mode. Using Exponential.");
+
+                    retryPolicy = new ExponentialAmqpRetryPolicy(options);
+                    break;
+            }
         }
-        return retrySpec.jitter(JITTER_FACTOR)
-            .maxBackoff(options.getMaxDelay())
-            .filter(error -> error instanceof TimeoutException
-                || (error instanceof AmqpException && ((AmqpException) error).isTransient()));
+
+        @Override
+        public Publisher<?> generateCompanion(Flux<RetrySignal> retrySignals) {
+            return retrySignals.concatMap(retrySignal -> {
+                final RetrySignal copy = retrySignal.copy();
+                final Throwable currentFailure = copy.failure();
+
+                final Duration retryDelay
+                    = retryPolicy.calculateRetryDelay(currentFailure, (int) copy.totalRetriesInARow());
+
+                if (retryDelay != null) {
+                    return Mono.delay(retryDelay);
+                }
+
+                if (isRetriableException(currentFailure)) {
+                    return Mono.error(Exceptions.retryExhausted("Retries exhausted.", currentFailure));
+                } else {
+                    return Mono.error(currentFailure);
+                }
+            }).onErrorStop();
+        }
     }
 }
