@@ -45,6 +45,12 @@ public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBu
     }
 
     /**
+     * Sets the metrics audience.
+     * @param audience the audience.
+     * @return the {@link MetricsClientBuilder}.
+     */
+
+    /**
      * Sets The HTTP pipeline to send requests through.
      * @param pipeline the pipeline value.
      * @return the {@link MetricsClientBuilder}.
