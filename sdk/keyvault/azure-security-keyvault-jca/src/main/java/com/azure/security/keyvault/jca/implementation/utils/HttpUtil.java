@@ -3,6 +3,7 @@
 package com.azure.security.keyvault.jca.implementation.utils;
 
 import com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
@@ -34,6 +35,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
 /**
@@ -59,9 +61,28 @@ public final class HttpUtil {
                 headers.forEach(httpGet::addHeader);
             }
             httpGet.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+
+            StringBuilder headersStringBuilder = new StringBuilder("[");
+            boolean firstHeader = true;
+
+            for (Header header : httpGet.getAllHeaders()) {
+                headersStringBuilder.append(header.getName()).append(": ").append(header.getValue());
+
+                if (firstHeader) {
+                    firstHeader = false;
+                } else {
+                    headersStringBuilder.append(", ");
+                }
+            }
+
+            headersStringBuilder.append("]");
+
+            LOGGER.log(INFO, "Executing GET request: {0} with headers: {1}",
+                new Object[]{ httpGet.getRequestLine(), headersStringBuilder.toString() });
+
             result = client.execute(httpGet, createResponseHandler());
         } catch (IOException ioe) {
-            LOGGER.log(WARNING, "Unable to finish the http get request.", ioe);
+            LOGGER.log(WARNING, "Unable to finish the HTTP GET request.", ioe);
         }
         return result;
     }
@@ -92,9 +113,30 @@ public final class HttpUtil {
                 httpPost.addHeader("Content-Type", contentType);
             }
             httpPost.setEntity(new StringEntity(body, ContentType.create(contentType)));
+
+            StringBuilder headersStringBuilder = new StringBuilder("[");
+            boolean firstHeader = true;
+
+            for (Header header : httpPost.getAllHeaders()) {
+                headersStringBuilder.append(header.getName()).append(": ").append(header.getValue());
+
+                if (firstHeader) {
+                    firstHeader = false;
+                } else {
+                    headersStringBuilder.append(", ");
+                }
+            }
+
+            headersStringBuilder.append("]");
+
+            httpPost.setEntity(new StringEntity(body, ContentType.create(contentType)));
+
+            LOGGER.log(INFO, "Executing POST request: {0} with headers: {1} and body: {2}",
+                new Object[]{ httpPost.getRequestLine(), headersStringBuilder.toString(), httpPost.getEntity() });
+
             result = client.execute(httpPost, createResponseHandler());
         } catch (IOException ioe) {
-            LOGGER.log(WARNING, "Unable to finish the http post request.", ioe);
+            LOGGER.log(WARNING, "Unable to finish the HTTP POST request.", ioe);
         }
         return result;
     }
@@ -102,6 +144,8 @@ public final class HttpUtil {
 
     private static ResponseHandler<String> createResponseHandler() {
         return (HttpResponse response) -> {
+            LOGGER.log(INFO, "Received response: {0}", response);
+
             int status = response.getStatusLine().getStatusCode();
             String result = null;
             if (status >= 200 && status < 300) {
@@ -122,7 +166,7 @@ public final class HttpUtil {
                 .loadTrustMaterial(keyStore, null)
                 .build();
         } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
-            LOGGER.log(WARNING, "Unable to build the ssl context.", e);
+            LOGGER.log(WARNING, "Unable to build the SSL context.", e);
         }
 
         SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(

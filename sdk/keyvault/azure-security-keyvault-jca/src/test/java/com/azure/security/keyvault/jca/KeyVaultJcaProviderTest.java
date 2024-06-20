@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.security.KeyStore;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultJcaProviderTest {
-
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultJcaProviderTest.class.getName());
 
     /**
      * Test getting a certificate using the Provider.
@@ -24,10 +25,14 @@ public class KeyVaultJcaProviderTest {
      */
     @Test
     public void testGetCertificate() throws Exception {
+        LOGGER.entering("KeyVaultJcaProviderTest", "testGetCertificate");
+
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
         KeyStore keystore = PropertyConvertorUtils.getKeyVaultKeyStore();
         assertNotNull(keystore.getCertificate(
             PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME")));
+
+        LOGGER.exiting("KeyVaultJcaProviderTest", "testGetCertificate");
     }
 }

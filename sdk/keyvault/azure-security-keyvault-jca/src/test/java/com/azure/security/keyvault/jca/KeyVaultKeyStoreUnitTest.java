@@ -11,11 +11,13 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class KeyVaultKeyStoreUnitTest {
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStoreUnitTest.class.getName());
 
     /**
      * Stores the CER test certificate (which is valid til 2120).
@@ -43,12 +45,18 @@ public class KeyVaultKeyStoreUnitTest {
 
     @Test
     public void testEngineStore() {
+        LOGGER.entering("KeyVaultKeyStoreUnitTest", "testEngineStore");
+
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         keystore.engineStore(null, null);
+
+        LOGGER.entering("KeyVaultKeyStoreUnitTest", "testEngineStore");
     }
 
     @Test
     public void testGetRefreshInterval() {
+        LOGGER.entering("KeyVaultKeyStoreUnitTest", "testGetRefreshInterval");
+
         System.clearProperty("azure.keyvault.jca.certificates-refresh-interval");
         System.clearProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms");
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
@@ -58,10 +66,14 @@ public class KeyVaultKeyStoreUnitTest {
         assertEquals(keystore.getRefreshInterval(), 2000);
         System.setProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms", "1000");
         assertEquals(keystore.getRefreshInterval(), 1000);
+
+        LOGGER.exiting("KeyVaultKeyStoreUnitTest", "testGetRefreshInterval");
     }
 
     @Test
     public void testEngineGetCertificateAlias() {
+        LOGGER.entering("KeyVaultKeyStoreUnitTest", "testEngineGetCertificateAlias");
+
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         X509Certificate certificate;
         try {
@@ -73,10 +85,14 @@ public class KeyVaultKeyStoreUnitTest {
         }
         keystore.engineSetCertificateEntry("setcert", certificate);
         assertNotNull(keystore.engineGetCertificateAlias(certificate));
+
+        LOGGER.exiting("KeyVaultKeyStoreUnitTest", "testEngineGetCertificateAlias");
     }
 
     @Test
     public void testEngineSetCertificateEntry() {
+        LOGGER.entering("KeyVaultKeyStoreUnitTest", "testEngineSetCertificateEntry");
+
         KeyVaultKeyStore keystore = new KeyVaultKeyStore();
         X509Certificate certificate;
         try {
@@ -90,6 +106,8 @@ public class KeyVaultKeyStoreUnitTest {
 
         keystore.engineSetCertificateEntry("setcert", certificate);
         assertNotNull(keystore.engineGetCertificate("setcert"));
+
+        LOGGER.exiting("KeyVaultKeyStoreUnitTest", "testEngineSetCertificateEntry");
     }
 
 }

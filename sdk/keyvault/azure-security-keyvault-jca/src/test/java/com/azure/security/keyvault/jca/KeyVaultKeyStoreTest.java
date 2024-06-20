@@ -10,6 +10,7 @@ import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import java.security.KeyStore;
 import java.security.Security;
 import java.security.cert.Certificate;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,13 +24,15 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  */
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultKeyStoreTest {
-
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyStoreTest.class.getName());
     private static String certificateName;
 
     private static KeyVaultKeyStore keystore;
 
     @BeforeAll
     public static void setEnvironmentProperty() {
+        LOGGER.entering("KeyVaultKeyStoreTest", "setEnvironmentProperty");
+
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         keystore = new KeyVaultKeyStore();
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
@@ -39,6 +42,8 @@ public class KeyVaultKeyStoreTest {
             PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"));
         certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
         keystore.engineLoad(parameter);
+
+        LOGGER.exiting("KeyVaultKeyStoreTest", "setEnvironmentProperty");
     }
 
     @Test

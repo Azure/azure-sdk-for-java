@@ -248,7 +248,7 @@ public class KeyVaultClient {
      * @return the access token.
      */
     private AccessToken getAccessTokenByHttpRequest() {
-        LOGGER.entering("KeyVaultClient", "getAccessToken");
+        LOGGER.entering("KeyVaultClient", "getAccessTokenByHttpRequest");
         AccessToken accessToken = null;
         try {
             String resource = URLEncoder.encode(keyVaultBaseUri, "UTF-8");
@@ -262,8 +262,8 @@ public class KeyVaultClient {
             } else {
                 accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
             }
-        } catch (Throwable throwable) {
-            LOGGER.log(WARNING, "Unsupported encoding or missing Httpclient", throwable);
+        } catch (Throwable t) {
+            LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", t);
         }
         LOGGER.exiting("KeyVaultClient", "getAccessToken", accessToken);
         return accessToken;

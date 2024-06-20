@@ -20,12 +20,14 @@ import java.security.ProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class SpecificPathCertificatesTest {
+    private static final Logger LOGGER = Logger.getLogger(SpecificPathCertificatesTest.class.getName());
 
     @BeforeAll
     public static void setEnvironmentProperty() {
@@ -40,13 +42,19 @@ public class SpecificPathCertificatesTest {
 
     @Test
     public void testGetSpecificPathCertificate() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+        LOGGER.entering("SpecificPathCertificatesTest", "testGetSpecificPathCertificate");
+
         System.setProperty("azure.cert-path.custom", getFilePath("custom"));
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         Assertions.assertNotNull(keyStore.getCertificate("sideload"));
+
+        LOGGER.exiting("SpecificPathCertificatesTest", "testGetSpecificPathCertificate");
     }
 
     @Test
     public void testCertificatePriority1() {
+        LOGGER.entering("SpecificPathCertificatesTest", "testCertificatePriority1");
+
         System.setProperty("azure.cert-path.well-known", getFilePath("well-known\\"));
         System.setProperty("azure.cert-path.custom", getFilePath("custom\\"));
         KeyVaultKeyStore ks = new KeyVaultKeyStore();
@@ -55,10 +63,14 @@ public class SpecificPathCertificatesTest {
         X509Certificate wellKnownCertificate = getCertificateByFile(new File(getFilePath("well-known\\sideload.pem")));
         assertEquals(wellKnownCertificate, ks.engineGetCertificate("sideload"));
         assertNotEquals(customCertificate, ks.engineGetCertificate("sideload"));
+
+        LOGGER.exiting("SpecificPathCertificatesTest", "testCertificatePriority1");
     }
 
     @Test
     public void testCertificatePriority2() {
+        LOGGER.entering("SpecificPathCertificatesTest", "testCertificatePriority2");
+
         System.setProperty("azure.cert-path.custom", getFilePath("custom\\"));
         KeyVaultKeyStore ks = new KeyVaultKeyStore();
         ks.engineLoad(null);
@@ -67,6 +79,7 @@ public class SpecificPathCertificatesTest {
         assertEquals(specificPathCertificate, ks.engineGetCertificate("sideload2"));
         assertNotEquals(classPathCertificate, ks.engineGetCertificate("sideload2"));
 
+        LOGGER.exiting("SpecificPathCertificatesTest", "testCertificatePriority2");
     }
 
     private X509Certificate getCertificateByFile(File file) {

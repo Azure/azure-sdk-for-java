@@ -12,11 +12,13 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultKeyManagerTest {
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultKeyManagerTest.class.getName());
 
     private static KeyVaultKeyManager manager;
     private static String certificateName;
@@ -24,11 +26,15 @@ public class KeyVaultKeyManagerTest {
     @BeforeAll
     public static void setEnvironmentProperty() throws KeyStoreException, NoSuchAlgorithmException, IOException,
         CertificateException {
+        LOGGER.entering("KeyVaultKeyManagerTest", "setEnvironmentProperty");
+
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         PropertyConvertorUtils.addKeyVaultJcaProvider();
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         manager = new KeyVaultKeyManager(keyStore, null);
         certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
+
+        LOGGER.exiting("KeyVaultKeyManagerTest", "setEnvironmentProperty");
     }
 
     @Test

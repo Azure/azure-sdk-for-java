@@ -8,11 +8,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
+import java.util.logging.Logger;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultClientTest {
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultClientTest.class.getName());
+
     private static KeyVaultClient keyVaultClient;
     private static String certificateName;
 
@@ -28,16 +32,28 @@ public class KeyVaultClientTest {
 
     @Test
     public void testGetAliases() {
+        LOGGER.entering("KeyVaultClientTest", "testGetAliases");
+
         assertTrue(keyVaultClient.getAliases().contains(certificateName));
+
+        LOGGER.exiting("KeyVaultClientTest", "testGetAliases");
     }
 
     @Test
     public void testGetCertificate() {
+        LOGGER.entering("KeyVaultClientTest", "testGetCertificate");
+
         assertNotNull(keyVaultClient.getCertificate(certificateName));
+
+        LOGGER.exiting("KeyVaultClientTest", "testGetCertificate");
     }
 
     @Test
     public void testGetKey() {
+        LOGGER.entering("KeyVaultClientTest", "testGetKey");
+
         assertNotNull(keyVaultClient.getKey(certificateName, null));
+
+        LOGGER.exiting("KeyVaultClientTest", "testGetKey");
     }
 }

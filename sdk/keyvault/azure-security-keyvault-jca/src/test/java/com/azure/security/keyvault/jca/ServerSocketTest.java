@@ -32,6 +32,7 @@ import java.security.KeyStore;
 import java.security.Security;
 import java.security.cert.X509Certificate;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -40,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class ServerSocketTest {
+    private static final Logger LOGGER = Logger.getLogger(ServerSocketTest.class.getName());
 
     private static KeyStore ks;
 
@@ -49,6 +51,8 @@ public class ServerSocketTest {
 
     @BeforeAll
     public static void beforeEach() throws Exception {
+        LOGGER.entering("ServerSocketTest", "beforeEach");
+
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         /*
          * Add JCA provider.
@@ -64,6 +68,8 @@ public class ServerSocketTest {
         kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "".toCharArray());
         certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
+
+        LOGGER.exiting("ServerSocketTest", "beforeEach");
     }
 
 
@@ -86,27 +92,38 @@ public class ServerSocketTest {
 
     @Test
     public void testHttpsConnectionWithoutClientTrust() throws Exception {
+        LOGGER.entering("ServerSocketTest", "testHttpsConnectionWithoutClientTrust");
+
         SSLContext sslContext = SSLContexts
             .custom()
             .loadTrustMaterial((final X509Certificate[] chain, final String authType) -> true)
             .build();
         testHttpsConnection(8765, sslContext);
 
+        LOGGER.exiting("ServerSocketTest", "testHttpsConnectionWithoutClientTrust");
     }
 
     @Test
     public void testHttpsConnectionWithSelfSignedClientTrust() throws Exception {
+        LOGGER.entering("ServerSocketTest", "testHttpsConnectionWithSelfSignedClientTrust");
+
         SSLContext sslContext = SSLContexts
             .custom()
             .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
             .build();
         testHttpsConnection(8766, sslContext);
 
+        LOGGER.exiting("ServerSocketTest", "testHttpsConnectionWithSelfSignedClientTrust");
+
     }
 
     @Test
     public void testServerSocketWithDefaultTrustManager() throws Exception {
+        LOGGER.entering("ServerSocketTest", "testServerSocketWithDefaultTrustManager");
+
         serverSocketWithTrustManager(8768);
+
+        LOGGER.exiting("ServerSocketTest", "testServerSocketWithDefaultTrustManager");
     }
 
 
@@ -117,9 +134,13 @@ public class ServerSocketTest {
      */
     @Test
     public void testServerSocketWithKeyVaultTrustManager() throws Exception {
+        LOGGER.entering("ServerSocketTest", "testServerSocketWithKeyVaultTrustManager");
+
         KeyVaultTrustManagerFactoryProvider provider = new KeyVaultTrustManagerFactoryProvider();
         Security.addProvider(provider);
         serverSocketWithTrustManager(8767);
+
+        LOGGER.exiting("ServerSocketTest", "testServerSocketWithKeyVaultTrustManager");
     }
 
 

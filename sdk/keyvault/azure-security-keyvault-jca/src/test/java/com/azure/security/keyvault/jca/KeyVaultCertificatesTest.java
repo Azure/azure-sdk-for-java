@@ -14,6 +14,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Base64;
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
 public class KeyVaultCertificatesTest {
+    private static final Logger LOGGER = Logger.getLogger(KeyVaultCertificatesTest.class.getName());
 
     private static String certificateName;
 
@@ -60,6 +62,8 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testGetKeyStore() throws Exception {
+        LOGGER.entering("KeyVaultCertificatesTest", "testGetKeyStore");
+
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         assertNotNull(keyStore.getCertificate(certificateName));
         assertTrue(keyStore.containsAlias(certificateName));
@@ -67,6 +71,8 @@ public class KeyVaultCertificatesTest {
 
         keyStore.setCertificateEntry("setcert", certificate);
         assertNotNull(keyStore.getCertificateAlias(certificate), "setcert");
+
+        LOGGER.exiting("KeyVaultCertificatesTest", "testGetKeyStore");
     }
 
     private X509Certificate getTestCertificate() {
@@ -84,6 +90,8 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testCertificatesRefreshInterval() throws Exception {
+        LOGGER.entering("KeyVaultCertificatesTest", "testCertificatesRefreshInterval");
+
         System.setProperty("azure.keyvault.jca.certificates-refresh-interval-in-ms", "1000");
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         assertNotNull(keyStore.getCertificate(certificateName));
@@ -91,6 +99,8 @@ public class KeyVaultCertificatesTest {
         assertNull(keyStore.getCertificate(certificateName));
         Thread.sleep(2000);
         assertNotNull(keyStore.getCertificate(certificateName));
+
+        LOGGER.exiting("KeyVaultCertificatesTest", "testCertificatesRefreshInterval");
     }
 
 }
