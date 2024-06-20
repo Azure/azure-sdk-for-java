@@ -3,7 +3,7 @@ trigger: none
 pr: none
 
 pool:
-  vmImage: 'macOS-13'
+  vmImage: 'ubuntu-20.04'
 
 variables:
 - group: Release Secrets for GitHub
@@ -22,26 +22,50 @@ steps:
 - task: UsePythonVersion@0
   inputs:
     versionSpec: ${{ variables.pythonVersion }}
-- bash: |
-    sudo apt-get install -y --upgrade python3-pip python3-setuptools
-    pip3 install --upgrade wheel
-    pip3 install --upgrade PyYAML requests
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      pip3 install --upgrade wheel
+      pip3 install --upgrade PyYAML requests
   displayName: Update python
+
+#- pwsh: |
+#    sudo apt-get install -y --upgrade python3-pip python3-setuptools
+#    pip3 install --upgrade wheel
+#    pip3 install --upgrade PyYAML requests
+#  displayName: Update python
 
 - task: NodeTool@0
   displayName: 'Install Node.js $(NodeVersion)'
   inputs:
     versionSpec: '$(NodeVersion)'
 
-- bash: |
-    npm install -g autorest
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      npm install -g autorest
   displayName: 'Install autorest'
   condition: eq(variables.fromTypeSpec, false)
+#- ps: |
+#    npm install -g autorest
+#  displayName: 'Install autorest'
+#  condition: eq(variables.fromTypeSpec, false)
 
-- bash: |
-    npm install -g @azure-tools/typespec-client-generator-cli
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      npm install -g @azure-tools/typespec-client-generator-cli
   displayName: 'Install tsp-client'
   condition: eq(variables.fromTypeSpec, true)
+
+#- bash: |
+#    npm install -g @azure-tools/typespec-client-generator-cli
+#  displayName: 'Install tsp-client'
+#  condition: eq(variables.fromTypeSpec, true)
 
 # - template: /eng/common/testproxy/test-proxy-tool.yml
 #   parameters:
@@ -58,10 +82,18 @@ steps:
 #  displayName: '[Experiment] Directly run tsp-client init command'
 #  condition: eq(variables.fromTypeSpec, true)
 
-- bash: |
-    tsp-client init --debug --tsp-config $(TSP_CONFIG)
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      tsp-client init --debug --tsp-config $(TSP_CONFIG)
   displayName: '[Experiment] Directly run tsp-client init command'
   condition: eq(variables.fromTypeSpec, true)
+
+#- bash: |
+#    tsp-client init --debug --tsp-config $(TSP_CONFIG)
+#  displayName: '[Experiment] Directly run tsp-client init command'
+#  condition: eq(variables.fromTypeSpec, true)
 
 - bash: |
     export PATH=$JAVA_HOME_11_X64/bin:$PATH
