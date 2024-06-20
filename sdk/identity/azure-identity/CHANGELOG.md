@@ -1,23 +1,5 @@
 # Release History
 
-## 1.13.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.13.0-beta.2 (2024-06-10)
-
-### Features Added
-- Added support for a client assertion in `OnBehalfOfCredential` [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files)
-
-### Bugs Fixed
-- Fixed an issue which may block `AzurePowershellCredential` from functioning correctly. [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files) 
-
 ## 1.12.2 (2024-06-10)
 
 ### Bugs Fixed
@@ -30,14 +12,6 @@
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
 - Upgraded `msal4j` from `1.15.0` to version `1.15.1`.
-
-## 1.13.0-beta.1 (2024-05-23)
-
-### Features Added
-- Added `AzurePipelinesCredential` to support [Microsoft Entra Workload ID](https://learn.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) in Azure Pipelines service connections.
-
-### Other Changes
-- Migrated Managed Identity authentication flow to utilize Msal4j MI implementation. 
 
 ## 1.12.1 (2024-05-02)
 
@@ -851,7 +825,7 @@ No feature was deprecated or removed.
 ## 1.0.0-preview.1 (2019-06-28)
 Version 1.0.0-preview.1 is a preview of our efforts in creating an authentication API for Azure SDK client libraries that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
-our efforts can be found in the [Azure SDK Design Guidelines for Java](https://aka.ms/azsdk/guide/java).
+our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
 
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 

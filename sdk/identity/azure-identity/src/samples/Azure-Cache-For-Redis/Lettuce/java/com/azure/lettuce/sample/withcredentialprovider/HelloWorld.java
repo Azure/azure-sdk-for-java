@@ -7,8 +7,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisCredentialsProvider;
 import io.lettuce.core.RedisURI;
@@ -20,8 +18,6 @@ import io.lettuce.core.ClientOptions;
 import io.lettuce.core.SocketOptions;
 import io.lettuce.core.RedisCredentials;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Objects;
 
 
@@ -36,7 +32,7 @@ public class HelloWorld {
         RedisURI redisURI = RedisURI.Builder.redis("<HOST_NAME>") // Host Name is Required
             .withPort(6380) // Port is Required
             .withSsl(true) // SSL Connections are required.
-            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials(defaultAzureCredential))) // Username and Token Credential are required.
+            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("<USERNAME>", defaultAzureCredential))) // Username and Token Credential are required.
             .withClientName("LettuceClient")
             .build();
 
@@ -82,16 +78,6 @@ public class HelloWorld {
             this.tokenCredential = tokenCredential;
         }
 
-        /**
-         * Create instance of Azure Redis Credentials
-         * @param tokenCredential the token credential to be used to fetch requests.
-         */
-        public AzureRedisCredentials(TokenCredential tokenCredential) {
-            Objects.requireNonNull(tokenCredential, "Token Credential is required");
-            this.tokenCredential = tokenCredential;
-            this.username = extractUsernameFromToken(tokenCredential.getToken(tokenRequestContext).block().getToken());
-        }
-
         @Override
         public String getUsername() {
             return username;
@@ -113,25 +99,5 @@ public class HelloWorld {
         public boolean hasPassword() {
             return tokenCredential != null;
         }
-    }
-
-    private static String extractUsernameFromToken(String token) {
-        String[] parts = token.split("\\.");
-        String base64 = parts[1];
-
-        switch (base64.length() % 4) {
-            case 2:
-                base64 += "==";
-                break;
-            case 3:
-                base64 += "=";
-                break;
-        }
-
-        byte[] jsonBytes = Base64.getDecoder().decode(base64);
-        String json = new String(jsonBytes, StandardCharsets.UTF_8);
-        JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
-
-        return jwt.get("oid").getAsString();
     }
 }

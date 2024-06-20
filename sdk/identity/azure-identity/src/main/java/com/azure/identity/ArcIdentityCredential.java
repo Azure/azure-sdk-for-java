@@ -49,6 +49,6 @@ class ArcIdentityCredential extends ManagedIdentityServiceCredential {
                     + "with the system assigned identity omit the client id when constructing the"
                     + " ManagedIdentityCredential.", null)));
         }
-        return identityClient.authenticateWithManagedIdentityMsalClient(request);
+        return identityClient.authenticateWithManagedIdentityConfidentialClient(request);
     }
 }

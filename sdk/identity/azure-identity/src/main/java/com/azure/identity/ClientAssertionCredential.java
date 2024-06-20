@@ -123,7 +123,7 @@ public class ClientAssertionCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception ignored) { }
+        } catch (Exception e) { }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);
@@ -131,8 +131,7 @@ public class ClientAssertionCredential implements TokenCredential {
             return token;
         } catch (Exception e) {
             LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
-            // wrap the exception in a RuntimeException to avoid checked exception problems.
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw e;
         }
     }
 }

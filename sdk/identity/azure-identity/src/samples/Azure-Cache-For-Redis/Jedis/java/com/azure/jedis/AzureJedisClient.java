@@ -28,10 +28,16 @@ public class AzureJedisClient extends Jedis {
     private HostAndPort hostAndPort;
     private ClientLogger clientLogger = new ClientLogger(AzureJedisClient.class);
 
-    AzureJedisClient(final String host, final int port, TokenCredential tokenCredential, boolean useSSL, RetryOptions retryOptions) {
+    AzureJedisClient(final String host, final int port, String username, TokenCredential tokenCredential, boolean useSSL, RetryOptions retryOptions) {
         jedis = new Jedis(host, port, useSSL);
         hostAndPort = new HostAndPort(host, port);
-        this.apiManager = new ApiManager(new Authenticator(new AccessTokenCache(tokenCredential)), retryOptions);
+        this.apiManager = new ApiManager(new Authenticator(username, new AccessTokenCache(tokenCredential)), retryOptions);
+    }
+
+    AzureJedisClient(final String host, final int port, String username, String password, boolean useSSL, RetryOptions retryOptions) {
+        jedis = new Jedis(host, port, useSSL);
+        hostAndPort = new HostAndPort(host, port);
+        this.apiManager = new ApiManager(new Authenticator(username, password), retryOptions);
     }
 
     void resetClientIfBroken() {

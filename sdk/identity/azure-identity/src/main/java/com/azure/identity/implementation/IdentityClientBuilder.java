@@ -3,11 +3,9 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.http.HttpPipeline;
 import com.azure.identity.SharedTokenCacheCredential;
 
 import java.time.Duration;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -28,7 +26,6 @@ public final class IdentityClientBuilder {
     private boolean sharedTokenCacheCred;
     private Duration clientAssertionTimeout;
     private Supplier<String> clientAssertionSupplier;
-    private Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline;
 
     /**
      * Sets the tenant ID for the client.
@@ -84,11 +81,6 @@ public final class IdentityClientBuilder {
      */
     public IdentityClientBuilder clientAssertionSupplier(Supplier<String> clientAssertionSupplier) {
         this.clientAssertionSupplier = clientAssertionSupplier;
-        return this;
-    }
-
-    public IdentityClientBuilder clientAssertionSupplierWithHttpPipeline(Function<HttpPipeline, String> clientAssertionSupplier) {
-        this.clientAssertionSupplierWithHttpPipeline = clientAssertionSupplier;
         return this;
     }
 
@@ -163,13 +155,13 @@ public final class IdentityClientBuilder {
      */
     public IdentityClient build() {
         return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
-            clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
+            clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
             identityClientOptions);
     }
 
     public IdentitySyncClient buildSyncClient() {
         return new IdentitySyncClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
-            clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
+            clientAssertionSupplier, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
             identityClientOptions);
     }
 }
