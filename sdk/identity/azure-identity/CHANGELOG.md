@@ -1,14 +1,9 @@
 # Release History
 
-## 1.13.0-beta.3 (Unreleased)
+## 1.13.0 (2024-06-20)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- GA for `AzurePipelinesCredential`
 
 ## 1.13.0-beta.2 (2024-06-10)
 
