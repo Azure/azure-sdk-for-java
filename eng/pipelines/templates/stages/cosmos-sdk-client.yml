@@ -17,9 +17,6 @@ parameters:
 - name: EnableBatchRelease
   type: boolean
   default: true
-- name: UseEsrpRelease
-  type: boolean
-  default: true
 - name: MatrixFilters
   type: object
   default: []
@@ -151,5 +148,4 @@ extends:
             TestPipeline: false
             ArtifactName: packages
             TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
-            UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
 

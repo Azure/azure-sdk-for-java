@@ -20,9 +20,6 @@ parameters:
   - name: EnableIntegrationStage
     type: boolean
     default: true
-  - name: UseEsrpRelease
-    type: boolean
-    default: true
     # A different environment will be passed in for service directories that have
     # live tests enabled for release and ReleaseDependsOnLiveTests is false
   - name: Environment

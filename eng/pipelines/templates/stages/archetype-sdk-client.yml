@@ -46,9 +46,6 @@ parameters:
   - name: EnableBatchRelease
     type: boolean
     default: true
-  - name: UseEsrpRelease
-    type: boolean
-    default: true
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
@@ -162,7 +159,6 @@ extends:
               TestPipeline: ${{ parameters.TestPipeline }}
               ArtifactName: packages
               TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
-              UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
               # This where the MavenBreakGlassApprovers is set for the release tasks.
               ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
                 Environment: 'MavenBreakGlassApprovers'

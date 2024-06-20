@@ -15,8 +15,6 @@ parameters:
   - name: TargetDocRepoName
     type: string
     default: ''
-  - name: UseEsrpRelease
-    type: boolean
     # A different environment will be passed in for service directories that have
     # live tests enabled for release and ReleaseDependsOnLiveTests is false
   - name: Environment
