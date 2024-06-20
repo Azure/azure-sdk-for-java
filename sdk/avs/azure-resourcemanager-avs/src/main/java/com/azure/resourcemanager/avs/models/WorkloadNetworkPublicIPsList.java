@@ -4,33 +4,38 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of NSX Public IP Blocks. */
-@Immutable
+/**
+ * The response of a WorkloadNetworkPublicIP list operation.
+ */
+@Fluent
 public final class WorkloadNetworkPublicIPsList {
     /*
-     * The items on the page
+     * The WorkloadNetworkPublicIP items on this page
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", required = true)
     private List<WorkloadNetworkPublicIpInner> value;
 
     /*
-     * URL to get the next page if any
+     * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of WorkloadNetworkPublicIPsList class. */
+    /**
+     * Creates an instance of WorkloadNetworkPublicIPsList class.
+     */
     public WorkloadNetworkPublicIPsList() {
     }
 
     /**
-     * Get the value property: The items on the page.
-     *
+     * Get the value property: The WorkloadNetworkPublicIP items on this page.
+     * 
      * @return the value value.
      */
     public List<WorkloadNetworkPublicIpInner> value() {
@@ -38,8 +43,19 @@ public final class WorkloadNetworkPublicIPsList {
     }
 
     /**
-     * Get the nextLink property: URL to get the next page if any.
-     *
+     * Set the value property: The WorkloadNetworkPublicIP items on this page.
+     * 
+     * @param value the value value to set.
+     * @return the WorkloadNetworkPublicIPsList object itself.
+     */
+    public WorkloadNetworkPublicIPsList withValue(List<WorkloadNetworkPublicIpInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The link to the next page of items.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,13 +63,30 @@ public final class WorkloadNetworkPublicIPsList {
     }
 
     /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the WorkloadNetworkPublicIPsList object itself.
+     */
+    public WorkloadNetworkPublicIPsList withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model WorkloadNetworkPublicIPsList"));
+        } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkloadNetworkPublicIPsList.class);
 }

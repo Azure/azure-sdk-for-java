@@ -6,27 +6,49 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The properties of a vSphere Replication (VR) addon. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "addonType")
+/**
+ * The properties of a vSphere Replication (VR) addon.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "addonType", defaultImpl = AddonVrProperties.class, visible = true)
 @JsonTypeName("VR")
 @Fluent
 public final class AddonVrProperties extends AddonProperties {
+    /*
+     * Addon type
+     */
+    @JsonTypeId
+    @JsonProperty(value = "addonType", required = true)
+    private AddonType addonType = AddonType.VR;
+
     /*
      * The vSphere Replication Server (VRS) count
      */
     @JsonProperty(value = "vrsCount", required = true)
     private int vrsCount;
 
-    /** Creates an instance of AddonVrProperties class. */
+    /**
+     * Creates an instance of AddonVrProperties class.
+     */
     public AddonVrProperties() {
     }
 
     /**
+     * Get the addonType property: Addon type.
+     * 
+     * @return the addonType value.
+     */
+    @Override
+    public AddonType addonType() {
+        return this.addonType;
+    }
+
+    /**
      * Get the vrsCount property: The vSphere Replication Server (VRS) count.
-     *
+     * 
      * @return the vrsCount value.
      */
     public int vrsCount() {
@@ -35,7 +57,7 @@ public final class AddonVrProperties extends AddonProperties {
 
     /**
      * Set the vrsCount property: The vSphere Replication Server (VRS) count.
-     *
+     * 
      * @param vrsCount the vrsCount value to set.
      * @return the AddonVrProperties object itself.
      */
@@ -46,7 +68,7 @@ public final class AddonVrProperties extends AddonProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

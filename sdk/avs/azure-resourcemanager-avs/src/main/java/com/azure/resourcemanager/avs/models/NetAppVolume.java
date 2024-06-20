@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure NetApp Files volume from Microsoft.NetApp provider. */
+/**
+ * An Azure NetApp Files volume from Microsoft.NetApp provider.
+ */
 @Fluent
 public final class NetAppVolume {
     /*
@@ -17,13 +19,15 @@ public final class NetAppVolume {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of NetAppVolume class. */
+    /**
+     * Creates an instance of NetAppVolume class.
+     */
     public NetAppVolume() {
     }
 
     /**
      * Get the id property: Azure resource ID of the NetApp volume.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +36,7 @@ public final class NetAppVolume {
 
     /**
      * Set the id property: Azure resource ID of the NetApp volume.
-     *
+     * 
      * @param id the id value to set.
      * @return the NetAppVolume object itself.
      */
@@ -43,14 +47,13 @@ public final class NetAppVolume {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model NetAppVolume"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model NetAppVolume"));
         }
     }
 

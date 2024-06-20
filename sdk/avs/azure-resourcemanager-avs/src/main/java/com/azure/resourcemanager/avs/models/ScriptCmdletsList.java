@@ -4,33 +4,38 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.ScriptCmdletInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Pageable list of scripts/cmdlets. */
-@Immutable
+/**
+ * The response of a ScriptCmdlet list operation.
+ */
+@Fluent
 public final class ScriptCmdletsList {
     /*
-     * List of scripts
+     * The ScriptCmdlet items on this page
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", required = true)
     private List<ScriptCmdletInner> value;
 
     /*
-     * URL to get the next page if any
+     * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ScriptCmdletsList class. */
+    /**
+     * Creates an instance of ScriptCmdletsList class.
+     */
     public ScriptCmdletsList() {
     }
 
     /**
-     * Get the value property: List of scripts.
-     *
+     * Get the value property: The ScriptCmdlet items on this page.
+     * 
      * @return the value value.
      */
     public List<ScriptCmdletInner> value() {
@@ -38,8 +43,19 @@ public final class ScriptCmdletsList {
     }
 
     /**
-     * Get the nextLink property: URL to get the next page if any.
-     *
+     * Set the value property: The ScriptCmdlet items on this page.
+     * 
+     * @param value the value value to set.
+     * @return the ScriptCmdletsList object itself.
+     */
+    public ScriptCmdletsList withValue(List<ScriptCmdletInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The link to the next page of items.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,13 +63,29 @@ public final class ScriptCmdletsList {
     }
 
     /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the ScriptCmdletsList object itself.
+     */
+    public ScriptCmdletsList withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ScriptCmdletsList"));
+        } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScriptCmdletsList.class);
 }

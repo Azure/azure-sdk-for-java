@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.avs.models.TrialStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Subscription trial availability. */
+/**
+ * Subscription trial availability.
+ */
 @Immutable
 public final class TrialInner {
     /*
@@ -23,13 +25,15 @@ public final class TrialInner {
     @JsonProperty(value = "availableHosts", access = JsonProperty.Access.WRITE_ONLY)
     private Integer availableHosts;
 
-    /** Creates an instance of TrialInner class. */
+    /**
+     * Creates an instance of TrialInner class.
+     */
     public TrialInner() {
     }
 
     /**
      * Get the status property: Trial status.
-     *
+     * 
      * @return the status value.
      */
     public TrialStatus status() {
@@ -38,7 +42,7 @@ public final class TrialInner {
 
     /**
      * Get the availableHosts property: Number of trial hosts available.
-     *
+     * 
      * @return the availableHosts value.
      */
     public Integer availableHosts() {
@@ -47,7 +51,7 @@ public final class TrialInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

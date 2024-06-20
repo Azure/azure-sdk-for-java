@@ -28,35 +28,10 @@ public final class LocationsImpl implements Locations {
         this.serviceManager = serviceManager;
     }
 
-    public Response<Trial> checkTrialAvailabilityWithResponse(String location, Sku sku, Context context) {
-        Response<TrialInner> inner = this.serviceClient().checkTrialAvailabilityWithResponse(location, sku, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new TrialImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Trial checkTrialAvailability(String location) {
-        TrialInner inner = this.serviceClient().checkTrialAvailability(location);
-        if (inner != null) {
-            return new TrialImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Quota> checkQuotaAvailabilityWithResponse(String location, Context context) {
         Response<QuotaInner> inner = this.serviceClient().checkQuotaAvailabilityWithResponse(location, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QuotaImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -67,6 +42,25 @@ public final class LocationsImpl implements Locations {
         QuotaInner inner = this.serviceClient().checkQuotaAvailability(location);
         if (inner != null) {
             return new QuotaImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Trial> checkTrialAvailabilityWithResponse(String location, Sku sku, Context context) {
+        Response<TrialInner> inner = this.serviceClient().checkTrialAvailabilityWithResponse(location, sku, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new TrialImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Trial checkTrialAvailability(String location) {
+        TrialInner inner = this.serviceClient().checkTrialAvailability(location);
+        if (inner != null) {
+            return new TrialImpl(inner, this.manager());
         } else {
             return null;
         }

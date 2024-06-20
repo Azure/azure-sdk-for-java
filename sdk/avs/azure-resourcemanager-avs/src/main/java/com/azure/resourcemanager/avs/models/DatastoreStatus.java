@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The operational status of the datastore. */
+/**
+ * datastore status.
+ */
 public final class DatastoreStatus extends ExpandableStringEnum<DatastoreStatus> {
-    /** Static value Unknown for DatastoreStatus. */
+    /**
+     * Static value Unknown for DatastoreStatus.
+     */
     public static final DatastoreStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value Accessible for DatastoreStatus. */
+    /**
+     * Static value Accessible for DatastoreStatus.
+     */
     public static final DatastoreStatus ACCESSIBLE = fromString("Accessible");
 
-    /** Static value Inaccessible for DatastoreStatus. */
+    /**
+     * Static value Inaccessible for DatastoreStatus.
+     */
     public static final DatastoreStatus INACCESSIBLE = fromString("Inaccessible");
 
-    /** Static value Attached for DatastoreStatus. */
+    /**
+     * Static value Attached for DatastoreStatus.
+     */
     public static final DatastoreStatus ATTACHED = fromString("Attached");
 
-    /** Static value Detached for DatastoreStatus. */
+    /**
+     * Static value Detached for DatastoreStatus.
+     */
     public static final DatastoreStatus DETACHED = fromString("Detached");
 
-    /** Static value LostCommunication for DatastoreStatus. */
+    /**
+     * Static value LostCommunication for DatastoreStatus.
+     */
     public static final DatastoreStatus LOST_COMMUNICATION = fromString("LostCommunication");
 
-    /** Static value DeadOrError for DatastoreStatus. */
+    /**
+     * Static value DeadOrError for DatastoreStatus.
+     */
     public static final DatastoreStatus DEAD_OR_ERROR = fromString("DeadOrError");
 
     /**
      * Creates a new instance of DatastoreStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class DatastoreStatus extends ExpandableStringEnum<DatastoreStatus>
 
     /**
      * Creates or finds a DatastoreStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatastoreStatus.
      */
@@ -53,7 +69,7 @@ public final class DatastoreStatus extends ExpandableStringEnum<DatastoreStatus>
 
     /**
      * Gets known DatastoreStatus values.
-     *
+     * 
      * @return known DatastoreStatus values.
      */
     public static Collection<DatastoreStatus> values() {

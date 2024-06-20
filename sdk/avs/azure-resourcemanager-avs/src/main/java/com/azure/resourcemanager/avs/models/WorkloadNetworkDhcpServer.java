@@ -6,14 +6,28 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** NSX DHCP Server. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dhcpType")
+/**
+ * NSX DHCP Server.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "dhcpType",
+    defaultImpl = WorkloadNetworkDhcpServer.class,
+    visible = true)
 @JsonTypeName("SERVER")
 @Fluent
 public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
+    /*
+     * Type of DHCP: SERVER or RELAY.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "dhcpType", required = true)
+    private DhcpTypeEnum dhcpType = DhcpTypeEnum.SERVER;
+
     /*
      * DHCP Server Address.
      */
@@ -26,13 +40,25 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
     @JsonProperty(value = "leaseTime")
     private Long leaseTime;
 
-    /** Creates an instance of WorkloadNetworkDhcpServer class. */
+    /**
+     * Creates an instance of WorkloadNetworkDhcpServer class.
+     */
     public WorkloadNetworkDhcpServer() {
     }
 
     /**
+     * Get the dhcpType property: Type of DHCP: SERVER or RELAY.
+     * 
+     * @return the dhcpType value.
+     */
+    @Override
+    public DhcpTypeEnum dhcpType() {
+        return this.dhcpType;
+    }
+
+    /**
      * Get the serverAddress property: DHCP Server Address.
-     *
+     * 
      * @return the serverAddress value.
      */
     public String serverAddress() {
@@ -41,7 +67,7 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
 
     /**
      * Set the serverAddress property: DHCP Server Address.
-     *
+     * 
      * @param serverAddress the serverAddress value to set.
      * @return the WorkloadNetworkDhcpServer object itself.
      */
@@ -52,7 +78,7 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
 
     /**
      * Get the leaseTime property: DHCP Server Lease Time.
-     *
+     * 
      * @return the leaseTime value.
      */
     public Long leaseTime() {
@@ -61,7 +87,7 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
 
     /**
      * Set the leaseTime property: DHCP Server Lease Time.
-     *
+     * 
      * @param leaseTime the leaseTime value to set.
      * @return the WorkloadNetworkDhcpServer object itself.
      */
@@ -70,14 +96,18 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkloadNetworkDhcpServer withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkloadNetworkDhcpServer withRevision(Long revision) {
         super.withRevision(revision);
@@ -86,7 +116,7 @@ public final class WorkloadNetworkDhcpServer extends WorkloadNetworkDhcpEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

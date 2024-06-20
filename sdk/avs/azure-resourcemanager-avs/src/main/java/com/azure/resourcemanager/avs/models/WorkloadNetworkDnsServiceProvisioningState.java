@@ -8,30 +8,44 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state. */
+/**
+ * Workload Network DNS Service provisioning state.
+ */
 public final class WorkloadNetworkDnsServiceProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkDnsServiceProvisioningState> {
-    /** Static value Succeeded for WorkloadNetworkDnsServiceProvisioningState. */
+    /**
+     * Static value Succeeded for WorkloadNetworkDnsServiceProvisioningState.
+     */
     public static final WorkloadNetworkDnsServiceProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for WorkloadNetworkDnsServiceProvisioningState. */
+    /**
+     * Static value Failed for WorkloadNetworkDnsServiceProvisioningState.
+     */
     public static final WorkloadNetworkDnsServiceProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Building for WorkloadNetworkDnsServiceProvisioningState. */
-    public static final WorkloadNetworkDnsServiceProvisioningState BUILDING = fromString("Building");
-
-    /** Static value Deleting for WorkloadNetworkDnsServiceProvisioningState. */
-    public static final WorkloadNetworkDnsServiceProvisioningState DELETING = fromString("Deleting");
-
-    /** Static value Updating for WorkloadNetworkDnsServiceProvisioningState. */
-    public static final WorkloadNetworkDnsServiceProvisioningState UPDATING = fromString("Updating");
-
-    /** Static value Canceled for WorkloadNetworkDnsServiceProvisioningState. */
+    /**
+     * Static value Canceled for WorkloadNetworkDnsServiceProvisioningState.
+     */
     public static final WorkloadNetworkDnsServiceProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Static value Building for WorkloadNetworkDnsServiceProvisioningState.
+     */
+    public static final WorkloadNetworkDnsServiceProvisioningState BUILDING = fromString("Building");
+
+    /**
+     * Static value Deleting for WorkloadNetworkDnsServiceProvisioningState.
+     */
+    public static final WorkloadNetworkDnsServiceProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Static value Updating for WorkloadNetworkDnsServiceProvisioningState.
+     */
+    public static final WorkloadNetworkDnsServiceProvisioningState UPDATING = fromString("Updating");
+
+    /**
      * Creates a new instance of WorkloadNetworkDnsServiceProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,7 +54,7 @@ public final class WorkloadNetworkDnsServiceProvisioningState
 
     /**
      * Creates or finds a WorkloadNetworkDnsServiceProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkloadNetworkDnsServiceProvisioningState.
      */
@@ -51,7 +65,7 @@ public final class WorkloadNetworkDnsServiceProvisioningState
 
     /**
      * Gets known WorkloadNetworkDnsServiceProvisioningState values.
-     *
+     * 
      * @return known WorkloadNetworkDnsServiceProvisioningState values.
      */
     public static Collection<WorkloadNetworkDnsServiceProvisioningState> values() {

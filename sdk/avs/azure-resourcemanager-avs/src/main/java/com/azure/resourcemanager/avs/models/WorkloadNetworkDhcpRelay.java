@@ -6,28 +6,54 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** NSX DHCP Relay. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dhcpType")
+/**
+ * NSX DHCP Relay.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "dhcpType",
+    defaultImpl = WorkloadNetworkDhcpRelay.class,
+    visible = true)
 @JsonTypeName("RELAY")
 @Fluent
 public final class WorkloadNetworkDhcpRelay extends WorkloadNetworkDhcpEntity {
+    /*
+     * Type of DHCP: SERVER or RELAY.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "dhcpType", required = true)
+    private DhcpTypeEnum dhcpType = DhcpTypeEnum.RELAY;
+
     /*
      * DHCP Relay Addresses. Max 3.
      */
     @JsonProperty(value = "serverAddresses")
     private List<String> serverAddresses;
 
-    /** Creates an instance of WorkloadNetworkDhcpRelay class. */
+    /**
+     * Creates an instance of WorkloadNetworkDhcpRelay class.
+     */
     public WorkloadNetworkDhcpRelay() {
     }
 
     /**
+     * Get the dhcpType property: Type of DHCP: SERVER or RELAY.
+     * 
+     * @return the dhcpType value.
+     */
+    @Override
+    public DhcpTypeEnum dhcpType() {
+        return this.dhcpType;
+    }
+
+    /**
      * Get the serverAddresses property: DHCP Relay Addresses. Max 3.
-     *
+     * 
      * @return the serverAddresses value.
      */
     public List<String> serverAddresses() {
@@ -36,7 +62,7 @@ public final class WorkloadNetworkDhcpRelay extends WorkloadNetworkDhcpEntity {
 
     /**
      * Set the serverAddresses property: DHCP Relay Addresses. Max 3.
-     *
+     * 
      * @param serverAddresses the serverAddresses value to set.
      * @return the WorkloadNetworkDhcpRelay object itself.
      */
@@ -45,14 +71,18 @@ public final class WorkloadNetworkDhcpRelay extends WorkloadNetworkDhcpEntity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkloadNetworkDhcpRelay withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkloadNetworkDhcpRelay withRevision(Long revision) {
         super.withRevision(revision);
@@ -61,7 +91,7 @@ public final class WorkloadNetworkDhcpRelay extends WorkloadNetworkDhcpEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

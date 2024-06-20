@@ -7,7 +7,9 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of customer managed encryption key. */
+/**
+ * The properties of customer managed encryption key.
+ */
 @Fluent
 public final class Encryption {
     /*
@@ -22,13 +24,15 @@ public final class Encryption {
     @JsonProperty(value = "keyVaultProperties")
     private EncryptionKeyVaultProperties keyVaultProperties;
 
-    /** Creates an instance of Encryption class. */
+    /**
+     * Creates an instance of Encryption class.
+     */
     public Encryption() {
     }
 
     /**
      * Get the status property: Status of customer managed encryption key.
-     *
+     * 
      * @return the status value.
      */
     public EncryptionState status() {
@@ -37,7 +41,7 @@ public final class Encryption {
 
     /**
      * Set the status property: Status of customer managed encryption key.
-     *
+     * 
      * @param status the status value to set.
      * @return the Encryption object itself.
      */
@@ -48,7 +52,7 @@ public final class Encryption {
 
     /**
      * Get the keyVaultProperties property: The key vault where the encryption key is stored.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public EncryptionKeyVaultProperties keyVaultProperties() {
@@ -57,7 +61,7 @@ public final class Encryption {
 
     /**
      * Set the keyVaultProperties property: The key vault where the encryption key is stored.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the Encryption object itself.
      */
@@ -68,7 +72,7 @@ public final class Encryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

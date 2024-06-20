@@ -6,6 +6,7 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.avs.models.AvailabilityProperties;
+import com.azure.resourcemanager.avs.models.DnsZoneType;
 import com.azure.resourcemanager.avs.models.Encryption;
 import com.azure.resourcemanager.avs.models.IdentitySource;
 import com.azure.resourcemanager.avs.models.InternetEnum;
@@ -13,9 +14,11 @@ import com.azure.resourcemanager.avs.models.ManagementCluster;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of a private cloud resource that may be updated. */
+/**
+ * The properties of a private cloud resource that may be updated.
+ */
 @Fluent
-public class PrivateCloudUpdateProperties {
+public final class PrivateCloudUpdateProperties {
     /*
      * The default cluster used for management
      */
@@ -47,20 +50,29 @@ public class PrivateCloudUpdateProperties {
     private Encryption encryption;
 
     /*
-     * Array of additional networks noncontiguous with networkBlock. Networks must be unique and non-overlapping across
-     * VNet in your subscription, on-premise, and this privateCloud networkBlock attribute. Make sure the CIDR format
-     * conforms to (A.B.C.D/X).
+     * Array of additional networks noncontiguous with networkBlock. Networks must be
+     * unique and non-overlapping across VNet in your subscription, on-premise, and
+     * this privateCloud networkBlock attribute. Make sure the CIDR format conforms to
+     * (A.B.C.D/X).
      */
     @JsonProperty(value = "extendedNetworkBlocks")
     private List<String> extendedNetworkBlocks;
 
-    /** Creates an instance of PrivateCloudUpdateProperties class. */
+    /*
+     * The type of DNS zone to use.
+     */
+    @JsonProperty(value = "dnsZoneType")
+    private DnsZoneType dnsZoneType;
+
+    /**
+     * Creates an instance of PrivateCloudUpdateProperties class.
+     */
     public PrivateCloudUpdateProperties() {
     }
 
     /**
      * Get the managementCluster property: The default cluster used for management.
-     *
+     * 
      * @return the managementCluster value.
      */
     public ManagementCluster managementCluster() {
@@ -69,7 +81,7 @@ public class PrivateCloudUpdateProperties {
 
     /**
      * Set the managementCluster property: The default cluster used for management.
-     *
+     * 
      * @param managementCluster the managementCluster value to set.
      * @return the PrivateCloudUpdateProperties object itself.
      */
@@ -80,7 +92,7 @@ public class PrivateCloudUpdateProperties {
 
     /**
      * Get the internet property: Connectivity to internet is enabled or disabled.
-     *
+     * 
      * @return the internet value.
      */
     public InternetEnum internet() {
@@ -89,7 +101,7 @@ public class PrivateCloudUpdateProperties {
 
     /**
      * Set the internet property: Connectivity to internet is enabled or disabled.
-     *
+     * 
      * @param internet the internet value to set.
      * @return the PrivateCloudUpdateProperties object itself.
      */
@@ -100,7 +112,7 @@ public class PrivateCloudUpdateProperties {
 
     /**
      * Get the identitySources property: vCenter Single Sign On Identity Sources.
-     *
+     * 
      * @return the identitySources value.
      */
     public List<IdentitySource> identitySources() {
@@ -109,7 +121,7 @@ public class PrivateCloudUpdateProperties {
 
     /**
      * Set the identitySources property: vCenter Single Sign On Identity Sources.
-     *
+     * 
      * @param identitySources the identitySources value to set.
      * @return the PrivateCloudUpdateProperties object itself.
      */
@@ -120,7 +132,7 @@ public class PrivateCloudUpdateProperties {
 
     /**
      * Get the availability property: Properties describing how the cloud is distributed across availability zones.
-     *
+     * 
      * @return the availability value.
      */
     public AvailabilityProperties availability() {
@@ -129,7 +141,7 @@ public class PrivateCloudUpdateProperties {
 
     /**
      * Set the availability property: Properties describing how the cloud is distributed across availability zones.
-     *
+     * 
      * @param availability the availability value to set.
      * @return the PrivateCloudUpdateProperties object itself.
      */
@@ -140,7 +152,7 @@ public class PrivateCloudUpdateProperties {
 
     /**
      * Get the encryption property: Customer managed key encryption, can be enabled or disabled.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -149,7 +161,7 @@ public class PrivateCloudUpdateProperties {
 
     /**
      * Set the encryption property: Customer managed key encryption, can be enabled or disabled.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the PrivateCloudUpdateProperties object itself.
      */
@@ -160,9 +172,11 @@ public class PrivateCloudUpdateProperties {
 
     /**
      * Get the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
-     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
-     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
-     *
+     * must be
+     * unique and non-overlapping across VNet in your subscription, on-premise, and
+     * this privateCloud networkBlock attribute. Make sure the CIDR format conforms to
+     * (A.B.C.D/X).
+     * 
      * @return the extendedNetworkBlocks value.
      */
     public List<String> extendedNetworkBlocks() {
@@ -171,9 +185,11 @@ public class PrivateCloudUpdateProperties {
 
     /**
      * Set the extendedNetworkBlocks property: Array of additional networks noncontiguous with networkBlock. Networks
-     * must be unique and non-overlapping across VNet in your subscription, on-premise, and this privateCloud
-     * networkBlock attribute. Make sure the CIDR format conforms to (A.B.C.D/X).
-     *
+     * must be
+     * unique and non-overlapping across VNet in your subscription, on-premise, and
+     * this privateCloud networkBlock attribute. Make sure the CIDR format conforms to
+     * (A.B.C.D/X).
+     * 
      * @param extendedNetworkBlocks the extendedNetworkBlocks value to set.
      * @return the PrivateCloudUpdateProperties object itself.
      */
@@ -183,8 +199,28 @@ public class PrivateCloudUpdateProperties {
     }
 
     /**
+     * Get the dnsZoneType property: The type of DNS zone to use.
+     * 
+     * @return the dnsZoneType value.
+     */
+    public DnsZoneType dnsZoneType() {
+        return this.dnsZoneType;
+    }
+
+    /**
+     * Set the dnsZoneType property: The type of DNS zone to use.
+     * 
+     * @param dnsZoneType the dnsZoneType value to set.
+     * @return the PrivateCloudUpdateProperties object itself.
+     */
+    public PrivateCloudUpdateProperties withDnsZoneType(DnsZoneType dnsZoneType) {
+        this.dnsZoneType = dnsZoneType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,33 +4,38 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.HcxEnterpriseSiteInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A paged list of HCX Enterprise Sites. */
-@Immutable
+/**
+ * The response of a HcxEnterpriseSite list operation.
+ */
+@Fluent
 public final class HcxEnterpriseSiteList {
     /*
-     * The items on a page
+     * The HcxEnterpriseSite items on this page
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", required = true)
     private List<HcxEnterpriseSiteInner> value;
 
     /*
-     * URL to get the next page if any
+     * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of HcxEnterpriseSiteList class. */
+    /**
+     * Creates an instance of HcxEnterpriseSiteList class.
+     */
     public HcxEnterpriseSiteList() {
     }
 
     /**
-     * Get the value property: The items on a page.
-     *
+     * Get the value property: The HcxEnterpriseSite items on this page.
+     * 
      * @return the value value.
      */
     public List<HcxEnterpriseSiteInner> value() {
@@ -38,8 +43,19 @@ public final class HcxEnterpriseSiteList {
     }
 
     /**
-     * Get the nextLink property: URL to get the next page if any.
-     *
+     * Set the value property: The HcxEnterpriseSite items on this page.
+     * 
+     * @param value the value value to set.
+     * @return the HcxEnterpriseSiteList object itself.
+     */
+    public HcxEnterpriseSiteList withValue(List<HcxEnterpriseSiteInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The link to the next page of items.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -47,13 +63,29 @@ public final class HcxEnterpriseSiteList {
     }
 
     /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the HcxEnterpriseSiteList object itself.
+     */
+    public HcxEnterpriseSiteList withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() != null) {
+        if (value() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model HcxEnterpriseSiteList"));
+        } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HcxEnterpriseSiteList.class);
 }

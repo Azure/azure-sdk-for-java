@@ -6,26 +6,39 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.avs.models.ScriptCmdletAudience;
+import com.azure.resourcemanager.avs.models.ScriptCmdletProvisioningState;
 import com.azure.resourcemanager.avs.models.ScriptParameter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A cmdlet available for script execution. */
+/**
+ * A cmdlet available for script execution.
+ */
 @Immutable
 public final class ScriptCmdletInner extends ProxyResource {
     /*
-     * The properties of a script cmdlet resource
+     * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
     private ScriptCmdletProperties innerProperties;
 
-    /** Creates an instance of ScriptCmdletInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of ScriptCmdletInner class.
+     */
     public ScriptCmdletInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of a script cmdlet resource.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private ScriptCmdletProperties innerProperties() {
@@ -33,8 +46,26 @@ public final class ScriptCmdletInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ScriptCmdletProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the description property: Description of the scripts functionality.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -43,7 +74,7 @@ public final class ScriptCmdletInner extends ProxyResource {
 
     /**
      * Get the timeout property: Recommended time limit for execution.
-     *
+     * 
      * @return the timeout value.
      */
     public String timeout() {
@@ -51,8 +82,18 @@ public final class ScriptCmdletInner extends ProxyResource {
     }
 
     /**
+     * Get the audience property: Specifies whether a script cmdlet is intended to be invoked only through automation or
+     * visible to customers.
+     * 
+     * @return the audience value.
+     */
+    public ScriptCmdletAudience audience() {
+        return this.innerProperties() == null ? null : this.innerProperties().audience();
+    }
+
+    /**
      * Get the parameters property: Parameters the script will accept.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ScriptParameter> parameters() {
@@ -61,7 +102,7 @@ public final class ScriptCmdletInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIpProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** NSX Public IP Block Properties. */
+/**
+ * NSX Public IP Block Properties.
+ */
 @Fluent
 public final class WorkloadNetworkPublicIpProperties {
     /*
@@ -35,13 +37,15 @@ public final class WorkloadNetworkPublicIpProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkloadNetworkPublicIpProvisioningState provisioningState;
 
-    /** Creates an instance of WorkloadNetworkPublicIpProperties class. */
+    /**
+     * Creates an instance of WorkloadNetworkPublicIpProperties class.
+     */
     public WorkloadNetworkPublicIpProperties() {
     }
 
     /**
      * Get the displayName property: Display name of the Public IP Block.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -50,7 +54,7 @@ public final class WorkloadNetworkPublicIpProperties {
 
     /**
      * Set the displayName property: Display name of the Public IP Block.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkPublicIpProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class WorkloadNetworkPublicIpProperties {
 
     /**
      * Get the numberOfPublicIPs property: Number of Public IPs requested.
-     *
+     * 
      * @return the numberOfPublicIPs value.
      */
     public Long numberOfPublicIPs() {
@@ -70,7 +74,7 @@ public final class WorkloadNetworkPublicIpProperties {
 
     /**
      * Set the numberOfPublicIPs property: Number of Public IPs requested.
-     *
+     * 
      * @param numberOfPublicIPs the numberOfPublicIPs value to set.
      * @return the WorkloadNetworkPublicIpProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class WorkloadNetworkPublicIpProperties {
 
     /**
      * Get the publicIpBlock property: CIDR Block of the Public IP Block.
-     *
+     * 
      * @return the publicIpBlock value.
      */
     public String publicIpBlock() {
@@ -90,7 +94,7 @@ public final class WorkloadNetworkPublicIpProperties {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadNetworkPublicIpProvisioningState provisioningState() {
@@ -99,7 +103,7 @@ public final class WorkloadNetworkPublicIpProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

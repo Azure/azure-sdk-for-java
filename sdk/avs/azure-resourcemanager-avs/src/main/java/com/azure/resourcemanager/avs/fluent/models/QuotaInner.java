@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Subscription quotas. */
+/**
+ * Subscription quotas.
+ */
 @Immutable
 public final class QuotaInner {
     /*
@@ -26,13 +28,15 @@ public final class QuotaInner {
     @JsonProperty(value = "quotaEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaEnabled quotaEnabled;
 
-    /** Creates an instance of QuotaInner class. */
+    /**
+     * Creates an instance of QuotaInner class.
+     */
     public QuotaInner() {
     }
 
     /**
      * Get the hostsRemaining property: Remaining hosts quota by sku type.
-     *
+     * 
      * @return the hostsRemaining value.
      */
     public Map<String, Integer> hostsRemaining() {
@@ -41,7 +45,7 @@ public final class QuotaInner {
 
     /**
      * Get the quotaEnabled property: Host quota is active for current subscription.
-     *
+     * 
      * @return the quotaEnabled value.
      */
     public QuotaEnabled quotaEnabled() {
@@ -50,7 +54,7 @@ public final class QuotaInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

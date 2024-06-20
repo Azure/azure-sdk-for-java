@@ -10,10 +10,8 @@ import com.azure.resourcemanager.avs.fluent.models.TrialInner;
 public final class TrialInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrialInner model =
-            BinaryData
-                .fromString("{\"status\":\"TrialAvailable\",\"availableHosts\":1342514759}")
-                .toObject(TrialInner.class);
+        TrialInner model = BinaryData.fromString("{\"status\":\"TrialAvailable\",\"availableHosts\":920256064}")
+            .toObject(TrialInner.class);
     }
 
     @org.junit.jupiter.api.Test

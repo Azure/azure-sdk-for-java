@@ -7,7 +7,9 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Encryption Key. */
+/**
+ * An Encryption Key.
+ */
 @Fluent
 public final class EncryptionKeyVaultProperties {
     /*
@@ -46,13 +48,15 @@ public final class EncryptionKeyVaultProperties {
     @JsonProperty(value = "versionType", access = JsonProperty.Access.WRITE_ONLY)
     private EncryptionVersionType versionType;
 
-    /** Creates an instance of EncryptionKeyVaultProperties class. */
+    /**
+     * Creates an instance of EncryptionKeyVaultProperties class.
+     */
     public EncryptionKeyVaultProperties() {
     }
 
     /**
      * Get the keyName property: The name of the key.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -61,7 +65,7 @@ public final class EncryptionKeyVaultProperties {
 
     /**
      * Set the keyName property: The name of the key.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the EncryptionKeyVaultProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class EncryptionKeyVaultProperties {
 
     /**
      * Get the keyVersion property: The version of the key.
-     *
+     * 
      * @return the keyVersion value.
      */
     public String keyVersion() {
@@ -81,7 +85,7 @@ public final class EncryptionKeyVaultProperties {
 
     /**
      * Set the keyVersion property: The version of the key.
-     *
+     * 
      * @param keyVersion the keyVersion value to set.
      * @return the EncryptionKeyVaultProperties object itself.
      */
@@ -92,7 +96,7 @@ public final class EncryptionKeyVaultProperties {
 
     /**
      * Get the autoDetectedKeyVersion property: The auto-detected version of the key if versionType is auto-detected.
-     *
+     * 
      * @return the autoDetectedKeyVersion value.
      */
     public String autoDetectedKeyVersion() {
@@ -101,7 +105,7 @@ public final class EncryptionKeyVaultProperties {
 
     /**
      * Get the keyVaultUrl property: The URL of the vault.
-     *
+     * 
      * @return the keyVaultUrl value.
      */
     public String keyVaultUrl() {
@@ -110,7 +114,7 @@ public final class EncryptionKeyVaultProperties {
 
     /**
      * Set the keyVaultUrl property: The URL of the vault.
-     *
+     * 
      * @param keyVaultUrl the keyVaultUrl value to set.
      * @return the EncryptionKeyVaultProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class EncryptionKeyVaultProperties {
 
     /**
      * Get the keyState property: The state of key provided.
-     *
+     * 
      * @return the keyState value.
      */
     public EncryptionKeyStatus keyState() {
@@ -130,7 +134,7 @@ public final class EncryptionKeyVaultProperties {
 
     /**
      * Get the versionType property: Property of the key if user provided or auto detected.
-     *
+     * 
      * @return the versionType value.
      */
     public EncryptionVersionType versionType() {
@@ -139,7 +143,7 @@ public final class EncryptionKeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

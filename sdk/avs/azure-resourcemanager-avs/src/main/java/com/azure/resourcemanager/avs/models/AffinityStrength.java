@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** VM-Host placement policy affinity strength (should/must). */
+/**
+ * Affinity Strength.
+ */
 public final class AffinityStrength extends ExpandableStringEnum<AffinityStrength> {
-    /** Static value Should for AffinityStrength. */
+    /**
+     * Static value Should for AffinityStrength.
+     */
     public static final AffinityStrength SHOULD = fromString("Should");
 
-    /** Static value Must for AffinityStrength. */
+    /**
+     * Static value Must for AffinityStrength.
+     */
     public static final AffinityStrength MUST = fromString("Must");
 
     /**
      * Creates a new instance of AffinityStrength value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AffinityStrength extends ExpandableStringEnum<AffinityStrengt
 
     /**
      * Creates or finds a AffinityStrength from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AffinityStrength.
      */
@@ -38,7 +44,7 @@ public final class AffinityStrength extends ExpandableStringEnum<AffinityStrengt
 
     /**
      * Gets known AffinityStrength values.
-     *
+     * 
      * @return known AffinityStrength values.
      */
     public static Collection<AffinityStrength> values() {

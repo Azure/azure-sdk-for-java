@@ -5,21 +5,28 @@
 package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkInner;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkList;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class WorkloadNetworkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"mbes\",\"name\":\"dnkwwtppjflcxog\",\"type\":\"okonzmnsikvmkqz\"},{\"id\":\"qqkdltfzxmhhvhgu\",\"name\":\"eodkwobda\",\"type\":\"xtibqdxbxwakbog\"},{\"id\":\"xndlkzgxhu\",\"name\":\"iplbpodxunkbebxm\",\"type\":\"byyntwlrbqt\"}],\"nextLink\":\"ievseotgqrllt\"}")
-                .toObject(WorkloadNetworkList.class);
+        WorkloadNetworkList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"uu\",\"name\":\"jfqka\",\"type\":\"e\"},{\"properties\":{\"provisioningState\":\"Deleting\"},\"id\":\"pubjibw\",\"name\":\"iftohqkvpu\",\"type\":\"ksgplsa\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"synljphuopxodl\",\"name\":\"iyntorzihle\",\"type\":\"sjswsrms\"},{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"zbchckqqzqioxiy\",\"name\":\"uiizynke\",\"type\":\"yatrwy\"}],\"nextLink\":\"mibzyhwitsmypyyn\"}")
+            .toObject(WorkloadNetworkList.class);
+        Assertions.assertEquals("mibzyhwitsmypyyn", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkList model = new WorkloadNetworkList();
+        WorkloadNetworkList model
+            = new WorkloadNetworkList()
+                .withValue(Arrays.asList(new WorkloadNetworkInner(), new WorkloadNetworkInner(),
+                    new WorkloadNetworkInner(), new WorkloadNetworkInner()))
+                .withNextLink("mibzyhwitsmypyyn");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkList.class);
+        Assertions.assertEquals("mibzyhwitsmypyyn", model.nextLink());
     }
 }

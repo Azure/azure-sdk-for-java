@@ -5,12 +5,21 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.resourcemanager.avs.models.VirtualMachineProvisioningState;
 import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovementState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Machine Properties. */
+/**
+ * Virtual Machine Properties.
+ */
 @Immutable
 public final class VirtualMachineProperties {
+    /*
+     * The provisioning state of the resource.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private VirtualMachineProvisioningState provisioningState;
+
     /*
      * Display name of the VM.
      */
@@ -35,13 +44,24 @@ public final class VirtualMachineProperties {
     @JsonProperty(value = "restrictMovement", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineRestrictMovementState restrictMovement;
 
-    /** Creates an instance of VirtualMachineProperties class. */
+    /**
+     * Creates an instance of VirtualMachineProperties class.
+     */
     public VirtualMachineProperties() {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public VirtualMachineProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Get the displayName property: Display name of the VM.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -50,7 +70,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the moRefId property: Virtual machine managed object reference id.
-     *
+     * 
      * @return the moRefId value.
      */
     public String moRefId() {
@@ -59,7 +79,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the folderPath property: Path to virtual machine's folder starting from datacenter virtual machine folder.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -68,7 +88,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the restrictMovement property: Whether VM DRS-driven movement is restricted (enabled) or not (disabled).
-     *
+     * 
      * @return the restrictMovement value.
      */
     public VirtualMachineRestrictMovementState restrictMovement() {
@@ -77,7 +97,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

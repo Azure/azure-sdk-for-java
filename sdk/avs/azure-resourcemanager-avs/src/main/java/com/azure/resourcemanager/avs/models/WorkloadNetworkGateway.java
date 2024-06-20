@@ -4,48 +4,65 @@
 
 package com.azure.resourcemanager.avs.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkGatewayInner;
 
-/** An immutable client-side representation of WorkloadNetworkGateway. */
+/**
+ * An immutable client-side representation of WorkloadNetworkGateway.
+ */
 public interface WorkloadNetworkGateway {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    WorkloadNetworkProvisioningState provisioningState();
+
+    /**
      * Gets the displayName property: Display name of the DHCP entity.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the path property: NSX Gateway Path.
-     *
+     * 
      * @return the path value.
      */
     String path();
 
     /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkGatewayInner object.
-     *
+     * 
      * @return the inner object.
      */
     WorkloadNetworkGatewayInner innerModel();

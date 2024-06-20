@@ -8,10 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.avs.models.DatastoreProvisioningState;
 import com.azure.resourcemanager.avs.models.DatastoreStatus;
 import com.azure.resourcemanager.avs.models.DiskPoolVolume;
+import com.azure.resourcemanager.avs.models.ElasticSanVolume;
 import com.azure.resourcemanager.avs.models.NetAppVolume;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a datastore. */
+/**
+ * The properties of a datastore.
+ */
 @Fluent
 public final class DatastoreProperties {
     /*
@@ -33,18 +36,26 @@ public final class DatastoreProperties {
     private DiskPoolVolume diskPoolVolume;
 
     /*
+     * An Elastic SAN volume
+     */
+    @JsonProperty(value = "elasticSanVolume")
+    private ElasticSanVolume elasticSanVolume;
+
+    /*
      * The operational status of the datastore
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private DatastoreStatus status;
 
-    /** Creates an instance of DatastoreProperties class. */
+    /**
+     * Creates an instance of DatastoreProperties class.
+     */
     public DatastoreProperties() {
     }
 
     /**
      * Get the provisioningState property: The state of the datastore provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DatastoreProvisioningState provisioningState() {
@@ -53,7 +64,7 @@ public final class DatastoreProperties {
 
     /**
      * Get the netAppVolume property: An Azure NetApp Files volume.
-     *
+     * 
      * @return the netAppVolume value.
      */
     public NetAppVolume netAppVolume() {
@@ -62,7 +73,7 @@ public final class DatastoreProperties {
 
     /**
      * Set the netAppVolume property: An Azure NetApp Files volume.
-     *
+     * 
      * @param netAppVolume the netAppVolume value to set.
      * @return the DatastoreProperties object itself.
      */
@@ -73,7 +84,7 @@ public final class DatastoreProperties {
 
     /**
      * Get the diskPoolVolume property: An iSCSI volume.
-     *
+     * 
      * @return the diskPoolVolume value.
      */
     public DiskPoolVolume diskPoolVolume() {
@@ -82,7 +93,7 @@ public final class DatastoreProperties {
 
     /**
      * Set the diskPoolVolume property: An iSCSI volume.
-     *
+     * 
      * @param diskPoolVolume the diskPoolVolume value to set.
      * @return the DatastoreProperties object itself.
      */
@@ -92,8 +103,28 @@ public final class DatastoreProperties {
     }
 
     /**
+     * Get the elasticSanVolume property: An Elastic SAN volume.
+     * 
+     * @return the elasticSanVolume value.
+     */
+    public ElasticSanVolume elasticSanVolume() {
+        return this.elasticSanVolume;
+    }
+
+    /**
+     * Set the elasticSanVolume property: An Elastic SAN volume.
+     * 
+     * @param elasticSanVolume the elasticSanVolume value to set.
+     * @return the DatastoreProperties object itself.
+     */
+    public DatastoreProperties withElasticSanVolume(ElasticSanVolume elasticSanVolume) {
+        this.elasticSanVolume = elasticSanVolume;
+        return this;
+    }
+
+    /**
      * Get the status property: The operational status of the datastore.
-     *
+     * 
      * @return the status value.
      */
     public DatastoreStatus status() {
@@ -102,7 +133,7 @@ public final class DatastoreProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -111,6 +142,9 @@ public final class DatastoreProperties {
         }
         if (diskPoolVolume() != null) {
             diskPoolVolume().validate();
+        }
+        if (elasticSanVolume() != null) {
+            elasticSanVolume().validate();
         }
     }
 }

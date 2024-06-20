@@ -6,19 +6,68 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkProvisioningState;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workload Network. */
+/**
+ * Workload Network.
+ */
 @Immutable
 public final class WorkloadNetworkInner extends ProxyResource {
-    /** Creates an instance of WorkloadNetworkInner class. */
+    /*
+     * The resource-specific properties for this resource.
+     */
+    @JsonProperty(value = "properties")
+    private WorkloadNetworkProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of WorkloadNetworkInner class.
+     */
     public WorkloadNetworkInner() {
     }
 
     /**
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
+     * @return the innerProperties value.
+     */
+    private WorkloadNetworkProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public WorkloadNetworkProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

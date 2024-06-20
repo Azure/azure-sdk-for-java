@@ -6,24 +6,36 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** NSX Gateway. */
+/**
+ * NSX Gateway.
+ */
 @Fluent
 public final class WorkloadNetworkGatewayInner extends ProxyResource {
     /*
-     * Gateway properties.
+     * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
     private WorkloadNetworkGatewayProperties innerProperties;
 
-    /** Creates an instance of WorkloadNetworkGatewayInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of WorkloadNetworkGatewayInner class.
+     */
     public WorkloadNetworkGatewayInner() {
     }
 
     /**
-     * Get the innerProperties property: Gateway properties.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private WorkloadNetworkGatewayProperties innerProperties() {
@@ -31,8 +43,26 @@ public final class WorkloadNetworkGatewayInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public WorkloadNetworkProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the displayName property: Display name of the DHCP entity.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -41,7 +71,7 @@ public final class WorkloadNetworkGatewayInner extends ProxyResource {
 
     /**
      * Set the displayName property: Display name of the DHCP entity.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkGatewayInner object itself.
      */
@@ -55,7 +85,7 @@ public final class WorkloadNetworkGatewayInner extends ProxyResource {
 
     /**
      * Get the path property: NSX Gateway Path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -64,7 +94,7 @@ public final class WorkloadNetworkGatewayInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

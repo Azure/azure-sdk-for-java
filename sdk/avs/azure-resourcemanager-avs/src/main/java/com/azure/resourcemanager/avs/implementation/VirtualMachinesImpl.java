@@ -22,50 +22,41 @@ public final class VirtualMachinesImpl implements VirtualMachines {
 
     private final com.azure.resourcemanager.avs.AvsManager serviceManager;
 
-    public VirtualMachinesImpl(
-        VirtualMachinesClient innerClient, com.azure.resourcemanager.avs.AvsManager serviceManager) {
+    public VirtualMachinesImpl(VirtualMachinesClient innerClient,
+        com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<VirtualMachine> list(String resourceGroupName, String privateCloudName, String clusterName) {
-        PagedIterable<VirtualMachineInner> inner =
-            this.serviceClient().list(resourceGroupName, privateCloudName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+        PagedIterable<VirtualMachineInner> inner
+            = this.serviceClient().list(resourceGroupName, privateCloudName, clusterName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VirtualMachine> list(
-        String resourceGroupName, String privateCloudName, String clusterName, Context context) {
-        PagedIterable<VirtualMachineInner> inner =
-            this.serviceClient().list(resourceGroupName, privateCloudName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
-    }
-
-    public Response<VirtualMachine> getWithResponse(
-        String resourceGroupName,
-        String privateCloudName,
-        String clusterName,
-        String virtualMachineId,
+    public PagedIterable<VirtualMachine> list(String resourceGroupName, String privateCloudName, String clusterName,
         Context context) {
-        Response<VirtualMachineInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, privateCloudName, clusterName, virtualMachineId, context);
+        PagedIterable<VirtualMachineInner> inner
+            = this.serviceClient().list(resourceGroupName, privateCloudName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
+    }
+
+    public Response<VirtualMachine> getWithResponse(String resourceGroupName, String privateCloudName,
+        String clusterName, String virtualMachineId, Context context) {
+        Response<VirtualMachineInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, privateCloudName, clusterName, virtualMachineId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VirtualMachineImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public VirtualMachine get(
-        String resourceGroupName, String privateCloudName, String clusterName, String virtualMachineId) {
-        VirtualMachineInner inner =
-            this.serviceClient().get(resourceGroupName, privateCloudName, clusterName, virtualMachineId);
+    public VirtualMachine get(String resourceGroupName, String privateCloudName, String clusterName,
+        String virtualMachineId) {
+        VirtualMachineInner inner
+            = this.serviceClient().get(resourceGroupName, privateCloudName, clusterName, virtualMachineId);
         if (inner != null) {
             return new VirtualMachineImpl(inner, this.manager());
         } else {
@@ -73,28 +64,17 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
     }
 
-    public void restrictMovement(
-        String resourceGroupName,
-        String privateCloudName,
-        String clusterName,
-        String virtualMachineId,
-        VirtualMachineRestrictMovement restrictMovement) {
-        this
-            .serviceClient()
+    public void restrictMovement(String resourceGroupName, String privateCloudName, String clusterName,
+        String virtualMachineId, VirtualMachineRestrictMovement restrictMovement) {
+        this.serviceClient()
             .restrictMovement(resourceGroupName, privateCloudName, clusterName, virtualMachineId, restrictMovement);
     }
 
-    public void restrictMovement(
-        String resourceGroupName,
-        String privateCloudName,
-        String clusterName,
-        String virtualMachineId,
-        VirtualMachineRestrictMovement restrictMovement,
-        Context context) {
-        this
-            .serviceClient()
-            .restrictMovement(
-                resourceGroupName, privateCloudName, clusterName, virtualMachineId, restrictMovement, context);
+    public void restrictMovement(String resourceGroupName, String privateCloudName, String clusterName,
+        String virtualMachineId, VirtualMachineRestrictMovement restrictMovement, Context context) {
+        this.serviceClient()
+            .restrictMovement(resourceGroupName, privateCloudName, clusterName, virtualMachineId, restrictMovement,
+                context);
     }
 
     private VirtualMachinesClient serviceClient() {

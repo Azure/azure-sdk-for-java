@@ -10,11 +10,9 @@ import com.azure.resourcemanager.avs.fluent.models.VirtualMachineInner;
 public final class VirtualMachineInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"phvwauyqncygu\",\"moRefId\":\"vipmdscwxqupevzh\",\"folderPath\":\"totxhojujb\",\"restrictMovement\":\"Disabled\"},\"id\":\"lmcuvhixb\",\"name\":\"xyfwnylrcool\",\"type\":\"ttpkiwkkbnujrywv\"}")
-                .toObject(VirtualMachineInner.class);
+        VirtualMachineInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"lxotogtwrupq\",\"moRefId\":\"vnm\",\"folderPath\":\"ykvceoveil\",\"restrictMovement\":\"Disabled\"},\"id\":\"tyfjfcnjbkcnxdhb\",\"name\":\"tkphywpnvjtoqn\",\"type\":\"rmclfplphoxu\"}")
+            .toObject(VirtualMachineInner.class);
     }
 
     @org.junit.jupiter.api.Test

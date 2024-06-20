@@ -7,34 +7,56 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Endpoint addresses. */
+/**
+ * Endpoint addresses.
+ */
 @Immutable
 public final class Endpoints {
     /*
-     * Endpoint for the NSX-T Data Center manager
+     * Endpoint FQDN for the NSX-T Data Center manager
      */
     @JsonProperty(value = "nsxtManager", access = JsonProperty.Access.WRITE_ONLY)
     private String nsxtManager;
 
     /*
-     * Endpoint for Virtual Center Server Appliance
+     * Endpoint FQDN for Virtual Center Server Appliance
      */
     @JsonProperty(value = "vcsa", access = JsonProperty.Access.WRITE_ONLY)
     private String vcsa;
 
     /*
-     * Endpoint for the HCX Cloud Manager
+     * Endpoint FQDN for the HCX Cloud Manager
      */
     @JsonProperty(value = "hcxCloudManager", access = JsonProperty.Access.WRITE_ONLY)
     private String hcxCloudManager;
 
-    /** Creates an instance of Endpoints class. */
+    /*
+     * Endpoint IP for the NSX-T Data Center manager
+     */
+    @JsonProperty(value = "nsxtManagerIp", access = JsonProperty.Access.WRITE_ONLY)
+    private String nsxtManagerIp;
+
+    /*
+     * Endpoint IP for Virtual Center Server Appliance
+     */
+    @JsonProperty(value = "vcenterIp", access = JsonProperty.Access.WRITE_ONLY)
+    private String vcenterIp;
+
+    /*
+     * Endpoint IP for the HCX Cloud Manager
+     */
+    @JsonProperty(value = "hcxCloudManagerIp", access = JsonProperty.Access.WRITE_ONLY)
+    private String hcxCloudManagerIp;
+
+    /**
+     * Creates an instance of Endpoints class.
+     */
     public Endpoints() {
     }
 
     /**
-     * Get the nsxtManager property: Endpoint for the NSX-T Data Center manager.
-     *
+     * Get the nsxtManager property: Endpoint FQDN for the NSX-T Data Center manager.
+     * 
      * @return the nsxtManager value.
      */
     public String nsxtManager() {
@@ -42,8 +64,8 @@ public final class Endpoints {
     }
 
     /**
-     * Get the vcsa property: Endpoint for Virtual Center Server Appliance.
-     *
+     * Get the vcsa property: Endpoint FQDN for Virtual Center Server Appliance.
+     * 
      * @return the vcsa value.
      */
     public String vcsa() {
@@ -51,8 +73,8 @@ public final class Endpoints {
     }
 
     /**
-     * Get the hcxCloudManager property: Endpoint for the HCX Cloud Manager.
-     *
+     * Get the hcxCloudManager property: Endpoint FQDN for the HCX Cloud Manager.
+     * 
      * @return the hcxCloudManager value.
      */
     public String hcxCloudManager() {
@@ -60,8 +82,35 @@ public final class Endpoints {
     }
 
     /**
+     * Get the nsxtManagerIp property: Endpoint IP for the NSX-T Data Center manager.
+     * 
+     * @return the nsxtManagerIp value.
+     */
+    public String nsxtManagerIp() {
+        return this.nsxtManagerIp;
+    }
+
+    /**
+     * Get the vcenterIp property: Endpoint IP for Virtual Center Server Appliance.
+     * 
+     * @return the vcenterIp value.
+     */
+    public String vcenterIp() {
+        return this.vcenterIp;
+    }
+
+    /**
+     * Get the hcxCloudManagerIp property: Endpoint IP for the HCX Cloud Manager.
+     * 
+     * @return the hcxCloudManagerIp value.
+     */
+    public String hcxCloudManagerIp() {
+        return this.hcxCloudManagerIp;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

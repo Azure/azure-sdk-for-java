@@ -9,28 +9,33 @@ import com.azure.resourcemanager.avs.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Pageable list of operations. */
+/**
+ * A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of
+ * results.
+ */
 @Immutable
-public final class OperationList {
+public final class OperationListResult {
     /*
-     * List of operations
+     * List of operations supported by the resource provider
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationInner> value;
 
     /*
-     * URL to get the next page if any
+     * URL to get the next set of operation list results (if there are any).
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of OperationList class. */
-    public OperationList() {
+    /**
+     * Creates an instance of OperationListResult class.
+     */
+    public OperationListResult() {
     }
 
     /**
-     * Get the value property: List of operations.
-     *
+     * Get the value property: List of operations supported by the resource provider.
+     * 
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -38,8 +43,8 @@ public final class OperationList {
     }
 
     /**
-     * Get the nextLink property: URL to get the next page if any.
-     *
+     * Get the nextLink property: URL to get the next set of operation list results (if there are any).
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +53,7 @@ public final class OperationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

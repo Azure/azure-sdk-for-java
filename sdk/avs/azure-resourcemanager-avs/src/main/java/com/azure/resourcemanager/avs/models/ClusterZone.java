@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Zone and associated hosts info. */
+/**
+ * Zone and associated hosts info.
+ */
 @Immutable
 public final class ClusterZone {
     /*
@@ -23,13 +25,15 @@ public final class ClusterZone {
     @JsonProperty(value = "zone", access = JsonProperty.Access.WRITE_ONLY)
     private String zone;
 
-    /** Creates an instance of ClusterZone class. */
+    /**
+     * Creates an instance of ClusterZone class.
+     */
     public ClusterZone() {
     }
 
     /**
      * Get the hosts property: List of hosts belonging to the availability zone in a cluster.
-     *
+     * 
      * @return the hosts value.
      */
     public List<String> hosts() {
@@ -38,7 +42,7 @@ public final class ClusterZone {
 
     /**
      * Get the zone property: Availability zone identifier.
-     *
+     * 
      * @return the zone value.
      */
     public String zone() {
@@ -47,7 +51,7 @@ public final class ClusterZone {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

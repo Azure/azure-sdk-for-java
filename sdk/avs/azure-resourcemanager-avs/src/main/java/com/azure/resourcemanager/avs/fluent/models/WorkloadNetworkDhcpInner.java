@@ -6,25 +6,36 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** NSX DHCP. */
+/**
+ * NSX DHCP.
+ */
 @Fluent
 public final class WorkloadNetworkDhcpInner extends ProxyResource {
     /*
-     * DHCP properties.
+     * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
     private WorkloadNetworkDhcpEntity properties;
 
-    /** Creates an instance of WorkloadNetworkDhcpInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of WorkloadNetworkDhcpInner class.
+     */
     public WorkloadNetworkDhcpInner() {
     }
 
     /**
-     * Get the properties property: DHCP properties.
-     *
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
      * @return the properties value.
      */
     public WorkloadNetworkDhcpEntity properties() {
@@ -32,8 +43,8 @@ public final class WorkloadNetworkDhcpInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: DHCP properties.
-     *
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
      * @param properties the properties value to set.
      * @return the WorkloadNetworkDhcpInner object itself.
      */
@@ -43,8 +54,17 @@ public final class WorkloadNetworkDhcpInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

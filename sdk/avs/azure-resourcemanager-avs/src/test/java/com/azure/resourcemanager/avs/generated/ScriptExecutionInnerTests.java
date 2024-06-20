@@ -15,44 +15,40 @@ import org.junit.jupiter.api.Assertions;
 public final class ScriptExecutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScriptExecutionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"scriptCmdletId\":\"abwidfcxsspuun\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"yhkx\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"drihpfhoqcaaewda\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"mdjvlpj\"}],\"failureReason\":\"kzbrmsgeivsiy\",\"timeout\":\"zkdnc\",\"retention\":\"xonbzoggculapz\",\"submittedAt\":\"2021-07-25T18:35:20Z\",\"startedAt\":\"2021-08-05T01:58:35Z\",\"finishedAt\":\"2021-06-21T04:03:02Z\",\"provisioningState\":\"Cancelled\",\"output\":[\"pnylb\",\"uajlyj\"],\"namedOutputs\":{\"zhvfcibyfmowuxr\":\"dataof\",\"xfzwi\":\"datajpvd\",\"xjrk\":\"datavwzjbhyz\"},\"information\":[\"trnegvmnvuqeqvld\",\"pa\"],\"warnings\":[\"bkkd\",\"flvestmjlxrrilo\",\"apeewchpxlkt\",\"kuziycsle\"],\"errors\":[\"uztcktyhjtqed\"]},\"id\":\"gzulwmmrqzzr\",\"name\":\"jvpglydzgk\",\"type\":\"vqeevtoep\"}")
-                .toObject(ScriptExecutionInner.class);
-        Assertions.assertEquals("abwidfcxsspuun", model.scriptCmdletId());
-        Assertions.assertEquals("yhkx", model.parameters().get(0).name());
-        Assertions.assertEquals("drihpfhoqcaaewda", model.hiddenParameters().get(0).name());
-        Assertions.assertEquals("kzbrmsgeivsiy", model.failureReason());
-        Assertions.assertEquals("zkdnc", model.timeout());
-        Assertions.assertEquals("xonbzoggculapz", model.retention());
-        Assertions.assertEquals("pnylb", model.output().get(0));
+        ScriptExecutionInner model = BinaryData.fromString(
+            "{\"properties\":{\"scriptCmdletId\":\"txmedj\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"lynqwwncwzzh\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"gktrmgucnapkte\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"ellwptfdy\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"qbuaceopzfqr\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"huaoppp\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"qeqxo\"}],\"failureReason\":\"dahzxctobg\",\"timeout\":\"kdmoi\",\"retention\":\"ostmgrcf\",\"submittedAt\":\"2021-06-18T12:29:32Z\",\"startedAt\":\"2021-06-08T13:34:15Z\",\"finishedAt\":\"2021-07-20T04:26:41Z\",\"provisioningState\":\"Canceled\",\"output\":[\"xbpvjymjhx\",\"j\"],\"namedOutputs\":{\"ivkrtsw\":\"datau\",\"vjfdx\":\"dataxqzvszjfa\",\"qtdo\":\"dataivetvtcq\",\"bhsfxob\":\"datamcbxvwvxysl\"},\"information\":[\"k\",\"lmpewwwfbkr\",\"rn\"],\"warnings\":[\"hqjohxcrsbfova\",\"rruvwbhsq\",\"sub\"],\"errors\":[\"birx\"]},\"id\":\"ybsrfbjfdtwss\",\"name\":\"t\",\"type\":\"tpvjzbexilzznfqq\"}")
+            .toObject(ScriptExecutionInner.class);
+        Assertions.assertEquals("txmedj", model.scriptCmdletId());
+        Assertions.assertEquals("lynqwwncwzzh", model.parameters().get(0).name());
+        Assertions.assertEquals("qbuaceopzfqr", model.hiddenParameters().get(0).name());
+        Assertions.assertEquals("dahzxctobg", model.failureReason());
+        Assertions.assertEquals("kdmoi", model.timeout());
+        Assertions.assertEquals("ostmgrcf", model.retention());
+        Assertions.assertEquals("xbpvjymjhx", model.output().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptExecutionInner model =
-            new ScriptExecutionInner()
-                .withScriptCmdletId("abwidfcxsspuun")
-                .withParameters(Arrays.asList(new ScriptExecutionParameter().withName("yhkx")))
-                .withHiddenParameters(
-                    Arrays
-                        .asList(
-                            new ScriptExecutionParameter().withName("drihpfhoqcaaewda"),
-                            new ScriptExecutionParameter().withName("mdjvlpj")))
-                .withFailureReason("kzbrmsgeivsiy")
-                .withTimeout("zkdnc")
-                .withRetention("xonbzoggculapz")
-                .withOutput(Arrays.asList("pnylb", "uajlyj"))
-                .withNamedOutputs(mapOf("zhvfcibyfmowuxr", "dataof", "xfzwi", "datajpvd", "xjrk", "datavwzjbhyz"));
+        ScriptExecutionInner model = new ScriptExecutionInner().withScriptCmdletId("txmedj")
+            .withParameters(Arrays.asList(new ScriptExecutionParameter().withName("lynqwwncwzzh"),
+                new ScriptExecutionParameter().withName("gktrmgucnapkte"),
+                new ScriptExecutionParameter().withName("ellwptfdy")))
+            .withHiddenParameters(Arrays.asList(new ScriptExecutionParameter().withName("qbuaceopzfqr"),
+                new ScriptExecutionParameter().withName("huaoppp"), new ScriptExecutionParameter().withName("qeqxo")))
+            .withFailureReason("dahzxctobg")
+            .withTimeout("kdmoi")
+            .withRetention("ostmgrcf")
+            .withOutput(Arrays.asList("xbpvjymjhx", "j"))
+            .withNamedOutputs(mapOf("ivkrtsw", "datau", "vjfdx", "dataxqzvszjfa", "qtdo", "dataivetvtcq", "bhsfxob",
+                "datamcbxvwvxysl"));
         model = BinaryData.fromObject(model).toObject(ScriptExecutionInner.class);
-        Assertions.assertEquals("abwidfcxsspuun", model.scriptCmdletId());
-        Assertions.assertEquals("yhkx", model.parameters().get(0).name());
-        Assertions.assertEquals("drihpfhoqcaaewda", model.hiddenParameters().get(0).name());
-        Assertions.assertEquals("kzbrmsgeivsiy", model.failureReason());
-        Assertions.assertEquals("zkdnc", model.timeout());
-        Assertions.assertEquals("xonbzoggculapz", model.retention());
-        Assertions.assertEquals("pnylb", model.output().get(0));
+        Assertions.assertEquals("txmedj", model.scriptCmdletId());
+        Assertions.assertEquals("lynqwwncwzzh", model.parameters().get(0).name());
+        Assertions.assertEquals("qbuaceopzfqr", model.hiddenParameters().get(0).name());
+        Assertions.assertEquals("dahzxctobg", model.failureReason());
+        Assertions.assertEquals("kdmoi", model.timeout());
+        Assertions.assertEquals("ostmgrcf", model.retention());
+        Assertions.assertEquals("xbpvjymjhx", model.output().get(0));
     }
 
     // Use "Map.of" if available

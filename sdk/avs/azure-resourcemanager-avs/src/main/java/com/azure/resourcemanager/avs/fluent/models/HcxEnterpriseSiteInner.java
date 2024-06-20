@@ -6,25 +6,37 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.avs.models.HcxEnterpriseSiteProvisioningState;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSiteStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An HCX Enterprise Site resource. */
+/**
+ * An HCX Enterprise Site resource.
+ */
 @Immutable
 public final class HcxEnterpriseSiteInner extends ProxyResource {
     /*
-     * The properties of an HCX Enterprise Site resource
+     * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties")
     private HcxEnterpriseSiteProperties innerProperties;
 
-    /** Creates an instance of HcxEnterpriseSiteInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of HcxEnterpriseSiteInner class.
+     */
     public HcxEnterpriseSiteInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of an HCX Enterprise Site resource.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private HcxEnterpriseSiteProperties innerProperties() {
@@ -32,8 +44,26 @@ public final class HcxEnterpriseSiteInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public HcxEnterpriseSiteProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the activationKey property: The activation key.
-     *
+     * 
      * @return the activationKey value.
      */
     public String activationKey() {
@@ -42,7 +72,7 @@ public final class HcxEnterpriseSiteInner extends ProxyResource {
 
     /**
      * Get the status property: The status of the HCX Enterprise Site.
-     *
+     * 
      * @return the status value.
      */
     public HcxEnterpriseSiteStatus status() {
@@ -51,7 +81,7 @@ public final class HcxEnterpriseSiteInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

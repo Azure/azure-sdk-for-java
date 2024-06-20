@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The connection status of the global reach connection. */
+/**
+ * Global Reach Connection status.
+ */
 public final class GlobalReachConnectionStatus extends ExpandableStringEnum<GlobalReachConnectionStatus> {
-    /** Static value Connected for GlobalReachConnectionStatus. */
+    /**
+     * Static value Connected for GlobalReachConnectionStatus.
+     */
     public static final GlobalReachConnectionStatus CONNECTED = fromString("Connected");
 
-    /** Static value Connecting for GlobalReachConnectionStatus. */
+    /**
+     * Static value Connecting for GlobalReachConnectionStatus.
+     */
     public static final GlobalReachConnectionStatus CONNECTING = fromString("Connecting");
 
-    /** Static value Disconnected for GlobalReachConnectionStatus. */
+    /**
+     * Static value Disconnected for GlobalReachConnectionStatus.
+     */
     public static final GlobalReachConnectionStatus DISCONNECTED = fromString("Disconnected");
 
     /**
      * Creates a new instance of GlobalReachConnectionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class GlobalReachConnectionStatus extends ExpandableStringEnum<Glob
 
     /**
      * Creates or finds a GlobalReachConnectionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GlobalReachConnectionStatus.
      */
@@ -41,7 +49,7 @@ public final class GlobalReachConnectionStatus extends ExpandableStringEnum<Glob
 
     /**
      * Gets known GlobalReachConnectionStatus values.
-     *
+     * 
      * @return known GlobalReachConnectionStatus values.
      */
     public static Collection<GlobalReachConnectionStatus> values() {

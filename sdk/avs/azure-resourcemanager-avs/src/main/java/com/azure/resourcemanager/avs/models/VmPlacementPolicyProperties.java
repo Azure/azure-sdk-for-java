@@ -7,15 +7,29 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** VM-VM placement policy properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+/**
+ * VM-VM placement policy properties.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = VmPlacementPolicyProperties.class,
+    visible = true)
 @JsonTypeName("VmVm")
 @Fluent
 public final class VmPlacementPolicyProperties extends PlacementPolicyProperties {
+    /*
+     * Placement Policy type
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private PlacementPolicyType type = PlacementPolicyType.VM_VM;
+
     /*
      * Virtual machine members list
      */
@@ -28,13 +42,25 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
     @JsonProperty(value = "affinityType", required = true)
     private AffinityType affinityType;
 
-    /** Creates an instance of VmPlacementPolicyProperties class. */
+    /**
+     * Creates an instance of VmPlacementPolicyProperties class.
+     */
     public VmPlacementPolicyProperties() {
     }
 
     /**
+     * Get the type property: Placement Policy type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public PlacementPolicyType type() {
+        return this.type;
+    }
+
+    /**
      * Get the vmMembers property: Virtual machine members list.
-     *
+     * 
      * @return the vmMembers value.
      */
     public List<String> vmMembers() {
@@ -43,7 +69,7 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
 
     /**
      * Set the vmMembers property: Virtual machine members list.
-     *
+     * 
      * @param vmMembers the vmMembers value to set.
      * @return the VmPlacementPolicyProperties object itself.
      */
@@ -54,7 +80,7 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
 
     /**
      * Get the affinityType property: placement policy affinity type.
-     *
+     * 
      * @return the affinityType value.
      */
     public AffinityType affinityType() {
@@ -63,7 +89,7 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
 
     /**
      * Set the affinityType property: placement policy affinity type.
-     *
+     * 
      * @param affinityType the affinityType value to set.
      * @return the VmPlacementPolicyProperties object itself.
      */
@@ -72,14 +98,18 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmPlacementPolicyProperties withState(PlacementPolicyState state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmPlacementPolicyProperties withDisplayName(String displayName) {
         super.withDisplayName(displayName);
@@ -88,23 +118,21 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (vmMembers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmMembers in model VmPlacementPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vmMembers in model VmPlacementPolicyProperties"));
         }
         if (affinityType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property affinityType in model VmPlacementPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property affinityType in model VmPlacementPolicyProperties"));
         }
     }
 

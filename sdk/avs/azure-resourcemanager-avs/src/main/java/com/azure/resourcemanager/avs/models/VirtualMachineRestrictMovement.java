@@ -7,7 +7,9 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Set VM DRS-driven movement to restricted (enabled) or not (disabled). */
+/**
+ * Set VM DRS-driven movement to restricted (enabled) or not (disabled).
+ */
 @Fluent
 public final class VirtualMachineRestrictMovement {
     /*
@@ -16,13 +18,15 @@ public final class VirtualMachineRestrictMovement {
     @JsonProperty(value = "restrictMovement")
     private VirtualMachineRestrictMovementState restrictMovement;
 
-    /** Creates an instance of VirtualMachineRestrictMovement class. */
+    /**
+     * Creates an instance of VirtualMachineRestrictMovement class.
+     */
     public VirtualMachineRestrictMovement() {
     }
 
     /**
      * Get the restrictMovement property: Whether VM DRS-driven movement is restricted (enabled) or not (disabled).
-     *
+     * 
      * @return the restrictMovement value.
      */
     public VirtualMachineRestrictMovementState restrictMovement() {
@@ -31,7 +35,7 @@ public final class VirtualMachineRestrictMovement {
 
     /**
      * Set the restrictMovement property: Whether VM DRS-driven movement is restricted (enabled) or not (disabled).
-     *
+     * 
      * @param restrictMovement the restrictMovement value to set.
      * @return the VirtualMachineRestrictMovement object itself.
      */
@@ -42,7 +46,7 @@ public final class VirtualMachineRestrictMovement {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,13 +5,23 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.resourcemanager.avs.models.ScriptCmdletAudience;
+import com.azure.resourcemanager.avs.models.ScriptCmdletProvisioningState;
 import com.azure.resourcemanager.avs.models.ScriptParameter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a pre-canned script. */
+/**
+ * Properties of a pre-canned script.
+ */
 @Immutable
 public final class ScriptCmdletProperties {
+    /*
+     * The provisioning state of the resource.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ScriptCmdletProvisioningState provisioningState;
+
     /*
      * Description of the scripts functionality
      */
@@ -25,18 +35,35 @@ public final class ScriptCmdletProperties {
     private String timeout;
 
     /*
+     * Specifies whether a script cmdlet is intended to be invoked only through automation or visible to customers
+     */
+    @JsonProperty(value = "audience", access = JsonProperty.Access.WRITE_ONLY)
+    private ScriptCmdletAudience audience;
+
+    /*
      * Parameters the script will accept
      */
     @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private List<ScriptParameter> parameters;
 
-    /** Creates an instance of ScriptCmdletProperties class. */
+    /**
+     * Creates an instance of ScriptCmdletProperties class.
+     */
     public ScriptCmdletProperties() {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ScriptCmdletProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Get the description property: Description of the scripts functionality.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -45,7 +72,7 @@ public final class ScriptCmdletProperties {
 
     /**
      * Get the timeout property: Recommended time limit for execution.
-     *
+     * 
      * @return the timeout value.
      */
     public String timeout() {
@@ -53,8 +80,18 @@ public final class ScriptCmdletProperties {
     }
 
     /**
+     * Get the audience property: Specifies whether a script cmdlet is intended to be invoked only through automation or
+     * visible to customers.
+     * 
+     * @return the audience value.
+     */
+    public ScriptCmdletAudience audience() {
+        return this.audience;
+    }
+
+    /**
      * Get the parameters property: Parameters the script will accept.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ScriptParameter> parameters() {
@@ -63,7 +100,7 @@ public final class ScriptCmdletProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

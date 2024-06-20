@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** placement policy type. */
+/**
+ * Placement Policy type.
+ */
 public final class PlacementPolicyType extends ExpandableStringEnum<PlacementPolicyType> {
-    /** Static value VmVm for PlacementPolicyType. */
+    /**
+     * Static value VmVm for PlacementPolicyType.
+     */
     public static final PlacementPolicyType VM_VM = fromString("VmVm");
 
-    /** Static value VmHost for PlacementPolicyType. */
+    /**
+     * Static value VmHost for PlacementPolicyType.
+     */
     public static final PlacementPolicyType VM_HOST = fromString("VmHost");
 
     /**
      * Creates a new instance of PlacementPolicyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class PlacementPolicyType extends ExpandableStringEnum<PlacementPol
 
     /**
      * Creates or finds a PlacementPolicyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PlacementPolicyType.
      */
@@ -38,7 +44,7 @@ public final class PlacementPolicyType extends ExpandableStringEnum<PlacementPol
 
     /**
      * Gets known PlacementPolicyType values.
-     *
+     * 
      * @return known PlacementPolicyType values.
      */
     public static Collection<PlacementPolicyType> values() {

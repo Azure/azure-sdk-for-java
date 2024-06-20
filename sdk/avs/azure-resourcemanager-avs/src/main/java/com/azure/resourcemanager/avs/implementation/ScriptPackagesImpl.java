@@ -21,32 +21,29 @@ public final class ScriptPackagesImpl implements ScriptPackages {
 
     private final com.azure.resourcemanager.avs.AvsManager serviceManager;
 
-    public ScriptPackagesImpl(
-        ScriptPackagesClient innerClient, com.azure.resourcemanager.avs.AvsManager serviceManager) {
+    public ScriptPackagesImpl(ScriptPackagesClient innerClient,
+        com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ScriptPackage> list(String resourceGroupName, String privateCloudName) {
         PagedIterable<ScriptPackageInner> inner = this.serviceClient().list(resourceGroupName, privateCloudName);
-        return Utils.mapPage(inner, inner1 -> new ScriptPackageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScriptPackageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ScriptPackage> list(String resourceGroupName, String privateCloudName, Context context) {
-        PagedIterable<ScriptPackageInner> inner =
-            this.serviceClient().list(resourceGroupName, privateCloudName, context);
-        return Utils.mapPage(inner, inner1 -> new ScriptPackageImpl(inner1, this.manager()));
+        PagedIterable<ScriptPackageInner> inner
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScriptPackageImpl(inner1, this.manager()));
     }
 
-    public Response<ScriptPackage> getWithResponse(
-        String resourceGroupName, String privateCloudName, String scriptPackageName, Context context) {
-        Response<ScriptPackageInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, scriptPackageName, context);
+    public Response<ScriptPackage> getWithResponse(String resourceGroupName, String privateCloudName,
+        String scriptPackageName, Context context) {
+        Response<ScriptPackageInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, scriptPackageName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ScriptPackageImpl(inner.getValue(), this.manager()));
         } else {
             return null;

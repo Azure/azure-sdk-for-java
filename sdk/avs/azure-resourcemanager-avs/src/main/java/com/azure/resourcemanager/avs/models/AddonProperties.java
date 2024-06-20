@@ -7,37 +7,54 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The properties of an addon. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "addonType",
-    defaultImpl = AddonProperties.class)
+/**
+ * The properties of an addon.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "addonType", defaultImpl = AddonProperties.class, visible = true)
 @JsonTypeName("AddonProperties")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "SRM", value = AddonSrmProperties.class),
-    @JsonSubTypes.Type(name = "VR", value = AddonVrProperties.class),
+    @JsonSubTypes.Type(name = "Arc", value = AddonArcProperties.class),
     @JsonSubTypes.Type(name = "HCX", value = AddonHcxProperties.class),
-    @JsonSubTypes.Type(name = "Arc", value = AddonArcProperties.class)
-})
+    @JsonSubTypes.Type(name = "SRM", value = AddonSrmProperties.class),
+    @JsonSubTypes.Type(name = "VR", value = AddonVrProperties.class) })
 @Immutable
 public class AddonProperties {
+    /*
+     * Addon type
+     */
+    @JsonTypeId
+    @JsonProperty(value = "addonType", required = true)
+    private AddonType addonType;
+
     /*
      * The state of the addon provisioning
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AddonProvisioningState provisioningState;
 
-    /** Creates an instance of AddonProperties class. */
+    /**
+     * Creates an instance of AddonProperties class.
+     */
     public AddonProperties() {
+        this.addonType = AddonType.fromString("AddonProperties");
+    }
+
+    /**
+     * Get the addonType property: Addon type.
+     * 
+     * @return the addonType value.
+     */
+    public AddonType addonType() {
+        return this.addonType;
     }
 
     /**
      * Get the provisioningState property: The state of the addon provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AddonProvisioningState provisioningState() {
@@ -46,7 +63,7 @@ public class AddonProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

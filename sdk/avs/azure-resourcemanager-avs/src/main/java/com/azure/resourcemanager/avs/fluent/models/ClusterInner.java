@@ -6,34 +6,54 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.ClusterProvisioningState;
 import com.azure.resourcemanager.avs.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A cluster resource. */
+/**
+ * A cluster resource.
+ */
 @Fluent
 public final class ClusterInner extends ProxyResource {
     /*
-     * The cluster SKU
+     * The resource-specific properties for this resource.
+     */
+    @JsonProperty(value = "properties")
+    private ClusterProperties innerProperties;
+
+    /*
+     * The SKU (Stock Keeping Unit) assigned to this resource.
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
-     * The properties of a cluster resource
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "properties")
-    private ClusterProperties innerProperties;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
-    /** Creates an instance of ClusterInner class. */
+    /**
+     * Creates an instance of ClusterInner class.
+     */
     public ClusterInner() {
     }
 
     /**
-     * Get the sku property: The cluster SKU.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
+     * @return the innerProperties value.
+     */
+    private ClusterProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the sku property: The SKU (Stock Keeping Unit) assigned to this resource.
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -41,8 +61,8 @@ public final class ClusterInner extends ProxyResource {
     }
 
     /**
-     * Set the sku property: The cluster SKU.
-     *
+     * Set the sku property: The SKU (Stock Keeping Unit) assigned to this resource.
+     * 
      * @param sku the sku value to set.
      * @return the ClusterInner object itself.
      */
@@ -52,17 +72,17 @@ public final class ClusterInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: The properties of a cluster resource.
-     *
-     * @return the innerProperties value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    private ClusterProperties innerProperties() {
-        return this.innerProperties;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
      * Get the clusterSize property: The cluster size.
-     *
+     * 
      * @return the clusterSize value.
      */
     public Integer clusterSize() {
@@ -71,7 +91,7 @@ public final class ClusterInner extends ProxyResource {
 
     /**
      * Set the clusterSize property: The cluster size.
-     *
+     * 
      * @param clusterSize the clusterSize value to set.
      * @return the ClusterInner object itself.
      */
@@ -85,7 +105,7 @@ public final class ClusterInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The state of the cluster provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ClusterProvisioningState provisioningState() {
@@ -94,7 +114,7 @@ public final class ClusterInner extends ProxyResource {
 
     /**
      * Get the clusterId property: The identity.
-     *
+     * 
      * @return the clusterId value.
      */
     public Integer clusterId() {
@@ -103,7 +123,7 @@ public final class ClusterInner extends ProxyResource {
 
     /**
      * Get the hosts property: The hosts.
-     *
+     * 
      * @return the hosts value.
      */
     public List<String> hosts() {
@@ -112,7 +132,7 @@ public final class ClusterInner extends ProxyResource {
 
     /**
      * Set the hosts property: The hosts.
-     *
+     * 
      * @param hosts the hosts value to set.
      * @return the ClusterInner object itself.
      */
@@ -125,20 +145,42 @@ public final class ClusterInner extends ProxyResource {
     }
 
     /**
+     * Get the vsanDatastoreName property: Name of the vsan datastore associated with the cluster.
+     * 
+     * @return the vsanDatastoreName value.
+     */
+    public String vsanDatastoreName() {
+        return this.innerProperties() == null ? null : this.innerProperties().vsanDatastoreName();
+    }
+
+    /**
+     * Set the vsanDatastoreName property: Name of the vsan datastore associated with the cluster.
+     * 
+     * @param vsanDatastoreName the vsanDatastoreName value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withVsanDatastoreName(String vsanDatastoreName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withVsanDatastoreName(vsanDatastoreName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model ClusterInner"));
-        } else {
-            sku().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (sku() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model ClusterInner"));
+        } else {
+            sku().validate();
         }
     }
 

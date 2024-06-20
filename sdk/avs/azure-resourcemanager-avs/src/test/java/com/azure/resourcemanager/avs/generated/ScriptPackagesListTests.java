@@ -5,21 +5,25 @@
 package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.avs.fluent.models.ScriptPackageInner;
 import com.azure.resourcemanager.avs.models.ScriptPackagesList;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class ScriptPackagesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScriptPackagesList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"ffovjzhpj\",\"version\":\"bgj\",\"company\":\"xumvfcluyovw\",\"uri\":\"bkfezzxscyhwzdgi\"},\"id\":\"ujb\",\"name\":\"bomvzzbtdcqv\",\"type\":\"niyujv\"}],\"nextLink\":\"l\"}")
-                .toObject(ScriptPackagesList.class);
+        ScriptPackagesList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"description\":\"qkdltfz\",\"version\":\"hhvh\",\"company\":\"r\",\"uri\":\"dkwobdagx\"},\"id\":\"bqdxbx\",\"name\":\"akbogqxndlkzgxh\",\"type\":\"ripl\"}],\"nextLink\":\"odxun\"}")
+            .toObject(ScriptPackagesList.class);
+        Assertions.assertEquals("odxun", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptPackagesList model = new ScriptPackagesList();
+        ScriptPackagesList model
+            = new ScriptPackagesList().withValue(Arrays.asList(new ScriptPackageInner())).withNextLink("odxun");
         model = BinaryData.fromObject(model).toObject(ScriptPackagesList.class);
+        Assertions.assertEquals("odxun", model.nextLink());
     }
 }

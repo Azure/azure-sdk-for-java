@@ -7,7 +7,9 @@ package com.azure.resourcemanager.avs.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Administrative credentials for accessing vCenter and NSX-T. */
+/**
+ * Administrative credentials for accessing vCenter and NSX-T.
+ */
 @Immutable
 public final class AdminCredentialsInner {
     /*
@@ -34,13 +36,15 @@ public final class AdminCredentialsInner {
     @JsonProperty(value = "vcenterPassword", access = JsonProperty.Access.WRITE_ONLY)
     private String vcenterPassword;
 
-    /** Creates an instance of AdminCredentialsInner class. */
+    /**
+     * Creates an instance of AdminCredentialsInner class.
+     */
     public AdminCredentialsInner() {
     }
 
     /**
      * Get the nsxtUsername property: NSX-T Manager username.
-     *
+     * 
      * @return the nsxtUsername value.
      */
     public String nsxtUsername() {
@@ -49,7 +53,7 @@ public final class AdminCredentialsInner {
 
     /**
      * Get the nsxtPassword property: NSX-T Manager password.
-     *
+     * 
      * @return the nsxtPassword value.
      */
     public String nsxtPassword() {
@@ -58,7 +62,7 @@ public final class AdminCredentialsInner {
 
     /**
      * Get the vcenterUsername property: vCenter admin username.
-     *
+     * 
      * @return the vcenterUsername value.
      */
     public String vcenterUsername() {
@@ -67,7 +71,7 @@ public final class AdminCredentialsInner {
 
     /**
      * Get the vcenterPassword property: vCenter admin password.
-     *
+     * 
      * @return the vcenterPassword value.
      */
     public String vcenterPassword() {
@@ -76,7 +80,7 @@ public final class AdminCredentialsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

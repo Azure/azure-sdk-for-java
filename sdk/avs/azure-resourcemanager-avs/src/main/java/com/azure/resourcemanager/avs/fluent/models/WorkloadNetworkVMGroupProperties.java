@@ -10,7 +10,9 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupProvisioningSt
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** NSX VM Group Properties. */
+/**
+ * NSX VM Group Properties.
+ */
 @Fluent
 public final class WorkloadNetworkVMGroupProperties {
     /*
@@ -43,13 +45,15 @@ public final class WorkloadNetworkVMGroupProperties {
     @JsonProperty(value = "revision")
     private Long revision;
 
-    /** Creates an instance of WorkloadNetworkVMGroupProperties class. */
+    /**
+     * Creates an instance of WorkloadNetworkVMGroupProperties class.
+     */
     public WorkloadNetworkVMGroupProperties() {
     }
 
     /**
      * Get the displayName property: Display name of the VM group.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -58,7 +62,7 @@ public final class WorkloadNetworkVMGroupProperties {
 
     /**
      * Set the displayName property: Display name of the VM group.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkVMGroupProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class WorkloadNetworkVMGroupProperties {
 
     /**
      * Get the members property: Virtual machine members of this group.
-     *
+     * 
      * @return the members value.
      */
     public List<String> members() {
@@ -78,7 +82,7 @@ public final class WorkloadNetworkVMGroupProperties {
 
     /**
      * Set the members property: Virtual machine members of this group.
-     *
+     * 
      * @param members the members value to set.
      * @return the WorkloadNetworkVMGroupProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class WorkloadNetworkVMGroupProperties {
 
     /**
      * Get the status property: VM Group status.
-     *
+     * 
      * @return the status value.
      */
     public VMGroupStatusEnum status() {
@@ -98,7 +102,7 @@ public final class WorkloadNetworkVMGroupProperties {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadNetworkVMGroupProvisioningState provisioningState() {
@@ -107,7 +111,7 @@ public final class WorkloadNetworkVMGroupProperties {
 
     /**
      * Get the revision property: NSX revision number.
-     *
+     * 
      * @return the revision value.
      */
     public Long revision() {
@@ -116,7 +120,7 @@ public final class WorkloadNetworkVMGroupProperties {
 
     /**
      * Set the revision property: NSX revision number.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the WorkloadNetworkVMGroupProperties object itself.
      */
@@ -127,7 +131,7 @@ public final class WorkloadNetworkVMGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

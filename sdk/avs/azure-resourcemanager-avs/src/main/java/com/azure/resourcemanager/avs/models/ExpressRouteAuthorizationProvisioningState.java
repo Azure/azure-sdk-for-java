@@ -8,24 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the ExpressRoute Circuit Authorization provisioning. */
+/**
+ * Express Route Circuit Authorization provisioning state.
+ */
 public final class ExpressRouteAuthorizationProvisioningState
     extends ExpandableStringEnum<ExpressRouteAuthorizationProvisioningState> {
-    /** Static value Succeeded for ExpressRouteAuthorizationProvisioningState. */
+    /**
+     * Static value Succeeded for ExpressRouteAuthorizationProvisioningState.
+     */
     public static final ExpressRouteAuthorizationProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ExpressRouteAuthorizationProvisioningState. */
+    /**
+     * Static value Failed for ExpressRouteAuthorizationProvisioningState.
+     */
     public static final ExpressRouteAuthorizationProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Updating for ExpressRouteAuthorizationProvisioningState. */
-    public static final ExpressRouteAuthorizationProvisioningState UPDATING = fromString("Updating");
-
-    /** Static value Canceled for ExpressRouteAuthorizationProvisioningState. */
+    /**
+     * Static value Canceled for ExpressRouteAuthorizationProvisioningState.
+     */
     public static final ExpressRouteAuthorizationProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Static value Updating for ExpressRouteAuthorizationProvisioningState.
+     */
+    public static final ExpressRouteAuthorizationProvisioningState UPDATING = fromString("Updating");
+
+    /**
      * Creates a new instance of ExpressRouteAuthorizationProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +44,7 @@ public final class ExpressRouteAuthorizationProvisioningState
 
     /**
      * Creates or finds a ExpressRouteAuthorizationProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExpressRouteAuthorizationProvisioningState.
      */
@@ -45,7 +55,7 @@ public final class ExpressRouteAuthorizationProvisioningState
 
     /**
      * Gets known ExpressRouteAuthorizationProvisioningState values.
-     *
+     * 
      * @return known ExpressRouteAuthorizationProvisioningState values.
      */
     public static Collection<ExpressRouteAuthorizationProvisioningState> values() {

@@ -23,32 +23,29 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
 
     private final com.azure.resourcemanager.avs.AvsManager serviceManager;
 
-    public ScriptExecutionsImpl(
-        ScriptExecutionsClient innerClient, com.azure.resourcemanager.avs.AvsManager serviceManager) {
+    public ScriptExecutionsImpl(ScriptExecutionsClient innerClient,
+        com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ScriptExecution> list(String resourceGroupName, String privateCloudName) {
         PagedIterable<ScriptExecutionInner> inner = this.serviceClient().list(resourceGroupName, privateCloudName);
-        return Utils.mapPage(inner, inner1 -> new ScriptExecutionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScriptExecutionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ScriptExecution> list(String resourceGroupName, String privateCloudName, Context context) {
-        PagedIterable<ScriptExecutionInner> inner =
-            this.serviceClient().list(resourceGroupName, privateCloudName, context);
-        return Utils.mapPage(inner, inner1 -> new ScriptExecutionImpl(inner1, this.manager()));
+        PagedIterable<ScriptExecutionInner> inner
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScriptExecutionImpl(inner1, this.manager()));
     }
 
-    public Response<ScriptExecution> getWithResponse(
-        String resourceGroupName, String privateCloudName, String scriptExecutionName, Context context) {
-        Response<ScriptExecutionInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, context);
+    public Response<ScriptExecution> getWithResponse(String resourceGroupName, String privateCloudName,
+        String scriptExecutionName, Context context) {
+        Response<ScriptExecutionInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ScriptExecutionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -72,32 +69,23 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
         this.serviceClient().delete(resourceGroupName, privateCloudName, scriptExecutionName, context);
     }
 
-    public Response<ScriptExecution> getExecutionLogsWithResponse(
-        String resourceGroupName,
-        String privateCloudName,
-        String scriptExecutionName,
-        List<ScriptOutputStreamType> scriptOutputStreamType,
-        Context context) {
-        Response<ScriptExecutionInner> inner =
-            this
-                .serviceClient()
-                .getExecutionLogsWithResponse(
-                    resourceGroupName, privateCloudName, scriptExecutionName, scriptOutputStreamType, context);
+    public Response<ScriptExecution> getExecutionLogsWithResponse(String resourceGroupName, String privateCloudName,
+        String scriptExecutionName, List<ScriptOutputStreamType> scriptOutputStreamType, Context context) {
+        Response<ScriptExecutionInner> inner = this.serviceClient()
+            .getExecutionLogsWithResponse(resourceGroupName, privateCloudName, scriptExecutionName,
+                scriptOutputStreamType, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ScriptExecutionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ScriptExecution getExecutionLogs(
-        String resourceGroupName, String privateCloudName, String scriptExecutionName) {
-        ScriptExecutionInner inner =
-            this.serviceClient().getExecutionLogs(resourceGroupName, privateCloudName, scriptExecutionName);
+    public ScriptExecution getExecutionLogs(String resourceGroupName, String privateCloudName,
+        String scriptExecutionName) {
+        ScriptExecutionInner inner
+            = this.serviceClient().getExecutionLogs(resourceGroupName, privateCloudName, scriptExecutionName);
         if (inner != null) {
             return new ScriptExecutionImpl(inner, this.manager());
         } else {
@@ -106,113 +94,77 @@ public final class ScriptExecutionsImpl implements ScriptExecutions {
     }
 
     public ScriptExecution getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String scriptExecutionName = Utils.getValueFromIdByName(id, "scriptExecutions");
+        String scriptExecutionName = ResourceManagerUtils.getValueFromIdByName(id, "scriptExecutions");
         if (scriptExecutionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE).getValue();
     }
 
     public Response<ScriptExecution> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String scriptExecutionName = Utils.getValueFromIdByName(id, "scriptExecutions");
+        String scriptExecutionName = ResourceManagerUtils.getValueFromIdByName(id, "scriptExecutions");
         if (scriptExecutionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, privateCloudName, scriptExecutionName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String scriptExecutionName = Utils.getValueFromIdByName(id, "scriptExecutions");
+        String scriptExecutionName = ResourceManagerUtils.getValueFromIdByName(id, "scriptExecutions");
         if (scriptExecutionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
         }
         this.delete(resourceGroupName, privateCloudName, scriptExecutionName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String scriptExecutionName = Utils.getValueFromIdByName(id, "scriptExecutions");
+        String scriptExecutionName = ResourceManagerUtils.getValueFromIdByName(id, "scriptExecutions");
         if (scriptExecutionName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scriptExecutions'.", id)));
         }
         this.delete(resourceGroupName, privateCloudName, scriptExecutionName, context);
     }
