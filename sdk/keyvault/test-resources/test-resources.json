@@ -117,9 +117,6 @@
     "testApplicationId": {
       "type": "string"
     },
-    "testApplicationSecret": {
-      "type": "string"
-    },
     "enabledForDeployment": {
       "type": "bool",
       "defaultValue": false,
@@ -509,10 +506,6 @@
     "AZURE_KEYVAULT_CLIENT_ID": {
       "type": "string",
       "value": "[parameters('testApplicationId')]"
-    },
-    "AZURE_KEYVAULT_CLIENT_SECRET": {
-      "type": "string",
-      "value": "[parameters('testApplicationSecret')]"
     },
     "AZURE_KEYVAULT_CERTIFICATE_NAME": {
       "type": "string",
