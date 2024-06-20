@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class PlacementPolicyType extends ExpandableStringEnum<PlacementPol
      * @param name a name to look for.
      * @return the corresponding PlacementPolicyType.
      */
-    @JsonCreator
     public static PlacementPolicyType fromString(String name) {
         return fromString(name, PlacementPolicyType.class);
     }

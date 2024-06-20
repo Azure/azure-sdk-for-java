@@ -25,7 +25,7 @@ public final class WorkloadNetworkDhcpConfigurationsCreateSamples {
             .withProperties(new WorkloadNetworkDhcpServer().withDisplayName("dhcpConfigurations1")
                 .withRevision(1L)
                 .withServerAddress("40.1.5.1/24")
-                .withLeaseTime(86400))
+                .withLeaseTime(86400L))
             .create();
     }
 }

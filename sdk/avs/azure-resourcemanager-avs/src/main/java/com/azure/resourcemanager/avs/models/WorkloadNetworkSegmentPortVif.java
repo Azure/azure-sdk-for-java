@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Ports and any VIF attached to segment.
  */
 @Immutable
-public final class WorkloadNetworkSegmentPortVif {
+public final class WorkloadNetworkSegmentPortVif implements JsonSerializable<WorkloadNetworkSegmentPortVif> {
     /*
      * Name of port or VIF attached to segment.
      */
-    @JsonProperty(value = "portName")
     private String portName;
 
     /**
@@ -39,5 +42,42 @@ public final class WorkloadNetworkSegmentPortVif {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("portName", this.portName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadNetworkSegmentPortVif from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadNetworkSegmentPortVif if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkloadNetworkSegmentPortVif.
+     */
+    public static WorkloadNetworkSegmentPortVif fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadNetworkSegmentPortVif deserializedWorkloadNetworkSegmentPortVif
+                = new WorkloadNetworkSegmentPortVif();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("portName".equals(fieldName)) {
+                    deserializedWorkloadNetworkSegmentPortVif.portName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadNetworkSegmentPortVif;
+        });
     }
 }

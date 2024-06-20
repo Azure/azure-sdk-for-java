@@ -74,7 +74,7 @@ public interface WorkloadNetworkDnsZone {
      * 
      * @return the dnsServices value.
      */
-    Integer dnsServices();
+    Long dnsServices();
 
     /**
      * Gets the provisioningState property: The provisioning state.
@@ -220,7 +220,7 @@ public interface WorkloadNetworkDnsZone {
              * @param dnsServices Number of DNS Services using the DNS zone.
              * @return the next definition stage.
              */
-            WithCreate withDnsServices(Integer dnsServices);
+            WithCreate withDnsServices(Long dnsServices);
         }
 
         /**
@@ -331,7 +331,7 @@ public interface WorkloadNetworkDnsZone {
              * @param dnsServices Number of DNS Services using the DNS zone.
              * @return the next definition stage.
              */
-            Update withDnsServices(Integer dnsServices);
+            Update withDnsServices(Long dnsServices);
         }
 
         /**

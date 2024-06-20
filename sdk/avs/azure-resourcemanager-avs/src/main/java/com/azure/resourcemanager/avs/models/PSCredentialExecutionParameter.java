@@ -5,39 +5,29 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * a powershell credential object.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = PSCredentialExecutionParameter.class,
-    visible = true)
-@JsonTypeName("Credential")
 @Fluent
 public final class PSCredentialExecutionParameter extends ScriptExecutionParameter {
     /*
      * script execution parameter type
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private ScriptExecutionParameterType type = ScriptExecutionParameterType.CREDENTIAL;
 
     /*
      * username for login
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * password for login
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /**
@@ -113,5 +103,53 @@ public final class PSCredentialExecutionParameter extends ScriptExecutionParamet
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PSCredentialExecutionParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PSCredentialExecutionParameter if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PSCredentialExecutionParameter.
+     */
+    public static PSCredentialExecutionParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PSCredentialExecutionParameter deserializedPSCredentialExecutionParameter
+                = new PSCredentialExecutionParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPSCredentialExecutionParameter.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedPSCredentialExecutionParameter.type
+                        = ScriptExecutionParameterType.fromString(reader.getString());
+                } else if ("username".equals(fieldName)) {
+                    deserializedPSCredentialExecutionParameter.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedPSCredentialExecutionParameter.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPSCredentialExecutionParameter;
+        });
     }
 }

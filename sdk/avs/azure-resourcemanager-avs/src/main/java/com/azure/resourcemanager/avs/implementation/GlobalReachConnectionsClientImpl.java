@@ -33,7 +33,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.GlobalReachConnectionsClient;
 import com.azure.resourcemanager.avs.fluent.models.GlobalReachConnectionInner;
-import com.azure.resourcemanager.avs.implementation.models.GlobalReachConnectionListResult;
+import com.azure.resourcemanager.avs.implementation.models.GlobalReachConnectionList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -74,7 +74,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GlobalReachConnectionListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<GlobalReachConnectionList>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -118,7 +118,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GlobalReachConnectionListResult>> listNext(
+        Mono<Response<GlobalReachConnectionList>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }

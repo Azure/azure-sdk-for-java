@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class ScriptOutputStreamType extends ExpandableStringEnum<ScriptOut
      * @param name a name to look for.
      * @return the corresponding ScriptOutputStreamType.
      */
-    @JsonCreator
     public static ScriptOutputStreamType fromString(String name) {
         return fromString(name, ScriptOutputStreamType.class);
     }

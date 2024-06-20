@@ -30,7 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.avs.fluent.HcxEnterpriseSitesClient;
 import com.azure.resourcemanager.avs.fluent.models.HcxEnterpriseSiteInner;
-import com.azure.resourcemanager.avs.implementation.models.HcxEnterpriseSiteListResult;
+import com.azure.resourcemanager.avs.implementation.models.HcxEnterpriseSiteList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -69,7 +69,7 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HcxEnterpriseSiteListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<HcxEnterpriseSiteList>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -112,9 +112,8 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HcxEnterpriseSiteListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+        Mono<Response<HcxEnterpriseSiteList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, Context context);
     }
 
     /**

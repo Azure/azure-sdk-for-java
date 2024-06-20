@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class VirtualMachineProvisioningState extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding VirtualMachineProvisioningState.
      */
-    @JsonCreator
     public static VirtualMachineProvisioningState fromString(String name) {
         return fromString(name, VirtualMachineProvisioningState.class);
     }

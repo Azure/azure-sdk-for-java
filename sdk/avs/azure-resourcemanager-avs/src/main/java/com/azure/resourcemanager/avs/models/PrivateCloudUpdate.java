@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.fluent.models.PrivateCloudUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,30 +18,25 @@ import java.util.Map;
  * An update to a private cloud resource.
  */
 @Fluent
-public final class PrivateCloudUpdate {
+public final class PrivateCloudUpdate implements JsonSerializable<PrivateCloudUpdate> {
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The SKU (Stock Keeping Unit) assigned to this resource.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * The managed service identities assigned to this resource.
      */
-    @JsonProperty(value = "identity")
     private PrivateCloudIdentity identity;
 
     /*
      * The updatable properties of a private cloud resource
      */
-    @JsonProperty(value = "properties")
     private PrivateCloudUpdateProperties innerProperties;
 
     /**
@@ -300,5 +298,51 @@ public final class PrivateCloudUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateCloudUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateCloudUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateCloudUpdate.
+     */
+    public static PrivateCloudUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateCloudUpdate deserializedPrivateCloudUpdate = new PrivateCloudUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPrivateCloudUpdate.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedPrivateCloudUpdate.sku = Sku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedPrivateCloudUpdate.identity = PrivateCloudIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateCloudUpdate.innerProperties = PrivateCloudUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateCloudUpdate;
+        });
     }
 }

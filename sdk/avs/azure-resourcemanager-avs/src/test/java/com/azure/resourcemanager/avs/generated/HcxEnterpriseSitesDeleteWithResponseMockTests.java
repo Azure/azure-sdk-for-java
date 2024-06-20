@@ -28,7 +28,7 @@ public final class HcxEnterpriseSitesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.hcxEnterpriseSites()
-            .deleteWithResponse("mquhio", "rsjuivfcdisyir", "xzhczexrxz", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("j", "uktalhsnvkcdmxz", "poaimlnwiaaomyl", com.azure.core.util.Context.NONE);
 
     }
 }

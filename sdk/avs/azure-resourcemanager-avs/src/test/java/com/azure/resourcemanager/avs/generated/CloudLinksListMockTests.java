@@ -22,7 +22,7 @@ public final class CloudLinksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Disconnected\",\"linkedCloud\":\"nlvhhtklnvnafvv\"},\"id\":\"f\",\"name\":\"devjb\",\"type\":\"slcqxypokkh\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"status\":\"Failed\",\"linkedCloud\":\"pxbiygnugjknfs\"},\"id\":\"cttuxuu\",\"name\":\"i\",\"type\":\"flqo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class CloudLinksListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CloudLink> response
-            = manager.cloudLinks().list("rljyoogwxhnsdu", "gwbsreurf", com.azure.core.util.Context.NONE);
+            = manager.cloudLinks().list("rgxffmshkw", "bkgozxwopdbydpi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nlvhhtklnvnafvv", response.iterator().next().linkedCloud());
+        Assertions.assertEquals("pxbiygnugjknfs", response.iterator().next().linkedCloud());
     }
 }

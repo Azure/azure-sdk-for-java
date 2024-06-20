@@ -6,59 +6,51 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * VM-Host placement policy properties.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = VmHostPlacementPolicyProperties.class,
-    visible = true)
-@JsonTypeName("VmHost")
 @Fluent
 public final class VmHostPlacementPolicyProperties extends PlacementPolicyProperties {
     /*
      * Placement Policy type
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private PlacementPolicyType type = PlacementPolicyType.VM_HOST;
 
     /*
      * Virtual machine members list
      */
-    @JsonProperty(value = "vmMembers", required = true)
     private List<String> vmMembers;
 
     /*
      * Host members list
      */
-    @JsonProperty(value = "hostMembers", required = true)
     private List<String> hostMembers;
 
     /*
      * placement policy affinity type
      */
-    @JsonProperty(value = "affinityType", required = true)
     private AffinityType affinityType;
 
     /*
      * vm-host placement policy affinity strength (should/must)
      */
-    @JsonProperty(value = "affinityStrength")
     private AffinityStrength affinityStrength;
 
     /*
      * placement policy azure hybrid benefit opt-in type
      */
-    @JsonProperty(value = "azureHybridBenefitType")
     private AzureHybridBenefitType azureHybridBenefitType;
+
+    /*
+     * The provisioning state
+     */
+    private PlacementPolicyProvisioningState provisioningState;
 
     /**
      * Creates an instance of VmHostPlacementPolicyProperties class.
@@ -177,6 +169,16 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
     }
 
     /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public PlacementPolicyProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -220,4 +222,75 @@ public final class VmHostPlacementPolicyProperties extends PlacementPolicyProper
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VmHostPlacementPolicyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeArrayField("vmMembers", this.vmMembers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("hostMembers", this.hostMembers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("affinityType", this.affinityType == null ? null : this.affinityType.toString());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("affinityStrength",
+            this.affinityStrength == null ? null : this.affinityStrength.toString());
+        jsonWriter.writeStringField("azureHybridBenefitType",
+            this.azureHybridBenefitType == null ? null : this.azureHybridBenefitType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VmHostPlacementPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VmHostPlacementPolicyProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VmHostPlacementPolicyProperties.
+     */
+    public static VmHostPlacementPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VmHostPlacementPolicyProperties deserializedVmHostPlacementPolicyProperties
+                = new VmHostPlacementPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedVmHostPlacementPolicyProperties
+                        .withState(PlacementPolicyState.fromString(reader.getString()));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedVmHostPlacementPolicyProperties.withDisplayName(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVmHostPlacementPolicyProperties.provisioningState
+                        = PlacementPolicyProvisioningState.fromString(reader.getString());
+                } else if ("vmMembers".equals(fieldName)) {
+                    List<String> vmMembers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVmHostPlacementPolicyProperties.vmMembers = vmMembers;
+                } else if ("hostMembers".equals(fieldName)) {
+                    List<String> hostMembers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVmHostPlacementPolicyProperties.hostMembers = hostMembers;
+                } else if ("affinityType".equals(fieldName)) {
+                    deserializedVmHostPlacementPolicyProperties.affinityType
+                        = AffinityType.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedVmHostPlacementPolicyProperties.type
+                        = PlacementPolicyType.fromString(reader.getString());
+                } else if ("affinityStrength".equals(fieldName)) {
+                    deserializedVmHostPlacementPolicyProperties.affinityStrength
+                        = AffinityStrength.fromString(reader.getString());
+                } else if ("azureHybridBenefitType".equals(fieldName)) {
+                    deserializedVmHostPlacementPolicyProperties.azureHybridBenefitType
+                        = AzureHybridBenefitType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVmHostPlacementPolicyProperties;
+        });
+    }
 }

@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An Encryption Key.
  */
 @Fluent
-public final class EncryptionKeyVaultProperties {
+public final class EncryptionKeyVaultProperties implements JsonSerializable<EncryptionKeyVaultProperties> {
     /*
      * The name of the key.
      */
-    @JsonProperty(value = "keyName")
     private String keyName;
 
     /*
      * The version of the key.
      */
-    @JsonProperty(value = "keyVersion")
     private String keyVersion;
 
     /*
      * The auto-detected version of the key if versionType is auto-detected.
      */
-    @JsonProperty(value = "autoDetectedKeyVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String autoDetectedKeyVersion;
 
     /*
      * The URL of the vault.
      */
-    @JsonProperty(value = "keyVaultUrl")
     private String keyVaultUrl;
 
     /*
      * The state of key provided
      */
-    @JsonProperty(value = "keyState", access = JsonProperty.Access.WRITE_ONLY)
     private EncryptionKeyStatus keyState;
 
     /*
      * Property of the key if user provided or auto detected
      */
-    @JsonProperty(value = "versionType", access = JsonProperty.Access.WRITE_ONLY)
     private EncryptionVersionType versionType;
 
     /**
@@ -147,5 +145,55 @@ public final class EncryptionKeyVaultProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyName", this.keyName);
+        jsonWriter.writeStringField("keyVersion", this.keyVersion);
+        jsonWriter.writeStringField("keyVaultUrl", this.keyVaultUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionKeyVaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionKeyVaultProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EncryptionKeyVaultProperties.
+     */
+    public static EncryptionKeyVaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionKeyVaultProperties deserializedEncryptionKeyVaultProperties = new EncryptionKeyVaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyName".equals(fieldName)) {
+                    deserializedEncryptionKeyVaultProperties.keyName = reader.getString();
+                } else if ("keyVersion".equals(fieldName)) {
+                    deserializedEncryptionKeyVaultProperties.keyVersion = reader.getString();
+                } else if ("autoDetectedKeyVersion".equals(fieldName)) {
+                    deserializedEncryptionKeyVaultProperties.autoDetectedKeyVersion = reader.getString();
+                } else if ("keyVaultUrl".equals(fieldName)) {
+                    deserializedEncryptionKeyVaultProperties.keyVaultUrl = reader.getString();
+                } else if ("keyState".equals(fieldName)) {
+                    deserializedEncryptionKeyVaultProperties.keyState
+                        = EncryptionKeyStatus.fromString(reader.getString());
+                } else if ("versionType".equals(fieldName)) {
+                    deserializedEncryptionKeyVaultProperties.versionType
+                        = EncryptionVersionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionKeyVaultProperties;
+        });
     }
 }

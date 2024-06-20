@@ -27,7 +27,7 @@ public final class WorkloadNetworkVmGroupsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workloadNetworkVmGroups().delete("ytunlbfjkwr", "snkq", "hsyrqunj", com.azure.core.util.Context.NONE);
+        manager.workloadNetworkVmGroups().delete("cysihs", "qcwdhoh", "dtmcd", com.azure.core.util.Context.NONE);
 
     }
 }

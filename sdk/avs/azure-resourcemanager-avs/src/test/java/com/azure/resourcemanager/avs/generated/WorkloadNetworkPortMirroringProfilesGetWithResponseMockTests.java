@@ -22,7 +22,7 @@ public final class WorkloadNetworkPortMirroringProfilesGetWithResponseMockTests 
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"rgywwp\",\"direction\":\"INGRESS\",\"source\":\"nptfujgi\",\"destination\":\"aaoepttaqut\",\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":3740922293737514976},\"id\":\"ruunzzjgehkf\",\"name\":\"imrt\",\"type\":\"xokffqyin\"}";
+            = "{\"properties\":{\"displayName\":\"qn\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"chrqb\",\"destination\":\"jrcg\",\"status\":\"FAILURE\",\"provisioningState\":\"Building\",\"revision\":8975438467720263747},\"id\":\"jumvqqolihrraio\",\"name\":\"aubrjtloq\",\"type\":\"fuojrngif\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class WorkloadNetworkPortMirroringProfilesGetWithResponseMockTests 
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkPortMirroring response = manager.workloadNetworkPortMirroringProfiles()
-            .getWithResponse("cxwaxfewz", "kjexfdeqvhp", "ylkkshkbffmbm", com.azure.core.util.Context.NONE)
+            .getWithResponse("ttexoqqpwcyyufmh", "uncuw", "qspkcdqzhlctd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rgywwp", response.displayName());
-        Assertions.assertEquals(PortMirroringDirectionEnum.INGRESS, response.direction());
-        Assertions.assertEquals("nptfujgi", response.source());
-        Assertions.assertEquals("aaoepttaqut", response.destination());
-        Assertions.assertEquals(3740922293737514976L, response.revision());
+        Assertions.assertEquals("qn", response.displayName());
+        Assertions.assertEquals(PortMirroringDirectionEnum.BIDIRECTIONAL, response.direction());
+        Assertions.assertEquals("chrqb", response.source());
+        Assertions.assertEquals("jrcg", response.destination());
+        Assertions.assertEquals(8975438467720263747L, response.revision());
     }
 }

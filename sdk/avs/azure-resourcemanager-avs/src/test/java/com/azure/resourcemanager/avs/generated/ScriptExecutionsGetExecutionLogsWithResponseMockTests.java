@@ -23,7 +23,7 @@ public final class ScriptExecutionsGetExecutionLogsWithResponseMockTests {
     @Test
     public void testGetExecutionLogsWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"scriptCmdletId\":\"qthwmgnmbscbb\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"dhxiidlopedbwd\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"yqyybxubmdna\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"qwremjel\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"qacigeleo\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"d\"}],\"failureReason\":\"qvwzkjopwbeonrl\",\"timeout\":\"wzdqybxceakxcpts\",\"retention\":\"fyiaseqch\",\"submittedAt\":\"2021-11-05T11:59:35Z\",\"startedAt\":\"2021-08-04T17:40:23Z\",\"finishedAt\":\"2021-01-20T16:29:41Z\",\"provisioningState\":\"Deleting\",\"output\":[\"ykiue\"],\"namedOutputs\":{\"klinhmdptysprq\":\"datanbwzohmnrxxbso\",\"pli\":\"datagnzxojpslsvj\",\"qvapcohhoucq\":\"datafiqwoy\",\"jxcx\":\"dataq\"},\"information\":[\"dcgdzbenribca\",\"etzqd\",\"tjwfljhznamtua\"],\"warnings\":[\"wcjjncqt\",\"z\",\"izvg\"],\"errors\":[\"tzuuvb\",\"ngrebwg\"]},\"id\":\"httzlswvajqfutlx\",\"name\":\"oqza\",\"type\":\"unwqr\"}";
+            = "{\"properties\":{\"scriptCmdletId\":\"szhv\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"c\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"hvtrrmhwrbfdpyf\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"ubhvj\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"ocu\"}],\"failureReason\":\"lw\",\"timeout\":\"hmem\",\"retention\":\"oclu\",\"submittedAt\":\"2021-08-23T19:22:29Z\",\"startedAt\":\"2021-11-26T19:05Z\",\"finishedAt\":\"2021-08-15T12:03:46Z\",\"provisioningState\":\"Cancelling\",\"output\":[\"mmyky\",\"jxsglhsr\",\"rye\",\"ylmbkzudni\"],\"namedOutputs\":{\"refqy\":\"dataihotjewlpxuzzjg\",\"kwpzdqtvh\":\"dataqotoihiqakydiwfb\"},\"information\":[\"odaqaxsi\",\"ietgbebjfu\"],\"warnings\":[\"oichdlpnfpubnt\",\"batzviqsows\",\"aelcat\",\"cjuhplrvkm\"],\"errors\":[\"mjvlgfgg\"]},\"id\":\"kyylizr\",\"name\":\"bjpsfxsfuztlvtm\",\"type\":\"agb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,18 +33,17 @@ public final class ScriptExecutionsGetExecutionLogsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ScriptExecution response = manager.scriptExecutions()
-            .getExecutionLogsWithResponse("rczezkhhlt", "jadhqoawj", "oyueayfbpcmsp",
-                Arrays.asList(ScriptOutputStreamType.WARNING, ScriptOutputStreamType.OUTPUT,
-                    ScriptOutputStreamType.WARNING),
+            .getExecutionLogsWithResponse("mtkhlowkxxpvbr", "fjmzsyzfho", "lhikcyychunsj",
+                Arrays.asList(ScriptOutputStreamType.WARNING, ScriptOutputStreamType.INFORMATION),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qthwmgnmbscbb", response.scriptCmdletId());
-        Assertions.assertEquals("dhxiidlopedbwd", response.parameters().get(0).name());
-        Assertions.assertEquals("qwremjel", response.hiddenParameters().get(0).name());
-        Assertions.assertEquals("qvwzkjopwbeonrl", response.failureReason());
-        Assertions.assertEquals("wzdqybxceakxcpts", response.timeout());
-        Assertions.assertEquals("fyiaseqch", response.retention());
-        Assertions.assertEquals("ykiue", response.output().get(0));
+        Assertions.assertEquals("szhv", response.scriptCmdletId());
+        Assertions.assertEquals("c", response.parameters().get(0).name());
+        Assertions.assertEquals("ocu", response.hiddenParameters().get(0).name());
+        Assertions.assertEquals("lw", response.failureReason());
+        Assertions.assertEquals("hmem", response.timeout());
+        Assertions.assertEquals("oclu", response.retention());
+        Assertions.assertEquals("mmyky", response.output().get(0));
     }
 }

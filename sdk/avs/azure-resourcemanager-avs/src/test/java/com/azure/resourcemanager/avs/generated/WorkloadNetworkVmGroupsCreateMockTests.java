@@ -22,7 +22,7 @@ public final class WorkloadNetworkVmGroupsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"ctbrxkjzwrgxffm\",\"members\":[\"wfbkgozxwo\",\"dby\"],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":8453153522791825173},\"id\":\"apxbi\",\"name\":\"gn\",\"type\":\"gjkn\"}";
+            = "{\"properties\":{\"displayName\":\"xcczurtl\",\"members\":[\"q\",\"bkwvzg\",\"zvd\",\"bzdixzmq\"],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":2317307583598027540},\"id\":\"hewjptmcgsbost\",\"name\":\"eln\",\"type\":\"la\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class WorkloadNetworkVmGroupsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkVMGroup response = manager.workloadNetworkVmGroups()
-            .define("xuckpggqoweyir")
-            .withExistingPrivateCloud("hdenxaulk", "akdkifmjnnawtqab")
-            .withDisplayName("isngwflqqmpizru")
-            .withMembers(Arrays.asList("qxpxiwfcngjsaa", "iixtmkzj"))
-            .withRevision(8321849396779286295L)
+            .define("vhdbevwqqxey")
+            .withExistingPrivateCloud("sufco", "dxbzlmcmuap")
+            .withDisplayName("nqzi")
+            .withMembers(Arrays.asList("kbg"))
+            .withRevision(2772661107055529324L)
             .create();
 
-        Assertions.assertEquals("ctbrxkjzwrgxffm", response.displayName());
-        Assertions.assertEquals("wfbkgozxwo", response.members().get(0));
-        Assertions.assertEquals(8453153522791825173L, response.revision());
+        Assertions.assertEquals("xcczurtl", response.displayName());
+        Assertions.assertEquals("q", response.members().get(0));
+        Assertions.assertEquals(2317307583598027540L, response.revision());
     }
 }

@@ -21,7 +21,7 @@ public final class WorkloadNetworkDnsZonesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"zonwpngajinnixj\",\"domain\":[\"tmjfjmyccxlzhcox\",\"vnekhenlusfnrdtj\"],\"dnsServerIps\":[\"r\",\"cq\"],\"sourceIp\":\"vidttgepuslvyjt\",\"dnsServices\":1750462834,\"provisioningState\":\"Deleting\",\"revision\":784595038382816064},\"id\":\"iesfuug\",\"name\":\"tuqfecjxeygtu\",\"type\":\"xu\"}";
+            = "{\"properties\":{\"displayName\":\"wetnpsihc\",\"domain\":[\"zvaylptrsqqw\",\"tcmwqkchc\",\"waxfewzjkj\"],\"dnsServerIps\":[\"deqvhp\",\"ylkkshkbffmbm\",\"zjrgyww\"],\"sourceIp\":\"jx\",\"dnsServices\":7942160744300622603,\"provisioningState\":\"Failed\",\"revision\":4816022177216444981},\"id\":\"gaao\",\"name\":\"pttaqutd\",\"type\":\"wemxswvruunzz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class WorkloadNetworkDnsZonesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkDnsZone response = manager.workloadNetworkDnsZones()
-            .getWithResponse("rjvzuyt", "rmlmuowo", "bauiropi", com.azure.core.util.Context.NONE)
+            .getWithResponse("sgcrpfbcunezzce", "elfwy", "wl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zonwpngajinnixj", response.displayName());
-        Assertions.assertEquals("tmjfjmyccxlzhcox", response.domain().get(0));
-        Assertions.assertEquals("r", response.dnsServerIps().get(0));
-        Assertions.assertEquals("vidttgepuslvyjt", response.sourceIp());
-        Assertions.assertEquals(1750462834, response.dnsServices());
-        Assertions.assertEquals(784595038382816064L, response.revision());
+        Assertions.assertEquals("wetnpsihc", response.displayName());
+        Assertions.assertEquals("zvaylptrsqqw", response.domain().get(0));
+        Assertions.assertEquals("deqvhp", response.dnsServerIps().get(0));
+        Assertions.assertEquals("jx", response.sourceIp());
+        Assertions.assertEquals(7942160744300622603L, response.dnsServices());
+        Assertions.assertEquals(4816022177216444981L, response.revision());
     }
 }

@@ -33,7 +33,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.AuthorizationsClient;
 import com.azure.resourcemanager.avs.fluent.models.ExpressRouteAuthorizationInner;
-import com.azure.resourcemanager.avs.implementation.models.ExpressRouteAuthorizationListResult;
+import com.azure.resourcemanager.avs.implementation.models.ExpressRouteAuthorizationList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -74,7 +74,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteAuthorizationListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<ExpressRouteAuthorizationList>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -117,7 +117,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteAuthorizationListResult>> listNext(
+        Mono<Response<ExpressRouteAuthorizationList>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }

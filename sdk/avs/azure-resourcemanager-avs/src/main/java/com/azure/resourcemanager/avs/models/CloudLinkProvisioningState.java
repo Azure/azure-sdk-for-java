@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class CloudLinkProvisioningState extends ExpandableStringEnum<Cloud
      * @param name a name to look for.
      * @return the corresponding CloudLinkProvisioningState.
      */
-    @JsonCreator
     public static CloudLinkProvisioningState fromString(String name) {
         return fromString(name, CloudLinkProvisioningState.class);
     }

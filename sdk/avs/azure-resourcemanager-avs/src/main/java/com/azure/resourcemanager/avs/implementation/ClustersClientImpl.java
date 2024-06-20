@@ -36,7 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.ClustersClient;
 import com.azure.resourcemanager.avs.fluent.models.ClusterInner;
 import com.azure.resourcemanager.avs.fluent.models.ClusterZoneListInner;
-import com.azure.resourcemanager.avs.implementation.models.ClusterListResult;
+import com.azure.resourcemanager.avs.implementation.models.ClusterList;
 import com.azure.resourcemanager.avs.models.ClustersUpdateResponse;
 import com.azure.resourcemanager.avs.models.ClusterUpdate;
 import java.nio.ByteBuffer;
@@ -78,7 +78,7 @@ public final class ClustersClientImpl implements ClustersClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<ClusterList>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -139,7 +139,7 @@ public final class ClustersClientImpl implements ClustersClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<ClusterList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, Context context);
     }
 

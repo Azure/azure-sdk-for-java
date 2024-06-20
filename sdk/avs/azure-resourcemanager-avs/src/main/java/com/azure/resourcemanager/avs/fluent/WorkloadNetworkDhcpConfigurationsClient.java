@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDhcpInner;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in WorkloadNetworkDhcpConfigurationsClient.
@@ -156,7 +155,7 @@ public interface WorkloadNetworkDhcpConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdate(String resourceGroupName,
-        String privateCloudName, String dhcpId, WorkloadNetworkDhcpUpdate workloadNetworkDhcp);
+        String privateCloudName, String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp);
 
     /**
      * Update a WorkloadNetworkDhcp.
@@ -173,7 +172,7 @@ public interface WorkloadNetworkDhcpConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdate(String resourceGroupName,
-        String privateCloudName, String dhcpId, WorkloadNetworkDhcpUpdate workloadNetworkDhcp, Context context);
+        String privateCloudName, String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context);
 
     /**
      * Update a WorkloadNetworkDhcp.
@@ -189,7 +188,7 @@ public interface WorkloadNetworkDhcpConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDhcpInner update(String resourceGroupName, String privateCloudName, String dhcpId,
-        WorkloadNetworkDhcpUpdate workloadNetworkDhcp);
+        WorkloadNetworkDhcpInner workloadNetworkDhcp);
 
     /**
      * Update a WorkloadNetworkDhcp.
@@ -206,7 +205,7 @@ public interface WorkloadNetworkDhcpConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDhcpInner update(String resourceGroupName, String privateCloudName, String dhcpId,
-        WorkloadNetworkDhcpUpdate workloadNetworkDhcp, Context context);
+        WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context);
 
     /**
      * Delete a WorkloadNetworkDhcp.

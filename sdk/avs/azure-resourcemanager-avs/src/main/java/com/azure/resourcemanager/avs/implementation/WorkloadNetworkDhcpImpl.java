@@ -9,7 +9,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDhcpInner;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpEntity;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpUpdate;
 
 public final class WorkloadNetworkDhcpImpl
     implements WorkloadNetworkDhcp, WorkloadNetworkDhcp.Definition, WorkloadNetworkDhcp.Update {
@@ -55,8 +54,6 @@ public final class WorkloadNetworkDhcpImpl
 
     private String dhcpId;
 
-    private WorkloadNetworkDhcpUpdate updateWorkloadNetworkDhcp;
-
     public WorkloadNetworkDhcpImpl withExistingPrivateCloud(String resourceGroupName, String privateCloudName) {
         this.resourceGroupName = resourceGroupName;
         this.privateCloudName = privateCloudName;
@@ -84,21 +81,20 @@ public final class WorkloadNetworkDhcpImpl
     }
 
     public WorkloadNetworkDhcpImpl update() {
-        this.updateWorkloadNetworkDhcp = new WorkloadNetworkDhcpUpdate();
         return this;
     }
 
     public WorkloadNetworkDhcp apply() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworkDhcpConfigurations()
-            .update(resourceGroupName, privateCloudName, dhcpId, updateWorkloadNetworkDhcp, Context.NONE);
+            .update(resourceGroupName, privateCloudName, dhcpId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkDhcp apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworkDhcpConfigurations()
-            .update(resourceGroupName, privateCloudName, dhcpId, updateWorkloadNetworkDhcp, context);
+            .update(resourceGroupName, privateCloudName, dhcpId, this.innerModel(), context);
         return this;
     }
 
@@ -128,16 +124,7 @@ public final class WorkloadNetworkDhcpImpl
     }
 
     public WorkloadNetworkDhcpImpl withProperties(WorkloadNetworkDhcpEntity properties) {
-        if (isInCreateMode()) {
-            this.innerModel().withProperties(properties);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDhcp.withProperties(properties);
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        this.innerModel().withProperties(properties);
+        return this;
     }
 }

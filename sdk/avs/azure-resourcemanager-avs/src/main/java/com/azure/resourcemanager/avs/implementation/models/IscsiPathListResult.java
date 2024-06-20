@@ -6,25 +6,27 @@ package com.azure.resourcemanager.avs.implementation.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.fluent.models.IscsiPathInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of a IscsiPath list operation.
  */
 @Immutable
-public final class IscsiPathListResult {
+public final class IscsiPathListResult implements JsonSerializable<IscsiPathListResult> {
     /*
      * The IscsiPath items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<IscsiPathInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -66,4 +68,45 @@ public final class IscsiPathListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IscsiPathListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IscsiPathListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IscsiPathListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IscsiPathListResult.
+     */
+    public static IscsiPathListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IscsiPathListResult deserializedIscsiPathListResult = new IscsiPathListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<IscsiPathInner> value = reader.readArray(reader1 -> IscsiPathInner.fromJson(reader1));
+                    deserializedIscsiPathListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedIscsiPathListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIscsiPathListResult;
+        });
+    }
 }

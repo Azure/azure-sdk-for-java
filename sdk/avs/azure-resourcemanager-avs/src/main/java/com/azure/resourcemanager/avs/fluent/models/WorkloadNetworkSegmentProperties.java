@@ -5,58 +5,55 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.SegmentStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentPortVif;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentProvisioningState;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentSubnet;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * NSX Segment Properties.
  */
 @Fluent
-public final class WorkloadNetworkSegmentProperties {
+public final class WorkloadNetworkSegmentProperties implements JsonSerializable<WorkloadNetworkSegmentProperties> {
     /*
      * Display name of the segment.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Gateway which to connect segment to.
      */
-    @JsonProperty(value = "connectedGateway")
     private String connectedGateway;
 
     /*
      * Subnet which to connect segment to.
      */
-    @JsonProperty(value = "subnet")
     private WorkloadNetworkSegmentSubnet subnet;
 
     /*
      * Port Vif which segment is associated with.
      */
-    @JsonProperty(value = "portVif", access = JsonProperty.Access.WRITE_ONLY)
     private List<WorkloadNetworkSegmentPortVif> portVif;
 
     /*
      * Segment status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private SegmentStatusEnum status;
 
     /*
      * The provisioning state
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkloadNetworkSegmentProvisioningState provisioningState;
 
     /*
      * NSX revision number.
      */
-    @JsonProperty(value = "revision")
     private Long revision;
 
     /**
@@ -184,5 +181,61 @@ public final class WorkloadNetworkSegmentProperties {
         if (portVif() != null) {
             portVif().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("connectedGateway", this.connectedGateway);
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeNumberField("revision", this.revision);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadNetworkSegmentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadNetworkSegmentProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkloadNetworkSegmentProperties.
+     */
+    public static WorkloadNetworkSegmentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadNetworkSegmentProperties deserializedWorkloadNetworkSegmentProperties
+                = new WorkloadNetworkSegmentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedWorkloadNetworkSegmentProperties.displayName = reader.getString();
+                } else if ("connectedGateway".equals(fieldName)) {
+                    deserializedWorkloadNetworkSegmentProperties.connectedGateway = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedWorkloadNetworkSegmentProperties.subnet = WorkloadNetworkSegmentSubnet.fromJson(reader);
+                } else if ("portVif".equals(fieldName)) {
+                    List<WorkloadNetworkSegmentPortVif> portVif
+                        = reader.readArray(reader1 -> WorkloadNetworkSegmentPortVif.fromJson(reader1));
+                    deserializedWorkloadNetworkSegmentProperties.portVif = portVif;
+                } else if ("status".equals(fieldName)) {
+                    deserializedWorkloadNetworkSegmentProperties.status
+                        = SegmentStatusEnum.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedWorkloadNetworkSegmentProperties.provisioningState
+                        = WorkloadNetworkSegmentProvisioningState.fromString(reader.getString());
+                } else if ("revision".equals(fieldName)) {
+                    deserializedWorkloadNetworkSegmentProperties.revision = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadNetworkSegmentProperties;
+        });
     }
 }

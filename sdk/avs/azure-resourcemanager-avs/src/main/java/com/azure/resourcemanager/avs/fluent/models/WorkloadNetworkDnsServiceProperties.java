@@ -5,63 +5,60 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.DnsServiceLogLevelEnum;
 import com.azure.resourcemanager.avs.models.DnsServiceStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServiceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * NSX DNS Service Properties.
  */
 @Fluent
-public final class WorkloadNetworkDnsServiceProperties {
+public final class WorkloadNetworkDnsServiceProperties
+    implements JsonSerializable<WorkloadNetworkDnsServiceProperties> {
     /*
      * Display name of the DNS Service.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * DNS service IP of the DNS Service.
      */
-    @JsonProperty(value = "dnsServiceIp")
     private String dnsServiceIp;
 
     /*
      * Default DNS zone of the DNS Service.
      */
-    @JsonProperty(value = "defaultDnsZone")
     private String defaultDnsZone;
 
     /*
      * FQDN zones of the DNS Service.
      */
-    @JsonProperty(value = "fqdnZones")
     private List<String> fqdnZones;
 
     /*
      * DNS Service log level.
      */
-    @JsonProperty(value = "logLevel")
     private DnsServiceLogLevelEnum logLevel;
 
     /*
      * DNS Service status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private DnsServiceStatusEnum status;
 
     /*
      * The provisioning state
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkloadNetworkDnsServiceProvisioningState provisioningState;
 
     /*
      * NSX revision number.
      */
-    @JsonProperty(value = "revision")
     private Long revision;
 
     /**
@@ -214,5 +211,65 @@ public final class WorkloadNetworkDnsServiceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("dnsServiceIp", this.dnsServiceIp);
+        jsonWriter.writeStringField("defaultDnsZone", this.defaultDnsZone);
+        jsonWriter.writeArrayField("fqdnZones", this.fqdnZones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("logLevel", this.logLevel == null ? null : this.logLevel.toString());
+        jsonWriter.writeNumberField("revision", this.revision);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadNetworkDnsServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadNetworkDnsServiceProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkloadNetworkDnsServiceProperties.
+     */
+    public static WorkloadNetworkDnsServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadNetworkDnsServiceProperties deserializedWorkloadNetworkDnsServiceProperties
+                = new WorkloadNetworkDnsServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceProperties.displayName = reader.getString();
+                } else if ("dnsServiceIp".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceProperties.dnsServiceIp = reader.getString();
+                } else if ("defaultDnsZone".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceProperties.defaultDnsZone = reader.getString();
+                } else if ("fqdnZones".equals(fieldName)) {
+                    List<String> fqdnZones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWorkloadNetworkDnsServiceProperties.fqdnZones = fqdnZones;
+                } else if ("logLevel".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceProperties.logLevel
+                        = DnsServiceLogLevelEnum.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceProperties.status
+                        = DnsServiceStatusEnum.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceProperties.provisioningState
+                        = WorkloadNetworkDnsServiceProvisioningState.fromString(reader.getString());
+                } else if ("revision".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsServiceProperties.revision = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadNetworkDnsServiceProperties;
+        });
     }
 }

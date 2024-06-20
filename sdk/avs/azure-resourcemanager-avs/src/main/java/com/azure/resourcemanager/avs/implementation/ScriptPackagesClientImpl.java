@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.avs.fluent.ScriptPackagesClient;
 import com.azure.resourcemanager.avs.fluent.models.ScriptPackageInner;
-import com.azure.resourcemanager.avs.implementation.models.ScriptPackageListResult;
+import com.azure.resourcemanager.avs.implementation.models.ScriptPackagesList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -66,7 +66,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScriptPackageListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<ScriptPackagesList>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -87,7 +87,7 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScriptPackageListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<ScriptPackagesList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, Context context);
     }
 

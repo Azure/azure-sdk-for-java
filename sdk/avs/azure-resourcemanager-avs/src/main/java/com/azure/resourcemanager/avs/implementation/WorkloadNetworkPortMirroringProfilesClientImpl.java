@@ -34,8 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworkPortMirroringProfilesClient;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPortMirroringInner;
-import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkPortMirroringListResult;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringUpdate;
+import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkPortMirroringList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -78,9 +77,8 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPortMirroringListResult>> listByWorkloadNetwork(
-            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<WorkloadNetworkPortMirroringList>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
             Context context);
@@ -117,7 +115,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
             @PathParam("portMirroringId") String portMirroringId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring,
+            @BodyParam("application/json") WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -135,7 +133,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPortMirroringListResult>> listByWorkloadNetworkNext(
+        Mono<Response<WorkloadNetworkPortMirroringList>> listByWorkloadNetworkNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }
@@ -707,7 +705,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String portMirroringId, WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring) {
+        String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -757,7 +755,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String portMirroringId, WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring, Context context) {
+        String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -805,7 +803,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginUpdateAsync(String resourceGroupName, String privateCloudName, String portMirroringId,
-            WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring) {
+            WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, privateCloudName,
             portMirroringId, workloadNetworkPortMirroring);
         return this.client.<WorkloadNetworkPortMirroringInner, WorkloadNetworkPortMirroringInner>getLroResult(mono,
@@ -829,7 +827,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginUpdateAsync(String resourceGroupName, String privateCloudName, String portMirroringId,
-            WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring, Context context) {
+            WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, privateCloudName,
             portMirroringId, workloadNetworkPortMirroring, context);
@@ -853,7 +851,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String portMirroringId,
-        WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring) {
+        WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
         return this.beginUpdateAsync(resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring)
             .getSyncPoller();
     }
@@ -874,7 +872,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String portMirroringId,
-        WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring, Context context) {
+        WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context) {
         return this
             .beginUpdateAsync(resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring,
                 context)
@@ -895,7 +893,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkPortMirroringInner> updateAsync(String resourceGroupName, String privateCloudName,
-        String portMirroringId, WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring) {
+        String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -916,7 +914,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkPortMirroringInner> updateAsync(String resourceGroupName, String privateCloudName,
-        String portMirroringId, WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring, Context context) {
+        String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring,
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -935,7 +933,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPortMirroringInner update(String resourceGroupName, String privateCloudName,
-        String portMirroringId, WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring) {
+        String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
         return updateAsync(resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring).block();
     }
 
@@ -954,7 +952,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkPortMirroringInner update(String resourceGroupName, String privateCloudName,
-        String portMirroringId, WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring, Context context) {
+        String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context) {
         return updateAsync(resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring, context)
             .block();
     }

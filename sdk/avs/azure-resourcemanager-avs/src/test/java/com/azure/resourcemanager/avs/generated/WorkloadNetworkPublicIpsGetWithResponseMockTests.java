@@ -21,7 +21,7 @@ public final class WorkloadNetworkPublicIpsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"xhlw\",\"numberOfPublicIPs\":1003428665455506608,\"publicIPBlock\":\"qrsxyp\",\"provisioningState\":\"Canceled\"},\"id\":\"y\",\"name\":\"nchrszizoyu\",\"type\":\"lyetndnbfqygg\"}";
+            = "{\"properties\":{\"displayName\":\"bwln\",\"numberOfPublicIPs\":6785534445230421786,\"publicIPBlock\":\"e\",\"provisioningState\":\"Deleting\"},\"id\":\"qavbpdqmj\",\"name\":\"lyyzglgouwtlmjj\",\"type\":\"uojqt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class WorkloadNetworkPublicIpsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkPublicIp response = manager.workloadNetworkPublicIps()
-            .getWithResponse("axpunjqikczvv", "tacgxmfc", "serxht", com.azure.core.util.Context.NONE)
+            .getWithResponse("hjm", "nnbsoqeqa", "arvlagunbt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xhlw", response.displayName());
-        Assertions.assertEquals(1003428665455506608L, response.numberOfPublicIPs());
+        Assertions.assertEquals("bwln", response.displayName());
+        Assertions.assertEquals(6785534445230421786L, response.numberOfPublicIPs());
     }
 }

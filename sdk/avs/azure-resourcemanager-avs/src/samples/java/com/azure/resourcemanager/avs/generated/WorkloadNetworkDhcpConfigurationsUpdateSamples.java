@@ -25,7 +25,7 @@ public final class WorkloadNetworkDhcpConfigurationsUpdateSamples {
             .getValue();
         resource.update()
             .withProperties(
-                new WorkloadNetworkDhcpServer().withRevision(1L).withServerAddress("40.1.5.1/24").withLeaseTime(86400))
+                new WorkloadNetworkDhcpServer().withRevision(1L).withServerAddress("40.1.5.1/24").withLeaseTime(86400L))
             .apply();
     }
 }

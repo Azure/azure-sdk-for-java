@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPortMirroringInner;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -163,7 +162,7 @@ public interface WorkloadNetworkPortMirroringProfilesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String portMirroringId,
-        WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring);
+        WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring);
 
     /**
      * Update a WorkloadNetworkPortMirroring.
@@ -181,7 +180,7 @@ public interface WorkloadNetworkPortMirroringProfilesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String portMirroringId,
-        WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring, Context context);
+        WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context);
 
     /**
      * Update a WorkloadNetworkPortMirroring.
@@ -197,7 +196,7 @@ public interface WorkloadNetworkPortMirroringProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkPortMirroringInner update(String resourceGroupName, String privateCloudName, String portMirroringId,
-        WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring);
+        WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring);
 
     /**
      * Update a WorkloadNetworkPortMirroring.
@@ -214,7 +213,7 @@ public interface WorkloadNetworkPortMirroringProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkPortMirroringInner update(String resourceGroupName, String privateCloudName, String portMirroringId,
-        WorkloadNetworkPortMirroringUpdate workloadNetworkPortMirroring, Context context);
+        WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context);
 
     /**
      * Delete a WorkloadNetworkPortMirroring.

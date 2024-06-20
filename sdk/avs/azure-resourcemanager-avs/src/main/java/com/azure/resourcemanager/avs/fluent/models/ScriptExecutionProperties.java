@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.ScriptExecutionParameter;
 import com.azure.resourcemanager.avs.models.ScriptExecutionProvisioningState;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -18,98 +22,82 @@ import java.util.Map;
  * Properties of a user-invoked script.
  */
 @Fluent
-public final class ScriptExecutionProperties {
+public final class ScriptExecutionProperties implements JsonSerializable<ScriptExecutionProperties> {
     /*
      * A reference to the script cmdlet resource if user is running a AVS script
      */
-    @JsonProperty(value = "scriptCmdletId")
     private String scriptCmdletId;
 
     /*
      * Parameters the script will accept
      */
-    @JsonProperty(value = "parameters")
     private List<ScriptExecutionParameter> parameters;
 
     /*
      * Parameters that will be hidden/not visible to ARM, such as passwords and
      * credentials
      */
-    @JsonProperty(value = "hiddenParameters")
     private List<ScriptExecutionParameter> hiddenParameters;
 
     /*
      * Error message if the script was able to run, but if the script itself had
      * errors or powershell threw an exception
      */
-    @JsonProperty(value = "failureReason")
     private String failureReason;
 
     /*
      * Time limit for execution
      */
-    @JsonProperty(value = "timeout", required = true)
     private String timeout;
 
     /*
      * Time to live for the resource. If not provided, will be available for 60 days
      */
-    @JsonProperty(value = "retention")
     private String retention;
 
     /*
      * Time the script execution was submitted
      */
-    @JsonProperty(value = "submittedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime submittedAt;
 
     /*
      * Time the script execution was started
      */
-    @JsonProperty(value = "startedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedAt;
 
     /*
      * Time the script execution was finished
      */
-    @JsonProperty(value = "finishedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime finishedAt;
 
     /*
      * The state of the script execution resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ScriptExecutionProvisioningState provisioningState;
 
     /*
      * Standard output stream from the powershell execution
      */
-    @JsonProperty(value = "output")
     private List<String> output;
 
     /*
      * User-defined dictionary.
      */
-    @JsonProperty(value = "namedOutputs")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> namedOutputs;
 
     /*
      * Standard information out stream from the powershell execution
      */
-    @JsonProperty(value = "information", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> information;
 
     /*
      * Standard warning out stream from the powershell execution
      */
-    @JsonProperty(value = "warnings", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> warnings;
 
     /*
      * Standard error output stream from the powershell execution
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> errors;
 
     /**
@@ -365,4 +353,90 @@ public final class ScriptExecutionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScriptExecutionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timeout", this.timeout);
+        jsonWriter.writeStringField("scriptCmdletId", this.scriptCmdletId);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("hiddenParameters", this.hiddenParameters,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("failureReason", this.failureReason);
+        jsonWriter.writeStringField("retention", this.retention);
+        jsonWriter.writeArrayField("output", this.output, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("namedOutputs", this.namedOutputs, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptExecutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptExecutionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScriptExecutionProperties.
+     */
+    public static ScriptExecutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptExecutionProperties deserializedScriptExecutionProperties = new ScriptExecutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeout".equals(fieldName)) {
+                    deserializedScriptExecutionProperties.timeout = reader.getString();
+                } else if ("scriptCmdletId".equals(fieldName)) {
+                    deserializedScriptExecutionProperties.scriptCmdletId = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<ScriptExecutionParameter> parameters
+                        = reader.readArray(reader1 -> ScriptExecutionParameter.fromJson(reader1));
+                    deserializedScriptExecutionProperties.parameters = parameters;
+                } else if ("hiddenParameters".equals(fieldName)) {
+                    List<ScriptExecutionParameter> hiddenParameters
+                        = reader.readArray(reader1 -> ScriptExecutionParameter.fromJson(reader1));
+                    deserializedScriptExecutionProperties.hiddenParameters = hiddenParameters;
+                } else if ("failureReason".equals(fieldName)) {
+                    deserializedScriptExecutionProperties.failureReason = reader.getString();
+                } else if ("retention".equals(fieldName)) {
+                    deserializedScriptExecutionProperties.retention = reader.getString();
+                } else if ("submittedAt".equals(fieldName)) {
+                    deserializedScriptExecutionProperties.submittedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startedAt".equals(fieldName)) {
+                    deserializedScriptExecutionProperties.startedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("finishedAt".equals(fieldName)) {
+                    deserializedScriptExecutionProperties.finishedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedScriptExecutionProperties.provisioningState
+                        = ScriptExecutionProvisioningState.fromString(reader.getString());
+                } else if ("output".equals(fieldName)) {
+                    List<String> output = reader.readArray(reader1 -> reader1.getString());
+                    deserializedScriptExecutionProperties.output = output;
+                } else if ("namedOutputs".equals(fieldName)) {
+                    Map<String, Object> namedOutputs = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedScriptExecutionProperties.namedOutputs = namedOutputs;
+                } else if ("information".equals(fieldName)) {
+                    List<String> information = reader.readArray(reader1 -> reader1.getString());
+                    deserializedScriptExecutionProperties.information = information;
+                } else if ("warnings".equals(fieldName)) {
+                    List<String> warnings = reader.readArray(reader1 -> reader1.getString());
+                    deserializedScriptExecutionProperties.warnings = warnings;
+                } else if ("errors".equals(fieldName)) {
+                    List<String> errors = reader.readArray(reader1 -> reader1.getString());
+                    deserializedScriptExecutionProperties.errors = errors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptExecutionProperties;
+        });
+    }
 }

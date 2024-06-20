@@ -21,7 +21,7 @@ public final class WorkloadNetworkDhcpConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"glcfhmlrqryxyn\",\"segments\":[\"rd\",\"sovwxznptgoeiyb\",\"abpfhvfs\",\"kvntjlrigjkskyri\"],\"provisioningState\":\"Succeeded\",\"revision\":6697301089417631797},\"id\":\"xwaabzmifrygznmm\",\"name\":\"xrizkzobgop\",\"type\":\"lhslnelxieixyn\"}";
+            = "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"ankjpdnjzh\",\"segments\":[\"ylhjlm\",\"oyxprimr\",\"opteecj\",\"eislstvasylwx\"],\"provisioningState\":\"Building\",\"revision\":8207738955383308872},\"id\":\"oohgu\",\"name\":\"fuzboyjathwtzolb\",\"type\":\"emwmdxmebwjs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class WorkloadNetworkDhcpConfigurationsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkDhcp response = manager.workloadNetworkDhcpConfigurations()
-            .getWithResponse("sf", "svtui", "zh", com.azure.core.util.Context.NONE)
+            .getWithResponse("wsldrizetpwbr", "lllibph", "qzmiza", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("glcfhmlrqryxyn", response.properties().displayName());
-        Assertions.assertEquals(6697301089417631797L, response.properties().revision());
+        Assertions.assertEquals("ankjpdnjzh", response.properties().displayName());
+        Assertions.assertEquals(8207738955383308872L, response.properties().revision());
     }
 }

@@ -6,17 +6,20 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An Elastic SAN volume from Microsoft.ElasticSan provider.
  */
 @Fluent
-public final class ElasticSanVolume {
+public final class ElasticSanVolume implements JsonSerializable<ElasticSanVolume> {
     /*
      * Azure resource ID of the Elastic SAN Volume
      */
-    @JsonProperty(value = "targetId", required = true)
     private String targetId;
 
     /**
@@ -58,4 +61,41 @@ public final class ElasticSanVolume {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ElasticSanVolume.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetId", this.targetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticSanVolume from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticSanVolume if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ElasticSanVolume.
+     */
+    public static ElasticSanVolume fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticSanVolume deserializedElasticSanVolume = new ElasticSanVolume();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetId".equals(fieldName)) {
+                    deserializedElasticSanVolume.targetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticSanVolume;
+        });
+    }
 }

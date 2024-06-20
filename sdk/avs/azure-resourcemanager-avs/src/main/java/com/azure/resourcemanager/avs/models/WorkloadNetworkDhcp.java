@@ -163,9 +163,9 @@ public interface WorkloadNetworkDhcp {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: The updatable properties of a DHCP update.
+             * Specifies the properties property: The resource-specific properties for this resource..
              * 
-             * @param properties The updatable properties of a DHCP update.
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
             Update withProperties(WorkloadNetworkDhcpEntity properties);

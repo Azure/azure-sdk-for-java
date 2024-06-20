@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVMGroupInner;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in WorkloadNetworkVmGroupsClient.
@@ -158,7 +157,7 @@ public interface WorkloadNetworkVmGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup);
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup);
 
     /**
      * Update a WorkloadNetworkVMGroup.
@@ -176,7 +175,7 @@ public interface WorkloadNetworkVmGroupsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup, Context context);
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context);
 
     /**
      * Update a WorkloadNetworkVMGroup.
@@ -192,7 +191,7 @@ public interface WorkloadNetworkVmGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkVMGroupInner update(String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup);
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup);
 
     /**
      * Update a WorkloadNetworkVMGroup.
@@ -209,7 +208,7 @@ public interface WorkloadNetworkVmGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkVMGroupInner update(String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup, Context context);
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context);
 
     /**
      * Delete a WorkloadNetworkVMGroup.

@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworkVirtualMachinesClient;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVirtualMachineInner;
-import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkVirtualMachineListResult;
+import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkVirtualMachinesList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -66,9 +66,8 @@ public final class WorkloadNetworkVirtualMachinesClientImpl implements WorkloadN
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/virtualMachines")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkVirtualMachineListResult>> listByWorkloadNetwork(
-            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<WorkloadNetworkVirtualMachinesList>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
             Context context);
@@ -88,7 +87,7 @@ public final class WorkloadNetworkVirtualMachinesClientImpl implements WorkloadN
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkVirtualMachineListResult>> listByWorkloadNetworkNext(
+        Mono<Response<WorkloadNetworkVirtualMachinesList>> listByWorkloadNetworkNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }

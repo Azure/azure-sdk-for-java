@@ -12,15 +12,15 @@ public final class IscsiPathInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IscsiPathInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"networkBlock\":\"clnpkci\"},\"id\":\"zriykhy\",\"name\":\"wf\",\"type\":\"jlb\"}")
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"networkBlock\":\"kjprvk\"},\"id\":\"fz\",\"name\":\"ljyxgtczhe\",\"type\":\"dbsdshm\"}")
             .toObject(IscsiPathInner.class);
-        Assertions.assertEquals("clnpkci", model.networkBlock());
+        Assertions.assertEquals("kjprvk", model.networkBlock());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IscsiPathInner model = new IscsiPathInner().withNetworkBlock("clnpkci");
+        IscsiPathInner model = new IscsiPathInner().withNetworkBlock("kjprvk");
         model = BinaryData.fromObject(model).toObject(IscsiPathInner.class);
-        Assertions.assertEquals("clnpkci", model.networkBlock());
+        Assertions.assertEquals("kjprvk", model.networkBlock());
     }
 }

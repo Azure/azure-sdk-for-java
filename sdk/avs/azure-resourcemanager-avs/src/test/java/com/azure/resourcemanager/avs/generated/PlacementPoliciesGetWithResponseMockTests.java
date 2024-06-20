@@ -22,7 +22,7 @@ public final class PlacementPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"uzk\",\"provisioningState\":\"Failed\"},\"id\":\"o\",\"name\":\"xrzvhqjwtrhtgvgz\",\"type\":\"c\"}";
+            = "{\"properties\":{\"type\":\"PlacementPolicyProperties\",\"state\":\"Enabled\",\"displayName\":\"muowolbauiro\",\"provisioningState\":\"Succeeded\"},\"id\":\"szonwpngajinn\",\"name\":\"xjawrt\",\"type\":\"jfjmyccxlzh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,10 @@ public final class PlacementPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PlacementPolicy response = manager.placementPolicies()
-            .getWithResponse("vlwyzg", "blkujrllfojuidjp", "uyjucejikzo", "ovvtzejetjkln",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("wrpqafgfugsnnf", "yetefyp", "coc", "fjgtixrjvzuy", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(PlacementPolicyState.ENABLED, response.properties().state());
-        Assertions.assertEquals("uzk", response.properties().displayName());
+        Assertions.assertEquals("muowolbauiro", response.properties().displayName());
     }
 }

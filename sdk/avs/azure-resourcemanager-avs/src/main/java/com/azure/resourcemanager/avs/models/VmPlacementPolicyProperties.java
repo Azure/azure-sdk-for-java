@@ -6,41 +6,36 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * VM-VM placement policy properties.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = VmPlacementPolicyProperties.class,
-    visible = true)
-@JsonTypeName("VmVm")
 @Fluent
 public final class VmPlacementPolicyProperties extends PlacementPolicyProperties {
     /*
      * Placement Policy type
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private PlacementPolicyType type = PlacementPolicyType.VM_VM;
 
     /*
      * Virtual machine members list
      */
-    @JsonProperty(value = "vmMembers", required = true)
     private List<String> vmMembers;
 
     /*
      * placement policy affinity type
      */
-    @JsonProperty(value = "affinityType", required = true)
     private AffinityType affinityType;
+
+    /*
+     * The provisioning state
+     */
+    private PlacementPolicyProvisioningState provisioningState;
 
     /**
      * Creates an instance of VmPlacementPolicyProperties class.
@@ -99,6 +94,16 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
     }
 
     /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public PlacementPolicyProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -137,4 +142,58 @@ public final class VmPlacementPolicyProperties extends PlacementPolicyProperties
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VmPlacementPolicyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeArrayField("vmMembers", this.vmMembers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("affinityType", this.affinityType == null ? null : this.affinityType.toString());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VmPlacementPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VmPlacementPolicyProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VmPlacementPolicyProperties.
+     */
+    public static VmPlacementPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VmPlacementPolicyProperties deserializedVmPlacementPolicyProperties = new VmPlacementPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedVmPlacementPolicyProperties
+                        .withState(PlacementPolicyState.fromString(reader.getString()));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedVmPlacementPolicyProperties.withDisplayName(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVmPlacementPolicyProperties.provisioningState
+                        = PlacementPolicyProvisioningState.fromString(reader.getString());
+                } else if ("vmMembers".equals(fieldName)) {
+                    List<String> vmMembers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVmPlacementPolicyProperties.vmMembers = vmMembers;
+                } else if ("affinityType".equals(fieldName)) {
+                    deserializedVmPlacementPolicyProperties.affinityType = AffinityType.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedVmPlacementPolicyProperties.type = PlacementPolicyType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVmPlacementPolicyProperties;
+        });
+    }
 }

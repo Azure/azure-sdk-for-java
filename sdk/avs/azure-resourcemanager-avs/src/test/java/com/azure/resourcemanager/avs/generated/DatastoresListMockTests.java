@@ -23,7 +23,7 @@ public final class DatastoresListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"netAppVolume\":{\"id\":\"m\"},\"diskPoolVolume\":{\"targetId\":\"sckdlp\",\"lunName\":\"gzrcxfailcfxwmdb\",\"mountOption\":\"ATTACH\",\"path\":\"gsftufqobrjlnacg\"},\"elasticSanVolume\":{\"targetId\":\"kknhxkizvytnrzv\"},\"status\":\"Attached\"},\"id\":\"aaeranokqgukk\",\"name\":\"qnvb\",\"type\":\"oylaxxul\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"netAppVolume\":{\"id\":\"nysuxmprafwgckh\"},\"diskPoolVolume\":{\"targetId\":\"xvd\",\"lunName\":\"ffwafq\",\"mountOption\":\"ATTACH\",\"path\":\"aspavehhr\"},\"elasticSanVolume\":{\"targetId\":\"bunzozudh\"},\"status\":\"DeadOrError\"},\"id\":\"moy\",\"name\":\"cdyuibhmfdnbzyd\",\"type\":\"f\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class DatastoresListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Datastore> response
-            = manager.datastores().list("slhhxudbxv", "d", "tnsi", com.azure.core.util.Context.NONE);
+        PagedIterable<Datastore> response = manager.datastores()
+            .list("hihfrbbcevqagtlt", "hlfkqojpy", "vgtrdcnifmzzs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("m", response.iterator().next().netAppVolume().id());
-        Assertions.assertEquals("sckdlp", response.iterator().next().diskPoolVolume().targetId());
-        Assertions.assertEquals("gzrcxfailcfxwmdb", response.iterator().next().diskPoolVolume().lunName());
+        Assertions.assertEquals("nysuxmprafwgckh", response.iterator().next().netAppVolume().id());
+        Assertions.assertEquals("xvd", response.iterator().next().diskPoolVolume().targetId());
+        Assertions.assertEquals("ffwafq", response.iterator().next().diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.ATTACH, response.iterator().next().diskPoolVolume().mountOption());
-        Assertions.assertEquals("kknhxkizvytnrzv", response.iterator().next().elasticSanVolume().targetId());
+        Assertions.assertEquals("bunzozudh", response.iterator().next().elasticSanVolume().targetId());
     }
 }

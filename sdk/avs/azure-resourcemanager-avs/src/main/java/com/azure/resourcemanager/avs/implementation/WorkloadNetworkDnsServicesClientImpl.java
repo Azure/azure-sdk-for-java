@@ -34,8 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworkDnsServicesClient;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDnsServiceInner;
-import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkDnsServiceListResult;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServiceUpdate;
+import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkDnsServicesList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -76,9 +75,8 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkDnsServiceListResult>> listByWorkloadNetwork(
-            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<WorkloadNetworkDnsServicesList>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
             Context context);
@@ -113,7 +111,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("dnsServiceId") String dnsServiceId,
             @HeaderParam("accept") String accept,
-            @BodyParam("application/json") WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService, Context context);
+            @BodyParam("application/json") WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
@@ -129,7 +127,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkDnsServiceListResult>> listByWorkloadNetworkNext(
+        Mono<Response<WorkloadNetworkDnsServicesList>> listByWorkloadNetworkNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }
@@ -693,7 +691,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String dnsServiceId, WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService) {
+        String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -742,7 +740,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String dnsServiceId, WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService, Context context) {
+        String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -789,7 +787,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateAsync(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService) {
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService);
         return this.client.<WorkloadNetworkDnsServiceInner, WorkloadNetworkDnsServiceInner>getLroResult(mono,
@@ -813,7 +811,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateAsync(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService, Context context) {
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, privateCloudName,
             dnsServiceId, workloadNetworkDnsService, context);
@@ -837,7 +835,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService) {
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
         return this.beginUpdateAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService)
             .getSyncPoller();
     }
@@ -858,7 +856,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService, Context context) {
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context) {
         return this
             .beginUpdateAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService, context)
             .getSyncPoller();
@@ -878,7 +876,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsServiceInner> updateAsync(String resourceGroupName, String privateCloudName,
-        String dnsServiceId, WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService) {
+        String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -898,7 +896,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDnsServiceInner> updateAsync(String resourceGroupName, String privateCloudName,
-        String dnsServiceId, WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService, Context context) {
+        String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -918,7 +916,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsServiceInner update(String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService) {
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
         return updateAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService).block();
     }
 
@@ -937,7 +935,7 @@ public final class WorkloadNetworkDnsServicesClientImpl implements WorkloadNetwo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDnsServiceInner update(String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService, Context context) {
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context) {
         return updateAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService, context)
             .block();
     }

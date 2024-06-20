@@ -5,43 +5,42 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.ClusterProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties of a cluster.
  */
 @Fluent
-public final class ClusterProperties {
+public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
     /*
      * The cluster size
      */
-    @JsonProperty(value = "clusterSize")
     private Integer clusterSize;
 
     /*
      * The state of the cluster provisioning
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterProvisioningState provisioningState;
 
     /*
      * The identity
      */
-    @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer clusterId;
 
     /*
      * The hosts
      */
-    @JsonProperty(value = "hosts")
     private List<String> hosts;
 
     /*
      * Name of the vsan datastore associated with the cluster
      */
-    @JsonProperty(value = "vsanDatastoreName")
     private String vsanDatastoreName;
 
     /**
@@ -134,5 +133,53 @@ public final class ClusterProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("clusterSize", this.clusterSize);
+        jsonWriter.writeArrayField("hosts", this.hosts, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("vsanDatastoreName", this.vsanDatastoreName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
+     */
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clusterSize".equals(fieldName)) {
+                    deserializedClusterProperties.clusterSize = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterProperties.provisioningState
+                        = ClusterProvisioningState.fromString(reader.getString());
+                } else if ("clusterId".equals(fieldName)) {
+                    deserializedClusterProperties.clusterId = reader.getNullable(JsonReader::getInt);
+                } else if ("hosts".equals(fieldName)) {
+                    List<String> hosts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterProperties.hosts = hosts;
+                } else if ("vsanDatastoreName".equals(fieldName)) {
+                    deserializedClusterProperties.vsanDatastoreName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProperties;
+        });
     }
 }

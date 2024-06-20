@@ -22,7 +22,7 @@ public final class WorkloadNetworkDhcpConfigurationsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"ivmxyasfl\",\"segments\":[\"gzwywak\",\"ihknsmjbl\",\"ljhlnymzotq\",\"ryuzcbmqqv\"],\"provisioningState\":\"Succeeded\",\"revision\":2672748922256801426},\"id\":\"ayxonsupeujl\",\"name\":\"qnhcvsqltnzoibg\",\"type\":\"xgnxfyqonmpqoxwd\"}";
+            = "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"zexrxzbujrt\",\"segments\":[\"vwrevkhgnlnzon\",\"lrpiqywnc\"],\"provisioningState\":\"Succeeded\",\"revision\":695830285026637390},\"id\":\"fizehtdhgbjk\",\"name\":\"reljeamur\",\"type\":\"zmlovuanash\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class WorkloadNetworkDhcpConfigurationsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkDhcp response = manager.workloadNetworkDhcpConfigurations()
-            .define("ickpz")
-            .withExistingPrivateCloud("aglkafhon", "juj")
-            .withProperties(new WorkloadNetworkDhcpEntity().withDisplayName("opmx").withRevision(1149822936606293846L))
+            .define("eqw")
+            .withExistingPrivateCloud("qcttadijaeukmrsi", "ekpndzaapmudq")
+            .withProperties(
+                new WorkloadNetworkDhcpEntity().withDisplayName("ibudqwy").withRevision(3020354173137847735L))
             .create();
 
-        Assertions.assertEquals("ivmxyasfl", response.properties().displayName());
-        Assertions.assertEquals(2672748922256801426L, response.properties().revision());
+        Assertions.assertEquals("zexrxzbujrt", response.properties().displayName());
+        Assertions.assertEquals(695830285026637390L, response.properties().revision());
     }
 }

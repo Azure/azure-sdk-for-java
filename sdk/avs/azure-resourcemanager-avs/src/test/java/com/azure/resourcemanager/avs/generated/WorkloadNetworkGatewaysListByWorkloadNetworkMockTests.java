@@ -22,7 +22,7 @@ public final class WorkloadNetworkGatewaysListByWorkloadNetworkMockTests {
     @Test
     public void testListByWorkloadNetwork() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"qpofvwbc\",\"path\":\"embnkbw\"},\"id\":\"vxkdivqihebwtswb\",\"name\":\"uwfmduragegizvc\",\"type\":\"felisdjub\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"izozsd\",\"path\":\"cxjmonfdgnwncyp\"},\"id\":\"w\",\"name\":\"ltv\",\"type\":\"qjctzenkeif\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class WorkloadNetworkGatewaysListByWorkloadNetworkMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadNetworkGateway> response = manager.workloadNetworkGateways()
-            .listByWorkloadNetwork("fdbxiqxeiiqbim", "tmwwi", com.azure.core.util.Context.NONE);
+            .listByWorkloadNetwork("xlpm", "erbdk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qpofvwbc", response.iterator().next().displayName());
+        Assertions.assertEquals("izozsd", response.iterator().next().displayName());
     }
 }

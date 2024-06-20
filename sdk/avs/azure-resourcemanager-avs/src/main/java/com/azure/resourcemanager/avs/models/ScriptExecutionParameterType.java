@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ScriptExecutionParameterType extends ExpandableStringEnum<Scr
      * @param name a name to look for.
      * @return the corresponding ScriptExecutionParameterType.
      */
-    @JsonCreator
     public static ScriptExecutionParameterType fromString(String name) {
         return fromString(name, ScriptExecutionParameterType.class);
     }

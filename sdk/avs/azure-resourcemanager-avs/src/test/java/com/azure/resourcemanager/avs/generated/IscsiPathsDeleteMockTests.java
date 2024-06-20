@@ -27,7 +27,7 @@ public final class IscsiPathsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.iscsiPaths().delete("npxqwodi", "fjxcjrmmuabwibv", com.azure.core.util.Context.NONE);
+        manager.iscsiPaths().delete("lmiiiovg", "cgxuugqkctotiowl", com.azure.core.util.Context.NONE);
 
     }
 }

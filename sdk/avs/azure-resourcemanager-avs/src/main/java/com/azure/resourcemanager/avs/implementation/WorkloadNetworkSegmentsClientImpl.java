@@ -34,8 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworkSegmentsClient;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkSegmentInner;
-import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkSegmentListResult;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentUpdate;
+import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkSegmentsList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -76,7 +75,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkSegmentListResult>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
+        Mono<Response<WorkloadNetworkSegmentsList>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -111,8 +110,8 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("segmentId") String segmentId,
-            @HeaderParam("accept") String accept,
-            @BodyParam("application/json") WorkloadNetworkSegmentUpdate properties, Context context);
+            @HeaderParam("accept") String accept, @BodyParam("application/json") WorkloadNetworkSegmentInner properties,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
@@ -128,7 +127,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkSegmentListResult>> listByWorkloadNetworkNext(
+        Mono<Response<WorkloadNetworkSegmentsList>> listByWorkloadNetworkNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }
@@ -687,7 +686,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String segmentId, WorkloadNetworkSegmentUpdate properties) {
+        String segmentId, WorkloadNetworkSegmentInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -735,7 +734,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String segmentId, WorkloadNetworkSegmentUpdate properties, Context context) {
+        String segmentId, WorkloadNetworkSegmentInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -780,7 +779,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateAsync(
-        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentUpdate properties) {
+        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, privateCloudName, segmentId, properties);
         return this.client.<WorkloadNetworkSegmentInner, WorkloadNetworkSegmentInner>getLroResult(mono,
@@ -803,7 +802,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateAsync(
-        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentUpdate properties,
+        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -827,7 +826,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdate(
-        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentUpdate properties) {
+        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties) {
         return this.beginUpdateAsync(resourceGroupName, privateCloudName, segmentId, properties).getSyncPoller();
     }
 
@@ -846,7 +845,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdate(
-        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentUpdate properties,
+        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties,
         Context context) {
         return this.beginUpdateAsync(resourceGroupName, privateCloudName, segmentId, properties, context)
             .getSyncPoller();
@@ -866,7 +865,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkSegmentInner> updateAsync(String resourceGroupName, String privateCloudName,
-        String segmentId, WorkloadNetworkSegmentUpdate properties) {
+        String segmentId, WorkloadNetworkSegmentInner properties) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, segmentId, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -886,7 +885,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkSegmentInner> updateAsync(String resourceGroupName, String privateCloudName,
-        String segmentId, WorkloadNetworkSegmentUpdate properties, Context context) {
+        String segmentId, WorkloadNetworkSegmentInner properties, Context context) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, segmentId, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -905,7 +904,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkSegmentInner update(String resourceGroupName, String privateCloudName, String segmentId,
-        WorkloadNetworkSegmentUpdate properties) {
+        WorkloadNetworkSegmentInner properties) {
         return updateAsync(resourceGroupName, privateCloudName, segmentId, properties).block();
     }
 
@@ -924,7 +923,7 @@ public final class WorkloadNetworkSegmentsClientImpl implements WorkloadNetworkS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkSegmentInner update(String resourceGroupName, String privateCloudName, String segmentId,
-        WorkloadNetworkSegmentUpdate properties, Context context) {
+        WorkloadNetworkSegmentInner properties, Context context) {
         return updateAsync(resourceGroupName, privateCloudName, segmentId, properties, context).block();
     }
 

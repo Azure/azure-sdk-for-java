@@ -10,7 +10,6 @@ import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVMGroupInner;
 import com.azure.resourcemanager.avs.models.VMGroupStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroup;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupProvisioningState;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupUpdate;
 import java.util.Collections;
 import java.util.List;
 
@@ -79,8 +78,6 @@ public final class WorkloadNetworkVMGroupImpl
 
     private String vmGroupId;
 
-    private WorkloadNetworkVMGroupUpdate updateWorkloadNetworkVMGroup;
-
     public WorkloadNetworkVMGroupImpl withExistingPrivateCloud(String resourceGroupName, String privateCloudName) {
         this.resourceGroupName = resourceGroupName;
         this.privateCloudName = privateCloudName;
@@ -108,21 +105,20 @@ public final class WorkloadNetworkVMGroupImpl
     }
 
     public WorkloadNetworkVMGroupImpl update() {
-        this.updateWorkloadNetworkVMGroup = new WorkloadNetworkVMGroupUpdate();
         return this;
     }
 
     public WorkloadNetworkVMGroup apply() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworkVmGroups()
-            .update(resourceGroupName, privateCloudName, vmGroupId, updateWorkloadNetworkVMGroup, Context.NONE);
+            .update(resourceGroupName, privateCloudName, vmGroupId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkVMGroup apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworkVmGroups()
-            .update(resourceGroupName, privateCloudName, vmGroupId, updateWorkloadNetworkVMGroup, context);
+            .update(resourceGroupName, privateCloudName, vmGroupId, this.innerModel(), context);
         return this;
     }
 
@@ -152,36 +148,17 @@ public final class WorkloadNetworkVMGroupImpl
     }
 
     public WorkloadNetworkVMGroupImpl withDisplayName(String displayName) {
-        if (isInCreateMode()) {
-            this.innerModel().withDisplayName(displayName);
-            return this;
-        } else {
-            this.updateWorkloadNetworkVMGroup.withDisplayName(displayName);
-            return this;
-        }
+        this.innerModel().withDisplayName(displayName);
+        return this;
     }
 
     public WorkloadNetworkVMGroupImpl withMembers(List<String> members) {
-        if (isInCreateMode()) {
-            this.innerModel().withMembers(members);
-            return this;
-        } else {
-            this.updateWorkloadNetworkVMGroup.withMembers(members);
-            return this;
-        }
+        this.innerModel().withMembers(members);
+        return this;
     }
 
     public WorkloadNetworkVMGroupImpl withRevision(Long revision) {
-        if (isInCreateMode()) {
-            this.innerModel().withRevision(revision);
-            return this;
-        } else {
-            this.updateWorkloadNetworkVMGroup.withRevision(revision);
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        this.innerModel().withRevision(revision);
+        return this;
     }
 }

@@ -23,7 +23,7 @@ public final class WorkloadNetworkPortMirroringProfilesListByWorkloadNetworkMock
     @Test
     public void testListByWorkloadNetwork() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"yophz\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"gcrpfbcun\",\"destination\":\"zcezelfwyfwl\",\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":979869830822712459},\"id\":\"ihclafzv\",\"name\":\"ylptrsqqwztcm\",\"type\":\"qkc\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"iexzsrzpge\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"bb\",\"destination\":\"pgdakchzyvli\",\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":1136926754194157082},\"id\":\"ibn\",\"name\":\"mysu\",\"type\":\"swqrntvlwijp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class WorkloadNetworkPortMirroringProfilesListByWorkloadNetworkMock
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadNetworkPortMirroring> response = manager.workloadNetworkPortMirroringProfiles()
-            .listByWorkloadNetwork("nktwfansnvpdibmi", "ostbzbkiwb", com.azure.core.util.Context.NONE);
+            .listByWorkloadNetwork("hnomdrkywuh", "svfuurutlwexxwl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yophz", response.iterator().next().displayName());
+        Assertions.assertEquals("iexzsrzpge", response.iterator().next().displayName());
         Assertions.assertEquals(PortMirroringDirectionEnum.BIDIRECTIONAL, response.iterator().next().direction());
-        Assertions.assertEquals("gcrpfbcun", response.iterator().next().source());
-        Assertions.assertEquals("zcezelfwyfwl", response.iterator().next().destination());
-        Assertions.assertEquals(979869830822712459L, response.iterator().next().revision());
+        Assertions.assertEquals("bb", response.iterator().next().source());
+        Assertions.assertEquals("pgdakchzyvli", response.iterator().next().destination());
+        Assertions.assertEquals(1136926754194157082L, response.iterator().next().revision());
     }
 }

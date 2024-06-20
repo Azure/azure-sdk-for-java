@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DnsServiceStatusEnum extends ExpandableStringEnum<DnsServiceS
      * @param name a name to look for.
      * @return the corresponding DnsServiceStatusEnum.
      */
-    @JsonCreator
     public static DnsServiceStatusEnum fromString(String name) {
         return fromString(name, DnsServiceStatusEnum.class);
     }

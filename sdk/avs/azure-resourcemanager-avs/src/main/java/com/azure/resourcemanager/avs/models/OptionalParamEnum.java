@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class OptionalParamEnum extends ExpandableStringEnum<OptionalParamE
      * @param name a name to look for.
      * @return the corresponding OptionalParamEnum.
      */
-    @JsonCreator
     public static OptionalParamEnum fromString(String name) {
         return fromString(name, OptionalParamEnum.class);
     }

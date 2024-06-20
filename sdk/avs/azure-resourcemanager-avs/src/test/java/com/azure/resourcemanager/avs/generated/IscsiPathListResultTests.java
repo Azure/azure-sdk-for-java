@@ -12,9 +12,9 @@ public final class IscsiPathListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IscsiPathListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"networkBlock\":\"ivwzjbhyzs\"},\"id\":\"rkambt\",\"name\":\"negvmnvuqe\",\"type\":\"vldspa\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkBlock\":\"kkdmfl\"},\"id\":\"stmjlxrri\",\"name\":\"ozapeew\",\"type\":\"hpxlktwkuziycs\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"networkBlock\":\"f\"},\"id\":\"tcktyhjtqedcgzu\",\"name\":\"wmmrq\",\"type\":\"zrrjvpgly\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"networkBlock\":\"rvqeevtoepryutn\"},\"id\":\"tpzdmovzvfvaawzq\",\"name\":\"dflgzuri\",\"type\":\"laecxndticok\"}],\"nextLink\":\"zmlqtmldgxo\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"networkBlock\":\"mvikl\"},\"id\":\"dvk\",\"name\":\"bejdznxcv\",\"type\":\"srhnjivo\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"networkBlock\":\"ovqfzge\"},\"id\":\"dftuljltduce\",\"name\":\"mtmczuome\",\"type\":\"wcw\"}],\"nextLink\":\"ioknssxmoj\"}")
             .toObject(IscsiPathListResult.class);
-        Assertions.assertEquals("ivwzjbhyzs", model.value().get(0).networkBlock());
-        Assertions.assertEquals("zmlqtmldgxo", model.nextLink());
+        Assertions.assertEquals("mvikl", model.value().get(0).networkBlock());
+        Assertions.assertEquals("ioknssxmoj", model.nextLink());
     }
 }

@@ -34,8 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworkDhcpConfigurationsClient;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDhcpInner;
-import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkDhcpListResult;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpUpdate;
+import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkDhcpList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -76,7 +75,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkDhcpListResult>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
+        Mono<Response<WorkloadNetworkDhcpList>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -112,7 +111,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("dhcpId") String dhcpId,
             @HeaderParam("accept") String accept,
-            @BodyParam("application/json") WorkloadNetworkDhcpUpdate workloadNetworkDhcp, Context context);
+            @BodyParam("application/json") WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
@@ -128,7 +127,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkDhcpListResult>> listByWorkloadNetworkNext(
+        Mono<Response<WorkloadNetworkDhcpList>> listByWorkloadNetworkNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }
@@ -684,7 +683,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String dhcpId, WorkloadNetworkDhcpUpdate workloadNetworkDhcp) {
+        String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -733,7 +732,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String dhcpId, WorkloadNetworkDhcpUpdate workloadNetworkDhcp, Context context) {
+        String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -780,7 +779,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateAsync(
         String resourceGroupName, String privateCloudName, String dhcpId,
-        WorkloadNetworkDhcpUpdate workloadNetworkDhcp) {
+        WorkloadNetworkDhcpInner workloadNetworkDhcp) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp);
         return this.client.<WorkloadNetworkDhcpInner, WorkloadNetworkDhcpInner>getLroResult(mono,
@@ -803,7 +802,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateAsync(
-        String resourceGroupName, String privateCloudName, String dhcpId, WorkloadNetworkDhcpUpdate workloadNetworkDhcp,
+        String resourceGroupName, String privateCloudName, String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -827,7 +826,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String dhcpId,
-        WorkloadNetworkDhcpUpdate workloadNetworkDhcp) {
+        WorkloadNetworkDhcpInner workloadNetworkDhcp) {
         return this.beginUpdateAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp).getSyncPoller();
     }
 
@@ -846,7 +845,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdate(
-        String resourceGroupName, String privateCloudName, String dhcpId, WorkloadNetworkDhcpUpdate workloadNetworkDhcp,
+        String resourceGroupName, String privateCloudName, String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp,
         Context context) {
         return this.beginUpdateAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context)
             .getSyncPoller();
@@ -866,7 +865,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDhcpInner> updateAsync(String resourceGroupName, String privateCloudName, String dhcpId,
-        WorkloadNetworkDhcpUpdate workloadNetworkDhcp) {
+        WorkloadNetworkDhcpInner workloadNetworkDhcp) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -886,7 +885,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkDhcpInner> updateAsync(String resourceGroupName, String privateCloudName, String dhcpId,
-        WorkloadNetworkDhcpUpdate workloadNetworkDhcp, Context context) {
+        WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -905,7 +904,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDhcpInner update(String resourceGroupName, String privateCloudName, String dhcpId,
-        WorkloadNetworkDhcpUpdate workloadNetworkDhcp) {
+        WorkloadNetworkDhcpInner workloadNetworkDhcp) {
         return updateAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp).block();
     }
 
@@ -924,7 +923,7 @@ public final class WorkloadNetworkDhcpConfigurationsClientImpl implements Worklo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkDhcpInner update(String resourceGroupName, String privateCloudName, String dhcpId,
-        WorkloadNetworkDhcpUpdate workloadNetworkDhcp, Context context) {
+        WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context) {
         return updateAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context).block();
     }
 

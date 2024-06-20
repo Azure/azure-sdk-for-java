@@ -12,15 +12,15 @@ public final class AddonArcPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddonArcProperties model
-            = BinaryData.fromString("{\"addonType\":\"Arc\",\"vCenter\":\"hc\",\"provisioningState\":\"Succeeded\"}")
+            = BinaryData.fromString("{\"addonType\":\"Arc\",\"vCenter\":\"sz\",\"provisioningState\":\"Succeeded\"}")
                 .toObject(AddonArcProperties.class);
-        Assertions.assertEquals("hc", model.vCenter());
+        Assertions.assertEquals("sz", model.vCenter());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddonArcProperties model = new AddonArcProperties().withVCenter("hc");
+        AddonArcProperties model = new AddonArcProperties().withVCenter("sz");
         model = BinaryData.fromObject(model).toObject(AddonArcProperties.class);
-        Assertions.assertEquals("hc", model.vCenter());
+        Assertions.assertEquals("sz", model.vCenter());
     }
 }

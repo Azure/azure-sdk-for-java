@@ -12,24 +12,24 @@ public final class WorkloadNetworkDhcpServerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDhcpServer model = BinaryData.fromString(
-            "{\"dhcpType\":\"SERVER\",\"serverAddress\":\"tayriwwroyqbex\",\"leaseTime\":398335028,\"displayName\":\"ibycno\",\"segments\":[\"nmefqsgzvahapj\"],\"provisioningState\":\"Failed\",\"revision\":1752139018010177019}")
+            "{\"dhcpType\":\"SERVER\",\"serverAddress\":\"laexqp\",\"leaseTime\":3403871146459803360,\"displayName\":\"ws\",\"segments\":[\"gvxp\"],\"provisioningState\":\"Deleting\",\"revision\":7205793596406177755}")
             .toObject(WorkloadNetworkDhcpServer.class);
-        Assertions.assertEquals("ibycno", model.displayName());
-        Assertions.assertEquals(1752139018010177019L, model.revision());
-        Assertions.assertEquals("tayriwwroyqbex", model.serverAddress());
-        Assertions.assertEquals(398335028, model.leaseTime());
+        Assertions.assertEquals("ws", model.displayName());
+        Assertions.assertEquals(7205793596406177755L, model.revision());
+        Assertions.assertEquals("laexqp", model.serverAddress());
+        Assertions.assertEquals(3403871146459803360L, model.leaseTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkDhcpServer model = new WorkloadNetworkDhcpServer().withDisplayName("ibycno")
-            .withRevision(1752139018010177019L)
-            .withServerAddress("tayriwwroyqbex")
-            .withLeaseTime(398335028);
+        WorkloadNetworkDhcpServer model = new WorkloadNetworkDhcpServer().withDisplayName("ws")
+            .withRevision(7205793596406177755L)
+            .withServerAddress("laexqp")
+            .withLeaseTime(3403871146459803360L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpServer.class);
-        Assertions.assertEquals("ibycno", model.displayName());
-        Assertions.assertEquals(1752139018010177019L, model.revision());
-        Assertions.assertEquals("tayriwwroyqbex", model.serverAddress());
-        Assertions.assertEquals(398335028, model.leaseTime());
+        Assertions.assertEquals("ws", model.displayName());
+        Assertions.assertEquals(7205793596406177755L, model.revision());
+        Assertions.assertEquals("laexqp", model.serverAddress());
+        Assertions.assertEquals(3403871146459803360L, model.leaseTime());
     }
 }

@@ -33,7 +33,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworkPublicIpsClient;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpInner;
-import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkPublicIPListResult;
+import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkPublicIPsList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -74,7 +74,7 @@ public final class WorkloadNetworkPublicIpsClientImpl implements WorkloadNetwork
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPublicIPListResult>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
+        Mono<Response<WorkloadNetworkPublicIPsList>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -115,7 +115,7 @@ public final class WorkloadNetworkPublicIpsClientImpl implements WorkloadNetwork
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPublicIPListResult>> listByWorkloadNetworkNext(
+        Mono<Response<WorkloadNetworkPublicIPsList>> listByWorkloadNetworkNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }

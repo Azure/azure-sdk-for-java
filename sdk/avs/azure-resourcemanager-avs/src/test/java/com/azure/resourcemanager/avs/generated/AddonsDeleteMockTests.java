@@ -27,7 +27,7 @@ public final class AddonsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.addons().delete("abeolhbhlvbm", "uqibsxtkcu", "fbsfarfsiow", com.azure.core.util.Context.NONE);
+        manager.addons().delete("gvriibakclac", "fr", "xousxauzl", com.azure.core.util.Context.NONE);
 
     }
 }

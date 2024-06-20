@@ -5,55 +5,52 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * NSX DNS Zone Properties.
  */
 @Fluent
-public final class WorkloadNetworkDnsZoneProperties {
+public final class WorkloadNetworkDnsZoneProperties implements JsonSerializable<WorkloadNetworkDnsZoneProperties> {
     /*
      * Display name of the DNS Zone.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Domain names of the DNS Zone.
      */
-    @JsonProperty(value = "domain")
     private List<String> domain;
 
     /*
      * DNS Server IP array of the DNS Zone.
      */
-    @JsonProperty(value = "dnsServerIps")
     private List<String> dnsServerIps;
 
     /*
      * Source IP of the DNS Zone.
      */
-    @JsonProperty(value = "sourceIp")
     private String sourceIp;
 
     /*
      * Number of DNS Services using the DNS zone.
      */
-    @JsonProperty(value = "dnsServices")
-    private Integer dnsServices;
+    private Long dnsServices;
 
     /*
      * The provisioning state
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkloadNetworkDnsZoneProvisioningState provisioningState;
 
     /*
      * NSX revision number.
      */
-    @JsonProperty(value = "revision")
     private Long revision;
 
     /**
@@ -147,7 +144,7 @@ public final class WorkloadNetworkDnsZoneProperties {
      * 
      * @return the dnsServices value.
      */
-    public Integer dnsServices() {
+    public Long dnsServices() {
         return this.dnsServices;
     }
 
@@ -157,7 +154,7 @@ public final class WorkloadNetworkDnsZoneProperties {
      * @param dnsServices the dnsServices value to set.
      * @return the WorkloadNetworkDnsZoneProperties object itself.
      */
-    public WorkloadNetworkDnsZoneProperties withDnsServices(Integer dnsServices) {
+    public WorkloadNetworkDnsZoneProperties withDnsServices(Long dnsServices) {
         this.dnsServices = dnsServices;
         return this;
     }
@@ -197,5 +194,62 @@ public final class WorkloadNetworkDnsZoneProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("domain", this.domain, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("dnsServerIps", this.dnsServerIps, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("sourceIp", this.sourceIp);
+        jsonWriter.writeNumberField("dnsServices", this.dnsServices);
+        jsonWriter.writeNumberField("revision", this.revision);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadNetworkDnsZoneProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadNetworkDnsZoneProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkloadNetworkDnsZoneProperties.
+     */
+    public static WorkloadNetworkDnsZoneProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadNetworkDnsZoneProperties deserializedWorkloadNetworkDnsZoneProperties
+                = new WorkloadNetworkDnsZoneProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsZoneProperties.displayName = reader.getString();
+                } else if ("domain".equals(fieldName)) {
+                    List<String> domain = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWorkloadNetworkDnsZoneProperties.domain = domain;
+                } else if ("dnsServerIps".equals(fieldName)) {
+                    List<String> dnsServerIps = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWorkloadNetworkDnsZoneProperties.dnsServerIps = dnsServerIps;
+                } else if ("sourceIp".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsZoneProperties.sourceIp = reader.getString();
+                } else if ("dnsServices".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsZoneProperties.dnsServices = reader.getNullable(JsonReader::getLong);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsZoneProperties.provisioningState
+                        = WorkloadNetworkDnsZoneProvisioningState.fromString(reader.getString());
+                } else if ("revision".equals(fieldName)) {
+                    deserializedWorkloadNetworkDnsZoneProperties.revision = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadNetworkDnsZoneProperties;
+        });
     }
 }

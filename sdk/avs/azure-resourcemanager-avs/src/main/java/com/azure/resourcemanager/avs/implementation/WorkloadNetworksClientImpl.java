@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworksClient;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkInner;
-import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkListResult;
+import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -76,7 +76,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<WorkloadNetworkList>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -86,9 +86,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+        Mono<Response<WorkloadNetworkList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, Context context);
     }
 
     /**

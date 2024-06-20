@@ -27,7 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.avs.fluent.ScriptCmdletsClient;
 import com.azure.resourcemanager.avs.fluent.models.ScriptCmdletInner;
-import com.azure.resourcemanager.avs.implementation.models.ScriptCmdletListResult;
+import com.azure.resourcemanager.avs.implementation.models.ScriptCmdletsList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -66,7 +66,7 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/{scriptPackageName}/scriptCmdlets")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScriptCmdletListResult>> list(@HostParam("endpoint") String endpoint,
+        Mono<Response<ScriptCmdletsList>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName,
@@ -89,7 +89,7 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScriptCmdletListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<ScriptCmdletsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, Context context);
     }
 

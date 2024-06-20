@@ -11,7 +11,7 @@ public final class ScriptCmdletPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptCmdletProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"description\":\"bycnunvjsrtkf\",\"timeout\":\"nopqgikyzirtx\",\"audience\":\"Any\",\"parameters\":[{\"type\":\"Credential\",\"name\":\"tpsew\",\"description\":\"oi\",\"visibility\":\"Visible\",\"optional\":\"Optional\"},{\"type\":\"Credential\",\"name\":\"tqmieox\",\"description\":\"ggufhyaomtb\",\"visibility\":\"Visible\",\"optional\":\"Optional\"}]}")
+            "{\"provisioningState\":\"Failed\",\"description\":\"wkyhkobopgxe\",\"timeout\":\"owepbqpcrfkb\",\"audience\":\"Any\",\"parameters\":[{\"type\":\"Int\",\"name\":\"dw\",\"description\":\"p\",\"visibility\":\"Hidden\",\"optional\":\"Optional\"}]}")
             .toObject(ScriptCmdletProperties.class);
     }
 }

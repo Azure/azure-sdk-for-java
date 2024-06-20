@@ -22,7 +22,7 @@ public final class WorkloadNetworkVmGroupsListByWorkloadNetworkMockTests {
     @Test
     public void testListByWorkloadNetwork() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"ky\",\"members\":[\"cjxgrytf\",\"pcycilrmcaykg\",\"noxuztrksx\",\"pndfcpfnznt\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":7745207921111221845},\"id\":\"rxuzvoam\",\"name\":\"tcqiosmg\",\"type\":\"zah\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"ykprlpyznu\",\"members\":[\"dsmexiitdfux\",\"yasiibmiy\",\"nnust\"],\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":5871871887515703016},\"id\":\"xhcmavmqfoudo\",\"name\":\"hcgyyprotwyp\",\"type\":\"ndm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,10 +32,10 @@ public final class WorkloadNetworkVmGroupsListByWorkloadNetworkMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<WorkloadNetworkVMGroup> response = manager.workloadNetworkVmGroups()
-            .listByWorkloadNetwork("pnpbswveflocc", "rmozihmipgawt", com.azure.core.util.Context.NONE);
+            .listByWorkloadNetwork("linmfgv", "irpghriypoqeyh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ky", response.iterator().next().displayName());
-        Assertions.assertEquals("cjxgrytf", response.iterator().next().members().get(0));
-        Assertions.assertEquals(7745207921111221845L, response.iterator().next().revision());
+        Assertions.assertEquals("ykprlpyznu", response.iterator().next().displayName());
+        Assertions.assertEquals("dsmexiitdfux", response.iterator().next().members().get(0));
+        Assertions.assertEquals(5871871887515703016L, response.iterator().next().revision());
     }
 }

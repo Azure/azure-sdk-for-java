@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Endpoint addresses.
  */
 @Immutable
-public final class Endpoints {
+public final class Endpoints implements JsonSerializable<Endpoints> {
     /*
      * Endpoint FQDN for the NSX-T Data Center manager
      */
-    @JsonProperty(value = "nsxtManager", access = JsonProperty.Access.WRITE_ONLY)
     private String nsxtManager;
 
     /*
      * Endpoint FQDN for Virtual Center Server Appliance
      */
-    @JsonProperty(value = "vcsa", access = JsonProperty.Access.WRITE_ONLY)
     private String vcsa;
 
     /*
      * Endpoint FQDN for the HCX Cloud Manager
      */
-    @JsonProperty(value = "hcxCloudManager", access = JsonProperty.Access.WRITE_ONLY)
     private String hcxCloudManager;
 
     /*
      * Endpoint IP for the NSX-T Data Center manager
      */
-    @JsonProperty(value = "nsxtManagerIp", access = JsonProperty.Access.WRITE_ONLY)
     private String nsxtManagerIp;
 
     /*
      * Endpoint IP for Virtual Center Server Appliance
      */
-    @JsonProperty(value = "vcenterIp", access = JsonProperty.Access.WRITE_ONLY)
     private String vcenterIp;
 
     /*
      * Endpoint IP for the HCX Cloud Manager
      */
-    @JsonProperty(value = "hcxCloudManagerIp", access = JsonProperty.Access.WRITE_ONLY)
     private String hcxCloudManagerIp;
 
     /**
@@ -114,5 +112,50 @@ public final class Endpoints {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Endpoints from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Endpoints if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Endpoints.
+     */
+    public static Endpoints fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Endpoints deserializedEndpoints = new Endpoints();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nsxtManager".equals(fieldName)) {
+                    deserializedEndpoints.nsxtManager = reader.getString();
+                } else if ("vcsa".equals(fieldName)) {
+                    deserializedEndpoints.vcsa = reader.getString();
+                } else if ("hcxCloudManager".equals(fieldName)) {
+                    deserializedEndpoints.hcxCloudManager = reader.getString();
+                } else if ("nsxtManagerIp".equals(fieldName)) {
+                    deserializedEndpoints.nsxtManagerIp = reader.getString();
+                } else if ("vcenterIp".equals(fieldName)) {
+                    deserializedEndpoints.vcenterIp = reader.getString();
+                } else if ("hcxCloudManagerIp".equals(fieldName)) {
+                    deserializedEndpoints.hcxCloudManagerIp = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpoints;
+        });
     }
 }

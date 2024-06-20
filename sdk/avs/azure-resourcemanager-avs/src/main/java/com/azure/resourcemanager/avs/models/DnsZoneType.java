@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DnsZoneType extends ExpandableStringEnum<DnsZoneType> {
      * @param name a name to look for.
      * @return the corresponding DnsZoneType.
      */
-    @JsonCreator
     public static DnsZoneType fromString(String name) {
         return fromString(name, DnsZoneType.class);
     }

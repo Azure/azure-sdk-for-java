@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class VMGroupStatusEnum extends ExpandableStringEnum<VMGroupStatusE
      * @param name a name to look for.
      * @return the corresponding VMGroupStatusEnum.
      */
-    @JsonCreator
     public static VMGroupStatusEnum fromString(String name) {
         return fromString(name, VMGroupStatusEnum.class);
     }

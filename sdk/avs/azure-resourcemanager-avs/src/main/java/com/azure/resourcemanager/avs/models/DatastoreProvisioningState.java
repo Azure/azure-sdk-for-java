@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class DatastoreProvisioningState extends ExpandableStringEnum<Datas
      * @param name a name to look for.
      * @return the corresponding DatastoreProvisioningState.
      */
-    @JsonCreator
     public static DatastoreProvisioningState fromString(String name) {
         return fromString(name, DatastoreProvisioningState.class);
     }

@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDnsServiceInner;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServiceUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in WorkloadNetworkDnsServicesClient.
@@ -162,7 +161,7 @@ public interface WorkloadNetworkDnsServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService);
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService);
 
     /**
      * Update a WorkloadNetworkDnsService.
@@ -180,7 +179,7 @@ public interface WorkloadNetworkDnsServicesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService, Context context);
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context);
 
     /**
      * Update a WorkloadNetworkDnsService.
@@ -196,7 +195,7 @@ public interface WorkloadNetworkDnsServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDnsServiceInner update(String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService);
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService);
 
     /**
      * Update a WorkloadNetworkDnsService.
@@ -213,7 +212,7 @@ public interface WorkloadNetworkDnsServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDnsServiceInner update(String resourceGroupName, String privateCloudName, String dnsServiceId,
-        WorkloadNetworkDnsServiceUpdate workloadNetworkDnsService, Context context);
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context);
 
     /**
      * Delete a WorkloadNetworkDnsService.

@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Subnet configuration for segment.
  */
 @Fluent
-public final class WorkloadNetworkSegmentSubnet {
+public final class WorkloadNetworkSegmentSubnet implements JsonSerializable<WorkloadNetworkSegmentSubnet> {
     /*
      * DHCP Range assigned for subnet.
      */
-    @JsonProperty(value = "dhcpRanges")
     private List<String> dhcpRanges;
 
     /*
      * Gateway address.
      */
-    @JsonProperty(value = "gatewayAddress")
     private String gatewayAddress;
 
     /**
@@ -77,5 +79,45 @@ public final class WorkloadNetworkSegmentSubnet {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dhcpRanges", this.dhcpRanges, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("gatewayAddress", this.gatewayAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadNetworkSegmentSubnet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadNetworkSegmentSubnet if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkloadNetworkSegmentSubnet.
+     */
+    public static WorkloadNetworkSegmentSubnet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadNetworkSegmentSubnet deserializedWorkloadNetworkSegmentSubnet = new WorkloadNetworkSegmentSubnet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dhcpRanges".equals(fieldName)) {
+                    List<String> dhcpRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWorkloadNetworkSegmentSubnet.dhcpRanges = dhcpRanges;
+                } else if ("gatewayAddress".equals(fieldName)) {
+                    deserializedWorkloadNetworkSegmentSubnet.gatewayAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadNetworkSegmentSubnet;
+        });
     }
 }

@@ -34,8 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworkVmGroupsClient;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVMGroupInner;
-import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkVMGroupListResult;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroupUpdate;
+import com.azure.resourcemanager.avs.implementation.models.WorkloadNetworkVMGroupsList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -76,7 +75,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkVMGroupListResult>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
+        Mono<Response<WorkloadNetworkVMGroupsList>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -112,7 +111,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("vmGroupId") String vmGroupId,
             @HeaderParam("accept") String accept,
-            @BodyParam("application/json") WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup, Context context);
+            @BodyParam("application/json") WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
@@ -128,7 +127,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkVMGroupListResult>> listByWorkloadNetworkNext(
+        Mono<Response<WorkloadNetworkVMGroupsList>> listByWorkloadNetworkNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }
@@ -679,7 +678,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String vmGroupId, WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup) {
+        String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -728,7 +727,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String vmGroupId, WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup, Context context) {
+        String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -775,7 +774,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateAsync(
         String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup) {
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup);
         return this.client.<WorkloadNetworkVMGroupInner, WorkloadNetworkVMGroupInner>getLroResult(mono,
@@ -799,7 +798,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateAsync(
         String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup, Context context) {
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context);
@@ -823,7 +822,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup) {
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
         return this.beginUpdateAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup)
             .getSyncPoller();
     }
@@ -844,7 +843,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup, Context context) {
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context) {
         return this.beginUpdateAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context)
             .getSyncPoller();
     }
@@ -863,7 +862,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkVMGroupInner> updateAsync(String resourceGroupName, String privateCloudName,
-        String vmGroupId, WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup) {
+        String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -883,7 +882,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkloadNetworkVMGroupInner> updateAsync(String resourceGroupName, String privateCloudName,
-        String vmGroupId, WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup, Context context) {
+        String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context) {
         return beginUpdateAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -902,7 +901,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkVMGroupInner update(String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup) {
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
         return updateAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup).block();
     }
 
@@ -921,7 +920,7 @@ public final class WorkloadNetworkVmGroupsClientImpl implements WorkloadNetworkV
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WorkloadNetworkVMGroupInner update(String resourceGroupName, String privateCloudName, String vmGroupId,
-        WorkloadNetworkVMGroupUpdate workloadNetworkVMGroup, Context context) {
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context) {
         return updateAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context).block();
     }
 

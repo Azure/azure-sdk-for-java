@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -58,7 +57,6 @@ public final class WorkloadNetworkSegmentProvisioningState
      * @param name a name to look for.
      * @return the corresponding WorkloadNetworkSegmentProvisioningState.
      */
-    @JsonCreator
     public static WorkloadNetworkSegmentProvisioningState fromString(String name) {
         return fromString(name, WorkloadNetworkSegmentProvisioningState.class);
     }

@@ -5,45 +5,44 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.AffinityStrength;
 import com.azure.resourcemanager.avs.models.AzureHybridBenefitType;
 import com.azure.resourcemanager.avs.models.PlacementPolicyState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties of a placement policy resource that may be updated.
  */
 @Fluent
-public final class PlacementPolicyUpdateProperties {
+public final class PlacementPolicyUpdateProperties implements JsonSerializable<PlacementPolicyUpdateProperties> {
     /*
      * Whether the placement policy is enabled or disabled
      */
-    @JsonProperty(value = "state")
     private PlacementPolicyState state;
 
     /*
      * Virtual machine members list
      */
-    @JsonProperty(value = "vmMembers")
     private List<String> vmMembers;
 
     /*
      * Host members list
      */
-    @JsonProperty(value = "hostMembers")
     private List<String> hostMembers;
 
     /*
      * vm-host placement policy affinity strength (should/must)
      */
-    @JsonProperty(value = "affinityStrength")
     private AffinityStrength affinityStrength;
 
     /*
      * placement policy azure hybrid benefit opt-in type
      */
-    @JsonProperty(value = "azureHybridBenefitType")
     private AzureHybridBenefitType azureHybridBenefitType;
 
     /**
@@ -158,5 +157,61 @@ public final class PlacementPolicyUpdateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeArrayField("vmMembers", this.vmMembers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("hostMembers", this.hostMembers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("affinityStrength",
+            this.affinityStrength == null ? null : this.affinityStrength.toString());
+        jsonWriter.writeStringField("azureHybridBenefitType",
+            this.azureHybridBenefitType == null ? null : this.azureHybridBenefitType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlacementPolicyUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlacementPolicyUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PlacementPolicyUpdateProperties.
+     */
+    public static PlacementPolicyUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlacementPolicyUpdateProperties deserializedPlacementPolicyUpdateProperties
+                = new PlacementPolicyUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedPlacementPolicyUpdateProperties.state
+                        = PlacementPolicyState.fromString(reader.getString());
+                } else if ("vmMembers".equals(fieldName)) {
+                    List<String> vmMembers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPlacementPolicyUpdateProperties.vmMembers = vmMembers;
+                } else if ("hostMembers".equals(fieldName)) {
+                    List<String> hostMembers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPlacementPolicyUpdateProperties.hostMembers = hostMembers;
+                } else if ("affinityStrength".equals(fieldName)) {
+                    deserializedPlacementPolicyUpdateProperties.affinityStrength
+                        = AffinityStrength.fromString(reader.getString());
+                } else if ("azureHybridBenefitType".equals(fieldName)) {
+                    deserializedPlacementPolicyUpdateProperties.azureHybridBenefitType
+                        = AzureHybridBenefitType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlacementPolicyUpdateProperties;
+        });
     }
 }

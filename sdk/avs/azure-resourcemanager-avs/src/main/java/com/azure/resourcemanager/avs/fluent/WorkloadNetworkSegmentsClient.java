@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkSegmentInner;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in WorkloadNetworkSegmentsClient.
@@ -158,7 +157,7 @@ public interface WorkloadNetworkSegmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdate(
-        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentUpdate properties);
+        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties);
 
     /**
      * Update a WorkloadNetworkSegment.
@@ -175,7 +174,7 @@ public interface WorkloadNetworkSegmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdate(
-        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentUpdate properties,
+        String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties,
         Context context);
 
     /**
@@ -192,7 +191,7 @@ public interface WorkloadNetworkSegmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkSegmentInner update(String resourceGroupName, String privateCloudName, String segmentId,
-        WorkloadNetworkSegmentUpdate properties);
+        WorkloadNetworkSegmentInner properties);
 
     /**
      * Update a WorkloadNetworkSegment.
@@ -209,7 +208,7 @@ public interface WorkloadNetworkSegmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkSegmentInner update(String resourceGroupName, String privateCloudName, String segmentId,
-        WorkloadNetworkSegmentUpdate properties, Context context);
+        WorkloadNetworkSegmentInner properties, Context context);
 
     /**
      * Delete a WorkloadNetworkSegment.

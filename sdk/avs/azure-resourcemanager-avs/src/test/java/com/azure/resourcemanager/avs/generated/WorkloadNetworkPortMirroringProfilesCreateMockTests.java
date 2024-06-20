@@ -22,7 +22,7 @@ public final class WorkloadNetworkPortMirroringProfilesCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"mxqhndvnoamldse\",\"direction\":\"EGRESS\",\"source\":\"djh\",\"destination\":\"lzok\",\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":947940587713808603},\"id\":\"eta\",\"name\":\"ltsxoatf\",\"type\":\"g\"}";
+            = "{\"properties\":{\"displayName\":\"nkrrf\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"btijvacvbm\",\"destination\":\"bqqxlaj\",\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":4124520510189226193},\"id\":\"h\",\"name\":\"kuyxoafg\",\"type\":\"oqltfae\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,19 +32,19 @@ public final class WorkloadNetworkPortMirroringProfilesCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkPortMirroring response = manager.workloadNetworkPortMirroringProfiles()
-            .define("gshejjtbxqmulux")
-            .withExistingPrivateCloud("wcobie", "stmninwjizcilng")
-            .withDisplayName("zvners")
+            .define("fnmdxotn")
+            .withExistingPrivateCloud("lzo", "hpc")
+            .withDisplayName("gugey")
             .withDirection(PortMirroringDirectionEnum.BIDIRECTIONAL)
-            .withSource("crwnamikz")
-            .withDestination("rqbsmswziq")
-            .withRevision(6886133591151042666L)
+            .withSource("rkyui")
+            .withDestination("bsnmfpph")
+            .withRevision(3280820966134981534L)
             .create();
 
-        Assertions.assertEquals("mxqhndvnoamldse", response.displayName());
-        Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, response.direction());
-        Assertions.assertEquals("djh", response.source());
-        Assertions.assertEquals("lzok", response.destination());
-        Assertions.assertEquals(947940587713808603L, response.revision());
+        Assertions.assertEquals("nkrrf", response.displayName());
+        Assertions.assertEquals(PortMirroringDirectionEnum.BIDIRECTIONAL, response.direction());
+        Assertions.assertEquals("btijvacvbm", response.source());
+        Assertions.assertEquals("bqqxlaj", response.destination());
+        Assertions.assertEquals(4124520510189226193L, response.revision());
     }
 }

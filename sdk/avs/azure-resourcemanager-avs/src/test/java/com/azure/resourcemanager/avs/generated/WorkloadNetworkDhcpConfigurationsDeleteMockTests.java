@@ -28,7 +28,7 @@ public final class WorkloadNetworkDhcpConfigurationsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.workloadNetworkDhcpConfigurations()
-            .delete("lxecwcrojphslh", "awjutifd", "fmvigorqjbttzh", com.azure.core.util.Context.NONE);
+            .delete("jpahlxvea", "f", "xnmwmqtibxyijddt", com.azure.core.util.Context.NONE);
 
     }
 }

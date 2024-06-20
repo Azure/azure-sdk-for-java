@@ -4,11 +4,9 @@
 
 package com.azure.resourcemanager.avs.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
- * Available service tiers for the SKU.
+ * This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not
+ * required on a PUT.
  */
 public enum SkuTier {
     /**
@@ -46,7 +44,6 @@ public enum SkuTier {
      * @param value the serialized value to parse.
      * @return the parsed SkuTier object, or null if unable to parse.
      */
-    @JsonCreator
     public static SkuTier fromString(String value) {
         if (value == null) {
             return null;
@@ -63,7 +60,6 @@ public enum SkuTier {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class EncryptionKeyStatus extends ExpandableStringEnum<EncryptionKe
      * @param name a name to look for.
      * @return the corresponding EncryptionKeyStatus.
      */
-    @JsonCreator
     public static EncryptionKeyStatus fromString(String name) {
         return fromString(name, EncryptionKeyStatus.class);
     }

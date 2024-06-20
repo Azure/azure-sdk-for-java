@@ -11,7 +11,6 @@ import com.azure.resourcemanager.avs.models.DnsServiceLogLevelEnum;
 import com.azure.resourcemanager.avs.models.DnsServiceStatusEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsService;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServiceProvisioningState;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServiceUpdate;
 import java.util.Collections;
 import java.util.List;
 
@@ -92,8 +91,6 @@ public final class WorkloadNetworkDnsServiceImpl
 
     private String dnsServiceId;
 
-    private WorkloadNetworkDnsServiceUpdate updateWorkloadNetworkDnsService;
-
     public WorkloadNetworkDnsServiceImpl withExistingPrivateCloud(String resourceGroupName, String privateCloudName) {
         this.resourceGroupName = resourceGroupName;
         this.privateCloudName = privateCloudName;
@@ -121,21 +118,20 @@ public final class WorkloadNetworkDnsServiceImpl
     }
 
     public WorkloadNetworkDnsServiceImpl update() {
-        this.updateWorkloadNetworkDnsService = new WorkloadNetworkDnsServiceUpdate();
         return this;
     }
 
     public WorkloadNetworkDnsService apply() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworkDnsServices()
-            .update(resourceGroupName, privateCloudName, dnsServiceId, updateWorkloadNetworkDnsService, Context.NONE);
+            .update(resourceGroupName, privateCloudName, dnsServiceId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkDnsService apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworkDnsServices()
-            .update(resourceGroupName, privateCloudName, dnsServiceId, updateWorkloadNetworkDnsService, context);
+            .update(resourceGroupName, privateCloudName, dnsServiceId, this.innerModel(), context);
         return this;
     }
 
@@ -165,66 +161,32 @@ public final class WorkloadNetworkDnsServiceImpl
     }
 
     public WorkloadNetworkDnsServiceImpl withDisplayName(String displayName) {
-        if (isInCreateMode()) {
-            this.innerModel().withDisplayName(displayName);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsService.withDisplayName(displayName);
-            return this;
-        }
+        this.innerModel().withDisplayName(displayName);
+        return this;
     }
 
     public WorkloadNetworkDnsServiceImpl withDnsServiceIp(String dnsServiceIp) {
-        if (isInCreateMode()) {
-            this.innerModel().withDnsServiceIp(dnsServiceIp);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsService.withDnsServiceIp(dnsServiceIp);
-            return this;
-        }
+        this.innerModel().withDnsServiceIp(dnsServiceIp);
+        return this;
     }
 
     public WorkloadNetworkDnsServiceImpl withDefaultDnsZone(String defaultDnsZone) {
-        if (isInCreateMode()) {
-            this.innerModel().withDefaultDnsZone(defaultDnsZone);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsService.withDefaultDnsZone(defaultDnsZone);
-            return this;
-        }
+        this.innerModel().withDefaultDnsZone(defaultDnsZone);
+        return this;
     }
 
     public WorkloadNetworkDnsServiceImpl withFqdnZones(List<String> fqdnZones) {
-        if (isInCreateMode()) {
-            this.innerModel().withFqdnZones(fqdnZones);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsService.withFqdnZones(fqdnZones);
-            return this;
-        }
+        this.innerModel().withFqdnZones(fqdnZones);
+        return this;
     }
 
     public WorkloadNetworkDnsServiceImpl withLogLevel(DnsServiceLogLevelEnum logLevel) {
-        if (isInCreateMode()) {
-            this.innerModel().withLogLevel(logLevel);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsService.withLogLevel(logLevel);
-            return this;
-        }
+        this.innerModel().withLogLevel(logLevel);
+        return this;
     }
 
     public WorkloadNetworkDnsServiceImpl withRevision(Long revision) {
-        if (isInCreateMode()) {
-            this.innerModel().withRevision(revision);
-            return this;
-        } else {
-            this.updateWorkloadNetworkDnsService.withRevision(revision);
-            return this;
-        }
-    }
-
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        this.innerModel().withRevision(revision);
+        return this;
     }
 }

@@ -21,7 +21,7 @@ public final class CloudLinksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"status\":\"Active\",\"linkedCloud\":\"mxxdtddmflh\"},\"id\":\"tx\",\"name\":\"vtzn\",\"type\":\"pxbannovvoxc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"status\":\"Deleting\",\"linkedCloud\":\"t\"},\"id\":\"auunfprnjletlx\",\"name\":\"mr\",\"type\":\"ddoui\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class CloudLinksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CloudLink response = manager.cloudLinks()
-            .getWithResponse("inqcymczngnbdxxe", "unin", "udbchaqdtv", com.azure.core.util.Context.NONE)
+            .getWithResponse("quvre", "mrnjh", "sujz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mxxdtddmflh", response.linkedCloud());
+        Assertions.assertEquals("t", response.linkedCloud());
     }
 }

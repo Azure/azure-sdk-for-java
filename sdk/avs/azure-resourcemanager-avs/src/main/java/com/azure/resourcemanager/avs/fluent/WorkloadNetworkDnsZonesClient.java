@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDnsZoneInner;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZoneUpdate;
 
 /**
  * An instance of this class provides access to all the operations defined in WorkloadNetworkDnsZonesClient.
@@ -159,7 +158,7 @@ public interface WorkloadNetworkDnsZonesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String dnsZoneId,
-        WorkloadNetworkDnsZoneUpdate workloadNetworkDnsZone);
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone);
 
     /**
      * Update a WorkloadNetworkDnsZone.
@@ -177,7 +176,7 @@ public interface WorkloadNetworkDnsZonesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdate(
         String resourceGroupName, String privateCloudName, String dnsZoneId,
-        WorkloadNetworkDnsZoneUpdate workloadNetworkDnsZone, Context context);
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context);
 
     /**
      * Update a WorkloadNetworkDnsZone.
@@ -193,7 +192,7 @@ public interface WorkloadNetworkDnsZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDnsZoneInner update(String resourceGroupName, String privateCloudName, String dnsZoneId,
-        WorkloadNetworkDnsZoneUpdate workloadNetworkDnsZone);
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone);
 
     /**
      * Update a WorkloadNetworkDnsZone.
@@ -210,7 +209,7 @@ public interface WorkloadNetworkDnsZonesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     WorkloadNetworkDnsZoneInner update(String resourceGroupName, String privateCloudName, String dnsZoneId,
-        WorkloadNetworkDnsZoneUpdate workloadNetworkDnsZone, Context context);
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context);
 
     /**
      * Delete a WorkloadNetworkDnsZone.

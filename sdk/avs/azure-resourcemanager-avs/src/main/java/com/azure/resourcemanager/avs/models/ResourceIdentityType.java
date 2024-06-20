@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The kind of managemed identity assigned to this resource.
+ * Type of managed service identity (either system assigned, or none).
  */
 public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIdentityType> {
     /**
@@ -37,7 +36,6 @@ public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIde
      * @param name a name to look for.
      * @return the corresponding ResourceIdentityType.
      */
-    @JsonCreator
     public static ResourceIdentityType fromString(String name) {
         return fromString(name, ResourceIdentityType.class);
     }
