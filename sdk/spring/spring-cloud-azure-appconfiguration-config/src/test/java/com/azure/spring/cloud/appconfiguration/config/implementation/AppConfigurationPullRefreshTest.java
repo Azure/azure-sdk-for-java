@@ -76,7 +76,7 @@ public class AppConfigurationPullRefreshTest {
 
        AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval, (long) 0, replicaLookUpMock, refreshUtilMock);
        refresh.refreshAsync();
-       Thread.sleep(10);
+       Thread.sleep(100);
        verify(eventDataMock, times(1)).getDoRefresh(); 
     }
 
