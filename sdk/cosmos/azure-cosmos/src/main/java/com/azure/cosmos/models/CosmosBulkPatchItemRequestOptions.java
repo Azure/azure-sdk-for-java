@@ -18,7 +18,6 @@ public final class CosmosBulkPatchItemRequestOptions {
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
     private String filterPredicate;
-    private Set<String> customCorrelatedIds;
 
     /**
      * Constructor
@@ -126,16 +125,6 @@ public final class CosmosBulkPatchItemRequestOptions {
         return this;
     }
 
-    /**
-     * Sets the custom ids.
-     *
-     * @param customCorrelatedIds the custom ids.
-     * @return the current request options.
-     */
-    public CosmosBulkPatchItemRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.customCorrelatedIds = customCorrelatedIds;
-        return this;
-    }
 
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
@@ -143,7 +132,6 @@ public final class CosmosBulkPatchItemRequestOptions {
         requestOptions.setIfNoneMatchETag(this.ifNoneMatchETag);
         requestOptions.setContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled);
         requestOptions.setFilterPredicate(this.filterPredicate);
-        requestOptions.setCustomCorrelatedIds(this.customCorrelatedIds);
         return requestOptions;
     }
 }

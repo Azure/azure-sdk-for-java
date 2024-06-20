@@ -43,7 +43,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
-    private Set<String> customCorrelatedIds;
+    private Set<String> keywordIdentifiers;
 
     /**
      * Instantiates a new query request options.
@@ -458,13 +458,13 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         return (T)this;
     }
 
-    public void setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.customCorrelatedIds = customCorrelatedIds;
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
     }
 
     @Override
-    public Set<String> getCustomCorrelatedIds() {
-        return this.customCorrelatedIds;
+    public Set<String> getKeywordIdentifiers() {
+        return this.keywordIdentifiers;
     }
 
     @Override
@@ -478,7 +478,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         this.indexMetricsEnabled = overrideOption( readOnlyRequestOptions.isIndexMetricsEnabled(), this.indexMetricsEnabled);
         this.queryMetricsEnabled = overrideOption( readOnlyRequestOptions.isQueryMetricsEnabled(), this.queryMetricsEnabled);
         this.responseContinuationTokenLimitInKb = overrideOption( readOnlyRequestOptions.getResponseContinuationTokenLimitInKb(), this.responseContinuationTokenLimitInKb);
-        this.customCorrelatedIds = overrideOption( readOnlyRequestOptions.getCustomCorrelatedIds(), this.customCorrelatedIds);
+        this.keywordIdentifiers = overrideOption( readOnlyRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
     }
 
     public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {

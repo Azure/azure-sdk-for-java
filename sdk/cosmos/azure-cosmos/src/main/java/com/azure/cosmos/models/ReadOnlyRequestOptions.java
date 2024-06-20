@@ -185,5 +185,5 @@ public interface ReadOnlyRequestOptions {
      *
      * @return the custom correlated ids.
      */
-    Set<String> getCustomCorrelatedIds();
+    Set<String> getKeywordIdentifiers();
 }

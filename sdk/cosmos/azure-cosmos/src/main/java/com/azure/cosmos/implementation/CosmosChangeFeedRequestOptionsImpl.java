@@ -40,7 +40,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private CosmosDiagnosticsThresholds thresholds;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
-    private Set<String> customCorrelatedIds;
+    private Set<String> keywordIdentifiers;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl topBeCloned) {
         this.continuationState = topBeCloned.continuationState;
@@ -264,13 +264,13 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
             HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
     }
 
-    public void setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.customCorrelatedIds = customCorrelatedIds;
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
     }
 
     @Override
-    public Set<String> getCustomCorrelatedIds() {
-        return this.customCorrelatedIds;
+    public Set<String> getKeywordIdentifiers() {
+        return this.keywordIdentifiers;
     }
 
     @Override
@@ -280,7 +280,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.excludeRegions = overrideOption(readOnlyRequestOptions.getExcludedRegions(), this.excludeRegions);
         this.throughputControlGroupName = overrideOption(readOnlyRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
         this.thresholds = overrideOption(readOnlyRequestOptions.getDiagnosticsThresholds(), this.thresholds);
-        this.customCorrelatedIds = overrideOption(readOnlyRequestOptions.getCustomCorrelatedIds(), this.customCorrelatedIds);
+        this.keywordIdentifiers = overrideOption(readOnlyRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
     }
 
 }

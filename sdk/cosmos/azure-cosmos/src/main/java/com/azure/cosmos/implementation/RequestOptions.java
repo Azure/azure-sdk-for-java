@@ -59,7 +59,7 @@ public class RequestOptions implements OverridableRequestOptions {
     private CosmosItemSerializer effectiveItemSerializer;
 
     private final AtomicReference<Runnable> markE2ETimeoutInRequestContextCallbackHook;
-    private Set<String> customCorrelatedIds;
+    private Set<String> keywordIdentifiers;
 
     public RequestOptions() {
 
@@ -552,13 +552,13 @@ public class RequestOptions implements OverridableRequestOptions {
         return this.markE2ETimeoutInRequestContextCallbackHook;
     }
 
-    public void setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.customCorrelatedIds = customCorrelatedIds;
+    public void setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
     }
 
     @Override
-    public Set<String> getCustomCorrelatedIds() {
-        return customCorrelatedIds;
+    public Set<String> getKeywordIdentifiers() {
+        return keywordIdentifiers;
     }
 
     @Override
@@ -571,7 +571,7 @@ public class RequestOptions implements OverridableRequestOptions {
         this.throughputControlGroupName = overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
         this.thresholds = overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
         this.endToEndOperationLatencyConfig = overrideOption(cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.endToEndOperationLatencyConfig);
-        this.customCorrelatedIds = overrideOption(cosmosCommonRequestOptions.getCustomCorrelatedIds(), this.customCorrelatedIds);
+        this.keywordIdentifiers = overrideOption(cosmosCommonRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
     }
 
     public CosmosItemSerializer getEffectiveItemSerializer() {

@@ -315,11 +315,11 @@ public final class CosmosReadManyRequestOptions {
     /**
      * Sets the custom ids.
      *
-     * @param customCorrelatedIds the custom ids.
+     * @param keywordIdentifiers the custom ids.
      * @return the current request options.
      */
-    public CosmosReadManyRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.actualRequestOptions.setCustomCorrelatedIds(customCorrelatedIds);
+    public CosmosReadManyRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
         return this;
     }
 

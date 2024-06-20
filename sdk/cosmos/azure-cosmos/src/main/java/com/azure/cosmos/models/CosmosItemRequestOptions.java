@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
@@ -454,7 +453,7 @@ public class CosmosItemRequestOptions {
         }
         requestOptions.setEffectiveItemSerializer(this.customSerializer);
         requestOptions.setUseTrackingIds(this.useTrackingIds);
-        requestOptions.setCustomCorrelatedIds(customCorrelatedIds);
+        requestOptions.setKeywordIdentifiers(customCorrelatedIds);
         return requestOptions;
     }
 

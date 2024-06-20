@@ -27,7 +27,7 @@ public final class CosmosBatchRequestOptions {
     private List<String> excludeRegions;
 
     private CosmosItemSerializer customSerializer;
-    private Set<String> customCorrelatedIds;
+    private Set<String> keywordIdentifiers;
 
     /**
      * Creates an instance of the CosmosBatchRequestOptions class
@@ -123,7 +123,7 @@ public final class CosmosBatchRequestOptions {
             }
         }
         requestOptions.setExcludedRegions(excludeRegions);
-        requestOptions.setCustomCorrelatedIds(customCorrelatedIds);
+        requestOptions.setKeywordIdentifiers(keywordIdentifiers);
 
         return requestOptions;
     }
@@ -202,11 +202,11 @@ public final class CosmosBatchRequestOptions {
     /**
      * Sets the custom ids.
      *
-     * @param customCorrelatedIds the custom ids.
+     * @param keywordIdentifiers the custom ids.
      * @return the current request options.
      */
-    public CosmosBatchRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.customCorrelatedIds = customCorrelatedIds;
+    public CosmosBatchRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
         return this;
     }
 

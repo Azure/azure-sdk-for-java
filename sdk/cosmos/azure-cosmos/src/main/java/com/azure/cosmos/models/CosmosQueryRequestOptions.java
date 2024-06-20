@@ -533,11 +533,11 @@ public class CosmosQueryRequestOptions {
     /**
      * Sets the custom ids.
      *
-     * @param customCorrelatedIds the custom ids.
+     * @param keywordIdentifiers the custom ids.
      * @return the current request options.
      */
-    public CosmosQueryRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.actualRequestOptions.setCustomCorrelatedIds(customCorrelatedIds);
+    public CosmosQueryRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.actualRequestOptions.setKeywordIdentifiers(keywordIdentifiers);
         return this;
     }
 

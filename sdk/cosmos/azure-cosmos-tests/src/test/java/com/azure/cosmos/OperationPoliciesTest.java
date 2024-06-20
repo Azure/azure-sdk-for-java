@@ -17,12 +17,12 @@ import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosCommonRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -90,12 +90,12 @@ public class OperationPoliciesTest extends TestSuiteBase {
         }
     }
 
-    private static void createReadDeleteBatchEtcOptions(String operationType, String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+    private static void createReadDeleteBatchEtcOptions(String operationType, String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (operationType.equals("Create") || operationType.equals("Read") || operationType.equals("Replace")
             || operationType.equals("Delete") || operationType.equals("Patch") || operationType.equals("Upsert")
             || (operationType.equals("Batch") && spanName.contains("transactionalBatch"))) {
 
-            cosmosCommonRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
+            cosmosRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
                     Duration.ofSeconds(Long.parseLong(prop.getProperty(E2E_TIMEOUT))),
                     new ThresholdBasedAvailabilityStrategy()))
                 .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
@@ -106,15 +106,15 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setIntegratedCacheBypassed(Boolean.parseBoolean(prop.getProperty(BYPASS_CACHE))))
                 .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
                 .setExcludeRegions(new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(","))))
-                .setCustomCorrelatedIds(new HashSet<>(Arrays.asList(prop.getProperty(customCorrelatedId).split(","))));
+                .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(customCorrelatedId).split(","))));
 
         }
     }
 
-    private static void createQueryReadAllItemsOptions(String operationType, String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+    private static void createQueryReadAllItemsOptions(String operationType, String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (operationType.equals("Query") || spanName.contains("readAllItems")) {
 
-            cosmosCommonRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
+            cosmosRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
                     Duration.ofSeconds(Long.parseLong(prop.getProperty(E2E_TIMEOUT))),
                     new ThresholdBasedAvailabilityStrategy()))
                 .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
@@ -132,13 +132,13 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 .setMaxPrefetchPageCount(Integer.parseInt(prop.getProperty(MAX_PREFETCH_PAGE_COUNT)))
                 .setQueryName(prop.getProperty(QUERY_NAME))
                 .setConsistencyLevel(ConsistencyLevel.valueOf(prop.getProperty(CONSISTENCY_LEVEL)))
-                .setCustomCorrelatedIds(new HashSet<>(Arrays.asList(prop.getProperty(customCorrelatedId).split(","))));
+                .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(customCorrelatedId).split(","))));
 
         }
     }
-    private static void createReadManyOptions(String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+    private static void createReadManyOptions(String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (spanName.contains("readMany")) {
-                cosmosCommonRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
+                cosmosRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
                         Duration.ofSeconds(Long.parseLong(prop.getProperty(E2E_TIMEOUT))),
                         new ThresholdBasedAvailabilityStrategy()))
                     .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
@@ -150,26 +150,26 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setQueryMetricsEnabled(Boolean.parseBoolean(prop.getProperty(QUERY_METRICS)))
                     .setIndexMetricsEnabled(Boolean.parseBoolean(prop.getProperty(INDEX_METRICS)))
                     .setConsistencyLevel(ConsistencyLevel.valueOf(prop.getProperty(CONSISTENCY_LEVEL)))
-                    .setCustomCorrelatedIds(new HashSet<>(Arrays.asList(prop.getProperty(customCorrelatedId).split(","))));
+                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(customCorrelatedId).split(","))));
         }
     }
 
-    private static void createBulkOptions(String operationType, String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+    private static void createBulkOptions(String operationType, String spanName, CosmosRequestOptions cosmoRequestOptions) {
         if (operationType.equals("Batch") && spanName.contains("nonTransactionalBatch")) {
-                cosmosCommonRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
+                cosmoRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
-                    .setCustomCorrelatedIds(new HashSet<>(Arrays.asList(prop.getProperty(customCorrelatedId).split(","))));
+                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(customCorrelatedId).split(","))));
         }
     }
 
-    private static void createChangeFeedOptions(String spanName, CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+    private static void createChangeFeedOptions(String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (spanName.contains("queryChangeFeed")) {
-                cosmosCommonRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
+                cosmosRequestOptions.setExcludeRegions((new ArrayList<>(Arrays.asList(prop.getProperty(EXCLUDE_REGIONS).split(",")))))
                     .setThroughputControlGroupName(prop.getProperty(THROUGHPUT_CONTROL_GROUP_NAME))
                     .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
                     .setMaxPrefetchPageCount(Integer.parseInt(prop.getProperty(MAX_PREFETCH_PAGE_COUNT)))
                     .setMaxItemCount(Integer.parseInt(prop.getProperty(MAX_ITEM_COUNT)))
-                    .setCustomCorrelatedIds(new HashSet<>(Arrays.asList(prop.getProperty(customCorrelatedId).split(","))));
+                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(customCorrelatedId).split(","))));
         }
     }
     @DataProvider
@@ -179,39 +179,39 @@ public class OperationPoliciesTest extends TestSuiteBase {
             CosmosDiagnosticsContext cosmosDiagnosticsContext = cosmosOperationDetails.getDiagnosticsContext();
             String operationType = cosmosDiagnosticsContext.getOperationType();
             String spanName = cosmosDiagnosticsContext.getSpanName();
-            CosmosCommonRequestOptions cosmosCommonRequestOptions = new CosmosCommonRequestOptions();
-            createReadDeleteBatchEtcOptions(operationType, spanName, cosmosCommonRequestOptions);
-            createQueryReadAllItemsOptions(operationType, spanName, cosmosCommonRequestOptions);
-            createReadManyOptions(spanName, cosmosCommonRequestOptions);
-            createBulkOptions(operationType, spanName, cosmosCommonRequestOptions);
-            createChangeFeedOptions(spanName, cosmosCommonRequestOptions);
-            cosmosOperationDetails.setCommonOptions(cosmosCommonRequestOptions);
+            CosmosRequestOptions cosmosRequestOptions = new CosmosRequestOptions();
+            createReadDeleteBatchEtcOptions(operationType, spanName, cosmosRequestOptions);
+            createQueryReadAllItemsOptions(operationType, spanName, cosmosRequestOptions);
+            createReadManyOptions(spanName, cosmosRequestOptions);
+            createBulkOptions(operationType, spanName, cosmosRequestOptions);
+            createChangeFeedOptions(spanName, cosmosRequestOptions);
+            cosmosOperationDetails.setCommonOptions(cosmosRequestOptions);
         };
 
         CosmosClientBuilder[] clientBuilders = new CosmosClientBuilder[3];
         clientBuilders[0] =  new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
             .credential(credential)
             .gatewayMode()
-            .addPolicy(policy);
+            .addOperationPolicy(policy);
         clientBuilders[1] =  new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
             .credential(credential)
-            .addPolicy(policy);
+            .addOperationPolicy(policy);
         clientBuilders[2] = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
             .credential(credential)
-            .addPolicy((cosmosOperationDetails) -> {
+            .addOperationPolicy((cosmosOperationDetails) -> {
                 CosmosDiagnosticsContext cosmosDiagnosticsContext = cosmosOperationDetails.getDiagnosticsContext();
                 String operationType = cosmosDiagnosticsContext.getOperationType();
                 String spanName = cosmosDiagnosticsContext.getSpanName();
-                CosmosCommonRequestOptions cosmosCommonRequestOptions = new CosmosCommonRequestOptions();
+                CosmosRequestOptions cosmosCommonRequestOptions = new CosmosRequestOptions();
                 createReadDeleteBatchEtcOptions(operationType, spanName, cosmosCommonRequestOptions);
                 createQueryReadAllItemsOptions(operationType, spanName, cosmosCommonRequestOptions);
                 createReadManyOptions(spanName, cosmosCommonRequestOptions);
                 cosmosOperationDetails.setCommonOptions(cosmosCommonRequestOptions);
-            }).addPolicy((cosmosOperationDetails) -> {
+            }).addOperationPolicy((cosmosOperationDetails) -> {
                 CosmosDiagnosticsContext cosmosDiagnosticsContext = cosmosOperationDetails.getDiagnosticsContext();
                 String operationType = cosmosDiagnosticsContext.getOperationType();
                 String spanName = cosmosDiagnosticsContext.getSpanName();
-                CosmosCommonRequestOptions cosmosCommonRequestOptions = new CosmosCommonRequestOptions();
+                CosmosRequestOptions cosmosCommonRequestOptions = new CosmosRequestOptions();
                 createBulkOptions(operationType, spanName, cosmosCommonRequestOptions);
                 createChangeFeedOptions(spanName, cosmosCommonRequestOptions);
                 cosmosOperationDetails.setCommonOptions(cosmosCommonRequestOptions);
@@ -711,7 +711,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
        assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(options[5]);
        assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(options[6]));
        assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
-       assertThat(requestOptions.getCustomCorrelatedIds()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
+       assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
     }
     private void validateOptions(String[] options, CosmosBatchResponse response) {
         OverridableRequestOptions requestOptions = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor().getRequestOptions(
@@ -719,7 +719,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase()).isEqualTo(options[1]);
         assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(options[6]));
         assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
-        assertThat(requestOptions.getCustomCorrelatedIds()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
+        assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
     }
 
     private void validateOptions(String[] options, CosmosBulkItemResponse response) {
@@ -727,7 +727,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             response.getCosmosDiagnostics().getDiagnosticsContext());
         assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
         assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(options[5]);
-        assertThat(requestOptions.getCustomCorrelatedIds()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
+        assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
     }
 
     private void validateOptions(String[] changedOptions, FeedResponse<InternalObjectNode> response, boolean isChangeFeed, boolean isReadMany) {
@@ -768,7 +768,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             assertThat(requestOptions.isIndexMetricsEnabled()).isEqualTo(Boolean.parseBoolean(changedOptions[14]));
             assertThat(requestOptions.getQueryNameOrDefault("")).isEqualTo(changedOptions[16]);
         }
-        assertThat(requestOptions.getCustomCorrelatedIds()).isEqualTo(new HashSet<>(Arrays.asList(changedOptions[17].split(","))));
+        assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(changedOptions[17].split(","))));
     }
 
     private void changeProperties(String[] values) {

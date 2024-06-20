@@ -6,7 +6,6 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.RequestOptions;
 
-import java.util.Set;
 
 /**
  * Encapsulates options that can be specified for an operation used in Bulk execution. It can be passed while
@@ -16,7 +15,6 @@ public final class CosmosBulkItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
-    private Set<String> customCorrelatedIds;
 
     /**
      * Constructor
@@ -98,23 +96,11 @@ public final class CosmosBulkItemRequestOptions {
         return this.contentResponseOnWriteEnabled;
     }
 
-    /**
-     * Sets the custom ids.
-     *
-     * @param customCorrelatedIds the custom ids.
-     * @return the current request options.
-     */
-    public CosmosBulkItemRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.customCorrelatedIds = customCorrelatedIds;
-        return this;
-    }
-
     RequestOptions toRequestOptions() {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(this.ifMatchETag);
         requestOptions.setIfNoneMatchETag(this.ifNoneMatchETag);
         requestOptions.setContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled);
-        requestOptions.setCustomCorrelatedIds(this.customCorrelatedIds);
 
         return requestOptions;
     }

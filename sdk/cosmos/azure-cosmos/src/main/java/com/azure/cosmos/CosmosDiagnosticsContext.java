@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
-import com.azure.cosmos.models.CosmosItemOperationType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -89,7 +88,6 @@ public final class CosmosDiagnosticsContext {
 
     private String queryStatement;
     private OverridableRequestOptions requestOptions;
-    private CosmosItemOperationType subOperationType;
 
     CosmosDiagnosticsContext(
         String spanName,
@@ -141,31 +139,6 @@ public final class CosmosDiagnosticsContext {
         this.isSampledOut = false;
         this.queryStatement = queryStatement;
         this.requestOptions = requestOptions;
-    }
-
-    CosmosDiagnosticsContext(
-        String spanName,
-        String accountName,
-        String endpoint,
-        String databaseName,
-        String collectionName,
-        ResourceType resourceType,
-        OperationType operationType,
-        String operationId,
-        ConsistencyLevel consistencyLevel,
-        Integer maxItemCount,
-        CosmosDiagnosticsThresholds thresholds,
-        String trackingId,
-        String connectionMode,
-        String userAgent,
-        Integer sequenceNumber,
-        String queryStatement,
-        OverridableRequestOptions requestOptions,
-        CosmosItemOperationType subOperationType) {
-        this(spanName, accountName, endpoint, databaseName, collectionName, resourceType, operationType, operationId,
-            consistencyLevel, maxItemCount, thresholds, trackingId, connectionMode, userAgent, sequenceNumber,
-            queryStatement, requestOptions);
-        this.subOperationType = subOperationType;
     }
 
     /**
@@ -942,8 +915,8 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    public Set<String> getCustomCorrelatedActivityId() {
-        return this.requestOptions.getCustomCorrelatedIds();
+    public Set<String> getCustomCorrelatedId() {
+        return this.requestOptions.getKeywordIdentifiers();
     }
 
     OverridableRequestOptions getRequestOptions() {
@@ -996,41 +969,6 @@ public final class CosmosDiagnosticsContext {
                             queryStatement,
                             requestOptions
                             );
-                    }
-
-                    @Override
-                    public CosmosDiagnosticsContext create(String spanName, String account, String endpoint,
-                                                           String databaseId,String containerId,
-                                                           ResourceType resourceType, OperationType operationType,
-                                                           String operationId,
-                                                           ConsistencyLevel consistencyLevel, Integer maxItemCount,
-                                                           CosmosDiagnosticsThresholds thresholds, String trackingId,
-                                                           String connectionMode, String userAgent,
-                                                           Integer sequenceNumber,
-                                                           String queryStatement,
-                                                           OverridableRequestOptions requestOptions,
-                                                           CosmosItemOperationType subOperationType) {
-
-                        return new CosmosDiagnosticsContext(
-                            spanName,
-                            account,
-                            endpoint,
-                            databaseId,
-                            containerId,
-                            resourceType,
-                            operationType,
-                            operationId,
-                            consistencyLevel,
-                            maxItemCount,
-                            thresholds,
-                            trackingId,
-                            connectionMode,
-                            userAgent,
-                            sequenceNumber,
-                            queryStatement,
-                            requestOptions,
-                            subOperationType
-                        );
                     }
 
                         @Override

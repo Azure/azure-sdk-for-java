@@ -340,7 +340,7 @@ public final class CosmosBulkExecutionOptions {
      * @return set of custom ids.
      */
     public Set<String> getCustomCorrelatedIds() {
-        return this.actualRequestOptions.getCustomCorrelatedIds();
+        return this.actualRequestOptions.getKeywordIdentifiers();
     }
 
     CosmosBulkExecutionOptionsImpl getImpl() {

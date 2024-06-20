@@ -876,26 +876,6 @@ public class ImplementationBridgeHelpers {
                 String queryStatement,
                 OverridableRequestOptions requestOptions);
 
-            CosmosDiagnosticsContext create(
-                String spanName,
-                String account,
-                String endpoint,
-                String databaseId,
-                String containerId,
-                ResourceType resourceType,
-                OperationType operationType,
-                String operationId,
-                ConsistencyLevel consistencyLevel,
-                Integer maxItemCount,
-                CosmosDiagnosticsThresholds thresholds,
-                String trackingId,
-                String connectionMode,
-                String userAgent,
-                Integer sequenceNumber,
-                String queryStatement,
-                OverridableRequestOptions requestOptions,
-                CosmosItemOperationType subOperationType);
-
             OverridableRequestOptions getRequestOptions(CosmosDiagnosticsContext ctx);
 
             void setRequestOptions(CosmosDiagnosticsContext ctx, OverridableRequestOptions requestOptions);

@@ -33,7 +33,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
     private Boolean indexMetricsEnabled;
     private Integer maxPrefetchPageCount;
     private String queryName;
-    private Set<String> customCorrelatedIds;
+    private Set<String> keywordIdentifiers;
 
     /**
      * Sets the CosmosEndToEndLatencyPolicyConfig.
@@ -225,11 +225,11 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
     /**
      * Sets the CustomCorrelatedIds.
      *
-     * @param customCorrelatedIds the CustomCorrelatedIds.
+     * @param keywordIdentifiers the CustomCorrelatedIds.
      * @return current CosmosCommonRequestOptions.
      */
-    public CosmosCommonRequestOptions setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.customCorrelatedIds = customCorrelatedIds;
+    public CosmosRequestOptions setKeywordIdentifiers(Set<String> keywordIdentifiers) {
+        this.keywordIdentifiers = keywordIdentifiers;
         return this;
     }
 
@@ -323,7 +323,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
     }
 
     @Override
-    public Set<String> getCustomCorrelatedIds() {
-        return this.customCorrelatedIds;
+    public Set<String> getKeywordIdentifiers() {
+        return this.keywordIdentifiers;
     }
 }

@@ -44,7 +44,7 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
     private List<String> excludeRegions;
     private BulkExecutorDiagnosticsTracker diagnosticsTracker = null;
     private CosmosItemSerializer customSerializer;
-    private Set<String> customCorrelatedIds;
+    private Set<String> keywordIdentifiers;
 
 
     public CosmosBulkExecutionOptionsImpl(CosmosBulkExecutionOptionsImpl toBeCloned) {
@@ -222,19 +222,19 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
     }
 
     public void setCustomCorrelatedIds(Set<String> customCorrelatedIds) {
-        this.customCorrelatedIds = customCorrelatedIds;
+        this.keywordIdentifiers = customCorrelatedIds;
     }
 
     @Override
-    public Set<String> getCustomCorrelatedIds() {
-        return this.customCorrelatedIds;
+    public Set<String> getKeywordIdentifiers() {
+        return this.keywordIdentifiers;
     }
 
     @Override
     public void override(ReadOnlyRequestOptions readOnlyRequestOptions) {
         this.excludeRegions = overrideOption(readOnlyRequestOptions.getExcludedRegions(), this.excludeRegions);
         this.throughputControlGroupName = overrideOption(readOnlyRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
-        this.customCorrelatedIds = overrideOption(readOnlyRequestOptions.getCustomCorrelatedIds(), this.customCorrelatedIds);
+        this.keywordIdentifiers = overrideOption(readOnlyRequestOptions.getKeywordIdentifiers(), this.keywordIdentifiers);
     }
 
 }
