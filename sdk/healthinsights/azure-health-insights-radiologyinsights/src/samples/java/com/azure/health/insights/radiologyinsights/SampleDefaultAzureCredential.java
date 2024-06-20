@@ -8,8 +8,8 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import com.azure.core.util.Configuration;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
@@ -91,18 +91,14 @@ public class SampleDefaultAzureCredential {
         // BEGIN: com.azure.health.insights.radiologyinsights.defaultazurecredential
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
 
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
-                .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
-        DefaultAzureCredential c = new DefaultAzureCredentialBuilder().build();
-        
-        clientBuilder = clientBuilder.credential(c);
+                .endpoint(endpoint)
+                .credential(credential);
+        RadiologyInsightsClient radiologyInsightsClient = clientBuilder.buildClient();
         // END: com.azure.health.insights.radiologyinsights.defaultazurecredential
         
-        System.out.println(endpoint);
-        
-        RadiologyInsightsClient radiologyInsightsClient = clientBuilder.buildClient();
-        
-        RadiologyInsightsInferenceResult riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob()).getFinalResult();
+        RadiologyInsightsInferenceResult riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob()).getFinalResult();
 
         displayCriticalResults(riJobResponse);
     }
