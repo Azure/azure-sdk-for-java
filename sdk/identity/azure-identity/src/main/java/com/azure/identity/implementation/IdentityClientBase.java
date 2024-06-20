@@ -206,8 +206,6 @@ public abstract class IdentityClientBase {
         String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/"
             + tenantId;
         IClientCredential credential;
-        // Initialize the adapter here so we can use the HttpPipeline if we need it.
-        initializeHttpPipelineAdapter();
 
         if (clientSecret != null) {
             credential = ClientCredentialFactory.createFromSecret(clientSecret);
@@ -238,7 +236,7 @@ public abstract class IdentityClientBase {
         } else if (clientAssertionSupplier != null) {
             credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplier.get());
         } else if (clientAssertionSupplierWithHttpPipeline != null) {
-            credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(this.httpPipeline));
+            credential = ClientCredentialFactory.createFromClientAssertion(clientAssertionSupplierWithHttpPipeline.apply(getPipeline()));
         } else {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Must provide client secret or client certificate path."
@@ -270,6 +268,7 @@ public abstract class IdentityClientBase {
         }
 
         applicationBuilder.sendX5c(options.isIncludeX5c());
+        initializeHttpPipelineAdapter();
 
         if (httpPipelineAdapter != null) {
             applicationBuilder.httpClient(httpPipelineAdapter);
@@ -898,18 +897,28 @@ public abstract class IdentityClientBase {
 
 
     void initializeHttpPipelineAdapter() {
-        // If user supplies the pipeline, then it should override all other properties
-        // as they should directly be set on the pipeline.
+        if (options.getProxyOptions() == null) {
+            httpPipelineAdapter = new HttpPipelineAdapter(getPipeline(), options);
+        }
+    }
+
+    HttpPipeline getPipeline() {
+        // if we've already initialized, return the pipeline
+        if (this.httpPipeline != null) {
+            return httpPipeline;
+        }
+
+        // if the user has supplied a pipeline, use it
         HttpPipeline httpPipeline = options.getHttpPipeline();
         if (httpPipeline != null) {
             this.httpPipeline = httpPipeline;
-            httpPipelineAdapter = new HttpPipelineAdapter(httpPipeline, options);
-        } else {
-            // If http client is set on the credential, then it should override the proxy options if any configured.
-            HttpClient httpClient = options.getHttpClient();
-            this.httpPipeline = setupPipeline(httpClient == null ? HttpClient.createDefault() : httpClient);
-            httpPipelineAdapter = new HttpPipelineAdapter(this.httpPipeline, options);
+            return this.httpPipeline;
         }
+
+        // if the user has supplied an HttpClient, use it
+        HttpClient httpClient = options.getHttpClient();
+        this.httpPipeline = setupPipeline(httpClient != null ? httpClient : HttpClient.createDefault());
+        return this.httpPipeline;
     }
 
     private byte[] getCertificateBytes() throws IOException {
