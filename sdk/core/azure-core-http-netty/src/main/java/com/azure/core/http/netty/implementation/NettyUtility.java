@@ -12,13 +12,16 @@ import io.netty.util.Version;
 import reactor.netty.Connection;
 import reactor.netty.channel.ChannelOperations;
 
+import java.io.IOException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 
 /**
  * Helper class containing utility methods.
@@ -38,11 +41,8 @@ public final class NettyUtility {
     private static final List<String> OPTIONAL_NETTY_VERSION_ARTIFACTS = Arrays
         .asList("netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
 
-    // List of Netty artifacts that should match the 'netty-tcnative.version' property in the pom.xml file.
-    private static final List<String> NETTY_TCNATIVE_VERSION_ARTIFACTS
-        = Collections.singletonList("netty-tcnative-boringssl-static");
-
-    static final String NETTY_VERSION_MISMATCH_LOG = "The versions of Netty being used are not aligned. ";
+    // Netty artifact that should match the 'netty-tcnative.version' property in the pom.xml file.
+    private static final String NETTY_TCNATIVE_VERSION_ARTIFACT = "netty-tcnative-boringssl-static";
 
     /**
      * Deep copies the passed {@link ByteBuf} into a {@link ByteBuffer}.
@@ -119,8 +119,7 @@ public final class NettyUtility {
             if (version == null) {
                 classpathNettyVersions.put("io.netty:" + artifact, "unknown (not found and is required)");
             } else {
-                classpathNettyVersions.put(version.artifactId() + ":" + version.artifactId(),
-                    version.artifactVersion());
+                classpathNettyVersions.put("io.netty:" + version.artifactId(), version.artifactVersion());
             }
         }
 
@@ -130,20 +129,29 @@ public final class NettyUtility {
             // Version shouldn't be null as azure-core-http-netty has it as a dependency, but it could have been
             // excluded. Don't include it as a warning for native dependencies as it is optional.
             if (version != null) {
-                classpathNettyVersions.put(version.artifactId() + ":" + version.artifactId(),
-                    version.artifactVersion());
+                classpathNettyVersions.put("io.netty:" + version.artifactId(), version.artifactVersion());
             }
         }
 
-        for (String artifact : NETTY_TCNATIVE_VERSION_ARTIFACTS) {
-            Version version = nettyVersions.get(artifact);
+        try {
+            Enumeration<URL> enumeration = Thread.currentThread()
+                .getContextClassLoader()
+                .getResources("META-INF/maven/io.netty/netty-tcnative-boringssl-static/pom.properties");
+            while (enumeration.hasMoreElements()) {
+                URL url = enumeration.nextElement();
+                Properties properties = new Properties();
+                properties.load(url.openStream());
 
-            // Version shouldn't be null as azure-core-http-netty has it as a dependency, but it could have been
-            // excluded. Don't include it as a warning for native dependencies as it is optional.
-            if (version != null) {
-                classPathNativeNettyVersions.put(version.artifactId() + ":" + version.artifactId(),
-                    version.artifactVersion());
+                String version = properties.getProperty("version");
+                String groupId = properties.getProperty("groupId");
+                String artifactId = properties.getProperty("artifactId");
+
+                if ("io.netty".equals(groupId) && NETTY_TCNATIVE_VERSION_ARTIFACT.equals(artifactId)) {
+                    classPathNativeNettyVersions.put("io.netty:" + NETTY_TCNATIVE_VERSION_ARTIFACT, version);
+                }
             }
+        } catch (IOException ignored) {
+            // Ignored as this is only used to check the version of the native dependencies.
         }
 
         return new NettyVersionLogInformation(azureNettyVersion, azureNativeNettyVersion, classpathNettyVersions,
@@ -153,8 +161,8 @@ public final class NettyUtility {
     static final class NettyVersionLogInformation {
         private final String azureNettyVersion;
         private final String azureNativeNettyVersion;
-        private final Map<String, String> classpathNettyVersions;
-        private final Map<String, String> classPathNativeNettyVersions;
+        final Map<String, String> classpathNettyVersions;
+        final Map<String, String> classPathNativeNettyVersions;
 
         NettyVersionLogInformation(String azureNettyVersion, String azureNativeNettyVersion,
             Map<String, String> classpathNettyVersions, Map<String, String> classPathNativeNettyVersions) {

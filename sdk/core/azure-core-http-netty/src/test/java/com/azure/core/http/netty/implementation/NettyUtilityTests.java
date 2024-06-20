@@ -23,6 +23,14 @@ public class NettyUtilityTests {
         // Should never have version mismatches when running tests, that would mean either the version properties are
         // wrong or there is a dependency diamond within azure-core-http-netty. Either way, it should be fixed.
         assertFalse(logInformation.shouldLog());
+        for (String artifactFullName : logInformation.classpathNettyVersions.keySet()) {
+            assertTrue(artifactFullName.startsWith("io.netty:netty-"),
+                "All artifact information should start with 'io.netty:netty-'");
+        }
+        for (String artifactFullName : logInformation.classPathNativeNettyVersions.keySet()) {
+            assertTrue(artifactFullName.startsWith("io.netty:netty-"),
+                "All artifact information should start with 'io.netty:netty-'");
+        }
     }
 
     @Test
@@ -32,5 +40,13 @@ public class NettyUtilityTests {
 
         // Junk versions used should flag for logging.
         assertTrue(logInformation.shouldLog());
+        for (String artifactFullName : logInformation.classpathNettyVersions.keySet()) {
+            assertTrue(artifactFullName.startsWith("io.netty:netty-"),
+                "All artifact information should start with 'io.netty:netty-'");
+        }
+        for (String artifactFullName : logInformation.classPathNativeNettyVersions.keySet()) {
+            assertTrue(artifactFullName.startsWith("io.netty:netty-"),
+                "All artifact information should start with 'io.netty:netty-'");
+        }
     }
 }
