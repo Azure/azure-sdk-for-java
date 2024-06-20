@@ -54,7 +54,7 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
-      tsp-client init --debug --tsp-config $(TSP_CONFIG)
+      tsp-client init --debug --tsp-config $(TSP_CONFIG) --no-prompt
   displayName: '[Experiment] Directly run tsp-client init command'
   condition: eq(variables.fromTypeSpec, true)
 
