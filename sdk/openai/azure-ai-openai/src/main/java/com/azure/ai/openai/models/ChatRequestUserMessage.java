@@ -9,7 +9,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -137,7 +136,6 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatRequestUserMessage.
      */
-    @Generated
     public static ChatRequestUserMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BinaryData content = null;
