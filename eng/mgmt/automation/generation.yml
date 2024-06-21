@@ -52,7 +52,6 @@ steps:
 #     targetVersion: 1.0.0-dev.20230908.1
 
 - bash: |
-    export PATH=$JAVA_HOME_11_X64/bin:$PATH
     java -version
     set -x
     ./eng/mgmt/automation/generate.py --tsp-config "$(TSP_CONFIG)" --version "$(VERSION)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
