@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 /**
- * Enabling this field will improve VM boot time by optimizing the final customized image output.
+ * Enabling this field will trigger an automatic build on image template creation or update.
  */
-public enum VMBootOptimizationState {
+public enum AutoRunState {
     /**
      * Enum value Enabled.
      */
@@ -19,26 +19,26 @@ public enum VMBootOptimizationState {
     DISABLED("Disabled");
 
     /**
-     * The actual serialized value for a VMBootOptimizationState instance.
+     * The actual serialized value for a AutoRunState instance.
      */
     private final String value;
 
-    VMBootOptimizationState(String value) {
+    AutoRunState(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a VMBootOptimizationState instance.
+     * Parses a serialized value to a AutoRunState instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed VMBootOptimizationState object, or null if unable to parse.
+     * @return the parsed AutoRunState object, or null if unable to parse.
      */
-    public static VMBootOptimizationState fromString(String value) {
+    public static AutoRunState fromString(String value) {
         if (value == null) {
             return null;
         }
-        VMBootOptimizationState[] items = VMBootOptimizationState.values();
-        for (VMBootOptimizationState item : items) {
+        AutoRunState[] items = AutoRunState.values();
+        for (AutoRunState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
