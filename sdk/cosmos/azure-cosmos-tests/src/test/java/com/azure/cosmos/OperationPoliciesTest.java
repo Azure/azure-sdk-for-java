@@ -56,8 +56,6 @@ import static org.assertj.core.api.Assertions.fail;
 public class OperationPoliciesTest extends TestSuiteBase {
     private CosmosAsyncClient client;
     private CosmosAsyncContainer container;
-    private static final ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor
-        = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
     private static final Properties prop = new Properties();
     private static final String E2E_TIMEOUT = "timeout.seconds";
     private static final String CONSISTENCY_LEVEL = "consistency.level";
@@ -179,7 +177,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             createReadManyOptions(spanName, cosmosRequestOptions);
             createBulkOptions(operationType, spanName, cosmosRequestOptions);
             createChangeFeedOptions(spanName, cosmosRequestOptions);
-            cosmosOperationDetails.setCommonOptions(cosmosRequestOptions);
+            cosmosOperationDetails.setRequestOptions(cosmosRequestOptions);
         };
 
         CosmosClientBuilder[] clientBuilders = new CosmosClientBuilder[3];
@@ -200,7 +198,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 createReadDeleteBatchEtcOptions(operationType, spanName, cosmosRequestOptions);
                 createQueryReadAllItemsOptions(operationType, spanName, cosmosRequestOptions);
                 createReadManyOptions(spanName, cosmosRequestOptions);
-                cosmosOperationDetails.setCommonOptions(cosmosRequestOptions);
+                cosmosOperationDetails.setRequestOptions(cosmosRequestOptions);
             }).addOperationPolicy((cosmosOperationDetails) -> {
                 CosmosDiagnosticsContext cosmosDiagnosticsContext = cosmosOperationDetails.getDiagnosticsContext();
                 String operationType = cosmosDiagnosticsContext.getOperationType();
@@ -208,7 +206,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 CosmosRequestOptions cosmosRequestOptions = new CosmosRequestOptions();
                 createBulkOptions(operationType, spanName, cosmosRequestOptions);
                 createChangeFeedOptions(spanName, cosmosRequestOptions);
-                cosmosOperationDetails.setCommonOptions(cosmosRequestOptions);
+                cosmosOperationDetails.setRequestOptions(cosmosRequestOptions);
             });
         return clientBuilders;
     }
