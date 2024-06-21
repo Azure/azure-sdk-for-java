@@ -16,7 +16,7 @@ variables:
   value: $[ne(variables['TSP_CONFIG'], '')]
 
 jobs:
-  - job: Fluent Lite generation for mgmt SDK
+  - job: FluentLiteGenerationForMgmtSDK
     pool:
       ${{ if ne(variables['TSP_CONFIG'], '')}}:
         vmImage: 'macOS-13' # tsp-client command will get permanent stuck on linux/windows: https://github.com/Azure/azure-sdk-tools/issues/8368
