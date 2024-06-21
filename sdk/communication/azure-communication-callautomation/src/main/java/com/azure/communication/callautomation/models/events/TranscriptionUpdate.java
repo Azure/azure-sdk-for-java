@@ -5,7 +5,9 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
@@ -13,7 +15,7 @@ import java.io.IOException;
  * The TranscriptionUpdate model.
  */
 @Fluent
-public final class TranscriptionUpdate {
+public final class TranscriptionUpdate implements JsonSerializable<TranscriptionUpdate> {
     /*
      * The transcriptionStatus property.
      */
@@ -68,6 +70,17 @@ public final class TranscriptionUpdate {
     public TranscriptionUpdate setTranscriptionStatusDetails(TranscriptionStatusDetails transcriptionStatusDetails) {
         this.transcriptionStatusDetails = transcriptionStatusDetails;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transcriptionStatus", transcriptionStatus.toString());
+        jsonWriter.writeStringField("transcriptionStatusDetails", transcriptionStatusDetails.toString());
+        return jsonWriter.writeEndObject();
     }
 
     static TranscriptionUpdate fromJson(JsonReader jsonReader) throws IOException {

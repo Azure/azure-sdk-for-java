@@ -5,13 +5,15 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
 /** The ResultInformation model. */
 @Immutable
-public final class ResultInformation {
+public final class ResultInformation implements JsonSerializable<ResultInformation> {
     /*
      * The code property.
      */
@@ -60,7 +62,28 @@ public final class ResultInformation {
         return this.message;
     }
 
-    static ResultInformation fromJson(JsonReader jsonReader) throws IOException {
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("code", this.code);
+        jsonWriter.writeIntField("subCode", this.subCode);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResultInformation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResultInformation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResultInformation.
+     */
+    public static ResultInformation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final ResultInformation information = new ResultInformation();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {

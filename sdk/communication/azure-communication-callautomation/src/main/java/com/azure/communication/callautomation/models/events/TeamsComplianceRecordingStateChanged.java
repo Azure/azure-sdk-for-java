@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -63,6 +64,19 @@ public final class TeamsComplianceRecordingStateChanged extends CallAutomationEv
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recordingId", recordingId);
+        jsonWriter.writeStringField("state", recordingState.toString());
+        jsonWriter.writeStringField("startDateTime", startDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
      * Reads an instance of TeamsComplianceRecordingStateChanged from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
@@ -83,7 +97,7 @@ public final class TeamsComplianceRecordingStateChanged extends CallAutomationEv
                 } else if ("startDateTime".equals(fieldName)) {
                     event.startDateTime = OffsetDateTime.parse(reader.getString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
                 } else {
-                    if (!event.handleField(fieldName, reader)) {
+                    if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
                 }

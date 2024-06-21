@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
@@ -73,6 +74,20 @@ public final class DialogSensitivityUpdate extends CallAutomationEventBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resultInformation", resultInformation);
+        jsonWriter.writeStringField("dialogInputType", dialogInputType.toString());
+        jsonWriter.writeStringField("dialogId", dialogId);
+        jsonWriter.writeBooleanField("sensitiveMask", sensitiveMask);
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
      * Reads an instance of DialogSensitivityUpdate from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
@@ -95,7 +110,7 @@ public final class DialogSensitivityUpdate extends CallAutomationEventBase {
                 } else if ("sensitiveMask".equals(fieldName)) {
                     event.sensitiveMask = reader.getBoolean();
                 } else {
-                    if (!event.handleField(fieldName, reader)) {
+                    if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
                 }

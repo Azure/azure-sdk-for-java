@@ -4,11 +4,13 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
+import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,6 +40,26 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("sequenceNumber", sequenceNumber);
+        jsonWriter.writeStartArray("participants");
+        for (CallParticipant participant : participants) {
+            final CallParticipantInternal inner = new CallParticipantInternal();
+            inner.setIdentifier(CommunicationIdentifierConverter.convert(participant.getIdentifier()));
+            inner.setIsMuted(participant.isMuted());
+            inner.setIsOnHold(participant.isOnHold());
+            jsonWriter.writeJson(inner);
+        }
+        jsonWriter.writeEndArray();
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
      * Reads an instance of ParticipantsUpdated from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
@@ -57,7 +79,7 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
                     event.participants = reader.readArray(CallParticipantInternal::fromJson)
                         .stream().map(CallParticipantConverter::convert).collect(Collectors.toList());
                 } else {
-                    if (!event.handleField(fieldName, reader)) {
+                    if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
                 }

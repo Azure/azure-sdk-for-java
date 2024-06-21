@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
@@ -32,6 +33,17 @@ public final class CancelAddParticipantSucceeded extends CallAutomationEventBase
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("invitationId", invitationId);
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
      * Reads an instance of CancelAddParticipantSucceeded from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
@@ -48,7 +60,7 @@ public final class CancelAddParticipantSucceeded extends CallAutomationEventBase
                 if ("invitationId".equals(fieldName)) {
                     event.invitationId = reader.getString();
                 } else {
-                    if (!event.handleField(fieldName, reader)) {
+                    if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
                 }

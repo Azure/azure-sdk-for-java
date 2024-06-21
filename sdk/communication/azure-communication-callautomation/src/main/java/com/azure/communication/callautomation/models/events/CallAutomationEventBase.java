@@ -4,11 +4,13 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
 /** The base event interface. */
-public abstract class CallAutomationEventBase {
+public abstract class CallAutomationEventBase implements JsonSerializable<CallAutomationEventBase> {
     /*
      * Call connection ID.
      */
@@ -72,7 +74,14 @@ public abstract class CallAutomationEventBase {
         return this.operationContext;
     }
 
-    boolean handleField(String fieldName, JsonReader reader) throws IOException {
+    void writeFields(JsonWriter writer) throws IOException {
+        writer.writeStringField("callConnectionId", this.callConnectionId);
+        writer.writeStringField("serverCallId", this.serverCallId);
+        writer.writeStringField("correlationId", this.correlationId);
+        writer.writeStringField("operationContext", this.operationContext);
+    }
+
+    boolean readField(String fieldName, JsonReader reader) throws IOException {
         if ("callConnectionId".equals(fieldName)) {
             this.callConnectionId = reader.getString();
             return true;

@@ -9,6 +9,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
@@ -48,6 +49,19 @@ public final class AddParticipantFailed extends CallAutomationEventBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resultInformation", resultInformation);
+        final CommunicationIdentifierModel inner = CommunicationIdentifierConverter.convert(participant);
+        jsonWriter.writeJsonField("participant", inner);
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
      * Reads an instance of AddParticipantFailed from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
@@ -67,7 +81,7 @@ public final class AddParticipantFailed extends CallAutomationEventBase {
                     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.participant = CommunicationIdentifierConverter.convert(inner);
                 } else {
-                    if (!event.handleField(fieldName, reader)) {
+                    if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
                 }

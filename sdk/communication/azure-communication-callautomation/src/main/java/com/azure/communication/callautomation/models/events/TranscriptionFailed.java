@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
@@ -53,6 +54,18 @@ public final class TranscriptionFailed extends CallAutomationEventBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resultInformation", resultInformation);
+        jsonWriter.writeJsonField("transcriptionUpdate", transcriptionUpdateResult);
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
      * Reads an instance of TranscriptionFailed from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
@@ -71,7 +84,7 @@ public final class TranscriptionFailed extends CallAutomationEventBase {
                 } else if ("transcriptionUpdate".equals(fieldName)) {
                     event.transcriptionUpdateResult = TranscriptionUpdate.fromJson(reader);
                 } else {
-                    if (!event.handleField(fieldName, reader)) {
+                    if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
                 }

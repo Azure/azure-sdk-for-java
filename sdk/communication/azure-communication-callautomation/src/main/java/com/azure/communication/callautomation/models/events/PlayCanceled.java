@@ -6,12 +6,23 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
 /** The PlayCanceled model. */
 @Fluent
 public final class PlayCanceled extends CallAutomationEventBase {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
      * Reads an instance of PlayCanceled from the JsonReader.
      *
@@ -26,7 +37,7 @@ public final class PlayCanceled extends CallAutomationEventBase {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if (!event.handleField(fieldName, reader)) {
+                if (!event.readField(fieldName, reader)) {
                     reader.skipChildren();
                 }
             }

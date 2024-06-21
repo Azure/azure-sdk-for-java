@@ -6,12 +6,24 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
 /** The RecognizeFailed model. */
 @Fluent
 public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resultInformation", resultInformation);
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
      * Reads an instance of RecognizeFailed from the JsonReader.
      *
@@ -29,7 +41,7 @@ public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else {
-                    if (!event.handleField(fieldName, reader)) {
+                    if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
                 }

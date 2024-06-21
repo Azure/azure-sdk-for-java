@@ -14,6 +14,7 @@ import com.azure.communication.callautomation.models.SpeechResult;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonWriter;
 
 /** The RecognizeCompleted model. */
 @Immutable
@@ -60,6 +61,21 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resultInformation", resultInformation);
+        jsonWriter.writeStringField("recognitionType", recognitionType.toString());
+        jsonWriter.writeJsonField("dtmfResult", dtmfResult);
+        jsonWriter.writeJsonField("speechResult", speechResult);
+        jsonWriter.writeJsonField("choiceResult", collectChoiceResult);
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
      * Reads an instance of RecognizeCompleted from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
@@ -84,7 +100,7 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
                 } else if ("choiceResult".equals(fieldName)) {
                     event.collectChoiceResult = ChoiceResult.fromJson(reader);
                 } else {
-                    if (!event.handleField(fieldName, reader)) {
+                    if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
                 }

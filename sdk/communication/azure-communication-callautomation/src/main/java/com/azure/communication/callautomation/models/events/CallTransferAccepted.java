@@ -11,6 +11,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 
 /** The CallTransferAccepted model. */
@@ -61,6 +62,19 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resultInformation", resultInformation);
+        jsonWriter.writeJsonField("transferee", CommunicationIdentifierConverter.convert(transferee));
+        jsonWriter.writeJsonField("transferTarget", CommunicationIdentifierConverter.convert(transferTarget));
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
      * Reads an instance of CallTransferAccepted from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
@@ -83,7 +97,7 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
                     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.transferTarget = CommunicationIdentifierConverter.convert(inner);
                 } else {
-                    if (!event.handleField(fieldName, reader)) {
+                    if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
                 }

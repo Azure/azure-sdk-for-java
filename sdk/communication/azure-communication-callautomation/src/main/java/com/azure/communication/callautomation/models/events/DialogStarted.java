@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 
@@ -60,6 +61,19 @@ public class DialogStarted extends CallAutomationEventBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resultInformation", resultInformation);
+        jsonWriter.writeStringField("dialogInputType", dialogInputType.toString());
+        jsonWriter.writeStringField("dialogId", dialogId);
+        super.writeFields(jsonWriter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
      * Reads an instance of DialogStarted from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
@@ -80,7 +94,7 @@ public class DialogStarted extends CallAutomationEventBase {
                 } else if ("dialogId".equals(fieldName)) {
                     event.dialogId = reader.getString();
                 } else {
-                    if (!event.handleField(fieldName, reader)) {
+                    if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
                     }
                 }
