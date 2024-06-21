@@ -62,14 +62,19 @@ steps:
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
   parameters:
     PRBranchName: fluent-lite-generation-$(Build.BuildId)
-    ${{ if eq(variables['fromTypeSpec'], 'true') }}:
-      CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
-      PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
-    ${{ elseif eq(variables['fromTypeSpec'], true) }}:
-      CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
-      PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
-    ${{ else }}:
-      CommitMsg: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
-      PRTitle: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
+    CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
+    PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
     PRLabels: 'Mgmt - Track 2'
     OpenAsDraft: '$(DRAFT_PULL_REQUEST)'
+  displayName: Create PR for TypeSpec CodeGen
+  condition: eq(variables.fromTypeSpec, true)
+
+- template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+  parameters:
+    PRBranchName: fluent-lite-generation-$(Build.BuildId)
+    CommitMsg: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
+    PRTitle: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
+    PRLabels: 'Mgmt - Track 2'
+    OpenAsDraft: '$(DRAFT_PULL_REQUEST)'
+  displayName: Create PR for Swagger CodeGen
+  condition: eq(variables.fromTypeSpec, false)
