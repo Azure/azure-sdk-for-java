@@ -19,7 +19,7 @@ variables:
   value: $[ne(variables['TSP_CONFIG'], '')]
 
 steps:
-- bash: |
+- pwsh: |
     sudo apt-get install -y --upgrade python3-pip python3-setuptools
     pip3 install --upgrade wheel
     pip3 install --upgrade PyYAML requests
@@ -36,12 +36,12 @@ steps:
   inputs:
     versionSpec: '$(NodeVersion)'
 
-- bash: |
+- pwsh: |
     npm install -g autorest
   displayName: 'Install autorest'
   condition: eq(variables.fromTypeSpec, false)
 
-- bash: |
+- pwsh: |
     npm install -g @azure-tools/typespec-client-generator-cli
   displayName: 'Install tsp-client'
   condition: eq(variables.fromTypeSpec, true)
@@ -50,6 +50,13 @@ steps:
 #   parameters:
 #     runProxy: true
 #     targetVersion: 1.0.0-dev.20230908.1
+
+- pwsh: |
+    java -version
+    set -x
+    tsp-client init --debug --tsp-config "$(TSP_CONFIG)"
+  displayName: [Experiment] Generation from TypeSpec by direct calling tsp-client
+  condition: eq(variables.fromTypeSpec, true)
 
 - bash: |
     java -version
