@@ -19,38 +19,35 @@ public final class SapOpenHubTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapOpenHubTableDataset model = BinaryData.fromString(
-            "{\"type\":\"on\",\"typeProperties\":{\"openHubDestinationName\":\"datazcg\",\"excludeLastRequest\":\"dataozlibcbnunzuysaj\",\"baseRequestId\":\"dataqlho\"},\"description\":\"ivgtibtkqjqjc\",\"structure\":\"datago\",\"schema\":\"datatkhh\",\"linkedServiceName\":{\"referenceName\":\"emrvk\",\"parameters\":{\"qfxspxgogyp\":\"datajtdyulglhelwrukl\",\"kvctvuz\":\"dataztgaexjn\",\"ttmhlvr\":\"datamb\"}},\"parameters\":{\"jggkwdepem\":{\"type\":\"Float\",\"defaultValue\":\"datanwukfajnpdw\"},\"gtrttcuayiqylnk\":{\"type\":\"Float\",\"defaultValue\":\"datayfiqiidxcorjvudy\"},\"gqexowq\":{\"type\":\"Object\",\"defaultValue\":\"datazifb\"},\"kuobpw\":{\"type\":\"Array\",\"defaultValue\":\"datagqrqkkvfy\"}},\"annotations\":[\"datapgobothx\",\"dataewhpnyjt\",\"dataqgzyvextc\"],\"folder\":{\"name\":\"r\"},\"\":{\"rifiozttcbiichg\":\"dataowuwhd\",\"ryqycymzrlcfgdwz\":\"dataudsozodwjcfqoy\",\"adnyciwzki\":\"datauzfdh\"}}")
+            "{\"type\":\"SapOpenHubTable\",\"typeProperties\":{\"openHubDestinationName\":\"datagenlrjcsmwevguyf\",\"excludeLastRequest\":\"dataxelrjk\",\"baseRequestId\":\"datacdetowwezhy\"},\"description\":\"di\",\"structure\":\"datawqlqacs\",\"schema\":\"databirtybcelfjn\",\"linkedServiceName\":{\"referenceName\":\"odnjyhzfaxskdv\",\"parameters\":{\"pegqxsorch\":\"dataumo\",\"kbmpw\":\"datazrqoxzyhlbeqvh\",\"zgaefhawkmib\":\"dataslajgg\",\"wi\":\"datay\"}},\"parameters\":{\"u\":{\"type\":\"Int\",\"defaultValue\":\"dataupdyttqm\"},\"s\":{\"type\":\"Array\",\"defaultValue\":\"datal\"}},\"annotations\":[\"datahhtuqmtxynof\",\"dataqobfixngxebihe\"],\"folder\":{\"name\":\"kingiqcdolrpgu\"},\"\":{\"dafbncuy\":\"datalbsm\",\"fzxjzi\":\"dataeykcnhpplzh\",\"wnuwkkfzzetl\":\"dataucrln\",\"vwywjvrlgqpwwlzp\":\"datahdyxz\"}}")
             .toObject(SapOpenHubTableDataset.class);
-        Assertions.assertEquals("ivgtibtkqjqjc", model.description());
-        Assertions.assertEquals("emrvk", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("jggkwdepem").type());
-        Assertions.assertEquals("r", model.folder().name());
+        Assertions.assertEquals("di", model.description());
+        Assertions.assertEquals("odnjyhzfaxskdv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("u").type());
+        Assertions.assertEquals("kingiqcdolrpgu", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapOpenHubTableDataset model = new SapOpenHubTableDataset().withDescription("ivgtibtkqjqjc")
-            .withStructure("datago")
-            .withSchema("datatkhh")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("emrvk")
-                .withParameters(
-                    mapOf("qfxspxgogyp", "datajtdyulglhelwrukl", "kvctvuz", "dataztgaexjn", "ttmhlvr", "datamb")))
-            .withParameters(mapOf("jggkwdepem",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datanwukfajnpdw"),
-                "gtrttcuayiqylnk",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datayfiqiidxcorjvudy"),
-                "gqexowq", new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datazifb"),
-                "kuobpw", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datagqrqkkvfy")))
-            .withAnnotations(Arrays.asList("datapgobothx", "dataewhpnyjt", "dataqgzyvextc"))
-            .withFolder(new DatasetFolder().withName("r"))
-            .withOpenHubDestinationName("datazcg")
-            .withExcludeLastRequest("dataozlibcbnunzuysaj")
-            .withBaseRequestId("dataqlho");
+        SapOpenHubTableDataset model = new SapOpenHubTableDataset().withDescription("di")
+            .withStructure("datawqlqacs")
+            .withSchema("databirtybcelfjn")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("odnjyhzfaxskdv")
+                .withParameters(mapOf("pegqxsorch", "dataumo", "kbmpw", "datazrqoxzyhlbeqvh", "zgaefhawkmib",
+                    "dataslajgg", "wi", "datay")))
+            .withParameters(
+                mapOf("u", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataupdyttqm"),
+                    "s", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datal")))
+            .withAnnotations(Arrays.asList("datahhtuqmtxynof", "dataqobfixngxebihe"))
+            .withFolder(new DatasetFolder().withName("kingiqcdolrpgu"))
+            .withOpenHubDestinationName("datagenlrjcsmwevguyf")
+            .withExcludeLastRequest("dataxelrjk")
+            .withBaseRequestId("datacdetowwezhy");
         model = BinaryData.fromObject(model).toObject(SapOpenHubTableDataset.class);
-        Assertions.assertEquals("ivgtibtkqjqjc", model.description());
-        Assertions.assertEquals("emrvk", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("jggkwdepem").type());
-        Assertions.assertEquals("r", model.folder().name());
+        Assertions.assertEquals("di", model.description());
+        Assertions.assertEquals("odnjyhzfaxskdv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("u").type());
+        Assertions.assertEquals("kingiqcdolrpgu", model.folder().name());
     }
 
     // Use "Map.of" if available

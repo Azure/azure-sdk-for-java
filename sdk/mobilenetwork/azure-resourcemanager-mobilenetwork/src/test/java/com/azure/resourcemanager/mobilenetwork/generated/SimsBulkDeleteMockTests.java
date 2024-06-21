@@ -6,60 +6,42 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mobilenetwork.MobileNetworkManager;
 import com.azure.resourcemanager.mobilenetwork.models.AsyncOperationStatus;
 import com.azure.resourcemanager.mobilenetwork.models.SimDeleteList;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SimsBulkDeleteMockTests {
     @Test
     public void testBulkDelete() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"id\":\"i\",\"name\":\"rpiwrqofulo\",\"status\":\"mjnlexwhcb\",\"resourceId\":\"ibkeph\",\"startTime\":\"2021-05-19T15:44:44Z\",\"endTime\":\"2021-01-05T02:55:46Z\",\"percentComplete\":3.1507250902145123,\"properties\":\"dataoyin\"}";
+            = "{\"id\":\"anc\",\"name\":\"xxqcwgaxf\",\"status\":\"vaknokzwjj\",\"resourceId\":\"ltixldzyyfytpq\",\"startTime\":\"2021-04-28T14:44Z\",\"endTime\":\"2021-11-09T20:29:56Z\",\"percentComplete\":14.258834353690963,\"properties\":\"dataivyqlkjuvsmbmsl\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MobileNetworkManager manager = MobileNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AsyncOperationStatus response = manager.sims()
+            .bulkDelete("bqbnaomhjrmkuh", "axljal", new SimDeleteList().withSims(Arrays.asList("hcjmo")),
+                com.azure.core.util.Context.NONE);
 
-        AsyncOperationStatus response = manager.sims().bulkDelete("ucygvo", "vyuns",
-            new SimDeleteList().withSims(Arrays.asList("lghieegjlgvvpase", "sgb", "xantuygdhg")),
-            com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("i", response.id());
-        Assertions.assertEquals("rpiwrqofulo", response.name());
-        Assertions.assertEquals("mjnlexwhcb", response.status());
-        Assertions.assertEquals("ibkeph", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T15:44:44Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T02:55:46Z"), response.endTime());
-        Assertions.assertEquals(3.1507250902145123D, response.percentComplete());
+        Assertions.assertEquals("anc", response.id());
+        Assertions.assertEquals("xxqcwgaxf", response.name());
+        Assertions.assertEquals("vaknokzwjj", response.status());
+        Assertions.assertEquals("ltixldzyyfytpq", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T14:44Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T20:29:56Z"), response.endTime());
+        Assertions.assertEquals(14.258834353690963D, response.percentComplete());
     }
 }

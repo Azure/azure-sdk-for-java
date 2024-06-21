@@ -201,6 +201,8 @@ public class StoreResultDiagnostics {
                     "storePhysicalAddress",
                     storeResultDiagnostics.storePhysicalAddress == null ? null : storeResultDiagnostics.storePhysicalAddress.getURIAsString());
             jsonGenerator.writeNumberField("lsn", storeResultDiagnostics.lsn);
+            jsonGenerator.writeNumberField("quorumAckedLSN",storeResultDiagnostics.quorumAckedLSN);
+            jsonGenerator.writeNumberField("currentReplicaSetSize", storeResultDiagnostics.currentReplicaSetSize);
             jsonGenerator.writeNumberField("globalCommittedLsn", storeResultDiagnostics.globalCommittedLSN);
             jsonGenerator.writeStringField("partitionKeyRangeId", storeResponseDiagnostics.getPartitionKeyRangeId());
             jsonGenerator.writeBooleanField("isValid", storeResultDiagnostics.isValid);

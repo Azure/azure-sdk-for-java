@@ -22,7 +22,7 @@ public final class AutonomousDatabaseBackupsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"autonomousDatabaseId\":\"zuawxtzxpuamwa\",\"databaseSizeInTBs\":1322793238,\"dbVersion\":\"vxcushsphaivmx\",\"displayName\":\"sflvgsgzwywakoih\",\"ocid\":\"smjblmljhlnym\",\"isAutomatic\":true,\"isRestorable\":false,\"lifecycleDetails\":\"yuzcbmqqvxmvw\",\"lifecycleState\":\"Updating\",\"retentionPeriodInDays\":1895835136,\"sizeInTBs\":414360047,\"timeAvailableTil\":\"2021-06-26T17:58:31Z\",\"timeEnded\":\"peujlzqn\",\"type\":\"Full\",\"provisioningState\":\"Succeeded\"},\"id\":\"tnzoibgsxgnxfy\",\"name\":\"onmpqoxwdof\",\"type\":\"bxiqxeiiqbimht\"}";
+            = "{\"properties\":{\"autonomousDatabaseOcid\":\"mxswvruunzz\",\"databaseSizeInTbs\":77.25669415562001,\"dbVersion\":\"fkimrtix\",\"displayName\":\"ffqyinlj\",\"ocid\":\"pqwhixmonst\",\"isAutomatic\":false,\"isRestorable\":true,\"lifecycleDetails\":\"velfcldu\",\"lifecycleState\":\"Deleting\",\"retentionPeriodInDays\":667519337,\"sizeInTbs\":18.709508916398665,\"timeAvailableTil\":\"2021-01-25T09:33:02Z\",\"timeStarted\":\"o\",\"timeEnded\":\"egstmninwjizci\",\"backupType\":\"Full\",\"provisioningState\":\"Succeeded\"},\"id\":\"h\",\"name\":\"jjtbxqmuluxlxqz\",\"type\":\"nersb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class AutonomousDatabaseBackupsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AutonomousDatabaseBackup response = manager.autonomousDatabaseBackups()
-            .define("ygznmmaxrizk")
-            .withExistingAutonomousDatabase("ovzidsx", "aabzmif")
-            .withProperties(new AutonomousDatabaseBackupProperties().withDisplayName("ecwcrojphslhcawj")
-                .withRetentionPeriodInDays(1991738571))
+            .define("crpfbcunez")
+            .withExistingAutonomousDatabase("ostbzbkiwb", "qnyophzfyls")
+            .withProperties(
+                new AutonomousDatabaseBackupProperties().withDisplayName("aylp").withRetentionPeriodInDays(754983653))
             .create();
 
-        Assertions.assertEquals("sflvgsgzwywakoih", response.properties().displayName());
-        Assertions.assertEquals(1895835136, response.properties().retentionPeriodInDays());
+        Assertions.assertEquals("ffqyinlj", response.properties().displayName());
+        Assertions.assertEquals(667519337, response.properties().retentionPeriodInDays());
     }
 }

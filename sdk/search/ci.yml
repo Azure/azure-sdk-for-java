@@ -37,7 +37,6 @@ extends:
   parameters:
     ServiceDirectory: search
     JavadocSafeJavaBuildVersion: '1.21'
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-search-documents
         groupId: com.azure

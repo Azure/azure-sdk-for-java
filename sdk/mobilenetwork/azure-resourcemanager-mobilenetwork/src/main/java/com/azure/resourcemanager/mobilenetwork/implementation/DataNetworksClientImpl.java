@@ -713,7 +713,8 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     private Mono<DataNetworkInner> createOrUpdateAsync(String resourceGroupName, String mobileNetworkName,
         String dataNetworkName, DataNetworkInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

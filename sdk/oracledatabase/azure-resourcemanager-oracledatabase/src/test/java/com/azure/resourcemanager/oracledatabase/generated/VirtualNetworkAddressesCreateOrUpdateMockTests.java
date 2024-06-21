@@ -22,7 +22,7 @@ public final class VirtualNetworkAddressesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ipAddress\":\"gwgcl\",\"vmOcid\":\"oebqinjipn\",\"ocid\":\"fujqlafcba\",\"domain\":\"pzpofoiyjw\",\"lifecycleDetails\":\"ilkmk\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Terminating\",\"timeAssigned\":\"2021-03-31T13:06:19Z\"},\"id\":\"viauogphua\",\"name\":\"tvt\",\"type\":\"ukyefchnmnahmnxh\"}";
+            = "{\"properties\":{\"ipAddress\":\"ghtuqfecjxey\",\"vmOcid\":\"uhxu\",\"ocid\":\"buew\",\"domain\":\"s\",\"lifecycleDetails\":\"jlxuz\",\"provisioningState\":\"Succeeded\",\"lifecycleState\":\"Terminating\",\"timeAssigned\":\"2021-07-24T18:32:54Z\"},\"id\":\"baqehgpdoh\",\"name\":\"jqatucoigebxn\",\"type\":\"nwfepbnwg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,13 @@ public final class VirtualNetworkAddressesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualNetworkAddress response = manager.virtualNetworkAddresses()
-            .define("zcugswvxwlmzqw")
-            .withExistingCloudVmCluster("mribiat", "gplucfotangcfhny")
-            .withProperties(new VirtualNetworkAddressProperties().withIpAddress("xnjmxm").withVmOcid("qudtcvclx"))
+            .define("nszonwpngaj")
+            .withExistingCloudVmCluster("rmlmuowo", "bauiropi")
+            .withProperties(
+                new VirtualNetworkAddressProperties().withIpAddress("ixjawrtm").withVmOcid("jmyccxlzhcoxov"))
             .create();
 
-        Assertions.assertEquals("gwgcl", response.properties().ipAddress());
-        Assertions.assertEquals("oebqinjipn", response.properties().vmOcid());
+        Assertions.assertEquals("ghtuqfecjxey", response.properties().ipAddress());
+        Assertions.assertEquals("uhxu", response.properties().vmOcid());
     }
 }

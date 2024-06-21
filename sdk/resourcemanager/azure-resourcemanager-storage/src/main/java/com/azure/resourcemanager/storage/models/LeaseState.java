@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -40,7 +39,7 @@ public final class LeaseState extends ExpandableStringEnum<LeaseState> {
 
     /**
      * Creates a new instance of LeaseState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -49,7 +48,7 @@ public final class LeaseState extends ExpandableStringEnum<LeaseState> {
 
     /**
      * Creates or finds a LeaseState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LeaseState.
      */
@@ -60,7 +59,7 @@ public final class LeaseState extends ExpandableStringEnum<LeaseState> {
 
     /**
      * Gets known LeaseState values.
-     *
+     * 
      * @return known LeaseState values.
      */
     public static Collection<LeaseState> values() {

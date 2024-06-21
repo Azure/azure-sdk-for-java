@@ -14,22 +14,22 @@ public final class ScheduledOperationsTypeUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledOperationsTypeUpdate model = BinaryData.fromString(
-            "{\"dayOfWeek\":{\"name\":\"Thursday\"},\"scheduledStartTime\":\"qxwbpokulpiu\",\"scheduledStopTime\":\"aasipqi\"}")
+            "{\"dayOfWeek\":{\"name\":\"Monday\"},\"scheduledStartTime\":\"saknynfsyn\",\"scheduledStopTime\":\"ph\"}")
             .toObject(ScheduledOperationsTypeUpdate.class);
-        Assertions.assertEquals(DayOfWeekName.THURSDAY, model.dayOfWeek().name());
-        Assertions.assertEquals("qxwbpokulpiu", model.scheduledStartTime());
-        Assertions.assertEquals("aasipqi", model.scheduledStopTime());
+        Assertions.assertEquals(DayOfWeekName.MONDAY, model.dayOfWeek().name());
+        Assertions.assertEquals("saknynfsyn", model.scheduledStartTime());
+        Assertions.assertEquals("ph", model.scheduledStopTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduledOperationsTypeUpdate model
-            = new ScheduledOperationsTypeUpdate().withDayOfWeek(new DayOfWeekUpdate().withName(DayOfWeekName.THURSDAY))
-                .withScheduledStartTime("qxwbpokulpiu")
-                .withScheduledStopTime("aasipqi");
+            = new ScheduledOperationsTypeUpdate().withDayOfWeek(new DayOfWeekUpdate().withName(DayOfWeekName.MONDAY))
+                .withScheduledStartTime("saknynfsyn")
+                .withScheduledStopTime("ph");
         model = BinaryData.fromObject(model).toObject(ScheduledOperationsTypeUpdate.class);
-        Assertions.assertEquals(DayOfWeekName.THURSDAY, model.dayOfWeek().name());
-        Assertions.assertEquals("qxwbpokulpiu", model.scheduledStartTime());
-        Assertions.assertEquals("aasipqi", model.scheduledStopTime());
+        Assertions.assertEquals(DayOfWeekName.MONDAY, model.dayOfWeek().name());
+        Assertions.assertEquals("saknynfsyn", model.scheduledStartTime());
+        Assertions.assertEquals("ph", model.scheduledStopTime());
     }
 }
