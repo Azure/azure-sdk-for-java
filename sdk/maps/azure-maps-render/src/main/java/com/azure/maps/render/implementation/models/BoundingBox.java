@@ -5,30 +5,33 @@
 package com.azure.maps.render.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameter group. */
+/**
+ * Parameter group.
+ */
 @Fluent
 public final class BoundingBox {
     /*
-     * Minimum coordinates (south-west point) of bounding box in latitude
-     * longitude coordinate system. E.g. 52.41064,4.84228
+     * Minimum coordinates (south-west point) of bounding box in latitude longitude coordinate system. E.g. 52.41064,4.84228
      */
-    @JsonProperty(value = "southWest", required = true)
     private List<Double> southWest;
 
     /*
-     * Maximum coordinates (north-east point) of bounding box in latitude
-     * longitude coordinate system. E.g. 52.41064,4.84228
+     * Maximum coordinates (north-east point) of bounding box in latitude longitude coordinate system. E.g. 52.41064,4.84228
      */
-    @JsonProperty(value = "northEast", required = true)
     private List<Double> northEast;
+
+    /**
+     * Creates an instance of BoundingBox class.
+     */
+    public BoundingBox() {
+    }
 
     /**
      * Get the southWest property: Minimum coordinates (south-west point) of bounding box in latitude longitude
      * coordinate system. E.g. 52.41064,4.84228.
-     *
+     * 
      * @return the southWest value.
      */
     public List<Double> getSouthWest() {
@@ -38,7 +41,7 @@ public final class BoundingBox {
     /**
      * Set the southWest property: Minimum coordinates (south-west point) of bounding box in latitude longitude
      * coordinate system. E.g. 52.41064,4.84228.
-     *
+     * 
      * @param southWest the southWest value to set.
      * @return the BoundingBox object itself.
      */
@@ -50,7 +53,7 @@ public final class BoundingBox {
     /**
      * Get the northEast property: Maximum coordinates (north-east point) of bounding box in latitude longitude
      * coordinate system. E.g. 52.41064,4.84228.
-     *
+     * 
      * @return the northEast value.
      */
     public List<Double> getNorthEast() {
@@ -60,7 +63,7 @@ public final class BoundingBox {
     /**
      * Set the northEast property: Maximum coordinates (north-east point) of bounding box in latitude longitude
      * coordinate system. E.g. 52.41064,4.84228.
-     *
+     * 
      * @param northEast the northEast value to set.
      * @return the BoundingBox object itself.
      */
