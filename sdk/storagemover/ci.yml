@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: storagemover
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-storagemover
         groupId: com.azure.resourcemanager

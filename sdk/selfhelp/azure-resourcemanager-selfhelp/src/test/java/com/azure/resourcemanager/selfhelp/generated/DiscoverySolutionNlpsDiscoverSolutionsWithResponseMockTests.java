@@ -18,9 +18,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class DiscoverySolutionNlpTenantScopesPostWithResponseMockTests {
+public final class DiscoverySolutionNlpsDiscoverSolutionsWithResponseMockTests {
     @Test
-    public void testPostWithResponse() throws Exception {
+    public void testDiscoverSolutionsWithResponse() throws Exception {
         String responseStr
             = "{\"value\":[{\"properties\":{\"problemTitle\":\"fhjxakvvjgs\",\"problemDescription\":\"r\",\"serviceId\":\"lmywwtkgkxnyed\",\"problemClassificationId\":\"gyvudtjuewbc\",\"solutions\":[{},{}],\"relatedServices\":[{},{},{}]},\"id\":\"hcjyxc\",\"name\":\"ybvpay\",\"type\":\"kkudzp\"},{\"properties\":{\"problemTitle\":\"jplmagstcy\",\"problemDescription\":\"pfkyrkdbdgiogsj\",\"serviceId\":\"nwqjnoba\",\"problemClassificationId\":\"hdd\",\"solutions\":[{},{},{}],\"relatedServices\":[{},{},{},{}]},\"id\":\"fnmntfpmvmemfn\",\"name\":\"zdwvvbalxl\",\"type\":\"lchpodbzevwrdn\"},{\"properties\":{\"problemTitle\":\"kuvsjcswsm\",\"problemDescription\":\"tuluq\",\"serviceId\":\"fcvlerch\",\"problemClassificationId\":\"bm\",\"solutions\":[{},{}],\"relatedServices\":[{},{},{},{}]},\"id\":\"widf\",\"name\":\"xsspuunnoxyhk\",\"type\":\"g\"}]}";
 
@@ -31,8 +31,8 @@ public final class DiscoverySolutionNlpTenantScopesPostWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DiscoveryNlpResponse response = manager.discoverySolutionNlpTenantScopes()
-            .postWithResponse(new DiscoveryNlpRequest().withIssueSummary("vscx")
+        DiscoveryNlpResponse response = manager.discoverySolutionNlps()
+            .discoverSolutionsWithResponse(new DiscoveryNlpRequest().withIssueSummary("vscx")
                 .withResourceId("mligov")
                 .withServiceId("rxkpmloazuruoc")
                 .withAdditionalContext("oorb"), com.azure.core.util.Context.NONE)

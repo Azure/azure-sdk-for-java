@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed a possible `NullPointerException` in the ctor of `FeedOperationState`. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
 * Changed to only disable `PartitionKeyRangeGoneRetryPolicy` when enable `disableSplitHandling` in `ChangeFeedRequestOptions`. - See [PR 40738](https://github.com/Azure/azure-sdk-for-java/pull/40738)
 
 #### Other Changes

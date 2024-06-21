@@ -7,11 +7,12 @@ package com.azure.resourcemanager.selfhelp.generated;
 import com.azure.resourcemanager.selfhelp.models.DiscoveryNlpRequest;
 
 /**
- * Samples for DiscoverySolutionNlpTenantScope Post.
+ * Samples for DiscoverySolutionNlp DiscoverSolutions.
  */
-public final class DiscoverySolutionNlpTenantScopePostSamples {
+public final class DiscoverySolutionNlpDiscoverSolutionsSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/DiscoverSolutionsAtTenantScope.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/
+     * DiscoverSolutionsAtTenantScope.json
      */
     /**
      * Sample code: Discovery Solutions using issue summary and service id.
@@ -20,8 +21,10 @@ public final class DiscoverySolutionNlpTenantScopePostSamples {
      */
     public static void
         discoverySolutionsUsingIssueSummaryAndServiceId(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.discoverySolutionNlpTenantScopes()
-            .postWithResponse(new DiscoveryNlpRequest().withIssueSummary("how to retrieve certs from deleted keyvault.")
-                .withServiceId("0d0fcd2e-c4fd-4349-8497-200edb39s3ca"), com.azure.core.util.Context.NONE);
+        manager.discoverySolutionNlps()
+            .discoverSolutionsWithResponse(
+                new DiscoveryNlpRequest().withIssueSummary("how to retrieve certs from deleted keyvault.")
+                    .withServiceId("0d0fcd2e-c4fd-4349-8497-200edb39s3ca"),
+                com.azure.core.util.Context.NONE);
     }
 }

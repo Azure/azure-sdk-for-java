@@ -14,9 +14,6 @@ parameters:
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
-- name: EnableBatchRelease
-  type: boolean
-  default: true
 - name: MatrixFilters
   type: object
   default: []

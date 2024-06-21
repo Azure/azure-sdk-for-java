@@ -18,9 +18,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class DiscoverySolutionNlpSubscriptionScopesPostWithResponseMockTests {
+public final class DiscoverySolutionNlpsDiscoverSolutionsBySubscriptionWithResponseMockTests {
     @Test
-    public void testPostWithResponse() throws Exception {
+    public void testDiscoverSolutionsBySubscriptionWithResponse() throws Exception {
         String responseStr
             = "{\"value\":[{\"properties\":{\"problemTitle\":\"zoggculapz\",\"problemDescription\":\"rpgogtqxep\",\"serviceId\":\"lbfu\",\"problemClassificationId\":\"lyjt\",\"solutions\":[{}],\"relatedServices\":[{}]},\"id\":\"hvfcibyfmow\",\"name\":\"xrkjpvdw\",\"type\":\"fzwiivwzjbhyz\"},{\"properties\":{\"problemTitle\":\"rkambt\",\"problemDescription\":\"egv\",\"serviceId\":\"vuqeqvldspast\",\"problemClassificationId\":\"kkdmfl\",\"solutions\":[{},{},{}],\"relatedServices\":[{},{},{},{}]},\"id\":\"lx\",\"name\":\"ril\",\"type\":\"zapeewchpx\"},{\"properties\":{\"problemTitle\":\"wk\",\"problemDescription\":\"iycslevuf\",\"serviceId\":\"tcktyhjtqedcgzu\",\"problemClassificationId\":\"mmrqz\",\"solutions\":[{},{},{},{}],\"relatedServices\":[{},{}]},\"id\":\"gl\",\"name\":\"dzgkr\",\"type\":\"qeevt\"},{\"properties\":{\"problemTitle\":\"r\",\"problemDescription\":\"t\",\"serviceId\":\"ytp\",\"problemClassificationId\":\"mov\",\"solutions\":[{},{}],\"relatedServices\":[{},{},{}]},\"id\":\"wzqa\",\"name\":\"f\",\"type\":\"gzuriglaecxndt\"}]}";
 
@@ -31,8 +31,8 @@ public final class DiscoverySolutionNlpSubscriptionScopesPostWithResponseMockTes
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DiscoveryNlpResponse response = manager.discoverySolutionNlpSubscriptionScopes()
-            .postWithResponse("ddrihpf",
+        DiscoveryNlpResponse response = manager.discoverySolutionNlps()
+            .discoverSolutionsBySubscriptionWithResponse("ddrihpf",
                 new DiscoveryNlpRequest().withIssueSummary("oqcaaewdaomdj")
                     .withResourceId("pjxxkzb")
                     .withServiceId("sgeivsiy")
