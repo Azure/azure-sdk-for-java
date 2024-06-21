@@ -591,9 +591,17 @@ public class CosmosAsyncContainer {
             requestOptions);
 
         CosmosOperationDetails operationDetails = operationDetailsAccessor.create(requestOptions, cosmosCtx);
-        clientAccessor.getOperationPolicies(client).forEach(policy -> policy.process(operationDetails));
-    }
+        clientAccessor.getOperationPolicies(client).forEach(policy -> {
+            try {
+                policy.process(operationDetails);
+            } catch (RuntimeException exception) {
+                logger.info("The following exception was thrown by a custom policy on a " +
+                    operationType.toString() + " operation." + exception.getMessage());
+                throw(exception);
+            }
 
+        });
+    }
 
     private <T> Mono<CosmosItemResponse<T>> createItemInternalCore(
         T item,
@@ -1350,7 +1358,7 @@ public class CosmosAsyncContainer {
         applyPolicies(OperationType.Batch, ResourceType.Document, requestOptionsInternal, this.bulkSpanName);
 
         return Flux.deferContextual(context -> {
-            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, clonedOptions);
+            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, requestOptionsInternal);
 
             return executor.execute().publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC);
         });

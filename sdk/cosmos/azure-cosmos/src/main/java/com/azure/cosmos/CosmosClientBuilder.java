@@ -245,6 +245,7 @@ public class CosmosClientBuilder implements
      * @return current cosmosClientBuilder
      */
     public CosmosClientBuilder addOperationPolicy(CosmosOperationPolicy policy) {
+        checkNotNull(policy, "Argument 'policy' must not be null.");
         this.requestPolicies.add(policy);
         return this;
     }

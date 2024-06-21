@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkExecutionThresholdsState;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.ReadOnlyRequestOptions;
@@ -68,6 +69,10 @@ public class CosmosBulkExecutionOptionsImpl implements OverridableRequestOptions
         if (toBeCloned.excludeRegions != null) {
             this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
         }
+    }
+
+    public CosmosBulkExecutionOptionsImpl() {
+        this(null, null, null);
     }
 
     /**

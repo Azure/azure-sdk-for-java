@@ -448,45 +448,22 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosBulkExecutionOptionsAccessor {
-            void setOperationContext(
-                CosmosBulkExecutionOptions options,
-                OperationContextAndListenerTuple operationContext);
 
             OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
-
-            <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
-
-            double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
-
-            double getMaxTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
 
             CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(
                 CosmosBulkExecutionOptions options,
                 double minRetryRate,
                 double maxRetryRate);
 
-            int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
-
-            CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options, int maxMicroBatchPayloadSizeInBytes);
-
-            int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
-
-            Integer getMaxConcurrentCosmosPartitions(CosmosBulkExecutionOptions options);
-
             CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
                 CosmosBulkExecutionOptions options, int mxConcurrentCosmosPartitions);
-
-            Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
 
             CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
                                                  String name, String value);
 
             Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
 
-            Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-            int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
-            void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
-            BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
             CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned);
             CosmosBulkExecutionOptionsImpl getImpl(CosmosBulkExecutionOptions options);
         }
@@ -729,6 +706,7 @@ public class ImplementationBridgeHelpers {
                 ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholds);
         }
     }
+
     public static final class CosmosOperationDetailsHelper {
         private final static AtomicBoolean cosmosOperationDetailsClassLoaded = new AtomicBoolean(false);
         private final static AtomicReference<CosmosOperationDetailsAccessor> accessor = new AtomicReference<>();

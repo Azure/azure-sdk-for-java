@@ -1829,7 +1829,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
-        if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
@@ -2194,7 +2194,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2342,7 +2342,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             (opt, e2ecfg, clientCtxOverride) -> upsertDocumentCore(
                 collectionLink, document, opt, disableAutomaticIdGeneration, e2ecfg, clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2424,7 +2424,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2505,7 +2505,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2595,7 +2595,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             OperationType.Replace, ResourceType.Document, path, requestHeaders, options, content);
 
-        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
 
@@ -2670,7 +2670,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2737,7 +2737,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             options,
             content);
 
-        if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+        if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
         if (options != null) {
@@ -2784,7 +2784,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2800,7 +2800,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 e2ecfg,
                 clientCtxOverride),
             options,
-            options != null && options.getNonIdempotentWriteRetriesEnabled()
+            options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()
         );
     }
 
@@ -2850,7 +2850,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEffectiveClientContext(clientContextOverride),
                 OperationType.Delete, ResourceType.Document, path, requestHeaders, options);
 
-            if (options != null && options.getNonIdempotentWriteRetriesEnabled()) {
+            if (options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
                 request.setNonIdempotentWriteRetriesEnabled(true);
             }
 

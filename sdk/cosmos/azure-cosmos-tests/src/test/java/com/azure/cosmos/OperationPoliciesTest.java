@@ -77,7 +77,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
     private static final String MAX_PREFETCH_PAGE_COUNT = "maxPrefetchPageCount";
     private static final String QUERY_NAME = "queryName";
     private static final String[] optionLabels = {E2E_TIMEOUT, CONSISTENCY_LEVEL, CONTENT_RESPONSE_ON_WRITE, NON_IDEMPOTENT_WRITE_RETRIES, BYPASS_CACHE, THROUGHPUT_CONTROL_GROUP_NAME, REQUEST_CHARGE_THRESHOLD, SCAN_IN_QUERY, EXCLUDE_REGIONS, MAX_DEGREE_OF_PARALLELISM, MAX_BUFFERED_ITEM_COUNT, RESPONSE_CONTINUATION_TOKEN_LIMIT_KB, MAX_ITEM_COUNT, QUERY_METRICS, INDEX_METRICS, MAX_PREFETCH_PAGE_COUNT, QUERY_NAME};
-    private static final String[] initialOptions = {"20", ConsistencyLevel.STRONG.toString().toUpperCase(), "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "true", "true", "10", "QueryName"};
+    private static final String[] initialOptions = {"20", ConsistencyLevel.STRONG.toString().toUpperCase(), "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "false", "false", "10", "QueryName"};
 
     @Factory(dataProvider = "clientBuildersWithApplyPolicies")
     public OperationPoliciesTest(CosmosClientBuilder clientBuilder) {
@@ -233,8 +233,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
     @DataProvider(name = "changedOptions")
     private String[][] createChangedOptions() {
         return new String[][] {
-            { "8", ConsistencyLevel.SESSION.toString().toUpperCase(), "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "false", "20", "QueryNameChanged" },
-            { "4", ConsistencyLevel.EVENTUAL.toString().toUpperCase(), "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "false", "20", "QueryNameChanged" },
+            { "8", ConsistencyLevel.SESSION.toString().toUpperCase(), "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "true", "20", "QueryNameChanged" },
+            { "4", ConsistencyLevel.EVENTUAL.toString().toUpperCase(), "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "true", "false", "20", "QueryNameChanged" },
             initialOptions
         };
     }
@@ -514,7 +514,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         validateOptions(changedOptions, batchResponse);
     }
 
-    @Test(groups = { "fast" }, dataProvider = "changedOptions"/*, timeOut = TIMEOUT*/)
+    @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
     public void query(String[] changedOptions) {
         String id = UUID.randomUUID().toString();
         container.createItem(getDocumentDefinition(id)).block();
