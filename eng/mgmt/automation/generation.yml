@@ -13,6 +13,8 @@ variables:
   value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 - name: NodeVersion
   value: '18.x'
+- name: JavaVersion
+  value: '17'
 - name: fromTypeSpec
   value: $[ne(variables['TSP_CONFIG'], '')]
 
@@ -25,7 +27,8 @@ steps:
 
 - task: JavaToolInstaller@0
   inputs:
-    versionSpec: '17'
+    versionSpec: '$(JavaVersion)'
+    jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
 
 - task: NodeTool@0
