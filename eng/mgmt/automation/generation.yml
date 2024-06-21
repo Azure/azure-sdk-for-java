@@ -53,7 +53,7 @@ steps:
 - bash: |
       mkdir -p ~/.ssh
       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-      git clone git@github.com:Azure/azure-rest-api-specs.git
+      git clone https://github.com/Azure/azure-rest-api-specs.git
   workingDirectory: '$(Agent.TempDirectory)'
   env:
     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
