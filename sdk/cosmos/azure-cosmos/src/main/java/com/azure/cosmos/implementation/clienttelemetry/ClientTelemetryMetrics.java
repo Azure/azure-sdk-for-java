@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.clienttelemetry;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncClient; 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
