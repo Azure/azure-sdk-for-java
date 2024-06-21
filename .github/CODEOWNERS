@@ -521,6 +521,9 @@
 # ServiceLabel: %LOUIS
 # ServiceOwners:                                     @minamnmik
 
+# ServiceLabel: %Maps
+# ServiceOwners:                                     @dubiety
+
 # ServiceLabel: %Managed Identity
 # ServiceOwners:                                     @varunkch
 

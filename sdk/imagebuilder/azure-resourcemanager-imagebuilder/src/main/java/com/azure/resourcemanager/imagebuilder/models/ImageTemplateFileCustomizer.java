@@ -5,41 +5,53 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Uploads files to VMs (Linux, Windows). Corresponds to Packer file provisioner.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("File")
 @Fluent
 public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
+    /*
+     * The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
+     */
+    private String type = "File";
+
     /*
      * The URI of the file to be uploaded for customizing the VM. It can be a github link, SAS URI for Azure Storage,
      * etc
      */
-    @JsonProperty(value = "sourceUri")
     private String sourceUri;
 
     /*
      * SHA256 checksum of the file provided in the sourceUri field above
      */
-    @JsonProperty(value = "sha256Checksum")
     private String sha256Checksum;
 
     /*
      * The absolute path to a file (with nested directory structures already created) where the file (from sourceUri)
      * will be uploaded to in the VM
      */
-    @JsonProperty(value = "destination")
     private String destination;
 
     /**
      * Creates an instance of ImageTemplateFileCustomizer class.
      */
     public ImageTemplateFileCustomizer() {
+    }
+
+    /**
+     * Get the type property: The type of customization tool you want to use on the Image. For example, "Shell" can be
+     * shell customizer.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -123,5 +135,53 @@ public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("sourceUri", this.sourceUri);
+        jsonWriter.writeStringField("sha256Checksum", this.sha256Checksum);
+        jsonWriter.writeStringField("destination", this.destination);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateFileCustomizer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateFileCustomizer if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateFileCustomizer.
+     */
+    public static ImageTemplateFileCustomizer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateFileCustomizer deserializedImageTemplateFileCustomizer = new ImageTemplateFileCustomizer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedImageTemplateFileCustomizer.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateFileCustomizer.type = reader.getString();
+                } else if ("sourceUri".equals(fieldName)) {
+                    deserializedImageTemplateFileCustomizer.sourceUri = reader.getString();
+                } else if ("sha256Checksum".equals(fieldName)) {
+                    deserializedImageTemplateFileCustomizer.sha256Checksum = reader.getString();
+                } else if ("destination".equals(fieldName)) {
+                    deserializedImageTemplateFileCustomizer.destination = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateFileCustomizer;
+        });
     }
 }

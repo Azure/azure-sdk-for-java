@@ -9,7 +9,8 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class StorageAccountsHierarchicalNamespaceMigrationSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountHierarchicalNamespaceMigration.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountHierarchicalNamespaceMigration.json
      */
     /**
      * Sample code: StorageAccountHierarchicalNamespaceMigration.

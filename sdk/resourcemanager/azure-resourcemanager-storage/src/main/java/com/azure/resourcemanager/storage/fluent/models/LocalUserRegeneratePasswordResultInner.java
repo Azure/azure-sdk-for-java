@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class LocalUserRegeneratePasswordResultInner {
     /*
-     * Auto generated password by the server for SSH authentication if hasSshPassword is set to true on the creation of local user.
+     * Auto generated password by the server for SSH authentication if hasSshPassword is set to true on the creation of
+     * local user.
      */
     @JsonProperty(value = "sshPassword", access = JsonProperty.Access.WRITE_ONLY)
     private String sshPassword;

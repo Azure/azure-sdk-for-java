@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * DatabaseEditionType enum.
+ * Database edition type enum.
  */
 public final class DatabaseEditionType extends ExpandableStringEnum<DatabaseEditionType> {
     /**
@@ -37,7 +36,6 @@ public final class DatabaseEditionType extends ExpandableStringEnum<DatabaseEdit
      * @param name a name to look for.
      * @return the corresponding DatabaseEditionType.
      */
-    @JsonCreator
     public static DatabaseEditionType fromString(String name) {
         return fromString(name, DatabaseEditionType.class);
     }

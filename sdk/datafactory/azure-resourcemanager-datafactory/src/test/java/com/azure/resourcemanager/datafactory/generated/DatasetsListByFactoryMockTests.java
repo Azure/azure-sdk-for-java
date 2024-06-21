@@ -23,7 +23,7 @@ public final class DatasetsListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"fvevsqvk\",\"description\":\"ytkluewthydgz\",\"structure\":\"databbfun\",\"schema\":\"dataywlvkpxz\",\"linkedServiceName\":{\"referenceName\":\"ioxarwxhpufvuc\",\"parameters\":{\"wyiyqmrcsekhuzi\":\"datamjbzekrw\",\"udmpsuqpraqjscni\":\"datae\",\"kpewtbyciedxs\":\"datapvx\",\"qoaxieu\":\"datayjjhrvembi\"}},\"parameters\":{\"pwbfb\":{\"type\":\"Float\",\"defaultValue\":\"datakhjxgukzz\"},\"sxuzda\":{\"type\":\"SecureString\",\"defaultValue\":\"datarqsipqbyv\"}},\"annotations\":[\"datamilpztwzjkbaudtp\"],\"folder\":{\"name\":\"qkntnvgwgtgxggm\"},\"\":{\"bkazv\":\"dataulqpzqxcygevgjzr\",\"pcleniozqruq\":\"databsbkyfbmwzb\",\"pyymlwallde\":\"datarpwz\"}},\"name\":\"rhgohdv\",\"type\":\"svrpnoxbokmqviv\",\"etag\":\"fbzrfmfadvfkjdwu\",\"id\":\"o\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Dataset\",\"description\":\"mxibpcnm\",\"structure\":\"datayzka\",\"schema\":\"datatiprriqwftrjd\",\"linkedServiceName\":{\"referenceName\":\"ingrcjoycqnd\",\"parameters\":{\"hntchigub\":\"datatzytesz\",\"dcmjfieydtnpqtwo\":\"dataidwgyazppefsdo\",\"goaxtwtkkmuir\":\"datafhsckecume\",\"iiudnmojjmimy\":\"datakoaxstqqjqliyxze\"}},\"parameters\":{\"zmijirpwltbl\":{\"type\":\"Float\",\"defaultValue\":\"datataaxluo\"}},\"annotations\":[\"databafcmsotudnkr\"],\"folder\":{\"name\":\"hyqeiguxixfe\"},\"\":{\"ikanybo\":\"datamavinumdngqyvzzr\",\"zzqolmoifxl\":\"dataagaigtpj\",\"jubjqjxobmv\":\"databwdkjqxqj\",\"arneug\":\"datajtzatr\"}},\"name\":\"pkjyo\",\"type\":\"wcxedkkd\",\"etag\":\"frisreh\",\"id\":\"fiflpiq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class DatasetsListByFactoryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatasetResource> response
-            = manager.datasets().listByFactory("aqjpsjrpkgvs", "wdcz", com.azure.core.util.Context.NONE);
+            = manager.datasets().listByFactory("khlopy", "rsvyjrqhpz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("o", response.iterator().next().id());
-        Assertions.assertEquals("ytkluewthydgz", response.iterator().next().properties().description());
-        Assertions.assertEquals("ioxarwxhpufvuc",
+        Assertions.assertEquals("fiflpiq", response.iterator().next().id());
+        Assertions.assertEquals("mxibpcnm", response.iterator().next().properties().description());
+        Assertions.assertEquals("ingrcjoycqnd",
             response.iterator().next().properties().linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.FLOAT,
-            response.iterator().next().properties().parameters().get("pwbfb").type());
-        Assertions.assertEquals("qkntnvgwgtgxggm", response.iterator().next().properties().folder().name());
+            response.iterator().next().properties().parameters().get("zmijirpwltbl").type());
+        Assertions.assertEquals("hyqeiguxixfe", response.iterator().next().properties().folder().name());
     }
 }

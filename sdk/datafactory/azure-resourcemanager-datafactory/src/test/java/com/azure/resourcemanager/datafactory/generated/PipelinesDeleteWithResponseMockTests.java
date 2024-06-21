@@ -27,7 +27,8 @@ public final class PipelinesDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.pipelines().deleteWithResponse("txjrhatpebewli", "egdizjdagn", "hd", com.azure.core.util.Context.NONE);
+        manager.pipelines()
+            .deleteWithResponse("vbvicwfrybvhg", "ltjghdfusphokcc", "ynnm", com.azure.core.util.Context.NONE);
 
     }
 }

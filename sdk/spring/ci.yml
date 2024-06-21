@@ -243,7 +243,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: spring
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-spring-data-cosmos
         groupId: com.azure

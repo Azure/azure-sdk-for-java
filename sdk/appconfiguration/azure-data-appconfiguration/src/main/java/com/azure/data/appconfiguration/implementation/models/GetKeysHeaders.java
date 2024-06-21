@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/**
- * The GetKeysHeaders model.
- */
+/** The GetKeysHeaders model. */
 @Fluent
 public final class GetKeysHeaders {
     /*
@@ -23,7 +21,7 @@ public final class GetKeysHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of GetKeysHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public GetKeysHeaders(HttpHeaders rawHeaders) {
@@ -32,7 +30,7 @@ public final class GetKeysHeaders {
 
     /**
      * Get the syncToken property: The Sync-Token property.
-     * 
+     *
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -41,7 +39,7 @@ public final class GetKeysHeaders {
 
     /**
      * Set the syncToken property: The Sync-Token property.
-     * 
+     *
      * @param syncToken the syncToken value to set.
      * @return the GetKeysHeaders object itself.
      */

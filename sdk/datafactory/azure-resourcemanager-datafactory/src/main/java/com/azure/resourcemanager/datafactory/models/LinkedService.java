@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -153,7 +153,7 @@ public class LinkedService {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "LinkedService";
 
     /*
      * The integration runtime reference.
@@ -181,7 +181,8 @@ public class LinkedService {
     private List<Object> annotations;
 
     /*
-     * The nested object which contains the information and credential which can be used to connect with related store or compute resource.
+     * The nested object which contains the information and credential which can be used to connect with related store
+     * or compute resource.
      */
     @JsonIgnore
     private Map<String, Object> additionalProperties;
@@ -190,7 +191,6 @@ public class LinkedService {
      * Creates an instance of LinkedService class.
      */
     public LinkedService() {
-        this.type = "LinkedService";
     }
 
     /**
@@ -308,7 +308,7 @@ public class LinkedService {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

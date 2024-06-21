@@ -5,41 +5,53 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Runs a shell script during the customization phase (Linux). Corresponds to Packer shell provisioner. Exactly one of
  * 'scriptUri' or 'inline' can be specified.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Shell")
 @Fluent
 public final class ImageTemplateShellCustomizer extends ImageTemplateCustomizer {
     /*
+     * The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
+     */
+    private String type = "Shell";
+
+    /*
      * URI of the shell script to be run for customizing. It can be a github link, SAS URI for Azure Storage, etc
      */
-    @JsonProperty(value = "scriptUri")
     private String scriptUri;
 
     /*
      * SHA256 checksum of the shell script provided in the scriptUri field
      */
-    @JsonProperty(value = "sha256Checksum")
     private String sha256Checksum;
 
     /*
      * Array of shell commands to execute
      */
-    @JsonProperty(value = "inline")
     private List<String> inline;
 
     /**
      * Creates an instance of ImageTemplateShellCustomizer class.
      */
     public ImageTemplateShellCustomizer() {
+    }
+
+    /**
+     * Get the type property: The type of customization tool you want to use on the Image. For example, "Shell" can be
+     * shell customizer.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -121,5 +133,54 @@ public final class ImageTemplateShellCustomizer extends ImageTemplateCustomizer 
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("scriptUri", this.scriptUri);
+        jsonWriter.writeStringField("sha256Checksum", this.sha256Checksum);
+        jsonWriter.writeArrayField("inline", this.inline, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateShellCustomizer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateShellCustomizer if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateShellCustomizer.
+     */
+    public static ImageTemplateShellCustomizer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateShellCustomizer deserializedImageTemplateShellCustomizer = new ImageTemplateShellCustomizer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedImageTemplateShellCustomizer.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateShellCustomizer.type = reader.getString();
+                } else if ("scriptUri".equals(fieldName)) {
+                    deserializedImageTemplateShellCustomizer.scriptUri = reader.getString();
+                } else if ("sha256Checksum".equals(fieldName)) {
+                    deserializedImageTemplateShellCustomizer.sha256Checksum = reader.getString();
+                } else if ("inline".equals(fieldName)) {
+                    List<String> inline = reader.readArray(reader1 -> reader1.getString());
+                    deserializedImageTemplateShellCustomizer.inline = inline;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateShellCustomizer;
+        });
     }
 }

@@ -5,40 +5,41 @@
 package com.azure.communication.sms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SmsRecipient model. */
+/**
+ * Recipient details for sending SMS messages.
+ */
 @Fluent
-public final class SmsRecipient {
+public final class SmsRecipient implements JsonSerializable<SmsRecipient> {
     /*
      * The recipient's phone number in E.164 format.
      */
-    @JsonProperty(value = "to", required = true)
     private String to;
 
     /*
-     * If specified, the client directs that the request is repeatable; that
-     * is, the client can make the request multiple times with the same
-     * Repeatability-Request-ID and get back an appropriate response without
-     * the server executing the request multiple times. The value of the
-     * Repeatability-Request-ID is an opaque string representing a
-     * client-generated, 36-character hexadecimal case-insensitive encoding of
-     * a UUID (GUID), identifier for the request.
+     * If specified, the client directs that the request is repeatable; that is, the client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate response without the server executing the request multiple times. The value of the Repeatability-Request-ID is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a UUID (GUID), identifier for the request.
      */
-    @JsonProperty(value = "repeatabilityRequestId")
     private String repeatabilityRequestId;
 
     /*
-     * MUST be sent by clients to specify that a request is repeatable.
-     * Repeatability-First-Sent is used to specify the date and time at which
-     * the request was first created.eg- Tue, 26 Mar 2019 16:06:51 GMT
+     * MUST be sent by clients to specify that a request is repeatable. Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue, 26 Mar 2019 16:06:51 GMT
      */
-    @JsonProperty(value = "repeatabilityFirstSent")
     private String repeatabilityFirstSent;
 
     /**
+     * Creates an instance of SmsRecipient class.
+     */
+    public SmsRecipient() {
+    }
+
+    /**
      * Get the to property: The recipient's phone number in E.164 format.
-     *
+     * 
      * @return the to value.
      */
     public String getTo() {
@@ -47,7 +48,7 @@ public final class SmsRecipient {
 
     /**
      * Set the to property: The recipient's phone number in E.164 format.
-     *
+     * 
      * @param to the to value to set.
      * @return the SmsRecipient object itself.
      */
@@ -62,7 +63,7 @@ public final class SmsRecipient {
      * appropriate response without the server executing the request multiple times. The value of the
      * Repeatability-Request-ID is an opaque string representing a client-generated, 36-character hexadecimal
      * case-insensitive encoding of a UUID (GUID), identifier for the request.
-     *
+     * 
      * @return the repeatabilityRequestId value.
      */
     public String getRepeatabilityRequestId() {
@@ -75,7 +76,7 @@ public final class SmsRecipient {
      * appropriate response without the server executing the request multiple times. The value of the
      * Repeatability-Request-ID is an opaque string representing a client-generated, 36-character hexadecimal
      * case-insensitive encoding of a UUID (GUID), identifier for the request.
-     *
+     * 
      * @param repeatabilityRequestId the repeatabilityRequestId value to set.
      * @return the SmsRecipient object itself.
      */
@@ -88,7 +89,7 @@ public final class SmsRecipient {
      * Get the repeatabilityFirstSent property: MUST be sent by clients to specify that a request is repeatable.
      * Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue, 26
      * Mar 2019 16:06:51 GMT.
-     *
+     * 
      * @return the repeatabilityFirstSent value.
      */
     public String getRepeatabilityFirstSent() {
@@ -99,12 +100,55 @@ public final class SmsRecipient {
      * Set the repeatabilityFirstSent property: MUST be sent by clients to specify that a request is repeatable.
      * Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue, 26
      * Mar 2019 16:06:51 GMT.
-     *
+     * 
      * @param repeatabilityFirstSent the repeatabilityFirstSent value to set.
      * @return the SmsRecipient object itself.
      */
     public SmsRecipient setRepeatabilityFirstSent(String repeatabilityFirstSent) {
         this.repeatabilityFirstSent = repeatabilityFirstSent;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("to", this.to);
+        jsonWriter.writeStringField("repeatabilityRequestId", this.repeatabilityRequestId);
+        jsonWriter.writeStringField("repeatabilityFirstSent", this.repeatabilityFirstSent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmsRecipient from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmsRecipient if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SmsRecipient.
+     */
+    public static SmsRecipient fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmsRecipient deserializedSmsRecipient = new SmsRecipient();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("to".equals(fieldName)) {
+                    deserializedSmsRecipient.to = reader.getString();
+                } else if ("repeatabilityRequestId".equals(fieldName)) {
+                    deserializedSmsRecipient.repeatabilityRequestId = reader.getString();
+                } else if ("repeatabilityFirstSent".equals(fieldName)) {
+                    deserializedSmsRecipient.repeatabilityFirstSent = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmsRecipient;
+        });
     }
 }

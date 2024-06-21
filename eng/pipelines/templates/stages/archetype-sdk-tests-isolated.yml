@@ -62,7 +62,8 @@ parameters:
     Public:
       SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       ServiceConnection: azure-sdk-tests
-      SubscriptionConfigurationFilePath: eng/common/TestResources/sub-config/AzurePublicMsft.json
+      SubscriptionConfigurationFilePaths:
+        - eng/common/TestResources/sub-config/AzurePublicMsft.json
     Preview:
       SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
       ServiceConnection: azure-sdk-tests
@@ -181,7 +182,7 @@ stages:
             CloudConfig:
               SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
               SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
-              SubscriptionConfigurationFilePath: ${{ cloud.value.SubscriptionConfigurationFilePath}}
+              SubscriptionConfigurationFilePaths: ${{ cloud.value.SubscriptionConfigurationFilePaths}}
               Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
               Cloud: ${{ cloud.key }}
               ServiceConnection: ${{ cloud.value.ServiceConnection }}
