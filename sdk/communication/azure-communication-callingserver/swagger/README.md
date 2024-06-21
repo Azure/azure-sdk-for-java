@@ -32,6 +32,7 @@ To update generated files for calling service, run the following command
 ### Code generation settings
 ``` yaml
 tag: package-2022-04-07-preview
+use: '@autorest/java@4.1.29'
 require:
     - https://github.com/richardcho-msft/azure-rest-api-specs/blob/dev-communication-CallingServer-2022-04-07-preview/specification/communication/data-plane/CallingServer/readme.md
 java: true
