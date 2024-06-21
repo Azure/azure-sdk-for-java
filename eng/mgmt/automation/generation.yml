@@ -67,7 +67,7 @@ steps:
       java -version
       set -x
       tsp-client init --debug --tsp-config "$(TSP_CONFIG)"
-  displayName: [Experiment] Generation from TypeSpec by direct calling tsp-client
+  displayName: '[Experiment] Generation from TypeSpec by direct calling tsp-client'
   condition: eq(variables.fromTypeSpec, true)
 
 - bash: |
