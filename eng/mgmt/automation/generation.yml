@@ -2,10 +2,11 @@ trigger: none
 
 pr: none
 
-parameters:
+parameters: # parameters(instead of variables) is used here for template compile time expressions
   - name: TSP_CONFIG
+    displayName: TSP_CONFIG(if release from TypeSpec)
     type: string
-    default: ""
+    default: ''
 
 variables:
 - group: Release Secrets for GitHub
