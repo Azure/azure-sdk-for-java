@@ -55,6 +55,8 @@ steps:
       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
       git clone git@github.com:Azure/azure-rest-api-specs.git
   workingDirectory: '$(Agent.TempDirectory)'
+  env:
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
   displayName: 'Clone azure-rest-api-specs repo.'
   condition: eq(variables.fromTypeSpec, true)
 
