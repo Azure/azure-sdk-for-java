@@ -5,62 +5,73 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Zendesk. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Zendesk")
-@JsonFlatten
+/**
+ * Linked service for Zendesk.
+ */
 @Fluent
 public class ZendeskLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "Zendesk";
+
+    /*
      * The authentication type to use.
      */
-    @JsonProperty(value = "typeProperties.authenticationType", required = true)
     private ZendeskAuthenticationType authenticationType;
 
     /*
      * The url to connect Zendesk source. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.url", required = true)
     private Object url;
 
     /*
      * The username of the Zendesk source. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.userName")
     private Object userName;
 
     /*
      * The password of the Zendesk source.
      */
-    @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
      * The api token for the Zendesk source.
      */
-    @JsonProperty(value = "typeProperties.apiToken")
     private SecretBase apiToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of ZendeskLinkedService class. */
-    public ZendeskLinkedService() {}
+    /**
+     * Creates an instance of ZendeskLinkedService class.
+     */
+    public ZendeskLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the authenticationType property: The authentication type to use.
-     *
+     * 
      * @return the authenticationType value.
      */
     public ZendeskAuthenticationType getAuthenticationType() {
@@ -69,7 +80,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: The authentication type to use.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -80,7 +91,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Get the url property: The url to connect Zendesk source. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object getUrl() {
@@ -89,7 +100,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Set the url property: The url to connect Zendesk source. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -101,7 +112,7 @@ public class ZendeskLinkedService extends LinkedService {
     /**
      * Get the userName property: The username of the Zendesk source. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the userName value.
      */
     public Object getUserName() {
@@ -111,7 +122,7 @@ public class ZendeskLinkedService extends LinkedService {
     /**
      * Set the userName property: The username of the Zendesk source. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param userName the userName value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -122,7 +133,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password of the Zendesk source.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -131,7 +142,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password of the Zendesk source.
-     *
+     * 
      * @param password the password value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -142,7 +153,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Get the apiToken property: The api token for the Zendesk source.
-     *
+     * 
      * @return the apiToken value.
      */
     public SecretBase getApiToken() {
@@ -151,7 +162,7 @@ public class ZendeskLinkedService extends LinkedService {
 
     /**
      * Set the apiToken property: The api token for the Zendesk source.
-     *
+     * 
      * @param apiToken the apiToken value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -163,7 +174,7 @@ public class ZendeskLinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -173,7 +184,7 @@ public class ZendeskLinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ZendeskLinkedService object itself.
      */
@@ -182,31 +193,140 @@ public class ZendeskLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZendeskLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZendeskLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZendeskLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ZendeskLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (authenticationType != null
+            || url != null
+            || userName != null
+            || password != null
+            || apiToken != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeStringField("authenticationType",
+                this.authenticationType == null ? null : this.authenticationType.toString());
+            jsonWriter.writeUntypedField("url", this.url);
+            jsonWriter.writeUntypedField("userName", this.userName);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeJsonField("apiToken", this.apiToken);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ZendeskLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ZendeskLinkedService if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ZendeskLinkedService.
+     */
+    public static ZendeskLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ZendeskLinkedService deserializedZendeskLinkedService = new ZendeskLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedZendeskLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedZendeskLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedZendeskLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedZendeskLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedZendeskLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("authenticationType".equals(fieldName)) {
+                            deserializedZendeskLinkedService.authenticationType
+                                = ZendeskAuthenticationType.fromString(reader.getString());
+                        } else if ("url".equals(fieldName)) {
+                            deserializedZendeskLinkedService.url = reader.readUntyped();
+                        } else if ("userName".equals(fieldName)) {
+                            deserializedZendeskLinkedService.userName = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedZendeskLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("apiToken".equals(fieldName)) {
+                            deserializedZendeskLinkedService.apiToken = SecretBase.fromJson(reader);
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedZendeskLinkedService.encryptedCredential = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedZendeskLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedZendeskLinkedService;
+        });
     }
 }

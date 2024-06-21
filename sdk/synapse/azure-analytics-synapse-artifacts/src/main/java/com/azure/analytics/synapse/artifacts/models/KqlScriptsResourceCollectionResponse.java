@@ -5,30 +5,38 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The KqlScriptsResourceCollectionResponse model. */
+/**
+ * The KqlScriptsResourceCollectionResponse model.
+ */
 @Fluent
-public final class KqlScriptsResourceCollectionResponse {
+public final class KqlScriptsResourceCollectionResponse
+    implements JsonSerializable<KqlScriptsResourceCollectionResponse> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<KqlScriptResource> value;
 
     /*
      * The nextLink property.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of KqlScriptsResourceCollectionResponse class. */
-    public KqlScriptsResourceCollectionResponse() {}
+    /**
+     * Creates an instance of KqlScriptsResourceCollectionResponse class.
+     */
+    public KqlScriptsResourceCollectionResponse() {
+    }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<KqlScriptResource> getValue() {
@@ -37,7 +45,7 @@ public final class KqlScriptsResourceCollectionResponse {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the KqlScriptsResourceCollectionResponse object itself.
      */
@@ -48,7 +56,7 @@ public final class KqlScriptsResourceCollectionResponse {
 
     /**
      * Get the nextLink property: The nextLink property.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -57,12 +65,53 @@ public final class KqlScriptsResourceCollectionResponse {
 
     /**
      * Set the nextLink property: The nextLink property.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the KqlScriptsResourceCollectionResponse object itself.
      */
     public KqlScriptsResourceCollectionResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KqlScriptsResourceCollectionResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KqlScriptsResourceCollectionResponse if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KqlScriptsResourceCollectionResponse.
+     */
+    public static KqlScriptsResourceCollectionResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KqlScriptsResourceCollectionResponse deserializedKqlScriptsResourceCollectionResponse
+                = new KqlScriptsResourceCollectionResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<KqlScriptResource> value = reader.readArray(reader1 -> KqlScriptResource.fromJson(reader1));
+                    deserializedKqlScriptsResourceCollectionResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedKqlScriptsResourceCollectionResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKqlScriptsResourceCollectionResponse;
+        });
     }
 }

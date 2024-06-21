@@ -5,72 +5,73 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The SparkBatchJobState model. */
+/**
+ * The SparkBatchJobState model.
+ */
 @Fluent
-public final class SparkBatchJobState {
+public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobState> {
     /*
      * the time that at which "not_started" livy state was first seen.
      */
-    @JsonProperty(value = "notStartedAt")
     private OffsetDateTime notStartedAt;
 
     /*
      * the time that at which "starting" livy state was first seen.
      */
-    @JsonProperty(value = "startingAt")
     private OffsetDateTime startingAt;
 
     /*
      * the time that at which "running" livy state was first seen.
      */
-    @JsonProperty(value = "runningAt")
     private OffsetDateTime runningAt;
 
     /*
      * time that at which "dead" livy state was first seen.
      */
-    @JsonProperty(value = "deadAt")
     private OffsetDateTime deadAt;
 
     /*
      * the time that at which "success" livy state was first seen.
      */
-    @JsonProperty(value = "successAt")
     private OffsetDateTime successAt;
 
     /*
      * the time that at which "killed" livy state was first seen.
      */
-    @JsonProperty(value = "killedAt")
     private OffsetDateTime terminatedAt;
 
     /*
      * the time that at which "recovering" livy state was first seen.
      */
-    @JsonProperty(value = "recoveringAt")
     private OffsetDateTime recoveringAt;
 
     /*
      * the Spark job state.
      */
-    @JsonProperty(value = "currentState")
     private String currentState;
 
     /*
      * The jobCreationRequest property.
      */
-    @JsonProperty(value = "jobCreationRequest")
     private SparkRequest jobCreationRequest;
 
-    /** Creates an instance of SparkBatchJobState class. */
-    public SparkBatchJobState() {}
+    /**
+     * Creates an instance of SparkBatchJobState class.
+     */
+    public SparkBatchJobState() {
+    }
 
     /**
      * Get the notStartedAt property: the time that at which "not_started" livy state was first seen.
-     *
+     * 
      * @return the notStartedAt value.
      */
     public OffsetDateTime getNotStartedAt() {
@@ -79,7 +80,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the notStartedAt property: the time that at which "not_started" livy state was first seen.
-     *
+     * 
      * @param notStartedAt the notStartedAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -90,7 +91,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the startingAt property: the time that at which "starting" livy state was first seen.
-     *
+     * 
      * @return the startingAt value.
      */
     public OffsetDateTime getStartingAt() {
@@ -99,7 +100,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the startingAt property: the time that at which "starting" livy state was first seen.
-     *
+     * 
      * @param startingAt the startingAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -110,7 +111,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the runningAt property: the time that at which "running" livy state was first seen.
-     *
+     * 
      * @return the runningAt value.
      */
     public OffsetDateTime getRunningAt() {
@@ -119,7 +120,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the runningAt property: the time that at which "running" livy state was first seen.
-     *
+     * 
      * @param runningAt the runningAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -130,7 +131,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the deadAt property: time that at which "dead" livy state was first seen.
-     *
+     * 
      * @return the deadAt value.
      */
     public OffsetDateTime getDeadAt() {
@@ -139,7 +140,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the deadAt property: time that at which "dead" livy state was first seen.
-     *
+     * 
      * @param deadAt the deadAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -150,7 +151,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the successAt property: the time that at which "success" livy state was first seen.
-     *
+     * 
      * @return the successAt value.
      */
     public OffsetDateTime getSuccessAt() {
@@ -159,7 +160,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the successAt property: the time that at which "success" livy state was first seen.
-     *
+     * 
      * @param successAt the successAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -170,7 +171,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the terminatedAt property: the time that at which "killed" livy state was first seen.
-     *
+     * 
      * @return the terminatedAt value.
      */
     public OffsetDateTime getTerminatedAt() {
@@ -179,7 +180,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the terminatedAt property: the time that at which "killed" livy state was first seen.
-     *
+     * 
      * @param terminatedAt the terminatedAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -190,7 +191,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the recoveringAt property: the time that at which "recovering" livy state was first seen.
-     *
+     * 
      * @return the recoveringAt value.
      */
     public OffsetDateTime getRecoveringAt() {
@@ -199,7 +200,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the recoveringAt property: the time that at which "recovering" livy state was first seen.
-     *
+     * 
      * @param recoveringAt the recoveringAt value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -210,7 +211,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the currentState property: the Spark job state.
-     *
+     * 
      * @return the currentState value.
      */
     public String getCurrentState() {
@@ -219,7 +220,7 @@ public final class SparkBatchJobState {
 
     /**
      * Set the currentState property: the Spark job state.
-     *
+     * 
      * @param currentState the currentState value to set.
      * @return the SparkBatchJobState object itself.
      */
@@ -230,7 +231,7 @@ public final class SparkBatchJobState {
 
     /**
      * Get the jobCreationRequest property: The jobCreationRequest property.
-     *
+     * 
      * @return the jobCreationRequest value.
      */
     public SparkRequest getJobCreationRequest() {
@@ -239,12 +240,86 @@ public final class SparkBatchJobState {
 
     /**
      * Set the jobCreationRequest property: The jobCreationRequest property.
-     *
+     * 
      * @param jobCreationRequest the jobCreationRequest value to set.
      * @return the SparkBatchJobState object itself.
      */
     public SparkBatchJobState setJobCreationRequest(SparkRequest jobCreationRequest) {
         this.jobCreationRequest = jobCreationRequest;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("notStartedAt",
+            this.notStartedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.notStartedAt));
+        jsonWriter.writeStringField("startingAt",
+            this.startingAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startingAt));
+        jsonWriter.writeStringField("runningAt",
+            this.runningAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.runningAt));
+        jsonWriter.writeStringField("deadAt",
+            this.deadAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deadAt));
+        jsonWriter.writeStringField("successAt",
+            this.successAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.successAt));
+        jsonWriter.writeStringField("killedAt",
+            this.terminatedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.terminatedAt));
+        jsonWriter.writeStringField("recoveringAt",
+            this.recoveringAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recoveringAt));
+        jsonWriter.writeStringField("currentState", this.currentState);
+        jsonWriter.writeJsonField("jobCreationRequest", this.jobCreationRequest);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkBatchJobState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkBatchJobState if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SparkBatchJobState.
+     */
+    public static SparkBatchJobState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkBatchJobState deserializedSparkBatchJobState = new SparkBatchJobState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notStartedAt".equals(fieldName)) {
+                    deserializedSparkBatchJobState.notStartedAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("startingAt".equals(fieldName)) {
+                    deserializedSparkBatchJobState.startingAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("runningAt".equals(fieldName)) {
+                    deserializedSparkBatchJobState.runningAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("deadAt".equals(fieldName)) {
+                    deserializedSparkBatchJobState.deadAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("successAt".equals(fieldName)) {
+                    deserializedSparkBatchJobState.successAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("killedAt".equals(fieldName)) {
+                    deserializedSparkBatchJobState.terminatedAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("recoveringAt".equals(fieldName)) {
+                    deserializedSparkBatchJobState.recoveringAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("currentState".equals(fieldName)) {
+                    deserializedSparkBatchJobState.currentState = reader.getString();
+                } else if ("jobCreationRequest".equals(fieldName)) {
+                    deserializedSparkBatchJobState.jobCreationRequest = SparkRequest.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkBatchJobState;
+        });
     }
 }

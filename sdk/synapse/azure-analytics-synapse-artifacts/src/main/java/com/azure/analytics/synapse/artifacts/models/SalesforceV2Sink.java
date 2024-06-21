@@ -5,44 +5,57 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity Salesforce V2 sink. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SalesforceV2Sink")
+/**
+ * A copy activity Salesforce V2 sink.
+ */
 @Fluent
 public final class SalesforceV2Sink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "SalesforceV2Sink";
+
+    /*
      * The write behavior for the operation. Default is Insert.
      */
-    @JsonProperty(value = "writeBehavior")
     private SalesforceV2SinkWriteBehavior writeBehavior;
 
     /*
-     * The name of the external ID field for upsert operation. Default value is 'Id' column. Type: string (or
-     * Expression with resultType string).
+     * The name of the external ID field for upsert operation. Default value is 'Id' column. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "externalIdFieldName")
     private Object externalIdFieldName;
 
     /*
-     * The flag indicating whether or not to ignore null values from input dataset (except key fields) during write
-     * operation. Default value is false. If set it to true, it means ADF will leave the data in the destination object
-     * unchanged when doing upsert/update operation and insert defined default value when doing insert operation,
-     * versus ADF will update the data in the destination object to NULL when doing upsert/update operation and insert
-     * NULL value when doing insert operation. Type: boolean (or Expression with resultType boolean).
+     * The flag indicating whether or not to ignore null values from input dataset (except key fields) during write operation. Default value is false. If set it to true, it means ADF will leave the data in the destination object unchanged when doing upsert/update operation and insert defined default value when doing insert operation, versus ADF will update the data in the destination object to NULL when doing upsert/update operation and insert NULL value when doing insert operation. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
-    /** Creates an instance of SalesforceV2Sink class. */
-    public SalesforceV2Sink() {}
+    /**
+     * Creates an instance of SalesforceV2Sink class.
+     */
+    public SalesforceV2Sink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the writeBehavior property: The write behavior for the operation. Default is Insert.
-     *
+     * 
      * @return the writeBehavior value.
      */
     public SalesforceV2SinkWriteBehavior getWriteBehavior() {
@@ -51,7 +64,7 @@ public final class SalesforceV2Sink extends CopySink {
 
     /**
      * Set the writeBehavior property: The write behavior for the operation. Default is Insert.
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the SalesforceV2Sink object itself.
      */
@@ -63,7 +76,7 @@ public final class SalesforceV2Sink extends CopySink {
     /**
      * Get the externalIdFieldName property: The name of the external ID field for upsert operation. Default value is
      * 'Id' column. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the externalIdFieldName value.
      */
     public Object getExternalIdFieldName() {
@@ -73,7 +86,7 @@ public final class SalesforceV2Sink extends CopySink {
     /**
      * Set the externalIdFieldName property: The name of the external ID field for upsert operation. Default value is
      * 'Id' column. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param externalIdFieldName the externalIdFieldName value to set.
      * @return the SalesforceV2Sink object itself.
      */
@@ -89,7 +102,7 @@ public final class SalesforceV2Sink extends CopySink {
      * when doing insert operation, versus ADF will update the data in the destination object to NULL when doing
      * upsert/update operation and insert NULL value when doing insert operation. Type: boolean (or Expression with
      * resultType boolean).
-     *
+     * 
      * @return the ignoreNullValues value.
      */
     public Object getIgnoreNullValues() {
@@ -103,7 +116,7 @@ public final class SalesforceV2Sink extends CopySink {
      * when doing insert operation, versus ADF will update the data in the destination object to NULL when doing
      * upsert/update operation and insert NULL value when doing insert operation. Type: boolean (or Expression with
      * resultType boolean).
-     *
+     * 
      * @param ignoreNullValues the ignoreNullValues value to set.
      * @return the SalesforceV2Sink object itself.
      */
@@ -112,38 +125,120 @@ public final class SalesforceV2Sink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceV2Sink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceV2Sink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceV2Sink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceV2Sink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceV2Sink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
+        jsonWriter.writeUntypedField("externalIdFieldName", this.externalIdFieldName);
+        jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceV2Sink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceV2Sink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SalesforceV2Sink.
+     */
+    public static SalesforceV2Sink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceV2Sink deserializedSalesforceV2Sink = new SalesforceV2Sink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.setWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.setWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.setSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.setSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.type = reader.getString();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.writeBehavior
+                        = SalesforceV2SinkWriteBehavior.fromString(reader.getString());
+                } else if ("externalIdFieldName".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.externalIdFieldName = reader.readUntyped();
+                } else if ("ignoreNullValues".equals(fieldName)) {
+                    deserializedSalesforceV2Sink.ignoreNullValues = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSalesforceV2Sink.setAdditionalProperties(additionalProperties);
+
+            return deserializedSalesforceV2Sink;
+        });
     }
 }

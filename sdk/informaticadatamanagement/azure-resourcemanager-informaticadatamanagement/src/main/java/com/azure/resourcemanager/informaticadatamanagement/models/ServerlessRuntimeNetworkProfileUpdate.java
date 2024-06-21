@@ -6,17 +6,21 @@ package com.azure.resourcemanager.informaticadatamanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Informatica Serverless Network profile properties update.
  */
 @Fluent
-public final class ServerlessRuntimeNetworkProfileUpdate {
+public final class ServerlessRuntimeNetworkProfileUpdate
+    implements JsonSerializable<ServerlessRuntimeNetworkProfileUpdate> {
     /*
      * Network Interface Configuration Profile Update
      */
-    @JsonProperty(value = "networkInterfaceConfiguration", required = true)
     private NetworkInterfaceConfigurationUpdate networkInterfaceConfiguration;
 
     /**
@@ -62,4 +66,43 @@ public final class ServerlessRuntimeNetworkProfileUpdate {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServerlessRuntimeNetworkProfileUpdate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("networkInterfaceConfiguration", this.networkInterfaceConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerlessRuntimeNetworkProfileUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerlessRuntimeNetworkProfileUpdate if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerlessRuntimeNetworkProfileUpdate.
+     */
+    public static ServerlessRuntimeNetworkProfileUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerlessRuntimeNetworkProfileUpdate deserializedServerlessRuntimeNetworkProfileUpdate
+                = new ServerlessRuntimeNetworkProfileUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkInterfaceConfiguration".equals(fieldName)) {
+                    deserializedServerlessRuntimeNetworkProfileUpdate.networkInterfaceConfiguration
+                        = NetworkInterfaceConfigurationUpdate.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerlessRuntimeNetworkProfileUpdate;
+        });
+    }
 }

@@ -23,7 +23,8 @@ import java.util.Map;
  */
 public final class TriggersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Create.json
      */
     /**
      * Sample code: Triggers_Create.
@@ -51,7 +52,8 @@ public final class TriggersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Update.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Update.json
      */
     /**
      * Sample code: Triggers_Update.

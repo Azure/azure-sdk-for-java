@@ -31,7 +31,7 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
 
     @Test
     @LiveOnly
-    public void testGetToken() {
+    public void testGetTokenFromPipeline() {
         // Arrange
         AzurePipelinesCredential credential = getCredential();
         // Act & Assert
@@ -45,7 +45,7 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
 
     @Test
     @LiveOnly
-    public void testGetTokenSync() {
+    public void testGetTokenFromPipelineSync() {
         // Arrange
         AzurePipelinesCredential credential = getCredential();
 

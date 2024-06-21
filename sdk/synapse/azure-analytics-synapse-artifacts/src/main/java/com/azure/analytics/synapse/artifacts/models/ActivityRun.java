@@ -5,106 +5,99 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Information about an activity run in a pipeline. */
+/**
+ * Information about an activity run in a pipeline.
+ */
 @Fluent
-public final class ActivityRun {
+public final class ActivityRun implements JsonSerializable<ActivityRun> {
     /*
      * The name of the pipeline.
      */
-    @JsonProperty(value = "pipelineName", access = JsonProperty.Access.WRITE_ONLY)
     private String pipelineName;
 
     /*
      * The id of the pipeline run.
      */
-    @JsonProperty(value = "pipelineRunId", access = JsonProperty.Access.WRITE_ONLY)
     private String pipelineRunId;
 
     /*
      * The name of the activity.
      */
-    @JsonProperty(value = "activityName", access = JsonProperty.Access.WRITE_ONLY)
     private String activityName;
 
     /*
      * The type of the activity.
      */
-    @JsonProperty(value = "activityType", access = JsonProperty.Access.WRITE_ONLY)
     private String activityType;
 
     /*
      * The id of the activity run.
      */
-    @JsonProperty(value = "activityRunId", access = JsonProperty.Access.WRITE_ONLY)
     private String activityRunId;
 
     /*
      * The name of the compute linked service.
      */
-    @JsonProperty(value = "linkedServiceName", access = JsonProperty.Access.WRITE_ONLY)
     private String linkedServiceName;
 
     /*
      * The status of the activity run.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * The start time of the activity run in 'ISO 8601' format.
      */
-    @JsonProperty(value = "activityRunStart", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime activityRunStart;
 
     /*
      * The end time of the activity run in 'ISO 8601' format.
      */
-    @JsonProperty(value = "activityRunEnd", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime activityRunEnd;
 
     /*
      * The duration of the activity run.
      */
-    @JsonProperty(value = "durationInMs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer durationInMs;
 
     /*
      * The input for the activity.
      */
-    @JsonProperty(value = "input", access = JsonProperty.Access.WRITE_ONLY)
     private Object input;
 
     /*
      * The output for the activity.
      */
-    @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private Object output;
 
     /*
      * The error if any from the activity run.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Object error;
 
     /*
      * Information about an activity run in a pipeline.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ActivityRun class. */
-    public ActivityRun() {}
+    /**
+     * Creates an instance of ActivityRun class.
+     */
+    public ActivityRun() {
+    }
 
     /**
      * Get the pipelineName property: The name of the pipeline.
-     *
+     * 
      * @return the pipelineName value.
      */
     public String getPipelineName() {
@@ -113,7 +106,7 @@ public final class ActivityRun {
 
     /**
      * Get the pipelineRunId property: The id of the pipeline run.
-     *
+     * 
      * @return the pipelineRunId value.
      */
     public String getPipelineRunId() {
@@ -122,7 +115,7 @@ public final class ActivityRun {
 
     /**
      * Get the activityName property: The name of the activity.
-     *
+     * 
      * @return the activityName value.
      */
     public String getActivityName() {
@@ -131,7 +124,7 @@ public final class ActivityRun {
 
     /**
      * Get the activityType property: The type of the activity.
-     *
+     * 
      * @return the activityType value.
      */
     public String getActivityType() {
@@ -140,7 +133,7 @@ public final class ActivityRun {
 
     /**
      * Get the activityRunId property: The id of the activity run.
-     *
+     * 
      * @return the activityRunId value.
      */
     public String getActivityRunId() {
@@ -149,7 +142,7 @@ public final class ActivityRun {
 
     /**
      * Get the linkedServiceName property: The name of the compute linked service.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public String getLinkedServiceName() {
@@ -158,7 +151,7 @@ public final class ActivityRun {
 
     /**
      * Get the status property: The status of the activity run.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -167,7 +160,7 @@ public final class ActivityRun {
 
     /**
      * Get the activityRunStart property: The start time of the activity run in 'ISO 8601' format.
-     *
+     * 
      * @return the activityRunStart value.
      */
     public OffsetDateTime getActivityRunStart() {
@@ -176,7 +169,7 @@ public final class ActivityRun {
 
     /**
      * Get the activityRunEnd property: The end time of the activity run in 'ISO 8601' format.
-     *
+     * 
      * @return the activityRunEnd value.
      */
     public OffsetDateTime getActivityRunEnd() {
@@ -185,7 +178,7 @@ public final class ActivityRun {
 
     /**
      * Get the durationInMs property: The duration of the activity run.
-     *
+     * 
      * @return the durationInMs value.
      */
     public Integer getDurationInMs() {
@@ -194,7 +187,7 @@ public final class ActivityRun {
 
     /**
      * Get the input property: The input for the activity.
-     *
+     * 
      * @return the input value.
      */
     public Object getInput() {
@@ -203,7 +196,7 @@ public final class ActivityRun {
 
     /**
      * Get the output property: The output for the activity.
-     *
+     * 
      * @return the output value.
      */
     public Object getOutput() {
@@ -212,7 +205,7 @@ public final class ActivityRun {
 
     /**
      * Get the error property: The error if any from the activity run.
-     *
+     * 
      * @return the error value.
      */
     public Object getError() {
@@ -221,17 +214,16 @@ public final class ActivityRun {
 
     /**
      * Get the additionalProperties property: Information about an activity run in a pipeline.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Information about an activity run in a pipeline.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ActivityRun object itself.
      */
@@ -240,11 +232,75 @@ public final class ActivityRun {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityRun from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityRun if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActivityRun.
+     */
+    public static ActivityRun fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityRun deserializedActivityRun = new ActivityRun();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pipelineName".equals(fieldName)) {
+                    deserializedActivityRun.pipelineName = reader.getString();
+                } else if ("pipelineRunId".equals(fieldName)) {
+                    deserializedActivityRun.pipelineRunId = reader.getString();
+                } else if ("activityName".equals(fieldName)) {
+                    deserializedActivityRun.activityName = reader.getString();
+                } else if ("activityType".equals(fieldName)) {
+                    deserializedActivityRun.activityType = reader.getString();
+                } else if ("activityRunId".equals(fieldName)) {
+                    deserializedActivityRun.activityRunId = reader.getString();
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedActivityRun.linkedServiceName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedActivityRun.status = reader.getString();
+                } else if ("activityRunStart".equals(fieldName)) {
+                    deserializedActivityRun.activityRunStart
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("activityRunEnd".equals(fieldName)) {
+                    deserializedActivityRun.activityRunEnd
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("durationInMs".equals(fieldName)) {
+                    deserializedActivityRun.durationInMs = reader.getNullable(JsonReader::getInt);
+                } else if ("input".equals(fieldName)) {
+                    deserializedActivityRun.input = reader.readUntyped();
+                } else if ("output".equals(fieldName)) {
+                    deserializedActivityRun.output = reader.readUntyped();
+                } else if ("error".equals(fieldName)) {
+                    deserializedActivityRun.error = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedActivityRun.additionalProperties = additionalProperties;
+
+            return deserializedActivityRun;
+        });
     }
 }

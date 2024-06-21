@@ -6,83 +6,75 @@ package com.azure.resourcemanager.informaticadatamanagement.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Informatica runtime resource metadata as received via the informatica fetch all runtime environments API.
  */
 @Immutable
-public final class InfaRuntimeResourceFetchMetaData {
+public final class InfaRuntimeResourceFetchMetaData implements JsonSerializable<InfaRuntimeResourceFetchMetaData> {
     /*
      * Environment name
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Created time
      */
-    @JsonProperty(value = "createdTime", required = true)
     private String createdTime;
 
     /*
      * Updated Time
      */
-    @JsonProperty(value = "updatedTime", required = true)
     private String updatedTime;
 
     /*
      * Created by
      */
-    @JsonProperty(value = "createdBy", required = true)
     private String createdBy;
 
     /*
      * Last Updated by
      */
-    @JsonProperty(value = "updatedBy", required = true)
     private String updatedBy;
 
     /*
      * Informatica serverless runtime id
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Environment Type
      */
-    @JsonProperty(value = "type", required = true)
     private RuntimeType type;
 
     /*
      * Status of the environment
      */
-    @JsonProperty(value = "status", required = true)
     private String status;
 
     /*
      * Display message for the given status
      */
-    @JsonProperty(value = "statusLocalized", required = true)
     private String statusLocalized;
 
     /*
      * status message
      */
-    @JsonProperty(value = "statusMessage", required = true)
     private String statusMessage;
 
     /*
      * Serverless Config Properties
      */
-    @JsonProperty(value = "serverlessConfigProperties", required = true)
     private InfaServerlessFetchConfigProperties serverlessConfigProperties;
 
     /*
      * Description of the runtime resource
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -265,4 +257,76 @@ public final class InfaRuntimeResourceFetchMetaData {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InfaRuntimeResourceFetchMetaData.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("createdTime", this.createdTime);
+        jsonWriter.writeStringField("updatedTime", this.updatedTime);
+        jsonWriter.writeStringField("createdBy", this.createdBy);
+        jsonWriter.writeStringField("updatedBy", this.updatedBy);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("statusLocalized", this.statusLocalized);
+        jsonWriter.writeStringField("statusMessage", this.statusMessage);
+        jsonWriter.writeJsonField("serverlessConfigProperties", this.serverlessConfigProperties);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InfaRuntimeResourceFetchMetaData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InfaRuntimeResourceFetchMetaData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InfaRuntimeResourceFetchMetaData.
+     */
+    public static InfaRuntimeResourceFetchMetaData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InfaRuntimeResourceFetchMetaData deserializedInfaRuntimeResourceFetchMetaData
+                = new InfaRuntimeResourceFetchMetaData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.name = reader.getString();
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.createdTime = reader.getString();
+                } else if ("updatedTime".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.updatedTime = reader.getString();
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.createdBy = reader.getString();
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.updatedBy = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.type = RuntimeType.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.status = reader.getString();
+                } else if ("statusLocalized".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.statusLocalized = reader.getString();
+                } else if ("statusMessage".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.statusMessage = reader.getString();
+                } else if ("serverlessConfigProperties".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.serverlessConfigProperties
+                        = InfaServerlessFetchConfigProperties.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedInfaRuntimeResourceFetchMetaData.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInfaRuntimeResourceFetchMetaData;
+        });
+    }
 }

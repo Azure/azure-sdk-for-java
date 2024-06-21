@@ -4,20 +4,16 @@
 
 package com.azure.resourcemanager.datafactory.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.fluent.models.CredentialResourceInner;
 import com.azure.resourcemanager.datafactory.models.Credential;
 import com.azure.resourcemanager.datafactory.models.CredentialResource;
 
-public final class CredentialResourceImpl implements CredentialResource {
+public final class CredentialResourceImpl
+    implements CredentialResource, CredentialResource.Definition, CredentialResource.Update {
     private CredentialResourceInner innerObject;
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
-
-    CredentialResourceImpl(CredentialResourceInner innerObject,
-        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -39,11 +35,125 @@ public final class CredentialResourceImpl implements CredentialResource {
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CredentialResourceInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.datafactory.DataFactoryManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String factoryName;
+
+    private String credentialName;
+
+    private String createIfMatch;
+
+    private String updateIfMatch;
+
+    public CredentialResourceImpl withExistingFactory(String resourceGroupName, String factoryName) {
+        this.resourceGroupName = resourceGroupName;
+        this.factoryName = factoryName;
+        return this;
+    }
+
+    public CredentialResource create() {
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentialOperations()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, credentialName, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public CredentialResource create(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentialOperations()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, credentialName, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
+        return this;
+    }
+
+    CredentialResourceImpl(String name, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+        this.innerObject = new CredentialResourceInner();
+        this.serviceManager = serviceManager;
+        this.credentialName = name;
+        this.createIfMatch = null;
+    }
+
+    public CredentialResourceImpl update() {
+        this.updateIfMatch = null;
+        return this;
+    }
+
+    public CredentialResource apply() {
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentialOperations()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, credentialName, this.innerModel(),
+                updateIfMatch, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public CredentialResource apply(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentialOperations()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, credentialName, this.innerModel(),
+                updateIfMatch, context)
+            .getValue();
+        return this;
+    }
+
+    CredentialResourceImpl(CredentialResourceInner innerObject,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.credentialName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "credentials");
+    }
+
+    public CredentialResource refresh() {
+        String localIfNoneMatch = null;
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentialOperations()
+            .getWithResponse(resourceGroupName, factoryName, credentialName, localIfNoneMatch, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public CredentialResource refresh(Context context) {
+        String localIfNoneMatch = null;
+        this.innerObject = serviceManager.serviceClient()
+            .getCredentialOperations()
+            .getWithResponse(resourceGroupName, factoryName, credentialName, localIfNoneMatch, context)
+            .getValue();
+        return this;
+    }
+
+    public CredentialResourceImpl withProperties(Credential properties) {
+        this.innerModel().withProperties(properties);
+        return this;
+    }
+
+    public CredentialResourceImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

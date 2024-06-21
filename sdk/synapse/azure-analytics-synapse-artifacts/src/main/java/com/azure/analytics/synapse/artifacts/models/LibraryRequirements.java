@@ -5,40 +5,44 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Spark pool library version requirements
- *
- * <p>Library requirements for a Big Data pool powered by Apache Spark.
+ * 
+ * Library requirements for a Big Data pool powered by Apache Spark.
  */
 @Fluent
-public final class LibraryRequirements {
+public final class LibraryRequirements implements JsonSerializable<LibraryRequirements> {
     /*
      * The last update time of the library requirements file.
      */
-    @JsonProperty(value = "time", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime time;
 
     /*
      * The library requirements.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * The filename of the library requirements file.
      */
-    @JsonProperty(value = "filename")
     private String filename;
 
-    /** Creates an instance of LibraryRequirements class. */
-    public LibraryRequirements() {}
+    /**
+     * Creates an instance of LibraryRequirements class.
+     */
+    public LibraryRequirements() {
+    }
 
     /**
      * Get the time property: The last update time of the library requirements file.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime getTime() {
@@ -47,7 +51,7 @@ public final class LibraryRequirements {
 
     /**
      * Get the content property: The library requirements.
-     *
+     * 
      * @return the content value.
      */
     public String getContent() {
@@ -56,7 +60,7 @@ public final class LibraryRequirements {
 
     /**
      * Set the content property: The library requirements.
-     *
+     * 
      * @param content the content value to set.
      * @return the LibraryRequirements object itself.
      */
@@ -67,7 +71,7 @@ public final class LibraryRequirements {
 
     /**
      * Get the filename property: The filename of the library requirements file.
-     *
+     * 
      * @return the filename value.
      */
     public String getFilename() {
@@ -76,12 +80,54 @@ public final class LibraryRequirements {
 
     /**
      * Set the filename property: The filename of the library requirements file.
-     *
+     * 
      * @param filename the filename value to set.
      * @return the LibraryRequirements object itself.
      */
     public LibraryRequirements setFilename(String filename) {
         this.filename = filename;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("filename", this.filename);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LibraryRequirements from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LibraryRequirements if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LibraryRequirements.
+     */
+    public static LibraryRequirements fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LibraryRequirements deserializedLibraryRequirements = new LibraryRequirements();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("time".equals(fieldName)) {
+                    deserializedLibraryRequirements.time
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("content".equals(fieldName)) {
+                    deserializedLibraryRequirements.content = reader.getString();
+                } else if ("filename".equals(fieldName)) {
+                    deserializedLibraryRequirements.filename = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLibraryRequirements;
+        });
     }
 }

@@ -51,7 +51,7 @@ final class MethodHandleReflectiveInvoker implements ReflectiveInvoker {
         return methodHandle.type().parameterCount();
     }
 
-    private static Object[] createFinalArgs(Object target, Object... args) {
+    static Object[] createFinalArgs(Object target, Object... args) {
         if (target == null && (args == null || args.length == 0)) {
             return NO_ARGS;
         }

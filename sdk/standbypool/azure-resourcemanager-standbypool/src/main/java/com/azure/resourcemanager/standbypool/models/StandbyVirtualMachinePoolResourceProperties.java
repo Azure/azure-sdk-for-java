@@ -6,35 +6,36 @@ package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details of the StandbyVirtualMachinePool.
  */
 @Fluent
-public final class StandbyVirtualMachinePoolResourceProperties {
+public final class StandbyVirtualMachinePoolResourceProperties
+    implements JsonSerializable<StandbyVirtualMachinePoolResourceProperties> {
     /*
      * Specifies the elasticity profile of the standby virtual machine pools.
      */
-    @JsonProperty(value = "elasticityProfile")
     private StandbyVirtualMachinePoolElasticityProfile elasticityProfile;
 
     /*
      * Specifies the desired state of virtual machines in the pool.
      */
-    @JsonProperty(value = "virtualMachineState", required = true)
     private VirtualMachineState virtualMachineState;
 
     /*
      * Specifies the fully qualified resource ID of a virtual machine scale set the pool is attached to.
      */
-    @JsonProperty(value = "attachedVirtualMachineScaleSetId")
     private String attachedVirtualMachineScaleSetId;
 
     /*
      * The status of the last operation.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -134,4 +135,55 @@ public final class StandbyVirtualMachinePoolResourceProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StandbyVirtualMachinePoolResourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualMachineState",
+            this.virtualMachineState == null ? null : this.virtualMachineState.toString());
+        jsonWriter.writeJsonField("elasticityProfile", this.elasticityProfile);
+        jsonWriter.writeStringField("attachedVirtualMachineScaleSetId", this.attachedVirtualMachineScaleSetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StandbyVirtualMachinePoolResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StandbyVirtualMachinePoolResourceProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StandbyVirtualMachinePoolResourceProperties.
+     */
+    public static StandbyVirtualMachinePoolResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StandbyVirtualMachinePoolResourceProperties deserializedStandbyVirtualMachinePoolResourceProperties
+                = new StandbyVirtualMachinePoolResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualMachineState".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolResourceProperties.virtualMachineState
+                        = VirtualMachineState.fromString(reader.getString());
+                } else if ("elasticityProfile".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolResourceProperties.elasticityProfile
+                        = StandbyVirtualMachinePoolElasticityProfile.fromJson(reader);
+                } else if ("attachedVirtualMachineScaleSetId".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolResourceProperties.attachedVirtualMachineScaleSetId
+                        = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedStandbyVirtualMachinePoolResourceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStandbyVirtualMachinePoolResourceProperties;
+        });
+    }
 }

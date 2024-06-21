@@ -5,41 +5,57 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity Common Data Service for Apps sink. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("CommonDataServiceForAppsSink")
+/**
+ * A copy activity Common Data Service for Apps sink.
+ */
 @Fluent
 public final class CommonDataServiceForAppsSink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "CommonDataServiceForAppsSink";
+
+    /*
      * The write behavior for the operation.
      */
-    @JsonProperty(value = "writeBehavior", required = true)
     private DynamicsSinkWriteBehavior writeBehavior;
 
     /*
-     * The flag indicating whether to ignore null values from input dataset (except key fields) during write operation.
-     * Default is false. Type: boolean (or Expression with resultType boolean).
+     * The flag indicating whether to ignore null values from input dataset (except key fields) during write operation. Default is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
     /*
-     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression
-     * with resultType string).
+     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
 
-    /** Creates an instance of CommonDataServiceForAppsSink class. */
-    public CommonDataServiceForAppsSink() {}
+    /**
+     * Creates an instance of CommonDataServiceForAppsSink class.
+     */
+    public CommonDataServiceForAppsSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the writeBehavior property: The write behavior for the operation.
-     *
+     * 
      * @return the writeBehavior value.
      */
     public DynamicsSinkWriteBehavior getWriteBehavior() {
@@ -48,7 +64,7 @@ public final class CommonDataServiceForAppsSink extends CopySink {
 
     /**
      * Set the writeBehavior property: The write behavior for the operation.
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the CommonDataServiceForAppsSink object itself.
      */
@@ -60,7 +76,7 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     /**
      * Get the ignoreNullValues property: The flag indicating whether to ignore null values from input dataset (except
      * key fields) during write operation. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the ignoreNullValues value.
      */
     public Object getIgnoreNullValues() {
@@ -70,7 +86,7 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     /**
      * Set the ignoreNullValues property: The flag indicating whether to ignore null values from input dataset (except
      * key fields) during write operation. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param ignoreNullValues the ignoreNullValues value to set.
      * @return the CommonDataServiceForAppsSink object itself.
      */
@@ -82,7 +98,7 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     /**
      * Get the alternateKeyName property: The logical name of the alternate key which will be used when upserting
      * records. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the alternateKeyName value.
      */
     public Object getAlternateKeyName() {
@@ -92,7 +108,7 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     /**
      * Set the alternateKeyName property: The logical name of the alternate key which will be used when upserting
      * records. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param alternateKeyName the alternateKeyName value to set.
      * @return the CommonDataServiceForAppsSink object itself.
      */
@@ -101,38 +117,121 @@ public final class CommonDataServiceForAppsSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("writeBehavior", this.writeBehavior == null ? null : this.writeBehavior.toString());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("ignoreNullValues", this.ignoreNullValues);
+        jsonWriter.writeUntypedField("alternateKeyName", this.alternateKeyName);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonDataServiceForAppsSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonDataServiceForAppsSink if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommonDataServiceForAppsSink.
+     */
+    public static CommonDataServiceForAppsSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommonDataServiceForAppsSink deserializedCommonDataServiceForAppsSink = new CommonDataServiceForAppsSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSink.setWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSink.setWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSink.setSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSink.setSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSink.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSink.writeBehavior
+                        = DynamicsSinkWriteBehavior.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSink.type = reader.getString();
+                } else if ("ignoreNullValues".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSink.ignoreNullValues = reader.readUntyped();
+                } else if ("alternateKeyName".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsSink.alternateKeyName = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCommonDataServiceForAppsSink.setAdditionalProperties(additionalProperties);
+
+            return deserializedCommonDataServiceForAppsSink;
+        });
     }
 }

@@ -5,47 +5,51 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The LinkConnectionResource model. */
+/**
+ * The LinkConnectionResource model.
+ */
 @Fluent
-public final class LinkConnectionResource {
+public final class LinkConnectionResource implements JsonSerializable<LinkConnectionResource> {
     /*
      * Link connection id
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Link connection name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Link connection type
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Properties of link connection
      */
-    @JsonProperty(value = "properties", required = true)
     private LinkConnection properties;
 
     /*
      * Link connection description
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of LinkConnectionResource class. */
-    public LinkConnectionResource() {}
+    /**
+     * Creates an instance of LinkConnectionResource class.
+     */
+    public LinkConnectionResource() {
+    }
 
     /**
      * Get the id property: Link connection id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -54,7 +58,7 @@ public final class LinkConnectionResource {
 
     /**
      * Set the id property: Link connection id.
-     *
+     * 
      * @param id the id value to set.
      * @return the LinkConnectionResource object itself.
      */
@@ -65,7 +69,7 @@ public final class LinkConnectionResource {
 
     /**
      * Get the name property: Link connection name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -74,7 +78,7 @@ public final class LinkConnectionResource {
 
     /**
      * Set the name property: Link connection name.
-     *
+     * 
      * @param name the name value to set.
      * @return the LinkConnectionResource object itself.
      */
@@ -85,7 +89,7 @@ public final class LinkConnectionResource {
 
     /**
      * Get the type property: Link connection type.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -94,7 +98,7 @@ public final class LinkConnectionResource {
 
     /**
      * Set the type property: Link connection type.
-     *
+     * 
      * @param type the type value to set.
      * @return the LinkConnectionResource object itself.
      */
@@ -105,7 +109,7 @@ public final class LinkConnectionResource {
 
     /**
      * Get the properties property: Properties of link connection.
-     *
+     * 
      * @return the properties value.
      */
     public LinkConnection getProperties() {
@@ -114,7 +118,7 @@ public final class LinkConnectionResource {
 
     /**
      * Set the properties property: Properties of link connection.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LinkConnectionResource object itself.
      */
@@ -125,7 +129,7 @@ public final class LinkConnectionResource {
 
     /**
      * Get the description property: Link connection description.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -134,12 +138,61 @@ public final class LinkConnectionResource {
 
     /**
      * Set the description property: Link connection description.
-     *
+     * 
      * @param description the description value to set.
      * @return the LinkConnectionResource object itself.
      */
     public LinkConnectionResource setDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkConnectionResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkConnectionResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LinkConnectionResource.
+     */
+    public static LinkConnectionResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkConnectionResource deserializedLinkConnectionResource = new LinkConnectionResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedLinkConnectionResource.properties = LinkConnection.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedLinkConnectionResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLinkConnectionResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLinkConnectionResource.type = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedLinkConnectionResource.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkConnectionResource;
+        });
     }
 }

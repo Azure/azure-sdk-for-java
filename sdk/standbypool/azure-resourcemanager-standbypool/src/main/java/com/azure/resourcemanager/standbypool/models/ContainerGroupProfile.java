@@ -6,23 +6,25 @@ package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details of the ContainerGroupProfile.
  */
 @Fluent
-public final class ContainerGroupProfile {
+public final class ContainerGroupProfile implements JsonSerializable<ContainerGroupProfile> {
     /*
      * Specifies container group profile id of standby container groups.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Specifies revision of container group profile.
      */
-    @JsonProperty(value = "revision")
     private Long revision;
 
     /**
@@ -84,4 +86,44 @@ public final class ContainerGroupProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerGroupProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeNumberField("revision", this.revision);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerGroupProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerGroupProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerGroupProfile.
+     */
+    public static ContainerGroupProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerGroupProfile deserializedContainerGroupProfile = new ContainerGroupProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedContainerGroupProfile.id = reader.getString();
+                } else if ("revision".equals(fieldName)) {
+                    deserializedContainerGroupProfile.revision = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerGroupProfile;
+        });
+    }
 }

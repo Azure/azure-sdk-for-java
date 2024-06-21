@@ -5,38 +5,54 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure MySQL database dataset. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureMySqlTable")
-@JsonFlatten
+/**
+ * The Azure MySQL database dataset.
+ */
 @Fluent
 public class AzureMySqlTableDataset extends Dataset {
     /*
+     * Type of dataset.
+     */
+    private String type = "AzureMySqlTable";
+
+    /*
      * The Azure MySQL database table name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
      * The name of Azure MySQL database table. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.table")
     private Object table;
 
-    /** Creates an instance of AzureMySqlTableDataset class. */
-    public AzureMySqlTableDataset() {}
+    /**
+     * Creates an instance of AzureMySqlTableDataset class.
+     */
+    public AzureMySqlTableDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -46,7 +62,7 @@ public class AzureMySqlTableDataset extends Dataset {
     /**
      * Set the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the AzureMySqlTableDataset object itself.
      */
@@ -58,7 +74,7 @@ public class AzureMySqlTableDataset extends Dataset {
     /**
      * Get the table property: The name of Azure MySQL database table. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -68,7 +84,7 @@ public class AzureMySqlTableDataset extends Dataset {
     /**
      * Set the table property: The name of Azure MySQL database table. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureMySqlTableDataset object itself.
      */
@@ -77,52 +93,157 @@ public class AzureMySqlTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeUntypedField("structure", getStructure());
+        jsonWriter.writeUntypedField("schema", getSchema());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", getFolder());
+        jsonWriter.writeStringField("type", this.type);
+        if (tableName != null || table != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("tableName", this.tableName);
+            jsonWriter.writeUntypedField("table", this.table);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMySqlTableDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMySqlTableDataset if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureMySqlTableDataset.
+     */
+    public static AzureMySqlTableDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMySqlTableDataset deserializedAzureMySqlTableDataset = new AzureMySqlTableDataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAzureMySqlTableDataset.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureMySqlTableDataset.setDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedAzureMySqlTableDataset.setStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedAzureMySqlTableDataset.setSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAzureMySqlTableDataset.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAzureMySqlTableDataset.setAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedAzureMySqlTableDataset.setFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureMySqlTableDataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("tableName".equals(fieldName)) {
+                            deserializedAzureMySqlTableDataset.tableName = reader.readUntyped();
+                        } else if ("table".equals(fieldName)) {
+                            deserializedAzureMySqlTableDataset.table = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureMySqlTableDataset.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureMySqlTableDataset;
+        });
     }
 }

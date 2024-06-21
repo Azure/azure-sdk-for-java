@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -52,7 +51,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +60,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Set the name property: Name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the NetworkSecurityPerimeterConfigurationPropertiesProfile object itself.
      */
@@ -72,7 +71,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Get the accessRulesVersion property: Current access rules version.
-     *
+     * 
      * @return the accessRulesVersion value.
      */
     public Float accessRulesVersion() {
@@ -81,7 +80,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Set the accessRulesVersion property: Current access rules version.
-     *
+     * 
      * @param accessRulesVersion the accessRulesVersion value to set.
      * @return the NetworkSecurityPerimeterConfigurationPropertiesProfile object itself.
      */
@@ -92,7 +91,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Get the accessRules property: List of Access Rules.
-     *
+     * 
      * @return the accessRules value.
      */
     public List<NspAccessRule> accessRules() {
@@ -101,7 +100,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Set the accessRules property: List of Access Rules.
-     *
+     * 
      * @param accessRules the accessRules value to set.
      * @return the NetworkSecurityPerimeterConfigurationPropertiesProfile object itself.
      */
@@ -112,7 +111,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Get the diagnosticSettingsVersion property: Diagnostic settings version.
-     *
+     * 
      * @return the diagnosticSettingsVersion value.
      */
     public Float diagnosticSettingsVersion() {
@@ -121,7 +120,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Set the diagnosticSettingsVersion property: Diagnostic settings version.
-     *
+     * 
      * @param diagnosticSettingsVersion the diagnosticSettingsVersion value to set.
      * @return the NetworkSecurityPerimeterConfigurationPropertiesProfile object itself.
      */
@@ -133,7 +132,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Get the enabledLogCategories property: Enabled logging categories.
-     *
+     * 
      * @return the enabledLogCategories value.
      */
     public List<String> enabledLogCategories() {
@@ -142,7 +141,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Set the enabledLogCategories property: Enabled logging categories.
-     *
+     * 
      * @param enabledLogCategories the enabledLogCategories value to set.
      * @return the NetworkSecurityPerimeterConfigurationPropertiesProfile object itself.
      */
@@ -154,7 +153,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

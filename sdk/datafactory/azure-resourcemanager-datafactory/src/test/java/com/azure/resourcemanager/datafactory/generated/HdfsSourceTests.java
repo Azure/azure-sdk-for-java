@@ -12,20 +12,20 @@ public final class HdfsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HdfsSource model = BinaryData.fromString(
-            "{\"type\":\"f\",\"recursive\":\"datalaxjmnbmfmloq\",\"distcpSettings\":{\"resourceManagerEndpoint\":\"dataswvtd\",\"tempScriptPath\":\"datapicwnbtvlrs\",\"distcpOptions\":\"datatrmodknxerkaiik\"},\"sourceRetryCount\":\"dataxpqrkeyhj\",\"sourceRetryWait\":\"dataezkbrvtaul\",\"maxConcurrentConnections\":\"dataqvtpkodijcn\",\"disableMetricsCollection\":\"datao\",\"\":{\"hijbfiyuho\":\"datacyqjj\",\"phyacdhjm\":\"dataulevpdbirhgj\",\"jtkuyvytfuq\":\"datanvgkxshh\",\"kf\":\"datastqbxpyfawkjei\"}}")
+            "{\"type\":\"HdfsSource\",\"recursive\":\"databtkcvola\",\"distcpSettings\":{\"resourceManagerEndpoint\":\"dataukgov\",\"tempScriptPath\":\"datau\",\"distcpOptions\":\"datadcqoxyxiyhmj\"},\"sourceRetryCount\":\"datanw\",\"sourceRetryWait\":\"datazgvaeqiygbo\",\"maxConcurrentConnections\":\"datazjodidgud\",\"disableMetricsCollection\":\"dataclajbenfyuuf\",\"\":{\"il\":\"dataikffczwaew\",\"pbwfna\":\"datauhsghdov\"}}")
             .toObject(HdfsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HdfsSource model = new HdfsSource().withSourceRetryCount("dataxpqrkeyhj")
-            .withSourceRetryWait("dataezkbrvtaul")
-            .withMaxConcurrentConnections("dataqvtpkodijcn")
-            .withDisableMetricsCollection("datao")
-            .withRecursive("datalaxjmnbmfmloq")
-            .withDistcpSettings(new DistcpSettings().withResourceManagerEndpoint("dataswvtd")
-                .withTempScriptPath("datapicwnbtvlrs")
-                .withDistcpOptions("datatrmodknxerkaiik"));
+        HdfsSource model = new HdfsSource().withSourceRetryCount("datanw")
+            .withSourceRetryWait("datazgvaeqiygbo")
+            .withMaxConcurrentConnections("datazjodidgud")
+            .withDisableMetricsCollection("dataclajbenfyuuf")
+            .withRecursive("databtkcvola")
+            .withDistcpSettings(new DistcpSettings().withResourceManagerEndpoint("dataukgov")
+                .withTempScriptPath("datau")
+                .withDistcpOptions("datadcqoxyxiyhmj"));
         model = BinaryData.fromObject(model).toObject(HdfsSource.class);
     }
 }

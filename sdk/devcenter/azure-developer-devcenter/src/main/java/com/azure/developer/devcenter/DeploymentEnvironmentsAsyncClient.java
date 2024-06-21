@@ -515,7 +515,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * }
      * }</pre>
      *
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -821,7 +821,7 @@ public final class DeploymentEnvironmentsAsyncClient {
     /**
      * Lists all environment types configured for a project.
      *
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

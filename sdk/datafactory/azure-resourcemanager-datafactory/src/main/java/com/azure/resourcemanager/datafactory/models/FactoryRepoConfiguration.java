@@ -31,7 +31,7 @@ public class FactoryRepoConfiguration {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "FactoryRepoConfiguration";
 
     /*
      * Account name.
@@ -73,7 +73,6 @@ public class FactoryRepoConfiguration {
      * Creates an instance of FactoryRepoConfiguration class.
      */
     public FactoryRepoConfiguration() {
-        this.type = "FactoryRepoConfiguration";
     }
 
     /**

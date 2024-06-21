@@ -11,19 +11,19 @@ public final class LakeHouseTableSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseTableSource model = BinaryData.fromString(
-            "{\"type\":\"euphg\",\"timestampAsOf\":\"databtgm\",\"versionAsOf\":\"datadredcvwsbsdyxq\",\"additionalColumns\":\"datarqouyfcfd\",\"sourceRetryCount\":\"dataaanubjeboelk\",\"sourceRetryWait\":\"datahso\",\"maxConcurrentConnections\":\"datav\",\"disableMetricsCollection\":\"datajdhw\",\"\":{\"vlkpwavd\":\"datajhhpfjz\"}}")
+            "{\"type\":\"LakeHouseTableSource\",\"timestampAsOf\":\"dataiwcgcwmshlpq\",\"versionAsOf\":\"dataxhdwjfxopzclka\",\"additionalColumns\":\"datauomga\",\"sourceRetryCount\":\"datac\",\"sourceRetryWait\":\"datajjfmzv\",\"maxConcurrentConnections\":\"databflyzc\",\"disableMetricsCollection\":\"datamlybsy\",\"\":{\"bt\":\"datanvtvbfpuml\"}}")
             .toObject(LakeHouseTableSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseTableSource model = new LakeHouseTableSource().withSourceRetryCount("dataaanubjeboelk")
-            .withSourceRetryWait("datahso")
-            .withMaxConcurrentConnections("datav")
-            .withDisableMetricsCollection("datajdhw")
-            .withTimestampAsOf("databtgm")
-            .withVersionAsOf("datadredcvwsbsdyxq")
-            .withAdditionalColumns("datarqouyfcfd");
+        LakeHouseTableSource model = new LakeHouseTableSource().withSourceRetryCount("datac")
+            .withSourceRetryWait("datajjfmzv")
+            .withMaxConcurrentConnections("databflyzc")
+            .withDisableMetricsCollection("datamlybsy")
+            .withTimestampAsOf("dataiwcgcwmshlpq")
+            .withVersionAsOf("dataxhdwjfxopzclka")
+            .withAdditionalColumns("datauomga");
         model = BinaryData.fromObject(model).toObject(LakeHouseTableSource.class);
     }
 }

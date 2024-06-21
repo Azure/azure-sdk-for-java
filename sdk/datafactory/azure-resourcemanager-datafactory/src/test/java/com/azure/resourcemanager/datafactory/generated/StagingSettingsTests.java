@@ -15,21 +15,22 @@ public final class StagingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StagingSettings model = BinaryData.fromString(
-            "{\"linkedServiceName\":{\"referenceName\":\"iflzsrk\",\"parameters\":{\"svpokv\":\"dataobhhbl\"}},\"path\":\"databy\",\"enableCompression\":\"datafu\",\"\":{\"fffagoovfwzy\":\"dataus\",\"xup\":\"datavnvrfjg\",\"earowrmesziubkyv\":\"datahgonovwu\",\"kaomy\":\"datagkouf\"}}")
+            "{\"linkedServiceName\":{\"referenceName\":\"oepssoqdibygrqci\",\"parameters\":{\"ypftrdicst\":\"datakxikxiqxlxoks\",\"opgwpkat\":\"databqgatkl\",\"sdpyirtrlzkpje\":\"datacetyyvxkwobbw\",\"klowuth\":\"datagzhhfnaqclep\"}},\"path\":\"dataphnmllbljeh\",\"enableCompression\":\"dataxxuofneaqah\",\"\":{\"xaovubfllfke\":\"datanapxhtqwsd\",\"cbuzudkqoeoukvi\":\"databziibuabpvdwhvn\"}}")
             .toObject(StagingSettings.class);
-        Assertions.assertEquals("iflzsrk", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("oepssoqdibygrqci", model.linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StagingSettings model = new StagingSettings()
-            .withLinkedServiceName(
-                new LinkedServiceReference().withReferenceName("iflzsrk").withParameters(mapOf("svpokv", "dataobhhbl")))
-            .withPath("databy")
-            .withEnableCompression("datafu")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("oepssoqdibygrqci")
+                .withParameters(mapOf("ypftrdicst", "datakxikxiqxlxoks", "opgwpkat", "databqgatkl", "sdpyirtrlzkpje",
+                    "datacetyyvxkwobbw", "klowuth", "datagzhhfnaqclep")))
+            .withPath("dataphnmllbljeh")
+            .withEnableCompression("dataxxuofneaqah")
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(StagingSettings.class);
-        Assertions.assertEquals("iflzsrk", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("oepssoqdibygrqci", model.linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

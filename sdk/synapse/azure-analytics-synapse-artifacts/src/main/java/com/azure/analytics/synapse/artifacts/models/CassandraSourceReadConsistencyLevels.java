@@ -5,7 +5,6 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,59 +13,79 @@ import java.util.Collection;
  * request. Must be one of cassandraSourceReadConsistencyLevels. The default value is 'ONE'. It is case-insensitive.
  */
 public final class CassandraSourceReadConsistencyLevels
-        extends ExpandableStringEnum<CassandraSourceReadConsistencyLevels> {
-    /** Static value ALL for CassandraSourceReadConsistencyLevels. */
+    extends ExpandableStringEnum<CassandraSourceReadConsistencyLevels> {
+    /**
+     * Static value ALL for CassandraSourceReadConsistencyLevels.
+     */
     public static final CassandraSourceReadConsistencyLevels ALL = fromString("ALL");
 
-    /** Static value EACH_QUORUM for CassandraSourceReadConsistencyLevels. */
+    /**
+     * Static value EACH_QUORUM for CassandraSourceReadConsistencyLevels.
+     */
     public static final CassandraSourceReadConsistencyLevels EACH_QUORUM = fromString("EACH_QUORUM");
 
-    /** Static value QUORUM for CassandraSourceReadConsistencyLevels. */
+    /**
+     * Static value QUORUM for CassandraSourceReadConsistencyLevels.
+     */
     public static final CassandraSourceReadConsistencyLevels QUORUM = fromString("QUORUM");
 
-    /** Static value LOCAL_QUORUM for CassandraSourceReadConsistencyLevels. */
+    /**
+     * Static value LOCAL_QUORUM for CassandraSourceReadConsistencyLevels.
+     */
     public static final CassandraSourceReadConsistencyLevels LOCAL_QUORUM = fromString("LOCAL_QUORUM");
 
-    /** Static value ONE for CassandraSourceReadConsistencyLevels. */
+    /**
+     * Static value ONE for CassandraSourceReadConsistencyLevels.
+     */
     public static final CassandraSourceReadConsistencyLevels ONE = fromString("ONE");
 
-    /** Static value TWO for CassandraSourceReadConsistencyLevels. */
+    /**
+     * Static value TWO for CassandraSourceReadConsistencyLevels.
+     */
     public static final CassandraSourceReadConsistencyLevels TWO = fromString("TWO");
 
-    /** Static value THREE for CassandraSourceReadConsistencyLevels. */
+    /**
+     * Static value THREE for CassandraSourceReadConsistencyLevels.
+     */
     public static final CassandraSourceReadConsistencyLevels THREE = fromString("THREE");
 
-    /** Static value LOCAL_ONE for CassandraSourceReadConsistencyLevels. */
+    /**
+     * Static value LOCAL_ONE for CassandraSourceReadConsistencyLevels.
+     */
     public static final CassandraSourceReadConsistencyLevels LOCAL_ONE = fromString("LOCAL_ONE");
 
-    /** Static value SERIAL for CassandraSourceReadConsistencyLevels. */
+    /**
+     * Static value SERIAL for CassandraSourceReadConsistencyLevels.
+     */
     public static final CassandraSourceReadConsistencyLevels SERIAL = fromString("SERIAL");
 
-    /** Static value LOCAL_SERIAL for CassandraSourceReadConsistencyLevels. */
+    /**
+     * Static value LOCAL_SERIAL for CassandraSourceReadConsistencyLevels.
+     */
     public static final CassandraSourceReadConsistencyLevels LOCAL_SERIAL = fromString("LOCAL_SERIAL");
 
     /**
      * Creates a new instance of CassandraSourceReadConsistencyLevels value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CassandraSourceReadConsistencyLevels() {}
+    public CassandraSourceReadConsistencyLevels() {
+    }
 
     /**
      * Creates or finds a CassandraSourceReadConsistencyLevels from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CassandraSourceReadConsistencyLevels.
      */
-    @JsonCreator
     public static CassandraSourceReadConsistencyLevels fromString(String name) {
         return fromString(name, CassandraSourceReadConsistencyLevels.class);
     }
 
     /**
      * Gets known CassandraSourceReadConsistencyLevels values.
-     *
+     * 
      * @return known CassandraSourceReadConsistencyLevels values.
      */
     public static Collection<CassandraSourceReadConsistencyLevels> values() {

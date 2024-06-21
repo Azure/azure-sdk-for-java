@@ -8,6 +8,10 @@ package com.azure.resourcemanager.deviceregistry.generated;
  * Samples for Assets GetByResourceGroup.
  */
 public final class AssetsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Get_Asset.json
+     */
     /**
      * Sample code: Get_Asset.
      * 

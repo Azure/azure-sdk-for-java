@@ -19,35 +19,32 @@ public final class Office365DatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Office365Dataset model = BinaryData.fromString(
-            "{\"type\":\"uqmtxynof\",\"typeProperties\":{\"tableName\":\"datarnicupdyttqmi\",\"predicate\":\"datajplosebmh\"},\"description\":\"obfixngxebi\",\"structure\":\"dataxhnkingiqcd\",\"schema\":\"datarpgupsjlbsmnda\",\"linkedServiceName\":{\"referenceName\":\"bncuyjeykcnhp\",\"parameters\":{\"xjziuucrlnew\":\"datahcf\",\"zlvwyw\":\"datauwkkfzzetlvhdy\",\"lgqpwwlzpd\":\"datav\",\"knmstbdoprwkamp\":\"dataarcbcdwhslxebaja\"}},\"parameters\":{\"huzymhlhihqk\":{\"type\":\"Float\",\"defaultValue\":\"dataldzniudrcycm\"},\"aiildcpud\":{\"type\":\"Array\",\"defaultValue\":\"datakmnbzko\"}},\"annotations\":[\"datauxsyjofpgved\",\"dataobujnjgyb\",\"dataxmqxigidullnjgc\"],\"folder\":{\"name\":\"grh\"},\"\":{\"n\":\"dataslgsazuq\",\"zj\":\"datahxhky\",\"ffxsfybntmveh\":\"datadkpvnrvzw\",\"zqweuyd\":\"datahflyuvbgtz\"}}")
+            "{\"type\":\"Office365Table\",\"typeProperties\":{\"tableName\":\"dataefvulblmr\",\"predicate\":\"dataxyprhfcaeooifqdy\"},\"description\":\"flobhahq\",\"structure\":\"datamfecorkfrocgbmxl\",\"schema\":\"datamzezbjesylslu\",\"linkedServiceName\":{\"referenceName\":\"bqfy\",\"parameters\":{\"gdz\":\"datay\"}},\"parameters\":{\"hmgw\":{\"type\":\"Int\",\"defaultValue\":\"datagqyvouprsytqzss\"}},\"annotations\":[\"datavrxpfdu\",\"dataolhg\",\"dataqvpbfjpoqzucfzl\"],\"folder\":{\"name\":\"dquur\"},\"\":{\"elbprn\":\"datamvhvz\",\"svhbngqiwyejto\":\"dataujywzcqyggmn\"}}")
             .toObject(Office365Dataset.class);
-        Assertions.assertEquals("obfixngxebi", model.description());
-        Assertions.assertEquals("bncuyjeykcnhp", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("huzymhlhihqk").type());
-        Assertions.assertEquals("grh", model.folder().name());
+        Assertions.assertEquals("flobhahq", model.description());
+        Assertions.assertEquals("bqfy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("hmgw").type());
+        Assertions.assertEquals("dquur", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Office365Dataset model = new Office365Dataset().withDescription("obfixngxebi")
-            .withStructure("dataxhnkingiqcd")
-            .withSchema("datarpgupsjlbsmnda")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bncuyjeykcnhp")
-                .withParameters(mapOf("xjziuucrlnew", "datahcf", "zlvwyw", "datauwkkfzzetlvhdy", "lgqpwwlzpd", "datav",
-                    "knmstbdoprwkamp", "dataarcbcdwhslxebaja")))
-            .withParameters(mapOf("huzymhlhihqk",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataldzniudrcycm"),
-                "aiildcpud",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datakmnbzko")))
-            .withAnnotations(Arrays.asList("datauxsyjofpgved", "dataobujnjgyb", "dataxmqxigidullnjgc"))
-            .withFolder(new DatasetFolder().withName("grh"))
-            .withTableName("datarnicupdyttqmi")
-            .withPredicate("datajplosebmh");
+        Office365Dataset model = new Office365Dataset().withDescription("flobhahq")
+            .withStructure("datamfecorkfrocgbmxl")
+            .withSchema("datamzezbjesylslu")
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("bqfy").withParameters(mapOf("gdz", "datay")))
+            .withParameters(mapOf("hmgw",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datagqyvouprsytqzss")))
+            .withAnnotations(Arrays.asList("datavrxpfdu", "dataolhg", "dataqvpbfjpoqzucfzl"))
+            .withFolder(new DatasetFolder().withName("dquur"))
+            .withTableName("dataefvulblmr")
+            .withPredicate("dataxyprhfcaeooifqdy");
         model = BinaryData.fromObject(model).toObject(Office365Dataset.class);
-        Assertions.assertEquals("obfixngxebi", model.description());
-        Assertions.assertEquals("bncuyjeykcnhp", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("huzymhlhihqk").type());
-        Assertions.assertEquals("grh", model.folder().name());
+        Assertions.assertEquals("flobhahq", model.description());
+        Assertions.assertEquals("bqfy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("hmgw").type());
+        Assertions.assertEquals("dquur", model.folder().name());
     }
 
     // Use "Map.of" if available

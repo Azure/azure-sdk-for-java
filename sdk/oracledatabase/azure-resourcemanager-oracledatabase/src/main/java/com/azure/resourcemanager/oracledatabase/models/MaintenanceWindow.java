@@ -5,72 +5,77 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * MaintenanceWindow resource properties.
  */
 @Fluent
-public final class MaintenanceWindow {
+public final class MaintenanceWindow implements JsonSerializable<MaintenanceWindow> {
     /*
      * The maintenance window scheduling preference.
      */
-    @JsonProperty(value = "preference")
     private Preference preference;
 
     /*
      * Months during the year when maintenance should be performed.
      */
-    @JsonProperty(value = "months")
     private List<Month> months;
 
     /*
-     * Weeks during the month when maintenance should be performed. Weeks start on the 1st, 8th, 15th, and 22nd days of the month, and have a duration of 7 days. Weeks start and end based on calendar dates, not days of the week. For example, to allow maintenance during the 2nd week of the month (from the 8th day to the 14th day of the month), use the value 2. Maintenance cannot be scheduled for the fifth week of months that contain more than 28 days. Note that this parameter works in conjunction with the  daysOfWeek and hoursOfDay parameters to allow you to specify specific days of the week and hours that maintenance will be performed. 
+     * Weeks during the month when maintenance should be performed. Weeks start on the 1st, 8th, 15th, and 22nd days of
+     * the month, and have a duration of 7 days. Weeks start and end based on calendar dates, not days of the week. For
+     * example, to allow maintenance during the 2nd week of the month (from the 8th day to the 14th day of the month),
+     * use the value 2. Maintenance cannot be scheduled for the fifth week of months that contain more than 28 days.
+     * Note that this parameter works in conjunction with the daysOfWeek and hoursOfDay parameters to allow you to
+     * specify specific days of the week and hours that maintenance will be performed.
      */
-    @JsonProperty(value = "weeksOfMonth")
     private List<Integer> weeksOfMonth;
 
     /*
      * Days during the week when maintenance should be performed.
      */
-    @JsonProperty(value = "daysOfWeek")
     private List<DayOfWeek> daysOfWeek;
 
     /*
-     * The window of hours during the day when maintenance should be performed. The window is a 4 hour slot. Valid values are - 0 - represents time slot 0:00 - 3:59 UTC - 4 - represents time slot 4:00 - 7:59 UTC - 8 - represents time slot 8:00 - 11:59 UTC - 12 - represents time slot 12:00 - 15:59 UTC - 16 - represents time slot 16:00 - 19:59 UTC - 20 - represents time slot 20:00 - 23:59 UTC
+     * The window of hours during the day when maintenance should be performed. The window is a 4 hour slot. Valid
+     * values are - 0 - represents time slot 0:00 - 3:59 UTC - 4 - represents time slot 4:00 - 7:59 UTC - 8 - represents
+     * time slot 8:00 - 11:59 UTC - 12 - represents time slot 12:00 - 15:59 UTC - 16 - represents time slot 16:00 -
+     * 19:59 UTC - 20 - represents time slot 20:00 - 23:59 UTC
      */
-    @JsonProperty(value = "hoursOfDay")
     private List<Integer> hoursOfDay;
 
     /*
-     * Lead time window allows user to set a lead time to prepare for a down time. The lead time is in weeks and valid value is between 1 to 4. 
+     * Lead time window allows user to set a lead time to prepare for a down time. The lead time is in weeks and valid
+     * value is between 1 to 4.
      */
-    @JsonProperty(value = "leadTimeInWeeks")
     private Integer leadTimeInWeeks;
 
     /*
      * Cloud Exadata infrastructure node patching method.
      */
-    @JsonProperty(value = "patchingMode")
     private PatchingMode patchingMode;
 
     /*
-     * Determines the amount of time the system will wait before the start of each database server patching operation. Custom action timeout is in minutes and valid value is between 15 to 120 (inclusive).
+     * Determines the amount of time the system will wait before the start of each database server patching operation.
+     * Custom action timeout is in minutes and valid value is between 15 to 120 (inclusive).
      */
-    @JsonProperty(value = "customActionTimeoutInMins")
     private Integer customActionTimeoutInMins;
 
     /*
-     * If true, enables the configuration of a custom action timeout (waiting period) between database server patching operations.
+     * If true, enables the configuration of a custom action timeout (waiting period) between database server patching
+     * operations.
      */
-    @JsonProperty(value = "isCustomActionTimeoutEnabled")
     private Boolean isCustomActionTimeoutEnabled;
 
     /*
      * is Monthly Patching Enabled
      */
-    @JsonProperty(value = "isMonthlyPatchingEnabled")
     private Boolean isMonthlyPatchingEnabled;
 
     /**
@@ -315,5 +320,73 @@ public final class MaintenanceWindow {
         if (daysOfWeek() != null) {
             daysOfWeek().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("preference", this.preference == null ? null : this.preference.toString());
+        jsonWriter.writeArrayField("months", this.months, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("weeksOfMonth", this.weeksOfMonth, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("daysOfWeek", this.daysOfWeek, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("hoursOfDay", this.hoursOfDay, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeNumberField("leadTimeInWeeks", this.leadTimeInWeeks);
+        jsonWriter.writeStringField("patchingMode", this.patchingMode == null ? null : this.patchingMode.toString());
+        jsonWriter.writeNumberField("customActionTimeoutInMins", this.customActionTimeoutInMins);
+        jsonWriter.writeBooleanField("isCustomActionTimeoutEnabled", this.isCustomActionTimeoutEnabled);
+        jsonWriter.writeBooleanField("isMonthlyPatchingEnabled", this.isMonthlyPatchingEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceWindow from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceWindow if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceWindow.
+     */
+    public static MaintenanceWindow fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceWindow deserializedMaintenanceWindow = new MaintenanceWindow();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("preference".equals(fieldName)) {
+                    deserializedMaintenanceWindow.preference = Preference.fromString(reader.getString());
+                } else if ("months".equals(fieldName)) {
+                    List<Month> months = reader.readArray(reader1 -> Month.fromJson(reader1));
+                    deserializedMaintenanceWindow.months = months;
+                } else if ("weeksOfMonth".equals(fieldName)) {
+                    List<Integer> weeksOfMonth = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedMaintenanceWindow.weeksOfMonth = weeksOfMonth;
+                } else if ("daysOfWeek".equals(fieldName)) {
+                    List<DayOfWeek> daysOfWeek = reader.readArray(reader1 -> DayOfWeek.fromJson(reader1));
+                    deserializedMaintenanceWindow.daysOfWeek = daysOfWeek;
+                } else if ("hoursOfDay".equals(fieldName)) {
+                    List<Integer> hoursOfDay = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedMaintenanceWindow.hoursOfDay = hoursOfDay;
+                } else if ("leadTimeInWeeks".equals(fieldName)) {
+                    deserializedMaintenanceWindow.leadTimeInWeeks = reader.getNullable(JsonReader::getInt);
+                } else if ("patchingMode".equals(fieldName)) {
+                    deserializedMaintenanceWindow.patchingMode = PatchingMode.fromString(reader.getString());
+                } else if ("customActionTimeoutInMins".equals(fieldName)) {
+                    deserializedMaintenanceWindow.customActionTimeoutInMins = reader.getNullable(JsonReader::getInt);
+                } else if ("isCustomActionTimeoutEnabled".equals(fieldName)) {
+                    deserializedMaintenanceWindow.isCustomActionTimeoutEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isMonthlyPatchingEnabled".equals(fieldName)) {
+                    deserializedMaintenanceWindow.isMonthlyPatchingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceWindow;
+        });
     }
 }

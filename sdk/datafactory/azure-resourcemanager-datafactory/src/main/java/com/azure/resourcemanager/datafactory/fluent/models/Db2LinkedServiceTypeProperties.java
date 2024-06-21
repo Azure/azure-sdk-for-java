@@ -15,19 +15,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Db2LinkedServiceTypeProperties {
     /*
-     * The connection string. It is mutually exclusive with server, database, authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with server, database, authenticationType, userName,
+     * packageCollection and certificateCommonName property. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
-     * Server name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
+     * Server name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "server")
     private Object server;
 
     /*
-     * Database name for connection. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
+     * Database name for connection. It is mutually exclusive with connectionString property. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "database")
     private Object database;
@@ -39,7 +42,8 @@ public final class Db2LinkedServiceTypeProperties {
     private Db2AuthenticationType authenticationType;
 
     /*
-     * Username for authentication. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
+     * Username for authentication. It is mutually exclusive with connectionString property. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "username")
     private Object username;
@@ -51,19 +55,22 @@ public final class Db2LinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * Under where packages are created when querying database. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
+     * Under where packages are created when querying database. It is mutually exclusive with connectionString property.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "packageCollection")
     private Object packageCollection;
 
     /*
-     * Certificate Common Name when TLS is enabled. It is mutually exclusive with connectionString property. Type: string (or Expression with resultType string).
+     * Certificate Common Name when TLS is enabled. It is mutually exclusive with connectionString property. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "certificateCommonName")
     private Object certificateCommonName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. It is mutually exclusive with connectionString property. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

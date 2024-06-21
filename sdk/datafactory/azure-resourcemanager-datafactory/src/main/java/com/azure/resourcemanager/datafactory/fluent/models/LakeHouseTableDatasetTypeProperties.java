@@ -13,6 +13,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LakeHouseTableDatasetTypeProperties {
     /*
+     * The schema name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "schema")
+    private Object schema;
+
+    /*
      * The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
@@ -22,6 +28,28 @@ public final class LakeHouseTableDatasetTypeProperties {
      * Creates an instance of LakeHouseTableDatasetTypeProperties class.
      */
     public LakeHouseTableDatasetTypeProperties() {
+    }
+
+    /**
+     * Get the schema property: The schema name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the schema value.
+     */
+    public Object schema() {
+        return this.schema;
+    }
+
+    /**
+     * Set the schema property: The schema name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param schema the schema value to set.
+     * @return the LakeHouseTableDatasetTypeProperties object itself.
+     */
+    public LakeHouseTableDatasetTypeProperties withSchema(Object schema) {
+        this.schema = schema;
+        return this;
     }
 
     /**

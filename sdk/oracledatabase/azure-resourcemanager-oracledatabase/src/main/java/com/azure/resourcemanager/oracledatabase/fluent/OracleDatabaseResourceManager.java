@@ -124,6 +124,13 @@ public interface OracleDatabaseResourceManager {
     GiVersionsClient getGiVersions();
 
     /**
+     * Gets the SystemVersionsClient object to access its operations.
+     * 
+     * @return the SystemVersionsClient object.
+     */
+    SystemVersionsClient getSystemVersions();
+
+    /**
      * Gets the OracleSubscriptionsClient object to access its operations.
      * 
      * @return the OracleSubscriptionsClient object.
