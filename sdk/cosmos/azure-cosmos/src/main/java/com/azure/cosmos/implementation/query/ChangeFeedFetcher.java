@@ -58,8 +58,13 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         // constructing retry policies for changeFeed requests
         DocumentClientRetryPolicy retryPolicyInstance =
             client.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
+
+        // For changeFeedProcessor with pkRange version, ChangeFeedState.containerRid will be name based rather than resouceId,
+        // due to the inconsistency of the ChangeFeedState.containerRid format, so in order to generate the correct path,
+        // we use a RxDocumentServiceRequest here
+        RxDocumentServiceRequest documentServiceRequest = createRequestFunc.get();
         String collectionLink = PathsHelper.generatePath(
-            ResourceType.DocumentCollection, changeFeedState.getContainerRid(), false);
+            ResourceType.DocumentCollection, documentServiceRequest, false);
         retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
             client.getCollectionCache(),
             retryPolicyInstance,
