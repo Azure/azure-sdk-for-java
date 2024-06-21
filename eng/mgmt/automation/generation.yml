@@ -19,10 +19,7 @@ variables:
   value: $[ne(variables['TSP_CONFIG'], '')]
 
 steps:
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
+- bash: |
       pip3 install --upgrade wheel
       pip3 install --upgrade PyYAML requests
   displayName: Update python
@@ -30,7 +27,7 @@ steps:
 - task: JavaToolInstaller@0
   inputs:
     versionSpec: '$(JavaVersion)'
-    jdkArchitectureOption: 'x64'
+    jdkArchitectureOption: '$(Agent.OSArchitecture)'
     jdkSourceOption: 'PreInstalled'
 
 - task: NodeTool@0
@@ -38,18 +35,12 @@ steps:
   inputs:
     versionSpec: '$(NodeVersion)'
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
+- bash: |
       npm install -g autorest
   displayName: 'Install autorest'
   condition: eq(variables.fromTypeSpec, false)
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
+- bash: |
       npm install -g @azure-tools/typespec-client-generator-cli
   displayName: 'Install tsp-client'
   condition: eq(variables.fromTypeSpec, true)
@@ -59,12 +50,15 @@ steps:
 #     runProxy: true
 #     targetVersion: 1.0.0-dev.20230908.1
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
+- bash: |
+      git clone git@github.com:Azure/azure-rest-api-specs.git
+  workingDirectory: '$(Agent.TempDirectory)'
+  displayName: 'Clone azure-rest-api-specs repo.'
+  condition: eq(variables.fromTypeSpec, true)
+
+- bash: |
       java -version
-      tsp-client init --debug --tsp-config "$(TSP_CONFIG)"
+      tsp-client init --debug --tsp-config "$(Agent.TempDirectory)/azure-rest-api-specs/specification/mongocluster/DocumentDB.MongoCluster.Management" --commit 7605afe88e3201dc25ce0881c2e49fe1b6bbdd54 --repo Azure/azure-rest-api-specs --local-spec-repo "$(Agent.TempDirectory)/azure-rest-api-specs/specification/mongocluster/DocumentDB.MongoCluster.Management"
   displayName: '[Experiment] Generation from TypeSpec by direct calling tsp-client'
   condition: eq(variables.fromTypeSpec, true)
 
