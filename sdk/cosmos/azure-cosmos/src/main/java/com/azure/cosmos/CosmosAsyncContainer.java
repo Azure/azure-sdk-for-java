@@ -1529,10 +1529,10 @@ public class CosmosAsyncContainer {
         CosmosQueryRequestOptions queryRequestOptions = requestOptions == null
             ? new CosmosQueryRequestOptions()
             : queryOptionsAccessor.clone(readManyOptionsAccessor.getImpl(requestOptions));
-        CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor.getImpl(queryRequestOptions);
-        applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyItemsSpanName);
         queryRequestOptions.setMaxDegreeOfParallelism(-1);
         queryRequestOptions.setQueryName("readMany");
+        CosmosQueryRequestOptionsBase<?> cosmosQueryRequestOptionsImpl = queryOptionsAccessor.getImpl(queryRequestOptions);
+        applyPolicies(OperationType.Query, ResourceType.Document, cosmosQueryRequestOptionsImpl, this.readManyItemsSpanName);
 
         CosmosAsyncClient client = this.getDatabase().getClient();
         CosmosPagedFluxOptions fluxOptions = new CosmosPagedFluxOptions();

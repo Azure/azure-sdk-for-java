@@ -116,6 +116,7 @@ public final class BulkExecutor<TContext> implements Disposable {
     private final BulkExecutorDiagnosticsTracker diagnosticsTracker;
     private final CosmosItemSerializer effectiveItemSerializer;
 
+    @SuppressWarnings({"unchecked"})
     public BulkExecutor(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
                         CosmosBulkExecutionOptionsImpl cosmosBulkOptions) {
