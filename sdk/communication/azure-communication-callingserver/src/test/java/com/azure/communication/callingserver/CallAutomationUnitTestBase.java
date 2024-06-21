@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.communication.callingserver;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -25,8 +27,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -162,13 +165,18 @@ public class CallAutomationUnitTestBase {
     }
 
     static String serializeObject(Object o) {
-        ObjectMapper mapper = new ObjectMapper();
-        String body = null;
-        try {
-            body = mapper.writeValueAsString(o);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        // TODO (Anu) : Fix this (delete this method and rename serializeObject2 to serializeObject).
+        return serializeObject2(null);
+    }
+
+    static <T extends JsonSerializable<T>> String serializeObject2(JsonSerializable<T> o) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            o.toJson(writer);
+            writer.flush();
+            return outputStream.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return body;
     }
 }
