@@ -19,12 +19,12 @@ variables:
 - name: JavaVersion
   value: '17'
 - name: fromTypeSpec
-  value: $[ne(parameters['TSP_CONFIG'], '')]
+  value: $[ne(parameters.TSP_CONFIG, '')]
 
 jobs:
   - job: FluentLiteGenerationForMgmtSDK
     pool:
-      ${{ if ne(parameters['TSP_CONFIG'], '')}}:
+      ${{ if ne(parameters.TSP_CONFIG, '')}}:
         vmImage: 'macOS-13' # tsp-client command will get permanent stuck on linux/windows: https://github.com/Azure/azure-sdk-tools/issues/8368
       ${{ else }}:
         vmImage: 'ubuntu-20.04'
@@ -78,7 +78,7 @@ jobs:
     - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
       parameters:
         PRBranchName: fluent-lite-generation-$(Build.BuildId)
-        ${{ if ne(parameters['TSP_CONFIG'], '') }}: # Have to use parameter here. The ${{<expression>}} is compile time expression, it won't resolve against runtime variables.
+        ${{ if ne(parameters.TSP_CONFIG, '') }}: # Have to use parameter here. The ${{<expression>}} is compile time expression, it won't resolve against runtime variables.
           CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
           PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
         ${{ else }}:
