@@ -62,7 +62,7 @@ steps:
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
   parameters:
     PRBranchName: fluent-lite-generation-$(Build.BuildId)
-    ${{ if eq(true, $[variables.fromTypeSpec]) }}:
+    ${{ if ne(variables['TSP_CONFIG'], '') }}: # Have to use parameter here. The ${{<expression>}} is compile time expression, it won't resolve against runtime variables.
       CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
       PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
     ${{ else }}:
