@@ -25,7 +25,7 @@ variables:
 jobs:
   - job: FluentLiteGenerationForMgmtSDK
     pool:
-      ${{ if ne(parameters.TSP_CONFIG, '')}}:
+      ${{ if eq(parameters.RELEASE_TYPE, 'TypeSpec')}}:
         vmImage: 'macOS-13' # tsp-client command will get permanent stuck on linux/windows: https://github.com/Azure/azure-sdk-tools/issues/8368
       ${{ else }}:
         vmImage: 'ubuntu-20.04'
