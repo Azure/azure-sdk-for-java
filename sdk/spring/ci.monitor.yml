@@ -29,7 +29,6 @@ extends:
   template:  ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: spring
-    EnableBatchRelease: true
     Artifacts:
       - name: spring-cloud-azure-starter-monitor
         groupId: com.azure.spring

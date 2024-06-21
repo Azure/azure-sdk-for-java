@@ -5,43 +5,64 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HourlyDuration. */
+/**
+ * Defines values for HourlyDuration.
+ */
 public final class HourlyDuration extends ExpandableStringEnum<HourlyDuration> {
-    /** Static value 1 for HourlyDuration. */
+    /**
+     * 1 Hours.
+     */
     public static final HourlyDuration ONE_HOUR = fromInt(1);
 
-    /** Static value 12 for HourlyDuration. */
+    /**
+     * 12 Hours.
+     */
     public static final HourlyDuration TWELVE_HOURS = fromInt(12);
 
-    /** Static value 24 for HourlyDuration. */
+    /**
+     * 24 Hours.
+     */
     public static final HourlyDuration TWENTY_FOUR_HOURS = fromInt(24);
 
-    /** Static value 48 for HourlyDuration. */
+    /**
+     * 48 Hours.
+     */
     public static final HourlyDuration FORTY_EIGHT_HOURS = fromInt(48);
 
-    /** Static value 72 for HourlyDuration. */
+    /**
+     * 72 Hours.
+     */
     public static final HourlyDuration SEVENTY_TWO_HOURS = fromInt(72);
 
-    /** Static value 96 for HourlyDuration. */
+    /**
+     * 96 Hours.
+     */
     public static final HourlyDuration NINETY_SIX_HOURS = fromInt(96);
 
     /**
+     * Creates a new instance of HourlyDuration value.
+     * 
+     * @deprecated Use the {@link #fromInt(int)} factory method.
+     */
+    @Deprecated
+    public HourlyDuration() {
+    }
+
+    /**
      * Creates or finds a HourlyDuration from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HourlyDuration.
      */
-    @JsonCreator
     public static HourlyDuration fromInt(int name) {
         return fromString(String.valueOf(name), HourlyDuration.class);
     }
 
     /**
      * Gets known HourlyDuration values.
-     *
+     * 
      * @return known HourlyDuration values.
      */
     public static Collection<HourlyDuration> values() {

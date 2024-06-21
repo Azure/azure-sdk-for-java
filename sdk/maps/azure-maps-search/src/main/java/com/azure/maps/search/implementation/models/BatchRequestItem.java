@@ -5,25 +5,32 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Batch request object. */
+/**
+ * Batch request object.
+ */
 @Fluent
-public final class BatchRequestItem {
+public final class BatchRequestItem implements JsonSerializable<BatchRequestItem> {
     /*
-     * This parameter contains a query string used to perform an unstructured geocoding operation. The query string
-     * will be passed verbatim to the search API for processing.
+     * This parameter contains a query string used to perform an unstructured geocoding operation. The query string will be passed verbatim to the search API for processing.
      */
-    @JsonProperty(value = "query")
     private String query;
 
-    /** Creates an instance of BatchRequestItem class. */
-    public BatchRequestItem() {}
+    /**
+     * Creates an instance of BatchRequestItem class.
+     */
+    public BatchRequestItem() {
+    }
 
     /**
      * Get the query property: This parameter contains a query string used to perform an unstructured geocoding
      * operation. The query string will be passed verbatim to the search API for processing.
-     *
+     * 
      * @return the query value.
      */
     public String getQuery() {
@@ -33,12 +40,48 @@ public final class BatchRequestItem {
     /**
      * Set the query property: This parameter contains a query string used to perform an unstructured geocoding
      * operation. The query string will be passed verbatim to the search API for processing.
-     *
+     * 
      * @param query the query value to set.
      * @return the BatchRequestItem object itself.
      */
     public BatchRequestItem setQuery(String query) {
         this.query = query;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("query", this.query);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchRequestItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchRequestItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchRequestItem.
+     */
+    public static BatchRequestItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchRequestItem deserializedBatchRequestItem = new BatchRequestItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("query".equals(fieldName)) {
+                    deserializedBatchRequestItem.query = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchRequestItem;
+        });
     }
 }

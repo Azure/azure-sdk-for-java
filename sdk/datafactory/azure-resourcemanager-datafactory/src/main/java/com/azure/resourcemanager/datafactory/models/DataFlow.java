@@ -28,7 +28,7 @@ public class DataFlow {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "DataFlow";
 
     /*
      * The description of the data flow.
@@ -52,7 +52,6 @@ public class DataFlow {
      * Creates an instance of DataFlow class.
      */
     public DataFlow() {
-        this.type = "DataFlow";
     }
 
     /**

@@ -19,32 +19,33 @@ public final class RelationalTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelationalTableDataset model = BinaryData.fromString(
-            "{\"type\":\"d\",\"typeProperties\":{\"tableName\":\"datapkwmamrlfizjud\"},\"description\":\"upngyhy\",\"structure\":\"datayafewcmodxw\",\"schema\":\"dataytxnxrqx\",\"linkedServiceName\":{\"referenceName\":\"tzeargvfvkhbj\",\"parameters\":{\"w\":\"datapjxsd\",\"ynepkt\":\"dataignybffqcw\",\"conyse\":\"datamwg\",\"ouoxfalo\":\"datajijfhpxni\"}},\"parameters\":{\"gfap\":{\"type\":\"Int\",\"defaultValue\":\"datayporsynieunbyd\"}},\"annotations\":[\"dataubwt\",\"dataay\"],\"folder\":{\"name\":\"vjfqreeoxvqjmrn\"},\"\":{\"ivixzhpjg\":\"datahsdbfbm\"}}")
+            "{\"type\":\"RelationalTable\",\"typeProperties\":{\"tableName\":\"datacytjgoea\"},\"description\":\"krwfmihwpadhedb\",\"structure\":\"databdczvothmkhjao\",\"schema\":\"databwfcn\",\"linkedServiceName\":{\"referenceName\":\"hbpoelhscmyhrhj\",\"parameters\":{\"pqwojoev\":\"datafqbokndwp\"}},\"parameters\":{\"krbuoggtdltlcuha\":{\"type\":\"Int\",\"defaultValue\":\"datatdxmlynzlyvap\"},\"ylzeohlpsftq\":{\"type\":\"Bool\",\"defaultValue\":\"datajv\"},\"vbvvcpwtqsu\":{\"type\":\"Int\",\"defaultValue\":\"datam\"}},\"annotations\":[\"datahmz\",\"datadffetevr\"],\"folder\":{\"name\":\"k\"},\"\":{\"ctkhfh\":\"datacycsyo\",\"rmhnmizhvpr\":\"datasatvcs\"}}")
             .toObject(RelationalTableDataset.class);
-        Assertions.assertEquals("upngyhy", model.description());
-        Assertions.assertEquals("tzeargvfvkhbj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("gfap").type());
-        Assertions.assertEquals("vjfqreeoxvqjmrn", model.folder().name());
+        Assertions.assertEquals("krwfmihwpadhedb", model.description());
+        Assertions.assertEquals("hbpoelhscmyhrhj", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("krbuoggtdltlcuha").type());
+        Assertions.assertEquals("k", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RelationalTableDataset model = new RelationalTableDataset().withDescription("upngyhy")
-            .withStructure("datayafewcmodxw")
-            .withSchema("dataytxnxrqx")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tzeargvfvkhbj")
-                .withParameters(mapOf("w", "datapjxsd", "ynepkt", "dataignybffqcw", "conyse", "datamwg", "ouoxfalo",
-                    "datajijfhpxni")))
-            .withParameters(mapOf("gfap",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datayporsynieunbyd")))
-            .withAnnotations(Arrays.asList("dataubwt", "dataay"))
-            .withFolder(new DatasetFolder().withName("vjfqreeoxvqjmrn"))
-            .withTableName("datapkwmamrlfizjud");
+        RelationalTableDataset model = new RelationalTableDataset().withDescription("krwfmihwpadhedb")
+            .withStructure("databdczvothmkhjao")
+            .withSchema("databwfcn")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("hbpoelhscmyhrhj")
+                .withParameters(mapOf("pqwojoev", "datafqbokndwp")))
+            .withParameters(mapOf("krbuoggtdltlcuha",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datatdxmlynzlyvap"),
+                "ylzeohlpsftq", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datajv"),
+                "vbvvcpwtqsu", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datam")))
+            .withAnnotations(Arrays.asList("datahmz", "datadffetevr"))
+            .withFolder(new DatasetFolder().withName("k"))
+            .withTableName("datacytjgoea");
         model = BinaryData.fromObject(model).toObject(RelationalTableDataset.class);
-        Assertions.assertEquals("upngyhy", model.description());
-        Assertions.assertEquals("tzeargvfvkhbj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("gfap").type());
-        Assertions.assertEquals("vjfqreeoxvqjmrn", model.folder().name());
+        Assertions.assertEquals("krwfmihwpadhedb", model.description());
+        Assertions.assertEquals("hbpoelhscmyhrhj", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("krbuoggtdltlcuha").type());
+        Assertions.assertEquals("k", model.folder().name());
     }
 
     // Use "Map.of" if available

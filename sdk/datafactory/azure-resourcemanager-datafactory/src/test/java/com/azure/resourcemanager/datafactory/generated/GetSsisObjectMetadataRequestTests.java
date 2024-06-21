@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class GetSsisObjectMetadataRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetSsisObjectMetadataRequest model
-            = BinaryData.fromString("{\"metadataPath\":\"wgxhn\"}").toObject(GetSsisObjectMetadataRequest.class);
-        Assertions.assertEquals("wgxhn", model.metadataPath());
+        GetSsisObjectMetadataRequest model = BinaryData.fromString("{\"metadataPath\":\"jriplrbpbewtghf\"}")
+            .toObject(GetSsisObjectMetadataRequest.class);
+        Assertions.assertEquals("jriplrbpbewtghf", model.metadataPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GetSsisObjectMetadataRequest model = new GetSsisObjectMetadataRequest().withMetadataPath("wgxhn");
+        GetSsisObjectMetadataRequest model = new GetSsisObjectMetadataRequest().withMetadataPath("jriplrbpbewtghf");
         model = BinaryData.fromObject(model).toObject(GetSsisObjectMetadataRequest.class);
-        Assertions.assertEquals("wgxhn", model.metadataPath());
+        Assertions.assertEquals("jriplrbpbewtghf", model.metadataPath());
     }
 }

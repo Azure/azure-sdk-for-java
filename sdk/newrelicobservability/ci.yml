@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: newrelicobservability
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-newrelicobservability
         groupId: com.azure.resourcemanager

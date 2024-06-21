@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -35,7 +34,7 @@ public final class PostPlannedFailoverRedundancy extends ExpandableStringEnum<Po
 
     /**
      * Creates a new instance of PostPlannedFailoverRedundancy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -44,7 +43,7 @@ public final class PostPlannedFailoverRedundancy extends ExpandableStringEnum<Po
 
     /**
      * Creates or finds a PostPlannedFailoverRedundancy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PostPlannedFailoverRedundancy.
      */
@@ -55,7 +54,7 @@ public final class PostPlannedFailoverRedundancy extends ExpandableStringEnum<Po
 
     /**
      * Gets known PostPlannedFailoverRedundancy values.
-     *
+     * 
      * @return known PostPlannedFailoverRedundancy values.
      */
     public static Collection<PostPlannedFailoverRedundancy> values() {

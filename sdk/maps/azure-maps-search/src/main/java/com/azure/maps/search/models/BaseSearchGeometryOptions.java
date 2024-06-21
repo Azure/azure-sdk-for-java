@@ -9,6 +9,8 @@ import com.azure.core.annotation.Fluent;
 
 /**
  * Class holding optional parameters for Geometry Search.
+ *
+ * @param <T> The extending type.
  */
 @Fluent
 public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOptions<T>> {
@@ -17,6 +19,12 @@ public abstract class BaseSearchGeometryOptions<T extends BaseSearchGeometryOpti
     private List<Integer> categoryFilter;
     private OperatingHoursRange operatingHours;
     private LocalizedMapView localizedMapView;
+
+    /**
+     * Creates a new instance of {@link BaseSearchGeometryOptions}.
+     */
+    public BaseSearchGeometryOptions() {
+    }
 
     /**
      * Returns the localized map view.

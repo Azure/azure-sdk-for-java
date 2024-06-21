@@ -11,19 +11,19 @@ public final class FileSystemSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileSystemSink model = BinaryData.fromString(
-            "{\"type\":\"bgohxb\",\"copyBehavior\":\"datacf\",\"writeBatchSize\":\"datazfpfxbqdrjunigxn\",\"writeBatchTimeout\":\"datanghgazdbvenv\",\"sinkRetryCount\":\"datati\",\"sinkRetryWait\":\"dataswrncwhlxvng\",\"maxConcurrentConnections\":\"datapydjdpapndmv\",\"disableMetricsCollection\":\"datadtvvta\",\"\":{\"kmfiudnpj\":\"datawkthmexidecdeh\",\"guv\":\"dataxfhtsgyyrg\",\"ytihhq\":\"datagqllgokznffqvtx\",\"rsnbdfamyolvgk\":\"datancwgrwgdpfzdygt\"}}")
+            "{\"type\":\"FileSystemSink\",\"copyBehavior\":\"databadkzpqctuplpkje\",\"writeBatchSize\":\"datanrnzl\",\"writeBatchTimeout\":\"dataugoeftrbxoma\",\"sinkRetryCount\":\"datavarfqverxelquqze\",\"sinkRetryWait\":\"datavjmllzykalbaum\",\"maxConcurrentConnections\":\"datadwqiucpj\",\"disableMetricsCollection\":\"datatbss\",\"\":{\"t\":\"datawzelxrf\"}}")
             .toObject(FileSystemSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileSystemSink model = new FileSystemSink().withWriteBatchSize("datazfpfxbqdrjunigxn")
-            .withWriteBatchTimeout("datanghgazdbvenv")
-            .withSinkRetryCount("datati")
-            .withSinkRetryWait("dataswrncwhlxvng")
-            .withMaxConcurrentConnections("datapydjdpapndmv")
-            .withDisableMetricsCollection("datadtvvta")
-            .withCopyBehavior("datacf");
+        FileSystemSink model = new FileSystemSink().withWriteBatchSize("datanrnzl")
+            .withWriteBatchTimeout("dataugoeftrbxoma")
+            .withSinkRetryCount("datavarfqverxelquqze")
+            .withSinkRetryWait("datavjmllzykalbaum")
+            .withMaxConcurrentConnections("datadwqiucpj")
+            .withDisableMetricsCollection("datatbss")
+            .withCopyBehavior("databadkzpqctuplpkje");
         model = BinaryData.fromObject(model).toObject(FileSystemSink.class);
     }
 }
