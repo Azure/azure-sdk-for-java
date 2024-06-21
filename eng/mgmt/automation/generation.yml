@@ -4,7 +4,7 @@ pr: none
 
 parameters: # parameters(instead of variables) is used here for template compile time expressions
   - name: RELEASE_TYPE
-    displayName: RELEASE TYPE
+    displayName: Release from
     type: string
     values:
       - Swagger
@@ -22,15 +22,13 @@ variables:
 - name: JavaVersion
   value: '17'
 
-
-pool:
-  ${{ if eq(parameters.RELEASE_TYPE, 'TypeSpec')}}:
-    vmImage: 'macOS-13' # tsp-client command will get permanent stuck on linux/windows: https://github.com/Azure/azure-sdk-tools/issues/8368
-  ${{ else }}:
-    vmImage: 'ubuntu-20.04'
-
 jobs:
   - job: FluentLiteGenerationForMgmtSDK
+    pool:
+      ${{ if eq(parameters.RELEASE_TYPE, 'TypeSpec')}}:
+        vmImage: 'macOS-13' # tsp-client command will get permanent stuck on linux/windows: https://github.com/Azure/azure-sdk-tools/issues/8368
+      ${{ else }}:
+        vmImage: 'ubuntu-20.04'
     steps:
     - bash: |
           pip3 install --upgrade wheel
