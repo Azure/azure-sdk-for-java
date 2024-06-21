@@ -184,13 +184,13 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
     }
 
     @Override
-    void writeJsonImpl(JsonWriter jsonWriter) throws IOException {
+    void toJsonImpl(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("endSilenceTimeout", CoreUtils.durationToStringWithDays(this.endSilenceTimeout));
         jsonWriter.writeStringField("speechLanguage", speechLanguage);
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", speechRecognitionModelEndpointId);
     }
 
-    static CallMediaRecognizeSpeechOptions readJsonImpl(JsonReader jsonReader) throws IOException {
+    static CallMediaRecognizeSpeechOptions fromJsonImpl(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final CallMediaRecognizeSpeechOptions options = new CallMediaRecognizeSpeechOptions(null, null);
             while (reader.nextToken() != JsonToken.END_OBJECT) {

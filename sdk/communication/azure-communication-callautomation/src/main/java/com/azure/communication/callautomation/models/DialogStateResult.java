@@ -117,7 +117,7 @@ public class DialogStateResult implements JsonSerializable<DialogStateResult> {
                 reader.nextToken();
                 if ("dialogId".equals(fieldName)) {
                     result.dialogId = reader.getString();
-                } if ("operationContext".equals(fieldName)) {
+                } else if ("operationContext".equals(fieldName)) {
                     result.operationContext = reader.getString();
                 } else {
                     reader.skipChildren();

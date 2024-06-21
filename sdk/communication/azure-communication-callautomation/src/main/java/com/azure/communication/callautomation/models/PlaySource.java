@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;

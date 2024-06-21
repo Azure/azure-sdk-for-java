@@ -68,11 +68,8 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
                 if ("sequenceNumber".equals(fieldName)) {
                     event.sequenceNumber = reader.getInt();
                 } else if ("participants".equals(fieldName)) {
-                    event.participants = reader.readArray(r -> {
-                        // TODO (anu): final CallParticipantInternal inner = CallParticipantInternal.fromJson(reader);
-                        final CallParticipantInternal inner = null;
-                        return inner;
-                    }).stream().map(CallParticipantConverter::convert).collect(Collectors.toList());
+                    event.participants = reader.readArray(CallParticipantInternal::fromJson)
+                        .stream().map(CallParticipantConverter::convert).collect(Collectors.toList());
                 } else {
                     reader.skipChildren();
                 }

@@ -90,12 +90,10 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else if ("transferee".equals(fieldName)) {
-                    // TODO (anu): final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
-                    final CommunicationIdentifierModel inner = null;
+                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.transferee = CommunicationIdentifierConverter.convert(inner);
                 } else if ("transferTarget".equals(fieldName)) {
-                    // TODO (anu): final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
-                    final CommunicationIdentifierModel inner = null;
+                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.transferTarget = CommunicationIdentifierConverter.convert(inner);
                 } else {
                     reader.skipChildren();

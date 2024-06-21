@@ -41,6 +41,10 @@ public final class RemoveParticipantFailed extends CallAutomationEventBase {
         this.participant = CommunicationIdentifierConverter.convert(mapper.convertValue(participant, CommunicationIdentifierModel.class));
     }
 
+    private RemoveParticipantFailed() {
+
+    }
+
     /**
      * Get the participant property: Participant added.
      *
@@ -68,8 +72,7 @@ public final class RemoveParticipantFailed extends CallAutomationEventBase {
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else if ("participant".equals(fieldName)) {
-                    // TODO (anu): final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
-                    final CommunicationIdentifierModel inner = null;
+                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.participant = CommunicationIdentifierConverter.convert(inner);
                 } else {
                     reader.skipChildren();

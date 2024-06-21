@@ -115,7 +115,7 @@ public final class StreamingDataParser {
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
-                        if ("TranscriptionData".equals(fieldName)) {
+                        if ("transcriptionData".equals(fieldName)) {
                             return TranscriptionDataConverter.fromJson(reader);
                         } else {
                             reader.skipChildren();
@@ -139,7 +139,7 @@ public final class StreamingDataParser {
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
-                        if ("TranscriptionMetadata".equals(fieldName)) {
+                        if ("transcriptionMetadata".equals(fieldName)) {
                             return TranscriptionMetadataConverter.fromJson(reader);
                         } else {
                             reader.skipChildren();

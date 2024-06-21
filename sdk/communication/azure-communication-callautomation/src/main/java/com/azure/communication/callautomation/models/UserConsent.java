@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.models.streaming.transcription.Word;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;

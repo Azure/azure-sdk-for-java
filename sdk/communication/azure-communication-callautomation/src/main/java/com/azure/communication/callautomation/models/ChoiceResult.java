@@ -95,7 +95,7 @@ public final class ChoiceResult extends RecognizeResult {
                 reader.nextToken();
                 if ("label".equals(fieldName)) {
                     result.label = reader.getString();
-                } if ("recognizedPhrase".equals(fieldName)) {
+                } else if ("recognizedPhrase".equals(fieldName)) {
                     result.recognizedPhrase = reader.getString();
                 } else {
                     reader.skipChildren();

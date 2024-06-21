@@ -72,8 +72,7 @@ public final class RemoveParticipantSucceeded extends CallAutomationEventBase {
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else if ("participant".equals(fieldName)) {
-                    // TODO (anu): final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
-                    final CommunicationIdentifierModel inner = null;
+                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.participant = CommunicationIdentifierConverter.convert(inner);
                 } else {
                     reader.skipChildren();

@@ -11,7 +11,7 @@ import java.io.IOException;
 /** The RecognizeCanceled model. */
 @Fluent
 public final class RecognizeCanceled extends CallAutomationEventBase {
-    static RecognizeFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
-        return new RecognizeFailed();
+    static RecognizeCanceled fromJsonImpl(JsonReader jsonReader) throws IOException {
+        return new RecognizeCanceled();
     }
 }

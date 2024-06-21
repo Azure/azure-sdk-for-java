@@ -187,7 +187,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
     }
 
     @Override
-    void writeJsonImpl(JsonWriter jsonWriter) throws IOException {
+    void toJsonImpl(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("interToneTimeout", CoreUtils.durationToStringWithDays(this.interToneTimeout));
         if (this.maxTonesToCollect != null) {
             jsonWriter.writeIntField("maxTonesToCollect", this.maxTonesToCollect);
@@ -195,7 +195,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
         jsonWriter.writeArrayField("stopTones", this.stopDtmfTones, (writer, element) -> writer.writeString(element.toString()));
     }
 
-    static CallMediaRecognizeDtmfOptions readJsonImpl(JsonReader jsonReader) throws IOException {
+    static CallMediaRecognizeDtmfOptions fromJsonImpl(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CallMediaRecognizeDtmfOptions options = new CallMediaRecognizeDtmfOptions(null, 0);
             while (reader.nextToken() != JsonToken.END_OBJECT) {

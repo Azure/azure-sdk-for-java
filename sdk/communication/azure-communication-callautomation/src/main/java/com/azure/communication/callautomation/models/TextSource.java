@@ -171,7 +171,7 @@ public final class TextSource extends PlaySource {
                     source.text = reader.getString();
                 } else if ("sourceLocale".equals(fieldName)) {
                     source.sourceLocale = reader.getString();
-                } if ("voiceKind".equals(fieldName)) {
+                } else if ("voiceKind".equals(fieldName)) {
                     source.voiceKind = VoiceKind.fromString(reader.getString());
                 } else if ("voiceName".equals(fieldName)) {
                     source.voiceName = reader.getString();

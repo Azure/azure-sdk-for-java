@@ -181,13 +181,13 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     @Override
-    void writeJsonImpl(JsonWriter jsonWriter) throws IOException {
+    void toJsonImpl(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("speechLanguage", this.speechLanguage);
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
         jsonWriter.writeArrayField("choices", this.choices, (writer, choice) -> choice.toJson(writer));
     }
 
-    static CallMediaRecognizeChoiceOptions readJsonImpl(JsonReader jsonReader) throws IOException {
+    static CallMediaRecognizeChoiceOptions fromJsonImpl(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final CallMediaRecognizeChoiceOptions options = new CallMediaRecognizeChoiceOptions(null, null);
             while (reader.nextToken() != JsonToken.END_OBJECT) {

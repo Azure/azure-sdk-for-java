@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
@@ -289,7 +291,7 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        this.writeJsonImpl(jsonWriter);
+        this.toJsonImpl(jsonWriter);
         jsonWriter.writeStringField("recognizeInputType", this.recognizeInputType == null ? null : this.recognizeInputType.toString());
         jsonWriter.writeJsonField("playPrompt", this.playPrompt);
         jsonWriter.writeBooleanField("interruptCallMediaOperation", this.interruptCallMediaOperation);
@@ -298,8 +300,8 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
         jsonWriter.writeBooleanField("interruptPrompt", this.interruptPrompt);
         jsonWriter.writeStringField("initialSilenceTimeout", CoreUtils.durationToStringWithDays(this.initialSilenceTimeout));
         jsonWriter.writeStringField("speechModelEndpointId", this.speechModelEndpointId);
-        // TODO (anu): targetParticipant is of com.azure.communication.common.CommunicationIdentifier, which doesn't seem serializable.
-        // jsonWriter.writeJsonField("targetParticipant", this.targetParticipant);
+        final CommunicationIdentifierModel participant = CommunicationIdentifierConverter.convert(this.targetParticipant);
+        jsonWriter.writeJsonField("targetParticipant", participant);
         jsonWriter.writeStringField("operationCallbackUrl", this.operationCallbackUrl);
         return jsonWriter.writeEndObject();
     }
@@ -328,13 +330,13 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
             }
             final CallMediaRecognizeOptions options;
             if ("dtmf".equals(type)) {
-                options = CallMediaRecognizeDtmfOptions.readJsonImpl(reader1.reset());
+                options = CallMediaRecognizeDtmfOptions.fromJsonImpl(reader1.reset());
             } else if ("choices".equals(type)) {
-                options = CallMediaRecognizeChoiceOptions.readJsonImpl(reader1.reset());
+                options = CallMediaRecognizeChoiceOptions.fromJsonImpl(reader1.reset());
             } else if ("speech".equals(type)) {
-                options = CallMediaRecognizeSpeechOptions.readJsonImpl(reader1.reset());
+                options = CallMediaRecognizeSpeechOptions.fromJsonImpl(reader1.reset());
             } else if ("speechordtmf".equals(type)) {
-                options = CallMediaRecognizeSpeechOrDtmfOptions.readJsonImpl(reader1.reset());
+                options = CallMediaRecognizeSpeechOrDtmfOptions.fromJsonImpl(reader1.reset());
             } else {
                 options = null;
             }
@@ -358,8 +360,8 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
                     } else if ("operationCallbackUrl".equals(fieldName)) {
                         options.operationCallbackUrl = reader2.getString();
                     } else if ("targetParticipant".equals(fieldName)) {
-                        // TODO (anu): targetParticipant is of com.azure.communication.common.CommunicationIdentifier, which doesn't seem de-serializable.
-                        options.targetParticipant = null;
+                        final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
+                        options.targetParticipant = CommunicationIdentifierConverter.convert(inner);
                     } else {
                         reader2.skipChildren();
                     }
@@ -369,5 +371,5 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
         });
     }
 
-    abstract void writeJsonImpl(JsonWriter jsonWriter) throws IOException;
+    abstract void toJsonImpl(JsonWriter jsonWriter) throws IOException;
 }

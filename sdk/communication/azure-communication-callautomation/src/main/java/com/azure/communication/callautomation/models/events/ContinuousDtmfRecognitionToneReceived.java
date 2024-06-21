@@ -51,7 +51,7 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
                 if ("sequenceId".equals(fieldName)) {
                     event.sequenceId = reader.getInt();
                 } else if ("tone".equals(fieldName)) {
-                   event.tone = DtmfTone.fromString(reader.getString());
+                    event.tone = DtmfTone.fromString(reader.getString());
                 } else if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else {

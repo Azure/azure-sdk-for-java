@@ -43,6 +43,15 @@ public abstract class CallAutomationEventBase {
         this.operationContext = null;
     }
 
+    /**
+     * Reads an instance of CallAutomationEventBase from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @param eventType the event type.
+     * @return An instance of CallAutomationEventBase if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CallAutomationEventBase.
+     */
     public static CallAutomationEventBase fromJson(JsonReader jsonReader, String eventType) throws IOException {
         return jsonReader.readObject(reader -> {
             final JsonReader reader1 = reader.bufferObject();
@@ -139,10 +148,11 @@ public abstract class CallAutomationEventBase {
             } else {
                 return null;
             }
-            final JsonReader reader2 = reader.reset();
-            while (reader2.nextToken() != JsonToken.END_OBJECT) {
+            final JsonReader reader2 = reader1.reset();
+            reader2.nextToken();
+            while (reader2.nextToken() != JsonToken.END_DOCUMENT) {
                 String fieldName = reader2.getFieldName();
-                reader.nextToken();
+                reader2.nextToken();
                 if ("callConnectionId".equals(fieldName)) {
                     event.callConnectionId = reader2.getString();
                 } else if ("serverCallId".equals(fieldName)) {
