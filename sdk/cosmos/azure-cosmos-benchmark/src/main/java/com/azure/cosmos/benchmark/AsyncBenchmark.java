@@ -89,9 +89,13 @@ abstract class AsyncBenchmark<T> {
         configuration = cfg;
 
         if (configuration.isPartitionLevelCircuitBreakerEnabled()) {
-            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                + "\"circuitBreakerType\": \"COUNT_BASED\","
-                + "\"circuitBreakerFailureTolerance\": \"LOW\"}");
+            System.setProperty(
+                "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                    + "}");
         }
 
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -144,8 +148,11 @@ abstract class AsyncBenchmark<T> {
             cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
 
-        CosmosClient syncClient = cosmosClientBuilder.buildClient();
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
+        CosmosClient syncClient = cosmosClientBuilder
+            .endpoint(configuration.getServiceEndpointForRunResultsUploadAccount())
+            .key(configuration.getMasterKeyForRunResultsUploadAccount())
+            .buildClient();
 
         try {
             cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());

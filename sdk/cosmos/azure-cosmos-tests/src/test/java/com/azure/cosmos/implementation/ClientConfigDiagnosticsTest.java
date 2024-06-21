@@ -286,8 +286,10 @@ public class ClientConfigDiagnosticsTest {
             System.setProperty(
                 "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
                 "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                    + "\"circuitBreakerType\": \"COUNT_BASED\","
-                    + "\"circuitBreakerFailureTolerance\": \"LOW\"}");
+                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                    + "}");
 
             PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
             diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(partitionLevelCircuitBreakerConfig);
@@ -318,7 +320,7 @@ public class ClientConfigDiagnosticsTest {
         }
 
         if (isPartitionLevelCircuitBreakerEnabled) {
-            assertThat(objectNode.get("partitionLevelCircuitBreakerCfg").asText()).isEqualTo("(cb: true, type: COUNT_BASED, tl: LOW)");
+            assertThat(objectNode.get("partitionLevelCircuitBreakerCfg").asText()).isEqualTo("(cb: true, type: CONSECUTIVE_EXCEPTION_COUNT_BASED, rexcntt: 10, wexcntt: 5)");
         } else {
             assertThat(objectNode.get("partitionLevelCircuitBreakerCfg")).isNull();
         }

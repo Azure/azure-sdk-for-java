@@ -20,11 +20,15 @@ public class PartitionLevelCircuitBreakerConfig {
 
     @JsonSetter(nulls = Nulls.SKIP)
     @JsonProperty
-    private String circuitBreakerType = "COUNT_BASED";
+    private String circuitBreakerType = "CONSECUTIVE_EXCEPTION_COUNT_BASED";
 
     @JsonSetter(nulls = Nulls.SKIP)
     @JsonProperty
-    private String circuitBreakerFailureTolerance = "LOW";
+    private int consecutiveExceptionCountToleratedForReads = 10;
+
+    @JsonSetter(nulls = Nulls.SKIP)
+    @JsonProperty
+    private int consecutiveExceptionCountToleratedForWrites = 5;
 
     private String cachedConfigAsString = "";
 
@@ -32,12 +36,17 @@ public class PartitionLevelCircuitBreakerConfig {
         return isPartitionLevelCircuitBreakerEnabled;
     }
 
+    // todo (abhmohanty): keep this method around for future-proofing (adding more circuit breaker types)
     public String getCircuitBreakerType() {
         return circuitBreakerType;
     }
 
-    public String getCircuitBreakerFailureTolerance() {
-        return circuitBreakerFailureTolerance;
+    public int getConsecutiveExceptionCountToleratedForReads() {
+        return consecutiveExceptionCountToleratedForReads;
+    }
+
+    public int getConsecutiveExceptionCountToleratedForWrites() {
+        return consecutiveExceptionCountToleratedForWrites;
     }
 
     public String toJson() {
@@ -49,11 +58,14 @@ public class PartitionLevelCircuitBreakerConfig {
     }
 
     public String getConfigAsString() {
+
         if (StringUtils.isEmpty(this.cachedConfigAsString)) {
             this.cachedConfigAsString = "(" + "cb: " + this.isPartitionLevelCircuitBreakerEnabled + ", " +
                 "type: " + this.circuitBreakerType + ", " +
-                "tl: " + this.circuitBreakerFailureTolerance + ")";
+                "rexcntt: " + this.consecutiveExceptionCountToleratedForReads + ", " +
+                "wexcntt: " + this.consecutiveExceptionCountToleratedForWrites + ")";
         }
+
         return this.cachedConfigAsString;
     }
 

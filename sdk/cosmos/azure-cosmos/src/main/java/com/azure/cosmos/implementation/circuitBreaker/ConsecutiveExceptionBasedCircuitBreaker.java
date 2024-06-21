@@ -29,19 +29,20 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
             case HealthyTentative:
 
                 exceptionCountAfterHandling++;
+                int successCountAfterHandling = 0;
 
                 if (isReadOnlyRequest) {
                     return new LocationSpecificContext(
                         locationSpecificContext.getSuccessCountForWrite(),
                         locationSpecificContext.getExceptionCountForWrite(),
-                        locationSpecificContext.getSuccessCountForRead(),
+                        successCountAfterHandling,
                         exceptionCountAfterHandling,
                         locationSpecificContext.getUnavailableSince(),
                         locationSpecificContext.getLocationHealthStatus(),
                         locationSpecificContext.isExceptionThresholdBreached());
                 } else {
                     return new LocationSpecificContext(
-                        locationSpecificContext.getSuccessCountForWrite(),
+                        successCountAfterHandling,
                         exceptionCountAfterHandling,
                         locationSpecificContext.getSuccessCountForRead(),
                         locationSpecificContext.getExceptionCountForRead(),
@@ -134,36 +135,9 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
         int successCountActual
             = isReadOnlyRequest ? locationSpecificContext.getSuccessCountForRead() : locationSpecificContext.getSuccessCountForWrite();
 
-        int exceptionCountActual
-            = isReadOnlyRequest ? locationSpecificContext.getExceptionCountForRead() : locationSpecificContext.getExceptionCountForWrite();
-
         LocationHealthStatus locationHealthStatus = locationSpecificContext.getLocationHealthStatus();
 
-        return successCountActual >= getMinimumSuccessCountForStatusUpgrade(locationHealthStatus, isReadOnlyRequest) &&
-            (double) exceptionCountActual / (double) successCountActual < getAllowedExceptionToSuccessRatio(locationHealthStatus, isReadOnlyRequest);
-    }
-
-    private static double getAllowedExceptionToSuccessRatio(LocationHealthStatus status, boolean isReadOnlyRequest) {
-
-        if (isReadOnlyRequest) {
-            switch (status) {
-                case HealthyWithFailures:
-                    return 0.3d;
-                case HealthyTentative:
-                    return 0.1d;
-                default:
-                    return 0d;
-            }
-        } else {
-            switch (status) {
-                case HealthyWithFailures:
-                    return 0.2d;
-                case HealthyTentative:
-                    return 0.05d;
-                default:
-                    return 0d;
-            }
-        }
+        return successCountActual >= getMinimumSuccessCountForStatusUpgrade(locationHealthStatus, isReadOnlyRequest);
     }
 
     public int getAllowedExceptionCountToMaintainStatus(LocationHealthStatus status, boolean isReadOnlyRequest) {
@@ -171,25 +145,9 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
         if (isReadOnlyRequest) {
             switch (status) {
                 case HealthyWithFailures:
-                    if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("LOW")) {
-                        return 10;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("MEDIUM")) {
-                        return 20;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("HIGH")) {
-                        return 40;
-                    } else {
-                        throw new IllegalArgumentException("Unsupported tolerance setting " + this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance());
-                    }
+                    return this.partitionLevelCircuitBreakerConfig.getConsecutiveExceptionCountToleratedForReads();
                 case HealthyTentative:
-                    if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("LOW")) {
-                        return 5;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("MEDIUM")) {
-                        return 10;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("HIGH")) {
-                        return 20;
-                    } else {
-                        throw new IllegalArgumentException("Unsupported tolerance setting " + this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance());
-                    }
+                    return this.partitionLevelCircuitBreakerConfig.getConsecutiveExceptionCountToleratedForReads() / 2;
                 case Healthy:
                 case Unavailable:
                     return 0;
@@ -199,25 +157,9 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
         } else {
             switch (status) {
                 case HealthyWithFailures:
-                    if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("LOW")) {
-                        return 5;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("MEDIUM")) {
-                        return 10;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("HIGH")) {
-                        return 20;
-                    } else {
-                        throw new IllegalArgumentException("Unsupported tolerance setting " + this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance());
-                    }
+                    return this.partitionLevelCircuitBreakerConfig.getConsecutiveExceptionCountToleratedForWrites();
                 case HealthyTentative:
-                    if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("LOW")) {
-                        return 10;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("MEDIUM")) {
-                        return 5;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("HIGH")) {
-                        return 3;
-                    } else {
-                        throw new IllegalArgumentException("Unsupported tolerance setting " + this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance());
-                    }
+                    return this.partitionLevelCircuitBreakerConfig.getConsecutiveExceptionCountToleratedForWrites() / 2;
                 case Healthy:
                     return 0;
                 default:
@@ -230,15 +172,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
         if (isReadOnlyRequest) {
             switch (status) {
                 case HealthyTentative:
-                    if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("LOW")) {
-                        return 10;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("MEDIUM")) {
-                        return 5;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("HIGH")) {
-                        return 3;
-                    } else {
-                        throw new IllegalArgumentException("Unsupported tolerance setting " + this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance());
-                    }
+                    return this.partitionLevelCircuitBreakerConfig.getConsecutiveExceptionCountToleratedForReads();
                 case Unavailable:
                 case HealthyWithFailures:
                 case Healthy:
@@ -249,15 +183,7 @@ public class ConsecutiveExceptionBasedCircuitBreaker implements ICircuitBreaker 
         } else {
             switch (status) {
                 case HealthyTentative:
-                    if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("LOW")) {
-                        return 20;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("MEDIUM")) {
-                        return 10;
-                    } else if (this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance().equals("HIGH")) {
-                        return 5;
-                    } else {
-                        throw new IllegalArgumentException("Unsupported tolerance setting " + this.partitionLevelCircuitBreakerConfig.getCircuitBreakerFailureTolerance());
-                    }
+                    return this.partitionLevelCircuitBreakerConfig.getConsecutiveExceptionCountToleratedForWrites();
                 case Unavailable:
                 case HealthyWithFailures:
                 case Healthy:

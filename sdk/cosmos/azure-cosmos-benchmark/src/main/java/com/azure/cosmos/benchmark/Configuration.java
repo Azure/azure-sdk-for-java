@@ -47,6 +47,12 @@ public class Configuration {
     @Parameter(names = "-masterKey", description = "Master Key")
     private String masterKey;
 
+    @Parameter(names = "-serviceEndpointForResultsUploadAccount", description = "Service Endpoint for run results upload account")
+    private String serviceEndpointForRunResultsUploadAccount;
+
+    @Parameter(names = "-masterKeyForResultsUploadAccount", description = "Master Key for run results upload account")
+    private String masterKeyForRunResultsUploadAccount;
+
     @Parameter(names = "-databaseId", description = "Database ID")
     private String databaseId;
 
@@ -398,6 +404,14 @@ public class Configuration {
 
     public String getMasterKey() {
         return masterKey;
+    }
+
+    public String getServiceEndpointForRunResultsUploadAccount() {
+        return serviceEndpointForRunResultsUploadAccount;
+    }
+
+    public String getMasterKeyForRunResultsUploadAccount() {
+        return masterKeyForRunResultsUploadAccount;
     }
 
     public String getApplicationName() {

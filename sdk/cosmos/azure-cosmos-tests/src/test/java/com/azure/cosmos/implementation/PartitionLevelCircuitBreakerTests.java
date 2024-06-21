@@ -1217,7 +1217,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
                 noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
@@ -1379,7 +1378,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadAllOperation,
                 twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
                 noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
@@ -1729,8 +1727,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         System.setProperty(
             "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
             "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                + "\"circuitBreakerType\": \"COUNT_BASED\","
-                + "\"circuitBreakerFailureTolerance\": \"LOW\"}");
+                + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                + "}");
 
         if (regionSwitchHint != null) {
             clientBuilder = clientBuilder

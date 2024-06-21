@@ -71,41 +71,21 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
 
     @DataProvider(name = "partitionLevelCircuitBreakerConfigs")
     public Object[][] partitionLevelCircuitBreakerConfigs() {
-        return new Object[][] {
-            new Object[] {
+        return new Object[][]{
+            new Object[]{
                 "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                    + "\"circuitBreakerType\": \"COUNT_BASED\","
-                    + "\"circuitBreakerFailureTolerance\": \"LOW\"}",
+                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                    + "}",
                 READ_OPERATION_TRUE
             },
-            new Object[] {
+            new Object[]{
                 "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                    + "\"circuitBreakerType\": \"COUNT_BASED\","
-                    + "\"circuitBreakerFailureTolerance\": \"MEDIUM\"}",
-                READ_OPERATION_TRUE
-            },
-            new Object[] {
-                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                    + "\"circuitBreakerType\": \"COUNT_BASED\","
-                    + "\"circuitBreakerFailureTolerance\": \"HIGH\"}",
-                READ_OPERATION_TRUE
-            },
-            new Object[] {
-                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                    + "\"circuitBreakerType\": \"COUNT_BASED\","
-                    + "\"circuitBreakerFailureTolerance\": \"LOW\"}",
-                !READ_OPERATION_TRUE
-            },
-            new Object[] {
-                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                    + "\"circuitBreakerType\": \"COUNT_BASED\","
-                    + "\"circuitBreakerFailureTolerance\": \"MEDIUM\"}",
-                !READ_OPERATION_TRUE
-            },
-            new Object[] {
-                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
-                    + "\"circuitBreakerType\": \"COUNT_BASED\","
-                    + "\"circuitBreakerFailureTolerance\": \"HIGH\"}",
+                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                    + "}",
                 !READ_OPERATION_TRUE
             }
         };
@@ -181,9 +161,9 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         String collectionResourceId = "dbs/db1/colls/coll1";
 
         List<URI> applicableReadWriteEndpoints = ImmutableList.of(
-            LocationEastUs2EndpointToLocationPair,
-            LocationEastUsEndpointToLocationPair,
-            LocationCentralUsEndpointToLocationPair)
+                LocationEastUs2EndpointToLocationPair,
+                LocationEastUsEndpointToLocationPair,
+                LocationCentralUsEndpointToLocationPair)
             .stream()
             .map(uriToLocationMappings -> uriToLocationMappings.getLeft())
             .collect(Collectors.toList());
