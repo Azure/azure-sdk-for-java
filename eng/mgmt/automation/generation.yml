@@ -23,7 +23,6 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      sudo apt-get install -y --upgrade python3-pip python3-setuptools
       pip3 install --upgrade wheel
       pip3 install --upgrade PyYAML requests
   displayName: Update python
@@ -65,7 +64,6 @@ steps:
     targetType: 'inline'
     script: |
       java -version
-      set -x
       tsp-client init --debug --tsp-config "$(TSP_CONFIG)"
   displayName: '[Experiment] Generation from TypeSpec by direct calling tsp-client'
   condition: eq(variables.fromTypeSpec, true)
