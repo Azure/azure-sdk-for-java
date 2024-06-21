@@ -75,8 +75,15 @@ public final class TeamsComplianceRecordingStateChanged extends CallAutomationEv
         return startDateTime;
     }
 
-
-    static TeamsComplianceRecordingStateChanged fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of TeamsComplianceRecordingStateChanged from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TeamsComplianceRecordingStateChanged if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TeamsComplianceRecordingStateChanged.
+     */
+    public static TeamsComplianceRecordingStateChanged fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final TeamsComplianceRecordingStateChanged event = new TeamsComplianceRecordingStateChanged();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -89,7 +96,9 @@ public final class TeamsComplianceRecordingStateChanged extends CallAutomationEv
                 } else if ("startDateTime".equals(fieldName)) {
                     event.startDateTime = OffsetDateTime.parse(reader.getString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

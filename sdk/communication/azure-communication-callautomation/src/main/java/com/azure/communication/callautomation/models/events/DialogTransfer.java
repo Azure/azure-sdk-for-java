@@ -107,7 +107,15 @@ public final class DialogTransfer extends CallAutomationEventBase {
         return this.ivrContext;
     }
 
-    static DialogTransfer fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of DialogTransfer from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DialogTransfer if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DialogTransfer.
+     */
+    public static DialogTransfer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final DialogTransfer event = new DialogTransfer();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -126,7 +134,9 @@ public final class DialogTransfer extends CallAutomationEventBase {
                 } else if ("ivrContext".equals(fieldName)) {
                     event.ivrContext = reader.readUntyped();
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

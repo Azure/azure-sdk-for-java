@@ -35,7 +35,15 @@ public final class CancelAddParticipantSucceeded extends CallAutomationEventBase
         return invitationId;
     }
 
-    static CancelAddParticipantSucceeded fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of CancelAddParticipantSucceeded from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CancelAddParticipantSucceeded if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CancelAddParticipantSucceeded.
+     */
+    public static CancelAddParticipantSucceeded fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final CancelAddParticipantSucceeded event = new CancelAddParticipantSucceeded();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -44,7 +52,9 @@ public final class CancelAddParticipantSucceeded extends CallAutomationEventBase
                 if ("invitationId".equals(fieldName)) {
                     event.invitationId = reader.getString();
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

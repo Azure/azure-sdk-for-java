@@ -63,7 +63,15 @@ public class DialogStarted extends CallAutomationEventBase {
         return this.dialogId;
     }
 
-    static DialogStarted fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of DialogStarted from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DialogStarted if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DialogStarted.
+     */
+    public static DialogStarted fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final DialogStarted event = new DialogStarted();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -76,7 +84,9 @@ public class DialogStarted extends CallAutomationEventBase {
                 } else if ("dialogId".equals(fieldName)) {
                     event.dialogId = reader.getString();
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

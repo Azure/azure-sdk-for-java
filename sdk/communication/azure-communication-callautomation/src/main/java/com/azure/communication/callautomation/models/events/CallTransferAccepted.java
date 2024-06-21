@@ -81,7 +81,15 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
         return this.transferTarget;
     }
 
-    static CallTransferAccepted fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of CallTransferAccepted from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CallTransferAccepted if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CallTransferAccepted.
+     */
+    public static CallTransferAccepted fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final CallTransferAccepted event = new CallTransferAccepted();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -96,7 +104,9 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
                     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.transferTarget = CommunicationIdentifierConverter.convert(inner);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

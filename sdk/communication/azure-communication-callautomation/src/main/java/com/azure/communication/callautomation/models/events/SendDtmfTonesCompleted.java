@@ -36,7 +36,15 @@ public final class SendDtmfTonesCompleted extends CallAutomationEventBase {
         return this.resultInformation;
     }
 
-    static SendDtmfTonesCompleted fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of SendDtmfTonesCompleted from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SendDtmfTonesCompleted if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SendDtmfTonesCompleted.
+     */
+    public static SendDtmfTonesCompleted fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final SendDtmfTonesCompleted event = new SendDtmfTonesCompleted();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -45,7 +53,9 @@ public final class SendDtmfTonesCompleted extends CallAutomationEventBase {
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

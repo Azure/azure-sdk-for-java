@@ -63,7 +63,15 @@ public final class RemoveParticipantSucceeded extends CallAutomationEventBase {
         return this.resultInformation;
     }
 
-    static RemoveParticipantSucceeded fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of RemoveParticipantSucceeded from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemoveParticipantSucceeded if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemoveParticipantSucceeded.
+     */
+    public static RemoveParticipantSucceeded fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final RemoveParticipantSucceeded event = new RemoveParticipantSucceeded();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -75,7 +83,9 @@ public final class RemoveParticipantSucceeded extends CallAutomationEventBase {
                     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.participant = CommunicationIdentifierConverter.convert(inner);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

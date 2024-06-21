@@ -77,7 +77,15 @@ public final class DialogHangup extends CallAutomationEventBase {
         return this.ivrContext;
     }
 
-    static DialogHangup fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of DialogHangup from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DialogHangup if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DialogHangup.
+     */
+    public static DialogHangup fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final DialogHangup event = new DialogHangup();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -92,7 +100,9 @@ public final class DialogHangup extends CallAutomationEventBase {
                 } else if ("ivrContext".equals(fieldName)) {
                     event.ivrContext = reader.readUntyped();
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

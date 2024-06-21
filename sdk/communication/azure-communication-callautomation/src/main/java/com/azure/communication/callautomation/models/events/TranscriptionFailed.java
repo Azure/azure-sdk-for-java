@@ -55,7 +55,15 @@ public final class TranscriptionFailed extends CallAutomationEventBase {
         return this.transcriptionUpdateResult;
     }
 
-    static TranscriptionFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of TranscriptionFailed from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TranscriptionFailed if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TranscriptionFailed.
+     */
+    public static TranscriptionFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final TranscriptionFailed event = new TranscriptionFailed();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -66,7 +74,9 @@ public final class TranscriptionFailed extends CallAutomationEventBase {
                 } else if ("transcriptionUpdate".equals(fieldName)) {
                     event.transcriptionUpdateResult = TranscriptionUpdate.fromJson(reader);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

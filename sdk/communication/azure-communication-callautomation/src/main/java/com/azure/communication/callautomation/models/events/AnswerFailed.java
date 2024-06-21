@@ -33,7 +33,15 @@ public final class AnswerFailed extends CallAutomationEventBase {
         return this.resultInformation;
     }
 
-    static AnswerFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of AnswerFailed from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnswerFailed if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AnswerFailed.
+     */
+    public static AnswerFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final AnswerFailed event = new AnswerFailed();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -42,7 +50,9 @@ public final class AnswerFailed extends CallAutomationEventBase {
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

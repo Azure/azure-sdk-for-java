@@ -64,7 +64,15 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
         return Optional.empty();
     }
 
-    static RecognizeCompleted fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of RecognizeCompleted from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecognizeCompleted if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecognizeCompleted.
+     */
+    public static RecognizeCompleted fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final RecognizeCompleted event = new RecognizeCompleted();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -81,7 +89,9 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
                 } else if ("choiceResult".equals(fieldName)) {
                     event.collectChoiceResult = ChoiceResult.fromJson(reader);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

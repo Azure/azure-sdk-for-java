@@ -12,7 +12,15 @@ import java.io.IOException;
 /** The RecognizeFailed model. */
 @Fluent
 public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode {
-    static RecognizeFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of RecognizeFailed from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecognizeFailed if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecognizeFailed.
+     */
+    public static RecognizeFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final RecognizeFailed event = new RecognizeFailed();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -21,7 +29,9 @@ public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

@@ -63,7 +63,15 @@ public final class AddParticipantFailed extends CallAutomationEventBase {
         return this.resultInformation;
     }
 
-    static AddParticipantFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of AddParticipantFailed from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddParticipantFailed if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddParticipantFailed.
+     */
+    public static AddParticipantFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final AddParticipantFailed event = new AddParticipantFailed();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -75,7 +83,9 @@ public final class AddParticipantFailed extends CallAutomationEventBase {
                     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.participant = CommunicationIdentifierConverter.convert(inner);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

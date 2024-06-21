@@ -63,7 +63,15 @@ public final class AddParticipantSucceeded extends CallAutomationEventBase {
         return this.resultInformation;
     }
 
-    static AddParticipantSucceeded fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of AddParticipantSucceeded from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddParticipantSucceeded if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddParticipantSucceeded.
+     */
+    public static AddParticipantSucceeded fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final AddParticipantSucceeded event = new AddParticipantSucceeded();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -75,7 +83,9 @@ public final class AddParticipantSucceeded extends CallAutomationEventBase {
                     final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
                     event.participant = CommunicationIdentifierConverter.convert(inner);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

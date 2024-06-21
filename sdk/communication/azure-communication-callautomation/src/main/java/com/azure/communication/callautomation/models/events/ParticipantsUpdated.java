@@ -59,7 +59,15 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
         return this.participants;
     }
 
-    static ParticipantsUpdated fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of ParticipantsUpdated from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParticipantsUpdated if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ParticipantsUpdated.
+     */
+    public static ParticipantsUpdated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final ParticipantsUpdated event = new ParticipantsUpdated();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -71,7 +79,9 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
                     event.participants = reader.readArray(CallParticipantInternal::fromJson)
                         .stream().map(CallParticipantConverter::convert).collect(Collectors.toList());
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

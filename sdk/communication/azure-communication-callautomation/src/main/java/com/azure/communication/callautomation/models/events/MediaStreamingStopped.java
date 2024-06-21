@@ -54,7 +54,15 @@ public final class MediaStreamingStopped extends CallAutomationEventBase {
         return this.mediaStreamingUpdateResult;
     }
 
-    static MediaStreamingStopped fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of MediaStreamingStopped from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaStreamingStopped if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaStreamingStopped.
+     */
+    public static MediaStreamingStopped fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final MediaStreamingStopped event = new MediaStreamingStopped();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -65,7 +73,9 @@ public final class MediaStreamingStopped extends CallAutomationEventBase {
                 } else if ("mediaStreamingUpdate".equals(fieldName)) {
                     event.mediaStreamingUpdateResult = MediaStreamingUpdate.fromJson(reader);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

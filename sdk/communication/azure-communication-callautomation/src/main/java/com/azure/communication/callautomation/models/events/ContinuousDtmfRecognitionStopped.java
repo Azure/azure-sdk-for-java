@@ -36,7 +36,15 @@ public final class ContinuousDtmfRecognitionStopped extends CallAutomationEventB
         return this.resultInformation;
     }
 
-    static ContinuousDtmfRecognitionStopped fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of ContinuousDtmfRecognitionStopped from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContinuousDtmfRecognitionStopped if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContinuousDtmfRecognitionStopped.
+     */
+    public static ContinuousDtmfRecognitionStopped fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final ContinuousDtmfRecognitionStopped event = new ContinuousDtmfRecognitionStopped();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -45,7 +53,9 @@ public final class ContinuousDtmfRecognitionStopped extends CallAutomationEventB
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

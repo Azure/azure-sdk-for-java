@@ -32,7 +32,15 @@ public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
         return this.resultInformation;
     }
 
-    static PlayFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of PlayFailed from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlayFailed if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PlayFailed.
+     */
+    public static PlayFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final PlayFailed event = new PlayFailed();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -41,7 +49,9 @@ public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

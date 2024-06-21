@@ -32,7 +32,15 @@ public final class CallTransferFailed extends CallAutomationEventBase {
         return this.resultInformation;
     }
 
-    static CallTransferFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of CallTransferFailed from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CallTransferFailed if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CallTransferFailed.
+     */
+    public static CallTransferFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final CallTransferFailed event = new CallTransferFailed();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -41,7 +49,9 @@ public final class CallTransferFailed extends CallAutomationEventBase {
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;

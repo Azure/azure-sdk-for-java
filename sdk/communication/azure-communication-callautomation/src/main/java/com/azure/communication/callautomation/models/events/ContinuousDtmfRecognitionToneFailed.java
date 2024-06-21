@@ -36,7 +36,15 @@ public final class ContinuousDtmfRecognitionToneFailed extends CallAutomationEve
         return this.resultInformation;
     }
 
-    static ContinuousDtmfRecognitionToneFailed fromJsonImpl(JsonReader jsonReader) throws IOException {
+    /**
+     * Reads an instance of ContinuousDtmfRecognitionToneFailed from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContinuousDtmfRecognitionToneFailed if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContinuousDtmfRecognitionToneFailed.
+     */
+    public static ContinuousDtmfRecognitionToneFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             final ContinuousDtmfRecognitionToneFailed event = new ContinuousDtmfRecognitionToneFailed();
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
@@ -45,7 +53,9 @@ public final class ContinuousDtmfRecognitionToneFailed extends CallAutomationEve
                 if ("resultInformation".equals(fieldName)) {
                     event.resultInformation = ResultInformation.fromJson(reader);
                 } else {
-                    reader.skipChildren();
+                    if (!event.handleField(fieldName, reader)) {
+                        reader.skipChildren();
+                    }
                 }
             }
             return event;
