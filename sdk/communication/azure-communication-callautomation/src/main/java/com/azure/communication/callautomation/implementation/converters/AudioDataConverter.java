@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.implementation.converters;
 import com.azure.communication.callautomation.models.streaming.StreamingDataParser;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -16,25 +15,21 @@ public final class AudioDataConverter {
     /*
      * The audio data.
      */
-    @JsonProperty(value = "data")
     private String data;
 
     /*
      * The timestamp of when the media was sourced.
      */
-    @JsonProperty(value = "timestamp")
     private String timestamp;
 
     /*
      * The participantId.
      */
-    @JsonProperty(value = "participantRawID")
     private String participantRawID;
 
     /*
      * Indicates if the received audio buffer contains only silence.
      */
-    @JsonProperty(value = "silent")
     private boolean silent;
 
     /**

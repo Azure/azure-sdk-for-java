@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -15,19 +14,16 @@ public final class DialogFailed extends CallAutomationEventBase {
     /*
      * Contains the resulting SIP code/sub-code and message from NGC services.
      */
-    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
     private ResultInformation resultInformation;
 
     /*
      * Determines the type of the dialog.
      */
-    @JsonProperty(value = "dialogInputType")
     private DialogInputType dialogInputType;
 
     /*
      * Dialog ID
      */
-    @JsonProperty(value = "dialogId", access = JsonProperty.Access.WRITE_ONLY)
     private String dialogId;
 
     /** Creates an instance of DialogCompleted class. */

@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -16,19 +15,16 @@ public final class MediaStreamingUpdate {
     /*
      * The contentType property.
      */
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * The mediaStreamingStatus property.
      */
-    @JsonProperty(value = "mediaStreamingStatus")
     private MediaStreamingStatus mediaStreamingStatus;
 
     /*
      * The mediaStreamingStatusDetails property.
      */
-    @JsonProperty(value = "mediaStreamingStatusDetails")
     private MediaStreamingStatusDetails mediaStreamingStatusDetails;
 
     /**

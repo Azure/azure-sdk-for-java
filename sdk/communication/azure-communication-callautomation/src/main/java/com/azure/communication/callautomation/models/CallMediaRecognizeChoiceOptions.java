@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -25,13 +24,11 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     /*
      * Speech language to be recognized, If not set default is en-US
      */
-    @JsonProperty(value = "speechLanguage")
     private String speechLanguage;
 
     /*
      * Endpoint where the custom model was deployed.
      */
-    @JsonProperty(value = "speechRecognitionModelEndpointId")
     private String speechRecognitionModelEndpointId;
 
     /**

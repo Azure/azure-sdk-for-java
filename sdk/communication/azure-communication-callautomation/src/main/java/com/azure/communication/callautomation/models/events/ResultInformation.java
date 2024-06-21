@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -16,19 +15,16 @@ public final class ResultInformation {
     /*
      * The code property.
      */
-    @JsonProperty(value = "code")
     private Integer code;
 
     /*
      * The subCode property.
      */
-    @JsonProperty(value = "subCode")
     private Integer subCode;
 
     /*
      * The message property.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     private ResultInformation() {

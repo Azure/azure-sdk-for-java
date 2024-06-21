@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -76,7 +75,6 @@ public final class TranscriptionStatusDetails extends ExpandableStringEnum<Trans
      * @param name a name to look for.
      * @return the corresponding TranscriptionStatusDetails.
      */
-    @JsonCreator
     public static TranscriptionStatusDetails fromString(String name) {
         return fromString(name, TranscriptionStatusDetails.class);
     }

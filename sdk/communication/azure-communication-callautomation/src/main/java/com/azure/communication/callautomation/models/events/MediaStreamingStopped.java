@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -17,14 +16,12 @@ public final class MediaStreamingStopped extends CallAutomationEventBase {
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
-    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
     private ResultInformation resultInformation;
 
     /*
      * Defines the result for audio streaming update with the current status
      * and the details about the status
      */
-    @JsonProperty(value = "mediaStreamingUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private MediaStreamingUpdate mediaStreamingUpdateResult;
 
      /**

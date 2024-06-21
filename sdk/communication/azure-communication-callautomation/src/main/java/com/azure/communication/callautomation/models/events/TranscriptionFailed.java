@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -19,13 +18,11 @@ public final class TranscriptionFailed extends CallAutomationEventBase {
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
-    @JsonProperty(value = "resultInformation")
     private ResultInformation resultInformation;
 
     /*
      * Defines the result for TranscriptionUpdate with the current status and the details about the status
      */
-    @JsonProperty(value = "transcriptionUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private TranscriptionUpdate transcriptionUpdateResult;
 
     /**

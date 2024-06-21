@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -16,13 +15,11 @@ public final class CancelAddParticipantFailed extends CallAutomationEventBase {
     /*
      * The invitation ID used to cancel the add participant request.
      */
-    @JsonProperty(value = "invitationId")
     private String invitationId;
 
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
-    @JsonProperty(value = "resultInformation")
     private ResultInformation resultInformation;
 
     private CancelAddParticipantFailed() {

@@ -8,14 +8,12 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
 /** Abstract base class for different external storage types. */
 @Fluent
 public abstract class ExternalStorage implements JsonSerializable<ExternalStorage> {
-    @JsonProperty(value = "storageType")
     private final RecordingStorageType storageType;
 
     /**

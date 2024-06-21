@@ -7,7 +7,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,19 +16,16 @@ public final class RecognitionChoice implements JsonSerializable<CallMediaRecogn
     /*
      * Identifier for a given choice
      */
-    @JsonProperty(value = "label", required = true)
     private String label;
 
     /*
      * List of phrases to recognize
      */
-    @JsonProperty(value = "phrases", required = true)
     private List<String> phrases;
 
     /*
      * The tone property.
      */
-    @JsonProperty(value = "tone")
     private DtmfTone tone;
 
     /**

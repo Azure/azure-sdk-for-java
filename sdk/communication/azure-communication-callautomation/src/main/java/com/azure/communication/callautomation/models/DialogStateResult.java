@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -22,25 +21,21 @@ public class DialogStateResult implements JsonSerializable<DialogStateResult> {
     /*
      * The dialog ID.
      */
-    @JsonProperty(value = "dialogId")
     private String dialogId;
 
     /*
      * Defines options for dialog.
      */
-    @JsonProperty(value = "dialogOptions")
     private StartDialogOptions dialogOptions;
 
     /*
      * Determines the type of the dialog.
      */
-    @JsonProperty(value = "dialogInputType")
     private DialogInputType dialogInputType;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     static {

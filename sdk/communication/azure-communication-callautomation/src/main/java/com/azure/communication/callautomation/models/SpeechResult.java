@@ -8,7 +8,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -23,7 +22,6 @@ public final class SpeechResult extends RecognizeResult {
     /*
      * The recognized speech in string.
      */
-    @JsonProperty(value = "speech")
     private String speech;
 
     /**

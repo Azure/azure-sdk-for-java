@@ -9,14 +9,8 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.Map;
 
 /** The AddParticipantSucceeded model. */
 @Immutable
@@ -24,22 +18,12 @@ public final class AddParticipantSucceeded extends CallAutomationEventBase {
     /*
      * Participant added
      */
-    @JsonIgnore
     private CommunicationIdentifier participant;
 
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
-    @JsonProperty(value = "resultInformation")
     private ResultInformation resultInformation;
-
-    @JsonCreator
-    private AddParticipantSucceeded(@JsonProperty("participant") Map<String, Object> participant) {
-        this.resultInformation = null;
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        this.participant = CommunicationIdentifierConverter.convert(mapper.convertValue(participant, CommunicationIdentifierModel.class));
-    }
 
     private AddParticipantSucceeded() {
 

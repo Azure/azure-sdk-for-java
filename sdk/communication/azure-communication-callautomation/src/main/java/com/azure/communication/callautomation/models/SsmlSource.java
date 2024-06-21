@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -17,13 +16,11 @@ public final class SsmlSource extends PlaySource {
     /*
      * Ssml string for the cognitive service to be played
      */
-    @JsonProperty(value = "ssmlText", required = true)
     private String ssmlText;
 
     /*
      * Endpoint where the Custom Voice was deployed.
      */
-    @JsonProperty(value = "customVoiceEndpointId")
     private String customVoiceEndpointId;
 
     /**

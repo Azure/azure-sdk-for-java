@@ -7,7 +7,6 @@ import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -18,19 +17,16 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
     /*
      * The sequence id which can be used to determine if the same tone was played multiple times or if any tones were missed.
      */
-    @JsonProperty(value = "sequenceId", required = true)
     private Integer sequenceId;
 
     /*
      * The tone property.
      */
-    @JsonProperty(value = "tone", required = true)
     private DtmfTone tone;
 
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
-    @JsonProperty(value = "resultInformation")
     private ResultInformation resultInformation;
 
     /**

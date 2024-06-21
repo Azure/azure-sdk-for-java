@@ -13,7 +13,6 @@ import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.SpeechResult;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.core.annotation.Immutable;
 
 /** The RecognizeCompleted model. */
@@ -25,25 +24,21 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
      * In case of cancel operation this field is not set and is returned
      * empty
      */
-    @JsonProperty(value = "recognitionType", access = JsonProperty.Access.WRITE_ONLY)
     private CallMediaRecognitionType recognitionType;
 
     /*
      * Defines the result for CallMediaRecognitionType = Dtmf
      */
-    @JsonProperty(value = "dtmfResult", access = JsonProperty.Access.WRITE_ONLY)
     private DtmfResult dtmfResult;
 
     /*
      * Defines the result for CallMediaRecognitionType = Speech or SpeechOrDtmf
      */
-    @JsonProperty(value = "speechResult", access = JsonProperty.Access.WRITE_ONLY)
     private SpeechResult speechResult;
 
     /*
      * Defines the result for RecognizeChoice
      */
-    @JsonProperty(value = "choiceResult", access = JsonProperty.Access.WRITE_ONLY)
     private ChoiceResult collectChoiceResult;
 
     /**

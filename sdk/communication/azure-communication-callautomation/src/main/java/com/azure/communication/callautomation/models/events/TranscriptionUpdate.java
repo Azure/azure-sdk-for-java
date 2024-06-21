@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -18,13 +17,11 @@ public final class TranscriptionUpdate {
     /*
      * The transcriptionStatus property.
      */
-    @JsonProperty(value = "transcriptionStatus")
     private TranscriptionStatus transcriptionStatus;
 
     /*
      * The transcriptionStatusDetails property.
      */
-    @JsonProperty(value = "transcriptionStatusDetails")
     private TranscriptionStatusDetails transcriptionStatusDetails;
 
     /**

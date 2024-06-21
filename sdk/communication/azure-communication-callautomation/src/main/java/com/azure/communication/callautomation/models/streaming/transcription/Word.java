@@ -7,7 +7,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -19,19 +18,16 @@ public class Word implements JsonSerializable<Word> {
     /*
      * Text in the phrase.
      */
-    @JsonProperty(value = "text")
     private String text;
 
     /*
      * The word's position within the phrase.
      */
-    @JsonProperty(value = "offset")
     private long offset;
 
     /*
      * Duration in ticks. 1 tick = 100 nanoseconds.
      */
-    @JsonProperty(value = "duration")
     private long duration;
 
     /**

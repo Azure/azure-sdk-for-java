@@ -5,7 +5,6 @@ package com.azure.communication.callautomation.models;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.azure.core.annotation.Fluent;
 
 import java.io.IOException;
@@ -16,7 +15,6 @@ public final class ChoiceResult extends RecognizeResult {
     /*
      * Label is the primary identifier for the choice detected
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /*
@@ -24,7 +22,6 @@ public final class ChoiceResult extends RecognizeResult {
      * If Dtmf input is recognized, then Label will be the identifier for the
      * choice detected and phrases will be set to null
      */
-    @JsonProperty(value = "recognizedPhrase")
     private String recognizedPhrase;
 
     /**

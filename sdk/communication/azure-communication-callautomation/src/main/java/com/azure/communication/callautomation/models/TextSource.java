@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -17,31 +16,26 @@ public final class TextSource extends PlaySource {
     /*
      * Text for the cognitive service to be played
      */
-    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * Source language locale to be played
      */
-    @JsonProperty(value = "sourceLocale")
     private String sourceLocale;
 
     /*
      * Voice kind type
      */
-    @JsonProperty(value = "voiceKind")
     private VoiceKind voiceKind;
 
     /*
      * Voice name to be played
      */
-    @JsonProperty(value = "voiceName")
     private String voiceName;
 
     /*
      * Endpoint where the custom voice was deployed.
      */
-    @JsonProperty(value = "customVoiceEndpointId")
     private String customVoiceEndpointId;
 
     /**

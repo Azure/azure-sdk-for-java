@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.implementation.converters;
 import com.azure.communication.callautomation.models.streaming.StreamingDataParser;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -18,25 +17,21 @@ public final class TranscriptionMetadataConverter {
     /*
      * Transcription Subscription Id.
      */
-    @JsonProperty(value = "subscriptionId")
     private String transcriptionSubscriptionId;
 
     /*
      * The target locale in which the translated text needs to be
      */
-    @JsonProperty(value = "locale")
     private String locale;
 
     /*
      * call connection Id.
      */
-    @JsonProperty(value = "callConnectionId")
     private String callConnectionId;
 
     /*
      * correlation Id
      */
-    @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /**

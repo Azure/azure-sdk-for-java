@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.json.JsonReader;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -13,25 +12,21 @@ public abstract class CallAutomationEventBase {
     /*
      * Call connection ID.
      */
-    @JsonProperty(value = "callConnectionId")
     private String callConnectionId;
 
     /*
      * Server call ID.
      */
-    @JsonProperty(value = "serverCallId")
     private String serverCallId;
 
     /*
      * Correlation ID for event to call correlation.
      */
-    @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
      * Operation context
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     CallAutomationEventBase() {

@@ -9,7 +9,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -22,37 +21,31 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
      * The length of end silence when user stops speaking and cogservice send
      * response.
      */
-    @JsonProperty(value = "endSilenceTimeout")
     private Duration endSilenceTimeout;
 
     /*
      * Speech language to be recognized, If not set default is en-US
      */
-    @JsonProperty(value = "speechLanguage")
     private String speechLanguage;
 
     /*
      * Endpoint where the custom model was deployed.
      */
-    @JsonProperty(value = "speechRecognitionModelEndpointId")
     private String speechRecognitionModelEndpointId;
 
     /*
      * Time to wait between DTMF inputs to stop recognizing.
      */
-    @JsonProperty(value = "interToneTimeout")
     private Duration interToneTimeout;
 
     /*
      * Maximum number of DTMFs to be collected.
      */
-    @JsonProperty(value = "maxTonesToCollect")
     private Integer maxTonesToCollect;
 
     /*
      * List of tones that will stop recognizing.
      */
-    @JsonProperty(value = "stopTones")
     private List<DtmfTone> stopDtmfTones;
 
     /**

@@ -8,7 +8,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -18,25 +17,21 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /*
      * Transport URL for live transcription
      */
-    @JsonProperty(value = "transportUrl", required = true)
     private String transportUrl;
 
     /*
      * The type of transport to be used for live transcription, eg. Websocket
      */
-    @JsonProperty(value = "transportType", required = true)
     private TranscriptionTransportType transportType;
 
     /*
      * Defines the locale for the data e.g en-CA, en-AU
      */
-    @JsonProperty(value = "locale", required = true)
     private String locale;
 
     /*
      * Determines if the transcription should be started immediately after call is answered or not.
      */
-    @JsonProperty(value = "startTranscription", required = true)
     private boolean startTranscription;
 
     /**

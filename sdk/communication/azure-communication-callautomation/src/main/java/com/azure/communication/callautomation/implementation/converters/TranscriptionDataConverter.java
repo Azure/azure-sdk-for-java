@@ -7,7 +7,6 @@ import com.azure.communication.callautomation.models.streaming.StreamingDataPars
 import com.azure.communication.callautomation.models.streaming.transcription.Word;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,50 +19,42 @@ public final class TranscriptionDataConverter {
     /*
      * The display form of the recognized word
      */
-    @JsonProperty(value = "text")
     private String text;
 
     /*
      * The format of text
      */
-    @JsonProperty(value = "format")
     private String format;
 
     /*
      * Confidence of recognition of the whole phrase, from 0.0 (no confidence) to 1.0 (full confidence)
      */
-    @JsonProperty(value = "confidence")
     private double confidence;
 
     /*
      * The position of this payload
      */
-    @JsonProperty(value = "offset")
     private long offset;
 
      /*
      * Duration in ticks. 1 tick = 100 nanoseconds.
      */
-    @JsonProperty(value = "duration")
     private long duration;
 
 
     /*
      * TThe result for each word of the phrase
      */
-    @JsonProperty(value = "words")
     private List<Word> words;
 
     /*
      * The participantId.
      */
-    @JsonProperty(value = "participantRawID")
     private String participantRawID;
 
     /*
      * Status of the result of transcription
      */
-    @JsonProperty(value = "resultStatus")
     private String resultStatus;
 
     /**

@@ -9,7 +9,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -22,19 +21,16 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
     /*
      * Time to wait between DTMF inputs to stop recognizing.
      */
-    @JsonProperty(value = "interToneTimeout")
     private Duration interToneTimeout;
 
     /*
      * Maximum number of DTMFs to be collected.
      */
-    @JsonProperty(value = "maxTonesToCollect")
     private Integer maxTonesToCollect;
 
     /*
      * List of tones that will stop recognizing.
      */
-    @JsonProperty(value = "stopTones")
     private List<DtmfTone> stopDtmfTones;
 
     /**

@@ -7,9 +7,6 @@ import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -22,27 +19,17 @@ public final class TeamsRecordingStateChanged extends CallAutomationEventBase {
     /**
      * Recording Id.
      */
-    @JsonProperty(value = "recordingId")
     private String recordingId;
 
     /**
      * Recording state.
      */
-    @JsonProperty(value = "state")
     private RecordingState recordingState;
 
     /**
      * Time of when it started recording.
      */
-    @JsonIgnore
     private OffsetDateTime startDateTime;
-
-    @JsonCreator
-    private TeamsRecordingStateChanged(@JsonProperty("startDateTime") String startDateTime) {
-        this.startDateTime = OffsetDateTime.parse(startDateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        this.recordingId = null;
-        this.recordingState = null;
-    }
 
     private TeamsRecordingStateChanged() {
 

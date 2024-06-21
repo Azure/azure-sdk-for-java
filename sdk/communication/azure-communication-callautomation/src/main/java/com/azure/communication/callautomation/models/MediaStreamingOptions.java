@@ -8,7 +8,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -18,25 +17,21 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
     /*
      * Transport URL for media streaming
      */
-    @JsonProperty(value = "transportUrl")
     private String transportUrl;
 
     /*
      * The type of transport to be used for media streaming, eg. Websocket
      */
-    @JsonProperty(value = "transportType")
     private MediaStreamingTransport transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
-    @JsonProperty(value = "contentType")
     private MediaStreamingContent contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
-    @JsonProperty(value = "audioChannelType")
     private MediaStreamingAudioChannel audioChannelType;
 
     /**

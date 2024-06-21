@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -16,7 +15,6 @@ public abstract class PlaySource implements JsonSerializable<PlaySource> {
     /*
      * Defines the identifier to be used for caching related media
      */
-    @JsonProperty(value = "playSourceCacheId")
     private String playSourceCacheId;
 
     /**

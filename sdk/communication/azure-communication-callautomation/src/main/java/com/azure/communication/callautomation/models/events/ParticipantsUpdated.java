@@ -9,15 +9,9 @@ import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /** The ParticipantsUpdated model. */
@@ -26,25 +20,9 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
     /*
      * List of current participants in the call.
      */
-    @JsonIgnore
     private List<CallParticipant> participants;
 
-    @JsonProperty(value = "sequenceNumber")
     private int sequenceNumber;
-
-    @JsonCreator
-    private ParticipantsUpdated(@JsonProperty("participants") List<Map<String, Object>> participants) {
-        this.sequenceNumber = 0;
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-        this.participants = participants
-            .stream()
-            .map(item -> mapper.convertValue(item, CallParticipantInternal.class))
-            .collect(Collectors.toList())
-            .stream()
-            .map(CallParticipantConverter::convert)
-            .collect(Collectors.toList());
-    }
 
     private ParticipantsUpdated() {
 

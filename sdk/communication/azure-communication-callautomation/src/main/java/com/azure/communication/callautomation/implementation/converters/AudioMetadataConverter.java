@@ -6,7 +6,6 @@ package com.azure.communication.callautomation.implementation.converters;
 import com.azure.communication.callautomation.models.streaming.StreamingDataParser;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -17,31 +16,26 @@ public final class AudioMetadataConverter {
     /*
      * The mediaSubscriptionId.
      */
-    @JsonProperty(value = "subscriptionId")
     private String mediaSubscriptionId;
 
     /*
      * The encoding.
      */
-    @JsonProperty(value = "encoding")
     private String encoding;
 
     /*
      * The sampleRate.
      */
-    @JsonProperty(value = "sampleRate")
     private int sampleRate;
 
     /*
      * The channels.
      */
-    @JsonProperty(value = "channels")
     private int channels;
 
     /*
      * The length.
      */
-    @JsonProperty(value = "length")
     private int length;
 
     /**

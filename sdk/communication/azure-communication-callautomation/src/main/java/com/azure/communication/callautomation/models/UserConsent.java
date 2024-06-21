@@ -8,7 +8,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 
@@ -18,7 +17,6 @@ public final class UserConsent implements JsonSerializable<UserConsent> {
     /*
      * The recording property.
      */
-    @JsonProperty(value = "recording")
     private Integer recording;
 
     /** Creates an instance of UserConsent class. */

@@ -12,7 +12,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.azure.json.JsonToken;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -23,64 +22,55 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
     /*
      * Determines the type of the recognition.
      */
-    @JsonProperty(value = "recognizeInputType", required = true)
     private RecognizeInputType recognizeInputType;
 
     /*
      * The source of the audio to be played for recognition.
      */
-    @JsonProperty(value = "playPrompt")
     private PlaySource playPrompt;
 
     /*
      * If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      */
-    @JsonProperty(value = "interruptCallMediaOperation")
     private Boolean interruptCallMediaOperation;
 
     /*
      * If set recognize can barge into other existing
      * queued-up/currently-processing requests.
      */
-    @JsonProperty(value = "stopCurrentOperations")
     private Boolean stopCurrentOperations;
 
     /*
      * The value to identify context of the operation.
      */
-    @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
      * Determines if we interrupt the prompt and start recognizing.
      */
-    @JsonProperty(value = "interruptPrompt")
     private Boolean interruptPrompt;
 
     /*
      * Time to wait for first input after prompt (if any).
      */
-    @JsonProperty(value = "initialSilenceTimeout")
     private Duration initialSilenceTimeout;
 
     /*
      * Endpoint where the custom model was deployed.
      */
-    @JsonProperty(value = "speechModelEndpointId")
     private String speechModelEndpointId;
 
- /*
+    /*
      * Target participant of DTMF tone recognition.
      */
-    @JsonProperty(value = "targetParticipant")
+    @SuppressWarnings("FieldMayBeFinal")
     private CommunicationIdentifier targetParticipant;
 
     /**
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
-    @JsonProperty(value = "operationCallbackUrl")
     private String operationCallbackUrl;
 
     /**
