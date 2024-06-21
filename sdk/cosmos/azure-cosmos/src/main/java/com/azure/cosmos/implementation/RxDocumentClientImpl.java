@@ -3615,7 +3615,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosChangeFeedRequestOptionsImpl optionsImpl = changeFeedOptionsAccessor.getImpl(clonedOptions);
 
         CosmosOperationDetails operationDetails = operationDetailsAccessor.create(optionsImpl, state.getDiagnosticsContextSnapshot());
-        this.operationPolicies.forEach(policy -> policy.process(operationDetails));
+        this.operationPolicies.forEach(policy -> {
+            try {
+                policy.process(operationDetails);
+            } catch (RuntimeException exception) {
+                logger.info("The following exception was thrown by a custom policy on changeFeed operation" + exception.getMessage());
+                throw(exception);
+            }
+        });
         ctxAccessor.setRequestOptions(state.getDiagnosticsContextSnapshot(), optionsImpl);
         return queryDocumentChangeFeed(collection, clonedOptions, classOfT);
     }
