@@ -104,6 +104,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
                 throw new RuntimeException(e);
             }
         }
+        System.out.println("...beforeTest...");
     }
 
     @Override
@@ -129,6 +130,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
                 throw new RuntimeException(e);
             }
         }
+        System.out.println("...afterTest...");
     }
 
     protected static ServiceBusClientBuilder createServiceBusClientBuilderWithConnectionString() {
@@ -188,6 +190,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        System.out.println("...messageBodyHandler...: " + body);
 
         // check if this is an incomingCallEvent(Event grid event) or normal callAutomation cloud events
         if (eventData.get("incomingCallContext") != null) {
