@@ -13,22 +13,24 @@ public final class ImageTemplateShellCustomizerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageTemplateShellCustomizer model = BinaryData.fromString(
-            "{\"type\":\"Shell\",\"scriptUri\":\"ktwh\",\"sha256Checksum\":\"xw\",\"inline\":[\"q\",\"mbsureximo\"],\"name\":\"ocfs\"}")
+            "{\"type\":\"Shell\",\"scriptUri\":\"j\",\"sha256Checksum\":\"ovm\",\"inline\":[\"acspkwl\",\"zdobpxjmflbvvnch\"],\"name\":\"cciw\"}")
             .toObject(ImageTemplateShellCustomizer.class);
-        Assertions.assertEquals("ocfs", model.name());
-        Assertions.assertEquals("ktwh", model.scriptUri());
-        Assertions.assertEquals("xw", model.sha256Checksum());
-        Assertions.assertEquals("q", model.inline().get(0));
+        Assertions.assertEquals("cciw", model.name());
+        Assertions.assertEquals("j", model.scriptUri());
+        Assertions.assertEquals("ovm", model.sha256Checksum());
+        Assertions.assertEquals("acspkwl", model.inline().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateShellCustomizer model = new ImageTemplateShellCustomizer().withName("ocfs").withScriptUri("ktwh")
-            .withSha256Checksum("xw").withInline(Arrays.asList("q", "mbsureximo"));
+        ImageTemplateShellCustomizer model = new ImageTemplateShellCustomizer().withName("cciw")
+            .withScriptUri("j")
+            .withSha256Checksum("ovm")
+            .withInline(Arrays.asList("acspkwl", "zdobpxjmflbvvnch"));
         model = BinaryData.fromObject(model).toObject(ImageTemplateShellCustomizer.class);
-        Assertions.assertEquals("ocfs", model.name());
-        Assertions.assertEquals("ktwh", model.scriptUri());
-        Assertions.assertEquals("xw", model.sha256Checksum());
-        Assertions.assertEquals("q", model.inline().get(0));
+        Assertions.assertEquals("cciw", model.name());
+        Assertions.assertEquals("j", model.scriptUri());
+        Assertions.assertEquals("ovm", model.sha256Checksum());
+        Assertions.assertEquals("acspkwl", model.inline().get(0));
     }
 }

@@ -5,43 +5,55 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Installs Windows Updates. Corresponds to Packer Windows Update Provisioner
  * (https://github.com/rgl/packer-provisioner-windows-update).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("WindowsUpdate")
 @Fluent
 public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCustomizer {
     /*
-     * Criteria to search updates. Omit or specify empty string to use the default (search all). Refer to above link
-     * for examples and detailed description of this field.
+     * The type of customization tool you want to use on the Image. For example, "Shell" can be shell customizer
      */
-    @JsonProperty(value = "searchCriteria")
+    private String type = "WindowsUpdate";
+
+    /*
+     * Criteria to search updates. Omit or specify empty string to use the default (search all). Refer to above link for
+     * examples and detailed description of this field.
+     */
     private String searchCriteria;
 
     /*
-     * Array of filters to select updates to apply. Omit or specify empty array to use the default (no filter). Refer
-     * to above link for examples and detailed description of this field.
+     * Array of filters to select updates to apply. Omit or specify empty array to use the default (no filter). Refer to
+     * above link for examples and detailed description of this field.
      */
-    @JsonProperty(value = "filters")
     private List<String> filters;
 
     /*
      * Maximum number of updates to apply at a time. Omit or specify 0 to use the default (1000)
      */
-    @JsonProperty(value = "updateLimit")
     private Integer updateLimit;
 
     /**
      * Creates an instance of ImageTemplateWindowsUpdateCustomizer class.
      */
     public ImageTemplateWindowsUpdateCustomizer() {
+    }
+
+    /**
+     * Get the type property: The type of customization tool you want to use on the Image. For example, "Shell" can be
+     * shell customizer.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -127,5 +139,56 @@ public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCus
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("searchCriteria", this.searchCriteria);
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("updateLimit", this.updateLimit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateWindowsUpdateCustomizer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateWindowsUpdateCustomizer if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageTemplateWindowsUpdateCustomizer.
+     */
+    public static ImageTemplateWindowsUpdateCustomizer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateWindowsUpdateCustomizer deserializedImageTemplateWindowsUpdateCustomizer
+                = new ImageTemplateWindowsUpdateCustomizer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedImageTemplateWindowsUpdateCustomizer.withName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateWindowsUpdateCustomizer.type = reader.getString();
+                } else if ("searchCriteria".equals(fieldName)) {
+                    deserializedImageTemplateWindowsUpdateCustomizer.searchCriteria = reader.getString();
+                } else if ("filters".equals(fieldName)) {
+                    List<String> filters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedImageTemplateWindowsUpdateCustomizer.filters = filters;
+                } else if ("updateLimit".equals(fieldName)) {
+                    deserializedImageTemplateWindowsUpdateCustomizer.updateLimit
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateWindowsUpdateCustomizer;
+        });
     }
 }

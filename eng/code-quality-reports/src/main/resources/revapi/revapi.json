@@ -578,9 +578,9 @@
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
-          "old": ".*? com\\.azure\\.resourcemanager\\.(cosmos|network|mobilenetwork)\\.models.*",
-          "justification": "Jackson annotation changed."
+          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded|removed)",
+          "old": ".*? com\\.azure\\.resourcemanager\\..*\\.models.*",
+          "justification": "Migration to azure-json."
         },
         {
           "regex": true,
