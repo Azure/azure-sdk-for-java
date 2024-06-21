@@ -3,15 +3,23 @@
 
 package com.azure.communication.callingserver.models;
 
+import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
 import java.time.Duration;
 
 /** The RecognizeConfigurations model. */
 @Fluent
-public final class RecognizeConfigurations {
+public final class RecognizeConfigurations implements JsonSerializable<RecognizeConfigurations> {
     /*
      * Determines if we interrupt the prompt and start recognizing.
      */
@@ -115,5 +123,54 @@ public final class RecognizeConfigurations {
     public RecognizeConfigurations setDtmfConfigurations(DtmfConfigurations dtmfConfigurations) {
         this.dtmfConfigurations = dtmfConfigurations;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("interruptPromptAndStartRecognition", this.interruptPromptAndStartRecognition);
+        jsonWriter.writeStringField("initialSilenceTimeoutInSeconds", CoreUtils.durationToStringWithDays(initialSilenceTimeoutInSeconds));
+        final CommunicationIdentifierModel participant = CommunicationIdentifierConverter.convert(this.targetParticipant);
+        // TODO: (anu): Fix this
+        // jsonWriter.writeJsonField("targetParticipant", participant);
+        jsonWriter.writeJsonField("dtmfConfigurations", dtmfConfigurations);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecognizeConfigurations from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecognizeConfigurations if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecognizeConfigurations.
+     */
+    public static RecognizeConfigurations fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final RecognizeConfigurations source = new RecognizeConfigurations();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("interruptPromptAndStartRecognition".equals(fieldName)) {
+                    source.interruptPromptAndStartRecognition = reader.getNullable(JsonReader::getBoolean);
+                } else if ("initialSilenceTimeoutInSeconds".equals(fieldName)) {
+                    final String value = reader.getString();
+                    source.initialSilenceTimeoutInSeconds = Duration.parse(value);
+                } else if ("targetParticipant".equals(fieldName)) {
+                    source.targetParticipant = null;
+                    // TODO: (anu): Fix this
+                    // final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
+                    // source.targetParticipant = CommunicationIdentifierConverter.convert(inner);
+                } else if ("dtmfConfigurations".equals(fieldName)) {
+                    source.dtmfConfigurations = DtmfConfigurations.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return source;
+        });
     }
 }
