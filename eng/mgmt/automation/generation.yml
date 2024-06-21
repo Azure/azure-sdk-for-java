@@ -3,7 +3,7 @@ trigger: none
 pr: none
 
 pool:
-  vmImage: 'macOS-13'
+  vmImage: 'ubuntu-20.04'
 
 variables:
 - group: Release Secrets for GitHub
@@ -62,19 +62,11 @@ steps:
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
   parameters:
     PRBranchName: fluent-lite-generation-$(Build.BuildId)
-    CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
-    PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
+    ${{ if eq(true, $[variables.fromTypeSpec]) }}:
+      CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
+      PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
+    ${{ else }}:
+      CommitMsg: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
+      PRTitle: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
     PRLabels: 'Mgmt - Track 2'
     OpenAsDraft: '$(DRAFT_PULL_REQUEST)'
-  displayName: Create PR for TypeSpec CodeGen
-  condition: eq(variables.fromTypeSpec, true)
-
-- template: /eng/common/pipelines/templates/steps/create-pull-request.yml
-  parameters:
-    PRBranchName: fluent-lite-generation-$(Build.BuildId)
-    CommitMsg: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
-    PRTitle: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
-    PRLabels: 'Mgmt - Track 2'
-    OpenAsDraft: '$(DRAFT_PULL_REQUEST)'
-  displayName: Create PR for Swagger CodeGen
-  condition: eq(variables.fromTypeSpec, false)
