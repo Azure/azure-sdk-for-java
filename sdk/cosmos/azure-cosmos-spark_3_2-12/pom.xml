@@ -514,6 +514,12 @@
                       </includes>
                     </filter>
                     <filter>
+                      <artifact>com.azure:azure-cosmos-test</artifact>
+                      <includes>
+                        <include>**</include>
+                      </includes>
+                    </filter>
+                    <filter>
                       <artifact>*:*</artifact>
                       <excludes>
                         <!-- suppress warning: Discovered module-info.class. Shading will break its strong encapsulation. -->
