@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: deviceregistry
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-deviceregistry
         groupId: com.azure.resourcemanager

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -73,7 +73,7 @@ public class CopySink {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "CopySink";
 
     /*
      * Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
@@ -82,7 +82,8 @@ public class CopySink {
     private Object writeBatchSize;
 
     /*
-     * Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Write batch timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "writeBatchTimeout")
     private Object writeBatchTimeout;
@@ -94,19 +95,22 @@ public class CopySink {
     private Object sinkRetryCount;
 
     /*
-     * Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Sink retry wait. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "sinkRetryWait")
     private Object sinkRetryWait;
 
     /*
-     * The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
+     * The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType
+     * integer).
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
 
     /*
-     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
+     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "disableMetricsCollection")
     private Object disableMetricsCollection;
@@ -121,7 +125,6 @@ public class CopySink {
      * Creates an instance of CopySink class.
      */
     public CopySink() {
-        this.type = "CopySink";
     }
 
     /**
@@ -287,7 +290,7 @@ public class CopySink {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

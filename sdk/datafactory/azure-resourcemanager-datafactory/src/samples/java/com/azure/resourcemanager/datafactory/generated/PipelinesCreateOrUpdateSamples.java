@@ -29,7 +29,8 @@ import java.util.Map;
  */
 public final class PipelinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Create.json
      */
     /**
      * Sample code: Pipelines_Create.
@@ -70,7 +71,8 @@ public final class PipelinesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Update.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Pipelines_Update.json
      */
     /**
      * Sample code: Pipelines_Update.

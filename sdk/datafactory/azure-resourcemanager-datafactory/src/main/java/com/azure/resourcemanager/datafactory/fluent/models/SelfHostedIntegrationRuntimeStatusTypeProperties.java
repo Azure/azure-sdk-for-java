@@ -32,7 +32,8 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
     private String taskQueueId;
 
     /*
-     * It is used to set the encryption mode for node-node communication channel (when more than 2 self-hosted integration runtime nodes exist).
+     * It is used to set the encryption mode for node-node communication channel (when more than 2 self-hosted
+     * integration runtime nodes exist).
      */
     @JsonProperty(value = "internalChannelEncryption", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeInternalChannelEncryptionMode internalChannelEncryption;
@@ -117,7 +118,8 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
     private OffsetDateTime autoUpdateEta;
 
     /*
-     * An alternative option to ensure interactive authoring function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     * An alternative option to ensure interactive authoring function when your self-hosted integration runtime is
+     * unable to establish a connection with Azure Relay.
      */
     @JsonProperty(value = "selfContainedInteractiveAuthoringEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean selfContainedInteractiveAuthoringEnabled;

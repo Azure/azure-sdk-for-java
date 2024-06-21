@@ -5,29 +5,36 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The viewport that covers the result represented by the top-left and bottom-right coordinates of the viewport. */
+/**
+ * The viewport that covers the result represented by the top-left and bottom-right coordinates of the viewport.
+ */
 @Fluent
-public final class BoundingBoxPrivate {
+public final class BoundingBoxPrivate implements JsonSerializable<BoundingBoxPrivate> {
     /*
      * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
-    @JsonProperty(value = "topLeftPoint")
     private LatLongPairAbbreviated topLeft;
 
     /*
      * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
-    @JsonProperty(value = "btmRightPoint")
     private LatLongPairAbbreviated bottomRight;
 
-    /** Creates an instance of BoundingBoxPrivate class. */
-    public BoundingBoxPrivate() {}
+    /**
+     * Creates an instance of BoundingBoxPrivate class.
+     */
+    public BoundingBoxPrivate() {
+    }
 
     /**
      * Get the topLeft property: A location represented as a latitude and longitude using short names 'lat' &amp; 'lon'.
-     *
+     * 
      * @return the topLeft value.
      */
     public LatLongPairAbbreviated getTopLeft() {
@@ -36,7 +43,7 @@ public final class BoundingBoxPrivate {
 
     /**
      * Set the topLeft property: A location represented as a latitude and longitude using short names 'lat' &amp; 'lon'.
-     *
+     * 
      * @param topLeft the topLeft value to set.
      * @return the BoundingBoxPrivate object itself.
      */
@@ -48,7 +55,7 @@ public final class BoundingBoxPrivate {
     /**
      * Get the bottomRight property: A location represented as a latitude and longitude using short names 'lat' &amp;
      * 'lon'.
-     *
+     * 
      * @return the bottomRight value.
      */
     public LatLongPairAbbreviated getBottomRight() {
@@ -58,12 +65,51 @@ public final class BoundingBoxPrivate {
     /**
      * Set the bottomRight property: A location represented as a latitude and longitude using short names 'lat' &amp;
      * 'lon'.
-     *
+     * 
      * @param bottomRight the bottomRight value to set.
      * @return the BoundingBoxPrivate object itself.
      */
     public BoundingBoxPrivate setBottomRight(LatLongPairAbbreviated bottomRight) {
         this.bottomRight = bottomRight;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("topLeftPoint", this.topLeft);
+        jsonWriter.writeJsonField("btmRightPoint", this.bottomRight);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BoundingBoxPrivate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BoundingBoxPrivate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BoundingBoxPrivate.
+     */
+    public static BoundingBoxPrivate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BoundingBoxPrivate deserializedBoundingBoxPrivate = new BoundingBoxPrivate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("topLeftPoint".equals(fieldName)) {
+                    deserializedBoundingBoxPrivate.topLeft = LatLongPairAbbreviated.fromJson(reader);
+                } else if ("btmRightPoint".equals(fieldName)) {
+                    deserializedBoundingBoxPrivate.bottomRight = LatLongPairAbbreviated.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBoundingBoxPrivate;
+        });
     }
 }

@@ -17,40 +17,30 @@ public final class TriggerListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TriggerListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"kb\",\"description\":\"rj\",\"runtimeState\":\"Started\",\"annotations\":[\"datacmisofie\"],\"\":{\"qdhcu\":\"datafoj\",\"khihihlhzds\":\"datalcplc\",\"mvec\":\"datatzbsrgnowcjhf\"}},\"name\":\"txmwoteyow\",\"type\":\"uqovekqvgqouwif\",\"etag\":\"pjwyiv\",\"id\":\"kfxcvhrfs\"},{\"properties\":{\"type\":\"uagrttikteusqc\",\"description\":\"vyklxuby\",\"runtimeState\":\"Started\",\"annotations\":[\"datamfblcqcuubg\",\"dataibrta\",\"datametttwgd\",\"datalqxihhrmooiz\"],\"\":{\"hyrpetogebjoxs\":\"dataypxiutcxap\",\"abrqnkkzj\":\"datahvnh\",\"rgaehvvibrxjj\":\"datajb\",\"lftidgfcwqmpim\":\"datatoqbeitpkxztmoob\"}},\"name\":\"xzhemjyh\",\"type\":\"uj\",\"etag\":\"t\",\"id\":\"ozzwculkba\"},{\"properties\":{\"type\":\"fajnjwltlwtjjguk\",\"description\":\"lhsnvkcdmx\",\"runtimeState\":\"Started\",\"annotations\":[\"dataimlnwiaaomylw\",\"dataazul\",\"datasethwwn\"],\"\":{\"zswpchwa\":\"datal\"}},\"name\":\"bousn\",\"type\":\"pgfewetwlyx\",\"etag\":\"cxy\",\"id\":\"hdjhlimmbcx\"},{\"properties\":{\"type\":\"bcporxvxcjzhqizx\",\"description\":\"xtgqscjavftjuh\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datamtggu\"],\"\":{\"ghfcfiwrxgkneuvy\":\"datajrajcivm\"}},\"name\":\"zqodfvpgshox\",\"type\":\"gbpfgz\",\"etag\":\"tx\",\"id\":\"flbqvgaq\"}],\"nextLink\":\"gafcqu\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"Trigger\",\"description\":\"nifmzzsdymbrnysu\",\"runtimeState\":\"Stopped\",\"annotations\":[\"datafwgckhocxvdfffw\"],\"\":{\"spave\":\"dataroud\",\"bunzozudh\":\"datahrv\"}},\"name\":\"gkmoyxcdyuibhmfd\",\"type\":\"zydvfvf\",\"etag\":\"naeo\",\"id\":\"rvhmgor\"},{\"properties\":{\"type\":\"Trigger\",\"description\":\"ukiscvwmzhw\",\"runtimeState\":\"Disabled\",\"annotations\":[\"dataxvxilcbtg\"],\"\":{\"vodggxdbee\":\"datazeyqxtjjfzqlqhyc\",\"wiuagydwqf\":\"datamieknlraria\",\"ocqwogfnzjvus\":\"dataylyrfgiagtco\"}},\"name\":\"ld\",\"type\":\"zuxylfsbtkadpyso\",\"etag\":\"btgkbugrjqctoj\",\"id\":\"isofieypefojyqd\"}],\"nextLink\":\"u\"}")
             .toObject(TriggerListResponse.class);
-        Assertions.assertEquals("kfxcvhrfs", model.value().get(0).id());
-        Assertions.assertEquals("rj", model.value().get(0).properties().description());
-        Assertions.assertEquals("gafcqu", model.nextLink());
+        Assertions.assertEquals("rvhmgor", model.value().get(0).id());
+        Assertions.assertEquals("nifmzzsdymbrnysu", model.value().get(0).properties().description());
+        Assertions.assertEquals("u", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TriggerListResponse model
-            = new TriggerListResponse()
-                .withValue(Arrays.asList(
-                    new TriggerResourceInner().withId("kfxcvhrfs")
-                        .withProperties(new Trigger().withDescription("rj")
-                            .withAnnotations(Arrays.asList("datacmisofie"))
-                            .withAdditionalProperties(mapOf("type", "kb", "runtimeState", "Started"))),
-                    new TriggerResourceInner().withId("ozzwculkba")
-                        .withProperties(new Trigger().withDescription("vyklxuby")
-                            .withAnnotations(
-                                Arrays.asList("datamfblcqcuubg", "dataibrta", "datametttwgd", "datalqxihhrmooiz"))
-                            .withAdditionalProperties(mapOf("type", "uagrttikteusqc", "runtimeState", "Started"))),
-                    new TriggerResourceInner().withId("hdjhlimmbcx")
-                        .withProperties(new Trigger().withDescription("lhsnvkcdmx")
-                            .withAnnotations(Arrays.asList("dataimlnwiaaomylw", "dataazul", "datasethwwn"))
-                            .withAdditionalProperties(mapOf("type", "fajnjwltlwtjjguk", "runtimeState", "Started"))),
-                    new TriggerResourceInner().withId("flbqvgaq")
-                        .withProperties(new Trigger().withDescription("xtgqscjavftjuh")
-                            .withAnnotations(Arrays.asList("datamtggu"))
-                            .withAdditionalProperties(mapOf("type", "bcporxvxcjzhqizx", "runtimeState", "Disabled")))))
-                .withNextLink("gafcqu");
+        TriggerListResponse model = new TriggerListResponse()
+            .withValue(Arrays.asList(
+                new TriggerResourceInner().withId("rvhmgor")
+                    .withProperties(new Trigger().withDescription("nifmzzsdymbrnysu")
+                        .withAnnotations(Arrays.asList("datafwgckhocxvdfffw"))
+                        .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Stopped"))),
+                new TriggerResourceInner().withId("isofieypefojyqd")
+                    .withProperties(new Trigger().withDescription("ukiscvwmzhw")
+                        .withAnnotations(Arrays.asList("dataxvxilcbtg"))
+                        .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Disabled")))))
+            .withNextLink("u");
         model = BinaryData.fromObject(model).toObject(TriggerListResponse.class);
-        Assertions.assertEquals("kfxcvhrfs", model.value().get(0).id());
-        Assertions.assertEquals("rj", model.value().get(0).properties().description());
-        Assertions.assertEquals("gafcqu", model.nextLink());
+        Assertions.assertEquals("rvhmgor", model.value().get(0).id());
+        Assertions.assertEquals("nifmzzsdymbrnysu", model.value().get(0).properties().description());
+        Assertions.assertEquals("u", model.nextLink());
     }
 
     // Use "Map.of" if available
