@@ -65,7 +65,7 @@ steps:
     ${{ if eq(variables['fromTypeSpec'], 'true') }}:
       CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
       PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
-    ${{ else if eq(variables['fromTypeSpec'], true) }}:
+    ${{ elseif eq(variables['fromTypeSpec'], true) }}:
       CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
       PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
     ${{ else }}:
