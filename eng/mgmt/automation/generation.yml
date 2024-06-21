@@ -51,6 +51,7 @@ steps:
 #     targetVersion: 1.0.0-dev.20230908.1
 
 - bash: |
+      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
       git clone git@github.com:Azure/azure-rest-api-specs.git
   workingDirectory: '$(Agent.TempDirectory)'
   displayName: 'Clone azure-rest-api-specs repo.'
