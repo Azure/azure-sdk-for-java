@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Detailed insights(s) obtained via the invocation of an insight diagnostic.
  */
 @Fluent
-public final class Insight {
+public final class Insight implements JsonSerializable<Insight> {
     /*
      * Article id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * This insight's title.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Detailed result content.
      */
-    @JsonProperty(value = "results")
     private String results;
 
     /*
      * Importance level of the insight.
      */
-    @JsonProperty(value = "importanceLevel")
     private ImportanceLevel importanceLevel;
 
     /**
@@ -128,5 +128,51 @@ public final class Insight {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("results", this.results);
+        jsonWriter.writeStringField("importanceLevel",
+            this.importanceLevel == null ? null : this.importanceLevel.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Insight from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Insight if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Insight.
+     */
+    public static Insight fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Insight deserializedInsight = new Insight();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedInsight.id = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedInsight.title = reader.getString();
+                } else if ("results".equals(fieldName)) {
+                    deserializedInsight.results = reader.getString();
+                } else if ("importanceLevel".equals(fieldName)) {
+                    deserializedInsight.importanceLevel = ImportanceLevel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInsight;
+        });
     }
 }
