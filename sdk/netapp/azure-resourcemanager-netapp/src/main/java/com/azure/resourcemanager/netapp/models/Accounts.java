@@ -150,6 +150,98 @@ public interface Accounts {
     void renewCredentials(String resourceGroupName, String accountName, Context context);
 
     /**
+     * Migrate volumes encryption key source.
+     * 
+     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
+     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void migrateEncryptionKey(String resourceGroupName, String accountName);
+
+    /**
+     * Migrate volumes encryption key source.
+     * 
+     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
+     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void migrateEncryptionKey(String resourceGroupName, String accountName, EncryptionMigrationRequest body,
+        Context context);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void getChangeKeyVaultInformation(String resourceGroupName, String accountName);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void getChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports MHSM to Key
+     * Vault, Key Vault to MHSM, MHSM to MHSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void changeKeyVault(String resourceGroupName, String accountName);
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports MHSM to Key
+     * Vault, Key Vault to MHSM, MHSM to MHSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void changeKeyVault(String resourceGroupName, String accountName, ChangeKeyVault body, Context context);
+
+    /**
      * Describe a NetApp Account
      * 
      * Get the NetApp account.

@@ -5,61 +5,57 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.VolumeBackups;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Backup policy properties.
  */
 @Fluent
-public final class BackupPolicyProperties {
+public final class BackupPolicyProperties implements JsonSerializable<BackupPolicyProperties> {
     /*
      * Backup Policy Resource ID
      */
-    @JsonProperty(value = "backupPolicyId", access = JsonProperty.Access.WRITE_ONLY)
     private String backupPolicyId;
 
     /*
      * Azure lifecycle management
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Daily backups count to keep
      */
-    @JsonProperty(value = "dailyBackupsToKeep")
     private Integer dailyBackupsToKeep;
 
     /*
      * Weekly backups count to keep
      */
-    @JsonProperty(value = "weeklyBackupsToKeep")
     private Integer weeklyBackupsToKeep;
 
     /*
      * Monthly backups count to keep
      */
-    @JsonProperty(value = "monthlyBackupsToKeep")
     private Integer monthlyBackupsToKeep;
 
     /*
      * Volumes using current backup policy
      */
-    @JsonProperty(value = "volumesAssigned", access = JsonProperty.Access.WRITE_ONLY)
     private Integer volumesAssigned;
 
     /*
      * The property to decide policy is enabled or not
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * A list of volumes assigned to this policy
      */
-    @JsonProperty(value = "volumeBackups", access = JsonProperty.Access.WRITE_ONLY)
     private List<VolumeBackups> volumeBackups;
 
     /**
@@ -193,5 +189,59 @@ public final class BackupPolicyProperties {
         if (volumeBackups() != null) {
             volumeBackups().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("dailyBackupsToKeep", this.dailyBackupsToKeep);
+        jsonWriter.writeNumberField("weeklyBackupsToKeep", this.weeklyBackupsToKeep);
+        jsonWriter.writeNumberField("monthlyBackupsToKeep", this.monthlyBackupsToKeep);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupPolicyProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupPolicyProperties.
+     */
+    public static BackupPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupPolicyProperties deserializedBackupPolicyProperties = new BackupPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupPolicyId".equals(fieldName)) {
+                    deserializedBackupPolicyProperties.backupPolicyId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedBackupPolicyProperties.provisioningState = reader.getString();
+                } else if ("dailyBackupsToKeep".equals(fieldName)) {
+                    deserializedBackupPolicyProperties.dailyBackupsToKeep = reader.getNullable(JsonReader::getInt);
+                } else if ("weeklyBackupsToKeep".equals(fieldName)) {
+                    deserializedBackupPolicyProperties.weeklyBackupsToKeep = reader.getNullable(JsonReader::getInt);
+                } else if ("monthlyBackupsToKeep".equals(fieldName)) {
+                    deserializedBackupPolicyProperties.monthlyBackupsToKeep = reader.getNullable(JsonReader::getInt);
+                } else if ("volumesAssigned".equals(fieldName)) {
+                    deserializedBackupPolicyProperties.volumesAssigned = reader.getNullable(JsonReader::getInt);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedBackupPolicyProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("volumeBackups".equals(fieldName)) {
+                    List<VolumeBackups> volumeBackups = reader.readArray(reader1 -> VolumeBackups.fromJson(reader1));
+                    deserializedBackupPolicyProperties.volumeBackups = volumeBackups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupPolicyProperties;
+        });
     }
 }

@@ -21,7 +21,7 @@ public final class BackupPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"tqjtwhauu\",\"properties\":{\"backupPolicyId\":\"prnjletlxsmr\",\"provisioningState\":\"do\",\"dailyBackupsToKeep\":453207888,\"weeklyBackupsToKeep\":2066157212,\"monthlyBackupsToKeep\":1329774917,\"volumesAssigned\":244946884,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"lqwzdvpiwhxqsz\",\"volumeResourceId\":\"maajquhuxylr\",\"backupsCount\":150383679,\"policyEnabled\":true},{\"volumeName\":\"jbmzyospspsh\",\"volumeResourceId\":\"fkyjpmspbpssdfpp\",\"backupsCount\":386298045,\"policyEnabled\":false},{\"volumeName\":\"yujtvczkcnyx\",\"volumeResourceId\":\"munjdxvglnkvx\",\"backupsCount\":460711183,\"policyEnabled\":true},{\"volumeName\":\"qivbgkcvkh\",\"volumeResourceId\":\"vuqd\",\"backupsCount\":2123906847,\"policyEnabled\":true}]},\"location\":\"yp\",\"tags\":{\"knidib\":\"bcpzgpxtivh\",\"kqmhhaowjr\":\"qjxgpnrhgovfgp\",\"kfvxcnq\":\"zvuporqzdfuydz\"},\"id\":\"xqpswok\",\"name\":\"vkhlggdhbemz\",\"type\":\"kzsz\"}";
+            = "{\"etag\":\"vnekhenlusfnrdtj\",\"properties\":{\"backupPolicyId\":\"xrdcqtj\",\"provisioningState\":\"dt\",\"dailyBackupsToKeep\":695049640,\"weeklyBackupsToKeep\":1779546866,\"monthlyBackupsToKeep\":818370137,\"volumesAssigned\":2099497391,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"wkasiziesf\",\"volumeResourceId\":\"ghtuqfecjxey\",\"backupsCount\":828769902,\"policyEnabled\":false},{\"volumeName\":\"ic\",\"volumeResourceId\":\"ewmrswnjlxu\",\"backupsCount\":1716042675,\"policyEnabled\":false},{\"volumeName\":\"sxjb\",\"volumeResourceId\":\"ehgpdohzjqatu\",\"backupsCount\":1160823097,\"policyEnabled\":false},{\"volumeName\":\"xncnwfe\",\"volumeResourceId\":\"nwgfmxjgcgbjbgd\",\"backupsCount\":197594994,\"policyEnabled\":false}]},\"location\":\"snaquf\",\"tags\":{\"zeqyjleziun\":\"ctqhamzjrwdk\",\"eg\":\"xdfzantkw\",\"uooqjagmdit\":\"amlbnseqacjjvpil\"},\"id\":\"ueio\",\"name\":\"kjbsah\",\"type\":\"tdtpdelqacslmo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class BackupPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BackupPolicy response = manager.backupPolicies()
-            .getWithResponse("mfcttux", "uyilflqoiquvrehm", "njhvsujztc", com.azure.core.util.Context.NONE)
+            .getWithResponse("pngajin", "ixjawrtm", "fjmyccxlzhco", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yp", response.location());
-        Assertions.assertEquals("bcpzgpxtivh", response.tags().get("knidib"));
-        Assertions.assertEquals(453207888, response.dailyBackupsToKeep());
-        Assertions.assertEquals(2066157212, response.weeklyBackupsToKeep());
-        Assertions.assertEquals(1329774917, response.monthlyBackupsToKeep());
+        Assertions.assertEquals("snaquf", response.location());
+        Assertions.assertEquals("ctqhamzjrwdk", response.tags().get("zeqyjleziun"));
+        Assertions.assertEquals(695049640, response.dailyBackupsToKeep());
+        Assertions.assertEquals(1779546866, response.weeklyBackupsToKeep());
+        Assertions.assertEquals(818370137, response.monthlyBackupsToKeep());
         Assertions.assertEquals(false, response.enabled());
     }
 }

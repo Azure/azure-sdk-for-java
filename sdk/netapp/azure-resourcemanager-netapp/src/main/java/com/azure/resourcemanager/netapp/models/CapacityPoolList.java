@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.fluent.models.CapacityPoolInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of capacity pool resources.
  */
 @Fluent
-public final class CapacityPoolList {
+public final class CapacityPoolList implements JsonSerializable<CapacityPoolList> {
     /*
      * List of Capacity pools
      */
-    @JsonProperty(value = "value")
     private List<CapacityPoolInner> value;
 
     /*
      * URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,45 @@ public final class CapacityPoolList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapacityPoolList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapacityPoolList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapacityPoolList.
+     */
+    public static CapacityPoolList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapacityPoolList deserializedCapacityPoolList = new CapacityPoolList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CapacityPoolInner> value = reader.readArray(reader1 -> CapacityPoolInner.fromJson(reader1));
+                    deserializedCapacityPoolList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCapacityPoolList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapacityPoolList;
+        });
     }
 }

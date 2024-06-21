@@ -6,30 +6,32 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Restore payload for Single File Backup Restore.
  */
 @Fluent
-public final class BackupRestoreFiles {
+public final class BackupRestoreFiles implements JsonSerializable<BackupRestoreFiles> {
     /*
      * List of files to be restored
      */
-    @JsonProperty(value = "fileList", required = true)
     private List<String> fileList;
 
     /*
-     * Destination folder where the files will be restored. The path name should start with a forward slash. If it is omitted from request then restore is done at the root folder of the destination volume by default
+     * Destination folder where the files will be restored. The path name should start with a forward slash. If it is
+     * omitted from request then restore is done at the root folder of the destination volume by default
      */
-    @JsonProperty(value = "restoreFilePath")
     private String restoreFilePath;
 
     /*
      * Resource Id of the destination volume on which the files need to be restored
      */
-    @JsonProperty(value = "destinationVolumeId", required = true)
     private String destinationVolumeId;
 
     /**
@@ -122,4 +124,48 @@ public final class BackupRestoreFiles {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackupRestoreFiles.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("fileList", this.fileList, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("destinationVolumeId", this.destinationVolumeId);
+        jsonWriter.writeStringField("restoreFilePath", this.restoreFilePath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupRestoreFiles from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupRestoreFiles if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupRestoreFiles.
+     */
+    public static BackupRestoreFiles fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupRestoreFiles deserializedBackupRestoreFiles = new BackupRestoreFiles();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fileList".equals(fieldName)) {
+                    List<String> fileList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBackupRestoreFiles.fileList = fileList;
+                } else if ("destinationVolumeId".equals(fieldName)) {
+                    deserializedBackupRestoreFiles.destinationVolumeId = reader.getString();
+                } else if ("restoreFilePath".equals(fieldName)) {
+                    deserializedBackupRestoreFiles.restoreFilePath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupRestoreFiles;
+        });
+    }
 }

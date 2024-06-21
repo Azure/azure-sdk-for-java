@@ -12,18 +12,16 @@ import java.util.List;
  */
 public interface NetworkSiblingSet {
     /**
-     * Gets the networkSiblingSetId property: Network Sibling Set ID
-     * 
-     * Network Sibling Set ID for a group of volumes sharing networking resources in a subnet.
+     * Gets the networkSiblingSetId property: Network Sibling Set ID for a group of volumes sharing networking resources
+     * in a subnet.
      * 
      * @return the networkSiblingSetId value.
      */
     String networkSiblingSetId();
 
     /**
-     * Gets the subnetId property: Subnet resource Id
-     * 
-     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
+     * Gets the subnetId property: The Azure Resource URI for a delegated subnet. Must have the delegation
+     * Microsoft.NetApp/volumes. Example
      * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}.
      * 
      * @return the subnetId value.
@@ -31,18 +29,15 @@ public interface NetworkSiblingSet {
     String subnetId();
 
     /**
-     * Gets the networkSiblingSetStateId property: Network sibling set state Id
-     * 
-     * Network sibling set state Id identifying the current state of the sibling set.
+     * Gets the networkSiblingSetStateId property: Network sibling set state Id identifying the current state of the
+     * sibling set.
      * 
      * @return the networkSiblingSetStateId value.
      */
     String networkSiblingSetStateId();
 
     /**
-     * Gets the networkFeatures property: Network features
-     * 
-     * Network features available to the volume, or current state of update.
+     * Gets the networkFeatures property: Network features available to the volume, or current state of update.
      * 
      * @return the networkFeatures value.
      */

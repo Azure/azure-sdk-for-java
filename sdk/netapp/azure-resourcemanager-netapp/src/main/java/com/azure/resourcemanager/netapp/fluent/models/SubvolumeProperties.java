@@ -5,41 +5,35 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * This represents path associated with the subvolume.
  */
 @Fluent
-public final class SubvolumeProperties {
+public final class SubvolumeProperties implements JsonSerializable<SubvolumeProperties> {
     /*
-     * path
-     * 
      * Path to the subvolume
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
-     * size
-     * 
      * Truncate subvolume to the provided size in bytes
      */
-    @JsonProperty(value = "size")
     private Long size;
 
     /*
-     * name
-     * 
      * parent path to the subvolume
      */
-    @JsonProperty(value = "parentPath")
     private String parentPath;
 
     /*
      * Azure lifecycle management
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
@@ -49,9 +43,7 @@ public final class SubvolumeProperties {
     }
 
     /**
-     * Get the path property: path
-     * 
-     * Path to the subvolume.
+     * Get the path property: Path to the subvolume.
      * 
      * @return the path value.
      */
@@ -60,9 +52,7 @@ public final class SubvolumeProperties {
     }
 
     /**
-     * Set the path property: path
-     * 
-     * Path to the subvolume.
+     * Set the path property: Path to the subvolume.
      * 
      * @param path the path value to set.
      * @return the SubvolumeProperties object itself.
@@ -73,9 +63,7 @@ public final class SubvolumeProperties {
     }
 
     /**
-     * Get the size property: size
-     * 
-     * Truncate subvolume to the provided size in bytes.
+     * Get the size property: Truncate subvolume to the provided size in bytes.
      * 
      * @return the size value.
      */
@@ -84,9 +72,7 @@ public final class SubvolumeProperties {
     }
 
     /**
-     * Set the size property: size
-     * 
-     * Truncate subvolume to the provided size in bytes.
+     * Set the size property: Truncate subvolume to the provided size in bytes.
      * 
      * @param size the size value to set.
      * @return the SubvolumeProperties object itself.
@@ -97,9 +83,7 @@ public final class SubvolumeProperties {
     }
 
     /**
-     * Get the parentPath property: name
-     * 
-     * parent path to the subvolume.
+     * Get the parentPath property: parent path to the subvolume.
      * 
      * @return the parentPath value.
      */
@@ -108,9 +92,7 @@ public final class SubvolumeProperties {
     }
 
     /**
-     * Set the parentPath property: name
-     * 
-     * parent path to the subvolume.
+     * Set the parentPath property: parent path to the subvolume.
      * 
      * @param parentPath the parentPath value to set.
      * @return the SubvolumeProperties object itself.
@@ -135,5 +117,49 @@ public final class SubvolumeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeStringField("parentPath", this.parentPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubvolumeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubvolumeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubvolumeProperties.
+     */
+    public static SubvolumeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubvolumeProperties deserializedSubvolumeProperties = new SubvolumeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedSubvolumeProperties.path = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedSubvolumeProperties.size = reader.getNullable(JsonReader::getLong);
+                } else if ("parentPath".equals(fieldName)) {
+                    deserializedSubvolumeProperties.parentPath = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSubvolumeProperties.provisioningState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubvolumeProperties;
+        });
     }
 }

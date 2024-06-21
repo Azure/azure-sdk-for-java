@@ -5,43 +5,42 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Replication status.
  */
 @Fluent
-public final class ReplicationStatusInner {
+public final class ReplicationStatusInner implements JsonSerializable<ReplicationStatusInner> {
     /*
      * Replication health check
      */
-    @JsonProperty(value = "healthy")
     private Boolean healthy;
 
     /*
      * Status of the mirror relationship
      */
-    @JsonProperty(value = "relationshipStatus")
     private RelationshipStatus relationshipStatus;
 
     /*
      * The status of the replication
      */
-    @JsonProperty(value = "mirrorState")
     private MirrorState mirrorState;
 
     /*
      * The progress of the replication
      */
-    @JsonProperty(value = "totalProgress")
     private String totalProgress;
 
     /*
      * Displays error message if the replication is in an error state
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /**
@@ -156,5 +155,55 @@ public final class ReplicationStatusInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("healthy", this.healthy);
+        jsonWriter.writeStringField("relationshipStatus",
+            this.relationshipStatus == null ? null : this.relationshipStatus.toString());
+        jsonWriter.writeStringField("mirrorState", this.mirrorState == null ? null : this.mirrorState.toString());
+        jsonWriter.writeStringField("totalProgress", this.totalProgress);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationStatusInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationStatusInner.
+     */
+    public static ReplicationStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationStatusInner deserializedReplicationStatusInner = new ReplicationStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("healthy".equals(fieldName)) {
+                    deserializedReplicationStatusInner.healthy = reader.getNullable(JsonReader::getBoolean);
+                } else if ("relationshipStatus".equals(fieldName)) {
+                    deserializedReplicationStatusInner.relationshipStatus
+                        = RelationshipStatus.fromString(reader.getString());
+                } else if ("mirrorState".equals(fieldName)) {
+                    deserializedReplicationStatusInner.mirrorState = MirrorState.fromString(reader.getString());
+                } else if ("totalProgress".equals(fieldName)) {
+                    deserializedReplicationStatusInner.totalProgress = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedReplicationStatusInner.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationStatusInner;
+        });
     }
 }

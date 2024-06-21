@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class RelationshipStatus extends ExpandableStringEnum<RelationshipS
      * @param name a name to look for.
      * @return the corresponding RelationshipStatus.
      */
-    @JsonCreator
     public static RelationshipStatus fromString(String name) {
         return fromString(name, RelationshipStatus.class);
     }

@@ -10,10 +10,12 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
+import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
@@ -21,6 +23,7 @@ import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
+import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
@@ -30,7 +33,9 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
+import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.Volume;
+import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
@@ -169,6 +174,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumePropertiesDataProtection dataProtection() {
         return this.innerModel().dataProtection();
+    }
+
+    public AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit() {
+        return this.innerModel().acceptGrowCapacityPoolForShortTermCloneSplit();
     }
 
     public Boolean isRestoring() {
@@ -325,6 +334,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().originatingResourceId();
     }
 
+    public Long inheritedSizeInBytes() {
+        return this.innerModel().inheritedSizeInBytes();
+    }
+
+    public VolumeLanguage language() {
+        return this.innerModel().language();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -451,6 +468,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
+    public void splitCloneFromParent() {
+        serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void splitCloneFromParent(Context context) {
+        serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
     public void breakFileLocks() {
         serviceManager.volumes().breakFileLocks(resourceGroupName, accountName, poolName, volumeName);
     }
@@ -526,6 +551,44 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public void reInitializeReplication(Context context) {
         serviceManager.volumes().reInitializeReplication(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public ClusterPeerCommandResponse peerClusterForOnPremMigration(PeerClusterForVolumeMigrationRequest body) {
+        return serviceManager.volumes()
+            .peerClusterForOnPremMigration(resourceGroupName, accountName, poolName, volumeName, body);
+    }
+
+    public ClusterPeerCommandResponse peerClusterForOnPremMigration(PeerClusterForVolumeMigrationRequest body,
+        Context context) {
+        return serviceManager.volumes()
+            .peerClusterForOnPremMigration(resourceGroupName, accountName, poolName, volumeName, body, context);
+    }
+
+    public SvmPeerCommandResponse createOnPremMigrationReplication() {
+        return serviceManager.volumes()
+            .createOnPremMigrationReplication(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public SvmPeerCommandResponse createOnPremMigrationReplication(Context context) {
+        return serviceManager.volumes()
+            .createOnPremMigrationReplication(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public void finalizeOnPremMigration() {
+        serviceManager.volumes().finalizeOnPremMigration(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void finalizeOnPremMigration(Context context) {
+        serviceManager.volumes().finalizeOnPremMigration(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public void performReplicationTransfer() {
+        serviceManager.volumes().performReplicationTransfer(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void performReplicationTransfer(Context context) {
+        serviceManager.volumes()
+            .performReplicationTransfer(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void poolChange(PoolChangeRequest body) {
@@ -616,8 +679,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withProtocolTypes(List<String> protocolTypes) {
-        this.innerModel().withProtocolTypes(protocolTypes);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withProtocolTypes(protocolTypes);
+            return this;
+        } else {
+            this.updateBody.withProtocolTypes(protocolTypes);
+            return this;
+        }
     }
 
     public VolumeImpl withSnapshotId(String snapshotId) {
@@ -647,6 +715,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withDataProtection(VolumePropertiesDataProtection dataProtection) {
         this.innerModel().withDataProtection(dataProtection);
+        return this;
+    }
+
+    public VolumeImpl withAcceptGrowCapacityPoolForShortTermCloneSplit(
+        AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit) {
+        this.innerModel()
+            .withAcceptGrowCapacityPoolForShortTermCloneSplit(acceptGrowCapacityPoolForShortTermCloneSplit);
         return this;
     }
 
@@ -832,6 +907,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withIsLargeVolume(Boolean isLargeVolume) {
         this.innerModel().withIsLargeVolume(isLargeVolume);
+        return this;
+    }
+
+    public VolumeImpl withLanguage(VolumeLanguage language) {
+        this.innerModel().withLanguage(language);
         return this;
     }
 

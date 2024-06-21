@@ -7,7 +7,10 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Subvolume Information properties.
@@ -17,14 +20,27 @@ public final class SubvolumeInfoInner extends ProxyResource {
     /*
      * Subvolume Properties
      */
-    @JsonProperty(value = "properties")
     private SubvolumeProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of SubvolumeInfoInner class.
@@ -51,9 +67,37 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the path property: path
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * Path to the subvolume.
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the path property: Path to the subvolume.
      * 
      * @return the path value.
      */
@@ -62,9 +106,7 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the path property: path
-     * 
-     * Path to the subvolume.
+     * Set the path property: Path to the subvolume.
      * 
      * @param path the path value to set.
      * @return the SubvolumeInfoInner object itself.
@@ -78,9 +120,7 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the size property: size
-     * 
-     * Truncate subvolume to the provided size in bytes.
+     * Get the size property: Truncate subvolume to the provided size in bytes.
      * 
      * @return the size value.
      */
@@ -89,9 +129,7 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the size property: size
-     * 
-     * Truncate subvolume to the provided size in bytes.
+     * Set the size property: Truncate subvolume to the provided size in bytes.
      * 
      * @param size the size value to set.
      * @return the SubvolumeInfoInner object itself.
@@ -105,9 +143,7 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Get the parentPath property: name
-     * 
-     * parent path to the subvolume.
+     * Get the parentPath property: parent path to the subvolume.
      * 
      * @return the parentPath value.
      */
@@ -116,9 +152,7 @@ public final class SubvolumeInfoInner extends ProxyResource {
     }
 
     /**
-     * Set the parentPath property: name
-     * 
-     * parent path to the subvolume.
+     * Set the parentPath property: parent path to the subvolume.
      * 
      * @param parentPath the parentPath value to set.
      * @return the SubvolumeInfoInner object itself.
@@ -149,5 +183,50 @@ public final class SubvolumeInfoInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubvolumeInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubvolumeInfoInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubvolumeInfoInner.
+     */
+    public static SubvolumeInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubvolumeInfoInner deserializedSubvolumeInfoInner = new SubvolumeInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSubvolumeInfoInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSubvolumeInfoInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSubvolumeInfoInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSubvolumeInfoInner.innerProperties = SubvolumeProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSubvolumeInfoInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubvolumeInfoInner;
+        });
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * revert a volume to the snapshot.
  */
 @Fluent
-public final class VolumeRevert {
+public final class VolumeRevert implements JsonSerializable<VolumeRevert> {
     /*
      * Resource id of the snapshot
      */
-    @JsonProperty(value = "snapshotId")
     private String snapshotId;
 
     /**
@@ -50,5 +53,41 @@ public final class VolumeRevert {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("snapshotId", this.snapshotId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeRevert from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeRevert if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeRevert.
+     */
+    public static VolumeRevert fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeRevert deserializedVolumeRevert = new VolumeRevert();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("snapshotId".equals(fieldName)) {
+                    deserializedVolumeRevert.snapshotId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeRevert;
+        });
     }
 }

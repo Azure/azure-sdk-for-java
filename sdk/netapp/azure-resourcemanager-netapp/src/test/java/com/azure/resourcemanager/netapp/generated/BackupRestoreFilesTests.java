@@ -13,21 +13,22 @@ public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupRestoreFiles model = BinaryData.fromString(
-            "{\"fileList\":[\"eewchpxlktw\",\"uziycsl\",\"vu\"],\"restoreFilePath\":\"ztcktyh\",\"destinationVolumeId\":\"tqedcgzulwm\"}")
+            "{\"fileList\":[\"hocxvdfffwafqrou\",\"aspavehhr\",\"kbunzoz\",\"dhcxgkmoy\"],\"restoreFilePath\":\"dyuib\",\"destinationVolumeId\":\"mfdn\"}")
             .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("eewchpxlktw", model.fileList().get(0));
-        Assertions.assertEquals("ztcktyh", model.restoreFilePath());
-        Assertions.assertEquals("tqedcgzulwm", model.destinationVolumeId());
+        Assertions.assertEquals("hocxvdfffwafqrou", model.fileList().get(0));
+        Assertions.assertEquals("dyuib", model.restoreFilePath());
+        Assertions.assertEquals("mfdn", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model = new BackupRestoreFiles().withFileList(Arrays.asList("eewchpxlktw", "uziycsl", "vu"))
-            .withRestoreFilePath("ztcktyh")
-            .withDestinationVolumeId("tqedcgzulwm");
+        BackupRestoreFiles model = new BackupRestoreFiles()
+            .withFileList(Arrays.asList("hocxvdfffwafqrou", "aspavehhr", "kbunzoz", "dhcxgkmoy"))
+            .withRestoreFilePath("dyuib")
+            .withDestinationVolumeId("mfdn");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("eewchpxlktw", model.fileList().get(0));
-        Assertions.assertEquals("ztcktyh", model.restoreFilePath());
-        Assertions.assertEquals("tqedcgzulwm", model.destinationVolumeId());
+        Assertions.assertEquals("hocxvdfffwafqrou", model.fileList().get(0));
+        Assertions.assertEquals("dyuib", model.restoreFilePath());
+        Assertions.assertEquals("mfdn", model.destinationVolumeId());
     }
 }

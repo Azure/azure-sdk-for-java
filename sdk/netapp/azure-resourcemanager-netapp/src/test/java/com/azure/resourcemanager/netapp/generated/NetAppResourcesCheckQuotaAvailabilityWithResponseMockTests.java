@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
     @Test
     public void testCheckQuotaAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"isAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"cto\"}";
+        String responseStr = "{\"isAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"srdvetn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CheckAvailabilityResponse response = manager.netAppResources()
-            .checkQuotaAvailabilityWithResponse("qwogfnzjvus",
-                new QuotaAvailabilityRequest().withName("zldmozuxy")
-                    .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS)
-                    .withResourceGroup("sbtkadpysownbtgk"),
-                com.azure.core.util.Context.NONE)
-            .getValue();
+        CheckAvailabilityResponse response
+            = manager.netAppResources()
+                .checkQuotaAvailabilityWithResponse("sgbpfgzdjtx", new QuotaAvailabilityRequest().withName("zflbqvg")
+                    .withType(
+                        CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS_VOLUMES_SNAPSHOTS)
+                    .withResourceGroup("vl"), com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals(true, response.isAvailable());
+        Assertions.assertEquals(false, response.isAvailable());
         Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("cto", response.message());
+        Assertions.assertEquals("srdvetn", response.message());
     }
 }

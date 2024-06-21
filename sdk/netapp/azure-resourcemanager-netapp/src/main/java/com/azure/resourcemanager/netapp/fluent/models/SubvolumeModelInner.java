@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Result of the post subvolume and action is to get metadata of the subvolume.
  */
 @Fluent
-public final class SubvolumeModelInner {
+public final class SubvolumeModelInner implements JsonSerializable<SubvolumeModelInner> {
     /*
      * Resource Id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * It represents the minimal properties of the subvolume.
      */
-    @JsonProperty(value = "properties")
     private SubvolumeModelProperties innerProperties;
 
     /**
@@ -80,9 +80,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the path property: path
-     * 
-     * Path to the subvolume.
+     * Get the path property: Path to the subvolume.
      * 
      * @return the path value.
      */
@@ -91,9 +89,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the path property: path
-     * 
-     * Path to the subvolume.
+     * Set the path property: Path to the subvolume.
      * 
      * @param path the path value to set.
      * @return the SubvolumeModelInner object itself.
@@ -107,9 +103,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the parentPath property: parentpath
-     * 
-     * Path to the parent subvolume.
+     * Get the parentPath property: Path to the parent subvolume.
      * 
      * @return the parentPath value.
      */
@@ -118,9 +112,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the parentPath property: parentpath
-     * 
-     * Path to the parent subvolume.
+     * Set the parentPath property: Path to the parent subvolume.
      * 
      * @param parentPath the parentPath value to set.
      * @return the SubvolumeModelInner object itself.
@@ -134,9 +126,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the size property: size
-     * 
-     * Size of subvolume.
+     * Get the size property: Size of subvolume.
      * 
      * @return the size value.
      */
@@ -145,9 +135,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the size property: size
-     * 
-     * Size of subvolume.
+     * Set the size property: Size of subvolume.
      * 
      * @param size the size value to set.
      * @return the SubvolumeModelInner object itself.
@@ -161,9 +149,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the bytesUsed property: bytesUsed
-     * 
-     * Bytes used.
+     * Get the bytesUsed property: Bytes used.
      * 
      * @return the bytesUsed value.
      */
@@ -172,9 +158,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the bytesUsed property: bytesUsed
-     * 
-     * Bytes used.
+     * Set the bytesUsed property: Bytes used.
      * 
      * @param bytesUsed the bytesUsed value to set.
      * @return the SubvolumeModelInner object itself.
@@ -188,9 +172,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the permissions property: permissions
-     * 
-     * Permissions of the subvolume.
+     * Get the permissions property: Permissions of the subvolume.
      * 
      * @return the permissions value.
      */
@@ -199,9 +181,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the permissions property: permissions
-     * 
-     * Permissions of the subvolume.
+     * Set the permissions property: Permissions of the subvolume.
      * 
      * @param permissions the permissions value to set.
      * @return the SubvolumeModelInner object itself.
@@ -215,9 +195,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the creationTimestamp property: creationTimeStamp
-     * 
-     * Creation time and date.
+     * Get the creationTimestamp property: Creation time and date.
      * 
      * @return the creationTimestamp value.
      */
@@ -226,9 +204,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the creationTimestamp property: creationTimeStamp
-     * 
-     * Creation time and date.
+     * Set the creationTimestamp property: Creation time and date.
      * 
      * @param creationTimestamp the creationTimestamp value to set.
      * @return the SubvolumeModelInner object itself.
@@ -242,9 +218,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the accessedTimestamp property: accessedTimeStamp
-     * 
-     * Most recent access time and date.
+     * Get the accessedTimestamp property: Most recent access time and date.
      * 
      * @return the accessedTimestamp value.
      */
@@ -253,9 +227,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the accessedTimestamp property: accessedTimeStamp
-     * 
-     * Most recent access time and date.
+     * Set the accessedTimestamp property: Most recent access time and date.
      * 
      * @param accessedTimestamp the accessedTimestamp value to set.
      * @return the SubvolumeModelInner object itself.
@@ -269,9 +241,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the modifiedTimestamp property: modifiedTimeStamp
-     * 
-     * Most recent modification time and date.
+     * Get the modifiedTimestamp property: Most recent modification time and date.
      * 
      * @return the modifiedTimestamp value.
      */
@@ -280,9 +250,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the modifiedTimestamp property: modifiedTimeStamp
-     * 
-     * Most recent modification time and date.
+     * Set the modifiedTimestamp property: Most recent modification time and date.
      * 
      * @param modifiedTimestamp the modifiedTimestamp value to set.
      * @return the SubvolumeModelInner object itself.
@@ -296,9 +264,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Get the changedTimestamp property: changedTimeStamp
-     * 
-     * Most recent change time and date.
+     * Get the changedTimestamp property: Most recent change time and date.
      * 
      * @return the changedTimestamp value.
      */
@@ -307,9 +273,7 @@ public final class SubvolumeModelInner {
     }
 
     /**
-     * Set the changedTimestamp property: changedTimeStamp
-     * 
-     * Most recent change time and date.
+     * Set the changedTimestamp property: Most recent change time and date.
      * 
      * @param changedTimestamp the changedTimestamp value to set.
      * @return the SubvolumeModelInner object itself.
@@ -354,5 +318,47 @@ public final class SubvolumeModelInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubvolumeModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubvolumeModelInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubvolumeModelInner.
+     */
+    public static SubvolumeModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubvolumeModelInner deserializedSubvolumeModelInner = new SubvolumeModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSubvolumeModelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSubvolumeModelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSubvolumeModelInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSubvolumeModelInner.innerProperties = SubvolumeModelProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubvolumeModelInner;
+        });
     }
 }

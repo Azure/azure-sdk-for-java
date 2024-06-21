@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of Snapshots.
  */
 @Fluent
-public final class SnapshotsList {
+public final class SnapshotsList implements JsonSerializable<SnapshotsList> {
     /*
      * A list of Snapshots
      */
-    @JsonProperty(value = "value")
     private List<SnapshotInner> value;
 
     /**
@@ -55,5 +58,42 @@ public final class SnapshotsList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotsList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SnapshotsList.
+     */
+    public static SnapshotsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotsList deserializedSnapshotsList = new SnapshotsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SnapshotInner> value = reader.readArray(reader1 -> SnapshotInner.fromJson(reader1));
+                    deserializedSnapshotsList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotsList;
+        });
     }
 }

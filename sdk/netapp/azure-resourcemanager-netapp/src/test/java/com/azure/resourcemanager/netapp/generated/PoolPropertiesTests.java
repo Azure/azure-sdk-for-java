@@ -15,27 +15,27 @@ public final class PoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolProperties model = BinaryData.fromString(
-            "{\"poolId\":\"ro\",\"size\":4284842638181152780,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"rmcqiby\",\"totalThroughputMibps\":97.50943,\"utilizedThroughputMibps\":0.45861602,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Double\"}")
+            "{\"poolId\":\"oayqc\",\"size\":4443763316743009421,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"j\",\"totalThroughputMibps\":25.971334,\"utilizedThroughputMibps\":13.51856,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"}")
             .toObject(PoolProperties.class);
-        Assertions.assertEquals(4284842638181152780L, model.size());
+        Assertions.assertEquals(4443763316743009421L, model.size());
         Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, model.serviceLevel());
         Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertEquals(false, model.coolAccess());
-        Assertions.assertEquals(EncryptionType.DOUBLE, model.encryptionType());
+        Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolProperties model = new PoolProperties().withSize(4284842638181152780L)
+        PoolProperties model = new PoolProperties().withSize(4443763316743009421L)
             .withServiceLevel(ServiceLevel.STANDARD_ZRS)
             .withQosType(QosType.MANUAL)
             .withCoolAccess(false)
-            .withEncryptionType(EncryptionType.DOUBLE);
+            .withEncryptionType(EncryptionType.SINGLE);
         model = BinaryData.fromObject(model).toObject(PoolProperties.class);
-        Assertions.assertEquals(4284842638181152780L, model.size());
+        Assertions.assertEquals(4443763316743009421L, model.size());
         Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, model.serviceLevel());
         Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertEquals(false, model.coolAccess());
-        Assertions.assertEquals(EncryptionType.DOUBLE, model.encryptionType());
+        Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
     }
 }

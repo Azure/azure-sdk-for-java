@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class SmbNonBrowsable extends ExpandableStringEnum<SmbNonBrowsable>
      * @param name a name to look for.
      * @return the corresponding SmbNonBrowsable.
      */
-    @JsonCreator
     public static SmbNonBrowsable fromString(String name) {
         return fromString(name, SmbNonBrowsable.class);
     }

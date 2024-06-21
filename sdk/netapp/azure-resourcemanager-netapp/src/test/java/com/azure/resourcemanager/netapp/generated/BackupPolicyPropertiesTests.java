@@ -12,24 +12,24 @@ public final class BackupPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicyProperties model = BinaryData.fromString(
-            "{\"backupPolicyId\":\"erqwkyhkobopg\",\"provisioningState\":\"dkow\",\"dailyBackupsToKeep\":818081451,\"weeklyBackupsToKeep\":313036289,\"monthlyBackupsToKeep\":2049440725,\"volumesAssigned\":1318988279,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"njv\",\"volumeResourceId\":\"wxlp\",\"backupsCount\":1000927704,\"policyEnabled\":false},{\"volumeName\":\"khtj\",\"volumeResourceId\":\"i\",\"backupsCount\":2104302004,\"policyEnabled\":true},{\"volumeName\":\"tmtdhtmdvypgik\",\"volumeResourceId\":\"szywkbirryu\",\"backupsCount\":421118351,\"policyEnabled\":false},{\"volumeName\":\"oqrvqqaatjin\",\"volumeResourceId\":\"goupmfiibfg\",\"backupsCount\":2107533163,\"policyEnabled\":false}]}")
+            "{\"backupPolicyId\":\"jglikkxwslolb\",\"provisioningState\":\"vuzlm\",\"dailyBackupsToKeep\":1023850423,\"weeklyBackupsToKeep\":1613313334,\"monthlyBackupsToKeep\":695591905,\"volumesAssigned\":1554558708,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"jxeznoigbrnjwmw\",\"volumeResourceId\":\"nbsazejjoqkag\",\"backupsCount\":1304843814,\"policyEnabled\":true},{\"volumeName\":\"augzxnfaazpxdtn\",\"volumeResourceId\":\"mkqjj\",\"backupsCount\":1784311457,\"policyEnabled\":false}]}")
             .toObject(BackupPolicyProperties.class);
-        Assertions.assertEquals(818081451, model.dailyBackupsToKeep());
-        Assertions.assertEquals(313036289, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(2049440725, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(1023850423, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1613313334, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(695591905, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(false, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicyProperties model = new BackupPolicyProperties().withDailyBackupsToKeep(818081451)
-            .withWeeklyBackupsToKeep(313036289)
-            .withMonthlyBackupsToKeep(2049440725)
-            .withEnabled(true);
+        BackupPolicyProperties model = new BackupPolicyProperties().withDailyBackupsToKeep(1023850423)
+            .withWeeklyBackupsToKeep(1613313334)
+            .withMonthlyBackupsToKeep(695591905)
+            .withEnabled(false);
         model = BinaryData.fromObject(model).toObject(BackupPolicyProperties.class);
-        Assertions.assertEquals(818081451, model.dailyBackupsToKeep());
-        Assertions.assertEquals(313036289, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(2049440725, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(1023850423, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1613313334, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(695591905, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(false, model.enabled());
     }
 }
