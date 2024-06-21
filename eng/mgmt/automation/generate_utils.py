@@ -465,7 +465,28 @@ def find_sdk_folder(sdk_root: str):
         tsp_location_item: str = git_items[0]
         sdk_folder = tsp_location_item[1:].strip()[0 : -len("/tsp-location.yaml")]
 
-    cmd = ["git", "reset", "."]
+    cmd = ["git", "reset", ".", "-q"]
     check_call(cmd, sdk_root)
 
     return sdk_folder
+
+
+def clean_sdk_folder_if_swagger(sdk_root: str, sdk_folder: str) -> bool:
+    succeeded = False
+    # try to find the sdk_folder
+    if not sdk_folder:
+        sdk_folder = find_sdk_folder(sdk_root)
+    if sdk_folder:
+        sdk_path = os.path.join(sdk_root, sdk_folder)
+        # check whether this is migration from Swagger
+        if os.path.exists(os.path.join(sdk_path, "swagger")):
+            logging.info(f"[GENERATE] Delete folder: {sdk_folder}")
+            print(
+                "Existing package in SDK was from Swagger. It cannot be automatically converted to package from TypeSpec. Generate a fresh package from TypeSpec.",
+                file=sys.stderr,
+            )
+            # delete the folder
+            shutil.rmtree(sdk_path, ignore_errors=True)
+
+            succeeded = True
+    return succeeded

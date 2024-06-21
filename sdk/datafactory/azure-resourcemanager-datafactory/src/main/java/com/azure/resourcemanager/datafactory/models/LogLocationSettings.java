@@ -20,7 +20,8 @@ public final class LogLocationSettings {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType string).
+     * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "path")
     private Object path;

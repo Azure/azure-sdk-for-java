@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * TlsAuthenticationType enum.
+ * TLS authentication type enum.
  */
 public final class TlsAuthenticationType extends ExpandableStringEnum<TlsAuthenticationType> {
     /**
@@ -37,7 +36,6 @@ public final class TlsAuthenticationType extends ExpandableStringEnum<TlsAuthent
      * @param name a name to look for.
      * @return the corresponding TlsAuthenticationType.
      */
-    @JsonCreator
     public static TlsAuthenticationType fromString(String name) {
         return fromString(name, TlsAuthenticationType.class);
     }

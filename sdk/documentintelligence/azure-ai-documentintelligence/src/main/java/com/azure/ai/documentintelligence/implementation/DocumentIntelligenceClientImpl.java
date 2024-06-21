@@ -164,7 +164,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> analyzeDocument(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/documentModels/{modelId}:analyze")
@@ -175,7 +175,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> analyzeDocumentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("modelId") String modelId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
@@ -186,7 +186,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> classifyDocument(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData classifyRequest, RequestOptions requestOptions, Context context);
 
         @Post("/documentClassifiers/{classifierId}:analyze")
@@ -197,7 +197,7 @@ public final class DocumentIntelligenceClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> classifyDocumentSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("classifierId") String classifierId,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData classifyRequest, RequestOptions requestOptions, Context context);
     }
 

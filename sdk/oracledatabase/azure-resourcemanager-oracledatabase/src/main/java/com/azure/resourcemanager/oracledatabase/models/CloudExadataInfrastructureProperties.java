@@ -6,198 +6,176 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * CloudExadataInfrastructure resource model.
  */
 @Fluent
-public final class CloudExadataInfrastructureProperties {
+public final class CloudExadataInfrastructureProperties
+    implements JsonSerializable<CloudExadataInfrastructureProperties> {
     /*
      * Exadata infra ocid
      */
-    @JsonProperty(value = "ocid", access = JsonProperty.Access.WRITE_ONLY)
     private String ocid;
 
     /*
      * The number of compute servers for the cloud Exadata infrastructure.
      */
-    @JsonProperty(value = "computeCount")
     private Integer computeCount;
 
     /*
      * The number of storage servers for the cloud Exadata infrastructure.
      */
-    @JsonProperty(value = "storageCount")
     private Integer storageCount;
 
     /*
      * The total storage allocated to the cloud Exadata infrastructure resource, in gigabytes (GB).
      */
-    @JsonProperty(value = "totalStorageSizeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalStorageSizeInGbs;
 
     /*
      * The available storage can be allocated to the cloud Exadata infrastructure resource, in gigabytes (GB).
      */
-    @JsonProperty(value = "availableStorageSizeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer availableStorageSizeInGbs;
 
     /*
      * The date and time the cloud Exadata infrastructure resource was created.
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private String timeCreated;
 
     /*
      * Additional information about the current lifecycle state.
      */
-    @JsonProperty(value = "lifecycleDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String lifecycleDetails;
 
     /*
      * maintenanceWindow property
      */
-    @JsonProperty(value = "maintenanceWindow")
     private MaintenanceWindow maintenanceWindow;
 
     /*
-     * The estimated total time required in minutes for all patching operations (database server, storage server, and network switch patching).
+     * The estimated total time required in minutes for all patching operations (database server, storage server, and
+     * network switch patching).
      */
-    @JsonProperty(value = "estimatedPatchingTime", access = JsonProperty.Access.WRITE_ONLY)
     private EstimatedPatchingTime estimatedPatchingTime;
 
     /*
-     * The list of customer email addresses that receive information from Oracle about the specified OCI Database service resource. Oracle uses these email addresses to send notifications about planned and unplanned software maintenance updates, information about system hardware, and other information needed by administrators. Up to 10 email addresses can be added to the customer contacts for a cloud Exadata infrastructure instance. 
+     * The list of customer email addresses that receive information from Oracle about the specified OCI Database
+     * service resource. Oracle uses these email addresses to send notifications about planned and unplanned software
+     * maintenance updates, information about system hardware, and other information needed by administrators. Up to 10
+     * email addresses can be added to the customer contacts for a cloud Exadata infrastructure instance.
      */
-    @JsonProperty(value = "customerContacts")
     private List<CustomerContact> customerContacts;
 
     /*
      * CloudExadataInfrastructure provisioning state
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AzureResourceProvisioningState provisioningState;
 
     /*
      * CloudExadataInfrastructure lifecycle state
      */
-    @JsonProperty(value = "lifecycleState", access = JsonProperty.Access.WRITE_ONLY)
     private CloudExadataInfrastructureLifecycleState lifecycleState;
 
     /*
      * The model name of the cloud Exadata infrastructure resource.
      */
-    @JsonProperty(value = "shape", required = true)
     private String shape;
 
     /*
      * HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
      */
-    @JsonProperty(value = "ociUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String ociUrl;
 
     /*
      * The total number of CPU cores allocated.
      */
-    @JsonProperty(value = "cpuCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer cpuCount;
 
     /*
      * The total number of CPU cores available.
      */
-    @JsonProperty(value = "maxCpuCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxCpuCount;
 
     /*
      * The memory allocated in GBs.
      */
-    @JsonProperty(value = "memorySizeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer memorySizeInGbs;
 
     /*
      * The total memory available in GBs.
      */
-    @JsonProperty(value = "maxMemoryInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxMemoryInGbs;
 
     /*
      * The local node storage to be allocated in GBs.
      */
-    @JsonProperty(value = "dbNodeStorageSizeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer dbNodeStorageSizeInGbs;
 
     /*
      * The total local node storage available in GBs.
      */
-    @JsonProperty(value = "maxDbNodeStorageSizeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxDbNodeStorageSizeInGbs;
 
     /*
      * The quantity of data in the database, in terabytes.
      */
-    @JsonProperty(value = "dataStorageSizeInTbs", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer dataStorageSizeInTbs;
+    private Double dataStorageSizeInTbs;
 
     /*
      * The total available DATA disk group size.
      */
-    @JsonProperty(value = "maxDataStorageInTbs", access = JsonProperty.Access.WRITE_ONLY)
     private Double maxDataStorageInTbs;
 
     /*
      * The software version of the database servers (dom0) in the Exadata infrastructure.
      */
-    @JsonProperty(value = "dbServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String dbServerVersion;
 
     /*
      * The software version of the storage servers (cells) in the Exadata infrastructure.
      */
-    @JsonProperty(value = "storageServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String storageServerVersion;
 
     /*
      * The requested number of additional storage servers activated for the Exadata infrastructure.
      */
-    @JsonProperty(value = "activatedStorageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer activatedStorageCount;
 
     /*
      * The requested number of additional storage servers for the Exadata infrastructure.
      */
-    @JsonProperty(value = "additionalStorageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer additionalStorageCount;
 
     /*
      * The name for the Exadata infrastructure.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * The OCID of the last maintenance run.
      */
-    @JsonProperty(value = "lastMaintenanceRunId", access = JsonProperty.Access.WRITE_ONLY)
     private String lastMaintenanceRunId;
 
     /*
      * The OCID of the next maintenance run.
      */
-    @JsonProperty(value = "nextMaintenanceRunId", access = JsonProperty.Access.WRITE_ONLY)
     private String nextMaintenanceRunId;
 
     /*
      * Monthly Db Server version
      */
-    @JsonProperty(value = "monthlyDbServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String monthlyDbServerVersion;
 
     /*
      * Monthly Storage Server version
      */
-    @JsonProperty(value = "monthlyStorageServerVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String monthlyStorageServerVersion;
 
     /**
@@ -457,7 +435,7 @@ public final class CloudExadataInfrastructureProperties {
      * 
      * @return the dataStorageSizeInTbs value.
      */
-    public Integer dataStorageSizeInTbs() {
+    public Double dataStorageSizeInTbs() {
         return this.dataStorageSizeInTbs;
     }
 
@@ -594,4 +572,127 @@ public final class CloudExadataInfrastructureProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CloudExadataInfrastructureProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("shape", this.shape);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeNumberField("computeCount", this.computeCount);
+        jsonWriter.writeNumberField("storageCount", this.storageCount);
+        jsonWriter.writeJsonField("maintenanceWindow", this.maintenanceWindow);
+        jsonWriter.writeArrayField("customerContacts", this.customerContacts,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudExadataInfrastructureProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudExadataInfrastructureProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CloudExadataInfrastructureProperties.
+     */
+    public static CloudExadataInfrastructureProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudExadataInfrastructureProperties deserializedCloudExadataInfrastructureProperties
+                = new CloudExadataInfrastructureProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("shape".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.shape = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.displayName = reader.getString();
+                } else if ("ocid".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.ocid = reader.getString();
+                } else if ("computeCount".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.computeCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("storageCount".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.storageCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("totalStorageSizeInGbs".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.totalStorageSizeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("availableStorageSizeInGbs".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.availableStorageSizeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.timeCreated = reader.getString();
+                } else if ("lifecycleDetails".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.lifecycleDetails = reader.getString();
+                } else if ("maintenanceWindow".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.maintenanceWindow
+                        = MaintenanceWindow.fromJson(reader);
+                } else if ("estimatedPatchingTime".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.estimatedPatchingTime
+                        = EstimatedPatchingTime.fromJson(reader);
+                } else if ("customerContacts".equals(fieldName)) {
+                    List<CustomerContact> customerContacts
+                        = reader.readArray(reader1 -> CustomerContact.fromJson(reader1));
+                    deserializedCloudExadataInfrastructureProperties.customerContacts = customerContacts;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.provisioningState
+                        = AzureResourceProvisioningState.fromString(reader.getString());
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.lifecycleState
+                        = CloudExadataInfrastructureLifecycleState.fromString(reader.getString());
+                } else if ("ociUrl".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.ociUrl = reader.getString();
+                } else if ("cpuCount".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.cpuCount = reader.getNullable(JsonReader::getInt);
+                } else if ("maxCpuCount".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.maxCpuCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("memorySizeInGbs".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.memorySizeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxMemoryInGbs".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.maxMemoryInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("dbNodeStorageSizeInGbs".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.dbNodeStorageSizeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maxDbNodeStorageSizeInGbs".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.maxDbNodeStorageSizeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("dataStorageSizeInTbs".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.dataStorageSizeInTbs
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("maxDataStorageInTbs".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.maxDataStorageInTbs
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("dbServerVersion".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.dbServerVersion = reader.getString();
+                } else if ("storageServerVersion".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.storageServerVersion = reader.getString();
+                } else if ("activatedStorageCount".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.activatedStorageCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("additionalStorageCount".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.additionalStorageCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("lastMaintenanceRunId".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.lastMaintenanceRunId = reader.getString();
+                } else if ("nextMaintenanceRunId".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.nextMaintenanceRunId = reader.getString();
+                } else if ("monthlyDbServerVersion".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.monthlyDbServerVersion = reader.getString();
+                } else if ("monthlyStorageServerVersion".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureProperties.monthlyStorageServerVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudExadataInfrastructureProperties;
+        });
+    }
 }

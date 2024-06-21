@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -40,7 +39,7 @@ public final class LeaseContainerRequestAction extends ExpandableStringEnum<Leas
 
     /**
      * Creates a new instance of LeaseContainerRequestAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -49,7 +48,7 @@ public final class LeaseContainerRequestAction extends ExpandableStringEnum<Leas
 
     /**
      * Creates or finds a LeaseContainerRequestAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LeaseContainerRequestAction.
      */
@@ -60,7 +59,7 @@ public final class LeaseContainerRequestAction extends ExpandableStringEnum<Leas
 
     /**
      * Gets known LeaseContainerRequestAction values.
-     *
+     * 
      * @return known LeaseContainerRequestAction values.
      */
     public static Collection<LeaseContainerRequestAction> values() {

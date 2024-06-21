@@ -14,15 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PortReuseHoldTimes {
     /*
-     * Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole can be reused.
-     * Default for TCP is 2 minutes.
+     * Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole can be reused. Default for TCP is 2 minutes.
      */
     @JsonProperty(value = "tcp")
     private Integer tcp;
 
     /*
-     * Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole can be reused.
-     * Default for UDP is 1 minute.
+     * Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole can be reused. Default for UDP is 1 minute.
      */
     @JsonProperty(value = "udp")
     private Integer udp;

@@ -11,15 +11,17 @@ public final class PostgreSqlTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PostgreSqlTableDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"datay\",\"table\":\"datayfr\",\"schema\":\"datadzfpsfyakidfhmlx\"}")
+            .fromString(
+                "{\"tableName\":\"datarznequqyntt\",\"table\":\"datanhajksbsyogjmq\",\"schema\":\"datagcydijnmcv\"}")
             .toObject(PostgreSqlTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PostgreSqlTableDatasetTypeProperties model = new PostgreSqlTableDatasetTypeProperties().withTableName("datay")
-            .withTable("datayfr")
-            .withSchema("datadzfpsfyakidfhmlx");
+        PostgreSqlTableDatasetTypeProperties model
+            = new PostgreSqlTableDatasetTypeProperties().withTableName("datarznequqyntt")
+                .withTable("datanhajksbsyogjmq")
+                .withSchema("datagcydijnmcv");
         model = BinaryData.fromObject(model).toObject(PostgreSqlTableDatasetTypeProperties.class);
     }
 }

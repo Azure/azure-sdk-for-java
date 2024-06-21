@@ -8,6 +8,10 @@ package com.azure.resourcemanager.deviceregistry.generated;
  * Samples for AssetEndpointProfiles GetByResourceGroup.
  */
 public final class AssetEndpointProfilesGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/deviceregistry/DeviceRegistry.Management/examples/2023-11-01-preview/Get_AssetEndpointProfile.json
+     */
     /**
      * Sample code: Get_AssetEndpointProfile.
      * 

@@ -6,44 +6,43 @@ package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the data point properties.
  */
 @Fluent
-public final class DataPoint {
+public final class DataPoint implements JsonSerializable<DataPoint> {
     /*
      * The name of the data point.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The address of the source of the data in the asset (e.g. URL) so that a client can access the data source on the
      * asset.
      */
-    @JsonProperty(value = "dataSource", required = true)
     private String dataSource;
 
     /*
      * The path to the type definition of the capability (e.g. DTMI, OPC UA information model node id, etc.), for
      * example dtmi:com:example:Robot:_contents:__prop1;1.
      */
-    @JsonProperty(value = "capabilityId")
     private String capabilityId;
 
     /*
      * An indication of how the data point should be mapped to OpenTelemetry.
      */
-    @JsonProperty(value = "observabilityMode")
     private DataPointsObservabilityMode observabilityMode;
 
     /*
      * Protocol-specific configuration for the data point. For OPC UA, this could include configuration like,
      * publishingInterval, samplingInterval, and queueSize.
      */
-    @JsonProperty(value = "dataPointConfiguration")
     private String dataPointConfiguration;
 
     /**
@@ -171,4 +170,55 @@ public final class DataPoint {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataPoint.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSource", this.dataSource);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("capabilityId", this.capabilityId);
+        jsonWriter.writeStringField("observabilityMode",
+            this.observabilityMode == null ? null : this.observabilityMode.toString());
+        jsonWriter.writeStringField("dataPointConfiguration", this.dataPointConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataPoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataPoint if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataPoint.
+     */
+    public static DataPoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataPoint deserializedDataPoint = new DataPoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSource".equals(fieldName)) {
+                    deserializedDataPoint.dataSource = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataPoint.name = reader.getString();
+                } else if ("capabilityId".equals(fieldName)) {
+                    deserializedDataPoint.capabilityId = reader.getString();
+                } else if ("observabilityMode".equals(fieldName)) {
+                    deserializedDataPoint.observabilityMode
+                        = DataPointsObservabilityMode.fromString(reader.getString());
+                } else if ("dataPointConfiguration".equals(fieldName)) {
+                    deserializedDataPoint.dataPointConfiguration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataPoint;
+        });
+    }
 }

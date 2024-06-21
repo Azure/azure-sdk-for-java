@@ -23,20 +23,24 @@ public final class AzureFunctionActivityTypeProperties {
     private AzureFunctionActivityMethod method;
 
     /*
-     * Name of the Function that the Azure Function Activity will call. Type: string (or Expression with resultType string)
+     * Name of the Function that the Azure Function Activity will call. Type: string (or Expression with resultType
+     * string)
      */
     @JsonProperty(value = "functionName", required = true)
     private Object functionName;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
+     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "headers")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET method Type: string (or Expression with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
+     * method Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "body")
     private Object body;

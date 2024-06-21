@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.fluent.models.NetworkSecurityPerimeterConfigurationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public final class NetworkSecurityPerimeterConfigurationList {
 
     /**
      * Get the value property: A collection of Network Security Perimeter configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkSecurityPerimeterConfigurationInner> value() {
@@ -44,7 +43,7 @@ public final class NetworkSecurityPerimeterConfigurationList {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -53,7 +52,7 @@ public final class NetworkSecurityPerimeterConfigurationList {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkSecurityPerimeterConfigurationList object itself.
      */
@@ -64,7 +63,7 @@ public final class NetworkSecurityPerimeterConfigurationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
