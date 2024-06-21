@@ -3,7 +3,10 @@ trigger: none
 pr: none
 
 pool:
-  vmImage: 'windows-2022'
+  ${{ if ne(variables['TSP_CONFIG'], '')}}:
+    vmImage: 'macOS-13' # tsp-client command will get permanent stuck on linux/windows: https://github.com/Azure/azure-sdk-tools/issues/8368
+  ${{ else }}:
+    vmImage: 'ubuntu-20.04'
 
 variables:
 - group: Release Secrets for GitHub
@@ -49,22 +52,6 @@ steps:
 #   parameters:
 #     runProxy: true
 #     targetVersion: 1.0.0-dev.20230908.1
-
-- bash: |
-      mkdir -p ~/.ssh
-      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-      git clone https://github.com/Azure/azure-rest-api-specs.git
-  workingDirectory: '$(Agent.TempDirectory)'
-  env:
-    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-  displayName: 'Clone azure-rest-api-specs repo.'
-  condition: eq(variables.fromTypeSpec, true)
-
-- bash: |
-      java -version
-      tsp-client init --debug --tsp-config "$(Agent.TempDirectory)/azure-rest-api-specs/specification/mongocluster/DocumentDB.MongoCluster.Management" --commit 7605afe88e3201dc25ce0881c2e49fe1b6bbdd54 --repo Azure/azure-rest-api-specs --local-spec-repo "$(Agent.TempDirectory)/azure-rest-api-specs/specification/mongocluster/DocumentDB.MongoCluster.Management"
-  displayName: '[Experiment] Generation from TypeSpec by direct calling tsp-client'
-  condition: eq(variables.fromTypeSpec, true)
 
 - bash: |
     java -version
