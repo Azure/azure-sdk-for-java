@@ -4,28 +4,34 @@
 package com.azure.communication.callingserver.models.events;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 
 /** The ResultInfo model. */
 @Immutable
-public final class ResultInfo {
+public final class ResultInfo implements JsonSerializable<ResultInfo> {
     /*
      * The code property.
      */
     @JsonProperty(value = "code")
-    private final Integer code;
+    private Integer code;
 
     /*
      * The subCode property.
      */
     @JsonProperty(value = "subCode")
-    private final Integer subCode;
+    private Integer subCode;
 
     /*
      * The message property.
      */
     @JsonProperty(value = "message")
-    private final String message;
+    private String message;
 
     private ResultInfo() {
         code = null;
@@ -58,5 +64,45 @@ public final class ResultInfo {
      */
     public String getMessage() {
         return this.message;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("code", this.code);
+        jsonWriter.writeIntField("subCode", this.subCode);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResultInformation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResultInformation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResultInformation.
+     */
+    public static ResultInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final ResultInfo information = new ResultInfo();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("code".equals(fieldName)) {
+                    information.code = reader.getInt();
+                } else if ("subCode".equals(fieldName)) {
+                    information.subCode = reader.getInt();
+                } else if ("message".equals(fieldName)) {
+                    information.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return information;
+        });
     }
 }

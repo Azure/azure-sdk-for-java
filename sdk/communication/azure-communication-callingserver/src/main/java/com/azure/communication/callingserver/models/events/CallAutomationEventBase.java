@@ -3,28 +3,33 @@
 
 package com.azure.communication.callingserver.models.events;
 
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.IOException;
+
 /** The base event interface. */
-public abstract class CallAutomationEventBase {
+public abstract class CallAutomationEventBase implements JsonSerializable<CallAutomationEventBase> {
     /*
      * Call connection ID.
      */
     @JsonProperty(value = "callConnectionId")
-    private final String callConnectionId;
+    private String callConnectionId;
 
     /*
      * Server call ID.
      */
     @JsonProperty(value = "serverCallId")
-    private final String serverCallId;
+    private String serverCallId;
 
     /*
      * Correlation ID for event to call correlation. Also called ChainId for
      * skype chain ID.
      */
     @JsonProperty(value = "correlationId")
-    private final String correlationId;
+    private String correlationId;
 
     CallAutomationEventBase() {
         this.serverCallId = null;
@@ -58,5 +63,27 @@ public abstract class CallAutomationEventBase {
      */
     public String getCorrelationId() {
         return this.correlationId;
+    }
+
+    void writeFields(JsonWriter writer) throws IOException {
+        writer.writeStringField("callConnectionId", this.callConnectionId);
+        writer.writeStringField("serverCallId", this.serverCallId);
+        writer.writeStringField("correlationId", this.correlationId);
+    }
+
+    boolean readField(String fieldName, JsonReader reader) throws IOException {
+        if ("callConnectionId".equals(fieldName)) {
+            this.callConnectionId = reader.getString();
+            return true;
+        }
+        if ("serverCallId".equals(fieldName)) {
+            this.serverCallId = reader.getString();
+            return true;
+        }
+        if ("correlationId".equals(fieldName)) {
+            this.correlationId = reader.getString();
+            return true;
+        }
+        return false;
     }
 }
