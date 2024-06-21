@@ -62,7 +62,10 @@ steps:
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
   parameters:
     PRBranchName: fluent-lite-generation-$(Build.BuildId)
-    ${{ if eq(variables.fromTypeSpec, 'true') }}:
+    ${{ if eq(variables['fromTypeSpec'], 'true') }}:
+      CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
+      PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
+    ${{ else if eq(variables['fromTypeSpec'], true) }}:
       CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
       PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
     ${{ else }}:
