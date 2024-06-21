@@ -569,7 +569,7 @@
           "code" : "java.method.parameterTypeChanged",
           "old" : "parameter com.azure.core.http.rest.Response<java.lang.String> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(===java.lang.String===, com.azure.core.util.Context)",
           "new" : "parameter com.azure.core.http.rest.Response<com.azure.security.attestation.models.TpmAttestationResult> com.azure.security.attestation.AttestationClient::attestTpmWithResponse(===com.azure.core.util.BinaryData===, com.azure.core.util.Context)",
-          "justification" : "The type of the parameter changed from 'java.lang.String' to 'com.azure.core.util.BinaryData'."
+          "justification" : "The type of the parameter changed from 'java.lang.String' to 'com.azure.core.util.BinaryData'.",
           "regex": true,
           "ignore": true,
           "code": "java.field.addedStaticField",
