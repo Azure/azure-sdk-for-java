@@ -23,6 +23,11 @@ steps:
     pip3 install --upgrade PyYAML requests
   displayName: Update python
 
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '17'
+    jdkSourceOption: 'PreInstalled'
+
 - task: NodeTool@0
   displayName: 'Install Node.js $(NodeVersion)'
   inputs:
