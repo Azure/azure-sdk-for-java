@@ -82,7 +82,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
             .publishOn(Schedulers.boundedElastic(), 1)
             .subscribeWith(publishResultSubscriber);
 
-        this.tracer = new EventHubsTracer(tracer, client.getFullyQualifiedNamespace(), client.getEventHubName());
+        this.tracer = new EventHubsTracer(tracer, client.getFullyQualifiedNamespace(), client.getEventHubName(), null);
     }
 
     /**
