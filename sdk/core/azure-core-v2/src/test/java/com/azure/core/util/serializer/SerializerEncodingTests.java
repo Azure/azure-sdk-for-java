@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.util.serializer;
 
-import com.azure.core.http.HttpHeaders;
+import io.clientcore.core.http.models.HttpHeaders;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

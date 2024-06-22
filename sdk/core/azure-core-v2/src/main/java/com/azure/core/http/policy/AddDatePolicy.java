@@ -3,14 +3,13 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.util.DateTimeRfc1123;
-import reactor.core.publisher.Mono;
-
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -21,10 +20,10 @@ import java.util.Locale;
  * used to add a "Date" header in RFC 1123 format when sending an HTTP request.</p>
  *
  * @see com.azure.core.http.policy
- * @see com.azure.core.http.policy.HttpPipelinePolicy
- * @see com.azure.core.http.HttpPipeline
- * @see com.azure.core.http.HttpRequest
- * @see com.azure.core.http.HttpResponse
+ * @see HttpPipelinePolicy
+ * @see HttpPipeline
+ * @see HttpRequest
+ * @see Response
  */
 public class AddDatePolicy implements HttpPipelinePolicy {
     private static final DateTimeFormatter FORMATTER
@@ -36,26 +35,18 @@ public class AddDatePolicy implements HttpPipelinePolicy {
     public AddDatePolicy() {
     }
 
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return Mono.defer(() -> {
-            setDate(context);
-            return next.process();
-        });
-    }
-
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        setDate(context);
-        return next.processSync();
-    }
-
-    private static void setDate(HttpPipelineCallContext context) {
+    private static void setDate(HttpRequest httpRequest) {
         OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
         try {
-            context.getHttpRequest().setHeader(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
+            httpRequest.getHeaders().add(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
         } catch (IllegalArgumentException ignored) {
-            context.getHttpRequest().setHeader(HttpHeaderName.DATE, FORMATTER.format(now));
+            httpRequest.getHeaders().add(HttpHeaderName.DATE, FORMATTER.format(now));
         }
+    }
+
+    @Override
+    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        setDate(httpRequest);
+        return next.process();
     }
 }

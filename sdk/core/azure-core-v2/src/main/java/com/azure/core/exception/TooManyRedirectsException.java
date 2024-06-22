@@ -3,7 +3,7 @@
 
 package com.azure.core.exception;
 
-import com.azure.core.http.HttpResponse;
+import io.clientcore.core.http.models.Response;
 
 /**
  * <p>The {@code TooManyRedirectsException} represents an exception thrown when an HTTP request has reached the
@@ -17,7 +17,7 @@ import com.azure.core.http.HttpResponse;
  *
  * @see com.azure.core.exception
  * @see com.azure.core.exception.HttpResponseException
- * @see com.azure.core.http.HttpResponse
+ * @see Response
  */
 public class TooManyRedirectsException extends HttpResponseException {
 
@@ -27,7 +27,7 @@ public class TooManyRedirectsException extends HttpResponseException {
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public TooManyRedirectsException(final String message, final HttpResponse response) {
+    public TooManyRedirectsException(final String message, final Response<?> response) {
         super(message, response);
     }
 
@@ -38,7 +38,7 @@ public class TooManyRedirectsException extends HttpResponseException {
      * @param response the HTTP response
      * @param value the deserialized response value
      */
-    public TooManyRedirectsException(final String message, final HttpResponse response, final Object value) {
+    public TooManyRedirectsException(final String message, final Response<?> response, final Object value) {
         super(message, response, value);
     }
 
@@ -49,7 +49,7 @@ public class TooManyRedirectsException extends HttpResponseException {
      * @param response the HTTP response
      * @param cause the Throwable which caused the creation of this TooManyRedirectsException
      */
-    public TooManyRedirectsException(final String message, final HttpResponse response, final Throwable cause) {
+    public TooManyRedirectsException(final String message, final Response<?> response, final Throwable cause) {
         super(message, response, cause);
     }
 }

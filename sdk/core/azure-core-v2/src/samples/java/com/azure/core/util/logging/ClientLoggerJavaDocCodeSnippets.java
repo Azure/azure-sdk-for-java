@@ -3,8 +3,8 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
+import io.clientcore.core.http.rest.Response;
+import io.clientcore.core.http.rest.SimpleResponse;
 
 import java.io.File;
 import java.io.IOException;

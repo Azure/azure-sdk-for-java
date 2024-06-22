@@ -70,16 +70,6 @@ import java.util.stream.Stream;
  */
 public class PagedIterableBase<T, P extends PagedResponse<T>> extends ContinuablePagedIterable<String, T, P> {
     /**
-     * Creates instance given {@link PagedFluxBase}.
-     *
-     * @param pagedFluxBase to use as iterable
-     */
-    @SuppressWarnings("deprecation")
-    public PagedIterableBase(PagedFluxBase<T, P> pagedFluxBase) {
-        super(pagedFluxBase);
-    }
-
-    /**
      * Creates instance given the {@link PageRetrieverSync page retriever} {@link Supplier}.
      *
      * @param provider The page retriever {@link Supplier}.

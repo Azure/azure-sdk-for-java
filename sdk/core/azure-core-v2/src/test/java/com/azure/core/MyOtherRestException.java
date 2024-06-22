@@ -5,7 +5,7 @@ package com.azure.core;
 
 import com.azure.core.util.serializer.HttpBinJSON;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpResponse;
+import io.clientcore.core.http.models.Response;
 
 public class MyOtherRestException extends HttpResponseException {
     /**

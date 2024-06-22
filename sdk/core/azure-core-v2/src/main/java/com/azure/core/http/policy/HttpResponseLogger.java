@@ -3,7 +3,7 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpResponse;
+import io.clientcore.core.http.models.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
@@ -34,7 +34,7 @@ public interface HttpResponseLogger {
      * @param loggingOptions The information available during response logging.
      * @return A reactive response that returns the HTTP response that was logged.
      */
-    Mono<HttpResponse> logResponse(ClientLogger logger, HttpResponseLoggingContext loggingOptions);
+    Mono<Response<?>> logResponse(ClientLogger logger, HttpResponseLoggingContext loggingOptions);
 
     /**
      * Logs the HTTP response.
@@ -44,7 +44,7 @@ public interface HttpResponseLogger {
      * @param loggingOptions The information available during response logging.
      * @return A response that returns the HTTP response that was logged.
      */
-    default HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
+    default Response<?> logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
         return logResponse(logger, loggingOptions).block();
     }
 }

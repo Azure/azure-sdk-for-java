@@ -3,6 +3,8 @@
 
 package com.azure.core.credential;
 
+import io.clientcore.core.credential.KeyCredential;
+
 /**
  * <p>
  * The {@link AzureKeyCredential} is used to authenticate and authorize requests made to Azure services.

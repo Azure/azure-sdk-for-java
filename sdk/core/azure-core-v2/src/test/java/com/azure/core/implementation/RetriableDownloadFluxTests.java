@@ -3,9 +3,9 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.http.policy.ExponentialBackoffOptions;
-import com.azure.core.http.policy.FixedDelayOptions;
-import com.azure.core.http.policy.RetryOptions;
+import io.clientcore.core.http.pipeline.ExponentialBackoffOptions;
+import io.clientcore.core.http.pipeline.FixedDelayOptions;
+import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -106,7 +106,7 @@ public class RetriableDownloadFluxTests {
     public void allRetriesAreConsumed() {
         RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(
             () -> Flux.error(new RuntimeException()), (throwable, offset) -> Flux.error(new RuntimeException()),
-            new RetryOptions(new FixedDelayOptions(100, Duration.ofMillis(1))), 0L);
+            new HttpRetryOptions(new FixedDelayOptions(100, Duration.ofMillis(1))), 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .verifyError(RuntimeException.class);
@@ -159,7 +159,7 @@ public class RetriableDownloadFluxTests {
         });
     }
 
-    private static RetryOptions createDefaultRetryOptions(int maxRetries) {
-        return new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(maxRetries));
+    private static HttpRetryOptions createDefaultRetryOptions(int maxRetries) {
+        return new HttpRetryOptions(new ExponentialBackoffOptions().setMaxRetries(maxRetries));
     }
 }

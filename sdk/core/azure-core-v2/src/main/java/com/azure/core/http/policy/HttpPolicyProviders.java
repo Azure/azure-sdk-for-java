@@ -5,6 +5,10 @@ package com.azure.core.http.policy;
 
 import com.azure.core.implementation.http.policy.InstrumentationPolicy;
 
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -36,10 +40,10 @@ import java.util.ServiceLoader;
  * <!-- end com.azure.core.http.policy.HttpPolicyProviders.usage -->
  *
  * @see com.azure.core.http.policy
- * @see com.azure.core.http.policy.HttpPipelinePolicy
- * @see com.azure.core.http.HttpPipeline
- * @see com.azure.core.http.HttpRequest
- * @see com.azure.core.http.HttpResponse
+ * @see HttpPipelinePolicy
+ * @see HttpPipeline
+ * @see HttpRequest
+ * @see Response
  * @see com.azure.core.http.policy.BeforeRetryPolicyProvider
  * @see com.azure.core.http.policy.AfterRetryPolicyProvider
  */

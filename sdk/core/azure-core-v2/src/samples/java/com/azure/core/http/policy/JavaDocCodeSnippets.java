@@ -8,8 +8,8 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -251,7 +251,7 @@ public class JavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for using {@link RetryPolicy}.
+     * Code snippets for using {@link HttpRetryPolicy}.
      */
     public void createRetryPolicy() {
         // BEGIN: com.azure.core.http.policy.RetryPolicy.constructor

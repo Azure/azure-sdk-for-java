@@ -3,8 +3,8 @@
 
 package com.azure.core.implementation.http;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpClientProvider;
+import io.clientcore.core.http.HttpClient;
+import io.clientcore.core.http.HttpClientProvider;
 import com.azure.core.util.HttpClientOptions;
 import org.junit.jupiter.api.Test;
 

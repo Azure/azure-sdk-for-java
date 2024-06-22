@@ -3,8 +3,8 @@
 
 package com.azure.core.http.rest;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpMethod;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.HttpMethod;
 import com.azure.core.util.BinaryData;
 
 import javax.json.Json;

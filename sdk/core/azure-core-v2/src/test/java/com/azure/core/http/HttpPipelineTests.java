@@ -3,13 +3,13 @@
 
 package com.azure.core.http;
 
-import com.azure.core.http.clients.NoOpHttpClient;
-import com.azure.core.http.policy.PortPolicy;
-import com.azure.core.http.policy.ProtocolPolicy;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.Context;
+import io.clientcore.core.http.clients.NoOpHttpClient;
+import io.clientcore.core.http.pipeline.PortPolicy;
+import io.clientcore.core.http.pipeline.ProtocolPolicy;
+import io.clientcore.core.http.pipeline.RequestIdPolicy;
+import io.clientcore.core.http.pipeline.HttpRetryPolicy;
+import io.clientcore.core.http.pipeline.UserAgentPolicy;
+import io.clientcore.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -26,7 +26,7 @@ public class HttpPipelineTests {
     public void constructorWithNoArguments() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 // do nothing
                 return null;
             }
@@ -41,7 +41,7 @@ public class HttpPipelineTests {
             .policies(new PortPolicy(80, true), new ProtocolPolicy("ftp", true), new RetryPolicy())
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
+                public Mono<Response<?>> send(HttpRequest request) {
                     // do nothing
                     return null;
                 }
@@ -61,7 +61,7 @@ public class HttpPipelineTests {
             .policies(new PortPolicy(80, true), new ProtocolPolicy("ftp", true), new RetryPolicy())
             .httpClient(new NoOpHttpClient() {
                 @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
+                public Mono<Response<?>> send(HttpRequest request) {
                     // do nothing
                     return null;
                 }
@@ -80,7 +80,7 @@ public class HttpPipelineTests {
         final URL expectedUrl = createUrl("http://my.site.com");
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 assertEquals(0, request.getHeaders().getSize());
                 assertEquals(expectedHttpMethod, request.getHttpMethod());
                 assertEquals(expectedUrl, request.getUrl());
@@ -88,7 +88,7 @@ public class HttpPipelineTests {
             }
         }).build();
 
-        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
+        final Response<?> response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
     }
@@ -100,7 +100,7 @@ public class HttpPipelineTests {
         final String expectedUserAgent = "my-user-agent";
         final HttpClient httpClient = new NoOpHttpClient() {
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 assertEquals(1, request.getHeaders().getSize());
                 assertEquals(expectedUserAgent, request.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 assertEquals(expectedHttpMethod, request.getHttpMethod());
@@ -112,7 +112,7 @@ public class HttpPipelineTests {
         final HttpPipeline httpPipeline
             = new HttpPipelineBuilder().httpClient(httpClient).policies(new UserAgentPolicy(expectedUserAgent)).build();
 
-        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
+        final Response<?> response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
     }
@@ -123,7 +123,7 @@ public class HttpPipelineTests {
         final URL expectedUrl = createUrl("http://my.site.com/1");
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 assertEquals(1, request.getHeaders().getSize());
                 final String requestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
                 assertNotNull(requestId);
@@ -135,7 +135,7 @@ public class HttpPipelineTests {
             }
         }).policies(new RequestIdPolicy()).build();
 
-        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
+        final Response<?> response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
     }
@@ -147,7 +147,7 @@ public class HttpPipelineTests {
         final URL expectedUrl = createUrl("http://my.site.com/1");
         final HttpClient httpClient = new NoOpHttpClient() {
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 assertEquals(1, request.getHeaders().getSize());
                 assertEquals(expectedUserAgent, request.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 assertEquals(expectedHttpMethod, request.getHttpMethod());
@@ -160,7 +160,7 @@ public class HttpPipelineTests {
             .policies((new UserAgentPolicy(expectedUserAgent)))
             .build();
 
-        final HttpResponse response
+        final Response<?> response
             = httpPipeline.sendSync(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
@@ -172,7 +172,7 @@ public class HttpPipelineTests {
         final URL expectedUrl = createUrl("http://my.site.com");
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 assertEquals(0, request.getHeaders().getSize());
                 assertEquals(expectedHttpMethod, request.getHttpMethod());
                 assertEquals(expectedUrl, request.getUrl());
@@ -180,7 +180,7 @@ public class HttpPipelineTests {
             }
         }).build();
 
-        final HttpResponse response
+        final Response<?> response
             = httpPipeline.sendSync(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());

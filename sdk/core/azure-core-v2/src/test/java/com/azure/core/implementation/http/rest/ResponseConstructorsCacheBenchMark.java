@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.http.rest.Response;
+import io.clientcore.core.http.rest.Response;
 import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.TypeUtil;
 import org.openjdk.jmh.Main;

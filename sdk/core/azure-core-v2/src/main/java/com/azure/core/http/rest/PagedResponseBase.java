@@ -3,10 +3,11 @@
 
 package com.azure.core.http.rest;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpRequest;
 import com.azure.core.util.IterableStream;
 
+import io.clientcore.core.util.binarydata.BinaryData;
 import java.util.List;
 
 /**
@@ -98,6 +99,11 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
     @Override
     public HttpRequest getRequest() {
         return request;
+    }
+
+    @Override
+    public BinaryData getBody() {
+        return null;
     }
 
     /**

@@ -8,15 +8,15 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpResponse;
+import io.clientcore.core.http.HttpClient;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.MockHttpResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.AccessPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -59,7 +59,7 @@ public class RestProxyXMLTests {
         }
 
         @Override
-        public Mono<HttpResponse> send(HttpRequest request) {
+        public Mono<Response<?>> send(HttpRequest request) {
             if (request.getUrl().toString().endsWith("GetContainerACLs")) {
                 return Mono.just(response(request, CONTAINERS_XML));
             } else if (request.getUrl().toString().endsWith("GetXMLWithAttributes")) {
@@ -98,7 +98,7 @@ public class RestProxyXMLTests {
         byte[] receivedBytes = null;
 
         @Override
-        public Mono<HttpResponse> send(HttpRequest request) {
+        public Mono<Response<?>> send(HttpRequest request) {
             if (request.getUrl().toString().endsWith("SetContainerACLs")) {
                 return FluxUtil.collectBytesInByteBufferStream(request.getBody()).map(bytes -> {
                     receivedBytes = bytes;

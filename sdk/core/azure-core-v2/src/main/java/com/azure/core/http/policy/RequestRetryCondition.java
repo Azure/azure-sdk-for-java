@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpResponse;
+import io.clientcore.core.http.models.Response;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  * Information about the request that failed, used to determine whether a retry should be attempted.
  */
 public final class RequestRetryCondition {
-    private final HttpResponse response;
+    private final Response<?> response;
     private final Throwable throwable;
     private final int tryCount;
     private final List<Throwable> retriedExceptions;
@@ -24,7 +24,7 @@ public final class RequestRetryCondition {
      * @param tryCount The number of tries that have been attempted.
      * @param retriedThrowables The list of throwables that have been encountered during retries.
      */
-    RequestRetryCondition(HttpResponse response, Throwable throwable, int tryCount, List<Throwable> retriedThrowables) {
+    RequestRetryCondition(Response<?> response, Throwable throwable, int tryCount, List<Throwable> retriedThrowables) {
         this.response = response;
         this.throwable = throwable;
         this.tryCount = tryCount;
@@ -39,7 +39,7 @@ public final class RequestRetryCondition {
      *
      * @return The HTTP response of the request that failed.
      */
-    public HttpResponse getResponse() {
+    public Response<?> getResponse() {
         return response;
     }
 

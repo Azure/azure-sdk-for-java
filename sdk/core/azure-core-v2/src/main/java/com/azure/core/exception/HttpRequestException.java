@@ -3,7 +3,7 @@
 
 package com.azure.core.exception;
 
-import com.azure.core.http.HttpRequest;
+import io.clientcore.core.http.models.HttpRequest;
 
 /**
  * <p>The {@code HttpRequestException} that represents an exception thrown when an HTTP request fails.</p>
@@ -13,7 +13,7 @@ import com.azure.core.http.HttpRequest;
  *
  * @see com.azure.core.exception
  * @see com.azure.core.exception.AzureException
- * @see com.azure.core.http.HttpRequest
+ * @see HttpRequest
  */
 public class HttpRequestException extends AzureException {
 

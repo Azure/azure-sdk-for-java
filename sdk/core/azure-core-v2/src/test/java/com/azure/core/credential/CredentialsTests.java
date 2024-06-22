@@ -5,18 +5,18 @@ package com.azure.core.credential;
 
 import com.azure.core.SyncAsyncExtension;
 import com.azure.core.SyncAsyncTest;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.clients.NoOpHttpClient;
-import com.azure.core.http.policy.AzureSasCredentialPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import io.clientcore.core.http.HttpClient;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.clients.NoOpHttpClient;
+import io.clientcore.core.http.pipeline.AzureSasCredentialPolicy;
+import io.clientcore.core.http.pipeline.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -43,7 +43,7 @@ public class CredentialsTests {
         BasicAuthenticationCredential credentials = new BasicAuthenticationCredential("user", "fakeKeyPlaceholder");
 
         HttpPipelinePolicy auditorPolicy = (context, next) -> {
-            String headerValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String headerValue = httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             Assertions.assertTrue(headerValue != null && headerValue.startsWith("Basic ") && headerValue.length() > 6);
             return next.process();
         };
@@ -51,9 +51,7 @@ public class CredentialsTests {
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
             .policies((context, next) -> credentials.getToken(new TokenRequestContext().addScopes("scope./default"))
                 .flatMap(token -> {
-                    context.getHttpRequest()
-                        .getHeaders()
-                        .set(HttpHeaderName.AUTHORIZATION, "Basic " + token.getToken());
+                    httpRequest.getHeaders().set(HttpHeaderName.AUTHORIZATION, "Basic " + token.getToken());
                     return next.process();
                 }), auditorPolicy)
             .build();
@@ -66,13 +64,13 @@ public class CredentialsTests {
         TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
 
         HttpPipelinePolicy auditorPolicy = (context, next) -> {
-            String headerValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String headerValue = httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             Assertions.assertEquals("Bearer this_is_a_token", headerValue);
             return next.process();
         };
         final HttpClient httpClient = new NoOpHttpClient() {
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 return Mono.just(new com.azure.core.http.MockHttpResponse(request, 200));
             }
         };
@@ -91,7 +89,7 @@ public class CredentialsTests {
         TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
 
         HttpPipelinePolicy auditorPolicy = (context, next) -> {
-            String headerValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+            String headerValue = httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             Assertions.assertEquals("Bearer this_is_a_token", headerValue);
             return next.process();
         };
@@ -118,7 +116,7 @@ public class CredentialsTests {
         AzureSasCredential credential = new AzureSasCredential(signature);
 
         HttpPipelinePolicy auditorPolicy = (context, next) -> {
-            String actualUrl = context.getHttpRequest().getUrl().toString();
+            String actualUrl = httpRequest.getUrl().toString();
             Assertions.assertEquals(expectedUrl, actualUrl);
             return next.process();
         };
@@ -143,7 +141,7 @@ public class CredentialsTests {
         AzureSasCredential credential = new AzureSasCredential(signature);
 
         HttpPipelinePolicy auditorPolicy = (context, next) -> {
-            String actualUrl = context.getHttpRequest().getUrl().toString();
+            String actualUrl = httpRequest.getUrl().toString();
             Assertions.assertEquals(expectedUrl, actualUrl);
             return next.process();
         };
@@ -177,7 +175,7 @@ public class CredentialsTests {
         AzureSasCredential credential = new AzureSasCredential("foo");
 
         HttpPipelinePolicy auditorPolicy = (context, next) -> {
-            String actualUrl = context.getHttpRequest().getUrl().toString();
+            String actualUrl = httpRequest.getUrl().toString();
             Assertions.assertEquals("http://localhost?foo", actualUrl);
             return next.process();
         };

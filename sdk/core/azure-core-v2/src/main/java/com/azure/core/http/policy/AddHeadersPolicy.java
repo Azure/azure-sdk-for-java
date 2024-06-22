@@ -3,12 +3,12 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
-import com.azure.core.http.HttpResponse;
-import reactor.core.publisher.Mono;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 
 /**
  * <p>The {@code AddHeadersPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy
@@ -34,11 +34,11 @@ import reactor.core.publisher.Mono;
  * <!-- end com.azure.core.http.policy.AddHeaderPolicy.constructor -->
  *
  * @see com.azure.core.http.policy
- * @see com.azure.core.http.policy.HttpPipelinePolicy
- * @see com.azure.core.http.HttpPipeline
- * @see com.azure.core.http.HttpRequest
- * @see com.azure.core.http.HttpResponse
- * @see com.azure.core.http.HttpHeaders
+ * @see HttpPipelinePolicy
+ * @see HttpPipeline
+ * @see HttpRequest
+ * @see Response
+ * @see HttpHeaders
  */
 public class AddHeadersPolicy implements HttpPipelinePolicy {
     private final HttpHeaders headers;
@@ -52,21 +52,14 @@ public class AddHeadersPolicy implements HttpPipelinePolicy {
         this.headers = headers;
     }
 
+    private static void setHeaders(HttpHeaders requestHeaders, HttpHeaders policyHeaders) {
+        requestHeaders.addAll(policyHeaders);
+    }
+
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        setHeaders(context.getHttpRequest().getHeaders(), headers);
+    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        setHeaders(httpRequest.getHeaders(), headers);
 
         return next.process();
-    }
-
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        setHeaders(context.getHttpRequest().getHeaders(), headers);
-
-        return next.processSync();
-    }
-
-    private static void setHeaders(HttpHeaders requestHeaders, HttpHeaders policyHeaders) {
-        requestHeaders.setAllHttpHeaders(policyHeaders);
     }
 }

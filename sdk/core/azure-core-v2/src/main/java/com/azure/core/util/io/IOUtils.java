@@ -3,18 +3,9 @@
 
 package com.azure.core.util.io;
 
-import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.AsynchronousFileChannelAdapter;
-import com.azure.core.implementation.ByteCountingAsynchronousByteChannel;
 import com.azure.core.implementation.ImplUtils;
-import com.azure.core.implementation.logging.LoggingKeys;
-import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
-import com.azure.core.util.logging.LoggingEventBuilder;
-import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoSink;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
@@ -24,10 +15,8 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
-import java.util.function.BiFunction;
-
-import static com.azure.core.http.HttpHeaderName.TRACEPARENT;
-import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 
 /**
  * Utilities related to IO operations that involve channels, streams, byte transfers.
@@ -176,57 +165,6 @@ public final class IOUtils {
         }
     }
 
-    /**
-     * Transfers the {@link StreamResponse} content to {@link AsynchronousByteChannel}.
-     * Resumes the transfer in case of errors.
-     *
-     * @param targetChannel The destination {@link AsynchronousByteChannel}.
-     * @param sourceResponse The initial {@link StreamResponse}.
-     * @param onErrorResume A {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
-     * downloading when an error occurs. The function accepts a {@link Throwable} and offset at the destination
-     * from beginning of writing at which the error occurred.
-     * @param progressReporter The {@link ProgressReporter}.
-     * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
-     * @return A {@link Mono} which completion indicates successful transfer.
-     */
-    public static Mono<Void> transferStreamResponseToAsynchronousByteChannel(AsynchronousByteChannel targetChannel,
-        StreamResponse sourceResponse, BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        ProgressReporter progressReporter, int maxRetries) {
-
-        return transferStreamResponseToAsynchronousByteChannelHelper(
-            new ByteCountingAsynchronousByteChannel(targetChannel, null, progressReporter), sourceResponse,
-            onErrorResume, maxRetries, 0);
-    }
-
-    private static Mono<Void> transferStreamResponseToAsynchronousByteChannelHelper(
-        ByteCountingAsynchronousByteChannel targetChannel, StreamResponse response,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, int maxRetries, int retryCount) {
-
-        return Mono.using(() -> response,
-            r -> r.writeValueToAsync(targetChannel).onErrorResume(Exception.class, exception -> {
-                response.close();
-
-                int updatedRetryCount = retryCount + 1;
-
-                if (updatedRetryCount > maxRetries) {
-                    createBasicLoggingContext(LogLevel.ERROR, response)
-                        .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
-                        .log("Retry attempts have been exhausted.", exception);
-                    return Mono.error(exception);
-                }
-
-                long bytesWritten = targetChannel.getBytesWritten();
-                createBasicLoggingContext(LogLevel.INFORMATIONAL, response)
-                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
-                    .addKeyValue("maxRetries", maxRetries)
-                    .addKeyValue("bytesWritten", bytesWritten)
-                    .log("Attempt failed. Scheduling retry.", exception);
-                return onErrorResume.apply(exception, bytesWritten)
-                    .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(targetChannel,
-                        newResponse, onErrorResume, maxRetries, updatedRetryCount));
-            }), StreamResponse::close);
-    }
-
     /*
      * Helper method to optimize the size of the read buffer to reduce the number of reads and writes that have to be
      * performed. If the source and/or target is IO-based, file, network connection, etc, this reduces the number of
@@ -257,23 +195,6 @@ public final class IOUtils {
         } else {
             return DEFAULT_BUFFER_SIZE;
         }
-    }
-
-    private static LoggingEventBuilder createBasicLoggingContext(LogLevel level, StreamResponse response) {
-        LoggingEventBuilder log = LOGGER.atLevel(level);
-        if (LOGGER.canLogAtLevel(level)) {
-            String clientRequestId = response.getRequest().getHeaders().getValue(X_MS_CLIENT_REQUEST_ID);
-            if (clientRequestId != null) {
-                log.addKeyValue(X_MS_CLIENT_REQUEST_ID.getCaseInsensitiveName(), clientRequestId);
-            }
-
-            String traceparent = response.getRequest().getHeaders().getValue(TRACEPARENT);
-            if (traceparent != null) {
-                log.addKeyValue(TRACEPARENT.getCaseInsensitiveName(), traceparent);
-            }
-        }
-
-        return log;
     }
 
     private IOUtils() {

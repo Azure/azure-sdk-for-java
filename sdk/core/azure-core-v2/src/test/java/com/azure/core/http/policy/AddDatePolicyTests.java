@@ -3,15 +3,15 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpResponse;
-import com.azure.core.util.Context;
+import io.clientcore.core.http.HttpClient;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -49,12 +49,12 @@ public class AddDatePolicyTests {
                 private final AtomicReference<String> firstDate = new AtomicReference<>();
 
                 @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
+                public Mono<Response<?>> send(HttpRequest request) {
                     return send(request, Context.NONE);
                 }
 
                 @Override
-                public Mono<HttpResponse> send(HttpRequest request, Context context) {
+                public Mono<Response<?>> send(HttpRequest request, Context context) {
                     return Mono.fromCallable(() -> sendSync(request, context));
                 }
 

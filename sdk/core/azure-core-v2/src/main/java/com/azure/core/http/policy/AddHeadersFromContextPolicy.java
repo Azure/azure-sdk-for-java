@@ -3,14 +3,13 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.util.Context;
-import reactor.core.publisher.Mono;
+import io.clientcore.core.util.Context;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 
 /**
  * The pipeline policy that override or add {@link HttpHeaders} in {@link HttpRequest} by reading values from
@@ -37,10 +36,10 @@ import reactor.core.publisher.Mono;
  * // Above three HttpHeader will be added in outgoing HttpRequest.
  * </pre>
  *
- * @see com.azure.core.http.policy.HttpPipelinePolicy
- * @see com.azure.core.http.HttpPipeline
- * @see com.azure.core.http.HttpRequest
- * @see com.azure.core.http.HttpResponse
+ * @see HttpPipelinePolicy
+ * @see HttpPipeline
+ * @see HttpRequest
+ * @see Response
  */
 public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
 
@@ -53,25 +52,16 @@ public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
     public AddHeadersFromContextPolicy() {
     }
 
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        addHeadersFromContext(context);
+    private static void addHeadersFromContext(HttpRequest httpRequest) {
+        final Object obj = httpRequest.getRequestOptions().getContext().get(AZURE_REQUEST_HTTP_HEADERS_KEY);
+        if (obj instanceof HttpHeaders) {
+            httpRequest.getHeaders().addAll((HttpHeaders) obj);
+        }
+    }
 
+    @Override
+    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        addHeadersFromContext(httpRequest);
         return next.process();
-    }
-
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        addHeadersFromContext(context);
-
-        return next.processSync();
-    }
-
-    private static void addHeadersFromContext(HttpPipelineCallContext context) {
-        context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).ifPresent(headers -> {
-            if (headers instanceof HttpHeaders) {
-                context.getHttpRequest().getHeaders().setAllHttpHeaders((HttpHeaders) headers);
-            }
-        });
     }
 }

@@ -5,17 +5,17 @@ package com.azure.core.http.policy;
 
 import com.azure.core.SyncAsyncExtension;
 import com.azure.core.SyncAsyncTest;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpResponse;
-import com.azure.core.http.clients.NoOpHttpClient;
-import com.azure.core.util.Context;
+import io.clientcore.core.http.HttpClient;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.http.clients.NoOpHttpClient;
+import io.clientcore.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
@@ -39,7 +39,7 @@ public class RedirectPolicyTest {
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
 
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 if (request.getUrl().toString().equals("http://localhost/")) {
                     Map<String, String> headers = new HashMap<>();
                     headers.put("Location", "http://redirecthost/");
@@ -295,7 +295,7 @@ public class RedirectPolicyTest {
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
 
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 if (request.getUrl().toString().equals("http://localhost/")) {
                     return Mono.just(new MockHttpResponse(request, 401, new HttpHeaders()));
                 } else {
@@ -349,7 +349,7 @@ public class RedirectPolicyTest {
         }
 
         @Override
-        public Mono<HttpResponse> send(HttpRequest httpRequest) {
+        public Mono<Response<?>> send(HttpRequest httpRequest) {
             count.getAndIncrement();
             return handler.apply(httpRequest);
         }

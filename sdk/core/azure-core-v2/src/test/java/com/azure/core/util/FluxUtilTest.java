@@ -3,13 +3,13 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.policy.FixedDelayOptions;
-import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.pipeline.FixedDelayOptions;
+import io.clientcore.core.http.pipeline.HttpRetryOptions;
+import io.clientcore.core.http.rest.Response;
+import io.clientcore.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import com.azure.core.util.mocking.MockFileChannel;
@@ -321,7 +321,7 @@ public class FluxUtilTest {
         Flux<ByteBuffer> retriableStream
             = FluxUtil.createRetriableDownloadFlux(() -> generateStream(data, 0, errorCount),
                 (throwable, position) -> generateStream(data, position, errorCount),
-                new RetryOptions(new FixedDelayOptions(5, Duration.ofMillis(1))), 0L);
+                new HttpRetryOptions(new FixedDelayOptions(5, Duration.ofMillis(1))), 0L);
 
         Path file = Files.createTempFile("writingRetriableStreamThatFails" + UUID.randomUUID(), ".txt");
         file.toFile().deleteOnExit();

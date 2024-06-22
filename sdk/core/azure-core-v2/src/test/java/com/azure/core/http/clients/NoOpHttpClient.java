@@ -3,16 +3,15 @@
 
 package com.azure.core.http.clients;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import reactor.core.publisher.Mono;
+import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
 
 public class NoOpHttpClient implements HttpClient {
 
     @Override
-    public Mono<HttpResponse> send(HttpRequest request) {
-        return Mono.empty(); // NOP
+    public Response<?> send(HttpRequest request) {
+        return null; // NOP
     }
 
 }

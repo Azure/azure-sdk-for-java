@@ -3,22 +3,14 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.implementation.accesshelpers.ExponentialBackoffAccessHelper;
-import com.azure.core.implementation.accesshelpers.FixedDelayAccessHelper;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-
-import java.io.FileOutputStream;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -137,47 +129,6 @@ public final class ImplUtils {
         } catch (NumberFormatException ex) {
             return -1;
         }
-    }
-
-    /**
-     * Writes a {@link ByteBuffer} into an {@link OutputStream}.
-     * <p>
-     * This method provides writing optimization based on the type of {@link ByteBuffer} and {@link OutputStream}
-     * passed. For example, if the {@link ByteBuffer} has a backing {@code byte[]} this method will access that directly
-     * to write to the {@code stream} instead of buffering the contents of the {@link ByteBuffer} into a temporary
-     * buffer.
-     *
-     * @param buffer The {@link ByteBuffer} to write into the {@code stream}.
-     * @param stream The {@link OutputStream} where the {@code buffer} will be written.
-     * @throws IOException If an I/O occurs while writing the {@code buffer} into the {@code stream}.
-     */
-    public static void writeByteBufferToStream(ByteBuffer buffer, OutputStream stream) throws IOException {
-        // First check if the buffer has a backing byte[]. The backing byte[] can be accessed directly and written
-        // without an additional buffering byte[].
-        if (buffer.hasArray()) {
-            // Write the byte[] from the current view position to the length remaining in the view.
-            stream.write(buffer.array(), buffer.position(), buffer.remaining());
-
-            // Update the position of the ByteBuffer to treat this the same as getting from the buffer.
-            buffer.position(buffer.position() + buffer.remaining());
-            return;
-        }
-
-        // Next begin checking for specific instances of OutputStream that may provide better writing options for
-        // direct ByteBuffers.
-        if (stream instanceof FileOutputStream) {
-            FileOutputStream fileOutputStream = (FileOutputStream) stream;
-
-            // Writing to the FileChannel directly may provide native optimizations for moving the OS managed memory
-            // into the file.
-            // Write will move both the OutputStream's and ByteBuffer's position so there is no need to perform
-            // additional updates that are required when using the backing array.
-            fileOutputStream.getChannel().write(buffer);
-            return;
-        }
-
-        // All optimizations have been exhausted, fallback to buffering write.
-        stream.write(FluxUtil.byteBufferToArray(buffer));
     }
 
     /**
@@ -398,29 +349,6 @@ public final class ImplUtils {
         } catch (ClassNotFoundException e) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("Class '" + className + "' is not found on the classpath.", e));
-        }
-    }
-
-    /**
-     * Converts the {@link RetryOptions} into a {@link RetryStrategy} so it can be more easily consumed.
-     *
-     * @param retryOptions The retry options.
-     * @return The retry strategy based on the retry options.
-     * @throws NullPointerException If {@code retryOptions} is null.
-     * @throws IllegalArgumentException If {@code retryOptions} doesn't define any retry strategy options.
-     */
-    public static RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-
-        if (retryOptions.getExponentialBackoffOptions() != null) {
-            return ExponentialBackoffAccessHelper.create(retryOptions.getExponentialBackoffOptions(),
-                retryOptions.getShouldRetryCondition());
-        } else if (retryOptions.getFixedDelayOptions() != null) {
-            return FixedDelayAccessHelper.create(retryOptions.getFixedDelayOptions(),
-                retryOptions.getShouldRetryCondition());
-        } else {
-            // This should never happen.
-            throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
         }
     }
 

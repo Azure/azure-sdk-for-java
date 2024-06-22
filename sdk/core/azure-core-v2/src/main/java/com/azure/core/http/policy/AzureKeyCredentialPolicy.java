@@ -5,6 +5,9 @@ package com.azure.core.http.policy;
 
 import com.azure.core.credential.AzureKeyCredential;
 
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.pipeline.KeyCredentialPolicy;
 import java.util.Objects;
 
 /**
@@ -30,11 +33,11 @@ import java.util.Objects;
  * <!-- end com.azure.core.http.policy.AzureKeyCredentialPolicy.constructor -->
  *
  * @see com.azure.core.http.policy
- * @see com.azure.core.http.policy.KeyCredentialPolicy
+ * @see KeyCredentialPolicy
  * @see com.azure.core.credential.AzureKeyCredential
- * @see com.azure.core.http.HttpPipeline
- * @see com.azure.core.http.HttpRequest
- * @see com.azure.core.http.HttpResponse
+ * @see HttpPipeline
+ * @see HttpRequest
+ * @see io.clientcore.core.http.models.Response
  */
 public final class AzureKeyCredentialPolicy extends KeyCredentialPolicy {
     /**

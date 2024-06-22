@@ -7,9 +7,9 @@ import com.azure.core.SyncAsyncExtension;
 import com.azure.core.SyncAsyncTest;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.*;
+import io.clientcore.core.http.*;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -274,12 +274,12 @@ public class PolicyConsumesResponseBodyTest {
         }
 
         @Override
-        public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
+        public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, Response<?> response) {
             return authorize;
         }
 
         @Override
-        public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
+        public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, Response<?> response) {
             return Mono.just(authorize);
         }
     }
@@ -292,7 +292,7 @@ public class PolicyConsumesResponseBodyTest {
         }
 
         @Override
-        public Mono<HttpResponse> send(HttpRequest request) {
+        public Mono<Response<?>> send(HttpRequest request) {
             return Mono.just(responseProvider.apply(request));
         }
 

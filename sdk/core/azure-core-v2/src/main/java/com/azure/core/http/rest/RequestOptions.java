@@ -3,15 +3,14 @@
 
 package com.azure.core.http.rest;
 
-import com.azure.core.annotation.QueryParam;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.http.rest.ErrorOptions;
-import com.azure.core.implementation.http.rest.UrlEscapers;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
+import io.clientcore.core.implementation.http.rest.UrlEscapers;
+import io.clientcore.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-
+import io.clientcore.core.http.annotation.QueryParam;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.util.binarydata.BinaryData;
 import java.util.EnumSet;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -179,7 +178,8 @@ public final class RequestOptions {
      */
     @Deprecated
     public RequestOptions addHeader(String header, String value) {
-        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
+        this.requestCallback = this.requestCallback
+            .andThen(request -> request.getHeaders().add(HttpHeaderName.fromString(header), value));
         return this;
     }
 
@@ -210,7 +210,8 @@ public final class RequestOptions {
      */
     @Deprecated
     public RequestOptions setHeader(String header, String value) {
-        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
+        this.requestCallback = this.requestCallback
+            .andThen(request -> request.getHeaders().set(HttpHeaderName.fromString(header), value));
         return this;
     }
 

@@ -3,12 +3,14 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedResponse;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpLogOptions;
 import com.azure.core.implementation.ImplUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import io.clientcore.core.util.Context;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 
@@ -244,29 +246,6 @@ public final class CoreUtils {
     }
 
     /**
-     * Retrieves the application ID from either a {@link ClientOptions} or {@link HttpLogOptions}.
-     * <p>
-     * This method first checks {@code clientOptions} for having an application ID then {@code logOptions}, finally
-     * returning null if neither are set.
-     * <p>
-     * {@code clientOptions} is checked first as {@code logOptions} application ID is deprecated.
-     *
-     * @param clientOptions The {@link ClientOptions}.
-     * @param logOptions The {@link HttpLogOptions}.
-     * @return The application ID from either {@code clientOptions} or {@code logOptions}, if neither are set null.
-     */
-    @SuppressWarnings("deprecation")
-    public static String getApplicationId(ClientOptions clientOptions, HttpLogOptions logOptions) {
-        if (clientOptions != null && !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())) {
-            return clientOptions.getApplicationId();
-        } else if (logOptions != null && !CoreUtils.isNullOrEmpty(logOptions.getApplicationId())) {
-            return logOptions.getApplicationId();
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Creates {@link HttpHeaders} from the provided {@link ClientOptions}.
      * <p>
      * If {@code clientOptions} is null or {@link ClientOptions#getHeaders()} doesn't return any {@link Header} values
@@ -290,7 +269,7 @@ public final class CoreUtils {
         HttpHeaders headers = new HttpHeaders();
         do {
             Header header = headerIterator.next();
-            headers.set(header.getName(), header.getValue());
+            headers.set(HttpHeaderName.fromString(header.getName()), header.getValue());
         } while (headerIterator.hasNext());
 
         return headers;
@@ -337,41 +316,6 @@ public final class CoreUtils {
 
             return defaultTimeout;
         }
-    }
-
-    /**
-     * Merges two {@link Context Contexts} into a new {@link Context}.
-     *
-     * @param into Context being merged into.
-     * @param from Context being merged.
-     * @return A new Context that is the merged Contexts.
-     * @throws NullPointerException If either {@code into} or {@code from} is null.
-     */
-    public static Context mergeContexts(Context into, Context from) {
-        Objects.requireNonNull(into, "'into' cannot be null.");
-        Objects.requireNonNull(from, "'from' cannot be null.");
-
-        // If the 'into' Context is the NONE Context just return the 'from' Context.
-        // This is safe as Context is immutable and prevents needing to create any new Contexts and temporary arrays.
-        if (into == Context.NONE) {
-            return from;
-        }
-
-        // Same goes the other way, where if the 'from' Context is the NONE Context just return the 'into' Context.
-        if (from == Context.NONE) {
-            return into;
-        }
-
-        Context[] contextChain = from.getContextChain();
-
-        Context returnContext = into;
-        for (Context toAdd : contextChain) {
-            if (toAdd != null) {
-                returnContext = returnContext.addData(toAdd.getKey(), toAdd.getValue());
-            }
-        }
-
-        return returnContext;
     }
 
     /**

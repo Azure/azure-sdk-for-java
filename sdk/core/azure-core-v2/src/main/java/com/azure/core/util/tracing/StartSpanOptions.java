@@ -3,7 +3,7 @@
 package com.azure.core.util.tracing;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 
 import java.time.Instant;
 import java.util.ArrayList;

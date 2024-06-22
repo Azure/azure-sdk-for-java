@@ -3,11 +3,11 @@
 
 package com.azure.core.http.rest;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpResponse;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.MockHttpResponse;
 import com.azure.core.util.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

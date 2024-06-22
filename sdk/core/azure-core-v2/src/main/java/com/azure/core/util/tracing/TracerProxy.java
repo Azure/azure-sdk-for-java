@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.util.tracing;
 
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 
 /**
  * This class provides a means for all client libraries to augment the context information they have received from an

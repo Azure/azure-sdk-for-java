@@ -3,9 +3,9 @@
 
 package com.azure.core.util.builder;
 
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.http.policy.RetryPolicy;
+import io.clientcore.core.http.models.HttpRetryOptions;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
@@ -18,35 +18,35 @@ public final class ClientBuilderUtil {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClientBuilderUtil.class);
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy();
+    private static final HttpRetryPolicy DEFAULT_RETRY_POLICY = new HttpRetryPolicy();
 
     /**
-     * This method validates that customized {@link HttpPipelinePolicy retry policy} and customized {@link RetryOptions}
+     * This method validates that customized {@link HttpPipelinePolicy retry policy} and customized {@link HttpRetryOptions}
      * are mutually exclusive.
      * If no customization was made then it falls back to the default.
      * @param retryPolicy a customized {@link HttpPipelinePolicy}.
-     * @param retryOptions a customized {@link RetryOptions}.
-     * @return final {@link RetryPolicy} to be used by the builder.
+     * @param retryOptions a customized {@link HttpRetryOptions}.
+     * @return final {@link HttpRetryPolicy} to be used by the builder.
      * @throws IllegalStateException if both {@code retryPolicy} and {@code retryOptions} are not {@code null}.
      */
     public static HttpPipelinePolicy validateAndGetRetryPolicy(HttpPipelinePolicy retryPolicy,
-        RetryOptions retryOptions) {
+        HttpRetryOptions retryOptions) {
         return validateAndGetRetryPolicy(retryPolicy, retryOptions, DEFAULT_RETRY_POLICY);
     }
 
     /**
-     * This method validates that customized {@link HttpPipelinePolicy retry policy} and customized {@link RetryOptions}
+     * This method validates that customized {@link HttpPipelinePolicy retry policy} and customized {@link HttpRetryOptions}
      * are mutually exclusive.
      * If no customization was made then it falls back to the default.
      * @param retryPolicy a customized {@link HttpPipelinePolicy}.
-     * @param retryOptions a customized {@link RetryOptions}.
+     * @param retryOptions a customized {@link HttpRetryOptions}.
      * @param defaultPolicy a default {@link HttpPipelinePolicy}.
-     * @return final {@link RetryPolicy} to be used by the builder.
+     * @return final {@link HttpRetryPolicy} to be used by the builder.
      * @throws NullPointerException if {@code defaultPolicy} is {@code null}.
      * @throws IllegalStateException if both {@code retryPolicy} and {@code retryOptions} are not {@code null}.
      */
     public static HttpPipelinePolicy validateAndGetRetryPolicy(HttpPipelinePolicy retryPolicy,
-        RetryOptions retryOptions, HttpPipelinePolicy defaultPolicy) {
+        HttpRetryOptions retryOptions, HttpPipelinePolicy defaultPolicy) {
         Objects.requireNonNull(defaultPolicy, "'defaultPolicy' cannot be null.");
         if (retryPolicy != null && retryOptions != null) {
             throw LOGGER.logExceptionAsWarning(
@@ -55,7 +55,7 @@ public final class ClientBuilderUtil {
         if (retryPolicy != null) {
             return retryPolicy;
         } else if (retryOptions != null) {
-            return new RetryPolicy(retryOptions);
+            return new HttpRetryPolicy(retryOptions);
         } else {
             return defaultPolicy;
         }

@@ -3,11 +3,11 @@
 
 package com.azure.core.util.polling;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.rest.SimpleResponse;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;

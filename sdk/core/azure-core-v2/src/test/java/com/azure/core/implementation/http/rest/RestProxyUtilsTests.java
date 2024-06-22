@@ -4,9 +4,9 @@
 package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.UnexpectedLengthException;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Named;

@@ -3,10 +3,10 @@
 
 package com.azure.core.http.rest;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;

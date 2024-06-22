@@ -5,14 +5,13 @@ package com.azure.core.models;
 
 import com.azure.core.implementation.Option;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -59,7 +58,7 @@ public final class JsonPatchDocument implements JsonSerializable<JsonPatchDocume
     /**
      * Creates a new JSON Patch document.
      * <p>
-     * If {@code serializer} isn't specified {@link JacksonAdapter} will be used.
+     * If {@code serializer} isn't specified {@link JsonSerializer} will be used.
      *
      * @param serializer The {@link JsonSerializer} that will be used to serialize patch operation values.
      */
@@ -478,7 +477,7 @@ public final class JsonPatchDocument implements JsonSerializable<JsonPatchDocume
             if (defaultSerializer == null) {
                 synchronized (SERIALIZER_INSTANTIATION_SYNCHRONIZER) {
                     if (defaultSerializer == null) {
-                        defaultSerializer = JsonSerializerProviders.createInstance();
+                        defaultSerializer = (JsonSerializer) new DefaultJsonSerializer();
                     }
                 }
             }

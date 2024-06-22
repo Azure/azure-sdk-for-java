@@ -3,7 +3,7 @@
 
 package com.azure.core.util.mocking;
 
-import com.azure.core.http.HttpHeaders;
+import io.clientcore.core.http.models.HttpHeaders;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;

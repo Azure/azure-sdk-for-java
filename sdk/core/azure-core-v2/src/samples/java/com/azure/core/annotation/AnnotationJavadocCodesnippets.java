@@ -5,9 +5,9 @@ package com.azure.core.annotation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.rest.Response;
+import io.clientcore.core.http.rest.ResponseBase;
 import joptsimple.util.KeyValuePair;
 import reactor.core.publisher.Mono;
 
@@ -456,7 +456,7 @@ public interface AnnotationJavadocCodesnippets {
     }
 
     final class MyCustomExceptionHttpResponseException extends HttpResponseException {
-        public MyCustomExceptionHttpResponseException(HttpResponse response) {
+        public MyCustomExceptionHttpResponseException(Response<?> response) {
             super(response);
         }
     }

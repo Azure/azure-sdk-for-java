@@ -3,17 +3,17 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.HttpClient;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.clients.NoOpHttpClient;
-import com.azure.core.util.Context;
+import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.clients.NoOpHttpClient;
+import io.clientcore.core.util.Context;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -101,13 +101,13 @@ public class HttpPipelinePolicyTests {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        public Mono<Response<?>> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             asyncCalls.incrementAndGet();
             return next.process();
         }
 
         @Override
-        public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        public Response<?> processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
             syncCalls.incrementAndGet();
             return next.processSync();
         }
@@ -118,7 +118,7 @@ public class HttpPipelinePolicyTests {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        public Mono<Response<?>> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             asyncCalls.incrementAndGet();
             return next.process();
         }

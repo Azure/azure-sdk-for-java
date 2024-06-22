@@ -4,10 +4,10 @@
 package com.azure.core.util.io;
 
 import com.azure.core.TestByteArrayOutputStream;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.MockFluxHttpResponse;
-import com.azure.core.http.rest.StreamResponse;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.MockFluxHttpResponse;
+import io.clientcore.core.http.rest.StreamResponse;
 import com.azure.core.util.FaultyAsynchronousByteChannel;
 import com.azure.core.util.PartialWriteAsynchronousChannel;
 import com.azure.core.util.PartialWriteChannel;

@@ -3,7 +3,7 @@
 
 package com.azure.core.util.tracing;
 
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 import com.azure.core.util.TracingOptions;
 
 import java.time.Instant;
@@ -258,7 +258,7 @@ public interface Tracer {
                         diagnosticId.set(value);
                     }
                 }, context);
-                return context.addData(DIAGNOSTIC_ID_KEY, diagnosticId);
+                return context.put(DIAGNOSTIC_ID_KEY, diagnosticId);
 
             case PROCESS:
                 // use previously created span builder with the links
@@ -512,7 +512,7 @@ public interface Tracer {
      * @throws NullPointerException if {@code diagnosticId} or {@code context} is {@code null}.
      */
     default Context extractContext(Function<String, String> headerGetter) {
-        return Context.NONE;
+        return Context.none();
     }
 
     /**
@@ -571,7 +571,7 @@ public interface Tracer {
             options.setStartTimestamp(startTime);
         }
 
-        return context.addData(SPAN_BUILDER_KEY, options);
+        return context.put(SPAN_BUILDER_KEY, options);
     }
 
     /**
@@ -589,7 +589,7 @@ public interface Tracer {
      */
     @Deprecated
     default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp) {
-        addEvent(name, attributes, timestamp, Context.NONE);
+        addEvent(name, attributes, timestamp, Context.none());
     }
 
     /**

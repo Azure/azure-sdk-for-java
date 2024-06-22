@@ -124,7 +124,7 @@ the necessary functionality.
 #### HttpTrait<T>
 
 `HttpTrait<T>` contains methods for setting key configurations for HTTP-based clients. This interface will allow you to
-configure the `HttpClient`, `HttpPipeline`, `HttpPipelinePolicy`s, `RetryOptions`, `HttpLogOptions`, and `ClientOptions` 
+configure the `HttpClient`, `HttpPipeline`, `HttpPipelinePolicy`s, `HttpRetryOptions`, `HttpLogOptions`, and `ClientOptions` 
 (preferably `HttpClientOptions` as it is more specific for HTTP-based service clients).
 
 For builders that expose `HttpTrait<T>`, if an `HttpPipeline` or `HttpClient` isn't set a default instance will be 

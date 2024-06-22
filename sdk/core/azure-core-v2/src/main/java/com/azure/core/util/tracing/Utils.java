@@ -3,7 +3,7 @@
 
 package com.azure.core.util.tracing;
 
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
@@ -48,7 +48,7 @@ final class Utils {
      */
     @SuppressWarnings("unchecked")
     static <T> T getOrNull(Context context, String key, Class<T> clazz) {
-        final Object data = context.getData(key).orElse(null);
+        final Object data = context.get(key);
         if (data != null && clazz.isAssignableFrom(data.getClass())) {
             return (T) data;
         }

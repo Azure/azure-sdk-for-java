@@ -5,10 +5,10 @@ package com.azure.core.implementation.serializer;
 
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpResponse;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.MockHttpResponse;
 import com.azure.core.util.mocking.MockSerializerAdapter;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;

@@ -5,17 +5,17 @@ package com.azure.core.http.policy;
 
 import com.azure.core.SyncAsyncExtension;
 import com.azure.core.SyncAsyncTest;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpResponse;
-import com.azure.core.http.clients.NoOpHttpClient;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.http.clients.NoOpHttpClient;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Assertions;
@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * Tests {@link RetryPolicy}.
+ * Tests {@link HttpRetryPolicy}.
  */
 public class RetryPolicyTests {
 
@@ -83,7 +83,7 @@ public class RetryPolicyTests {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).httpClient(new NoOpHttpClient() {
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 throw new IllegalStateException("Expected to call 'sendSync' API");
             }
 
@@ -131,7 +131,7 @@ public class RetryPolicyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).httpClient(new NoOpHttpClient() {
 
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 throw new IllegalStateException("Expected to call 'sendSync' API");
             }
 
@@ -175,7 +175,7 @@ public class RetryPolicyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).httpClient(new NoOpHttpClient() {
 
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 throw new IllegalStateException("Expected to call 'sendSync' API");
             }
 
@@ -238,7 +238,7 @@ public class RetryPolicyTests {
         HttpPipeline pipeline
             = new HttpPipelineBuilder().policies(new RetryPolicy(retryStrategy)).httpClient(new NoOpHttpClient() {
                 @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
+                public Mono<Response<?>> send(HttpRequest request) {
                     throw new IllegalStateException("Expected to call 'sendSync' API");
                 }
 
@@ -279,7 +279,7 @@ public class RetryPolicyTests {
             }
 
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 Assertions.assertTrue(count++ < maxRetries);
                 return Mono.just(new MockHttpResponse(request, 500));
             }
@@ -314,7 +314,7 @@ public class RetryPolicyTests {
             }
 
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 beforeSendingRequest();
                 return Mono.just(new MockHttpResponse(request, 500));
             }
@@ -355,7 +355,7 @@ public class RetryPolicyTests {
             }
 
             @Override
-            public Mono<HttpResponse> send(HttpRequest request) {
+            public Mono<Response<?>> send(HttpRequest request) {
                 beforeSendingRequest();
                 return Mono.just(new MockHttpResponse(request, 503));
             }
@@ -388,7 +388,7 @@ public class RetryPolicyTests {
                     }
 
                     @Override
-                    public Mono<HttpResponse> send(HttpRequest request) {
+                    public Mono<Response<?>> send(HttpRequest request) {
                         return Mono.just(closeTrackingHttpResponse);
                     }
                 })
@@ -412,7 +412,7 @@ public class RetryPolicyTests {
                     }
 
                     @Override
-                    public Mono<HttpResponse> send(HttpRequest request) {
+                    public Mono<Response<?>> send(HttpRequest request) {
                         return Mono
                             .error(new UncheckedIOException(new IOException("Attempt " + count.incrementAndGet())));
                     }
@@ -758,8 +758,8 @@ public class RetryPolicyTests {
     @Test
     public void retryOptionsCanConfigureHttpResponseRetryLogic() {
         // Fixed delay retry options which only retries on 429 responses
-        RetryOptions retryOptions
-            = new RetryOptions(new FixedDelayOptions(1, Duration.ofMillis(1))).setShouldRetryCondition(
+        HttpRetryOptions retryOptions
+            = new HttpRetryOptions(new FixedDelayOptions(1, Duration.ofMillis(1))).setShouldRetryCondition(
                 retryInfo -> retryInfo.getResponse() != null && retryInfo.getResponse().getStatusCode() == 429);
 
         AtomicInteger attemptCount = new AtomicInteger();
@@ -783,7 +783,7 @@ public class RetryPolicyTests {
     @Test
     public void retryOptionsCanConfigureThrowableRetryLogic() {
         // Fixed delay retry options which only retries IOException-based exceptions.
-        RetryOptions retryOptions = new RetryOptions(new FixedDelayOptions(1, Duration.ofMillis(1)))
+        HttpRetryOptions retryOptions = new HttpRetryOptions(new FixedDelayOptions(1, Duration.ofMillis(1)))
             .setShouldRetryCondition(retryInfo -> retryInfo.getThrowable() instanceof IOException);
 
         AtomicInteger attemptCount = new AtomicInteger();

@@ -3,21 +3,21 @@
 
 package com.azure.core;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpResponse;
-import com.azure.core.http.policy.FixedDelay;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import io.clientcore.core.http.HttpClient;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.http.pipeline.FixedDelay;
+import io.clientcore.core.http.pipeline.HttpRetryPolicy;
+import io.clientcore.core.http.pipeline.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 import com.azure.core.util.TestConfigurationSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -52,7 +52,7 @@ public class UserAgentTests {
     }
 
     /**
-     * Tests that applying the {@link UserAgentPolicy} after a {@link RetryPolicy} doesn't result in the User-Agent
+     * Tests that applying the {@link UserAgentPolicy} after a {@link HttpRetryPolicy} doesn't result in the User-Agent
      * header being applied multiple times.
      */
     @ParameterizedTest(name = "{displayName} [{index}]")
@@ -205,7 +205,7 @@ public class UserAgentTests {
         }
 
         @Override
-        public Mono<HttpResponse> send(HttpRequest request) {
+        public Mono<Response<?>> send(HttpRequest request) {
             validator.accept(request);
             return Mono.just(new MockHttpResponse(request, 200));
         }
@@ -226,7 +226,7 @@ public class UserAgentTests {
         }
 
         @Override
-        public Mono<HttpResponse> send(HttpRequest request) {
+        public Mono<Response<?>> send(HttpRequest request) {
             if (retryCount < 5) {
                 retryCount++;
                 return Mono.error(new RuntimeException("Activating retry policy"));

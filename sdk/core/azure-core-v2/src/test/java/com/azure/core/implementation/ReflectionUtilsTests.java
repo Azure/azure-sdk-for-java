@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.http.HttpHeaders;
+import io.clientcore.core.http.models.HttpHeaders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledForJreRange;
 import org.junit.jupiter.api.condition.EnabledIf;

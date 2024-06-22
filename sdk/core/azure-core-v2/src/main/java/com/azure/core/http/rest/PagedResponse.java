@@ -4,6 +4,7 @@ package com.azure.core.http.rest;
 
 import com.azure.core.util.IterableStream;
 
+import io.clientcore.core.http.models.Response;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.List;

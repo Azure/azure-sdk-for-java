@@ -2,8 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.core.http.rest;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.util.binarydata.BinaryData;
+import java.io.IOException;
 
 /**
  * The response of a REST request.
@@ -76,5 +79,15 @@ public class ResponseBase<H, T> implements Response<T> {
     @Override
     public T getValue() {
         return value;
+    }
+
+    @Override
+    public BinaryData getBody() {
+        return null;
+    }
+
+    @Override
+    public void close() throws IOException {
+
     }
 }

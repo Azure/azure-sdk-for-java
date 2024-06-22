@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.http.rest.RequestOptions;
+import io.clientcore.core.http.models.RequestOptions;
 
 /**
  * Determines how errors are handled by requests using {@link RequestOptions}.

@@ -3,7 +3,7 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.HttpMethod;
+import io.clientcore.core.http.HttpMethod;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

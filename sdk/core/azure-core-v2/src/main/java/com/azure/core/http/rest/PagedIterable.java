@@ -82,20 +82,8 @@ import java.util.stream.Stream;
  * @see IterableStream
  */
 public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
-    private final PagedFlux<T> pagedFlux;
     private final Function<Integer, PagedResponse<T>> firstPageRetriever;
     private final BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever;
-
-    /**
-     * Creates instance given {@link PagedFlux}.
-     * @param pagedFlux to use as iterable
-     */
-    public PagedIterable(PagedFlux<T> pagedFlux) {
-        super(pagedFlux);
-        this.pagedFlux = pagedFlux;
-        this.firstPageRetriever = null;
-        this.nextPageRetriever = null;
-    }
 
     /**
      * Creates an instance of {@link PagedIterable} that consists of only a single page. This constructor takes a {@code
@@ -203,9 +191,6 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      */
     @SuppressWarnings("deprecation")
     public <S> PagedIterable<S> mapPage(Function<T, S> mapper) {
-        if (pagedFlux != null) {
-            return new PagedIterable<>(pagedFlux.mapPage(mapper));
-        }
         Function<Integer, PagedResponse<S>> firstMappedPageRetriever = pageSize -> {
             PagedResponse<T> firstPageResponse = this.firstPageRetriever.apply(pageSize);
             PagedResponse<S> firstMappedPageResponse = mapPagedResponse(firstPageResponse, mapper);
@@ -230,7 +215,6 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
         Function<Integer, PagedResponse<T>> firstPageRetriever,
         BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
         super(provider);
-        this.pagedFlux = null;
         this.firstPageRetriever = firstPageRetriever;
         this.nextPageRetriever = nextPageRetriever;
     }

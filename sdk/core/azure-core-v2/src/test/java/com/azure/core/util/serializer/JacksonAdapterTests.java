@@ -3,9 +3,9 @@
 
 package com.azure.core.util.serializer;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.models.GeoObjectType;
 import com.azure.core.models.JsonPatchDocument;

@@ -3,8 +3,8 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpRequest;
-import com.azure.core.util.Context;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.util.Context;
 
 /**
  * The {@code HttpRequestLoggingContext} class provides contextual information available during HTTP request logging.
@@ -14,9 +14,9 @@ import com.azure.core.util.Context;
  * request.</p>
  *
  *
- * @see com.azure.core.http.HttpRequest
+ * @see HttpRequest
  * @see com.azure.core.util.Context
- * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see HttpPipelinePolicy
  */
 public final class HttpRequestLoggingContext {
     private final HttpRequest httpRequest;

@@ -11,17 +11,17 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpResponse;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
+import io.clientcore.core.http.HttpClient;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.http.rest.Response;
+import io.clientcore.core.http.rest.RestProxy;
 import com.azure.core.implementation.http.policy.InstrumentationPolicy;
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -229,7 +229,7 @@ public class RestProxyTracingTests {
 
     private static class SimpleMockHttpClient implements HttpClient {
         @Override
-        public Mono<HttpResponse> send(HttpRequest request) {
+        public Mono<Response<?>> send(HttpRequest request) {
             if (request.getHttpMethod() == HttpMethod.GET) {
                 return Mono.just(new MockHttpResponse(request, 200));
             } else if (request.getHttpMethod() == HttpMethod.PUT) {

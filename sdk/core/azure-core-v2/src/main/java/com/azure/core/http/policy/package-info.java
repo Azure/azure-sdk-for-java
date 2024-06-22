@@ -28,11 +28,11 @@
  * <p>This package is crucial for the communication between Azure SDK client libraries and Azure services. It provides
  * a layer of abstraction over the HTTP protocol, allowing client libraries to focus on service-specific logic.</p>
  *
- * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see HttpPipelinePolicy
  * @see com.azure.core.http.policy.HttpLogDetailLevel
  * @see com.azure.core.http.policy.HttpLogOptions
  * @see com.azure.core.http.policy.HttpLoggingPolicy
- * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see HttpPipelinePolicy
  * @see com.azure.core.http.policy.RetryPolicy
  * @see com.azure.core.http.policy.UserAgentPolicy
  */

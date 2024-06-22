@@ -3,7 +3,7 @@
 
 package com.azure.core.exception;
 
-import com.azure.core.http.HttpResponse;
+import io.clientcore.core.http.models.Response;
 
 /**
  * <p>The {@code ClientAuthenticationException} represents an exception thrown when client authentication fails with
@@ -30,7 +30,7 @@ public class ClientAuthenticationException extends HttpResponseException {
      * @param message The exception message or the response content if a message is not available.
      * @param response The HTTP response with the authorization failure.
      */
-    public ClientAuthenticationException(final String message, final HttpResponse response) {
+    public ClientAuthenticationException(final String message, final Response<?> response) {
         super(message, response);
     }
 
@@ -41,7 +41,7 @@ public class ClientAuthenticationException extends HttpResponseException {
      * @param response The HTTP response with the authorization failure.
      * @param value The deserialized HTTP response value.
      */
-    public ClientAuthenticationException(final String message, final HttpResponse response, final Object value) {
+    public ClientAuthenticationException(final String message, final Response<?> response, final Object value) {
         super(message, response, value);
     }
 
@@ -52,7 +52,7 @@ public class ClientAuthenticationException extends HttpResponseException {
      * @param response The HTTP response with the authorization failure.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
-    public ClientAuthenticationException(final String message, final HttpResponse response, final Throwable cause) {
+    public ClientAuthenticationException(final String message, final Response<?> response, final Throwable cause) {
         super(message, response, cause);
     }
 }

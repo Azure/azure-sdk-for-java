@@ -3,8 +3,8 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpResponse;
-import com.azure.core.util.Context;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.util.Context;
 
 import java.time.Duration;
 
@@ -15,19 +15,18 @@ import java.time.Duration;
  * access to the HTTP response being received, the duration between the HTTP request being sent and the HTTP response
  * being received, the contextual information about the response, and the try count for the request.</p>
  *
- * @see com.azure.core.http.HttpResponse
+ * @see Response
  * @see java.time.Duration
  * @see com.azure.core.util.Context
- * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see HttpPipelinePolicy
  */
 public final class HttpResponseLoggingContext {
-    private final HttpResponse httpResponse;
+    private final Response<?> httpResponse;
     private final Duration responseDuration;
     private final Context context;
     private final Integer tryCount;
 
-    HttpResponseLoggingContext(HttpResponse httpResponse, Duration responseDuration, Context context,
-        Integer tryCount) {
+    HttpResponseLoggingContext(Response<?> httpResponse, Duration responseDuration, Context context, Integer tryCount) {
         this.httpResponse = httpResponse;
         this.responseDuration = responseDuration;
         this.context = context;
@@ -39,7 +38,7 @@ public final class HttpResponseLoggingContext {
      *
      * @return The HTTP response being received.
      */
-    public HttpResponse getHttpResponse() {
+    public Response<?> getHttpResponse() {
         return httpResponse;
     }
 

@@ -3,8 +3,8 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.HttpLogOptions;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.pipeline.HttpLogOptions;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;

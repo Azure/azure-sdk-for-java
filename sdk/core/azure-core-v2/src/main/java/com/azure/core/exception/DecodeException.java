@@ -3,7 +3,7 @@
 
 package com.azure.core.exception;
 
-import com.azure.core.http.HttpResponse;
+import io.clientcore.core.http.models.Response;
 
 /**
  * <p>The {@code DecodeException} represents an exception thrown when the HTTP response could not be decoded during
@@ -22,7 +22,7 @@ public class DecodeException extends HttpResponseException {
      * @param message The exception message or the response content if a message is not available.
      * @param response The HTTP response received from Azure service.
      */
-    public DecodeException(final String message, final HttpResponse response) {
+    public DecodeException(final String message, final Response<?> response) {
         super(message, response);
     }
 
@@ -33,7 +33,7 @@ public class DecodeException extends HttpResponseException {
      * @param response The HTTP response received from Azure service.
      * @param value The deserialized response value.
      */
-    public DecodeException(final String message, final HttpResponse response, final Object value) {
+    public DecodeException(final String message, final Response<?> response, final Object value) {
         super(message, response, value);
     }
 
@@ -44,7 +44,7 @@ public class DecodeException extends HttpResponseException {
      * @param response The HTTP response received from Azure service.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
-    public DecodeException(final String message, final HttpResponse response, final Throwable cause) {
+    public DecodeException(final String message, final Response<?> response, final Throwable cause) {
         super(message, response, cause);
     }
 }

@@ -3,21 +3,21 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.ContentType;
-import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.clients.NoOpHttpClient;
+import io.clientcore.core.http.ContentType;
+import io.clientcore.core.http.models.HttpHeader;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.clients.NoOpHttpClient;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.accesshelpers.ClientLoggerAccessHelper;
 import com.azure.core.implementation.logging.DefaultLogger;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;

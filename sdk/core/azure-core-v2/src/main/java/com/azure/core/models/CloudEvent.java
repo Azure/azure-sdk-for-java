@@ -4,7 +4,7 @@
 package com.azure.core.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.BinaryData;
+import io.clientcore.core.util.binarydata.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;

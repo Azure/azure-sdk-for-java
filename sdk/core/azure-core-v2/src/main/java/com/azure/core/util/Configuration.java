@@ -3,8 +3,6 @@
 
 package com.azure.core.util;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpClientProvider;
 import com.azure.core.implementation.util.EnvironmentConfiguration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
@@ -12,6 +10,8 @@ import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 
+import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpClientProvider;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

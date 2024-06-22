@@ -3,7 +3,7 @@
 
 package com.azure.core.http;
 
-import com.azure.core.http.policy.RetryPolicy;
+import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 
 /**
  * Codesnippets for {@link HttpPipelineBuilder}.

@@ -3,12 +3,12 @@
 
 package com.azure.core.util.tracing;
 
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.TracingOptions;
 

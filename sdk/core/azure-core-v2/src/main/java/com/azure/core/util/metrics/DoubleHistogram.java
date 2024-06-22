@@ -3,7 +3,7 @@
 
 package com.azure.core.util.metrics;
 
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 import com.azure.core.util.TelemetryAttributes;
 
 /** A histogram instrument that records {@code long} values. */

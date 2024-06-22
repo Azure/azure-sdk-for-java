@@ -3,16 +3,16 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.StreamResponse;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.rest.Page;
+import io.clientcore.core.http.rest.PagedResponseBase;
+import io.clientcore.core.http.rest.ResponseBase;
+import io.clientcore.core.http.rest.SimpleResponse;
+import io.clientcore.core.http.rest.StreamResponse;
 import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.IterableStream;
@@ -191,15 +191,15 @@ class ResponseConstructorsCacheBenchMarkTestData {
     };
     private static final byte[] PAGE_FOO_BYTE_ARRAY = asJsonByteArray(PAGE_FOO);
     // MOCK RESPONSES
-    private static final Mono<HttpResponse> VOID_RESPONSE
+    private static final Mono<Response<?>> VOID_RESPONSE
         = Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, null));
-    private static final Mono<HttpResponse> FOO_RESPONSE
+    private static final Mono<Response<?>> FOO_RESPONSE
         = Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, FOO_BYTE_ARRAY));
-    private static final Mono<HttpResponse> STREAM_RESPONSE
+    private static final Mono<Response<?>> STREAM_RESPONSE
         = Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, STREAM_BYTE_ARRAY));
-    private static final Mono<HttpResponse> FOO_PAGE_RESPONSE
+    private static final Mono<Response<?>> FOO_PAGE_RESPONSE
         = Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, PAGE_FOO_BYTE_ARRAY));
-    private static final Mono<HttpResponse> FOO_CUSTOM_HEADER_RESPONSE
+    private static final Mono<Response<?>> FOO_CUSTOM_HEADER_RESPONSE
         = Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_CUSTOM_HEADERS, FOO_BYTE_ARRAY));
     // ARRAY HOLDING TEST DATA
     private final Input[] inputs;
@@ -243,7 +243,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         private final HttpResponseDecoder.HttpDecodedResponse decodedResponse;
         private final Object bodyAsObject;
 
-        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, Mono<HttpResponse> httpResponse,
+        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, Mono<Response<?>> httpResponse,
             Object bodyAsObject) {
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();
             this.decodedResponse = decoder.decode(httpResponse, new HttpResponseDecodeData() {

@@ -3,13 +3,13 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
 import com.azure.core.util.DateTimeRfc1123;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -88,7 +88,7 @@ public class AddDatePolicyBenchmark {
 
     private static final HttpPipelinePolicy DATE_TIME_RFC_1123 = (context, next) -> Mono.defer(() -> {
         OffsetDateTime now = OffsetDateTime.now();
-        context.getHttpRequest().getHeaders().set(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
+        httpRequest.getHeaders().set(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now));
         return next.process();
     });
 
@@ -97,7 +97,7 @@ public class AddDatePolicyBenchmark {
 
     private static final HttpPipelinePolicy DATE_TIME_FORMATTER = (context, next) -> Mono.defer(() -> {
         OffsetDateTime now = OffsetDateTime.now();
-        context.getHttpRequest().getHeaders().set(HttpHeaderName.DATE, FORMATTER.format(now));
+        httpRequest.getHeaders().set(HttpHeaderName.DATE, FORMATTER.format(now));
         return next.process();
     });
 

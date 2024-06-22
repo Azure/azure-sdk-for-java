@@ -4,14 +4,14 @@
 package com.azure.core.implementation.serializer;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.MockHttpResponse;
-import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.http.rest.Page;
+import io.clientcore.core.http.rest.Response;
+import io.clientcore.core.http.rest.ResponseBase;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
@@ -61,7 +61,7 @@ public class HttpResponseBodyDecoderTests {
 
     @ParameterizedTest
     @MethodSource("invalidHttpResponseSupplier")
-    public void invalidHttpResponse(HttpResponse response) {
+    public void invalidHttpResponse(Response<?> response) {
         assertThrows(NullPointerException.class,
             () -> HttpResponseBodyDecoder.decodeByteArray(null, response, null, null));
 

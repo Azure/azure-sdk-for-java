@@ -3,16 +3,14 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
-
+import io.clientcore.core.http.models.HttpHeader;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -21,6 +19,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import reactor.core.Exceptions;
 
 /**
  * <p>The {@code CookiePolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
@@ -43,10 +42,10 @@ import java.util.Map;
  * <!-- end com.azure.core.http.policy.CookiePolicy.constructor -->
  *
  * @see com.azure.core.http.policy
- * @see com.azure.core.http.policy.HttpPipelinePolicy
- * @see com.azure.core.http.HttpPipeline
- * @see com.azure.core.http.HttpRequest
- * @see com.azure.core.http.HttpResponse
+ * @see HttpPipelinePolicy
+ * @see HttpPipeline
+ * @see HttpRequest
+ * @see Response
  */
 public class CookiePolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(CookiePolicy.class);
@@ -58,21 +57,6 @@ public class CookiePolicy implements HttpPipelinePolicy {
     public CookiePolicy() {
     }
 
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return Mono.defer(() -> {
-            beforeRequest(context.getHttpRequest(), cookies);
-            return next.process();
-        }).map(response -> afterResponse(context, response, cookies));
-    }
-
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        beforeRequest(context.getHttpRequest(), cookies);
-
-        return afterResponse(context, next.processSync(), cookies);
-    }
-
     @SuppressWarnings("deprecation")
     private static void beforeRequest(HttpRequest httpRequest, CookieHandler cookies) {
         try {
@@ -80,30 +64,36 @@ public class CookiePolicy implements HttpPipelinePolicy {
 
             Map<String, List<String>> cookieHeaders = new HashMap<>();
             for (HttpHeader header : httpRequest.getHeaders()) {
-                cookieHeaders.put(header.getName(), header.getValuesList());
+                cookieHeaders.put(String.valueOf(header.getName()), header.getValues());
             }
 
             Map<String, List<String>> requestCookies = cookies.get(uri, cookieHeaders);
             for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
-                httpRequest.getHeaders().set(entry.getKey(), entry.getValue());
+                httpRequest.getHeaders().set(HttpHeaderName.fromString(entry.getKey()), entry.getValue());
             }
         } catch (URISyntaxException | IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
-    private static HttpResponse afterResponse(HttpPipelineCallContext context, HttpResponse response,
-        CookieHandler cookies) {
+    private static Response<?> afterResponse(HttpRequest httpRequest, Response<?> response, CookieHandler cookies) {
         Map<String, List<String>> responseHeaders = new HashMap<>();
         for (HttpHeader header : response.getHeaders()) {
-            responseHeaders.put(header.getName(), header.getValuesList());
+            responseHeaders.put(String.valueOf(header.getName()), header.getValues());
         }
         try {
-            final URI uri = context.getHttpRequest().getUrl().toURI();
+            final URI uri = httpRequest.getUrl().toURI();
             cookies.put(uri, responseHeaders);
         } catch (URISyntaxException | IOException e) {
             throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
         }
         return response;
+    }
+
+    @Override
+    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        beforeRequest(httpRequest, cookies);
+
+        return afterResponse(httpRequest, next.process(), cookies);
     }
 }

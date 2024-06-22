@@ -3,19 +3,19 @@
 
 package com.azure.core.util.polling;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.MockHttpResponse;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
+import io.clientcore.core.http.HttpClient;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.HttpMethod;
+import io.clientcore.core.http.HttpPipeline;
+import io.clientcore.core.http.HttpPipelineBuilder;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.MockHttpResponse;
+import io.clientcore.core.http.pipeline.HttpRetryPolicy;
+import io.clientcore.core.http.rest.Response;
+import io.clientcore.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.serializer.DefaultJsonSerializer;
-import com.azure.core.util.Context;
+import io.clientcore.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

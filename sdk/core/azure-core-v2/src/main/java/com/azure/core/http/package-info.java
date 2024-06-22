@@ -32,9 +32,9 @@
  * some way, such as, to add a custom header to all requests.</p>
  *
  * @see com.azure.core.http.HttpClient
- * @see com.azure.core.http.HttpRequest
- * @see com.azure.core.http.HttpResponse
- * @see com.azure.core.http.HttpPipeline
+ * @see HttpRequest
+ * @see Response
+ * @see HttpPipeline
  * @see com.azure.core.http.HttpHeaders
  * @see com.azure.core.http.HttpMethod
  */

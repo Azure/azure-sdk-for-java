@@ -3,16 +3,14 @@
 
 package com.azure.core.http.policy;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelineNextSyncPolicy;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.util.CoreUtils;
-import reactor.core.publisher.Mono;
-
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import java.util.Objects;
 
 /**
@@ -38,11 +36,11 @@ import java.util.Objects;
  * <!-- end com.azure.core.http.policy.RequestIdPolicy.constructor -->
  *
  * @see com.azure.core.http.policy
- * @see com.azure.core.http.policy.HttpPipelinePolicy
- * @see com.azure.core.http.HttpPipeline
- * @see com.azure.core.http.HttpRequest
- * @see com.azure.core.http.HttpResponse
- * @see com.azure.core.http.HttpHeaders
+ * @see HttpPipelinePolicy
+ * @see HttpPipeline
+ * @see HttpRequest
+ * @see Response
+ * @see HttpHeaders
  */
 public class RequestIdPolicy implements HttpPipelinePolicy {
 
@@ -65,23 +63,17 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
         this.requestIdHeaderName = REQUEST_ID_HEADER;
     }
 
-    @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        setRequestIdHeader(context.getHttpRequest(), requestIdHeaderName);
-        return next.process();
-    }
-
-    @Override
-    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        setRequestIdHeader(context.getHttpRequest(), requestIdHeaderName);
-        return next.processSync();
-    }
-
     private static void setRequestIdHeader(HttpRequest request, HttpHeaderName requestIdHeaderName) {
         HttpHeaders headers = request.getHeaders();
         String requestId = headers.getValue(requestIdHeaderName);
         if (requestId == null) {
             headers.set(requestIdHeaderName, CoreUtils.randomUuid().toString());
         }
+    }
+
+    @Override
+    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        setRequestIdHeader(httpRequest, requestIdHeaderName);
+        return next.process();
     }
 }
