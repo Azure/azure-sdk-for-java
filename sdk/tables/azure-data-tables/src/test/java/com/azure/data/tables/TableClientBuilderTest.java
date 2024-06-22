@@ -38,7 +38,7 @@ public class TableClientBuilderTest {
 
     private static final String ENDPOINT = "https://myAccount.table.core.windows.net";
     private static final String CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=myAccount;AccountKey=myKey;EndpointSuffix=core.windows.net";
-private static final TokenCredential CREDENTIAL = new MockTokenCredential();
+    private static final TokenCredential CREDENTIAL = new MockTokenCredential();
 
     private String tableName;
     private TableServiceVersion serviceVersion;
