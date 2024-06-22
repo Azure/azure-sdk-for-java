@@ -5,29 +5,36 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A location represented as a latitude and longitude using short names 'lat' &amp; 'lon'. */
+/**
+ * A location represented as a latitude and longitude using short names 'lat' &amp; 'lon'.
+ */
 @Fluent
-public final class LatLongPairAbbreviated {
+public final class LatLongPairAbbreviated implements JsonSerializable<LatLongPairAbbreviated> {
     /*
      * Latitude property
      */
-    @JsonProperty(value = "lat")
     private Double lat;
 
     /*
      * Longitude property
      */
-    @JsonProperty(value = "lon")
     private Double lon;
 
-    /** Creates an instance of LatLongPairAbbreviated class. */
-    public LatLongPairAbbreviated() {}
+    /**
+     * Creates an instance of LatLongPairAbbreviated class.
+     */
+    public LatLongPairAbbreviated() {
+    }
 
     /**
      * Get the lat property: Latitude property.
-     *
+     * 
      * @return the lat value.
      */
     public Double getLat() {
@@ -36,7 +43,7 @@ public final class LatLongPairAbbreviated {
 
     /**
      * Set the lat property: Latitude property.
-     *
+     * 
      * @param lat the lat value to set.
      * @return the LatLongPairAbbreviated object itself.
      */
@@ -47,7 +54,7 @@ public final class LatLongPairAbbreviated {
 
     /**
      * Get the lon property: Longitude property.
-     *
+     * 
      * @return the lon value.
      */
     public Double getLon() {
@@ -56,12 +63,51 @@ public final class LatLongPairAbbreviated {
 
     /**
      * Set the lon property: Longitude property.
-     *
+     * 
      * @param lon the lon value to set.
      * @return the LatLongPairAbbreviated object itself.
      */
     public LatLongPairAbbreviated setLon(Double lon) {
         this.lon = lon;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("lat", this.lat);
+        jsonWriter.writeNumberField("lon", this.lon);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LatLongPairAbbreviated from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LatLongPairAbbreviated if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LatLongPairAbbreviated.
+     */
+    public static LatLongPairAbbreviated fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LatLongPairAbbreviated deserializedLatLongPairAbbreviated = new LatLongPairAbbreviated();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lat".equals(fieldName)) {
+                    deserializedLatLongPairAbbreviated.lat = reader.getNullable(JsonReader::getDouble);
+                } else if ("lon".equals(fieldName)) {
+                    deserializedLatLongPairAbbreviated.lon = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLatLongPairAbbreviated;
+        });
     }
 }

@@ -5,43 +5,64 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SearchIndexes. */
+/**
+ * Defines values for SearchIndexes.
+ */
 public final class SearchIndexes extends ExpandableStringEnum<SearchIndexes> {
-    /** Static value Addr for SearchIndexes. */
+    /**
+     * Address range interpolation.
+     */
     public static final SearchIndexes ADDRESS = fromString("Addr");
 
-    /** Static value Geo for SearchIndexes. */
+    /**
+     * Geographies.
+     */
     public static final SearchIndexes GEOGRAPHIES = fromString("Geo");
 
-    /** Static value PAD for SearchIndexes. */
+    /**
+     * Point Addresses.
+     */
     public static final SearchIndexes POINT_ADDRESSES = fromString("PAD");
 
-    /** Static value POI for SearchIndexes. */
+    /**
+     * Points of interest.
+     */
     public static final SearchIndexes POINTS_OF_INTEREST = fromString("POI");
 
-    /** Static value Str for SearchIndexes. */
+    /**
+     * Streets.
+     */
     public static final SearchIndexes STREETS = fromString("Str");
 
-    /** Static value Xstr for SearchIndexes. */
+    /**
+     * Cross Streets (Intersections).
+     */
     public static final SearchIndexes CROSS_STREETS = fromString("Xstr");
 
     /**
+     * Creates a new instance of SearchIndexes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SearchIndexes() {
+    }
+
+    /**
      * Creates or finds a SearchIndexes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SearchIndexes.
      */
-    @JsonCreator
     public static SearchIndexes fromString(String name) {
         return fromString(name, SearchIndexes.class);
     }
 
     /**
      * Gets known SearchIndexes values.
-     *
+     * 
      * @return known SearchIndexes values.
      */
     public static Collection<SearchIndexes> values() {

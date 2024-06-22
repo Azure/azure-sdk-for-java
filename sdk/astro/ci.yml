@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: astro
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-astro
         groupId: com.azure.resourcemanager

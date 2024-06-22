@@ -3,10 +3,16 @@
 
 package com.azure.maps.search.models;
 
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /** This object is returned from a successful Search Address Batch service call. */
-public final class BatchSearchResult {
+public final class BatchSearchResult implements JsonSerializable<BatchSearchResult> {
     private final BatchResultSummary batchSummary;
     private final List<SearchAddressBatchItem> batchItems;
     private String batchId;
@@ -25,8 +31,7 @@ public final class BatchSearchResult {
      * @param batchSummary the summary of this batch's search results.
      * @param batchItems the items returned in this search.
      */
-    public BatchSearchResult(BatchResultSummary batchSummary,
-            List<SearchAddressBatchItem> batchItems) {
+    public BatchSearchResult(BatchResultSummary batchSummary, List<SearchAddressBatchItem> batchItems) {
         this.batchSummary = batchSummary;
         this.batchItems = batchItems;
     }
@@ -65,5 +70,51 @@ public final class BatchSearchResult {
      */
     public void setBatchId(String batchId) {
         this.batchId = batchId;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("batchSummary", batchSummary);
+        jsonWriter.writeArrayField("batchItems", batchItems, JsonWriter::writeJson);
+        jsonWriter.writeStringField("batchId", batchId);
+        jsonWriter.writeEndObject();
+        return jsonWriter;
+    }
+
+    /**
+     * Reads an instance of BatchSearchResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchSearchResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchSearchResult.
+     */
+    public static BatchSearchResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchResultSummary batchSummary = null;
+            List<SearchAddressBatchItem> batchItems = null;
+            String batchId = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("batchSummary".equals(fieldName)) {
+                    batchSummary = BatchResultSummary.fromJson(reader);
+                } else if ("batchItems".equals(fieldName)) {
+                    batchItems = reader.readArray(SearchAddressBatchItem::fromJson);
+                } else if ("batchId".equals(fieldName)) {
+                    batchId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            BatchSearchResult batchSearchResult = new BatchSearchResult(batchSummary, batchItems);
+            batchSearchResult.setBatchId(batchId);
+
+            return batchSearchResult;
+        });
     }
 }
