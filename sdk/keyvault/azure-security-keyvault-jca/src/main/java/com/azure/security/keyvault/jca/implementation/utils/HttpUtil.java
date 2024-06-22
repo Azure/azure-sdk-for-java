@@ -212,6 +212,10 @@ public final class HttpUtil {
     }
 
     public static String addTrailingSlashIfRequired(String uri) {
+        if (uri == null) {
+            return null;
+        }
+
         if (!uri.endsWith("/")) {
             return uri + "/";
         }

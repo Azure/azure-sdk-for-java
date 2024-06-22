@@ -137,7 +137,8 @@ public class KeyVaultClient {
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
 
         this.keyVaultUri = addTrailingSlashIfRequired(keyVaultUri);
-        // Base Uri shouldn't end with a slash.
+
+        // Base URI shouldn't end with a slash.
         String domainNameSuffix = Optional.of(this.keyVaultUri)
                 .map(uri -> uri.split("\\.", 2)[1])
                 .map(suffix -> suffix.substring(0, suffix.length() - 1))
