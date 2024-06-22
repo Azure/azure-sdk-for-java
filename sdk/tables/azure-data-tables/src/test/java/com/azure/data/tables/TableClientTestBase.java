@@ -3,6 +3,7 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -21,18 +22,11 @@ public abstract class TableClientTestBase extends TestProxyTestBase {
 
     protected abstract HttpClient buildAssertingClient(HttpClient httpClient);
 
-    protected TableClientBuilder getClientBuilder(String tableName, String connectionString) {
-        final TableClientBuilder tableClientBuilder = new TableClientBuilder()
-            .connectionString(connectionString);
-
-        return configureTestClientBuilder(tableClientBuilder, tableName);
-    }
-
-    protected TableClientBuilder getClientBuilder(String tableName, String endpoint, TokenCredential tokenCredential,
+    protected TableClientBuilder getClientBuilder(String tableName,
                                                   boolean enableTenantDiscovery) {
         final TableClientBuilder tableClientBuilder = new TableClientBuilder()
-            .credential(tokenCredential)
-            .endpoint(endpoint);
+            .credential(TestUtils.getTestTokenCredential(interceptorManager))
+            .endpoint(TestUtils.getEndpoint(interceptorManager.isPlaybackMode()));
 
         if (enableTenantDiscovery) {
             tableClientBuilder.enableTenantDiscovery();
@@ -40,6 +34,19 @@ public abstract class TableClientTestBase extends TestProxyTestBase {
 
         return configureTestClientBuilder(tableClientBuilder, tableName);
     }
+
+    protected TableClientBuilder getClientBuilderWithConnectionString(String tableName,
+                                                  boolean enableTenantDiscovery) {
+        final TableClientBuilder tableClientBuilder = new TableClientBuilder()
+            .connectionString(TestUtils.getConnectionString(interceptorManager.isPlaybackMode()));
+
+        if (enableTenantDiscovery) {
+            tableClientBuilder.enableTenantDiscovery();
+        }
+
+        return configureTestClientBuilder(tableClientBuilder, tableName);
+    }
+
 
     private TableClientBuilder configureTestClientBuilder(TableClientBuilder tableClientBuilder, String tableName) {
         tableClientBuilder

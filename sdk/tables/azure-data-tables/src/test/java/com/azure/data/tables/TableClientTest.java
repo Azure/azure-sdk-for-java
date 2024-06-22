@@ -12,7 +12,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestResourceNamer;
@@ -77,8 +76,7 @@ public class TableClientTest extends TableClientTestBase {
 
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        tableClient = getClientBuilder(tableName, connectionString).buildClient();
+        tableClient = getClientBuilder(tableName, false).buildClient();
         tableClient.createTable();
     }
 
@@ -90,8 +88,7 @@ public class TableClientTest extends TableClientTestBase {
     public void createTable() {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableClient tableClient2 = getClientBuilder(tableName2, connectionString).buildClient();
+        final TableClient tableClient2 = getClientBuilder(tableName2, false).buildClient();
 
         // Act & Assert
         assertNotNull(tableClient2.createTable());
@@ -101,7 +98,6 @@ public class TableClientTest extends TableClientTestBase {
      * Tests that a table and entity can be created while having a different tenant ID than the one that will be
      * provided in the authentication challenge.
      */
-    @LiveOnly
     @Test
     public void createTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
@@ -126,8 +122,7 @@ public class TableClientTest extends TableClientTestBase {
         }
 
         final TableClient tableClient2 =
-            getClientBuilder(tableName2, Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
-                "https://tablestests.table.core.windows.com"), credential, true).buildClient();
+            getClientBuilder(tableName2, true).buildClient();
         // Act & Assert
         // This request will use the tenant ID extracted from the previous request.
 
@@ -146,7 +141,7 @@ public class TableClientTest extends TableClientTestBase {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        final TableClient tableClient2 = getClientBuilder(tableName2, connectionString).buildClient();
+        final TableClient tableClient2 = getClientBuilder(tableName2, false).buildClient();
         final int expectedStatusCode = 204;
 
         // Act & Assert
@@ -966,7 +961,6 @@ public class TableClientTest extends TableClientTestBase {
     /**
      * Create an entity with a property for each supported type and verify that getProperty returns the correct type for each.
      */
-    @Disabled("This test is disabled because it is failing in CI.")
     @Test
     public void createEntityWithAllSupportedTypes() {
         // Arrange
@@ -1125,8 +1119,6 @@ public class TableClientTest extends TableClientTestBase {
 
     }
 
-
-    @LiveOnly
     @Test
     public void generateSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -1138,7 +1130,8 @@ public class TableClientTest extends TableClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        final String sas = tableClient.generateSas(sasSignatureValues);
+        TableClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
+        final String sas = tableClient2.generateSas(sasSignatureValues);
 
         assertTrue(
             sas.startsWith(
@@ -1152,7 +1145,6 @@ public class TableClientTest extends TableClientTestBase {
         );
     }
 
-    @LiveOnly
     @Test
     public void generateSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -1177,7 +1169,8 @@ public class TableClientTest extends TableClientTestBase {
                 .setEndPartitionKey(endPartitionKey)
                 .setEndRowKey(endRowKey);
 
-        final String sas = tableClient.generateSas(sasSignatureValues);
+        TableClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
+        final String sas = tableClient2.generateSas(sasSignatureValues);
 
         assertTrue(
             sas.startsWith(
@@ -1197,7 +1190,6 @@ public class TableClientTest extends TableClientTestBase {
         );
     }
 
-    @LiveOnly
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
         // SAS tokens at the table level have not been working with Cosmos endpoints.
@@ -1213,7 +1205,8 @@ public class TableClientTest extends TableClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        final String sas = tableClient.generateSas(sasSignatureValues);
+        TableClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
+        final String sas = tableClient2.generateSas(sasSignatureValues);
 
         final TableClientBuilder tableClientBuilder = new TableClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -1244,7 +1237,6 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(expectedStatusCode, newTableClient.createEntityWithResponse(entity, null, null).getStatusCode());
     }
 
-    @LiveOnly
     @Test
     public void setAndListAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
@@ -1261,11 +1253,13 @@ public class TableClientTest extends TableClientTestBase {
         TableSignedIdentifier tableSignedIdentifier = new TableSignedIdentifier(id).setAccessPolicy(tableAccessPolicy);
         final int expectedStatusCode = 204;
 
+        TableClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
+
         assertEquals(expectedStatusCode,
-            tableClient.setAccessPoliciesWithResponse(Collections.singletonList(tableSignedIdentifier), null, null)
+            tableClient2.setAccessPoliciesWithResponse(Collections.singletonList(tableSignedIdentifier), null, null)
                 .getStatusCode());
 
-        TableAccessPolicies tableAccessPolicies = tableClient.getAccessPolicies();
+        TableAccessPolicies tableAccessPolicies = tableClient2.getAccessPolicies();
 
         assertNotNull(tableAccessPolicies);
         assertNotNull(tableAccessPolicies.getIdentifiers());
@@ -1283,7 +1277,6 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(id, signedIdentifier.getId());
     }
 
-    @LiveOnly
     @Test
     public void setAndListMultipleAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
@@ -1303,10 +1296,12 @@ public class TableClientTest extends TableClientTestBase {
         tableSignedIdentifiers.add(new TableSignedIdentifier(id2).setAccessPolicy(tableAccessPolicy));
         final int expectedStatusCode = 204;
 
-        assertEquals(expectedStatusCode,
-            tableClient.setAccessPoliciesWithResponse(tableSignedIdentifiers, null, null).getStatusCode());
+        TableClient tableClient2 = getClientBuilderWithConnectionString(tableClient.getTableName(), false).buildClient();
 
-        TableAccessPolicies tableAccessPolicies = tableClient.getAccessPolicies();
+        assertEquals(expectedStatusCode,
+            tableClient2.setAccessPoliciesWithResponse(tableSignedIdentifiers, null, null).getStatusCode());
+
+        TableAccessPolicies tableAccessPolicies = tableClient2.getAccessPolicies();
 
         assertNotNull(tableAccessPolicies);
         assertNotNull(tableAccessPolicies.getIdentifiers());
