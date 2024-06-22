@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -28,7 +27,7 @@ public final class ServiceSpecification {
 
     /**
      * Get the metricSpecifications property: Metric specifications of operation.
-     *
+     * 
      * @return the metricSpecifications value.
      */
     public List<MetricSpecification> metricSpecifications() {
@@ -37,7 +36,7 @@ public final class ServiceSpecification {
 
     /**
      * Set the metricSpecifications property: Metric specifications of operation.
-     *
+     * 
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the ServiceSpecification object itself.
      */
@@ -48,7 +47,7 @@ public final class ServiceSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,37 +5,42 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Script block of scripts. */
+/**
+ * Script block of scripts.
+ */
 @Fluent
-public final class ScriptActivityScriptBlock {
+public final class ScriptActivityScriptBlock implements JsonSerializable<ScriptActivityScriptBlock> {
     /*
      * The query text. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "text", required = true)
     private Object text;
 
     /*
-     * The type of the query. Please refer to the ScriptType for valid options. Type: string (or Expression with
-     * resultType string).
+     * The type of the query. Please refer to the ScriptType for valid options. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "type", required = true)
     private Object type;
 
     /*
      * Array of script parameters. Type: array.
      */
-    @JsonProperty(value = "parameters")
     private List<ScriptActivityParameter> parameters;
 
-    /** Creates an instance of ScriptActivityScriptBlock class. */
-    public ScriptActivityScriptBlock() {}
+    /**
+     * Creates an instance of ScriptActivityScriptBlock class.
+     */
+    public ScriptActivityScriptBlock() {
+    }
 
     /**
      * Get the text property: The query text. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the text value.
      */
     public Object getText() {
@@ -44,7 +49,7 @@ public final class ScriptActivityScriptBlock {
 
     /**
      * Set the text property: The query text. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param text the text value to set.
      * @return the ScriptActivityScriptBlock object itself.
      */
@@ -56,7 +61,7 @@ public final class ScriptActivityScriptBlock {
     /**
      * Get the type property: The type of the query. Please refer to the ScriptType for valid options. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the type value.
      */
     public Object getType() {
@@ -66,7 +71,7 @@ public final class ScriptActivityScriptBlock {
     /**
      * Set the type property: The type of the query. Please refer to the ScriptType for valid options. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param type the type value to set.
      * @return the ScriptActivityScriptBlock object itself.
      */
@@ -77,7 +82,7 @@ public final class ScriptActivityScriptBlock {
 
     /**
      * Get the parameters property: Array of script parameters. Type: array.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ScriptActivityParameter> getParameters() {
@@ -86,12 +91,57 @@ public final class ScriptActivityScriptBlock {
 
     /**
      * Set the parameters property: Array of script parameters. Type: array.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ScriptActivityScriptBlock object itself.
      */
     public ScriptActivityScriptBlock setParameters(List<ScriptActivityParameter> parameters) {
         this.parameters = parameters;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("text", this.text);
+        jsonWriter.writeUntypedField("type", this.type);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptActivityScriptBlock from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptActivityScriptBlock if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScriptActivityScriptBlock.
+     */
+    public static ScriptActivityScriptBlock fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptActivityScriptBlock deserializedScriptActivityScriptBlock = new ScriptActivityScriptBlock();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("text".equals(fieldName)) {
+                    deserializedScriptActivityScriptBlock.text = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScriptActivityScriptBlock.type = reader.readUntyped();
+                } else if ("parameters".equals(fieldName)) {
+                    List<ScriptActivityParameter> parameters
+                        = reader.readArray(reader1 -> ScriptActivityParameter.fromJson(reader1));
+                    deserializedScriptActivityScriptBlock.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptActivityScriptBlock;
+        });
     }
 }

@@ -20,6 +20,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -4141,8 +4142,13 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
         DataLakeDirectoryAsyncClient aadDirClient = getPathClientBuilderWithTokenCredential(
             ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), dc.getDirectoryPath())
             .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
@@ -4150,10 +4156,8 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .buildDirectoryAsyncClient();
 
         StepVerifier.create(aadDirClient.exists())
-            .verifyErrorSatisfies(r -> {
-                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
-                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
-            });
+            .expectNext(true)
+            .verifyComplete();
     }
 
     @Test

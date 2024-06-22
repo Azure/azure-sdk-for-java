@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * SessionModeType enum.
+ * Session mode type enum.
  */
 public final class SessionModeType extends ExpandableStringEnum<SessionModeType> {
     /**
@@ -37,7 +36,6 @@ public final class SessionModeType extends ExpandableStringEnum<SessionModeType>
      * @param name a name to look for.
      * @return the corresponding SessionModeType.
      */
-    @JsonCreator
     public static SessionModeType fromString(String name) {
         return fromString(name, SessionModeType.class);
     }

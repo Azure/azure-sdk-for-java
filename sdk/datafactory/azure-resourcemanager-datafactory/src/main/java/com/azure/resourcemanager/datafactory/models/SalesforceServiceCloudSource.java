@@ -35,13 +35,15 @@ public final class SalesforceServiceCloudSource extends CopySource {
     private Object query;
 
     /*
-     * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or Expression with resultType string).
+     * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "readBehavior")
     private Object readBehavior;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;

@@ -11,19 +11,19 @@ public final class OracleServiceCloudSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OracleServiceCloudSource model = BinaryData.fromString(
-            "{\"type\":\"bnbluutmfimlozlf\",\"query\":\"datak\",\"queryTimeout\":\"dataxzukhvioccszd\",\"additionalColumns\":\"dataafuhccnqf\",\"sourceRetryCount\":\"datajirfyetljrdcg\",\"sourceRetryWait\":\"datarmx\",\"maxConcurrentConnections\":\"datawcqhaonmfnf\",\"disableMetricsCollection\":\"datawiocuhas\",\"\":{\"dpqkfxdqm\":\"datalhtukheimwhotjc\"}}")
+            "{\"type\":\"OracleServiceCloudSource\",\"query\":\"datarh\",\"queryTimeout\":\"datagaaaxigafa\",\"additionalColumns\":\"datatoo\",\"sourceRetryCount\":\"datazdoblpdtcyv\",\"sourceRetryWait\":\"datahboplavgfbvro\",\"maxConcurrentConnections\":\"datauexqweyslwlppoh\",\"disableMetricsCollection\":\"datafgalexy\",\"\":{\"jxtfvxcjd\":\"datakadtwdcg\",\"jkwltnsnhuvmok\":\"databsgvz\"}}")
             .toObject(OracleServiceCloudSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleServiceCloudSource model = new OracleServiceCloudSource().withSourceRetryCount("datajirfyetljrdcg")
-            .withSourceRetryWait("datarmx")
-            .withMaxConcurrentConnections("datawcqhaonmfnf")
-            .withDisableMetricsCollection("datawiocuhas")
-            .withQueryTimeout("dataxzukhvioccszd")
-            .withAdditionalColumns("dataafuhccnqf")
-            .withQuery("datak");
+        OracleServiceCloudSource model = new OracleServiceCloudSource().withSourceRetryCount("datazdoblpdtcyv")
+            .withSourceRetryWait("datahboplavgfbvro")
+            .withMaxConcurrentConnections("datauexqweyslwlppoh")
+            .withDisableMetricsCollection("datafgalexy")
+            .withQueryTimeout("datagaaaxigafa")
+            .withAdditionalColumns("datatoo")
+            .withQuery("datarh");
         model = BinaryData.fromObject(model).toObject(OracleServiceCloudSource.class);
     }
 }

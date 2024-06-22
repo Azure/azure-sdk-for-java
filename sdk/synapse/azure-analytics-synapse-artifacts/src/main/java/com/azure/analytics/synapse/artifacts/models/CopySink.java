@@ -5,114 +5,74 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** A copy activity sink. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type",
-        defaultImpl = CopySink.class)
-@JsonTypeName("CopySink")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "DelimitedTextSink", value = DelimitedTextSink.class),
-    @JsonSubTypes.Type(name = "JsonSink", value = JsonSink.class),
-    @JsonSubTypes.Type(name = "OrcSink", value = OrcSink.class),
-    @JsonSubTypes.Type(name = "RestSink", value = RestSink.class),
-    @JsonSubTypes.Type(name = "AzurePostgreSqlSink", value = AzurePostgreSqlSink.class),
-    @JsonSubTypes.Type(name = "AzureMySqlSink", value = AzureMySqlSink.class),
-    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeSink", value = AzureDatabricksDeltaLakeSink.class),
-    @JsonSubTypes.Type(name = "WarehouseSink", value = WarehouseSink.class),
-    @JsonSubTypes.Type(name = "SapCloudForCustomerSink", value = SapCloudForCustomerSink.class),
-    @JsonSubTypes.Type(name = "AzureQueueSink", value = AzureQueueSink.class),
-    @JsonSubTypes.Type(name = "AzureTableSink", value = AzureTableSink.class),
-    @JsonSubTypes.Type(name = "AvroSink", value = AvroSink.class),
-    @JsonSubTypes.Type(name = "ParquetSink", value = ParquetSink.class),
-    @JsonSubTypes.Type(name = "BinarySink", value = BinarySink.class),
-    @JsonSubTypes.Type(name = "BlobSink", value = BlobSink.class),
-    @JsonSubTypes.Type(name = "FileSystemSink", value = FileSystemSink.class),
-    @JsonSubTypes.Type(name = "DocumentDbCollectionSink", value = DocumentDbCollectionSink.class),
-    @JsonSubTypes.Type(name = "CosmosDbSqlApiSink", value = CosmosDbSqlApiSink.class),
-    @JsonSubTypes.Type(name = "SqlSink", value = SqlSink.class),
-    @JsonSubTypes.Type(name = "SqlServerSink", value = SqlServerSink.class),
-    @JsonSubTypes.Type(name = "AzureSqlSink", value = AzureSqlSink.class),
-    @JsonSubTypes.Type(name = "SqlMISink", value = SqlMISink.class),
-    @JsonSubTypes.Type(name = "SqlDWSink", value = SqlDWSink.class),
-    @JsonSubTypes.Type(name = "SnowflakeSink", value = SnowflakeSink.class),
-    @JsonSubTypes.Type(name = "SnowflakeV2Sink", value = SnowflakeV2Sink.class),
-    @JsonSubTypes.Type(name = "OracleSink", value = OracleSink.class),
-    @JsonSubTypes.Type(name = "AzureDataLakeStoreSink", value = AzureDataLakeStoreSink.class),
-    @JsonSubTypes.Type(name = "AzureBlobFSSink", value = AzureBlobFSSink.class),
-    @JsonSubTypes.Type(name = "AzureSearchIndexSink", value = AzureSearchIndexSink.class),
-    @JsonSubTypes.Type(name = "OdbcSink", value = OdbcSink.class),
-    @JsonSubTypes.Type(name = "InformixSink", value = InformixSink.class),
-    @JsonSubTypes.Type(name = "MicrosoftAccessSink", value = MicrosoftAccessSink.class),
-    @JsonSubTypes.Type(name = "DynamicsSink", value = DynamicsSink.class),
-    @JsonSubTypes.Type(name = "DynamicsCrmSink", value = DynamicsCrmSink.class),
-    @JsonSubTypes.Type(name = "CommonDataServiceForAppsSink", value = CommonDataServiceForAppsSink.class),
-    @JsonSubTypes.Type(name = "AzureDataExplorerSink", value = AzureDataExplorerSink.class),
-    @JsonSubTypes.Type(name = "SalesforceSink", value = SalesforceSink.class),
-    @JsonSubTypes.Type(name = "SalesforceServiceCloudSink", value = SalesforceServiceCloudSink.class),
-    @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSink", value = CosmosDbMongoDbApiSink.class),
-    @JsonSubTypes.Type(name = "LakeHouseTableSink", value = LakeHouseTableSink.class),
-    @JsonSubTypes.Type(name = "SalesforceV2Sink", value = SalesforceV2Sink.class),
-    @JsonSubTypes.Type(name = "SalesforceServiceCloudV2Sink", value = SalesforceServiceCloudV2Sink.class)
-})
+/**
+ * A copy activity sink.
+ */
 @Fluent
-public class CopySink {
+public class CopySink implements JsonSerializable<CopySink> {
+    /*
+     * Copy sink type.
+     */
+    private String type;
+
     /*
      * Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
      */
-    @JsonProperty(value = "writeBatchSize")
     private Object writeBatchSize;
 
     /*
-     * Write batch timeout. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "writeBatchTimeout")
     private Object writeBatchTimeout;
 
     /*
      * Sink retry count. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "sinkRetryCount")
     private Object sinkRetryCount;
 
     /*
-     * Sink retry wait. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "sinkRetryWait")
     private Object sinkRetryWait;
 
     /*
-     * The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType
-     * integer).
+     * The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
 
     /*
      * A copy activity sink.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of CopySink class. */
-    public CopySink() {}
+    /**
+     * Creates an instance of CopySink class.
+     */
+    public CopySink() {
+        this.type = "CopySink";
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the writeBatchSize property: Write batch size. Type: integer (or Expression with resultType integer),
      * minimum: 0.
-     *
+     * 
      * @return the writeBatchSize value.
      */
     public Object getWriteBatchSize() {
@@ -122,7 +82,7 @@ public class CopySink {
     /**
      * Set the writeBatchSize property: Write batch size. Type: integer (or Expression with resultType integer),
      * minimum: 0.
-     *
+     * 
      * @param writeBatchSize the writeBatchSize value to set.
      * @return the CopySink object itself.
      */
@@ -134,7 +94,7 @@ public class CopySink {
     /**
      * Get the writeBatchTimeout property: Write batch timeout. Type: string (or Expression with resultType string),
      * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the writeBatchTimeout value.
      */
     public Object getWriteBatchTimeout() {
@@ -144,7 +104,7 @@ public class CopySink {
     /**
      * Set the writeBatchTimeout property: Write batch timeout. Type: string (or Expression with resultType string),
      * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param writeBatchTimeout the writeBatchTimeout value to set.
      * @return the CopySink object itself.
      */
@@ -155,7 +115,7 @@ public class CopySink {
 
     /**
      * Get the sinkRetryCount property: Sink retry count. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the sinkRetryCount value.
      */
     public Object getSinkRetryCount() {
@@ -164,7 +124,7 @@ public class CopySink {
 
     /**
      * Set the sinkRetryCount property: Sink retry count. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param sinkRetryCount the sinkRetryCount value to set.
      * @return the CopySink object itself.
      */
@@ -176,7 +136,7 @@ public class CopySink {
     /**
      * Get the sinkRetryWait property: Sink retry wait. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the sinkRetryWait value.
      */
     public Object getSinkRetryWait() {
@@ -186,7 +146,7 @@ public class CopySink {
     /**
      * Set the sinkRetryWait property: Sink retry wait. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param sinkRetryWait the sinkRetryWait value to set.
      * @return the CopySink object itself.
      */
@@ -198,7 +158,7 @@ public class CopySink {
     /**
      * Get the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store. Type:
      * integer (or Expression with resultType integer).
-     *
+     * 
      * @return the maxConcurrentConnections value.
      */
     public Object getMaxConcurrentConnections() {
@@ -208,7 +168,7 @@ public class CopySink {
     /**
      * Set the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store. Type:
      * integer (or Expression with resultType integer).
-     *
+     * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the CopySink object itself.
      */
@@ -219,17 +179,16 @@ public class CopySink {
 
     /**
      * Get the additionalProperties property: A copy activity sink.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: A copy activity sink.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the CopySink object itself.
      */
@@ -238,11 +197,172 @@ public class CopySink {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("writeBatchSize", this.writeBatchSize);
+        jsonWriter.writeUntypedField("writeBatchTimeout", this.writeBatchTimeout);
+        jsonWriter.writeUntypedField("sinkRetryCount", this.sinkRetryCount);
+        jsonWriter.writeUntypedField("sinkRetryWait", this.sinkRetryWait);
+        jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CopySink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CopySink if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the CopySink.
+     */
+    public static CopySink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("DelimitedTextSink".equals(discriminatorValue)) {
+                    return DelimitedTextSink.fromJson(readerToUse.reset());
+                } else if ("JsonSink".equals(discriminatorValue)) {
+                    return JsonSink.fromJson(readerToUse.reset());
+                } else if ("OrcSink".equals(discriminatorValue)) {
+                    return OrcSink.fromJson(readerToUse.reset());
+                } else if ("RestSink".equals(discriminatorValue)) {
+                    return RestSink.fromJson(readerToUse.reset());
+                } else if ("AzurePostgreSqlSink".equals(discriminatorValue)) {
+                    return AzurePostgreSqlSink.fromJson(readerToUse.reset());
+                } else if ("AzureMySqlSink".equals(discriminatorValue)) {
+                    return AzureMySqlSink.fromJson(readerToUse.reset());
+                } else if ("AzureDatabricksDeltaLakeSink".equals(discriminatorValue)) {
+                    return AzureDatabricksDeltaLakeSink.fromJson(readerToUse.reset());
+                } else if ("WarehouseSink".equals(discriminatorValue)) {
+                    return WarehouseSink.fromJson(readerToUse.reset());
+                } else if ("SapCloudForCustomerSink".equals(discriminatorValue)) {
+                    return SapCloudForCustomerSink.fromJson(readerToUse.reset());
+                } else if ("AzureQueueSink".equals(discriminatorValue)) {
+                    return AzureQueueSink.fromJson(readerToUse.reset());
+                } else if ("AzureTableSink".equals(discriminatorValue)) {
+                    return AzureTableSink.fromJson(readerToUse.reset());
+                } else if ("AvroSink".equals(discriminatorValue)) {
+                    return AvroSink.fromJson(readerToUse.reset());
+                } else if ("ParquetSink".equals(discriminatorValue)) {
+                    return ParquetSink.fromJson(readerToUse.reset());
+                } else if ("BinarySink".equals(discriminatorValue)) {
+                    return BinarySink.fromJson(readerToUse.reset());
+                } else if ("BlobSink".equals(discriminatorValue)) {
+                    return BlobSink.fromJson(readerToUse.reset());
+                } else if ("FileSystemSink".equals(discriminatorValue)) {
+                    return FileSystemSink.fromJson(readerToUse.reset());
+                } else if ("DocumentDbCollectionSink".equals(discriminatorValue)) {
+                    return DocumentDbCollectionSink.fromJson(readerToUse.reset());
+                } else if ("CosmosDbSqlApiSink".equals(discriminatorValue)) {
+                    return CosmosDbSqlApiSink.fromJson(readerToUse.reset());
+                } else if ("SqlSink".equals(discriminatorValue)) {
+                    return SqlSink.fromJson(readerToUse.reset());
+                } else if ("SqlServerSink".equals(discriminatorValue)) {
+                    return SqlServerSink.fromJson(readerToUse.reset());
+                } else if ("AzureSqlSink".equals(discriminatorValue)) {
+                    return AzureSqlSink.fromJson(readerToUse.reset());
+                } else if ("SqlMISink".equals(discriminatorValue)) {
+                    return SqlMISink.fromJson(readerToUse.reset());
+                } else if ("SqlDWSink".equals(discriminatorValue)) {
+                    return SqlDWSink.fromJson(readerToUse.reset());
+                } else if ("SnowflakeSink".equals(discriminatorValue)) {
+                    return SnowflakeSink.fromJson(readerToUse.reset());
+                } else if ("SnowflakeV2Sink".equals(discriminatorValue)) {
+                    return SnowflakeV2Sink.fromJson(readerToUse.reset());
+                } else if ("OracleSink".equals(discriminatorValue)) {
+                    return OracleSink.fromJson(readerToUse.reset());
+                } else if ("AzureDataLakeStoreSink".equals(discriminatorValue)) {
+                    return AzureDataLakeStoreSink.fromJson(readerToUse.reset());
+                } else if ("AzureBlobFSSink".equals(discriminatorValue)) {
+                    return AzureBlobFSSink.fromJson(readerToUse.reset());
+                } else if ("AzureSearchIndexSink".equals(discriminatorValue)) {
+                    return AzureSearchIndexSink.fromJson(readerToUse.reset());
+                } else if ("OdbcSink".equals(discriminatorValue)) {
+                    return OdbcSink.fromJson(readerToUse.reset());
+                } else if ("InformixSink".equals(discriminatorValue)) {
+                    return InformixSink.fromJson(readerToUse.reset());
+                } else if ("MicrosoftAccessSink".equals(discriminatorValue)) {
+                    return MicrosoftAccessSink.fromJson(readerToUse.reset());
+                } else if ("DynamicsSink".equals(discriminatorValue)) {
+                    return DynamicsSink.fromJson(readerToUse.reset());
+                } else if ("DynamicsCrmSink".equals(discriminatorValue)) {
+                    return DynamicsCrmSink.fromJson(readerToUse.reset());
+                } else if ("CommonDataServiceForAppsSink".equals(discriminatorValue)) {
+                    return CommonDataServiceForAppsSink.fromJson(readerToUse.reset());
+                } else if ("AzureDataExplorerSink".equals(discriminatorValue)) {
+                    return AzureDataExplorerSink.fromJson(readerToUse.reset());
+                } else if ("SalesforceSink".equals(discriminatorValue)) {
+                    return SalesforceSink.fromJson(readerToUse.reset());
+                } else if ("SalesforceServiceCloudSink".equals(discriminatorValue)) {
+                    return SalesforceServiceCloudSink.fromJson(readerToUse.reset());
+                } else if ("CosmosDbMongoDbApiSink".equals(discriminatorValue)) {
+                    return CosmosDbMongoDbApiSink.fromJson(readerToUse.reset());
+                } else if ("LakeHouseTableSink".equals(discriminatorValue)) {
+                    return LakeHouseTableSink.fromJson(readerToUse.reset());
+                } else if ("SalesforceV2Sink".equals(discriminatorValue)) {
+                    return SalesforceV2Sink.fromJson(readerToUse.reset());
+                } else if ("SalesforceServiceCloudV2Sink".equals(discriminatorValue)) {
+                    return SalesforceServiceCloudV2Sink.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static CopySink fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CopySink deserializedCopySink = new CopySink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedCopySink.type = reader.getString();
+                } else if ("writeBatchSize".equals(fieldName)) {
+                    deserializedCopySink.writeBatchSize = reader.readUntyped();
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedCopySink.writeBatchTimeout = reader.readUntyped();
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedCopySink.sinkRetryCount = reader.readUntyped();
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedCopySink.sinkRetryWait = reader.readUntyped();
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedCopySink.maxConcurrentConnections = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCopySink.additionalProperties = additionalProperties;
+
+            return deserializedCopySink;
+        });
     }
 }

@@ -18,14 +18,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the asynchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class MetastoreAsyncClient {
-    @Generated private final MetastoresImpl serviceClient;
+    @Generated
+    private final MetastoresImpl serviceClient;
 
     /**
      * Initializes an instance of MetastoreAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -35,9 +38,9 @@ public final class MetastoreAsyncClient {
 
     /**
      * Register files in Syms.
-     *
+     * 
      * @param id The name of the database to be created. The name can contain only alphanumeric characters and should
-     *     not exceed 24 characters.
+     * not exceed 24 characters.
      * @param registerBody The body for the register request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -46,16 +49,16 @@ public final class MetastoreAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetastoreRegistrationResponse>> registerWithResponse(
-            String id, MetastoreRegisterObject registerBody) {
+    public Mono<Response<MetastoreRegistrationResponse>> registerWithResponse(String id,
+        MetastoreRegisterObject registerBody) {
         return this.serviceClient.registerWithResponseAsync(id, registerBody);
     }
 
     /**
      * Register files in Syms.
-     *
+     * 
      * @param id The name of the database to be created. The name can contain only alphanumeric characters and should
-     *     not exceed 24 characters.
+     * not exceed 24 characters.
      * @param registerBody The body for the register request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -70,7 +73,7 @@ public final class MetastoreAsyncClient {
 
     /**
      * Gets status of the database.
-     *
+     * 
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -85,7 +88,7 @@ public final class MetastoreAsyncClient {
 
     /**
      * Gets status of the database.
-     *
+     * 
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -100,7 +103,7 @@ public final class MetastoreAsyncClient {
 
     /**
      * Update files in Syms.
-     *
+     * 
      * @param id The name of the database to be updated.
      * @param updateBody The body for the update request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,7 +119,7 @@ public final class MetastoreAsyncClient {
 
     /**
      * Update files in Syms.
-     *
+     * 
      * @param id The name of the database to be updated.
      * @param updateBody The body for the update request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,7 +135,7 @@ public final class MetastoreAsyncClient {
 
     /**
      * Remove files in Syms.
-     *
+     * 
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -147,7 +150,7 @@ public final class MetastoreAsyncClient {
 
     /**
      * Remove files in Syms.
-     *
+     * 
      * @param id The id parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.

@@ -20,7 +20,7 @@ public final class DnsPrivateZonesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"ocid\":\"flrzpas\",\"isProtected\":false,\"lifecycleState\":\"Creating\",\"self\":\"uimzdlyjd\",\"serial\":7799986,\"version\":\"wmkyoqufdvruzsl\",\"viewId\":\"j\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-11-19T14:44:25Z\",\"provisioningState\":\"Failed\"},\"id\":\"mdxotngfdgu\",\"name\":\"eyzihgrky\",\"type\":\"i\"}";
+            = "{\"properties\":{\"ocid\":\"ftpmdtzfjltfv\",\"isProtected\":false,\"lifecycleState\":\"Deleted\",\"self\":\"jtotpvopvpbd\",\"serial\":369514238,\"version\":\"qgqqihedsvqwthmk\",\"viewId\":\"bcysih\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-11-04T09:46:52Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"hohsd\",\"name\":\"mcdzsufcohdxbz\",\"type\":\"mcmuapc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class DnsPrivateZonesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DnsPrivateZone response
-            = manager.dnsPrivateZones().getWithResponse("jtlo", "xfuojrn", com.azure.core.util.Context.NONE).getValue();
+            = manager.dnsPrivateZones().getWithResponse("jkavl", "or", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

@@ -55,7 +55,8 @@ public final class AzureSqlSink extends CopySink {
     private Object storedProcedureTableTypeParameterName;
 
     /*
-     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression with resultType string).
+     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "tableOption")
     private Object tableOption;
@@ -67,7 +68,8 @@ public final class AzureSqlSink extends CopySink {
     private Object sqlWriterUseTableLock;
 
     /*
-     * Write behavior when copying data into Azure SQL. Type: SqlWriteBehaviorEnum (or Expression with resultType SqlWriteBehaviorEnum)
+     * Write behavior when copying data into Azure SQL. Type: SqlWriteBehaviorEnum (or Expression with resultType
+     * SqlWriteBehaviorEnum)
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class VirtualMachineState extends ExpandableStringEnum<VirtualMachi
      * @param name a name to look for.
      * @return the corresponding VirtualMachineState.
      */
-    @JsonCreator
     public static VirtualMachineState fromString(String name) {
         return fromString(name, VirtualMachineState.class);
     }

@@ -12,22 +12,24 @@ public final class ImageTemplateFileValidatorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageTemplateFileValidator model = BinaryData.fromString(
-            "{\"type\":\"File\",\"sourceUri\":\"kthfui\",\"sha256Checksum\":\"odsfcpkvxodpuozm\",\"destination\":\"ydagfuaxbe\",\"name\":\"iu\"}")
+            "{\"type\":\"File\",\"sourceUri\":\"czvyifq\",\"sha256Checksum\":\"kdvjsll\",\"destination\":\"vvdfwatkpnpul\",\"name\":\"xbczwtruwiqz\"}")
             .toObject(ImageTemplateFileValidator.class);
-        Assertions.assertEquals("iu", model.name());
-        Assertions.assertEquals("kthfui", model.sourceUri());
-        Assertions.assertEquals("odsfcpkvxodpuozm", model.sha256Checksum());
-        Assertions.assertEquals("ydagfuaxbe", model.destination());
+        Assertions.assertEquals("xbczwtruwiqz", model.name());
+        Assertions.assertEquals("czvyifq", model.sourceUri());
+        Assertions.assertEquals("kdvjsll", model.sha256Checksum());
+        Assertions.assertEquals("vvdfwatkpnpul", model.destination());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateFileValidator model = new ImageTemplateFileValidator().withName("iu").withSourceUri("kthfui")
-            .withSha256Checksum("odsfcpkvxodpuozm").withDestination("ydagfuaxbe");
+        ImageTemplateFileValidator model = new ImageTemplateFileValidator().withName("xbczwtruwiqz")
+            .withSourceUri("czvyifq")
+            .withSha256Checksum("kdvjsll")
+            .withDestination("vvdfwatkpnpul");
         model = BinaryData.fromObject(model).toObject(ImageTemplateFileValidator.class);
-        Assertions.assertEquals("iu", model.name());
-        Assertions.assertEquals("kthfui", model.sourceUri());
-        Assertions.assertEquals("odsfcpkvxodpuozm", model.sha256Checksum());
-        Assertions.assertEquals("ydagfuaxbe", model.destination());
+        Assertions.assertEquals("xbczwtruwiqz", model.name());
+        Assertions.assertEquals("czvyifq", model.sourceUri());
+        Assertions.assertEquals("kdvjsll", model.sha256Checksum());
+        Assertions.assertEquals("vvdfwatkpnpul", model.destination());
     }
 }

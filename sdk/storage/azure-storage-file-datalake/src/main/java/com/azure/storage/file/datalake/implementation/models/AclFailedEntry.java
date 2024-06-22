@@ -5,37 +5,41 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AclFailedEntry model. */
-@JacksonXmlRootElement(localName = "AclFailedEntry")
+/**
+ * The AclFailedEntry model.
+ */
 @Fluent
-public final class AclFailedEntry {
+public final class AclFailedEntry implements JsonSerializable<AclFailedEntry> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type property.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The errorMessage property.
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
-    /** Creates an instance of AclFailedEntry class. */
-    public AclFailedEntry() {}
+    /**
+     * Creates an instance of AclFailedEntry class.
+     */
+    public AclFailedEntry() {
+    }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -44,7 +48,7 @@ public final class AclFailedEntry {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the AclFailedEntry object itself.
      */
@@ -55,7 +59,7 @@ public final class AclFailedEntry {
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -64,7 +68,7 @@ public final class AclFailedEntry {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the AclFailedEntry object itself.
      */
@@ -75,7 +79,7 @@ public final class AclFailedEntry {
 
     /**
      * Get the errorMessage property: The errorMessage property.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String getErrorMessage() {
@@ -84,12 +88,54 @@ public final class AclFailedEntry {
 
     /**
      * Set the errorMessage property: The errorMessage property.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the AclFailedEntry object itself.
      */
     public AclFailedEntry setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AclFailedEntry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AclFailedEntry if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AclFailedEntry.
+     */
+    public static AclFailedEntry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AclFailedEntry deserializedAclFailedEntry = new AclFailedEntry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAclFailedEntry.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAclFailedEntry.type = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedAclFailedEntry.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAclFailedEntry;
+        });
     }
 }

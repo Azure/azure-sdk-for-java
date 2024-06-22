@@ -12,6 +12,7 @@ pr:
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-native-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: appconfiguration
     Artifacts:
     - name: azure-data-appconfiguration
@@ -19,9 +20,5 @@ extends:
       safeName: azuredataappconfiguration
     TimeoutInMinutes: 90
     SupportedClouds: 'Public'
-    EnvVars:
-      AZURE_CLIENT_ID: $(APPCONFIGURATION_CLIENT_ID)
-      AZURE_CLIENT_SECRET: $(APPCONFIGURATION_CLIENT_SECRET)
-      AZURE_TENANT_ID: $(APPCONFIGURATION_TENANT_ID)
     TestGoals: 'verify'
     TestOptions: '-DskipSpringITs=false'

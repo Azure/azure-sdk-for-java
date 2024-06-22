@@ -97,9 +97,9 @@ Our samples are structured as test source code in `/src/samples/` so we can easi
 compile correctly.
 
 <!-- Links -->
-[design-guidelines]: https://azuresdkspecs.z5.web.core.windows.net/DesignGuidelines.html
+[design-guidelines]: https://aka.ms/azsdk/guide
 [event_grid_create]: https://docs.microsoft.com/azure/event-grid/custom-event-quickstart-portal
 [github-general]: https://github.com/Azure/azure-sdk
-[java-spec]: https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html
+[java-spec]: https://aka.ms/azsdk/guide/java
 [maven]: https://maven.apache.org/
 [core_tests]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-test

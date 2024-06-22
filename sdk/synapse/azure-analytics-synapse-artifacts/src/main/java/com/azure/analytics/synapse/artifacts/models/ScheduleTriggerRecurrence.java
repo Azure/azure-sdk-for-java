@@ -5,64 +5,65 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** The workflow trigger recurrence. */
+/**
+ * The workflow trigger recurrence.
+ */
 @Fluent
-public final class ScheduleTriggerRecurrence {
+public final class ScheduleTriggerRecurrence implements JsonSerializable<ScheduleTriggerRecurrence> {
     /*
      * The frequency.
      */
-    @JsonProperty(value = "frequency")
     private RecurrenceFrequency frequency;
 
     /*
      * The interval.
      */
-    @JsonProperty(value = "interval")
     private Integer interval;
 
     /*
      * The start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The time zone.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * The recurrence schedule.
      */
-    @JsonProperty(value = "schedule")
     private RecurrenceSchedule schedule;
 
     /*
      * The workflow trigger recurrence.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ScheduleTriggerRecurrence class. */
-    public ScheduleTriggerRecurrence() {}
+    /**
+     * Creates an instance of ScheduleTriggerRecurrence class.
+     */
+    public ScheduleTriggerRecurrence() {
+    }
 
     /**
      * Get the frequency property: The frequency.
-     *
+     * 
      * @return the frequency value.
      */
     public RecurrenceFrequency getFrequency() {
@@ -71,7 +72,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the frequency property: The frequency.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -82,7 +83,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the interval property: The interval.
-     *
+     * 
      * @return the interval value.
      */
     public Integer getInterval() {
@@ -91,7 +92,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the interval property: The interval.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -102,7 +103,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the startTime property: The start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -111,7 +112,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the startTime property: The start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -122,7 +123,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the endTime property: The end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -131,7 +132,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the endTime property: The end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -142,7 +143,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the timeZone property: The time zone.
-     *
+     * 
      * @return the timeZone value.
      */
     public String getTimeZone() {
@@ -151,7 +152,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the timeZone property: The time zone.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -162,7 +163,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the schedule property: The recurrence schedule.
-     *
+     * 
      * @return the schedule value.
      */
     public RecurrenceSchedule getSchedule() {
@@ -171,7 +172,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the schedule property: The recurrence schedule.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -182,17 +183,16 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the additionalProperties property: The workflow trigger recurrence.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: The workflow trigger recurrence.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -201,11 +201,70 @@ public final class ScheduleTriggerRecurrence {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeNumberField("interval", this.interval);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleTriggerRecurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleTriggerRecurrence if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleTriggerRecurrence.
+     */
+    public static ScheduleTriggerRecurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleTriggerRecurrence deserializedScheduleTriggerRecurrence = new ScheduleTriggerRecurrence();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frequency".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.frequency
+                        = RecurrenceFrequency.fromString(reader.getString());
+                } else if ("interval".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.interval = reader.getNullable(JsonReader::getInt);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.endTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.timeZone = reader.getString();
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedScheduleTriggerRecurrence.schedule = RecurrenceSchedule.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedScheduleTriggerRecurrence.additionalProperties = additionalProperties;
+
+            return deserializedScheduleTriggerRecurrence;
+        });
     }
 }

@@ -5,42 +5,49 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The partition mechanism that will be used for Sql read in parallel. */
+/**
+ * The partition mechanism that will be used for Sql read in parallel.
+ */
 public final class SqlPartitionOption extends ExpandableStringEnum<SqlPartitionOption> {
-    /** Static value None for SqlPartitionOption. */
+    /**
+     * Static value None for SqlPartitionOption.
+     */
     public static final SqlPartitionOption NONE = fromString("None");
 
-    /** Static value PhysicalPartitionsOfTable for SqlPartitionOption. */
+    /**
+     * Static value PhysicalPartitionsOfTable for SqlPartitionOption.
+     */
     public static final SqlPartitionOption PHYSICAL_PARTITIONS_OF_TABLE = fromString("PhysicalPartitionsOfTable");
 
-    /** Static value DynamicRange for SqlPartitionOption. */
+    /**
+     * Static value DynamicRange for SqlPartitionOption.
+     */
     public static final SqlPartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
      * Creates a new instance of SqlPartitionOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SqlPartitionOption() {}
+    public SqlPartitionOption() {
+    }
 
     /**
      * Creates or finds a SqlPartitionOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SqlPartitionOption.
      */
-    @JsonCreator
     public static SqlPartitionOption fromString(String name) {
         return fromString(name, SqlPartitionOption.class);
     }
 
     /**
      * Gets known SqlPartitionOption values.
-     *
+     * 
      * @return known SqlPartitionOption values.
      */
     public static Collection<SqlPartitionOption> values() {

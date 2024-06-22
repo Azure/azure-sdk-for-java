@@ -6,17 +6,20 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * DbNode action object.
  */
 @Fluent
-public final class DbNodeAction {
+public final class DbNodeAction implements JsonSerializable<DbNodeAction> {
     /*
      * Db action
      */
-    @JsonProperty(value = "action", required = true)
     private DbNodeActionEnum action;
 
     /**
@@ -58,4 +61,41 @@ public final class DbNodeAction {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DbNodeAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DbNodeAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DbNodeAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DbNodeAction.
+     */
+    public static DbNodeAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DbNodeAction deserializedDbNodeAction = new DbNodeAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedDbNodeAction.action = DbNodeActionEnum.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDbNodeAction;
+        });
+    }
 }

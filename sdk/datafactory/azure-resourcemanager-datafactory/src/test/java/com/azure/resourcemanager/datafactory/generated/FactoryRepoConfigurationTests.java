@@ -12,30 +12,30 @@ public final class FactoryRepoConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FactoryRepoConfiguration model = BinaryData.fromString(
-            "{\"type\":\"iqzbq\",\"accountName\":\"vsovmyokac\",\"repositoryName\":\"pkwlhz\",\"collaborationBranch\":\"obpxjmflbvvn\",\"rootFolder\":\"hrk\",\"lastCommitId\":\"iwwzjuqk\",\"disablePublish\":false}")
+            "{\"type\":\"FactoryRepoConfiguration\",\"accountName\":\"o\",\"repositoryName\":\"rq\",\"collaborationBranch\":\"b\",\"rootFolder\":\"oczvy\",\"lastCommitId\":\"qrvkdv\",\"disablePublish\":false}")
             .toObject(FactoryRepoConfiguration.class);
-        Assertions.assertEquals("vsovmyokac", model.accountName());
-        Assertions.assertEquals("pkwlhz", model.repositoryName());
-        Assertions.assertEquals("obpxjmflbvvn", model.collaborationBranch());
-        Assertions.assertEquals("hrk", model.rootFolder());
-        Assertions.assertEquals("iwwzjuqk", model.lastCommitId());
+        Assertions.assertEquals("o", model.accountName());
+        Assertions.assertEquals("rq", model.repositoryName());
+        Assertions.assertEquals("b", model.collaborationBranch());
+        Assertions.assertEquals("oczvy", model.rootFolder());
+        Assertions.assertEquals("qrvkdv", model.lastCommitId());
         Assertions.assertEquals(false, model.disablePublish());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FactoryRepoConfiguration model = new FactoryRepoConfiguration().withAccountName("vsovmyokac")
-            .withRepositoryName("pkwlhz")
-            .withCollaborationBranch("obpxjmflbvvn")
-            .withRootFolder("hrk")
-            .withLastCommitId("iwwzjuqk")
+        FactoryRepoConfiguration model = new FactoryRepoConfiguration().withAccountName("o")
+            .withRepositoryName("rq")
+            .withCollaborationBranch("b")
+            .withRootFolder("oczvy")
+            .withLastCommitId("qrvkdv")
             .withDisablePublish(false);
         model = BinaryData.fromObject(model).toObject(FactoryRepoConfiguration.class);
-        Assertions.assertEquals("vsovmyokac", model.accountName());
-        Assertions.assertEquals("pkwlhz", model.repositoryName());
-        Assertions.assertEquals("obpxjmflbvvn", model.collaborationBranch());
-        Assertions.assertEquals("hrk", model.rootFolder());
-        Assertions.assertEquals("iwwzjuqk", model.lastCommitId());
+        Assertions.assertEquals("o", model.accountName());
+        Assertions.assertEquals("rq", model.repositoryName());
+        Assertions.assertEquals("b", model.collaborationBranch());
+        Assertions.assertEquals("oczvy", model.rootFolder());
+        Assertions.assertEquals("qrvkdv", model.lastCommitId());
         Assertions.assertEquals(false, model.disablePublish());
     }
 }

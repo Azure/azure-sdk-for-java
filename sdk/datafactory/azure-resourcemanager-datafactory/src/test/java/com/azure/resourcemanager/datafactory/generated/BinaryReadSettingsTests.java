@@ -14,14 +14,14 @@ public final class BinaryReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BinaryReadSettings model = BinaryData.fromString(
-            "{\"type\":\"mxdrgimsioff\",\"compressionProperties\":{\"type\":\"zluilzgpghjakzmn\",\"\":{\"pbxvpfyupgo\":\"dataqmajslwmj\",\"frkzgtxwyqkk\":\"datarwpoxuykqyoyjptk\"}},\"\":{\"vfundkhdmyxmsbt\":\"dataonl\"}}")
+            "{\"type\":\"BinaryReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"kucarwnpw\":\"datatbxruuuyaarrrgjn\",\"theaxqyhflnlut\":\"datachlabttxfi\"}},\"\":{\"ukqurrtcf\":\"dataslell\"}}")
             .toObject(BinaryReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BinaryReadSettings model = new BinaryReadSettings().withCompressionProperties(
-            new CompressionReadSettings().withAdditionalProperties(mapOf("type", "zluilzgpghjakzmn")));
+            new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings")));
         model = BinaryData.fromObject(model).toObject(BinaryReadSettings.class);
     }
 

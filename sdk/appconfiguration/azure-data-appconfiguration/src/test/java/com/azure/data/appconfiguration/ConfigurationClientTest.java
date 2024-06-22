@@ -72,9 +72,10 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     private ConfigurationClient getConfigurationClient(HttpClient httpClient,
         ConfigurationServiceVersion serviceVersion) {
-        return clientSetup(credentials -> {
+        return clientSetup((credentials, endpoint) -> {
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
+                .credential(credentials)
+                .endpoint(endpoint)
                 .serviceVersion(serviceVersion);
 
             builder = setHttpClient(httpClient, builder);

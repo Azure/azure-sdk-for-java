@@ -137,7 +137,7 @@ public interface VirtualNetworkAddress {
     /**
      * The template for VirtualNetworkAddress update.
      */
-    interface Update {
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -158,6 +158,18 @@ public interface VirtualNetworkAddress {
      * The VirtualNetworkAddress update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the VirtualNetworkAddress update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(VirtualNetworkAddressProperties properties);
+        }
     }
 
     /**

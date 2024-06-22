@@ -7,7 +7,7 @@ module com.azure.maps.weather {
     exports com.azure.maps.weather;
     exports com.azure.maps.weather.models;
 
-    opens com.azure.maps.weather.implementation to com.fasterxml.jackson.databind, com.azure.core;
-    opens com.azure.maps.weather.models to com.fasterxml.jackson.databind, com.azure.core;
-    opens com.azure.maps.weather.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.maps.weather.implementation to com.azure.core;
+    opens com.azure.maps.weather.models to com.azure.core;
+    opens com.azure.maps.weather.implementation.models to com.azure.core;
 }
