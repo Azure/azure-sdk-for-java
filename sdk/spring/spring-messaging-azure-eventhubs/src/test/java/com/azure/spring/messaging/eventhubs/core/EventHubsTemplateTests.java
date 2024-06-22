@@ -15,7 +15,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
@@ -73,6 +75,35 @@ class EventHubsTemplateTests {
             messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
 
         Mono<Void> mono = this.eventHubsTemplate.sendAsync(this.destination, messages, null);
+        StepVerifier.create(mono)
+                    .verifyComplete();
+        verify(this.mockProducerClient, times(3)).send(any(EventDataBatch.class));
+    }
+
+    /**
+     * test the three batches case in parallel
+     */
+    @Test
+    void testSendAsyncForMessagesWithThreeBatchParallel() {
+        EventDataBatch eventDataBatch = mock(EventDataBatch.class);
+
+        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
+            .thenReturn(Mono.just(eventDataBatch));
+        when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, true, false, true, true,
+            false, true);
+        when(eventDataBatch.getCount()).thenReturn(2, 2, 1);
+        List<String> messagesList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            messagesList.add("abcde");
+        }
+        List<Message<String>> messages =
+            messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
+
+        Mono<Void> mono = Flux.just(messages)
+            .parallel()
+            .runOn(Schedulers.parallel())
+            .flatMap(msgs -> this.eventHubsTemplate.sendAsync(this.destination, messages, null))
+            .then();
         StepVerifier.create(mono)
                     .verifyComplete();
         verify(this.mockProducerClient, times(3)).send(any(EventDataBatch.class));
