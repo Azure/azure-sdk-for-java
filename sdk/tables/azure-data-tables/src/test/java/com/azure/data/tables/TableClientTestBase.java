@@ -3,8 +3,6 @@
 
 package com.azure.data.tables;
 
-import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
