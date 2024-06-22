@@ -10,7 +10,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestProxyTestBase;
 
-import com.nimbusds.oauth2.sdk.token.Token;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
