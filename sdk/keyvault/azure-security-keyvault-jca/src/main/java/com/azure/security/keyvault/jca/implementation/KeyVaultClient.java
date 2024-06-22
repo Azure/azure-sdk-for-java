@@ -142,7 +142,7 @@ public class KeyVaultClient {
                 .map(uri -> uri.split("\\.", 2)[1])
                 .map(suffix -> suffix.substring(0, suffix.length() - 1))
                 .orElse(null);
-        keyVaultBaseUri = HTTPS_PREFIX + domainNameSuffix;
+        this.keyVaultBaseUri = HTTPS_PREFIX + domainNameSuffix;
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -196,9 +196,8 @@ public class KeyVaultClient {
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
-                String aadAuthenticationUri =
-                    getLoginUri(new URI(String.format("%scertificates%s", keyVaultUri, API_VERSION_POSTFIX)),
-                        disableChallengeResourceVerification);
+                String aadAuthenticationUri = getLoginUri(new URI(keyVaultUri + "certificates" + API_VERSION_POSTFIX),
+                    disableChallengeResourceVerification);
                 accessToken =
                     AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
             } else {
