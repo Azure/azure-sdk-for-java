@@ -186,10 +186,8 @@ function Get-ArtifactsList-Per-Service-Directory {
                 Write-Error "Processing yml file $($ymlFile.FullName)"
                 Write-Error "$ymlPath already contains an Artifact entry for $libFullName"
             }
-            else {
-                if ($UseVerboseLogging) {
-                    Write-Host "    Adding Artifact: $libFullName"
-                }
+            elseif ($UseVerboseLogging) {
+                Write-Host "    Adding Artifact: $libFullName"
             }
         }
         # These list of modules per sdk/<ServiceDirectory> has to be verified to be using the
