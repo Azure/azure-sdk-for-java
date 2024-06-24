@@ -12,13 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class TranscriptionStopped extends CallAutomationEventBase {
-
-    /*
-     * Contains the resulting SIP code/sub-code and message from NGC services.
-     */
-    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
-    private final ResultInformation resultInformation;
-
     /*
      * Defines the result for TranscriptionUpdate with the current status and the details about the status
      */
@@ -29,17 +22,7 @@ public final class TranscriptionStopped extends CallAutomationEventBase {
      * Creates an instance of TranscriptionStopped class.
      */
     public TranscriptionStopped() {
-        resultInformation = null;
         transcriptionUpdateResult = null;
-    }
-
-    /**
-     * Contains the resulting SIP code/sub-code and message from NGC services.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**

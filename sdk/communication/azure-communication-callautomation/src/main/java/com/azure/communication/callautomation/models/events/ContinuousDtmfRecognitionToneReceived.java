@@ -23,14 +23,7 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
     @JsonProperty(value = "tone", required = true)
     private final DtmfTone tone;
 
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
-
     private ContinuousDtmfRecognitionToneReceived() {
-        resultInformation = null;
         sequenceId = 0;
         tone = null;
     }
@@ -52,14 +45,5 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
      */
     public DtmfTone getTone() {
         return this.tone;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 }

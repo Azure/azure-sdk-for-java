@@ -142,7 +142,7 @@ public final class PlayToAllOptions {
      * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
      * @return the PlayOptionsInternal object itself.
      */
-    public PlayToAllOptions setInterruptCallMediaOperation(boolean interruptCallMediaOperation) {
+    public PlayToAllOptions setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
         this.interruptCallMediaOperation = interruptCallMediaOperation;
         return this;
     }

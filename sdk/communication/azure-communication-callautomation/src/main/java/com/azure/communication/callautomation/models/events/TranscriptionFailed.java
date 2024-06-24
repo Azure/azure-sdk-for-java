@@ -14,12 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class TranscriptionFailed extends CallAutomationEventBase {
 
     /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
-
-    /*
      * Defines the result for TranscriptionUpdate with the current status and the details about the status
      */
     @JsonProperty(value = "transcriptionUpdate", access = JsonProperty.Access.WRITE_ONLY)
@@ -29,17 +23,7 @@ public final class TranscriptionFailed extends CallAutomationEventBase {
      * Creates an instance of TranscriptionFailed class.
      */
     public TranscriptionFailed() {
-        this.resultInformation = null;
         this.transcriptionUpdateResult = null;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**

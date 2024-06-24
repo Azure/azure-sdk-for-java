@@ -33,6 +33,7 @@ import com.azure.communication.callautomation.models.events.TranscriptionStarted
 import com.azure.communication.callautomation.models.events.TranscriptionStopped;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
+import com.azure.communication.callautomation.models.events.ConnectFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
 import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
@@ -148,7 +149,9 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, CancelAddParticipantSucceeded.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CancelAddParticipantFailed")) {
                 ret = mapper.convertValue(eventData, CancelAddParticipantFailed.class);
-            }   else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.ConnectFailed")) {
+                ret = mapper.convertValue(eventData, ConnectFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
                 ret = mapper.convertValue(eventData, TranscriptionStarted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionFailed")) {
                 ret = mapper.convertValue(eventData, TranscriptionFailed.class);

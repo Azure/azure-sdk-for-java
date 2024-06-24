@@ -12,12 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MediaStreamingStarted extends CallAutomationEventBase {
     /*
-     * Contains the resulting SIP code/sub-code and message from NGC services.
-     */
-    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
-    private final ResultInformation resultInformation;
-
-    /*
      * Defines the result for MediaStreamingUpdate with the current status and the details about the status
      */
     @JsonProperty(value = "mediaStreamingUpdate", access = JsonProperty.Access.WRITE_ONLY)
@@ -27,17 +21,7 @@ public final class MediaStreamingStarted extends CallAutomationEventBase {
      * Creates an instance of MediaStreamingStarted class.
      */
     public MediaStreamingStarted() {
-        resultInformation = null;
         mediaStreamingUpdateResult = null;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
      /**

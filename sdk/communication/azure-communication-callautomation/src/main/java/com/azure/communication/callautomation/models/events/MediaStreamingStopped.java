@@ -9,13 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The MediaStreamingStopped model. */
 @Fluent
 public final class MediaStreamingStopped extends CallAutomationEventBase {
-    
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
-    private ResultInformation resultInformation;
-
     /*
      * Defines the result for audio streaming update with the current status
      * and the details about the status
@@ -27,17 +20,7 @@ public final class MediaStreamingStopped extends CallAutomationEventBase {
      * Creates an instance of MediaStreamingStopped class.
      */
     public MediaStreamingStopped() {
-        resultInformation = null;
         mediaStreamingUpdateResult = null;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**

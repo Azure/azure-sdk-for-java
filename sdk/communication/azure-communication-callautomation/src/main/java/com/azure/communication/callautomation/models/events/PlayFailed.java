@@ -9,12 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The PlayFailed model. */
 @Immutable
 public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
-
      /*
      * Contains the index of the failed play source.
      */
@@ -22,16 +16,6 @@ public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
     private Integer failedPlaySourceIndex;
 
     private PlayFailed() {
-        this.resultInformation = null;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**

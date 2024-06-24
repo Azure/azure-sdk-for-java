@@ -14,6 +14,12 @@ public abstract class CallAutomationEventBase {
     private final String callConnectionId;
 
     /*
+     * Contains the resulting SIP code, sub-code and message.
+     */
+    @JsonProperty(value = "resultInformation")
+    private final ResultInformation resultInformation;
+
+    /*
      * Server call ID.
      */
     @JsonProperty(value = "serverCallId")
@@ -36,6 +42,7 @@ public abstract class CallAutomationEventBase {
         this.callConnectionId = null;
         this.correlationId = null;
         this.operationContext = null;
+        this.resultInformation = null;
     }
 
     /**
@@ -72,5 +79,14 @@ public abstract class CallAutomationEventBase {
      */
     public String getOperationContext() {
         return this.operationContext;
+    }
+
+    /**
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     *
+     * @return the resultInformation value.
+     */
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
     }
 }

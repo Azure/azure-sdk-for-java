@@ -8,6 +8,7 @@ import com.azure.communication.callautomation.implementation.converters.Communic
 import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingSubscriptionInternal;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
@@ -208,12 +209,17 @@ public final class CallConnectionProperties {
         if (callConnectionPropertiesInternal.getMediaStreamingSubscription() == null) {
             return null;
         }
+
+        MediaStreamingSubscriptionInternal mediaStreamingSubscriptionInternal = callConnectionPropertiesInternal.getMediaStreamingSubscription();
         MediaStreamingSubscription mediaStreamingSubscription = new MediaStreamingSubscription();
-        mediaStreamingSubscription.setId(callConnectionPropertiesInternal.getMediaStreamingSubscription().getId());
-        mediaStreamingSubscription.setState(MediaStreamingSubscriptionState.fromString(callConnectionPropertiesInternal.getMediaStreamingSubscription().getState().toString()));
-        mediaStreamingSubscription.setSubscribedContentTypes(callConnectionPropertiesInternal.getMediaStreamingSubscription().getSubscribedContentTypes().stream()
+        mediaStreamingSubscription.setId(mediaStreamingSubscriptionInternal.getId());
+        mediaStreamingSubscription.setState(MediaStreamingSubscriptionState.fromString(mediaStreamingSubscriptionInternal.getState().toString()));
+        if(mediaStreamingSubscriptionInternal.getSubscribedContentTypes() != null) {
+        mediaStreamingSubscription.setSubscribedContentTypes(mediaStreamingSubscriptionInternal.getSubscribedContentTypes().stream()
                 .map(contentType -> MediaStreamingContentType.fromString(contentType.toString()))
                 .collect(Collectors.toList()));
+        }
+
         return mediaStreamingSubscription;
     }
 

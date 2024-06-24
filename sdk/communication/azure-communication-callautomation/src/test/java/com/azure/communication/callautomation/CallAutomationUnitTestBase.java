@@ -38,6 +38,7 @@ public class CallAutomationUnitTestBase {
     static final String MOCK_CONNECTION_STRING = String.format("endpoint=%s;accesskey=eyJhbG", MOCK_ENDPOINT);
     static final String CALL_CONNECTION_ID = "callConnectionId";
     static final String CALL_SERVER_CALL_ID = "serverCallId";
+    static final String ROOM_ID = "roomId";
     static final String CALL_CALLER_ID = "callerId";
     static final CommunicationUserIdentifier USER_1 = new CommunicationUserIdentifier("userId1");
     static final String CALL_CALLER_DISPLAY_NAME = "callerDisplayName";

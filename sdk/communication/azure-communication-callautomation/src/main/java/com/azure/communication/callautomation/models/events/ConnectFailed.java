@@ -5,10 +5,10 @@ package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Immutable;
 
-/** The PlayCompleted model. */
+/** The ConnectFailed model. */
 @Immutable
-public final class PlayCompleted extends CallAutomationEventBaseWithReasonCode {
+public final class ConnectFailed extends CallAutomationEventBase {
+    private ConnectFailed() {
 
-    private PlayCompleted() {
     }
 }

@@ -25,6 +25,7 @@ import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
+import com.azure.communication.callautomation.models.RoomCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -138,6 +139,8 @@ public final class CallRecordingAsync {
             callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
         } else if (callLocator.getKind() == CallLocatorKind.SERVER_CALL_LOCATOR) {
             callLocatorInternal.setServerCallId(((ServerCallLocator) callLocator).getServerCallId());
+        } else if (callLocator.getKind() == CallLocatorKind.ROOM_CALL_LOCATOR) {
+            callLocatorInternal.setServerCallId(((RoomCallLocator) callLocator).getRoomId());
         } else {
             throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
         }

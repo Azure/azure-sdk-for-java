@@ -90,12 +90,12 @@ public final class MediaStreamingOptions {
         return this.audioChannelType;
     }
 
-    /**
-     * Get the startMediaStreaming property: Which determines if the media streaming should be started immediately after call is answered or not.
-     *
+     /**
+     * Get the startMediaStreaming property: Enables intermediate results for the transcribed speech.
+     * 
      * @return the startMediaStreaming value.
      */
-    public boolean getStartMediaStreaming() {
+    public Boolean isStartMediaStreamingEnabled() {
         return this.startMediaStreaming;
     }
 
