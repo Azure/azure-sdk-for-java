@@ -71,7 +71,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
         Mono<Response<StorageTaskReportSummary>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
-            @QueryParam("$maxpagesize") String maxpagesize, @QueryParam("$filter") String filter,
+            @QueryParam("$maxpagesize") Integer maxpagesize, @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -103,7 +103,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTaskReportInstanceInner>> listSinglePageAsync(String resourceGroupName,
-        String accountName, String maxpagesize, String filter) {
+        String accountName, Integer maxpagesize, String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -149,7 +149,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageTaskReportInstanceInner>> listSinglePageAsync(String resourceGroupName,
-        String accountName, String maxpagesize, String filter, Context context) {
+        String accountName, Integer maxpagesize, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -193,7 +193,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String accountName,
-        String maxpagesize, String filter) {
+        Integer maxpagesize, String filter) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
@@ -211,7 +211,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String accountName) {
-        final String maxpagesize = null;
+        final Integer maxpagesize = null;
         final String filter = null;
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -237,7 +237,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageTaskReportInstanceInner> listAsync(String resourceGroupName, String accountName,
-        String maxpagesize, String filter, Context context) {
+        Integer maxpagesize, String filter, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
@@ -255,7 +255,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskReportInstanceInner> list(String resourceGroupName, String accountName) {
-        final String maxpagesize = null;
+        final Integer maxpagesize = null;
         final String filter = null;
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter));
     }
@@ -280,7 +280,7 @@ public final class StorageTaskAssignmentsInstancesReportsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskReportInstanceInner> list(String resourceGroupName, String accountName,
-        String maxpagesize, String filter, Context context) {
+        Integer maxpagesize, String filter, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter, context));
     }
 
