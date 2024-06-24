@@ -586,5 +586,5 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterappconfigurationconfig }}
-    MatrixFilters:
-        - JavaTestVersion=^(?!1.8|1.11).*
+#    MatrixFilters:
+#        - JavaTestVersion=^(?!1.8|1.11).*
