@@ -67,10 +67,12 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -85,15 +87,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
     private List<String> writeRegions;
 
-    private static final CosmosEndToEndOperationLatencyPolicyConfig noEndToEndTimeout
+    private static final CosmosEndToEndOperationLatencyPolicyConfig NO_END_TO_END_TIMEOUT
         = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofDays(1)).build();
 
-    private static final CosmosEndToEndOperationLatencyPolicyConfig twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy
+    private static final CosmosEndToEndOperationLatencyPolicyConfig TWO_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY
         = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
         .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
         .build();
 
-    private static final CosmosEndToEndOperationLatencyPolicyConfig twoSecondEndToEndTimeoutWithoutAvailabilityStrategy
+    private static final CosmosEndToEndOperationLatencyPolicyConfig TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY
         = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
         .build();
 
@@ -191,9 +193,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
     private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildReadWriteSessionNotAvailableRules
         = PartitionLevelCircuitBreakerTests::buildReadWriteSessionNotAvailableRules;
 
-    private static final CosmosRegionSwitchHint noRegionSwitchHint = null;
+    private static final CosmosRegionSwitchHint NO_REGION_SWITCH_HINT = null;
 
-    private static final Boolean nonIdempotentWriteRetriesEnabled = true;
+    private static final Boolean NON_IDEMPOTENT_WRITE_RETRIES_ENABLED = true;
+
+    private static final Set<ConnectionMode> ALL_CONNECTION_MODES_INCLUDED = new HashSet<>();
+
+    private static final Set<ConnectionMode> ONLY_DIRECT_MODE = new HashSet<>();
+
+    private static final Set<ConnectionMode> ONLY_GATEWAY_MODE = new HashSet<>();
 
     private String firstPreferredRegion = null;
 
@@ -231,6 +239,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             this.singlePartitionAsyncContainerId = UUID.randomUUID().toString();
             sharedAsyncDatabase.createContainerIfNotExists(this.singlePartitionAsyncContainerId, "/id").block();
+
+            ALL_CONNECTION_MODES_INCLUDED.add(ConnectionMode.DIRECT);
+            ALL_CONNECTION_MODES_INCLUDED.add(ConnectionMode.GATEWAY);
+            ONLY_DIRECT_MODE.add(ConnectionMode.DIRECT);
+            ONLY_GATEWAY_MODE.add(ConnectionMode.GATEWAY);
 
             try {
                 Thread.sleep(3000);
@@ -286,15 +299,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(11),
                 generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 validateResponseHasSuccess,
                 validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // Server-generated 503 injected into first preferred region for UPSERT_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -308,15 +321,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(6),
                 generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // Server-generated 503 injected into first preferred region for REPLACE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -330,15 +343,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(6),
                 generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // Server-generated 503 injected into first preferred region for DELETE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -352,16 +365,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(6),
                 generateServiceUnavailableRules,
-
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // Server-generated 503 injected into first preferred region for PATCH_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -375,15 +387,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(6),
                 generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // Server-generated 503 injected into first preferred region for CREATE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -397,15 +409,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(6),
                 generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // Server-generated 503 injected into first preferred region for QUERY_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -420,15 +432,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(11),
                 generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // Server-generated 503 injected into first preferred region for BATCH_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -442,15 +454,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(6),
                 generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // Server-generated 503 injected into first preferred region for READ_FEED_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -463,15 +475,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(11),
                 generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // Server-generated 410 injected into first preferred region for READ_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -484,15 +496,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // Server-generated 410 injected into first preferred region for UPSERT_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -506,15 +518,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // Server-generated 410 injected into first preferred region for REPLACE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -528,15 +540,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // Server-generated 410 injected into first preferred region for DELETE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -550,15 +562,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // Server-generated 410 injected into first preferred region for PATCH_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -572,15 +584,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // Server-generated 410 injected into first preferred region for CREATE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -594,15 +606,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // Server-generated 410 injected into first preferred region for QUERY_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -617,15 +629,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateServerGeneratedGoneRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // Response-delay injected into first preferred region for CREATE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -640,15 +652,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
                     .withResponseDelay(Duration.ofSeconds(6)),
                 generateTransitTimeoutRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // Response-delay injected into first preferred region for REPLACE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -663,15 +675,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
                     .withResponseDelay(Duration.ofSeconds(6)),
                 generateTransitTimeoutRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // Response-delay injected into first preferred region for CREATE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -687,15 +699,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
                     .withResponseDelay(Duration.ofSeconds(6)),
                 generateTransitTimeoutRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasRequestTimeoutException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // Response-delay injected into first preferred region for REPLACE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -711,15 +723,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
                     .withResponseDelay(Duration.ofSeconds(6)),
                 generateTransitTimeoutRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasRequestTimeoutException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // 500 (internal server error) injected into first preferred region for READ_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -732,15 +744,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(11),
                 generateInternalServerErrorRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasInternalServerError,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 500 (internal server error) injected into first preferred region for CREATE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -754,15 +766,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(6),
                 generateInternalServerErrorRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasInternalServerError,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 500 (internal server error) injected into first preferred region for READ_FEED_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -775,15 +787,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(11),
                 generateInternalServerErrorRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasInternalServerError,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 500 (internal server error) injected into first preferred region for QUERY_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -798,15 +810,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withHitLimit(11),
                 generateInternalServerErrorRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasInternalServerError,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 429 injected into first preferred region for READ_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -819,15 +831,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateTooManyRequestsRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 429 injected into first preferred region for CREATE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -841,15 +853,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateTooManyRequestsRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 429 injected into first preferred region for QUERY_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -863,15 +875,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateTooManyRequestsRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 404/1002 injected into first preferred region for READ_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -884,15 +896,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateReadOrWriteSessionNotAvailableRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
-                !nonIdempotentWriteRetriesEnabled,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // 404/1002 injected into first preferred region for CREATE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -906,15 +918,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateReadOrWriteSessionNotAvailableRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
-                !nonIdempotentWriteRetriesEnabled,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // 449 injected into first preferred region for CREATE_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -928,15 +940,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateRetryWithRules,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // 503 injected into all regions for READ_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -949,15 +961,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions)
                     .withHitLimit(11),
                 generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasServiceUnavailableError,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 503 injected into all regions for UPSERT_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
@@ -971,15 +983,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions)
                     .withHitLimit(6),
                 generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasServiceUnavailableError,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 503 injected into all regions for QUERY_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -992,15 +1004,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions)
                     .withHitLimit(11),
                 generateServiceUnavailableRules,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasServiceUnavailableError,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 429 injected into first preferred region for READ_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -1013,15 +1025,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateTooManyRequestsRules,
-                twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // 429 injected into first preferred region for CREATE_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -1034,15 +1046,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateTooManyRequestsRules,
-                twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
-                noRegionSwitchHint,
-                nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // 429 injected into first preferred region for QUERY_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -1055,15 +1067,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 generateTooManyRequestsRules,
-                twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
-                noRegionSwitchHint,
-                !nonIdempotentWriteRetriesEnabled,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             }
         };
     }
@@ -1109,14 +1121,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildServiceUnavailableError,
                 executeReadManyOperation,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // Server-generated 410 injected into first preferred region for read many operation
             // injected into all replicas of the faulty EPK range.
@@ -1130,14 +1142,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildServerGeneratedGoneError,
                 executeReadManyOperation,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // 429 injected into first preferred region for read many operation
             // injected into all replicas of the faulty EPK range.
@@ -1151,14 +1163,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildTooManyRequestsError,
                 executeReadManyOperation,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 404/1002 injected into first preferred region for read many operation
             // injected into all replicas of the faulty EPK range.
@@ -1172,14 +1184,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildReadWriteSessionNotAvailableRules,
                 executeReadManyOperation,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // 503 injected into all region for read many operation
             // injected into all replicas of the faulty EPK range.
@@ -1194,14 +1206,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions),
                 this.buildServiceUnavailableError,
                 executeReadManyOperation,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasServiceUnavailableError,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 429 injected into first preferred region for read many operation
             // injected into all replicas of the faulty EPK range.
@@ -1215,14 +1227,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 this.buildTooManyRequestsError,
                 executeReadManyOperation,
-                twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
-                noRegionSwitchHint,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             }
         };
     }
@@ -1270,14 +1282,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildServiceUnavailableError,
                 executeReadAllOperation,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 429 injected into first preferred region for read all operation
             // injected into all replicas of the faulty EPK range.
@@ -1291,14 +1303,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildServerGeneratedGoneError,
                 executeReadAllOperation,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // 429 injected into first preferred region for read all operation
             // injected into all replicas of the faulty EPK range.
@@ -1312,14 +1324,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildTooManyRequestsError,
                 executeReadAllOperation,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 404/1002 injected into first preferred region for read all operation
             // injected into all replicas of the faulty EPK range.
@@ -1333,14 +1345,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
                 this.buildReadWriteSessionNotAvailableRules,
                 executeReadAllOperation,
-                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
-                noRegionSwitchHint,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ONLY_DIRECT_MODE
             },
             // 503 injected into all region for read all operation
             // injected into all replicas of the faulty EPK range.
@@ -1355,14 +1367,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionApplicableRegions(this.writeRegions),
                 this.buildServiceUnavailableError,
                 executeReadAllOperation,
-                noEndToEndTimeout,
-                noRegionSwitchHint,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasServiceUnavailableError,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 429 injected into first preferred region for read all operation
             // injected into all replicas of the faulty EPK range.
@@ -1376,14 +1388,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 this.buildTooManyRequestsError,
                 executeReadAllOperation,
-                twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy,
-                noRegionSwitchHint,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
                 this.validateResponseHasSuccess,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ConnectionMode.DIRECT
+                ALL_CONNECTION_MODES_INCLUDED
             }
         };
     }
@@ -1401,7 +1413,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitingHasKickedIn,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenExceptionBubblesUp,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
-        ConnectionMode allowedConnectionMode) {
+        Set<ConnectionMode> allowedConnectionModes) {
 
         List<String> preferredRegions = this.writeRegions;
 
@@ -1413,8 +1425,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
 
-        if (connectionPolicy.getConnectionMode() != allowedConnectionMode) {
-            throw new SkipException(String.format("Test is not applicable to %s connectivity mode!", allowedConnectionMode));
+        if (!allowedConnectionModes.contains(connectionPolicy.getConnectionMode())) {
+            throw new SkipException(String.format("Test is not applicable to %s connectivity mode!", connectionPolicy.getConnectionMode()));
         }
 
         CosmosAsyncClient asyncClient = null;
