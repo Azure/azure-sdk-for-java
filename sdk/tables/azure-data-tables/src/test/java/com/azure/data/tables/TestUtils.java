@@ -232,8 +232,11 @@ public final class TestUtils {
 
     static boolean isCosmosTest() {
         Configuration globalConfiguration = Configuration.getGlobalConfiguration();
-        return globalConfiguration.get("TABLES_CONNECTION_STRING") != null
-            && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
+
+        return (globalConfiguration.get("TABLES_CONNECTION_STRING") != null
+            && globalConfiguration.get("TABLES_CONNECTION_STRING").contains("cosmos.azure.com")) || (
+            globalConfiguration.get("TABLES_ENDPOINT") != null
+                && globalConfiguration.get("TABLES_ENDPOINT").contains("cosmos.azure.com"));
     }
 
     public static void addTestProxyTestSanitizersAndMatchers(InterceptorManager interceptorManager) {

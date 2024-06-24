@@ -20,7 +20,13 @@ public abstract class TableClientTestBase extends TestProxyTestBase {
 
     protected abstract HttpClient buildAssertingClient(HttpClient httpClient);
 
-    protected TableClientBuilder getClientBuilder(String tableName,
+
+    protected TableClientBuilder getClientBuilder(String tableName, boolean enableTenantDiscovery) {
+        return TestUtils.isCosmosTest() ? getClientBuilderWithConnectionString(tableName, enableTenantDiscovery)
+            : getClientBuilderUsingEntra(tableName, enableTenantDiscovery);
+    }
+
+    protected TableClientBuilder getClientBuilderUsingEntra(String tableName,
                                                   boolean enableTenantDiscovery) {
         final TableClientBuilder tableClientBuilder = new TableClientBuilder()
             .credential(TestUtils.getTestTokenCredential(interceptorManager))
