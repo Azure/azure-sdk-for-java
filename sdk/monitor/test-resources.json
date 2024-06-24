@@ -312,10 +312,6 @@
     }
   ],
   "outputs": {
-    "AZURE_APPCONFIG_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.AppConfiguration/configurationStores',variables('uniqueAzConfigName')), '2019-02-01-preview').value[0].connectionString]"
-    },
     "roleDefinitionId": {
       "type": "string",
       "value": "[variables('roleDefinitionId')]"
