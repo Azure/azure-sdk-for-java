@@ -77,7 +77,7 @@ public class EmailTestBase extends TestProxyTestBase {
     public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isLiveMode()) {
             final TokenCredential c = new AzurePowerShellCredentialBuilder().build();
-            System.out.println("Endpoint::" + ENDPOINT);
+            System.out.println("Endpoint-::" + ENDPOINT);
             final AccessToken t = c.getToken(new TokenRequestContext().addScopes("https://communication.azure.com//.default")).block();
             System.out.println("ExipreAt::" + t.getExpiresAt());
             return c;
