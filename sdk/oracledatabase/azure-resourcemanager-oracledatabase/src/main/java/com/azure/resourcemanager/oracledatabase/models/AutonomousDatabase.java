@@ -312,6 +312,49 @@ public interface AutonomousDatabase {
     AutonomousDatabaseWalletFile generateWallet(GenerateAutonomousDatabaseWalletDetails body);
 
     /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    AutonomousDatabase restore(RestoreAutonomousDatabaseDetails body);
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    AutonomousDatabase restore(RestoreAutonomousDatabaseDetails body, Context context);
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    AutonomousDatabase shrink();
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    AutonomousDatabase shrink(Context context);
+
+    /**
      * Perform switchover action on Autonomous Database.
      * 
      * @param body The content of the action request.

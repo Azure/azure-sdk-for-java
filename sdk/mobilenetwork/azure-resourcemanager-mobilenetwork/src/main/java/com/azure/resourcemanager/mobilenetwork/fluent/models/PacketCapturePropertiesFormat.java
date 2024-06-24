@@ -47,8 +47,7 @@ public final class PacketCapturePropertiesFormat {
     private List<String> networkInterfaces;
 
     /*
-     * Number of bytes captured per packet, the remaining bytes are truncated. The default "0" means the entire packet
-     * is captured.
+     * Number of bytes captured per packet, the remaining bytes are truncated. The default "0" means the entire packet is captured.
      */
     @JsonProperty(value = "bytesToCapturePerPacket")
     private Long bytesToCapturePerPacket;
@@ -134,8 +133,8 @@ public final class PacketCapturePropertiesFormat {
     }
 
     /**
-     * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are
-     * truncated. The default "0" means the entire packet is captured.
+     * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
+     * The default "0" means the entire packet is captured.
      * 
      * @return the bytesToCapturePerPacket value.
      */
@@ -144,8 +143,8 @@ public final class PacketCapturePropertiesFormat {
     }
 
     /**
-     * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are
-     * truncated. The default "0" means the entire packet is captured.
+     * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
+     * The default "0" means the entire packet is captured.
      * 
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set.
      * @return the PacketCapturePropertiesFormat object itself.

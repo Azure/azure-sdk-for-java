@@ -102,7 +102,7 @@ public final class TestUtils {
 
     static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,
         String keyFilter) {
-        addStore(properties, storeEndpoint, connectionString, keyFilter, "\0");
+        addStore(properties, storeEndpoint, connectionString, keyFilter, null);
     }
 
     static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,

@@ -5,30 +5,37 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The classification for the POI being returned. */
+/**
+ * The classification for the POI being returned.
+ */
 @Immutable
-public final class Classification {
+public final class Classification implements JsonSerializable<Classification> {
     /*
      * Code property
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Names array
      */
-    @JsonProperty(value = "names", access = JsonProperty.Access.WRITE_ONLY)
     private List<ClassificationName> names;
 
-    /** Creates an instance of Classification class. */
-    public Classification() {}
+    /**
+     * Creates an instance of Classification class.
+     */
+    public Classification() {
+    }
 
     /**
      * Get the code property: Code property.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -37,10 +44,48 @@ public final class Classification {
 
     /**
      * Get the names property: Names array.
-     *
+     * 
      * @return the names value.
      */
     public List<ClassificationName> getNames() {
         return this.names;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Classification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Classification if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Classification.
+     */
+    public static Classification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Classification deserializedClassification = new Classification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedClassification.code = reader.getString();
+                } else if ("names".equals(fieldName)) {
+                    List<ClassificationName> names = reader.readArray(reader1 -> ClassificationName.fromJson(reader1));
+                    deserializedClassification.names = names;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClassification;
+        });
     }
 }

@@ -14,21 +14,22 @@ public final class DataNetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataNetworkInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Canceled\",\"description\":\"wu\"},\"location\":\"gazxuf\",\"tags\":{\"fidfvzw\":\"ckyfih\",\"nteiwaopv\":\"zuhtymwisdkfthwx\"},\"id\":\"mijcmmxdcufufs\",\"name\":\"pymzidnsezcxtbzs\",\"type\":\"fycc\"}")
+            "{\"properties\":{\"provisioningState\":\"Unknown\",\"description\":\"qeojnxqbzvddntw\"},\"location\":\"eic\",\"tags\":{\"uhrhcffcyddgl\":\"npzaoq\"},\"id\":\"jthjqkwpyei\",\"name\":\"xmqci\",\"type\":\"q\"}")
             .toObject(DataNetworkInner.class);
-        Assertions.assertEquals("gazxuf", model.location());
-        Assertions.assertEquals("ckyfih", model.tags().get("fidfvzw"));
-        Assertions.assertEquals("wu", model.description());
+        Assertions.assertEquals("eic", model.location());
+        Assertions.assertEquals("npzaoq", model.tags().get("uhrhcffcyddgl"));
+        Assertions.assertEquals("qeojnxqbzvddntw", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataNetworkInner model = new DataNetworkInner().withLocation("gazxuf")
-            .withTags(mapOf("fidfvzw", "ckyfih", "nteiwaopv", "zuhtymwisdkfthwx")).withDescription("wu");
+        DataNetworkInner model = new DataNetworkInner().withLocation("eic")
+            .withTags(mapOf("uhrhcffcyddgl", "npzaoq"))
+            .withDescription("qeojnxqbzvddntw");
         model = BinaryData.fromObject(model).toObject(DataNetworkInner.class);
-        Assertions.assertEquals("gazxuf", model.location());
-        Assertions.assertEquals("ckyfih", model.tags().get("fidfvzw"));
-        Assertions.assertEquals("wu", model.description());
+        Assertions.assertEquals("eic", model.location());
+        Assertions.assertEquals("npzaoq", model.tags().get("uhrhcffcyddgl"));
+        Assertions.assertEquals("qeojnxqbzvddntw", model.description());
     }
 
     // Use "Map.of" if available

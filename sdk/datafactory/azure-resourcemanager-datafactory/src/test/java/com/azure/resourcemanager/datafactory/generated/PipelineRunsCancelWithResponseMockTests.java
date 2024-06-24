@@ -28,8 +28,7 @@ public final class PipelineRunsCancelWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.pipelineRuns()
-            .cancelWithResponse("avrqvlu", "wwgfgtnoktilfdy", "urejvqcmpwwrpxth", true,
-                com.azure.core.util.Context.NONE);
+            .cancelWithResponse("yp", "vyvobkkek", "dxclqjnnhotwqk", false, com.azure.core.util.Context.NONE);
 
     }
 }

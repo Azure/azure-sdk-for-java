@@ -15,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MicrosoftAccessLinkedServiceTypeProperties {
     /*
-     * The non-access credential portion of the connection string as well as an optional encrypted credential. Type: string, or SecureString, or AzureKeyVaultSecretReference, or Expression with resultType string.
+     * The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
+     * string, or SecureString, or AzureKeyVaultSecretReference, or Expression with resultType string.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
-     * Type of authentication used to connect to the Microsoft Access as ODBC data store. Possible values are: Anonymous and Basic. Type: string (or Expression with resultType string).
+     * Type of authentication used to connect to the Microsoft Access as ODBC data store. Possible values are: Anonymous
+     * and Basic. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
@@ -45,7 +47,8 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

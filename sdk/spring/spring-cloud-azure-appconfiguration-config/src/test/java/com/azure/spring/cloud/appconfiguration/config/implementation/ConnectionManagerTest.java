@@ -13,11 +13,14 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
@@ -40,9 +43,12 @@ public class ConnectionManagerTest {
     private ConnectionManager connectionManager;
 
     private ConfigStore configStore;
+    
+    private MockitoSession session;
 
     @BeforeEach
     public void setup() {
+        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MockitoAnnotations.openMocks(this);
 
         configStore = new ConfigStore();
@@ -51,6 +57,12 @@ public class ConnectionManagerTest {
         configStore.validateAndInit();
 
         connectionManager = null;
+    }
+    
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
+        session.finishMocking();
     }
 
     @Test

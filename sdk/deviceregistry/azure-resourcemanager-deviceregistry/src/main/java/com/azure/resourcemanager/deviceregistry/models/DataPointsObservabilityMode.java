@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class DataPointsObservabilityMode extends ExpandableStringEnum<Data
      * @param name a name to look for.
      * @return the corresponding DataPointsObservabilityMode.
      */
-    @JsonCreator
     public static DataPointsObservabilityMode fromString(String name) {
         return fromString(name, DataPointsObservabilityMode.class);
     }

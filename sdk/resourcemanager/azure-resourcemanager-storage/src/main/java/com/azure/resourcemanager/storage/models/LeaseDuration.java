@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +24,7 @@ public final class LeaseDuration extends ExpandableStringEnum<LeaseDuration> {
 
     /**
      * Creates a new instance of LeaseDuration value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +33,7 @@ public final class LeaseDuration extends ExpandableStringEnum<LeaseDuration> {
 
     /**
      * Creates or finds a LeaseDuration from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LeaseDuration.
      */
@@ -45,7 +44,7 @@ public final class LeaseDuration extends ExpandableStringEnum<LeaseDuration> {
 
     /**
      * Gets known LeaseDuration values.
-     *
+     * 
      * @return known LeaseDuration values.
      */
     public static Collection<LeaseDuration> values() {

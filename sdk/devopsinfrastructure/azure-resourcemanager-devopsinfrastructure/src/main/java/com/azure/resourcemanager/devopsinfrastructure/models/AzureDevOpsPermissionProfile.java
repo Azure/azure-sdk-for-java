@@ -6,30 +6,31 @@ package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines the type of Azure DevOps pool permission.
  */
 @Fluent
-public final class AzureDevOpsPermissionProfile {
+public final class AzureDevOpsPermissionProfile implements JsonSerializable<AzureDevOpsPermissionProfile> {
     /*
      * Determines who has admin permissions to the Azure DevOps pool.
      */
-    @JsonProperty(value = "kind", required = true)
     private AzureDevOpsPermissionType kind;
 
     /*
      * User email addresses
      */
-    @JsonProperty(value = "users")
     private List<String> users;
 
     /*
      * Group email addresses
      */
-    @JsonProperty(value = "groups")
     private List<String> groups;
 
     /**
@@ -112,4 +113,50 @@ public final class AzureDevOpsPermissionProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureDevOpsPermissionProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeArrayField("users", this.users, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("groups", this.groups, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDevOpsPermissionProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDevOpsPermissionProfile if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureDevOpsPermissionProfile.
+     */
+    public static AzureDevOpsPermissionProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDevOpsPermissionProfile deserializedAzureDevOpsPermissionProfile = new AzureDevOpsPermissionProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedAzureDevOpsPermissionProfile.kind
+                        = AzureDevOpsPermissionType.fromString(reader.getString());
+                } else if ("users".equals(fieldName)) {
+                    List<String> users = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureDevOpsPermissionProfile.users = users;
+                } else if ("groups".equals(fieldName)) {
+                    List<String> groups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureDevOpsPermissionProfile.groups = groups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDevOpsPermissionProfile;
+        });
+    }
 }

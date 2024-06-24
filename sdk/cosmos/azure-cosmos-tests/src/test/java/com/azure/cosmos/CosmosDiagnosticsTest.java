@@ -983,9 +983,12 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(responseStatisticsList.size()).isGreaterThan(0);
             JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
             assertThat(storeResult).isNotNull();
+            int currentReplicaSetSize = storeResult.get("currentReplicaSetSize").asInt(-1);
+            assertThat(currentReplicaSetSize).isEqualTo(-1);
             JsonNode replicaStatusList = storeResult.get("replicaStatusList");
-            assertThat(replicaStatusList.isArray()).isTrue();
-            assertThat(replicaStatusList.size()).isGreaterThan(0);
+            assertThat(replicaStatusList.isObject()).isTrue();
+            int quorumAcked = storeResult.get("quorumAckedLSN").asInt(-1);
+            assertThat(quorumAcked).isEqualTo(-1);
         }
     }
 
@@ -1228,11 +1231,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(responseStatisticsList.size()).isGreaterThan(0);
         JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
         assertThat(storeResult).isNotNull();
-
+        int replicaSetSize = storeResult.get("currentReplicaSetSize").asInt(-1);
+        assertThat(replicaSetSize).isGreaterThan(0);
         JsonNode replicaStatusList = storeResult.get("replicaStatusList");
-        assertThat(replicaStatusList.isArray()).isTrue();
-        assertThat(replicaStatusList.size()).isGreaterThan(0);
-
+        assertThat(replicaStatusList.isObject()).isTrue();
+        int replicasNum = replicaStatusList.get(Uri.ATTEMPTING).size() + replicaStatusList.get(Uri.IGNORING).size();
+        assertThat(replicasNum).isEqualTo(replicaSetSize);
+        String replicaStatusTxt = replicaStatusList.get(Uri.ATTEMPTING).get(0).asText();
+        assertThat(replicaStatusTxt.contains("P")).isTrue();
+        assertThat(replicaStatusTxt.contains("Connected")).isTrue();
         // validate serviceEndpointStatistics
         JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
         assertThat(serviceEndpointStatistics).isNotNull();
@@ -1508,14 +1515,14 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
             TestItem testItem = TestItem.createNewItem();
             container.createItem(testItem).block();
-            
+
             CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
             requestOptions.setCosmosEndToEndOperationLatencyPolicyConfig(
                 new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(-1)).build()
             );
             CosmosPagedFlux<ObjectNode> flux = container.readAllItems(requestOptions, ObjectNode.class);
             List<ObjectNode> results = flux.collectList().block();
-                
+
             fail("This should have failed with an exception");
         } catch(OperationCancelledException cancelledException) {
             assertThat(cancelledException).isNotNull();

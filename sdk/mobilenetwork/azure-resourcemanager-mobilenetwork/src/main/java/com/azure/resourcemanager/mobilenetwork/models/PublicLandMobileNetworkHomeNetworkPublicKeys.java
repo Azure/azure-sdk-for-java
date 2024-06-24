@@ -14,15 +14,13 @@ import java.util.List;
 @Fluent
 public final class PublicLandMobileNetworkHomeNetworkPublicKeys {
     /*
-     * This provides a mapping to identify which public key has been used for SUPI concealment using the Profile A
-     * Protection Scheme.
+     * This provides a mapping to identify which public key has been used for SUPI concealment using the Profile A Protection Scheme.
      */
     @JsonProperty(value = "profileA")
     private List<HomeNetworkPublicKey> profileA;
 
     /*
-     * This provides a mapping to identify which public key has been used for SUPI concealment using the Profile B
-     * Protection Scheme.
+     * This provides a mapping to identify which public key has been used for SUPI concealment using the Profile B Protection Scheme.
      */
     @JsonProperty(value = "profileB")
     private List<HomeNetworkPublicKey> profileB;

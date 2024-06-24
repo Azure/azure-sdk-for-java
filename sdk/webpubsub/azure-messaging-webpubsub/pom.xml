@@ -32,6 +32,11 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <jacoco.min.linecoverage>0.39</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.29</jacoco.min.branchcoverage>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -90,12 +95,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>2.0.13</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

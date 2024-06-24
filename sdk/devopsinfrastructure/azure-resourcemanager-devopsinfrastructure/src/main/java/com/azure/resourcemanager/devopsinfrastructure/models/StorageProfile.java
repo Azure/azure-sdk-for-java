@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The storage profile of the VMSS.
  */
 @Fluent
-public final class StorageProfile {
+public final class StorageProfile implements JsonSerializable<StorageProfile> {
     /*
      * The Azure SKU name of the machines in the pool.
      */
-    @JsonProperty(value = "osDiskStorageAccountType")
     private OsDiskStorageAccountType osDiskStorageAccountType;
 
     /*
      * A list of empty data disks to attach.
      */
-    @JsonProperty(value = "dataDisks")
     private List<DataDisk> dataDisks;
 
     /**
@@ -80,5 +82,47 @@ public final class StorageProfile {
         if (dataDisks() != null) {
             dataDisks().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osDiskStorageAccountType",
+            this.osDiskStorageAccountType == null ? null : this.osDiskStorageAccountType.toString());
+        jsonWriter.writeArrayField("dataDisks", this.dataDisks, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageProfile.
+     */
+    public static StorageProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageProfile deserializedStorageProfile = new StorageProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osDiskStorageAccountType".equals(fieldName)) {
+                    deserializedStorageProfile.osDiskStorageAccountType
+                        = OsDiskStorageAccountType.fromString(reader.getString());
+                } else if ("dataDisks".equals(fieldName)) {
+                    List<DataDisk> dataDisks = reader.readArray(reader1 -> DataDisk.fromJson(reader1));
+                    deserializedStorageProfile.dataDisks = dataDisks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageProfile;
+        });
     }
 }
