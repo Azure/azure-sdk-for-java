@@ -79,6 +79,9 @@ public class Utils {
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
 
+    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+
     // NOTE DateTimeFormatter.RFC_1123_DATE_TIME cannot be used.
     // because cosmos db rfc1123 validation requires two digits for day.
     // so Thu, 04 Jan 2018 00:30:37 GMT is accepted by the cosmos db service,
@@ -593,7 +596,8 @@ public class Utils {
                     ? itemSerializer
                     : CosmosItemSerializer.DEFAULT_SERIALIZER;
 
-                T result = effectiveSerializer.deserialize(
+                T result = itemSerializerAccessor.deserializeSafe(
+                    effectiveSerializer,
                     getSimpleObjectMapper().convertValue(jsonTree, ObjectNodeMap.JACKSON_MAP_TYPE),
                     itemClassType);
                 return result;
@@ -610,7 +614,7 @@ public class Utils {
         CosmosItemSerializer effectiveItemSerializer= itemSerializer == null ?
                 CosmosItemSerializer.DEFAULT_SERIALIZER : itemSerializer;
 
-        return effectiveItemSerializer.deserialize(new ObjectNodeMap(jsonNode), itemClassType);
+        return itemSerializerAccessor.deserializeSafe(effectiveItemSerializer, new ObjectNodeMap(jsonNode), itemClassType);
     }
 
     @SuppressWarnings("unchecked")
@@ -620,7 +624,7 @@ public class Utils {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
                 ? (Map<String, Object>) object
-                : serializer.serialize(object);
+                : itemSerializerAccessor.serializeSafe(serializer, object);
 
             if (onAfterSerialization != null) {
                 onAfterSerialization.accept(jsonTreeMap);
