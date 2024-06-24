@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
@@ -75,7 +76,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
     private static final String MAX_PREFETCH_PAGE_COUNT = "maxPrefetchPageCount";
     private static final String QUERY_NAME = "queryName";
     private static final String[] optionLabels = {E2E_TIMEOUT, CONSISTENCY_LEVEL, CONTENT_RESPONSE_ON_WRITE, NON_IDEMPOTENT_WRITE_RETRIES, BYPASS_CACHE, THROUGHPUT_CONTROL_GROUP_NAME, REQUEST_CHARGE_THRESHOLD, SCAN_IN_QUERY, EXCLUDE_REGIONS, MAX_DEGREE_OF_PARALLELISM, MAX_BUFFERED_ITEM_COUNT, RESPONSE_CONTINUATION_TOKEN_LIMIT_KB, MAX_ITEM_COUNT, QUERY_METRICS, INDEX_METRICS, MAX_PREFETCH_PAGE_COUNT, QUERY_NAME};
-    private static final String[] initialOptions = {"20", ConsistencyLevel.STRONG.toString().toUpperCase(), "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "false", "false", "10", "QueryName"};
+    private static final String[] initialOptions = {"20", "Session", "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "false", "false", "10", "QueryName"};
 
     @Factory(dataProvider = "clientBuildersWithApplyPolicies")
     public OperationPoliciesTest(CosmosClientBuilder clientBuilder) {
@@ -94,7 +95,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     Duration.ofSeconds(Long.parseLong(prop.getProperty(E2E_TIMEOUT))),
                     new ThresholdBasedAvailabilityStrategy()))
                 .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
-                .setConsistencyLevel(ConsistencyLevel.valueOf(prop.getProperty(CONSISTENCY_LEVEL)))
+                .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)))
                 .setContentResponseOnWriteEnabled(Boolean.parseBoolean(prop.getProperty(CONTENT_RESPONSE_ON_WRITE)))
                 .setNonIdempotentWriteRetriesEnabled(Boolean.parseBoolean(prop.getProperty(NON_IDEMPOTENT_WRITE_RETRIES)))
                 .setDedicatedGatewayRequestOptions(new DedicatedGatewayRequestOptions()
@@ -165,7 +166,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
     }
 
     @DataProvider
-    public static CosmosClientBuilder[] clientBuildersWithApplyPolicies() {
+    public static Object[] clientBuildersWithApplyPolicies() {
         CosmosOperationPolicy policy = (cosmosOperationDetails) -> {
             // Figure out Operation
             CosmosDiagnosticsContext cosmosDiagnosticsContext = cosmosOperationDetails.getDiagnosticsContext();
@@ -231,8 +232,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
     @DataProvider(name = "changedOptions")
     private String[][] createChangedOptions() {
         return new String[][] {
-            { "8", ConsistencyLevel.SESSION.toString().toUpperCase(), "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "true", "20", "QueryNameChanged" },
-            { "4", ConsistencyLevel.EVENTUAL.toString().toUpperCase(), "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "true", "false", "20", "QueryNameChanged" },
+            { "8", "ConsistentPrefix", "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "true", "20", "QueryNameChanged" },
+            { "4", "Eventual", "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "true", "false", "20", "QueryNameChanged" },
             initialOptions
         };
     }
@@ -671,7 +672,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
            response.getDiagnostics().getDiagnosticsContext());
        assertThat(requestOptions.getCosmosEndToEndLatencyPolicyConfig().getEndToEndOperationTimeout().getSeconds())
            .isEqualTo(Long.parseLong(options[0]));
-       assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase()).isEqualTo(options[1]);
+       assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[1].toUpperCase(Locale.ROOT));
        assertThat(requestOptions.isContentResponseOnWriteEnabled()).isEqualTo(Boolean.parseBoolean(options[2]));
        assertThat(requestOptions.getNonIdempotentWriteRetriesEnabled()).isEqualTo(Boolean.parseBoolean(options[3]));
        assertThat(requestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()).isEqualTo(Boolean.parseBoolean(options[4]));
