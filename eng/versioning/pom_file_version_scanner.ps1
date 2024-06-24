@@ -204,10 +204,8 @@ function Get-ArtifactsList-Per-Service-Directory {
                     Write-Error "$ymlPath already contains an AdditionalModule entry for $libFullName"
                 }
             }
-            else {
-                if ($UseVerboseLogging) {
-                    Write-Host "    Adding AdditionalModules: $libFullName"
-                }
+            elseif ($UseVerboseLogging) {
+                Write-Host "    Adding AdditionalModules: $libFullName"
             }
         }
     }
