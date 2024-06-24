@@ -3,7 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.data.cosmos;
 
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
@@ -17,7 +19,9 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosDataAutoConfigurationTests.CustomAzureCosmosConnectionDetails.DATABASE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.RETURNS_MOCKS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
@@ -51,6 +55,45 @@ class CosmosDataAutoConfigurationTests {
 
     @Test
     @SuppressWarnings("try")
+    void onlyConnectionDetailsBeanConfigured() {
+        try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
+            AzureCosmosProperties azureCosmosProperties = new AzureCosmosProperties();
+            azureCosmosProperties.setEndpoint(ENDPOINT);
+            azureCosmosProperties.setDatabase("property-database");
+            this.contextRunner
+                .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
+                .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
+                .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
+                .run(context -> {
+                    assertThat(context).hasSingleBean(CosmosTemplate.class);
+                    assertThat(context).hasSingleBean(ReactiveCosmosTemplate.class);
+                });
+        }
+    }
+
+    @Test
+    @SuppressWarnings("try")
+    void bothPropertyAndBeanConfiguredBeanHasHigherPriority() {
+        try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
+            AzureCosmosProperties azureCosmosProperties = new AzureCosmosProperties();
+            azureCosmosProperties.setEndpoint(ENDPOINT);
+            String propertyDatabase = "property-database";
+            azureCosmosProperties.setDatabase(propertyDatabase);
+            this.contextRunner
+                .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
+                .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
+                .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
+                .run(context -> {
+                    assertThat(context).hasSingleBean(CosmosTemplate.class);
+                    assertThat(context).hasSingleBean(ReactiveCosmosTemplate.class);
+                    assertThat(context).hasSingleBean(CosmosDataAutoConfiguration.class);
+                    assertEquals(DATABASE, context.getBean(CosmosDataAutoConfiguration.class).getDatabaseName());
+                });
+        }
+    }
+
+    @Test
+    @SuppressWarnings("try")
     void cosmosTemplateExistsAndUsesIt() {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             AzureCosmosProperties azureCosmosProperties = new AzureCosmosProperties();
@@ -60,6 +103,7 @@ class CosmosDataAutoConfigurationTests {
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
                 .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
+                .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test"
@@ -82,6 +126,7 @@ class CosmosDataAutoConfigurationTests {
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
                 .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
+                .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test"
@@ -106,6 +151,7 @@ class CosmosDataAutoConfigurationTests {
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
                 .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
+                .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test",
@@ -133,6 +179,7 @@ class CosmosDataAutoConfigurationTests {
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
                 .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
+                .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
                 .withUserConfiguration(UserAuditingConfiguration.class)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
@@ -148,5 +195,34 @@ class CosmosDataAutoConfigurationTests {
     @EnableCosmosAuditing
     static class UserAuditingConfiguration {
 
+    }
+
+    static class CustomAzureCosmosConnectionDetails implements AzureCosmosConnectionDetails {
+        static final String DATABASE = "bean-database";
+
+        @Override
+        public String getEndpoint() {
+            return "bean-endpoint";
+        }
+
+        @Override
+        public String getKey() {
+            return "bean-key";
+        }
+
+        @Override
+        public String getDatabase() {
+            return DATABASE;
+        }
+
+        @Override
+        public Boolean getEndpointDiscoveryEnabled() {
+            return false;
+        }
+
+        @Override
+        public ConnectionMode getConnectionMode() {
+            return ConnectionMode.GATEWAY;
+        }
     }
 }

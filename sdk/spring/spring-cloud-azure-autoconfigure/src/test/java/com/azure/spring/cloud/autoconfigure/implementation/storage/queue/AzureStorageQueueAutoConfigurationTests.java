@@ -190,11 +190,46 @@ class AzureStorageQueueAutoConfigurationTests extends AbstractAzureServiceConfig
             });
     }
 
+    @Test
+    void connectionDetailsHasHigherPriority() {
+        String accountName = "property-account-name";
+        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "property-key");
+        String endpoint = String.format("https://%s.file.core.windows.net", accountName);
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.queue.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.queue.endpoint=" + endpoint
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(AzureStorageQueueConnectionDetails.class, CustomAzureStorageQueueConnectionDetails::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageQueueProperties.class);
+                AzureStorageQueueProperties properties = context.getBean(AzureStorageQueueProperties.class);
+                assertEquals(CustomAzureStorageQueueConnectionDetails.ENDPOINT, properties.getEndpoint());
+                assertEquals(CustomAzureStorageQueueConnectionDetails.CONNECTION_STRING, properties.getConnectionString());
+            });
+    }
+
     private static class QueueServiceClientBuilderCustomizer extends TestBuilderCustomizer<QueueServiceClientBuilder> {
 
     }
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
 
+    }
+
+    static class CustomAzureStorageQueueConnectionDetails implements AzureStorageQueueConnectionDetails {
+        static final String CONNECTION_STRING = String.format(STORAGE_CONNECTION_STRING_PATTERN, "bean-account-name", "bean-key");
+        static final String ENDPOINT = String.format("https://%s.file.core.windows.net", "bean-account-name");
+
+        @Override
+        public String getConnectionString() {
+            return CONNECTION_STRING;
+        }
+
+        @Override
+        public String getEndpoint() {
+            return ENDPOINT;
+        }
     }
 }

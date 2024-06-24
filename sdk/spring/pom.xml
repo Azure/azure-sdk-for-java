@@ -59,6 +59,7 @@
         <module>spring-cloud-azure-stream-binder-servicebus</module>
         <module>spring-cloud-azure-starter-jdbc-mysql</module>
         <module>spring-cloud-azure-starter-jdbc-postgresql</module>
+        <module>spring-cloud-azure-testcontainers</module>
         <module>spring-cloud-azure-integration-tests</module>
         <module>spring-cloud-azure-integration-test-appconfiguration-config</module>
         <module>spring-cloud-azure-appconfiguration-config</module>

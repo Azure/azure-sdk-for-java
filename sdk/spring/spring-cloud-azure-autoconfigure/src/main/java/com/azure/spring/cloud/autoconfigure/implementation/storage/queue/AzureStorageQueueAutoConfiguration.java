@@ -22,12 +22,12 @@ import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -36,13 +36,9 @@ import org.springframework.context.annotation.Import;
  *
  * @since 4.0.0
  */
+@Conditional(AzureStorageQueueAutoConfigurationCondition.class)
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties
-@ConditionalOnClass(QueueServiceClientBuilder.class)
-@ConditionalOnProperty(value = { "spring.cloud.azure.storage.queue.enabled", "spring.cloud.azure.storage.enabled" }, havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(
-    prefixes = { "spring.cloud.azure.storage.queue", "spring.cloud.azure.storage" },
-    name = { "account-name", "endpoint", "connection-string" })
 @Import(AzureStorageConfiguration.class)
 public class AzureStorageQueueAutoConfiguration {
 
@@ -50,6 +46,12 @@ public class AzureStorageQueueAutoConfiguration {
     @ConfigurationProperties(AzureStorageQueueProperties.PREFIX)
     AzureStorageQueueProperties azureStorageQueueProperties(@Qualifier("azureStorageProperties") AzureStorageProperties azureStorageProperties) {
         return AzureServicePropertiesUtils.loadServiceCommonProperties(azureStorageProperties, new AzureStorageQueueProperties());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(AzureStorageQueueConnectionDetails.class)
+    PropertiesAzureStorageQueueConnectionDetails azureStorageQueueConnectionDetails(AzureStorageQueueProperties properties) {
+        return new PropertiesAzureStorageQueueConnectionDetails(properties);
     }
 
     @Bean
@@ -83,9 +85,13 @@ public class AzureStorageQueueAutoConfiguration {
     @ConditionalOnMissingBean
     QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(
         AzureStorageQueueProperties properties,
+        AzureStorageQueueConnectionDetails connectionDetails,
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<QueueServiceClientBuilder>> customizers) {
-
+        if (!(connectionDetails instanceof PropertiesAzureStorageQueueConnectionDetails)) {
+            properties.setEndpoint(connectionDetails.getEndpoint());
+            properties.setConnectionString(connectionDetails.getConnectionString());
+        }
         final QueueServiceClientBuilderFactory factory = new QueueServiceClientBuilderFactory(properties);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_QUEUE);
@@ -103,10 +109,29 @@ public class AzureStorageQueueAutoConfiguration {
     @Bean
     @ConditionalOnAnyProperty(prefixes = { AzureStorageQueueProperties.PREFIX, AzureStorageProperties.PREFIX }, name = { "connection-string" })
     StaticConnectionStringProvider<AzureServiceType.StorageQueue> staticStorageQueueConnectionStringProvider(
-        AzureStorageQueueProperties storageQueueProperties) {
+        AzureStorageQueueConnectionDetails connectionDetails) {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_QUEUE,
-                                                    storageQueueProperties.getConnectionString());
+                                                    connectionDetails.getConnectionString());
+    }
+
+    static class PropertiesAzureStorageQueueConnectionDetails implements AzureStorageQueueConnectionDetails {
+
+        private final AzureStorageQueueProperties properties;
+
+        PropertiesAzureStorageQueueConnectionDetails(AzureStorageQueueProperties properties) {
+            this.properties = properties;
+        }
+
+        @Override
+        public String getConnectionString() {
+            return this.properties.getConnectionString();
+        }
+
+        @Override
+        public String getEndpoint() {
+            return this.properties.getEndpoint();
+        }
     }
 
 }

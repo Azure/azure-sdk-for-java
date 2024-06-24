@@ -198,7 +198,6 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
                 "spring.cloud.azure.cosmos.direct-connection.max-connections-per-endpoint=9",
                 "spring.cloud.azure.cosmos.direct-connection.max-requests-per-connection=10",
                 "spring.cloud.azure.cosmos.populate-query-metrics=true"
-
             )
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
@@ -233,6 +232,30 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
                 assertEquals(9, properties.getDirectConnection().getMaxConnectionsPerEndpoint());
                 assertEquals(10, properties.getDirectConnection().getMaxRequestsPerConnection());
                 assertTrue(properties.isPopulateQueryMetrics());
+            });
+    }
+
+    @Test
+    void connectionDetailsShouldHasHigherPriorityThanProperties() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.cosmos.endpoint=test-endpoint",
+                "spring.cloud.azure.cosmos.key=cosmos-key",
+                "spring.cloud.azure.cosmos.database=test-database",
+                "spring.cloud.azure.cosmos.endpoint-discovery-enabled=false",
+                "spring.cloud.azure.cosmos.connection-mode=direct"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
+            .withBean(AzureCosmosConnectionDetails.class, CustomAzureCosmosConnectionDetails::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureCosmosProperties.class);
+                AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
+                assertEquals("test-endpoint-by-connection-detail", properties.getEndpoint());
+                assertEquals("cosmos-key-by-connection-detail", properties.getKey());
+                assertEquals("test-database-by-connection-detail", properties.getDatabase());
+                assertTrue(properties.getEndpointDiscoveryEnabled());
+                assertEquals(ConnectionMode.GATEWAY, properties.getConnectionMode());
             });
     }
 

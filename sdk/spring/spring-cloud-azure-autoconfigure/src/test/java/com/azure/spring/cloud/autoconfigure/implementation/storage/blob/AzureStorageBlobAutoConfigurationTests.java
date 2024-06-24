@@ -230,12 +230,41 @@ class AzureStorageBlobAutoConfigurationTests extends AbstractAzureServiceConfigu
             });
     }
 
+    @Test
+    void connectionDetailsHasHigherPriority() {
+        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, "property-account-name", "property-test-key");
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.blob.connection-string=" + connectionString
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(BlobServiceAsyncClient.class, () -> mock(BlobServiceAsyncClient.class))
+            .withBean(BlobServiceClient.class, () -> mock(BlobServiceClient.class))
+            .withBean(BlobAsyncClient.class, () -> mock(BlobAsyncClient.class))
+            .withBean(BlobClient.class, () -> mock(BlobClient.class))
+            .withBean(AzureStorageBlobConnectionDetails.class, CustomAzureStorageBlobConnectionDetails::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageBlobProperties.class);
+                AzureStorageBlobProperties properties = context.getBean(AzureStorageBlobProperties.class);
+                assertEquals(CustomAzureStorageBlobConnectionDetails.CONNECTION_STRING, properties.getConnectionString());
+            });
+    }
+
     private static class BlobServiceClientBuilderCustomizer extends TestBuilderCustomizer<BlobServiceClientBuilder> {
 
     }
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
 
+    }
+
+    static class CustomAzureStorageBlobConnectionDetails implements AzureStorageBlobConnectionDetails {
+        static final String CONNECTION_STRING = String.format(STORAGE_CONNECTION_STRING_PATTERN, "custom-account-name", "custom-test-key");
+
+        @Override
+        public String getConnectionString() {
+            return CONNECTION_STRING;
+        }
     }
 
 }
