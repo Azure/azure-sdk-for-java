@@ -46,8 +46,6 @@ $SpringSampleParents = ("spring-boot-starter-parent", "azure-spring-boot-test-pa
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
 $SamplesPath = Resolve-Path ($PSScriptRoot + "/../../samples")
 $SdkRoot = Resolve-Path ($PSScriptRoot + "/../../sdk")
-# JRS-REMOVE
-Write-Host "SdkRoot=$SdkRoot"
 
 # Not all POM files have a parent entry
 $PomFilesIgnoreParent = ("$($Path)\parent\pom.xml")
@@ -57,7 +55,11 @@ $DependencyTypeDependency = "dependency"
 $DependencyTypeExternal = "external_dependency"
 $DependencyTypeForError = "$($DependencyTypeCurrent)|$($DependencyTypeDependency)|$($DependencyTypeExternal)"
 $UpdateTagFormat = "{x-version-update;<groupId>:<artifactId>;$($DependencyTypeForError)}"
-$UseVerboseLogging = $true # $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose']
+$UseVerboseLogging = $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose']
+
+if ($UseVerboseLogging) {
+    Write-Host "SdkRoot=$SdkRoot"
+}
 
 Install-ModuleIfNotInstalled "powershell-yaml" "0.4.1" | Import-Module
 
@@ -152,9 +154,14 @@ function Get-ArtifactsList-Per-Service-Directory {
 
     # Get all of the yml files under sdk/
     $ymlFiles = Get-ChildItem -Path $SdkRoot -Recurse -Depth 3 -File -Filter "ci*yml"
+    if ($ymlFiles.Length -eq 0) {
+        Write-Error "Unable to get yml files for the repository. If this is a sparse-checkout please ensure '**/*.yml' is one of the paths."
+        exit 1
+    }
     foreach ($ymlFile in $ymlFiles) {
-        # JRS-REMOVE NEXT LINE
-        Write-Host "Processing yml file: $ymlFile"
+        if ($UseVerboseLogging) {
+            Write-Host "Processing yml file: $ymlFile"
+        }
         # The ci.cosmos.yml lives in spring and is used to test the cosmos spring library. Its exception
         # will be moved once things are corrected.
         if ($ymlFile.FullName.Split([IO.Path]::DirectorySeparatorChar) -contains "resourcemanagerhybrid" -or
@@ -179,9 +186,10 @@ function Get-ArtifactsList-Per-Service-Directory {
                 Write-Error "Processing yml file $($ymlFile.FullName)"
                 Write-Error "$ymlPath already contains an Artifact entry for $libFullName"
             }
-            # JRS - REMOVE-ELSE-CLAUSE
             else {
-                Write-Host "    Adding Artifact: $libFullName"
+                if ($UseVerboseLogging) {
+                    Write-Host "    Adding Artifact: $libFullName"
+                }
             }
         }
         # These list of modules per sdk/<ServiceDirectory> has to be verified to be using the
@@ -198,9 +206,10 @@ function Get-ArtifactsList-Per-Service-Directory {
                     Write-Error "$ymlPath already contains an AdditionalModule entry for $libFullName"
                 }
             }
-            # JRS - REMOVE-ELSE-CLAUSE
             else {
-                Write-Host "    Adding AdditionalModules: $libFullName"
+                if ($UseVerboseLogging) {
+                    Write-Host "    Adding AdditionalModules: $libFullName"
+                }
             }
         }
     }
