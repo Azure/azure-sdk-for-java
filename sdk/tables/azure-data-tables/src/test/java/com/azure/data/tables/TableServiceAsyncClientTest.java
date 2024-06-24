@@ -69,6 +69,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
 
     @Override
     protected void beforeTest() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST && interceptorManager.isLiveMode(), "Tables CosmosDB live tests are currently disabled.");
         final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
         serviceClient = getClientBuilder(endpoint, false).buildAsyncClient();
     }
