@@ -6,20 +6,11 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.DownloadResponseComplianceDetailedPdfReport;
-import org.junit.jupiter.api.Test;
 
 public final class DownloadResponseComplianceDetailedPdfReportTests {
-    @Test
-    public void testDeserialize() {
-        DownloadResponseComplianceDetailedPdfReport model =
-            BinaryData
-                .fromString("{\"sasUri\":\"qwalmuzyoxaepd\"}")
-                .toObject(DownloadResponseComplianceDetailedPdfReport.class);
-    }
-
-    @Test
-    public void testSerialize() {
-        DownloadResponseComplianceDetailedPdfReport model = new DownloadResponseComplianceDetailedPdfReport();
-        model = BinaryData.fromObject(model).toObject(DownloadResponseComplianceDetailedPdfReport.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DownloadResponseComplianceDetailedPdfReport model = BinaryData.fromString("{\"sasUri\":\"fdntwjchrdgoih\"}")
+            .toObject(DownloadResponseComplianceDetailedPdfReport.class);
     }
 }

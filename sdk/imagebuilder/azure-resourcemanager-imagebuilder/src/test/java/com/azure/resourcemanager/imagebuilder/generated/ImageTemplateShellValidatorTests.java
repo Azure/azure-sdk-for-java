@@ -13,22 +13,24 @@ public final class ImageTemplateShellValidatorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImageTemplateShellValidator model = BinaryData.fromString(
-            "{\"type\":\"Shell\",\"scriptUri\":\"hezrkgq\",\"sha256Checksum\":\"jrefovgmkqsle\",\"inline\":[\"xyqj\",\"k\",\"attpngjcrcczsq\",\"jh\"],\"name\":\"daj\"}")
+            "{\"type\":\"Shell\",\"scriptUri\":\"a\",\"sha256Checksum\":\"ae\",\"inline\":[\"hy\",\"ltrpmopj\",\"cma\",\"u\"],\"name\":\"thfuiuaodsfcpkvx\"}")
             .toObject(ImageTemplateShellValidator.class);
-        Assertions.assertEquals("daj", model.name());
-        Assertions.assertEquals("hezrkgq", model.scriptUri());
-        Assertions.assertEquals("jrefovgmkqsle", model.sha256Checksum());
-        Assertions.assertEquals("xyqj", model.inline().get(0));
+        Assertions.assertEquals("thfuiuaodsfcpkvx", model.name());
+        Assertions.assertEquals("a", model.scriptUri());
+        Assertions.assertEquals("ae", model.sha256Checksum());
+        Assertions.assertEquals("hy", model.inline().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateShellValidator model = new ImageTemplateShellValidator().withName("daj").withScriptUri("hezrkgq")
-            .withSha256Checksum("jrefovgmkqsle").withInline(Arrays.asList("xyqj", "k", "attpngjcrcczsq", "jh"));
+        ImageTemplateShellValidator model = new ImageTemplateShellValidator().withName("thfuiuaodsfcpkvx")
+            .withScriptUri("a")
+            .withSha256Checksum("ae")
+            .withInline(Arrays.asList("hy", "ltrpmopj", "cma", "u"));
         model = BinaryData.fromObject(model).toObject(ImageTemplateShellValidator.class);
-        Assertions.assertEquals("daj", model.name());
-        Assertions.assertEquals("hezrkgq", model.scriptUri());
-        Assertions.assertEquals("jrefovgmkqsle", model.sha256Checksum());
-        Assertions.assertEquals("xyqj", model.inline().get(0));
+        Assertions.assertEquals("thfuiuaodsfcpkvx", model.name());
+        Assertions.assertEquals("a", model.scriptUri());
+        Assertions.assertEquals("ae", model.sha256Checksum());
+        Assertions.assertEquals("hy", model.inline().get(0));
     }
 }

@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -13,125 +18,105 @@ import java.util.List;
  * DbServer resource properties.
  */
 @Immutable
-public final class DbServerProperties {
+public final class DbServerProperties implements JsonSerializable<DbServerProperties> {
     /*
      * Db server name.
      */
-    @JsonProperty(value = "ocid", access = JsonProperty.Access.WRITE_ONLY)
     private String ocid;
 
     /*
      * The name for the Db Server.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The OCID of the compartment.
      */
-    @JsonProperty(value = "compartmentId", access = JsonProperty.Access.WRITE_ONLY)
     private String compartmentId;
 
     /*
      * The OCID of the Exadata infrastructure.
      */
-    @JsonProperty(value = "exadataInfrastructureId", access = JsonProperty.Access.WRITE_ONLY)
     private String exadataInfrastructureId;
 
     /*
      * The number of CPU cores enabled on the Db server.
      */
-    @JsonProperty(value = "cpuCoreCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer cpuCoreCount;
 
     /*
      * dbServerPatching details of the Db server.
      */
-    @JsonProperty(value = "dbServerPatchingDetails", access = JsonProperty.Access.WRITE_ONLY)
     private DbServerPatchingDetails dbServerPatchingDetails;
 
     /*
      * The total memory available in GBs.
      */
-    @JsonProperty(value = "maxMemoryInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxMemoryInGbs;
 
     /*
      * The allocated local node storage in GBs on the Db server.
      */
-    @JsonProperty(value = "dbNodeStorageSizeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer dbNodeStorageSizeInGbs;
 
     /*
      * The OCID of the VM Clusters associated with the Db server.
      */
-    @JsonProperty(value = "vmClusterIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> vmClusterIds;
 
     /*
      * The OCID of the Db nodes associated with the Db server.
      */
-    @JsonProperty(value = "dbNodeIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> dbNodeIds;
 
     /*
      * Lifecycle details of dbServer.
      */
-    @JsonProperty(value = "lifecycleDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String lifecycleDetails;
 
     /*
      * DbServer provisioning state.
      */
-    @JsonProperty(value = "lifecycleState", access = JsonProperty.Access.WRITE_ONLY)
     private DbServerProvisioningState lifecycleState;
 
     /*
      * The total number of CPU cores available.
      */
-    @JsonProperty(value = "maxCpuCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxCpuCount;
 
     /*
      * The list of OCIDs of the Autonomous VM Clusters associated with the Db server.
      */
-    @JsonProperty(value = "autonomousVmClusterIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> autonomousVmClusterIds;
 
     /*
      * The list of OCIDs of the Autonomous Virtual Machines associated with the Db server.
      */
-    @JsonProperty(value = "autonomousVirtualMachineIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> autonomousVirtualMachineIds;
 
     /*
      * The total max dbNode storage in GBs.
      */
-    @JsonProperty(value = "maxDbNodeStorageInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxDbNodeStorageInGbs;
 
     /*
      * The total memory size in GBs.
      */
-    @JsonProperty(value = "memorySizeInGbs", access = JsonProperty.Access.WRITE_ONLY)
     private Integer memorySizeInGbs;
 
     /*
      * The shape of the Db server. The shape determines the amount of CPU, storage, and memory resources available.
      */
-    @JsonProperty(value = "shape", access = JsonProperty.Access.WRITE_ONLY)
     private String shape;
 
     /*
      * The date and time that the Db Server was created.
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /*
      * Azure resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /**
@@ -332,5 +317,85 @@ public final class DbServerProperties {
         if (dbServerPatchingDetails() != null) {
             dbServerPatchingDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DbServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DbServerProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DbServerProperties.
+     */
+    public static DbServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DbServerProperties deserializedDbServerProperties = new DbServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ocid".equals(fieldName)) {
+                    deserializedDbServerProperties.ocid = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDbServerProperties.displayName = reader.getString();
+                } else if ("compartmentId".equals(fieldName)) {
+                    deserializedDbServerProperties.compartmentId = reader.getString();
+                } else if ("exadataInfrastructureId".equals(fieldName)) {
+                    deserializedDbServerProperties.exadataInfrastructureId = reader.getString();
+                } else if ("cpuCoreCount".equals(fieldName)) {
+                    deserializedDbServerProperties.cpuCoreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("dbServerPatchingDetails".equals(fieldName)) {
+                    deserializedDbServerProperties.dbServerPatchingDetails = DbServerPatchingDetails.fromJson(reader);
+                } else if ("maxMemoryInGbs".equals(fieldName)) {
+                    deserializedDbServerProperties.maxMemoryInGbs = reader.getNullable(JsonReader::getInt);
+                } else if ("dbNodeStorageSizeInGbs".equals(fieldName)) {
+                    deserializedDbServerProperties.dbNodeStorageSizeInGbs = reader.getNullable(JsonReader::getInt);
+                } else if ("vmClusterIds".equals(fieldName)) {
+                    List<String> vmClusterIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDbServerProperties.vmClusterIds = vmClusterIds;
+                } else if ("dbNodeIds".equals(fieldName)) {
+                    List<String> dbNodeIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDbServerProperties.dbNodeIds = dbNodeIds;
+                } else if ("lifecycleDetails".equals(fieldName)) {
+                    deserializedDbServerProperties.lifecycleDetails = reader.getString();
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedDbServerProperties.lifecycleState
+                        = DbServerProvisioningState.fromString(reader.getString());
+                } else if ("maxCpuCount".equals(fieldName)) {
+                    deserializedDbServerProperties.maxCpuCount = reader.getNullable(JsonReader::getInt);
+                } else if ("autonomousVmClusterIds".equals(fieldName)) {
+                    List<String> autonomousVmClusterIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDbServerProperties.autonomousVmClusterIds = autonomousVmClusterIds;
+                } else if ("autonomousVirtualMachineIds".equals(fieldName)) {
+                    List<String> autonomousVirtualMachineIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDbServerProperties.autonomousVirtualMachineIds = autonomousVirtualMachineIds;
+                } else if ("maxDbNodeStorageInGbs".equals(fieldName)) {
+                    deserializedDbServerProperties.maxDbNodeStorageInGbs = reader.getNullable(JsonReader::getInt);
+                } else if ("memorySizeInGbs".equals(fieldName)) {
+                    deserializedDbServerProperties.memorySizeInGbs = reader.getNullable(JsonReader::getInt);
+                } else if ("shape".equals(fieldName)) {
+                    deserializedDbServerProperties.shape = reader.getString();
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedDbServerProperties.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDbServerProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDbServerProperties;
+        });
     }
 }

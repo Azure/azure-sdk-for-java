@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class SkuCapability {
     /*
-     * The name of capability, The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
+     * The name of capability, The capability information in the specified SKU, including file encryption, network ACLs,
+     * change notification, etc.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;

@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * DisasterRecoveryType enum.
+ * Disaster recovery type enum.
  */
 public final class DisasterRecoveryType extends ExpandableStringEnum<DisasterRecoveryType> {
     /**
@@ -37,7 +36,6 @@ public final class DisasterRecoveryType extends ExpandableStringEnum<DisasterRec
      * @param name a name to look for.
      * @return the corresponding DisasterRecoveryType.
      */
-    @JsonCreator
     public static DisasterRecoveryType fromString(String name) {
         return fromString(name, DisasterRecoveryType.class);
     }

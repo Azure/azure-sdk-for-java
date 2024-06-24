@@ -13,31 +13,34 @@ public final class AsyncOperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AsyncOperationStatusInner model = BinaryData.fromString(
-            "{\"id\":\"egukgjnpiucg\",\"name\":\"evqzntypmrbp\",\"status\":\"zcdrqjsdpydnfyhx\",\"resourceId\":\"oejzi\",\"startTime\":\"2021-10-16T23:09:14Z\",\"endTime\":\"2021-04-16T21:39:11Z\",\"percentComplete\":44.46839055655801,\"properties\":\"datazfbishcbkhaj\"}")
+            "{\"id\":\"qzrnkcqvyxlwhz\",\"name\":\"icohoqqnwvl\",\"status\":\"yav\",\"resourceId\":\"heun\",\"startTime\":\"2021-02-20T01:45:10Z\",\"endTime\":\"2021-10-16T07:10:15Z\",\"percentComplete\":22.279060088789205,\"properties\":\"dataonocukok\"}")
             .toObject(AsyncOperationStatusInner.class);
-        Assertions.assertEquals("egukgjnpiucg", model.id());
-        Assertions.assertEquals("evqzntypmrbp", model.name());
-        Assertions.assertEquals("zcdrqjsdpydnfyhx", model.status());
-        Assertions.assertEquals("oejzi", model.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-16T23:09:14Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T21:39:11Z"), model.endTime());
-        Assertions.assertEquals(44.46839055655801D, model.percentComplete());
+        Assertions.assertEquals("qzrnkcqvyxlwhz", model.id());
+        Assertions.assertEquals("icohoqqnwvl", model.name());
+        Assertions.assertEquals("yav", model.status());
+        Assertions.assertEquals("heun", model.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-20T01:45:10Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-16T07:10:15Z"), model.endTime());
+        Assertions.assertEquals(22.279060088789205D, model.percentComplete());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AsyncOperationStatusInner model = new AsyncOperationStatusInner().withId("egukgjnpiucg")
-            .withName("evqzntypmrbp").withStatus("zcdrqjsdpydnfyhx").withResourceId("oejzi")
-            .withStartTime(OffsetDateTime.parse("2021-10-16T23:09:14Z"))
-            .withEndTime(OffsetDateTime.parse("2021-04-16T21:39:11Z")).withPercentComplete(44.46839055655801D)
-            .withProperties("datazfbishcbkhaj");
+        AsyncOperationStatusInner model = new AsyncOperationStatusInner().withId("qzrnkcqvyxlwhz")
+            .withName("icohoqqnwvl")
+            .withStatus("yav")
+            .withResourceId("heun")
+            .withStartTime(OffsetDateTime.parse("2021-02-20T01:45:10Z"))
+            .withEndTime(OffsetDateTime.parse("2021-10-16T07:10:15Z"))
+            .withPercentComplete(22.279060088789205D)
+            .withProperties("dataonocukok");
         model = BinaryData.fromObject(model).toObject(AsyncOperationStatusInner.class);
-        Assertions.assertEquals("egukgjnpiucg", model.id());
-        Assertions.assertEquals("evqzntypmrbp", model.name());
-        Assertions.assertEquals("zcdrqjsdpydnfyhx", model.status());
-        Assertions.assertEquals("oejzi", model.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-16T23:09:14Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T21:39:11Z"), model.endTime());
-        Assertions.assertEquals(44.46839055655801D, model.percentComplete());
+        Assertions.assertEquals("qzrnkcqvyxlwhz", model.id());
+        Assertions.assertEquals("icohoqqnwvl", model.name());
+        Assertions.assertEquals("yav", model.status());
+        Assertions.assertEquals("heun", model.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-20T01:45:10Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-16T07:10:15Z"), model.endTime());
+        Assertions.assertEquals(22.279060088789205D, model.percentComplete());
     }
 }

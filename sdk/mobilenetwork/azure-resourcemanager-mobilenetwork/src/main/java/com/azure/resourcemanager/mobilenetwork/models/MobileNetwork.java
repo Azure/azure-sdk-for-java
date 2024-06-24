@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mobilenetwork.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -334,4 +335,24 @@ public interface MobileNetwork {
      * @return the refreshed resource.
      */
     MobileNetwork refresh(Context context);
+
+    /**
+     * Gets all the SIM groups assigned to a mobile network.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIM groups assigned to a mobile network as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<SimGroup> listSimGroups();
+
+    /**
+     * Gets all the SIM groups assigned to a mobile network.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the SIM groups assigned to a mobile network as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<SimGroup> listSimGroups(Context context);
 }
