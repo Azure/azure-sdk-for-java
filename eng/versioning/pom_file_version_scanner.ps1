@@ -55,7 +55,7 @@ $DependencyTypeDependency = "dependency"
 $DependencyTypeExternal = "external_dependency"
 $DependencyTypeForError = "$($DependencyTypeCurrent)|$($DependencyTypeDependency)|$($DependencyTypeExternal)"
 $UpdateTagFormat = "{x-version-update;<groupId>:<artifactId>;$($DependencyTypeForError)}"
-$UseVerboseLogging = $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose']
+$UseVerboseLogging = $true # $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose']
 
 Install-ModuleIfNotInstalled "powershell-yaml" "0.4.1" | Import-Module
 
