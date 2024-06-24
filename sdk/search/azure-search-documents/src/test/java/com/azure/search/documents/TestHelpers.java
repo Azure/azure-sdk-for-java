@@ -3,17 +3,20 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -389,7 +392,7 @@ public final class TestHelpers {
 
             SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
                 .endpoint(ENDPOINT)
-                .credential(new AzureKeyCredential(API_KEY))
+                .credential(getTestTokenCredential())
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 
@@ -402,6 +405,21 @@ public final class TestHelpers {
             return searchIndexClient;
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
+        }
+    }
+
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @return The appropriate token credential
+     */
+    public static TokenCredential getTestTokenCredential() {
+        if (testMode == TestMode.LIVE) {
+            return new AzurePowerShellCredentialBuilder().build();
+        } else if (testMode == TestMode.RECORD) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new MockTokenCredential();
         }
     }
 
@@ -433,7 +451,7 @@ public final class TestHelpers {
     public static SearchIndexClient createSharedSearchIndexClient() {
         return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(getTestTokenCredential())
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
             .buildClient();
