@@ -181,7 +181,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             .publishOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE)
             .flatMap(partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair -> {
 
-                logger.info("Background updateStaleLocationInfo kicking in...");
+                logger.debug("Background updateStaleLocationInfo kicking in...");
 
                 PartitionKeyRangeWrapper partitionKeyRangeWrapper = partitionKeyRangeWrapperToPartitionKeyRangeWrapperPair.getKey();
 
