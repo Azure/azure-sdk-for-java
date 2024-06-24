@@ -27,9 +27,11 @@ extends:
           SubscriptionConfigurations:
             - $(sub-config-communication-int-test-resources-common)
             - $(sub-config-communication-int-test-resources-java)
+          ServiceConnection: azure-sdk-tests
         PPE:
           SubscriptionConfigurations:
             - $(sub-config-communication-ppe-test-resources-common)
             - $(sub-config-communication-ppe-test-resources-java)
+          ServiceConnection: azure-sdk-tests
       TestResourceDirectories:
         - communication/azure-communication-email/

@@ -3,9 +3,7 @@
 
 package com.azure.communication.email;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.InterceptorManager;
@@ -76,11 +74,7 @@ public class EmailTestBase extends TestProxyTestBase {
      */
     public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isLiveMode()) {
-            final TokenCredential c = new AzurePowerShellCredentialBuilder().build();
-            System.out.println("Endpoint-::" + ENDPOINT);
-            final AccessToken t = c.getToken(new TokenRequestContext().addScopes("https://communication.azure.com//.default")).block();
-            System.out.println("ExipreAt::" + t.getExpiresAt());
-            return c;
+            return new AzurePowerShellCredentialBuilder().build();
         } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().build();
         } else {
