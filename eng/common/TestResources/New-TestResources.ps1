@@ -320,9 +320,6 @@ function BuildDeploymentOutputs([string]$serviceName, [object]$azContext, [objec
         $capitalized[$item.Name.ToUpperInvariant()] = $item.Value
     }
 
-    $testDomain = $DeploymentOutputs["AZURE_TEST_DOMAIN"]
-    Write-Host 'Test Domain: $testDomain'
-
     return $capitalized
 }
 
