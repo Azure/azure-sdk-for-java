@@ -18,9 +18,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class CheckNameAvailabilitiesPostWithResponseMockTests {
+public final class CheckNameAvailabilitiesCheckAvailabilityWithResponseMockTests {
     @Test
-    public void testPostWithResponse() throws Exception {
+    public void testCheckAvailabilityWithResponse() throws Exception {
         String responseStr = "{\"nameAvailable\":false,\"reason\":\"ojvdcpzfoqo\",\"message\":\"cybxa\"}";
 
         HttpClient httpClient
@@ -31,7 +31,7 @@ public final class CheckNameAvailabilitiesPostWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckNameAvailabilityResponse response = manager.checkNameAvailabilities()
-            .postWithResponse("vtpuqujmqlgk",
+            .checkAvailabilityWithResponse("vtpuqujmqlgk",
                 new CheckNameAvailabilityRequest().withName("tndoaongbjc").withType("ujitcjedftww"),
                 com.azure.core.util.Context.NONE)
             .getValue();
