@@ -9,7 +9,7 @@ public enum ClientEndpointType {
     /** Default WebPubSub Client Endpoint. E.g: <code>wss://exampleHost.com/client/hubs/exampleHub</code> */
     DEFAULT("default"),
 
-    /** MQTT Client Endpoint. E.g: <code>wss://exampleHost.com/client/mqtt/hubs/exampleHub</code> */
+    /** MQTT Client Endpoint. E.g: <code>wss://exampleHost.com/clients/mqtt/hubs/exampleHub</code> */
     MQTT("mqtt");
 
     /** The actual serialized value for a ClientEndpointType. */

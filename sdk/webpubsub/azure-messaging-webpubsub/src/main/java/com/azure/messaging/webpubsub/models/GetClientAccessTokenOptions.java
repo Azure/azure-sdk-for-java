@@ -25,6 +25,7 @@ public final class GetClientAccessTokenOptions {
      * Creates an instance of GetClientAccessTokenOptions.
      */
     public GetClientAccessTokenOptions() {
+        this.clientEndpointType = ClientEndpointType.DEFAULT;
     }
 
     /**
