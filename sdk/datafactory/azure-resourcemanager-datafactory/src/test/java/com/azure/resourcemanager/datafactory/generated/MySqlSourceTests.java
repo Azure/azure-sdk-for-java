@@ -11,19 +11,19 @@ public final class MySqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MySqlSource model = BinaryData.fromString(
-            "{\"type\":\"nucgw\",\"query\":\"datawvpnbgyxo\",\"queryTimeout\":\"dataqpzqivfgemvuicxw\",\"additionalColumns\":\"datarydl\",\"sourceRetryCount\":\"datajjatjmnd\",\"sourceRetryWait\":\"datacdum\",\"maxConcurrentConnections\":\"datahatckomdyfjss\",\"disableMetricsCollection\":\"datazvkddaeiepvjrmk\",\"\":{\"awokr\":\"dataymkbfd\",\"idtxmbnmjimggz\":\"datahjyahrmuwvsdyruo\"}}")
+            "{\"type\":\"MySqlSource\",\"query\":\"dataeedjnklvbrsxykwb\",\"queryTimeout\":\"datasd\",\"additionalColumns\":\"datajitlqxpsnnnxhgd\",\"sourceRetryCount\":\"datadxylndbgaicj\",\"sourceRetryWait\":\"datajzfzkh\",\"maxConcurrentConnections\":\"datapnmrxjdfk\",\"disableMetricsCollection\":\"datakaipfyv\",\"\":{\"ah\":\"datasvywkbiekyvak\",\"oxvoaoavezwcl\":\"datapgnapkpaie\",\"vhcbu\":\"datazmlrvlghlrcdiq\",\"jtockgqaawyyszwo\":\"dataawifz\"}}")
             .toObject(MySqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MySqlSource model = new MySqlSource().withSourceRetryCount("datajjatjmnd")
-            .withSourceRetryWait("datacdum")
-            .withMaxConcurrentConnections("datahatckomdyfjss")
-            .withDisableMetricsCollection("datazvkddaeiepvjrmk")
-            .withQueryTimeout("dataqpzqivfgemvuicxw")
-            .withAdditionalColumns("datarydl")
-            .withQuery("datawvpnbgyxo");
+        MySqlSource model = new MySqlSource().withSourceRetryCount("datadxylndbgaicj")
+            .withSourceRetryWait("datajzfzkh")
+            .withMaxConcurrentConnections("datapnmrxjdfk")
+            .withDisableMetricsCollection("datakaipfyv")
+            .withQueryTimeout("datasd")
+            .withAdditionalColumns("datajitlqxpsnnnxhgd")
+            .withQuery("dataeedjnklvbrsxykwb");
         model = BinaryData.fromObject(model).toObject(MySqlSource.class);
     }
 }

@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 public final class PipelinesCreateRunWithResponseMockTests {
     @Test
     public void testCreateRunWithResponse() throws Exception {
-        String responseStr = "{\"runId\":\"xibwhdhgenmefb\"}";
+        String responseStr = "{\"runId\":\"dhzltmywy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class PipelinesCreateRunWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CreateRunResponse response = manager.pipelines()
-            .createRunWithResponse("ywnl", "mfizfovlufkyg", "yklw", "kdblpeutahm", false, "ersvplnab", true,
-                mapOf("zlbdbhfaso", "dataiktglaux", "n", "datavhqgkfcspodm", "woxtevonmq", "datakixithykgeqnfe"),
+            .createRunWithResponse("nnqii", "hpxxwbetmqugov", "ddxlrbs", "qrgjejabqvg", false, "iqyazpxlyabj", false,
+                mapOf("kuxphbwmbgwgmyg", "datassjfwur", "z", "datansnkylqdsyg", "ewqwdglmfsjpl", "dataufr"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xibwhdhgenmefb", response.runId());
+        Assertions.assertEquals("dhzltmywy", response.runId());
     }
 
     // Use "Map.of" if available

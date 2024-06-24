@@ -10,13 +10,14 @@ import com.azure.resourcemanager.datafactory.models.PipelineElapsedTimeMetricPol
 public final class PipelineElapsedTimeMetricPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PipelineElapsedTimeMetricPolicy model = BinaryData.fromString("{\"duration\":\"datamblrrilbywd\"}")
+        PipelineElapsedTimeMetricPolicy model = BinaryData.fromString("{\"duration\":\"datahwagohbuffkmrqe\"}")
             .toObject(PipelineElapsedTimeMetricPolicy.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PipelineElapsedTimeMetricPolicy model = new PipelineElapsedTimeMetricPolicy().withDuration("datamblrrilbywd");
+        PipelineElapsedTimeMetricPolicy model
+            = new PipelineElapsedTimeMetricPolicy().withDuration("datahwagohbuffkmrqe");
         model = BinaryData.fromObject(model).toObject(PipelineElapsedTimeMetricPolicy.class);
     }
 }

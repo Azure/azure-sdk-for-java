@@ -19,32 +19,33 @@ public final class MagentoObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MagentoObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"mqfwbgdmfv\",\"typeProperties\":{\"tableName\":\"dataima\"},\"description\":\"fmpota\",\"structure\":\"datapfigrxxtrcodb\",\"schema\":\"dataogldmxxb\",\"linkedServiceName\":{\"referenceName\":\"hspvamsxrwqlwdf\",\"parameters\":{\"bboffgxtae\":\"datarplzeqzv\",\"fcyatbxdwr\":\"dataxt\",\"fbpeigkflvovriq\":\"datayvtkmxvztshnu\"}},\"parameters\":{\"txur\":{\"type\":\"Float\",\"defaultValue\":\"datakqcgzygtdjhtbar\"}},\"annotations\":[\"datayyumhzpst\",\"datacqacvttyh\",\"databilnszyjbuw\"],\"folder\":{\"name\":\"sydsci\"},\"\":{\"l\":\"dataayioxpqgqs\",\"akqsjymcfv\":\"datalefeombodvdgf\",\"nbpkfnxrlncmlzvv\":\"datazceuyuqktck\",\"cjqzrevfwcba\":\"datamesfhqs\"}}")
+            "{\"type\":\"MagentoObject\",\"typeProperties\":{\"tableName\":\"dataf\"},\"description\":\"zgccyn\",\"structure\":\"datavmsiehedm\",\"schema\":\"dataoneeyrxpa\",\"linkedServiceName\":{\"referenceName\":\"xtzayqwddig\",\"parameters\":{\"d\":\"dataspl\"}},\"parameters\":{\"zbjkjqpizd\":{\"type\":\"Object\",\"defaultValue\":\"datavee\"},\"wl\":{\"type\":\"Float\",\"defaultValue\":\"datah\"},\"ywbnk\":{\"type\":\"Int\",\"defaultValue\":\"dataj\"}},\"annotations\":[\"datarxactsawvxcimp\"],\"folder\":{\"name\":\"rm\"},\"\":{\"knyfuysjhvrr\":\"datamslub\"}}")
             .toObject(MagentoObjectDataset.class);
-        Assertions.assertEquals("fmpota", model.description());
-        Assertions.assertEquals("hspvamsxrwqlwdf", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("txur").type());
-        Assertions.assertEquals("sydsci", model.folder().name());
+        Assertions.assertEquals("zgccyn", model.description());
+        Assertions.assertEquals("xtzayqwddig", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("zbjkjqpizd").type());
+        Assertions.assertEquals("rm", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MagentoObjectDataset model = new MagentoObjectDataset().withDescription("fmpota")
-            .withStructure("datapfigrxxtrcodb")
-            .withSchema("dataogldmxxb")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("hspvamsxrwqlwdf")
-                .withParameters(mapOf("bboffgxtae", "datarplzeqzv", "fcyatbxdwr", "dataxt", "fbpeigkflvovriq",
-                    "datayvtkmxvztshnu")))
-            .withParameters(mapOf("txur",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datakqcgzygtdjhtbar")))
-            .withAnnotations(Arrays.asList("datayyumhzpst", "datacqacvttyh", "databilnszyjbuw"))
-            .withFolder(new DatasetFolder().withName("sydsci"))
-            .withTableName("dataima");
+        MagentoObjectDataset model = new MagentoObjectDataset().withDescription("zgccyn")
+            .withStructure("datavmsiehedm")
+            .withSchema("dataoneeyrxpa")
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("xtzayqwddig").withParameters(mapOf("d", "dataspl")))
+            .withParameters(mapOf("zbjkjqpizd",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datavee"), "wl",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datah"), "ywbnk",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataj")))
+            .withAnnotations(Arrays.asList("datarxactsawvxcimp"))
+            .withFolder(new DatasetFolder().withName("rm"))
+            .withTableName("dataf");
         model = BinaryData.fromObject(model).toObject(MagentoObjectDataset.class);
-        Assertions.assertEquals("fmpota", model.description());
-        Assertions.assertEquals("hspvamsxrwqlwdf", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("txur").type());
-        Assertions.assertEquals("sydsci", model.folder().name());
+        Assertions.assertEquals("zgccyn", model.description());
+        Assertions.assertEquals("xtzayqwddig", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("zbjkjqpizd").type());
+        Assertions.assertEquals("rm", model.folder().name());
     }
 
     // Use "Map.of" if available

@@ -181,7 +181,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: resourcemanager
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager
         groupId: com.azure.resourcemanager
