@@ -21,61 +21,42 @@ public final class JobRunsImpl implements JobRuns {
 
     private final com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager;
 
-    public JobRunsImpl(
-        JobRunsClient innerClient, com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
+    public JobRunsImpl(JobRunsClient innerClient,
+        com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<JobRun> list(
-        String resourceGroupName, String storageMoverName, String projectName, String jobDefinitionName) {
-        PagedIterable<JobRunInner> inner =
-            this.serviceClient().list(resourceGroupName, storageMoverName, projectName, jobDefinitionName);
-        return Utils.mapPage(inner, inner1 -> new JobRunImpl(inner1, this.manager()));
+    public PagedIterable<JobRun> list(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName) {
+        PagedIterable<JobRunInner> inner
+            = this.serviceClient().list(resourceGroupName, storageMoverName, projectName, jobDefinitionName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobRunImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<JobRun> list(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
-        Context context) {
-        PagedIterable<JobRunInner> inner =
-            this.serviceClient().list(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context);
-        return Utils.mapPage(inner, inner1 -> new JobRunImpl(inner1, this.manager()));
+    public PagedIterable<JobRun> list(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName, Context context) {
+        PagedIterable<JobRunInner> inner
+            = this.serviceClient().list(resourceGroupName, storageMoverName, projectName, jobDefinitionName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobRunImpl(inner1, this.manager()));
     }
 
-    public Response<JobRun> getWithResponse(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
-        String jobRunName,
-        Context context) {
-        Response<JobRunInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName, storageMoverName, projectName, jobDefinitionName, jobRunName, context);
+    public Response<JobRun> getWithResponse(String resourceGroupName, String storageMoverName, String projectName,
+        String jobDefinitionName, String jobRunName, Context context) {
+        Response<JobRunInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, storageMoverName, projectName, jobDefinitionName, jobRunName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JobRunImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public JobRun get(
-        String resourceGroupName,
-        String storageMoverName,
-        String projectName,
-        String jobDefinitionName,
+    public JobRun get(String resourceGroupName, String storageMoverName, String projectName, String jobDefinitionName,
         String jobRunName) {
-        JobRunInner inner =
-            this.serviceClient().get(resourceGroupName, storageMoverName, projectName, jobDefinitionName, jobRunName);
+        JobRunInner inner
+            = this.serviceClient().get(resourceGroupName, storageMoverName, projectName, jobDefinitionName, jobRunName);
         if (inner != null) {
             return new JobRunImpl(inner, this.manager());
         } else {
