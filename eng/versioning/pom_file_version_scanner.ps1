@@ -154,7 +154,7 @@ function Get-ArtifactsList-Per-Service-Directory {
 
     # Get all of the yml files under sdk/
     $ymlFiles = Get-ChildItem -Path $SdkRoot -Recurse -Depth 3 -File -Filter "ci*yml"
-    if ($ymlFiles.Length -eq 0) {
+    if (-not $ymlFiles) {
         Write-Error "Unable to get yml files for the repository. If this is a sparse-checkout please ensure '**/*.yml' is one of the paths."
         exit 1
     }
