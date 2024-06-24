@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
-import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificContext;
+import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.Pair;
@@ -18,13 +18,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -135,14 +132,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
-        LocationSpecificContext locationSpecificContext
+        LocationSpecificHealthContext locationSpecificHealthContext
             = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isTrue();
-        assertThat(locationSpecificContext.isExceptionThresholdBreached()).isFalse();
+        assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isTrue();
+        assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isFalse();
 
         System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
@@ -202,14 +199,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
-        LocationSpecificContext locationSpecificContext
+        LocationSpecificHealthContext locationSpecificHealthContext
             = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isTrue();
-        assertThat(locationSpecificContext.isExceptionThresholdBreached()).isFalse();
+        assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isTrue();
+        assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isFalse();
 
         System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
@@ -274,14 +271,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
-        LocationSpecificContext locationSpecificContext
+        LocationSpecificHealthContext locationSpecificHealthContext
             = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isFalse();
-        assertThat(locationSpecificContext.isExceptionThresholdBreached()).isTrue();
+        assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
+        assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
 
         System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
@@ -348,14 +345,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
-        LocationSpecificContext locationSpecificContext
+        LocationSpecificHealthContext locationSpecificHealthContext
             = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isFalse();
-        assertThat(locationSpecificContext.isExceptionThresholdBreached()).isTrue();
+        assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
+        assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
 
         try {
             Thread.sleep(65_000);
@@ -363,10 +360,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             throw new RuntimeException(ex);
         }
 
-        locationSpecificContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+        locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isTrue();
-        assertThat(locationSpecificContext.isExceptionThresholdBreached()).isFalse();
+        assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isTrue();
+        assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isFalse();
 
         System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
@@ -433,14 +430,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
-        LocationSpecificContext locationSpecificContext
+        LocationSpecificHealthContext locationSpecificHealthContext
             = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isFalse();
-        assertThat(locationSpecificContext.isExceptionThresholdBreached()).isTrue();
+        assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
+        assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
 
         try {
             Thread.sleep(65_000);
@@ -448,7 +445,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             throw new RuntimeException(ex);
         }
 
-        locationSpecificContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+        locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
         int successCountToUpgradeStatus = globalPartitionEndpointManagerForCircuitBreaker.getConsecutiveExceptionBasedCircuitBreaker().getMinimumSuccessCountForStatusUpgrade(LocationHealthStatus.HealthyTentative, readOperationTrue);
 
@@ -457,8 +454,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 .handleLocationSuccessForPartitionKeyRange(request);
         }
 
-        assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isTrue();
-        assertThat(locationSpecificContext.isExceptionThresholdBreached()).isFalse();
+        assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isTrue();
+        assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isFalse();
 
         System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
@@ -525,14 +522,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(request.requestContext.resolvedPartitionKeyRange, collectionResourceId));
 
-        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
-        LocationSpecificContext locationSpecificContext
+        LocationSpecificHealthContext locationSpecificHealthContext
             = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isFalse();
-        assertThat(locationSpecificContext.isExceptionThresholdBreached()).isTrue();
+        assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
+        assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
 
         try {
             Thread.sleep(65_000);
@@ -547,10 +544,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
                 .handleLocationExceptionForPartitionKeyRange(request, LocationEastUs2EndpointToLocationPair.getKey());
         }
 
-        locationSpecificContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
+        locationSpecificHealthContext = locationEndpointToLocationSpecificContextForPartition.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        assertThat(locationSpecificContext.isRegionAvailableToProcessRequests()).isFalse();
-        assertThat(locationSpecificContext.isExceptionThresholdBreached()).isTrue();
+        assertThat(locationSpecificHealthContext.isRegionAvailableToProcessRequests()).isFalse();
+        assertThat(locationSpecificHealthContext.isExceptionThresholdBreached()).isTrue();
 
         System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
@@ -699,27 +696,27 @@ public class GlobalPartitionEndpointManagerForCircuitBreakerTests {
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId1));
 
-        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartitionForColl1
-            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfoSnapshotForColl1);
+        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartitionForColl1
+            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfoSnapshotForColl1);
 
         Object partitionLevelLocationUnavailabilityInfoSnapshotForColl2
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(new PartitionKeyRangeWrapper(
             new PartitionKeyRange(pkRangeId, minInclusive, maxExclusive), collectionResourceId2));
 
-        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartitionForColl2
-            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfoSnapshotForColl2);
+        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartitionForColl2
+            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionLevelLocationUnavailabilityInfoSnapshotForColl2);
 
-        LocationSpecificContext locationSpecificContext1
+        LocationSpecificHealthContext locationSpecificHealthContext1
             = locationEndpointToLocationSpecificContextForPartitionForColl1.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        LocationSpecificContext locationSpecificContext2
+        LocationSpecificHealthContext locationSpecificHealthContext2
             = locationEndpointToLocationSpecificContextForPartitionForColl2.get(LocationEastUs2EndpointToLocationPair.getKey());
 
-        assertThat(locationSpecificContext1.isRegionAvailableToProcessRequests()).isFalse();
-        assertThat(locationSpecificContext1.isExceptionThresholdBreached()).isTrue();
+        assertThat(locationSpecificHealthContext1.isRegionAvailableToProcessRequests()).isFalse();
+        assertThat(locationSpecificHealthContext1.isExceptionThresholdBreached()).isTrue();
 
-        assertThat(locationSpecificContext2.isRegionAvailableToProcessRequests()).isTrue();
-        assertThat(locationSpecificContext2.isExceptionThresholdBreached()).isFalse();
+        assertThat(locationSpecificHealthContext2.isRegionAvailableToProcessRequests()).isTrue();
+        assertThat(locationSpecificHealthContext2.isExceptionThresholdBreached()).isFalse();
 
         System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }

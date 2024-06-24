@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.circuitBreaker;
 
 import java.time.Instant;
 
-public class LocationSpecificContext {
+public class LocationSpecificHealthContext {
     private final int exceptionCountForWrite;
     private final int successCountForWrite;
     private final int exceptionCountForRead;
@@ -14,7 +14,7 @@ public class LocationSpecificContext {
     private final LocationHealthStatus locationHealthStatus;
     private final boolean isExceptionThresholdBreached;
 
-    public LocationSpecificContext(
+    public LocationSpecificHealthContext(
         int successCountForWrite,
         int exceptionCountForWrite,
         int successCountForRead,

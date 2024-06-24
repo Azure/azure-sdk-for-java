@@ -11,17 +11,16 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class LocationContextTransitionHandler {
+public class LocationSpecificHealthContextTransitionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(LocationContextTransitionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(LocationSpecificHealthContextTransitionHandler.class);
 
     private final GlobalEndpointManager globalEndpointManager;
     private final ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker;
 
-    public LocationContextTransitionHandler(
+    public LocationSpecificHealthContextTransitionHandler(
         GlobalEndpointManager globalEndpointManager,
         ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker) {
 
@@ -29,17 +28,17 @@ public class LocationContextTransitionHandler {
         this.consecutiveExceptionBasedCircuitBreaker = consecutiveExceptionBasedCircuitBreaker;
     }
 
-    public LocationSpecificContext handleSuccess(
-        LocationSpecificContext locationSpecificContext,
+    public LocationSpecificHealthContext handleSuccess(
+        LocationSpecificHealthContext locationSpecificHealthContext,
         PartitionKeyRangeWrapper partitionKeyRangeWrapper,
         URI locationWithSuccess,
         boolean forceStatusChange,
         boolean isReadOnlyRequest) {
 
-        LocationHealthStatus currentLocationHealthStatusSnapshot = locationSpecificContext.getLocationHealthStatus();
+        LocationHealthStatus currentLocationHealthStatusSnapshot = locationSpecificHealthContext.getLocationHealthStatus();
 
         int exceptionCountActual
-            = isReadOnlyRequest ? locationSpecificContext.getExceptionCountForRead() : locationSpecificContext.getExceptionCountForWrite();
+            = isReadOnlyRequest ? locationSpecificHealthContext.getExceptionCountForRead() : locationSpecificHealthContext.getExceptionCountForWrite();
 
         switch (currentLocationHealthStatusSnapshot) {
             case Healthy:
@@ -48,7 +47,7 @@ public class LocationContextTransitionHandler {
                 if (!forceStatusChange) {
                     if (exceptionCountActual > 0) {
                         return this.consecutiveExceptionBasedCircuitBreaker
-                            .handleSuccess(locationSpecificContext, isReadOnlyRequest);
+                            .handleSuccess(locationSpecificHealthContext, isReadOnlyRequest);
                     }
                 }
                 break;
@@ -56,10 +55,10 @@ public class LocationContextTransitionHandler {
             case HealthyTentative:
                 if (!forceStatusChange) {
 
-                    LocationSpecificContext locationSpecificContextInner
-                        = this.consecutiveExceptionBasedCircuitBreaker.handleSuccess(locationSpecificContext, isReadOnlyRequest);
+                    LocationSpecificHealthContext locationSpecificHealthContextInner
+                        = this.consecutiveExceptionBasedCircuitBreaker.handleSuccess(locationSpecificHealthContext, isReadOnlyRequest);
 
-                    if (this.consecutiveExceptionBasedCircuitBreaker.canHealthStatusBeUpgraded(locationSpecificContextInner, isReadOnlyRequest)) {
+                    if (this.consecutiveExceptionBasedCircuitBreaker.canHealthStatusBeUpgraded(locationSpecificHealthContextInner, isReadOnlyRequest)) {
 
                         if (logger.isDebugEnabled()) {
                             logger.debug("Partition {}-{} of collection : {} marked as Healthy from HealthyTentative for region : {}",
@@ -72,12 +71,12 @@ public class LocationContextTransitionHandler {
 
                         return this.transitionHealthStatus(LocationHealthStatus.Healthy);
                     } else {
-                        return locationSpecificContextInner;
+                        return locationSpecificHealthContextInner;
                     }
                 }
                 break;
             case Unavailable:
-                Instant unavailableSinceActual = locationSpecificContext.getUnavailableSince();
+                Instant unavailableSinceActual = locationSpecificHealthContext.getUnavailableSince();
                 if (!forceStatusChange) {
                     if (Duration.between(unavailableSinceActual, Instant.now()).compareTo(Duration.ofSeconds(30)) > 0) {
 
@@ -110,17 +109,17 @@ public class LocationContextTransitionHandler {
                 throw new IllegalStateException("Unsupported health status: " + currentLocationHealthStatusSnapshot);
         }
 
-        return locationSpecificContext;
+        return locationSpecificHealthContext;
     }
 
-    public LocationSpecificContext handleException(
-        LocationSpecificContext locationSpecificContext,
+    public LocationSpecificHealthContext handleException(
+        LocationSpecificHealthContext locationSpecificHealthContext,
         PartitionKeyRangeWrapper partitionKeyRangeWrapper,
         ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithPossibleUnavailableRegions,
         URI locationWithException,
         boolean isReadOnlyRequest) {
 
-        LocationHealthStatus currentLocationHealthStatusSnapshot = locationSpecificContext.getLocationHealthStatus();
+        LocationHealthStatus currentLocationHealthStatusSnapshot = locationSpecificHealthContext.getLocationHealthStatus();
 
         switch (currentLocationHealthStatusSnapshot) {
             case Healthy:
@@ -136,22 +135,22 @@ public class LocationContextTransitionHandler {
 
                 return this.transitionHealthStatus(LocationHealthStatus.HealthyWithFailures);
             case HealthyWithFailures:
-                if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificContext, isReadOnlyRequest)) {
+                if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
 
-                    LocationSpecificContext locationSpecificContextInner
-                        = this.consecutiveExceptionBasedCircuitBreaker.handleException(locationSpecificContext, isReadOnlyRequest);
+                    LocationSpecificHealthContext locationSpecificHealthContextInner
+                        = this.consecutiveExceptionBasedCircuitBreaker.handleException(locationSpecificHealthContext, isReadOnlyRequest);
 
                     if (logger.isDebugEnabled()) {
                         logger.debug("Partition {}-{} of collection : {} has exception count of {} for region : {}",
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                             partitionKeyRangeWrapper.getResourceId(),
-                            isReadOnlyRequest ? locationSpecificContextInner.getExceptionCountForRead() : locationSpecificContextInner.getExceptionCountForWrite(),
+                            isReadOnlyRequest ? locationSpecificHealthContextInner.getExceptionCountForRead() : locationSpecificHealthContextInner.getExceptionCountForWrite(),
                             this.globalEndpointManager
                                 .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                     }
 
-                    return locationSpecificContextInner;
+                    return locationSpecificHealthContextInner;
                 } else {
                     partitionKeyRangesWithPossibleUnavailableRegions.put(partitionKeyRangeWrapper, partitionKeyRangeWrapper);
 
@@ -167,8 +166,8 @@ public class LocationContextTransitionHandler {
                     return this.transitionHealthStatus(LocationHealthStatus.Unavailable);
                 }
             case HealthyTentative:
-                if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificContext, isReadOnlyRequest)) {
-                    return this.consecutiveExceptionBasedCircuitBreaker.handleException(locationSpecificContext, isReadOnlyRequest);
+                if (!this.consecutiveExceptionBasedCircuitBreaker.shouldHealthStatusBeDowngraded(locationSpecificHealthContext, isReadOnlyRequest)) {
+                    return this.consecutiveExceptionBasedCircuitBreaker.handleException(locationSpecificHealthContext, isReadOnlyRequest);
                 } else {
 
                     if (logger.isDebugEnabled()) {
@@ -187,11 +186,11 @@ public class LocationContextTransitionHandler {
         }
     }
 
-    public LocationSpecificContext transitionHealthStatus(LocationHealthStatus newStatus) {
+    public LocationSpecificHealthContext transitionHealthStatus(LocationHealthStatus newStatus) {
 
         switch (newStatus) {
             case Healthy:
-                return new LocationSpecificContext(
+                return new LocationSpecificHealthContext(
                     0,
                     0,
                     0,
@@ -200,7 +199,7 @@ public class LocationContextTransitionHandler {
                     LocationHealthStatus.Healthy,
                     false);
             case HealthyWithFailures:
-                return new LocationSpecificContext(
+                return new LocationSpecificHealthContext(
                     0,
                     0,
                     0,
@@ -209,7 +208,7 @@ public class LocationContextTransitionHandler {
                     LocationHealthStatus.HealthyWithFailures,
                     false);
             case Unavailable:
-                return new LocationSpecificContext(
+                return new LocationSpecificHealthContext(
                     0,
                     0,
                     0,
@@ -218,7 +217,7 @@ public class LocationContextTransitionHandler {
                     LocationHealthStatus.Unavailable,
                     true);
             case HealthyTentative:
-                return new LocationSpecificContext(
+                return new LocationSpecificHealthContext(
                     0,
                     0,
                     0,

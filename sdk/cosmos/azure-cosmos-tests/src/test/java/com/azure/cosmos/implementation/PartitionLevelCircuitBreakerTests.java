@@ -23,7 +23,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.circuitBreaker.ConsecutiveExceptionBasedCircuitBreaker;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.circuitBreaker.LocationHealthStatus;
-import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificContext;
+import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.circuitBreaker.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -2662,17 +2662,17 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         Object partitionAndLocationSpecificUnavailabilityInfo
             = partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
 
-        ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         int count = 0;
         int regionCountWithFailures = 0;
         boolean failuresExist = false;
 
-        for (LocationSpecificContext locationSpecificContext : locationEndpointToLocationSpecificContextForPartition.values()) {
-            count += locationSpecificContext.getExceptionCountForRead() + locationSpecificContext.getExceptionCountForWrite();
+        for (LocationSpecificHealthContext locationSpecificHealthContext : locationEndpointToLocationSpecificContextForPartition.values()) {
+            count += locationSpecificHealthContext.getExceptionCountForRead() + locationSpecificHealthContext.getExceptionCountForWrite();
 
-            if (locationSpecificContext.getExceptionCountForRead() + locationSpecificContext.getExceptionCountForWrite() > 0) {
+            if (locationSpecificHealthContext.getExceptionCountForRead() + locationSpecificHealthContext.getExceptionCountForWrite() > 0) {
                 failuresExist = true;
                 regionCountWithFailures++;
             }

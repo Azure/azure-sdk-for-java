@@ -35,7 +35,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
     private final GlobalEndpointManager globalEndpointManager;
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelLocationUnavailabilityInfo> partitionKeyRangeToLocationSpecificUnavailabilityInfo;
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionKeyRangeWrapper> partitionKeyRangesWithPossibleUnavailableRegions;
-    private final LocationContextTransitionHandler locationContextTransitionHandler;
+    private final LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
     private final ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker;
 
     public GlobalPartitionEndpointManagerForCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
@@ -45,7 +45,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
         PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
         this.consecutiveExceptionBasedCircuitBreaker = new ConsecutiveExceptionBasedCircuitBreaker(partitionLevelCircuitBreakerConfig);
-        this.locationContextTransitionHandler = new LocationContextTransitionHandler(this.globalEndpointManager, this.consecutiveExceptionBasedCircuitBreaker);
+        this.locationSpecificHealthContextTransitionHandler = new LocationSpecificHealthContextTransitionHandler(this.globalEndpointManager, this.consecutiveExceptionBasedCircuitBreaker);
     }
 
     public void init() {
@@ -157,14 +157,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         List<URI> unavailableLocations = new ArrayList<>();
 
         if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
-            Map<URI, LocationSpecificContext> locationEndpointToFailureMetricsForPartition =
+            Map<URI, LocationSpecificHealthContext> locationEndpointToFailureMetricsForPartition =
                 partitionLevelLocationUnavailabilityInfoSnapshot.locationEndpointToLocationSpecificContextForPartition;
 
-            for (Map.Entry<URI, LocationSpecificContext> pair : locationEndpointToFailureMetricsForPartition.entrySet()) {
+            for (Map.Entry<URI, LocationSpecificHealthContext> pair : locationEndpointToFailureMetricsForPartition.entrySet()) {
                 URI location = pair.getKey();
-                LocationSpecificContext locationSpecificContext = pair.getValue();
+                LocationSpecificHealthContext locationSpecificHealthContext = pair.getValue();
 
-                if (locationSpecificContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
+                if (locationSpecificHealthContext.getLocationHealthStatus() == LocationHealthStatus.Unavailable) {
                     unavailableLocations.add(location);
                 }
             }
@@ -188,7 +188,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                 PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
 
                 if (partitionLevelLocationUnavailabilityInfo != null) {
-                    for (Map.Entry<URI, LocationSpecificContext> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
+                    for (Map.Entry<URI, LocationSpecificHealthContext> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToLocationSpecificContextForPartition.entrySet()) {
 
                         URI locationWithStaleUnavailabilityInfo = locationToLocationLevelMetrics.getKey();
 
@@ -196,7 +196,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
                             if (locationSpecificContextAsVal != null) {
                                 locationSpecificContextAsVal = GlobalPartitionEndpointManagerForCircuitBreaker
-                                    .this.locationContextTransitionHandler.handleSuccess(
+                                    .this.locationSpecificHealthContextTransitionHandler.handleSuccess(
                                     locationSpecificContextAsVal,
                                     partitionKeyRangeWrapper,
                                     locationWithStaleUnavailabilityInfoAsKey,
@@ -242,14 +242,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
     private class PartitionLevelLocationUnavailabilityInfo {
 
-        private final ConcurrentHashMap<URI, LocationSpecificContext> locationEndpointToLocationSpecificContextForPartition;
+        private final ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition;
         private final ConcurrentHashMap<String, String> regionToHealthStatus;
-        private final LocationContextTransitionHandler locationContextTransitionHandler;
+        private final LocationSpecificHealthContextTransitionHandler locationSpecificHealthContextTransitionHandler;
 
         private PartitionLevelLocationUnavailabilityInfo() {
             this.locationEndpointToLocationSpecificContextForPartition = new ConcurrentHashMap<>();
             this.regionToHealthStatus = new ConcurrentHashMap<>();
-            this.locationContextTransitionHandler = GlobalPartitionEndpointManagerForCircuitBreaker.this.locationContextTransitionHandler;
+            this.locationSpecificHealthContextTransitionHandler = GlobalPartitionEndpointManagerForCircuitBreaker.this.locationSpecificHealthContextTransitionHandler;
         }
 
         private boolean handleException(PartitionKeyRangeWrapper partitionKeyRangeWrapper, URI locationWithException, boolean isReadOnlyRequest) {
@@ -259,7 +259,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             this.locationEndpointToLocationSpecificContextForPartition.compute(locationWithException, (locationAsKey, locationSpecificContextAsVal) -> {
 
                 if (locationSpecificContextAsVal == null) {
-                    locationSpecificContextAsVal = new LocationSpecificContext(
+                    locationSpecificContextAsVal = new LocationSpecificHealthContext(
                         0,
                         0,
                         0,
@@ -269,7 +269,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         false);
                 }
 
-                LocationSpecificContext locationSpecificContextAfterTransition = this.locationContextTransitionHandler.handleException(
+                LocationSpecificHealthContext locationSpecificHealthContextAfterTransition = this.locationSpecificHealthContextTransitionHandler.handleException(
                     locationSpecificContextAsVal,
                     partitionKeyRangeWrapper,
                     GlobalPartitionEndpointManagerForCircuitBreaker.this.partitionKeyRangesWithPossibleUnavailableRegions,
@@ -280,10 +280,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     GlobalPartitionEndpointManagerForCircuitBreaker
                         .this.globalEndpointManager
                         .getRegionName(locationAsKey, isReadOnlyRequest ? OperationType.Read : OperationType.Create),
-                    locationSpecificContextAfterTransition.getLocationHealthStatus().getStringifiedLocationHealthStatus());
+                    locationSpecificHealthContextAfterTransition.getLocationHealthStatus().getStringifiedLocationHealthStatus());
 
-                isExceptionThresholdBreached.set(locationSpecificContextAfterTransition.isExceptionThresholdBreached());
-                return locationSpecificContextAfterTransition;
+                isExceptionThresholdBreached.set(locationSpecificHealthContextAfterTransition.isExceptionThresholdBreached());
+                return locationSpecificHealthContextAfterTransition;
             });
 
             return isExceptionThresholdBreached.get();
@@ -292,10 +292,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         private void handleSuccess(PartitionKeyRangeWrapper partitionKeyRangeWrapper, URI succeededLocation, boolean isReadOnlyRequest) {
             this.locationEndpointToLocationSpecificContextForPartition.compute(succeededLocation, (locationAsKey, locationSpecificContextAsVal) -> {
 
-                LocationSpecificContext locationSpecificContextAfterTransition;
+                LocationSpecificHealthContext locationSpecificHealthContextAfterTransition;
 
                 if (locationSpecificContextAsVal == null) {
-                    locationSpecificContextAsVal = new LocationSpecificContext(
+                    locationSpecificContextAsVal = new LocationSpecificHealthContext(
                         0,
                         0,
                         0,
@@ -305,7 +305,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         false);
                 }
 
-                locationSpecificContextAfterTransition = this.locationContextTransitionHandler.handleSuccess(
+                locationSpecificHealthContextAfterTransition = this.locationSpecificHealthContextTransitionHandler.handleSuccess(
                     locationSpecificContextAsVal,
                     partitionKeyRangeWrapper,
                     succeededLocation,
@@ -316,9 +316,9 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     GlobalPartitionEndpointManagerForCircuitBreaker
                         .this.globalEndpointManager
                         .getRegionName(locationAsKey, isReadOnlyRequest ? OperationType.Read : OperationType.Create),
-                    locationSpecificContextAfterTransition.getLocationHealthStatus().getStringifiedLocationHealthStatus());
+                    locationSpecificHealthContextAfterTransition.getLocationHealthStatus().getStringifiedLocationHealthStatus());
 
-                return locationSpecificContextAfterTransition;
+                return locationSpecificHealthContextAfterTransition;
             });
         }
 
@@ -328,9 +328,9 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                 if (!this.locationEndpointToLocationSpecificContextForPartition.containsKey(availableLocation)) {
                     return true;
                 } else {
-                    LocationSpecificContext locationSpecificContextSnapshot = this.locationEndpointToLocationSpecificContextForPartition.get(availableLocation);
+                    LocationSpecificHealthContext locationSpecificHealthContextSnapshot = this.locationEndpointToLocationSpecificContextForPartition.get(availableLocation);
 
-                    if (locationSpecificContextSnapshot.isRegionAvailableToProcessRequests()) {
+                    if (locationSpecificHealthContextSnapshot.isRegionAvailableToProcessRequests()) {
                         return true;
                     }
                 }
