@@ -59,6 +59,22 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         checkNotNull(changeFeedState, "Argument 'changeFeedState' must not be null.");
         this.changeFeedState = changeFeedState;
 
+        // constructing retry policies for changeFeed requests
+        DocumentClientRetryPolicy retryPolicyInstance =
+            client.getResetSessionTokenRetryPolicy().getRequestPolicy(null);
+
+        // For changeFeedProcessor with pkRange version, ChangeFeedState.containerRid will be name based rather than resouceId,
+        // due to the inconsistency of the ChangeFeedState.containerRid format, so in order to generate the correct path,
+        // we use a RxDocumentServiceRequest here
+        RxDocumentServiceRequest documentServiceRequest = createRequestFunc.get();
+        String collectionLink = PathsHelper.generatePath(
+            ResourceType.DocumentCollection, documentServiceRequest, false);
+        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
+            client.getCollectionCache(),
+            retryPolicyInstance,
+            collectionLink,
+            requestOptionProperties);
+
         if (isSplitHandlingDisabled) {
             // True for ChangeFeedProcessor - where all retry-logic is handled
             this.feedRangeContinuationRetryPolicy = retryPolicyInstance;
@@ -87,17 +103,10 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
         this.createRequestFunc = () -> {
             RxDocumentServiceRequest request = createRequestFunc.get();
+            request.requestContext.setClientRetryPolicySupplier(() -> this.feedRangeContinuationRetryPolicy);
             this.feedRangeContinuationRetryPolicy.onBeforeSendRequest(request);
             return request;
         };
-
-            this.createRequestFunc = () -> {
-                RxDocumentServiceRequest request = createRequestFunc.get();
-                request.requestContext.setClientRetryPolicySupplier(() -> this.feedRangeContinuationFeedRangeGoneRetryPolicy);
-                this.feedRangeContinuationFeedRangeGoneRetryPolicy.onBeforeSendRequest(request);
-                return request;
-            };
-        }
     }
 
     @Override
