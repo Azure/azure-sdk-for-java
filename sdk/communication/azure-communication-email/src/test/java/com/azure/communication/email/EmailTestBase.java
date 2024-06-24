@@ -3,12 +3,19 @@
 
 package com.azure.communication.email;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.ArrayList;
@@ -18,9 +25,8 @@ import java.util.stream.Stream;
 
 
 public class EmailTestBase extends TestProxyTestBase {
-
-    protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_CONNECTION_STRING_EMAIL", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+    protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://endpoint.communication.azure.com");
 
     protected static final String RECIPIENT_ADDRESS = Configuration.getGlobalConfiguration()
         .get("RECIPIENT_ADDRESS", "customer@contoso.com");
@@ -41,7 +47,8 @@ public class EmailTestBase extends TestProxyTestBase {
 
     private EmailClientBuilder getEmailClientBuilder(HttpClient httpClient) {
         EmailClientBuilder emailClientBuilder = new EmailClientBuilder()
-            .connectionString(CONNECTION_STRING)
+            .credential(getTestTokenCredential(interceptorManager))
+            .endpoint(ENDPOINT)
             .httpClient(getHttpClientOrUsePlayback(httpClient));
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
@@ -59,6 +66,26 @@ public class EmailTestBase extends TestProxyTestBase {
         }
 
         return emailClientBuilder;
+    }
+
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @param interceptorManager the interceptor manager
+     * @return The appropriate token credential
+     */
+    public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isLiveMode()) {
+            final TokenCredential c = new AzurePowerShellCredentialBuilder().build();
+            System.out.println("Endpoint::" + ENDPOINT);
+            final AccessToken t = c.getToken(new TokenRequestContext().addScopes("https://communication.azure.com//.default")).block();
+            System.out.println("ExipreAt::" + t.getExpiresAt());
+            return c;
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new MockTokenCredential();
+        }
     }
 
     static Stream<Arguments> getTestParameters() {

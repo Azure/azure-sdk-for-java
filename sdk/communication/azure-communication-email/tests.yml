@@ -21,6 +21,8 @@ extends:
             - $(sub-config-azure-cloud-test-resources)
             - $(sub-config-communication-services-cloud-test-resources-common)
             - $(sub-config-communication-services-cloud-test-resources-java)
+          SubscriptionConfigurationFilePath: eng/common/TestResources/sub-config/AzurePublicMsft.json
+          ServiceConnection: azure-sdk-tests
         Int:
           SubscriptionConfigurations:
             - $(sub-config-communication-int-test-resources-common)
