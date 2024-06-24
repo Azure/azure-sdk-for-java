@@ -46,6 +46,8 @@ $SpringSampleParents = ("spring-boot-starter-parent", "azure-spring-boot-test-pa
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
 $SamplesPath = Resolve-Path ($PSScriptRoot + "/../../samples")
 $SdkRoot = Resolve-Path ($PSScriptRoot + "/../../sdk")
+# JRS-REMOVE
+Write-Host "SdkRoot=$SdkRoot"
 
 # Not all POM files have a parent entry
 $PomFilesIgnoreParent = ("$($Path)\parent\pom.xml")
@@ -151,6 +153,8 @@ function Get-ArtifactsList-Per-Service-Directory {
     # Get all of the yml files under sdk/
     $ymlFiles = Get-ChildItem -Path $SdkRoot -Recurse -Depth 3 -File -Filter "ci*yml"
     foreach ($ymlFile in $ymlFiles) {
+        # JRS-REMOVE NEXT LINE
+        Write-Host "Processing yml file: $ymlFile"
         # The ci.cosmos.yml lives in spring and is used to test the cosmos spring library. Its exception
         # will be moved once things are corrected.
         if ($ymlFile.FullName.Split([IO.Path]::DirectorySeparatorChar) -contains "resourcemanagerhybrid" -or
@@ -175,6 +179,10 @@ function Get-ArtifactsList-Per-Service-Directory {
                 Write-Error "Processing yml file $($ymlFile.FullName)"
                 Write-Error "$ymlPath already contains an Artifact entry for $libFullName"
             }
+            # JRS - REMOVE-ELSE-CLAUSE
+            else {
+                Write-Host "    Adding Artifact: $libFullName"
+            }
         }
         # These list of modules per sdk/<ServiceDirectory> has to be verified to be using the
         # latest version of other modules in the same ServiceDirectory which includes AdditionModules.
@@ -189,6 +197,10 @@ function Get-ArtifactsList-Per-Service-Directory {
                     Write-Error "Processing yml file $($ymlFile.FullName)"
                     Write-Error "$ymlPath already contains an AdditionalModule entry for $libFullName"
                 }
+            }
+            # JRS - REMOVE-ELSE-CLAUSE
+            else {
+                Write-Host "    Adding AdditionalModules: $libFullName"
             }
         }
     }
