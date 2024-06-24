@@ -508,6 +508,14 @@ public class Configs {
     }
 
     public static boolean getAzureCosmosNonStreamingOrderByDisabled() {
+        if(logger.isTraceEnabled()) {
+            logger.trace(
+                "AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY property is: {}",
+                System.getProperty(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY));
+            logger.trace(
+                "AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY env variable is: {}",
+                System.getenv().get(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY));
+        }
         return Boolean.parseBoolean(System.getProperty(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY,
             firstNonNull(
                 emptyToNull(System.getenv().get(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY)),
