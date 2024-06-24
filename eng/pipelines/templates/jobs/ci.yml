@@ -252,6 +252,7 @@ jobs:
             Paths:
               - '**/*.xml'
               - '**/*.md'
+              - '**/*.yml'
               - '.vscode/cspell.json'
               - '!sdk/**/test-recordings'
               - '!sdk/**/session-records'
