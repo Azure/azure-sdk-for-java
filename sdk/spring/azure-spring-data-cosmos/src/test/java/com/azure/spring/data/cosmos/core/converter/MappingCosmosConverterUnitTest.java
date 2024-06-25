@@ -9,6 +9,7 @@ import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.Importance;
 import com.azure.spring.data.cosmos.domain.Memo;
+import com.azure.spring.data.cosmos.domain.ObjectWithBigDecimal;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.domain.PersonWithEtag;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.ApplicationContext;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,7 +43,7 @@ public class MappingCosmosConverterUnitTest {
     @Before
     public void setUp() {
         final CosmosMappingContext mappingContext = new CosmosMappingContext();
-        final ObjectMapper objectMapper = new ObjectMapper();
+        final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
 
         mappingContext.setApplicationContext(applicationContext);
         mappingContext.afterPropertiesSet();
@@ -153,5 +155,26 @@ public class MappingCosmosConverterUnitTest {
 
         assertThat(jsonNode.get(TestConstants.PROPERTY_ETAG_DEFAULT).asText()).isEqualTo(etagValue);
     }
+
+    @Test
+    public void convertsBigDecimalAsString() {
+        final ObjectWithBigDecimal object = new ObjectWithBigDecimal(TestConstants.ID_1, TestConstants.BIG_DECIMAL_VALUE);
+
+        final JsonNode jsonNode = mappingCosmosConverter.writeJsonNode(object);
+
+        assertThat(new BigDecimal(jsonNode.get(TestConstants.PROPERTY_AMOUNT).asText())).isEqualTo(TestConstants.BIG_DECIMAL_VALUE);
+    }
+
+    @Test
+    public void deserializesExistingNumberBigDecimalCorrectly() {
+        final ObjectNode objectNode = ObjectMapperFactory.getObjectMapper().createObjectNode();
+        objectNode.put(TestConstants.PROPERTY_ID, TestConstants.ID_1);
+        objectNode.put(TestConstants.PROPERTY_AMOUNT, TestConstants.BIG_DECIMAL_VALUE.doubleValue());
+
+        final ObjectWithBigDecimal object = mappingCosmosConverter.read(ObjectWithBigDecimal.class, objectNode);
+
+        assertThat(object.getAmount().doubleValue()).isEqualTo(TestConstants.BIG_DECIMAL_VALUE.doubleValue());
+    }
 }
+
 
