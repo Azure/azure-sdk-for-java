@@ -16,6 +16,7 @@ public final class CosmosMeterOptions {
     private final EnumSet<TagName> suppressedTagNames;
 
     private final boolean isDiagnosticThresholdsFilteringEnabled;
+    private String baseUnit;
 
     public CosmosMeterOptions(
         CosmosMetricName name,
@@ -23,7 +24,8 @@ public final class CosmosMeterOptions {
         double[] percentiles,
         boolean isHistogramPublishingEnabled,
         EnumSet<TagName> suppressedTagNames,
-        boolean isDiagnosticThresholdsFilteringEnabled) {
+        boolean isDiagnosticThresholdsFilteringEnabled,
+        String baseUnit) {
 
         this.name = name;
         this.isEnabled = isEnabled;
@@ -31,6 +33,7 @@ public final class CosmosMeterOptions {
         this.isHistogramPublishingEnabled = isHistogramPublishingEnabled;
         this.suppressedTagNames = suppressedTagNames;
         this.isDiagnosticThresholdsFilteringEnabled = isDiagnosticThresholdsFilteringEnabled;
+        this.baseUnit = baseUnit;
     }
 
     public CosmosMetricName getMeterName() {
@@ -54,4 +57,8 @@ public final class CosmosMeterOptions {
     }
 
     public boolean isDiagnosticThresholdsFilteringEnabled() { return this.isDiagnosticThresholdsFilteringEnabled; }
+
+    public String getBaseUnit() {
+        return this.baseUnit;
+    }
 }
