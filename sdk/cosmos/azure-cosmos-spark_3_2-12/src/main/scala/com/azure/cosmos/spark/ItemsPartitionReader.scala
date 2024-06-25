@@ -137,10 +137,6 @@ private case class ItemsPartitionReader
 
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
-  private val maxOperationTimeout = Duration.ofSeconds(CosmosConstants.readOperationEndToEndTimeoutInSeconds)
-  private val endToEndTimeoutPolicy = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(maxOperationTimeout)
-      .enable(true)
-      .build
 
   private def shouldLogDetailedFeedDiagnostics(): Boolean = {
     diagnosticsConfig.mode.isDefined &&
@@ -237,7 +233,6 @@ private case class ItemsPartitionReader
       )
 
       queryOptions.setDedicatedGatewayRequestOptions(readConfig.dedicatedGatewayRequestOptions)
-      queryOptions.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndTimeoutPolicy)
 
       ImplementationBridgeHelpers
         .CosmosQueryRequestOptionsHelper
