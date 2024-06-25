@@ -91,7 +91,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // Load persisted events back to memory when in playback mode
         if (getTestMode() == TestMode.PLAYBACK) {
             try {
-                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".json";
+                String fileName = "./src/test/resources/" + testContextManager.getTestName() + ".json";
                 FileInputStream fileInputStream = new FileInputStream(fileName);
                 byte[] jsonData = new byte[fileInputStream.available()];
                 fileInputStream.read(jsonData);
@@ -116,7 +116,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // In recording mode, manually store events from event dispatcher into local disk as the callAutomationClient doesn't do so
         if (getTestMode() == TestMode.RECORD) {
             try {
-                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".json";
+                String fileName = "./src/test/resources/" + testContextManager.getTestName() + ".json";
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 String jsonString = objectMapper.writeValueAsString(eventsToPersist);

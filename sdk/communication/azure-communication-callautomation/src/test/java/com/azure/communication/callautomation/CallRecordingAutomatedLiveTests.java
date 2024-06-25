@@ -33,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createACSCallAndUnmixedAudioTest(HttpClient httpClient) {
@@ -118,7 +117,6 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createACSCallUnmixedAudioAffinityTest(HttpClient httpClient) {

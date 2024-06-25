@@ -36,7 +36,6 @@ import com.azure.communication.callautomation.models.ConnectCallResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 
 public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -137,7 +136,6 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -202,7 +200,6 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
