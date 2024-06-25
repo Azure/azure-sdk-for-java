@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.jca.implementation.certificates;
 
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public final class KeyVaultCertificates implements AzureCertificates {
      * @param clientId Client ID.
      * @param clientSecret Client secret.
      * @param managedIdentity Managed identity.
-     * @param disableChallengeResourceVerification Disable challenge resource verification.
+     * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
      */
     public void updateKeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
         String managedIdentity, boolean disableChallengeResourceVerification) {

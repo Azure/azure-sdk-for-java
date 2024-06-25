@@ -84,28 +84,11 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret,
         String managedIdentity) {
 
-        this(uri, tenantId, clientId, clientSecret, managedIdentity, false);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param uri The Azure Key Vault URI.
-     * @param tenantId The tenant ID.
-     * @param clientId The client ID.
-     * @param clientSecret The client secret.
-     * @param managedIdentity The managed identity.
-     * @param disableChallengeResourceVerification Indicates if challenge resource verification should be disabled.
-     */
-    public KeyVaultLoadStoreParameter(String uri, String tenantId, String clientId, String clientSecret,
-        String managedIdentity, boolean disableChallengeResourceVerification) {
-
         this.uri = uri;
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.managedIdentity = managedIdentity;
-        this.disableChallengeResourceVerification = disableChallengeResourceVerification;
     }
 
     /**
@@ -170,5 +153,12 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      */
     public boolean isChallengeResourceVerificationDisabled() {
         return disableChallengeResourceVerification;
+    }
+
+    /**
+     * Disables challenge resource verification when authenticating against the service.
+     */
+    public void disableChallengeResourceVerification() {
+        disableChallengeResourceVerification = true;
     }
 }

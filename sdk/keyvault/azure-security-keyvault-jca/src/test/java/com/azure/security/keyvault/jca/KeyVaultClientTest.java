@@ -22,8 +22,7 @@ public class KeyVaultClientTest {
             PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
             PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID"),
             PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID"),
-            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"),
-            false);
+            PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"));
         certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
     }
 

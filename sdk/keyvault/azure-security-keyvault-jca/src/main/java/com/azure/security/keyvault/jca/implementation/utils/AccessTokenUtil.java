@@ -222,11 +222,11 @@ public final class AccessTokenUtil {
         return result;
     }
 
-    public static String getLoginUri(URI resourceUri, boolean disableChallengeResourceVerification) {
+    public static String getLoginUri(String resourceUri, boolean disableChallengeResourceVerification) {
         LOGGER.entering("AccessTokenUtil", "getLoginUri", resourceUri);
-        LOGGER.log(INFO, "Getting login URI using: {0}", resourceUri.toString());
+        LOGGER.log(INFO, "Getting login URI using: {0}", resourceUri);
 
-        HttpResponse response = HttpUtil.getWithResponse(resourceUri.toString(), null);
+        HttpResponse response = HttpUtil.getWithResponse(resourceUri, null);
         Map<String, String> challengeAttributes =
             extractChallengeAttributes(response.getFirstHeader(WWW_AUTHENTICATE).getValue());
         String scope = challengeAttributes.get("resource");
@@ -308,18 +308,26 @@ public final class AccessTokenUtil {
     /**
      * Verifies whether a challenge resource is valid or not.
      *
-     * @param resourceUri The resource URI.
+     * @param resource The URI to validate the challenge against.
      * @param scope The scope of the challenge.
      *
-     * @return A boolean indicating if the challenge resource is valid or not.
+     * @return A boolean indicating if the resource URI is valid or not.
      */
-    private static boolean isChallengeResourceValid(URI resourceUri, String scope) {
+    private static boolean isChallengeResourceValid(String resource, String scope) {
+        final URI resourceUri;
+
+        try {
+            resourceUri = new URI(resource);
+        } catch (URISyntaxException e) {
+            throw new IllegalStateException("The provided resource " + resource + " is not a valid URI.", e);
+        }
+
         final URI scopeUri;
 
         try {
             scopeUri = new URI(scope);
         } catch (URISyntaxException e) {
-            throw new IllegalStateException("The challenge resource " + scope + " is not a valid URI.", e);
+            throw new IllegalStateException("The challenge scope " + scope + " is not a valid URI.", e);
         }
 
         // Returns false if the host specified in the scope does not match the requested domain.

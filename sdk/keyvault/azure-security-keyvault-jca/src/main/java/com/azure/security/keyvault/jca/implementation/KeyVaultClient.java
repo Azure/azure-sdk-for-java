@@ -18,7 +18,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -95,15 +94,15 @@ public class KeyVaultClient {
      */
     private final boolean disableChallengeResourceVerification;
 
+
     /**
      * Constructor for authentication with user-assigned managed identity.
      *
      * @param keyVaultUri The Azure Key Vault URI.
      * @param managedIdentity The user-assigned managed identity object ID.
-     * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
      */
-    KeyVaultClient(String keyVaultUri, String managedIdentity, boolean disableChallengeResourceVerification) {
-        this(keyVaultUri, null, null, null, managedIdentity, disableChallengeResourceVerification);
+    KeyVaultClient(String keyVaultUri, String managedIdentity) {
+        this(keyVaultUri, null, null, null, managedIdentity, false);
     }
 
     /**
@@ -113,12 +112,9 @@ public class KeyVaultClient {
      * @param tenantId The tenant ID.
      * @param clientId The client ID.
      * @param clientSecret The client secret.
-     * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
      */
-    public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
-        boolean disableChallengeResourceVerification) {
-
-        this(keyVaultUri, tenantId, clientId, clientSecret, null, disableChallengeResourceVerification);
+    public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
+        this(keyVaultUri, tenantId, clientId, clientSecret, null, false);
     }
 
     /**
@@ -136,13 +132,12 @@ public class KeyVaultClient {
 
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
 
-        this.keyVaultUri = addTrailingSlashIfRequired(keyVaultUri);
-
+        this.keyVaultUri = addTrailingSlashIfRequired(validateUri(keyVaultUri, "Azure Key Vault URI"));
         // Base URI shouldn't end with a slash.
         String domainNameSuffix = Optional.of(this.keyVaultUri)
-                .map(uri -> uri.split("\\.", 2)[1])
-                .map(suffix -> suffix.substring(0, suffix.length() - 1))
-                .orElse(null);
+            .map(uri -> uri.split("\\.", 2)[1])
+            .map(suffix -> suffix.substring(0, suffix.length() - 1))
+            .orElse(null);
         this.keyVaultBaseUri = HTTPS_PREFIX + domainNameSuffix;
         this.tenantId = tenantId;
         this.clientId = clientId;
@@ -197,7 +192,7 @@ public class KeyVaultClient {
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
-                String aadAuthenticationUri = getLoginUri(new URI(keyVaultUri + "certificates" + API_VERSION_POSTFIX),
+                String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
                     disableChallengeResourceVerification);
                 accessToken =
                     AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
@@ -224,7 +219,7 @@ public class KeyVaultClient {
 
         headers.put("Authorization", "Bearer " + getAccessToken());
 
-        String uri = String.format("%scertificates%s", keyVaultUri, API_VERSION_POSTFIX);
+        String uri = keyVaultUri + "certificates" + API_VERSION_POSTFIX;
 
         while (uri != null && !uri.isEmpty()) {
             String response = HttpUtil.get(uri, headers);
@@ -264,7 +259,7 @@ public class KeyVaultClient {
 
         headers.put("Authorization", "Bearer " + getAccessToken());
 
-        String url = String.format("%scertificates/%s%s", keyVaultUri, alias, API_VERSION_POSTFIX);
+        String url = keyVaultUri + "certificates/" + alias + API_VERSION_POSTFIX;
         String response = HttpUtil.get(url, headers);
 
         if (response != null) {
@@ -416,7 +411,7 @@ public class KeyVaultClient {
 
         headers.put("Authorization", "Bearer " + getAccessToken());
 
-        String url = String.format("%s/sign%s", keyId, API_VERSION_POSTFIX);
+        String url = keyId + "/sign" + API_VERSION_POSTFIX;
         String response = HttpUtil.post(url, headers, bodyString, "application/json");
 
         if (response != null) {
