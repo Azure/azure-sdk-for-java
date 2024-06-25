@@ -224,26 +224,6 @@
         "principalId": "[parameters('testApplicationOid')]",
         "scope": "[resourceGroup().id]"
       }
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2019-04-01-preview",
-      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('eventGridDataSenderRoleId'))]",
-      "properties": {
-        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('eventGridDataSenderRoleId'))]",
-        "principalId": "[parameters('testApplicationOid')]",
-        "scope": "[resourceGroup().id]"
-      }
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2019-04-01-preview",
-      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('eventGridDataContributorRoleId'))]",
-      "properties": {
-        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('eventGridDataContributorRoleId'))]",
-        "principalId": "[parameters('testApplicationOid')]",
-        "scope": "[resourceGroup().id]"
-      }
     }
   ],
   "outputs": {
