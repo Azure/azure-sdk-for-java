@@ -17,14 +17,6 @@
   },
   "resources": [],
   "outputs": {
-    "AZURE_SPRING_CLIENT_ID": {
-      "type": "string",
-      "value": "[parameters('testApplicationID')]"
-    },
-    "AZURE_SPRING_CLIENT_SECRET": {
-      "type": "string",
-      "value": "[parameters('testApplicationSecret')]"
-    },
     "AZURE_SPRING_TENANT_ID": {
       "type": "string",
       "value": "[parameters('tenantId')]"
