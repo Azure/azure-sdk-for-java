@@ -59,6 +59,7 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
      */
     public SyncOperationLocationPollingStrategy(PollingStrategyOptions pollingStrategyOptions, String propertyName) {
         super(PollingUtils.OPERATION_LOCATION_HEADER, pollingStrategyOptions);
+        System.out.println(pollingStrategyOptions.getEndpoint());
         this.propertyName = propertyName;
         this.endpoint = pollingStrategyOptions.getEndpoint();
         this.serializer = pollingStrategyOptions.getSerializer() != null

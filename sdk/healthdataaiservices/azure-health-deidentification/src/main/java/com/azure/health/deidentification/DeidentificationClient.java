@@ -223,7 +223,7 @@ public final class DeidentificationClient {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
+     * <tr><td>nextToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -293,7 +293,7 @@ public final class DeidentificationClient {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
+     * <tr><td>nextToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -526,7 +526,7 @@ public final class DeidentificationClient {
      * 
      * Resource list operation template.
      * 
-     * @param continuationToken Token to continue a previous query.
+     * @param nextToken Token to continue a previous query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -537,11 +537,11 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeidentificationJob> listJobs(String continuationToken) {
+    public PagedIterable<DeidentificationJob> listJobs(String nextToken) {
         // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
-        if (continuationToken != null) {
-            requestOptions.addQueryParam("continuationToken", continuationToken, false);
+        if (nextToken != null) {
+            requestOptions.addQueryParam("nextToken", nextToken, false);
         }
         return serviceClient.listJobs(requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DeidentificationJob.class));
@@ -574,7 +574,7 @@ public final class DeidentificationClient {
      * Resource list operation template.
      * 
      * @param name The name of a job.
-     * @param continuationToken Token to continue a previous query.
+     * @param nextToken Token to continue a previous query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -585,11 +585,11 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<HealthFileDetails> listJobFiles(String name, String continuationToken) {
+    public PagedIterable<HealthFileDetails> listJobFiles(String name, String nextToken) {
         // Generated convenience method for listJobFiles
         RequestOptions requestOptions = new RequestOptions();
-        if (continuationToken != null) {
-            requestOptions.addQueryParam("continuationToken", continuationToken, false);
+        if (nextToken != null) {
+            requestOptions.addQueryParam("nextToken", nextToken, false);
         }
         return serviceClient.listJobFiles(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(HealthFileDetails.class));

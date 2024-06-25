@@ -1183,7 +1183,7 @@ public final class DeidentificationClientImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
+     * <tr><td>nextToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1258,7 +1258,7 @@ public final class DeidentificationClientImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
+     * <tr><td>nextToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1351,7 +1351,7 @@ public final class DeidentificationClientImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
+     * <tr><td>nextToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1424,7 +1424,7 @@ public final class DeidentificationClientImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
+     * <tr><td>nextToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1517,7 +1517,7 @@ public final class DeidentificationClientImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
+     * <tr><td>nextToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1574,7 +1574,7 @@ public final class DeidentificationClientImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
+     * <tr><td>nextToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1649,7 +1649,7 @@ public final class DeidentificationClientImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
+     * <tr><td>nextToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
@@ -1704,7 +1704,7 @@ public final class DeidentificationClientImpl {
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
-     * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
+     * <tr><td>nextToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
