@@ -5,19 +5,48 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The properties of Azure Storage SMB file share endpoint to update. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+/**
+ * The properties of Azure Storage SMB file share endpoint to update.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "endpointType",
+    defaultImpl = AzureStorageSmbFileShareEndpointUpdateProperties.class,
+    visible = true)
 @JsonTypeName("AzureStorageSmbFileShare")
 @Fluent
 public final class AzureStorageSmbFileShareEndpointUpdateProperties extends EndpointBaseUpdateProperties {
-    /** Creates an instance of AzureStorageSmbFileShareEndpointUpdateProperties class. */
+    /*
+     * The Endpoint resource type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private EndpointType endpointType = EndpointType.AZURE_STORAGE_SMB_FILE_SHARE;
+
+    /**
+     * Creates an instance of AzureStorageSmbFileShareEndpointUpdateProperties class.
+     */
     public AzureStorageSmbFileShareEndpointUpdateProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the endpointType property: The Endpoint resource type.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageSmbFileShareEndpointUpdateProperties withDescription(String description) {
         super.withDescription(description);
@@ -26,7 +55,7 @@ public final class AzureStorageSmbFileShareEndpointUpdateProperties extends Endp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
