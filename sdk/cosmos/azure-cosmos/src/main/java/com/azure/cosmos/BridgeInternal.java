@@ -607,6 +607,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void  initializeAllAccessors() {
+        CosmosItemSerializer.initialize();
         CosmosClient.initialize();
         CosmosAsyncClientEncryptionKey.initialize();
         CosmosAsyncContainer.initialize();
@@ -620,6 +621,5 @@ public final class BridgeInternal {
         CosmosDiagnosticsThresholds.initialize();
         CosmosContainerProactiveInitConfig.initialize();
         SessionRetryOptions.initialize();
-        CosmosItemSerializer.initialize();
     }
 }
