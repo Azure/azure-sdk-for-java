@@ -491,6 +491,13 @@
           "justification": "Removing Jackson annotations from Storage File Datalake in transition to stream-style."
         },
         {
+          "ignore": true,
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.storage\\.blob\\.models.*",
+          "justification": "Removing Jackson annotations from Storage Blob in transition to stream-style."
+        },
+        {
           "regex": true,
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
