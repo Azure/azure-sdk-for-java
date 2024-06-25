@@ -3,9 +3,9 @@
 
 package com.azure.core.implementation.serializer;
 
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.v2.util.serializer.JacksonAdapter;
+import com.azure.core.v2.util.serializer.SerializerAdapter;
+import com.azure.core.v2.util.serializer.SerializerEncoding;
 import com.azure.xml.XmlSerializable;
 import org.junit.jupiter.api.Test;
 

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.v2.exception.UnexpectedLengthException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

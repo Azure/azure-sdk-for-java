@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.core.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.mocking.MockMonoSink;
-import com.azure.core.util.mocking.MockOutputStream;
+import io.clientcore.core.util.ClientLogger;
+import com.azure.core.v2.util.mocking.MockMonoSink;
+import com.azure.core.v2.util.mocking.MockOutputStream;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.MonoSink;

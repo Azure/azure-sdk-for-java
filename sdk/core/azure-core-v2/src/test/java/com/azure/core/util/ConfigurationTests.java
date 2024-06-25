@@ -3,7 +3,7 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.util.EnvironmentConfiguration;
+import com.azure.core.v2.implementation.util.EnvironmentConfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

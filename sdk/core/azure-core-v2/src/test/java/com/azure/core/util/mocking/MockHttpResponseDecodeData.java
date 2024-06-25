@@ -3,8 +3,8 @@
 
 package com.azure.core.util.mocking;
 
-import com.azure.core.implementation.http.UnexpectedExceptionInformation;
-import com.azure.core.implementation.serializer.HttpResponseDecodeData;
+import com.azure.core.v2.implementation.http.UnexpectedExceptionInformation;
+import com.azure.core.v2.implementation.serializer.HttpResponseDecodeData;
 
 import java.lang.reflect.Type;
 

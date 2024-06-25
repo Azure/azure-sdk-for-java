@@ -14,15 +14,15 @@ import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.http.rest.Response;
 import io.clientcore.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.serializer.DefaultJsonSerializer;
+import com.azure.core.v2.implementation.serializer.DefaultJsonSerializer;
 import io.clientcore.core.util.Context;
-import com.azure.core.util.serializer.TypeReference;
+import com.azure.core.v2.util.serializer.TypeReference;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -44,7 +44,7 @@ public class OperationResourcePollingStrategyTest {
         String mockPollUrl = "http://localhost/poll";
         String finalResultUrl = "http://localhost/final";
 
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
                 new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl), new TestPollResult("InProgress"));
@@ -54,10 +54,10 @@ public class OperationResourcePollingStrategyTest {
 
         HttpClient httpClient = request -> {
             if (mockPollUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
+                return new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
                     new TestPollResult("Succeeded", finalResultUrl)));
             } else if (finalResultUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
+                return new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
                     new TestPollResult("final-state", finalResultUrl)));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
@@ -88,7 +88,7 @@ public class OperationResourcePollingStrategyTest {
         String mockPollUrl = "http://localhost/poll";
         String finalResultUrl = "http://localhost/final";
 
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
                 new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl).set(HttpHeaderName.LOCATION, finalResultUrl),
@@ -131,7 +131,7 @@ public class OperationResourcePollingStrategyTest {
         int[] activationCallCount = new int[1];
         String mockPollUrl = "http://localhost/poll";
 
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
                 new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl), new TestPollResult("InProgress"));
@@ -171,7 +171,7 @@ public class OperationResourcePollingStrategyTest {
         String putUrl = "http://localhost";
         String mockPollUrl = "http://localhost/poll";
 
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.PUT, putUrl), 200,
                 new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl), new TestPollResult("InProgress"));
@@ -220,7 +220,7 @@ public class OperationResourcePollingStrategyTest {
         String mockPollAbsolutePath = endpointUrl + mockPollRelativePath;
 
         // Mocking
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
 
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost/post"), 200,
@@ -230,10 +230,10 @@ public class OperationResourcePollingStrategyTest {
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollAbsolutePath);
         HttpClient httpClient = request -> {
             if (mockPollAbsolutePath.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
+                return new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
                     new TestPollResult("Succeeded", finalResultAbsolutePath)));
             } else if (finalResultAbsolutePath.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
+                return new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
                     new TestPollResult("final-state", finalResultAbsolutePath)));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
@@ -243,7 +243,7 @@ public class OperationResourcePollingStrategyTest {
         // Create OperationResourcePollingStrategy
         PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient), endpointUrl,
-                new DefaultJsonSerializer(), headerName, Context.NONE),
+                new DefaultJsonSerializer(), headerName, Context.none()),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
         // Verify
@@ -266,7 +266,7 @@ public class OperationResourcePollingStrategyTest {
         int[] activationCallCount = new int[1];
         String mockPollUrl = "http://localhost/poll";
 
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
                 new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl), new TestPollResult("InProgress"));
@@ -307,7 +307,7 @@ public class OperationResourcePollingStrategyTest {
         String mockPollUrl = "http://localhost/poll";
         String finalResultUrl = "http://localhost/final";
 
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
                 new HttpHeaders().set(OPERATION_LOCATION, mockPollUrl).set(HttpHeaderName.LOCATION, finalResultUrl),
@@ -320,16 +320,16 @@ public class OperationResourcePollingStrategyTest {
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).httpClient(request -> {
             int count = attemptCount.getAndIncrement();
             if (mockPollUrl.equals(request.getUrl().toString()) && count == 0) {
-                return Mono.just(new MockHttpResponse(pollRequest, args[0],
+                return new MockHttpResponse(pollRequest, args[0],
                     new HttpHeaders().set(HttpHeaderName.LOCATION, finalResultUrl), new TestPollResult("Succeeded")));
             } else if (mockPollUrl.equals(request.getUrl().toString()) && count == 1) {
-                return Mono.just(new MockHttpResponse(pollRequest, args[1],
+                return new MockHttpResponse(pollRequest, args[1],
                     new HttpHeaders().set(HttpHeaderName.LOCATION, finalResultUrl), new TestPollResult("Succeeded")));
             } else if (finalResultUrl.equals(request.getUrl().toString()) && count == 1) {
-                return Mono.just(
+                return
                     new MockHttpResponse(finalRequest, args[1], new HttpHeaders(), new TestPollResult("final-state")));
             } else if (finalResultUrl.equals(request.getUrl().toString())) {
-                return Mono.just(
+                return
                     new MockHttpResponse(finalRequest, args[2], new HttpHeaders(), new TestPollResult("final-state")));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
@@ -355,7 +355,7 @@ public class OperationResourcePollingStrategyTest {
         String requestFinalResultUrl, String responseFinalResultUrl) {
         int[] activationCallCount = new int[1];
 
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
                 new HttpHeaders().set(OPERATION_LOCATION, responsePollUrl), new TestPollResult("InProgress"));
@@ -365,10 +365,10 @@ public class OperationResourcePollingStrategyTest {
 
         HttpClient httpClient = request -> {
             if (requestPollUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
+                return new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
                     new TestPollResult("Succeeded", responseFinalResultUrl)));
             } else if (requestFinalResultUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
+                return new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
                     new TestPollResult("final-state", responseFinalResultUrl)));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));

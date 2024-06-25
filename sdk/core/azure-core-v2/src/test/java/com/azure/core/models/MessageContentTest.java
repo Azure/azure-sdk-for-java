@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.models;
 
-import com.azure.core.util.BinaryData;
+import com.azure.core.v2.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

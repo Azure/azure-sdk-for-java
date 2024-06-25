@@ -3,9 +3,9 @@
 
 package com.azure.core.models;
 
-import com.azure.core.implementation.serializer.DefaultJsonSerializer;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.TypeReference;
+import com.azure.core.v2.implementation.serializer.DefaultJsonSerializer;
+import com.azure.core.v2.util.BinaryData;
+import com.azure.core.v2.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

@@ -3,10 +3,10 @@
 
 package com.azure.core.util.tracing;
 
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
-import com.azure.core.util.TestConfigurationSource;
-import com.azure.core.util.TracingOptions;
+import io.clientcore.core.util.configuration.Configuration;
+import com.azure.core.v2.util.ConfigurationBuilder;
+import com.azure.core.v2.util.TestConfigurationSource;
+import com.azure.core.v2.util.TracingOptions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -3,19 +3,19 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.v2.exception.UnexpectedLengthException;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.v2.util.BinaryData;
+import com.azure.core.v2.util.FluxUtil;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
@@ -210,7 +210,7 @@ public class RestProxyUtilsTests {
         }
     }
 
-    private static Mono<byte[]> validateAndCollectRequestAsync(HttpRequest request) {
+    private static byte[]> validateAndCollectRequestAsync(HttpRequest request) {
         return RestProxyUtils.validateLengthAsync(request)
             .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getBody()));
     }

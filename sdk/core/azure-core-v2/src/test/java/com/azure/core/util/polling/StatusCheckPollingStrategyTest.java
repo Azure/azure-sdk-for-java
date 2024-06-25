@@ -8,9 +8,9 @@ import io.clientcore.core.http.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.rest.Response;
 import io.clientcore.core.http.rest.SimpleResponse;
-import com.azure.core.util.serializer.TypeReference;
+import com.azure.core.v2.util.serializer.TypeReference;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -26,7 +26,7 @@ public class StatusCheckPollingStrategyTest {
     @Test
     public void statusCheckPollingStrategySucceedsOnActivation() {
         int[] activationCallCount = new int[1];
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.GET, "http://localhost"), 200, new HttpHeaders(),
                 new TestPollResult("ActivationDone"));

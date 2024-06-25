@@ -8,13 +8,13 @@ import io.clientcore.core.http.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.MockFluxHttpResponse;
 import io.clientcore.core.http.rest.StreamResponse;
-import com.azure.core.util.FaultyAsynchronousByteChannel;
-import com.azure.core.util.PartialWriteAsynchronousChannel;
-import com.azure.core.util.PartialWriteChannel;
-import com.azure.core.util.mocking.MockAsynchronousFileChannel;
+import com.azure.core.v2.util.FaultyAsynchronousByteChannel;
+import com.azure.core.v2.util.PartialWriteAsynchronousChannel;
+import com.azure.core.v2.util.PartialWriteChannel;
+import com.azure.core.v2.util.mocking.MockAsynchronousFileChannel;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
@@ -119,18 +119,18 @@ public class IOUtilsTest {
         AtomicInteger retries = new AtomicInteger();
         ConcurrentLinkedQueue<Long> offsets = new ConcurrentLinkedQueue<>();
         ConcurrentLinkedQueue<Throwable> throwables = new ConcurrentLinkedQueue<>();
-        ConcurrentLinkedQueue<MockFluxHttpResponse> responses = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<MockFluxResponse<?>  responses = new ConcurrentLinkedQueue<>();
         MockFluxHttpResponse httpResponse = new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier.apply(0));
         responses.add(httpResponse);
         StreamResponse initialResponse = new StreamResponse(httpResponse);
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume = (throwable, offset) -> {
+        BiFunction<Throwable, Long, StreamResponse>> onErrorResume = (throwable, offset) -> {
             retries.incrementAndGet();
             offsets.add(offset);
             throwables.add(throwable);
             MockFluxHttpResponse newHttpResponse
                 = new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier.apply(offset.intValue()));
             responses.add(newHttpResponse);
-            return Mono.just(new StreamResponse(newHttpResponse));
+            return new StreamResponse(newHttpResponse));
         };
 
         try (FaultyAsynchronousByteChannel channel
@@ -176,18 +176,18 @@ public class IOUtilsTest {
         AtomicInteger retries = new AtomicInteger();
         ConcurrentLinkedQueue<Long> offsets = new ConcurrentLinkedQueue<>();
         ConcurrentLinkedQueue<Throwable> throwables = new ConcurrentLinkedQueue<>();
-        ConcurrentLinkedQueue<MockFluxHttpResponse> responses = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<MockFluxResponse<?>  responses = new ConcurrentLinkedQueue<>();
         MockFluxHttpResponse httpResponse = new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier.apply(0));
         responses.add(httpResponse);
         StreamResponse initialResponse = new StreamResponse(httpResponse);
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume = (throwable, offset) -> {
+        BiFunction<Throwable, Long, StreamResponse>> onErrorResume = (throwable, offset) -> {
             retries.incrementAndGet();
             offsets.add(offset);
             throwables.add(throwable);
             MockFluxHttpResponse newHttpResponse
                 = new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier.apply(offset.intValue()));
             responses.add(newHttpResponse);
-            return Mono.just(new StreamResponse(newHttpResponse));
+            return new StreamResponse(newHttpResponse));
         };
 
         try (FaultyAsynchronousByteChannel channel

@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.v2.util.serializer.JacksonAdapter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 

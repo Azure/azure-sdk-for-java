@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.serializer;
 
-import com.azure.core.util.CoreUtils;
+import com.azure.core.v2.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;

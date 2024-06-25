@@ -13,16 +13,15 @@ import io.clientcore.core.http.rest.PagedResponseBase;
 import io.clientcore.core.http.rest.ResponseBase;
 import io.clientcore.core.http.rest.SimpleResponse;
 import io.clientcore.core.http.rest.StreamResponse;
-import com.azure.core.implementation.serializer.HttpResponseDecodeData;
-import com.azure.core.implementation.serializer.HttpResponseDecoder;
-import com.azure.core.util.IterableStream;
-import com.azure.core.util.UrlBuilder;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.v2.implementation.serializer.HttpResponseDecodeData;
+import com.azure.core.v2.implementation.serializer.HttpResponseDecoder;
+import com.azure.core.v2.util.IterableStream;
+import io.clientcore.core.implementation.util.UrlBuilder;
+import com.azure.core.v2.util.serializer.JacksonAdapter;
+import com.azure.core.v2.util.serializer.SerializerAdapter;
+import com.azure.core.v2.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -111,18 +110,18 @@ class ResponseConstructorsCacheBenchMarkTestData {
     // Mock Http Response
     static final class MockResponse extends HttpResponse {
         private final int statusCode;
-        private final HttpHeaders headers;
-        private final Mono<byte[]> bodyBytes;
+        private final HttpHeaders headers;private final byte[]>bodyBytes;
         private final Flux<ByteBuffer> bodyBb;
-        private final Mono<String> bodyString;
+
+        private final String> bodyString;
 
         MockResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] body) {
             super(request);
             this.statusCode = statusCode;
             this.headers = headers;
-            this.bodyBytes = body == null ? Mono.empty() : Mono.just(body);
+            this.bodyBytes = body == null ? Mono.empty() : body);
             this.bodyBb = body == null ? Flux.empty() : Flux.just(ByteBuffer.wrap(body));
-            this.bodyString = body == null ? Mono.empty() : Mono.just(new String(body, Charset.defaultCharset()));
+            this.bodyString = body == null ? Mono.empty() : new String(body, Charset.defaultCharset()));
         }
 
         @Override
@@ -147,17 +146,17 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         @Override
-        public Mono<byte[]> getBodyAsByteArray() {
+        public byte[]> getBodyAsByteArray() {
             return this.bodyBytes;
         }
 
         @Override
-        public Mono<String> getBodyAsString() {
+        public String> getBodyAsString() {
             return this.bodyString;
         }
 
         @Override
-        public Mono<String> getBodyAsString(Charset charset) {
+        public String> getBodyAsString(Charset charset) {
             return this.bodyString;
         }
     }
@@ -176,31 +175,12 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final Foo FOO = new Foo().setName("foo1");
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);
     private static final byte[] STREAM_BYTE_ARRAY = new byte[1];
-    private static final Page<Foo> PAGE_FOO = new Page<Foo>() {
-        @Override
-        public IterableStream<Foo> getElements() {
-            List<Foo> items = new ArrayList<>();
-            items.add(FOO);
-            return new IterableStream<Foo>(items);
-        }
+    private static final Page<Foo> PAGE_FOO=new Page<Foo>(){@Override public IterableStream<Foo>getElements(){List<Foo>items=new ArrayList<>();items.add(FOO);return new IterableStream<Foo>(items);}
 
-        @Override
-        public String getContinuationToken() {
-            return null;
-        }
-    };
+    @Override public String getContinuationToken(){return null;}};
     private static final byte[] PAGE_FOO_BYTE_ARRAY = asJsonByteArray(PAGE_FOO);
     // MOCK RESPONSES
-    private static final Mono<Response<?>> VOID_RESPONSE
-        = Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, null));
-    private static final Mono<Response<?>> FOO_RESPONSE
-        = Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, FOO_BYTE_ARRAY));
-    private static final Mono<Response<?>> STREAM_RESPONSE
-        = Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, STREAM_BYTE_ARRAY));
-    private static final Mono<Response<?>> FOO_PAGE_RESPONSE
-        = Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, PAGE_FOO_BYTE_ARRAY));
-    private static final Mono<Response<?>> FOO_CUSTOM_HEADER_RESPONSE
-        = Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_CUSTOM_HEADERS, FOO_BYTE_ARRAY));
+    private static final Response<?>>VOID_RESPONSE=new MockResponse(HTTP_REQUEST,RESPONSE_STATUS_CODE,RESPONSE_HEADERS,null));private static final Response<?>>FOO_RESPONSE=new MockResponse(HTTP_REQUEST,RESPONSE_STATUS_CODE,RESPONSE_HEADERS,FOO_BYTE_ARRAY));private static final Response<?>>STREAM_RESPONSE=new MockResponse(HTTP_REQUEST,RESPONSE_STATUS_CODE,RESPONSE_HEADERS,STREAM_BYTE_ARRAY));private static final Response<?>>FOO_PAGE_RESPONSE=new MockResponse(HTTP_REQUEST,RESPONSE_STATUS_CODE,RESPONSE_HEADERS,PAGE_FOO_BYTE_ARRAY));private static final Response<?>>FOO_CUSTOM_HEADER_RESPONSE=new MockResponse(HTTP_REQUEST,RESPONSE_STATUS_CODE,RESPONSE_CUSTOM_HEADERS,FOO_BYTE_ARRAY));
     // ARRAY HOLDING TEST DATA
     private final Input[] inputs;
 
@@ -243,7 +223,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
         private final HttpResponseDecoder.HttpDecodedResponse decodedResponse;
         private final Object bodyAsObject;
 
-        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, Mono<Response<?>> httpResponse,
+        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, Response<?>> httpResponse,
             Object bodyAsObject) {
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();
             this.decodedResponse = decoder.decode(httpResponse, new HttpResponseDecodeData() {

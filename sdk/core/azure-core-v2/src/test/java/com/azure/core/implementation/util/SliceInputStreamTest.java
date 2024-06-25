@@ -4,7 +4,7 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.TestByteArrayOutputStream;
-import com.azure.core.util.mocking.MockInputStream;
+import com.azure.core.v2.util.mocking.MockInputStream;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

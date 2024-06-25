@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.implementation;
 
-import com.azure.core.util.CoreUtils;
+import com.azure.core.v2.util.CoreUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;

@@ -6,7 +6,7 @@ package com.azure.core.implementation;
 import io.clientcore.core.http.pipeline.ExponentialBackoffOptions;
 import io.clientcore.core.http.pipeline.FixedDelayOptions;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.v2.util.FluxUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;

@@ -7,10 +7,8 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.rest.Response;
-import com.azure.core.implementation.serializer.HttpResponseDecoder;
-import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
+import com.azure.core.v2.implementation.serializer.HttpResponseDecoder;
+import io.clientcore.core.util.ClientLogger;
 
 import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;
@@ -85,7 +83,7 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
                                 .getTarget());
                     }
                 } catch (Throwable t) {
-                    throw logger.logExceptionAsError(new RuntimeException(t));
+                    throw logger.logThrowableAsError(new RuntimeException(t));
                 }
             }
         }
@@ -118,7 +116,7 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
          * @param bodyAsObject the http response content
          * @return an instance of a {@link Response} implementation
          */
-        Mono<Response<?>> invoke(final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
+        Response<?>> invoke(final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
             final Object bodyAsObject) {
             final HttpResponse httpResponse = decodedResponse.getSourceResponse();
             final HttpRequest httpRequest = httpResponse.getRequest();
@@ -143,9 +141,9 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
         }
     }
 
-    private static Mono<Response<?>> callMethodHandle(MethodHandle methodHandle, Object... params) {
+    private static Response<?>> callMethodHandle(MethodHandle methodHandle, Object... params) {
         try {
-            return Mono.just((Response<?>) methodHandle.invoke(params));
+            return (Response<?>) methodHandle.invoke(params));
         } catch (Throwable t) {
             throw Exceptions.propagate(t);
         }

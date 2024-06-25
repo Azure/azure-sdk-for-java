@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -90,7 +89,7 @@ public class ContextTests {
 
     @Test
     public void getValueKeyCannotBeNull() {
-        assertThrows(IllegalArgumentException.class, () -> Context.NONE.getData(null));
+        assertThrows(IllegalArgumentException.class, () -> Context.none().getData(null));
     }
 
     @ParameterizedTest
@@ -101,7 +100,7 @@ public class ContextTests {
 
     @Test
     public void getContextChain() {
-        Context context = Context.NONE.addData("key", "value");
+        Context context = Context.none().addData("key", "value");
         Context[] chain = context.getContextChain();
         assertEquals(1, chain.length);
         assertEquals("value", chain[0].getValue());
@@ -121,7 +120,7 @@ public class ContextTests {
 
         Context contextWithMultipleSameKeys = new Context("key", "value").addData("key", "value2");
 
-        return Stream.of(Arguments.of(Context.NONE, Collections.emptyMap()),
+        return Stream.of(Arguments.of(Context.none(), Collections.emptyMap()),
             Arguments.of(new Context("key", "value"), Collections.singletonMap("key", "value")),
             Arguments.of(contextWithMultipleKeys, expectedMultipleKeys),
             Arguments.of(contextWithMultipleSameKeys, Collections.singletonMap("key", "value2")));

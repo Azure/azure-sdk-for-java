@@ -5,7 +5,7 @@ package com.azure.core.implementation.http;
 
 import io.clientcore.core.http.HttpClient;
 import io.clientcore.core.http.HttpClientProvider;
-import com.azure.core.util.HttpClientOptions;
+import com.azure.core.v2.util.HttpClientOptions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

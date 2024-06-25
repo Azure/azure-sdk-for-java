@@ -7,10 +7,8 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.rest.Response;
-import com.azure.core.implementation.serializer.HttpResponseDecoder;
-import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
+import com.azure.core.v2.implementation.serializer.HttpResponseDecoder;
+import io.clientcore.core.util.ClientLogger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -35,14 +33,16 @@ class ResponseConstructorsNoCacheReflection {
                 try {
                     return (Constructor<? extends Response<?>>) constructor;
                 } catch (Throwable t) {
-                    throw logger.logExceptionAsError(new RuntimeException(t));
+                    throw logger.logThrowableAsError(new RuntimeException(t));
                 }
             }
         }
         return null;
     }
 
-    Mono<Response<?>> invoke(final Constructor<? extends Response<?>> constructor,
+    Response<?>>
+
+    invoke(final Constructor<? extends Response<?>> constructor,
         final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
         final HttpResponse httpResponse = decodedResponse.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
@@ -62,15 +62,15 @@ class ResponseConstructorsNoCacheReflection {
                     decodedResponse.getDecodedHeaders());
 
             default:
-                throw logger.logExceptionAsError(
+                throw logger.logThrowableAsError(
                     new IllegalStateException("Response constructor with expected parameters not found."));
         }
     }
 
-    private static Mono<Response<?>> constructResponse(Constructor<? extends Response<?>> constructor,
+    private static Response<?>> constructResponse(Constructor<? extends Response<?>> constructor,
         Object... params) {
         try {
-            return Mono.just(constructor.newInstance(params));
+            return constructor.newInstance(params));
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException ex) {
             throw Exceptions.propagate(ex);
         }

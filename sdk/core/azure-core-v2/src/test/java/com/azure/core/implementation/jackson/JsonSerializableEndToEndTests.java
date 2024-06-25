@@ -3,9 +3,9 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.v2.util.serializer.JacksonAdapter;
+import com.azure.core.v2.util.serializer.SerializerAdapter;
+import com.azure.core.v2.util.serializer.SerializerEncoding;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;

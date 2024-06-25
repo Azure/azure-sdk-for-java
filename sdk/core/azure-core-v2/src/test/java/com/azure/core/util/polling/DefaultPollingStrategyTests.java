@@ -15,10 +15,10 @@ import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.rest.Response;
 import io.clientcore.core.http.rest.SimpleResponse;
 import io.clientcore.core.util.Context;
-import com.azure.core.util.serializer.TypeReference;
+import com.azure.core.v2.util.serializer.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -40,7 +40,7 @@ public class DefaultPollingStrategyTests {
         String mockPollUrl = "http://localhost/poll";
         String finalResultUrl = "http://localhost/final";
 
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
                 new HttpHeaders().set(HttpHeaderName.LOCATION, mockPollUrl), new TestPollResult("InProgress"));
@@ -51,7 +51,7 @@ public class DefaultPollingStrategyTests {
         AtomicReference<Context> lastContext = new AtomicReference<>();
         HttpClient httpClient = getHttpClient(mockPollUrl, finalResultUrl, pollRequest, lastContext);
 
-        // PollingStrategy with context = Context.NONE
+        // PollingStrategy with context = Context.none()
         PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new DefaultPollingStrategy<>(createPipeline(httpClient), null, null),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
@@ -60,7 +60,7 @@ public class DefaultPollingStrategyTests {
             .expectSubscription()
             .expectNext(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
             .verifyComplete();
-        Assertions.assertEquals(Context.NONE, lastContext.get());
+        Assertions.assertEquals(Context.none(), lastContext.get());
 
         // PollingStrategy with context
         final Context context = new Context("key", "value");
@@ -75,7 +75,7 @@ public class DefaultPollingStrategyTests {
         Assertions.assertEquals("value", lastContext.get().getData("key").orElse(null));
 
         pollerFlux = PollerFlux.create(Duration.ofMillis(1), activationOperation::get,
-            new DefaultPollingStrategy<>(createPipeline(httpClient), null, Context.NONE), POLL_RESULT_TYPE_REFERENCE,
+            new DefaultPollingStrategy<>(createPipeline(httpClient), null, Context.none()), POLL_RESULT_TYPE_REFERENCE,
             POLL_RESULT_TYPE_REFERENCE);
 
         StepVerifier
@@ -93,19 +93,19 @@ public class DefaultPollingStrategyTests {
         AtomicReference<Context> lastContext) {
         return new HttpClient() {
             @Override
-            public Mono<Response<?>> send(HttpRequest request) {
-                return send(request, Context.NONE);
+            public Response<?>> send(HttpRequest request) {
+                return send(request);
             }
 
             @Override
-            public Mono<Response<?>> send(HttpRequest request, Context context) {
+            public Response<?>> send(HttpRequest request, Context context) {
                 lastContext.set(context);
                 if (mockPollUrl.equals(request.getUrl().toString())) {
-                    return Mono.just(new MockHttpResponse(pollRequest, 200,
+                    return new MockHttpResponse(pollRequest, 200,
                         new HttpHeaders().set(HttpHeaderName.LOCATION, finalResultUrl),
                         new TestPollResult("Succeeded")));
                 } else if (finalResultUrl.equals(request.getUrl().toString())) {
-                    return Mono.just(
+                    return
                         new MockHttpResponse(pollRequest, 200, new HttpHeaders(), new TestPollResult("final-state")));
                 } else {
                     return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));

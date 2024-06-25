@@ -15,12 +15,12 @@ public class ContextsTest {
     public void createFromEmpty() {
         Contexts contexts = Contexts.empty();
 
-        assertSame(Context.NONE, contexts.getContext());
+        assertSame(Context.none(), contexts.getContext());
     }
 
     @Test
     public void createFromExisting() {
-        Context context = Context.NONE.addData("foo", "bar");
+        Context context = Context.none().addData("foo", "bar");
         Contexts contexts = Contexts.with(context);
 
         assertSame(context, contexts.getContext());

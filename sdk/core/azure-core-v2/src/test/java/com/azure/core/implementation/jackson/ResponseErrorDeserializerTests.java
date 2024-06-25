@@ -3,9 +3,9 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.models.ResponseError;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.v2.models.ResponseError;
+import com.azure.core.v2.util.serializer.JacksonAdapter;
+import com.azure.core.v2.util.serializer.SerializerEncoding;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;

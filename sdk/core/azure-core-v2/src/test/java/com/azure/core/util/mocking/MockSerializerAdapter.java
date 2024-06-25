@@ -4,9 +4,9 @@
 package com.azure.core.util.mocking;
 
 import io.clientcore.core.http.models.HttpHeaders;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.v2.util.serializer.CollectionFormat;
+import com.azure.core.v2.util.serializer.SerializerAdapter;
+import com.azure.core.v2.util.serializer.SerializerEncoding;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

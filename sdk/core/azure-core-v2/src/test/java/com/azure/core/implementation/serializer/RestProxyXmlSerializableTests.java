@@ -3,13 +3,13 @@
 
 package com.azure.core.implementation.serializer;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.exception.HttpResponseException;
+import com.azure.core.v2.annotation.BodyParam;
+import com.azure.core.v2.annotation.ExpectedResponses;
+import com.azure.core.v2.annotation.Get;
+import com.azure.core.v2.annotation.Host;
+import com.azure.core.v2.annotation.Put;
+import com.azure.core.v2.annotation.ServiceInterface;
+import com.azure.core.v2.exception.HttpResponseException;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.HttpPipeline;
@@ -18,7 +18,6 @@ import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.rest.RestProxy;
 import com.azure.xml.XmlSerializable;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
@@ -62,7 +61,7 @@ public class RestProxyXmlSerializableTests {
             } else {
                 assertEquals(doubleQuoteXmlDeclaration + expectedBody, body);
             }
-            return Mono.just(new MockHttpResponse(request, 200));
+            return new MockHttpResponse(request, 200));
         }).build();
 
         SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline);
@@ -74,7 +73,7 @@ public class RestProxyXmlSerializableTests {
         String response = "<?xml version=\"1.0\" encoding=\"utf-8\"?><SimpleXml boolean=\"true\" decimal=\"10.0\">"
             + "<int>10</int><string>10</string></SimpleXml>";
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> Mono.just(
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request ->
             new MockHttpResponse(request, 200, new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml"),
                 response.getBytes(StandardCharsets.UTF_8))))
             .build();
@@ -94,7 +93,7 @@ public class RestProxyXmlSerializableTests {
         String response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<SimpleXml boolean=\"true\" decimal=\"10.0\"></SimpleXml>";
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> Mono.just(
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request ->
             new MockHttpResponse(request, 200, new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml"),
                 response.getBytes(StandardCharsets.UTF_8))))
             .build();

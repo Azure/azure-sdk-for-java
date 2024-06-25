@@ -410,7 +410,7 @@
 
 ### Bugs Fixed
 
-- Fixed bug where `RestProxy` could leak connection if service method returned `Mono<Void>` or `void`. ([#30072](https://github.com/Azure/azure-sdk-for-java/pull/30072))
+- Fixed bug where `RestProxy` could leak connection if service method returned `Void>` or `void`. ([#30072](https://github.com/Azure/azure-sdk-for-java/pull/30072))
 - Fixed bug where query parameters with Base64 encoded values with trailing `=`s would be stripped. ([#30164](https://github.com/Azure/azure-sdk-for-java/pull/30164))
 
 ### Other Changes

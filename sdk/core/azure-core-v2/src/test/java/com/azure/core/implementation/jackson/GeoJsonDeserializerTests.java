@@ -3,20 +3,20 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.models.GeoBoundingBox;
-import com.azure.core.models.GeoCollection;
-import com.azure.core.models.GeoLineString;
-import com.azure.core.models.GeoLineStringCollection;
-import com.azure.core.models.GeoLinearRing;
-import com.azure.core.models.GeoObject;
-import com.azure.core.models.GeoPoint;
-import com.azure.core.models.GeoPointCollection;
-import com.azure.core.models.GeoPolygon;
-import com.azure.core.models.GeoPolygonCollection;
-import com.azure.core.models.GeoPosition;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.v2.models.GeoBoundingBox;
+import com.azure.core.v2.models.GeoCollection;
+import com.azure.core.v2.models.GeoLineString;
+import com.azure.core.v2.models.GeoLineStringCollection;
+import com.azure.core.v2.models.GeoLinearRing;
+import com.azure.core.v2.models.GeoObject;
+import com.azure.core.v2.models.GeoPoint;
+import com.azure.core.v2.models.GeoPointCollection;
+import com.azure.core.v2.models.GeoPolygon;
+import com.azure.core.v2.models.GeoPolygonCollection;
+import com.azure.core.v2.models.GeoPosition;
+import com.azure.core.v2.util.serializer.JacksonAdapter;
+import com.azure.core.v2.util.serializer.SerializerAdapter;
+import com.azure.core.v2.util.serializer.SerializerEncoding;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

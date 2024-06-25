@@ -3,8 +3,8 @@
 
 package com.azure.core.models;
 
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.PollOperationDetails;
+import com.azure.core.v2.util.BinaryData;
+import com.azure.core.v2.util.polling.PollOperationDetails;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

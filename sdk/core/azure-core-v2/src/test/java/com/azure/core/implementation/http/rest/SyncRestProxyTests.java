@@ -3,13 +3,13 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.v2.annotation.BodyParam;
+import com.azure.core.v2.annotation.ExpectedResponses;
+import com.azure.core.v2.annotation.Get;
+import com.azure.core.v2.annotation.HeaderParam;
+import com.azure.core.v2.annotation.Host;
+import com.azure.core.v2.annotation.Post;
+import com.azure.core.v2.annotation.ServiceInterface;
 import io.clientcore.core.http.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.HttpMethod;
@@ -22,13 +22,12 @@ import io.clientcore.core.http.rest.RequestOptions;
 import io.clientcore.core.http.rest.Response;
 import io.clientcore.core.http.rest.RestProxy;
 import io.clientcore.core.http.rest.StreamResponse;
-import com.azure.core.util.BinaryData;
+import com.azure.core.v2.util.BinaryData;
 import io.clientcore.core.util.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collections;
@@ -68,7 +67,7 @@ public class SyncRestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        testInterface.testVoidMethod(Context.NONE);
+        testInterface.testVoidMethod(Context.none());
 
         assertTrue(client.lastResponseClosed);
     }
@@ -78,13 +77,13 @@ public class SyncRestProxyTests {
         AtomicBoolean asyncMethodCalled = new AtomicBoolean(false);
         HttpClient client = new HttpClient() {
             @Override
-            public Mono<Response<?>> send(HttpRequest request) {
+            public Response<?>> send(HttpRequest request) {
                 asyncMethodCalled.set(true);
-                return Mono.just(new MockHttpResponse(request, 200));
+                return new MockHttpResponse(request, 200));
             }
 
             @Override
-            public HttpResponse sendSync(HttpRequest request, Context context) {
+            public Response<?> send(HttpRequest request) {
                 throw new IllegalStateException("Sync send API was Invoked.");
             }
         };
@@ -105,7 +104,7 @@ public class SyncRestProxyTests {
         byte[] bytes = "hello".getBytes();
         Response<Void> response
             = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),
-                "application/json", (long) bytes.length, Context.NONE);
+                "application/json", (long) bytes.length, Context.none());
         assertEquals(200, response.getStatusCode());
     }
 
@@ -115,7 +114,7 @@ public class SyncRestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StreamResponse streamResponse = testInterface.testDownload(Context.NONE);
+        StreamResponse streamResponse = testInterface.testDownload(Context.none());
         streamResponse.close();
         // This indirectly tests that StreamResponse has HttpResponse reference
         assertTrue(client.lastResponseClosed);
@@ -126,12 +125,12 @@ public class SyncRestProxyTests {
         private volatile boolean lastResponseClosed;
 
         @Override
-        public Mono<Response<?>> send(HttpRequest request) {
+        public Response<?>> send(HttpRequest request) {
             return Mono.error(new IllegalStateException("Async Send API was Invoked."));
         }
 
         @Override
-        public HttpResponse sendSync(HttpRequest request, Context context) {
+        public Response<?> send(HttpRequest request) {
             boolean success = request.getUrl().getPath().equals("/my/url/path");
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
                 success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
@@ -171,12 +170,12 @@ public class SyncRestProxyTests {
 
         return Stream.of(
             // Cases where the RequestOptions or it's Context doesn't exist.
-            Arguments.of(Context.NONE, null, Collections.emptyMap()),
-            Arguments.of(Context.NONE, new RequestOptions(), Collections.emptyMap()),
-            Arguments.of(Context.NONE, new RequestOptions().setContext(Context.NONE), Collections.emptyMap()),
+            Arguments.of(Context.none(), null, Collections.emptyMap()),
+            Arguments.of(Context.none(), new RequestOptions(), Collections.emptyMap()),
+            Arguments.of(Context.none(), new RequestOptions().setContext(Context.none()), Collections.emptyMap()),
 
             // Case where the RequestOptions Context is merged into an empty Context.
-            Arguments.of(Context.NONE, new RequestOptions().setContext(new Context("key", "value")),
+            Arguments.of(Context.none(), new RequestOptions().setContext(new Context("key", "value")),
                 Collections.singletonMap("key", "value")),
 
             // Case where the RequestOptions Context is merged, without replacement, into an existing Context.

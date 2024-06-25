@@ -4,7 +4,7 @@
 package com.azure.core.util.metrics;
 
 import io.clientcore.core.util.Context;
-import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.v2.util.TelemetryAttributes;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -38,7 +38,7 @@ public class NoopMeterTests {
         TelemetryAttributes attributes = noopMeter.createAttributes(Collections.singletonMap("foo", 42L));
         assertNotNull(attributes);
 
-        histogram.record(42L, attributes, Context.NONE);
+        histogram.record(42L, attributes, Context.none());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class NoopMeterTests {
         LongCounter counter = noopMeter.createLongCounter("name", "description", null);
         assertFalse(counter.isEnabled());
         TelemetryAttributes attributes = noopMeter.createAttributes(Collections.singletonMap("foo", 0.42d));
-        counter.add(42L, attributes, Context.NONE);
+        counter.add(42L, attributes, Context.none());
     }
 
     @Test
@@ -67,7 +67,7 @@ public class NoopMeterTests {
         LongCounter counter = noopMeter.createLongUpDownCounter("name", "description", null);
         assertFalse(counter.isEnabled());
         TelemetryAttributes attributes = noopMeter.createAttributes(Collections.emptyMap());
-        counter.add(42L, attributes, Context.NONE);
+        counter.add(42L, attributes, Context.none());
     }
 
     @Test

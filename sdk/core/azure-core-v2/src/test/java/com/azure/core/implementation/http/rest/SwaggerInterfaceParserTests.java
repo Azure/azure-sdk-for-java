@@ -3,10 +3,10 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.v2.annotation.ExpectedResponses;
+import com.azure.core.v2.annotation.Get;
+import com.azure.core.v2.annotation.Host;
+import com.azure.core.v2.annotation.ServiceInterface;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;

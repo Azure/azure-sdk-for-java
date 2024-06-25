@@ -3,23 +3,23 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.FileContent;
-import com.azure.core.implementation.util.FluxByteBufferContent;
-import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
-import com.azure.core.implementation.util.MyFileContent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.mocking.MockAsynchronousFileChannel;
-import com.azure.core.util.mocking.MockFile;
-import com.azure.core.util.mocking.MockFileContent;
-import com.azure.core.util.mocking.MockFileInputStream;
-import com.azure.core.util.mocking.MockPath;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.ObjectSerializer;
-import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.core.util.serializer.TypeReference;
+import com.azure.core.v2.implementation.util.BinaryDataContent;
+import com.azure.core.v2.implementation.util.BinaryDataHelper;
+import com.azure.core.v2.implementation.util.FileContent;
+import com.azure.core.v2.implementation.util.FluxByteBufferContent;
+import com.azure.core.v2.implementation.util.IterableOfByteBuffersInputStream;
+import com.azure.core.v2.implementation.util.MyFileContent;
+import io.clientcore.core.util.ClientLogger;
+import com.azure.core.v2.util.mocking.MockAsynchronousFileChannel;
+import com.azure.core.v2.util.mocking.MockFile;
+import com.azure.core.v2.util.mocking.MockFileContent;
+import com.azure.core.v2.util.mocking.MockFileInputStream;
+import com.azure.core.v2.util.mocking.MockPath;
+import com.azure.core.v2.util.serializer.JacksonAdapter;
+import com.azure.core.v2.util.serializer.JsonSerializer;
+import com.azure.core.v2.util.serializer.ObjectSerializer;
+import com.azure.core.v2.util.serializer.SerializerEncoding;
+import com.azure.core.v2.util.serializer.TypeReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -31,7 +31,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
 import reactor.core.publisher.SynchronousSink;
 import reactor.test.StepVerifier;
 
@@ -68,7 +68,7 @@ import java.util.stream.Stream;
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.CoreTestUtils.fillArray;
 import static com.azure.core.CoreTestUtils.readStream;
-import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
+import static com.azure.core.v2.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -232,7 +232,7 @@ public class BinaryDataTest {
 
     @ParameterizedTest
     @MethodSource("createFromFluxEagerlySupplier")
-    public void createFromFluxEagerly(Mono<BinaryData> binaryDataMono, byte[] expectedBytes, int expectedCount) {
+    public void createFromFluxEagerly(BinaryData> binaryDataMono, byte[] expectedBytes, int expectedCount) {
         StepVerifier.create(binaryDataMono).assertNext(actual -> {
             assertArraysEqual(expectedBytes, actual.toBytes());
             assertEquals(expectedBytes.length, actual.getLength());
@@ -553,7 +553,7 @@ public class BinaryDataTest {
 
     @Test
     public void fluxContent() {
-        Mono<BinaryData> binaryDataMono = BinaryData.fromFlux(
+        BinaryData> binaryDataMono = BinaryData.fromFlux(
             Flux.just(ByteBuffer.wrap("Hello".getBytes(StandardCharsets.UTF_8))).delayElements(Duration.ofMillis(10)));
 
         StepVerifier.create(binaryDataMono)
@@ -1074,7 +1074,7 @@ public class BinaryDataTest {
         ThreadLocalRandom.current().nextBytes(data);
         byte[] expectedData = CoreUtils.clone(data);
 
-        Mono<BinaryDataContent> binaryDataContentMono
+        BinaryDataContent> binaryDataContentMono
             = new FluxByteBufferContent(Flux.just(ByteBuffer.wrap(data))).toReplayableContentAsync();
 
         StepVerifier.create(binaryDataContentMono)
@@ -1142,12 +1142,12 @@ public class BinaryDataTest {
             try {
                 return mapper.readValue(stream, typeFactory.constructType(typeReference.getJavaType()));
             } catch (IOException ex) {
-                throw logger.logExceptionAsError(new UncheckedIOException(ex));
+                throw logger.logThrowableAsError(new UncheckedIOException(ex));
             }
         }
 
         @Override
-        public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+        public <T> T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
             return Mono.fromCallable(() -> deserialize(stream, typeReference));
         }
 
@@ -1156,12 +1156,12 @@ public class BinaryDataTest {
             try {
                 mapper.writeValue(stream, value);
             } catch (IOException ex) {
-                throw logger.logExceptionAsError(new UncheckedIOException(ex));
+                throw logger.logThrowableAsError(new UncheckedIOException(ex));
             }
         }
 
         @Override
-        public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+        public Void> serializeAsync(OutputStream stream, Object value) {
             return Mono.fromRunnable(() -> serialize(stream, value));
         }
     }

@@ -3,11 +3,11 @@
 
 package com.azure.core.models;
 
-import com.azure.core.implementation.serializer.DefaultJsonSerializer;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.v2.implementation.serializer.DefaultJsonSerializer;
+import com.azure.core.v2.util.serializer.JacksonAdapter;
+import com.azure.core.v2.util.serializer.JsonSerializer;
+import com.azure.core.v2.util.serializer.SerializerAdapter;
+import com.azure.core.v2.util.serializer.SerializerEncoding;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

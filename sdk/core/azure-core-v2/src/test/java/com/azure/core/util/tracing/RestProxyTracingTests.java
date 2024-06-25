@@ -5,12 +5,12 @@ package com.azure.core.util.tracing;
 
 import com.azure.core.SyncAsyncExtension;
 import com.azure.core.SyncAsyncTest;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.v2.annotation.ExpectedResponses;
+import com.azure.core.v2.annotation.Get;
+import com.azure.core.v2.annotation.Host;
+import com.azure.core.v2.annotation.Post;
+import com.azure.core.v2.annotation.Put;
+import com.azure.core.v2.annotation.ServiceInterface;
 import io.clientcore.core.http.HttpClient;
 import io.clientcore.core.http.HttpMethod;
 import io.clientcore.core.http.HttpPipeline;
@@ -20,11 +20,11 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.rest.Response;
 import io.clientcore.core.http.rest.RestProxy;
-import com.azure.core.implementation.http.policy.InstrumentationPolicy;
+import com.azure.core.v2.implementation.http.policy.InstrumentationPolicy;
 import io.clientcore.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -56,8 +56,8 @@ public class RestProxyTracingTests {
 
     @SyncAsyncTest
     public void restProxySuccess() throws Exception {
-        SyncAsyncExtension.execute(() -> testInterface.testMethodReturnsMonoVoidSync(Context.NONE),
-            () -> testInterface.testMethodReturnsMonoVoid(Context.NONE).block());
+        SyncAsyncExtension.execute(() -> testInterface.testMethodReturnsMonoVoidSync(Context.none()),
+            () -> testInterface.testMethodReturnsMonoVoid(Context.none()).block());
 
         assertEquals(2, tracer.getSpans().size());
         Span restProxy = tracer.getSpans().get(0);
@@ -71,7 +71,7 @@ public class RestProxyTracingTests {
 
     @SyncAsyncTest
     public void restProxyNested() throws Exception {
-        Context outerSpan = tracer.start("outer", Context.NONE);
+        Context outerSpan = tracer.start("outer", Context.none());
         SyncAsyncExtension.execute(() -> testInterface.testMethodReturnsMonoVoidSync(outerSpan),
             () -> testInterface.testMethodReturnsMonoVoid(outerSpan).block());
         tracer.end(null, null, outerSpan);
@@ -229,9 +229,9 @@ public class RestProxyTracingTests {
 
     private static class SimpleMockHttpClient implements HttpClient {
         @Override
-        public Mono<Response<?>> send(HttpRequest request) {
+        public Response<?>> send(HttpRequest request) {
             if (request.getHttpMethod() == HttpMethod.GET) {
-                return Mono.just(new MockHttpResponse(request, 200));
+                return new MockHttpResponse(request, 200));
             } else if (request.getHttpMethod() == HttpMethod.PUT) {
                 return Mono.delay(Duration.ofSeconds(10)).map(l -> new MockHttpResponse(request, 200));
             } else {
@@ -240,7 +240,7 @@ public class RestProxyTracingTests {
         }
 
         @Override
-        public HttpResponse sendSync(HttpRequest request, Context context) {
+        public Response<?> send(HttpRequest request) {
             if (request.getHttpMethod() == HttpMethod.GET) {
                 return new MockHttpResponse(request, 200);
             } else {
@@ -254,7 +254,7 @@ public class RestProxyTracingTests {
     interface TestInterface {
         @Get("my/url/path")
         @ExpectedResponses({ 200 })
-        Mono<Void> testMethodReturnsMonoVoid(Context context);
+        Void> testMethodReturnsMonoVoid(Context context);
 
         @Get("my/url/path")
         @ExpectedResponses({ 200 })
@@ -262,7 +262,7 @@ public class RestProxyTracingTests {
 
         @Post("my/url/path")
         @ExpectedResponses({ 500 })
-        Mono<Void> testMethodThrows();
+        Void> testMethodThrows();
 
         @Post("my/url/path")
         @ExpectedResponses({ 500 })
@@ -270,6 +270,6 @@ public class RestProxyTracingTests {
 
         @Put("my/url/path")
         @ExpectedResponses({ 200 })
-        Mono<Void> testMethodDelays();
+        Void> testMethodDelays();
     }
 }

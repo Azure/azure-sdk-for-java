@@ -14,15 +14,15 @@ import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.pipeline.FixedDelay;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.http.pipeline.UserAgentPolicy;
-import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
-import com.azure.core.util.ConfigurationSource;
+import io.clientcore.core.util.configuration.Configuration;
+import com.azure.core.v2.util.ConfigurationBuilder;
+import com.azure.core.v2.util.ConfigurationSource;
 import io.clientcore.core.util.Context;
-import com.azure.core.util.TestConfigurationSource;
+import com.azure.core.v2.util.TestConfigurationSource;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -144,7 +144,7 @@ public class UserAgentTests {
             .policies(userAgentPolicy)
             .build();
 
-        try (HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost"),
+        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost"),
             new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent))) {
             assertEquals(200, response.getStatusCode());
         }
@@ -205,13 +205,13 @@ public class UserAgentTests {
         }
 
         @Override
-        public Mono<Response<?>> send(HttpRequest request) {
+        public Response<?>> send(HttpRequest request) {
             validator.accept(request);
-            return Mono.just(new MockHttpResponse(request, 200));
+            return new MockHttpResponse(request, 200));
         }
 
         @Override
-        public HttpResponse sendSync(HttpRequest request, Context context) {
+        public Response<?> send(HttpRequest request) {
             validator.accept(request);
             return new MockHttpResponse(request, 200);
         }
@@ -226,14 +226,14 @@ public class UserAgentTests {
         }
 
         @Override
-        public Mono<Response<?>> send(HttpRequest request) {
+        public Response<?>> send(HttpRequest request) {
             if (retryCount < 5) {
                 retryCount++;
                 return Mono.error(new RuntimeException("Activating retry policy"));
             }
 
             validator.accept(request);
-            return Mono.just(new MockHttpResponse(request, 200));
+            return new MockHttpResponse(request, 200));
         }
     }
 }

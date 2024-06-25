@@ -3,7 +3,7 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.implementation.util.EnvironmentConfiguration;
+import com.azure.core.v2.implementation.util.EnvironmentConfiguration;
 import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;

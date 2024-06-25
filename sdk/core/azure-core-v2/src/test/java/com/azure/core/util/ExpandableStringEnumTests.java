@@ -3,8 +3,8 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.EnumWithPackagePrivateCtor;
-import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.v2.implementation.EnumWithPackagePrivateCtor;
+import io.clientcore.core.implementation.ReflectionUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

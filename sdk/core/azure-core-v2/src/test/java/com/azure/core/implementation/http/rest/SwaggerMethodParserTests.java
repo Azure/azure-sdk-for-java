@@ -3,28 +3,28 @@
 
 package com.azure.core.implementation.http.rest;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.FormParam;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Head;
-import com.azure.core.annotation.HeaderParam;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Options;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
-import com.azure.core.annotation.ReturnValueWireType;
-import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.v2.annotation.BodyParam;
+import com.azure.core.v2.annotation.Delete;
+import com.azure.core.v2.annotation.ExpectedResponses;
+import com.azure.core.v2.annotation.FormParam;
+import com.azure.core.v2.annotation.Get;
+import com.azure.core.v2.annotation.Head;
+import com.azure.core.v2.annotation.HeaderParam;
+import com.azure.core.v2.annotation.Headers;
+import com.azure.core.v2.annotation.Host;
+import com.azure.core.v2.annotation.HostParam;
+import com.azure.core.v2.annotation.Options;
+import com.azure.core.v2.annotation.Patch;
+import com.azure.core.v2.annotation.PathParam;
+import com.azure.core.v2.annotation.Post;
+import com.azure.core.v2.annotation.Put;
+import com.azure.core.v2.annotation.QueryParam;
+import com.azure.core.v2.annotation.ReturnValueWireType;
+import com.azure.core.v2.annotation.ServiceInterface;
+import com.azure.core.v2.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.v2.exception.HttpResponseException;
+import com.azure.core.v2.exception.ResourceModifiedException;
+import com.azure.core.v2.exception.ResourceNotFoundException;
 import io.clientcore.core.http.ContentType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -36,21 +36,20 @@ import io.clientcore.core.http.rest.Response;
 import io.clientcore.core.http.rest.ResponseBase;
 import io.clientcore.core.http.rest.SimpleResponse;
 import io.clientcore.core.http.rest.StreamResponse;
-import com.azure.core.implementation.TypeUtil;
-import com.azure.core.models.JsonPatchDocument;
-import com.azure.core.util.Base64Url;
-import com.azure.core.util.BinaryData;
+import com.azure.core.v2.implementation.TypeUtil;
+import com.azure.core.v2.models.JsonPatchDocument;
+import io.clientcore.core.implementation.util.Base64Url;
+import com.azure.core.v2.util.BinaryData;
 import io.clientcore.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.UrlBuilder;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
+import io.clientcore.core.implementation.util.DateTimeRfc1123;
+import io.clientcore.core.implementation.util.UrlBuilder;
+import com.azure.core.v2.util.serializer.JacksonAdapter;
+import com.azure.core.v2.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -535,8 +534,8 @@ public class SwaggerMethodParserTests {
 
         Context context = new Context("key", "value");
 
-        return Stream.of(Arguments.of(swaggerMethodParser, toObjectArray(Context.NONE), Context.NONE),
-            Arguments.of(swaggerMethodParser, toObjectArray((Object) null), Context.NONE),
+        return Stream.of(Arguments.of(swaggerMethodParser, toObjectArray(Context.none()), Context.none()),
+            Arguments.of(swaggerMethodParser, toObjectArray((Object) null), Context.none()),
             Arguments.of(swaggerMethodParser, toObjectArray(context), context));
     }
 

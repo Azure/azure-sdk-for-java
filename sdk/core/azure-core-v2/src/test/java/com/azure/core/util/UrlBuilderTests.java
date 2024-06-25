@@ -6,7 +6,7 @@ package com.azure.core.util;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -720,7 +720,7 @@ public class UrlBuilderTests {
     @Test
     public void fluxParallelParsing() {
         AtomicInteger callCount = new AtomicInteger();
-        Mono<Void> mono = Flux.range(0, 20000)
+        Void> mono = Flux.range(0, 20000)
             .parallel(Runtime.getRuntime().availableProcessors())
             .runOn(Schedulers.boundedElastic())
             .map(i -> {

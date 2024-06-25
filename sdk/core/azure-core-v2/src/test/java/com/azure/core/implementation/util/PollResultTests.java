@@ -3,8 +3,8 @@
 
 package com.azure.core.implementation.util;
 
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.implementation.PollResult;
+import com.azure.core.v2.util.polling.LongRunningOperationStatus;
+import com.azure.core.v2.util.polling.implementation.PollResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

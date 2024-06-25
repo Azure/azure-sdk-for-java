@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.models.jsonflatten;
 
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.v2.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;

@@ -9,7 +9,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
@@ -36,13 +36,13 @@ public class HttpResponseTests {
 
     // A Type to mimic Response with body content released/disposed as it consumed
     private static class SelfDisposedHttpResponse extends HttpResponse {
-        private final Mono<ByteBuffer> contentMono;
+        private final ByteBuffer>contentMono;
         private final HttpHeaders headers = new HttpHeaders();
         private volatile boolean consumed;
 
         protected SelfDisposedHttpResponse() {
             super(new HttpRequest(HttpMethod.GET, "http://localhost"));
-            this.contentMono = Mono.just(ByteBuffer.wrap("long_long_content".getBytes()));
+            this.contentMono = ByteBuffer.wrap("long_long_content".getBytes()));
         }
 
         Flux<ByteBuffer> getInnerContentFlux() {
@@ -75,17 +75,17 @@ public class HttpResponseTests {
         }
 
         @Override
-        public Mono<byte[]> getBodyAsByteArray() {
+        public byte[]> getBodyAsByteArray() {
             return this.getBody().map(bb -> new byte[bb.remaining()]).next();
         }
 
         @Override
-        public Mono<String> getBodyAsString() {
+        public String> getBodyAsString() {
             throw new RuntimeException("Not implemented");
         }
 
         @Override
-        public Mono<String> getBodyAsString(Charset charset) {
+        public String> getBodyAsString(Charset charset) {
             throw new RuntimeException("Not implemented");
         }
     }

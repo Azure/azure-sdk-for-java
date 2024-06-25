@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.util.ExpandableStringEnum;
+import com.azure.core.v2.util.ExpandableStringEnum;
 
 public class EnumWithPackagePrivateCtor extends ExpandableStringEnum<EnumWithPackagePrivateCtor> {
     @Deprecated

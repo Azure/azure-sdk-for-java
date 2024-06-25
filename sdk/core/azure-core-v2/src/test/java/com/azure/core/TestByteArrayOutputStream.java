@@ -3,7 +3,7 @@
 
 package com.azure.core;
 
-import com.azure.core.implementation.AccessibleByteArrayOutputStream;
+import com.azure.core.v2.implementation.AccessibleByteArrayOutputStream;
 
 import java.util.Arrays;
 

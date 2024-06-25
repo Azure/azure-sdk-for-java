@@ -5,7 +5,7 @@ package com.azure.core.util.polling;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -87,25 +87,25 @@ public class PollerTests {
         PollResponse<TestResponse> response4
             = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, new TestResponse("4"), retryAfter);
 
-        Function<PollingContext<TestResponse>, Mono<TestResponse>> activationOperation = ignored -> Mono.empty();
+        Function<PollingContext<TestResponse>, TestResponse>> activationOperation = ignored -> null;
 
         int[] callCount = new int[1];
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = ignored -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = ignored -> {
             switch (callCount[0]++) {
                 case 0:
-                    return Mono.just(response0);
+                    return response0);
 
                 case 1:
-                    return Mono.just(response1);
+                    return response1);
 
                 case 2:
-                    return Mono.just(response2);
+                    return response2);
 
                 case 3:
-                    return Mono.just(response3);
+                    return response3);
 
                 case 4:
-                    return Mono.just(response4);
+                    return response4);
 
                 default:
                     return Mono.error(new IllegalStateException("Too many requests"));
@@ -131,14 +131,14 @@ public class PollerTests {
     @Test
     public void noPollingForSynchronouslyCompletedActivationTest() {
         int[] activationCallCount = new int[1];
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> activationOperationWithResponse
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> activationOperationWithResponse
             = ignored -> Mono.fromCallable(() -> {
                 activationCallCount[0]++;
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                     new TestResponse("ActivationDone"));
             });
 
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = ignored -> Mono
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = ignored -> Mono
             .error(new RuntimeException("Polling shouldn't happen for synchronously completed activation."));
 
         PollerFlux<TestResponse, CertificateOutput> pollerFlux = create(Duration.ofMillis(10),
@@ -156,19 +156,19 @@ public class PollerTests {
     @Test
     public void noPollingForSynchronouslyCompletedActivationInSyncPollerTest() {
         int[] activationCallCount = new int[1];
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> activationOperationWithResponse
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> activationOperationWithResponse
             = ignored -> Mono.fromCallable(() -> {
                 activationCallCount[0]++;
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                     new TestResponse("ActivationDone"));
             });
 
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = ignored -> Mono
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = ignored -> Mono
             .error(new RuntimeException("Polling shouldn't happen for synchronously completed activation."));
 
         SyncPoller<TestResponse, CertificateOutput> syncPoller
             = create(Duration.ofMillis(10), activationOperationWithResponse, pollOperation,
-                (ignored1, ignored2) -> null, ignored -> (Mono<CertificateOutput>) null).getSyncPoller();
+                (ignored1, ignored2) -> null, ignored -> (CertificateOutput>) null).getSyncPoller();
 
         try {
             PollResponse<TestResponse> response = syncPoller.waitForCompletion(Duration.ofSeconds(1));
@@ -184,7 +184,7 @@ public class PollerTests {
         final Duration retryAfter = Duration.ofMillis(10);
 
         int[] activationCallCount = new int[1];
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> activationOperationWithResponse
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> activationOperationWithResponse
             = ignored -> Mono.fromCallable(() -> {
                 activationCallCount[0]++;
                 return new PollResponse<>(IN_PROGRESS, new TestResponse("ActivationDone"));
@@ -198,19 +198,19 @@ public class PollerTests {
             = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, new TestResponse("3"), retryAfter);
 
         int[] callCount = new int[1];
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = ignored -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = ignored -> {
             switch (callCount[0]++) {
                 case 0:
-                    return Mono.just(response0);
+                    return response0);
 
                 case 1:
-                    return Mono.just(response1);
+                    return response1);
 
                 case 2:
-                    return Mono.just(response2);
+                    return response2);
 
                 case 3:
-                    return Mono.just(response3);
+                    return response3);
 
                 default:
                     return Mono.error(new IllegalStateException("Too many requests"));
@@ -242,23 +242,23 @@ public class PollerTests {
             = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, new TestResponse("2"), retryAfter);
 
         int[] activationCallCount = new int[1];
-        Function<PollingContext<TestResponse>, Mono<TestResponse>> activationOperation
+        Function<PollingContext<TestResponse>, TestResponse>> activationOperation
             = ignored -> Mono.fromCallable(() -> {
                 activationCallCount[0]++;
                 return new TestResponse("ActivationDone");
             });
 
         int[] pollCallCount = new int[1];
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = ignored -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = ignored -> {
             switch (pollCallCount[0]++) {
                 case 0:
-                    return Mono.just(response0);
+                    return response0);
 
                 case 1:
-                    return Mono.just(response1);
+                    return response1);
 
                 case 2:
-                    return Mono.just(response2);
+                    return response2);
 
                 default:
                     return Mono.error(new IllegalStateException("Too many requests"));
@@ -299,20 +299,20 @@ public class PollerTests {
             = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, new TestResponse("2"), retryAfter);
 
         final TestResponse activationResponse = new TestResponse("Foo");
-        Function<PollingContext<TestResponse>, Mono<TestResponse>> activationOperation
-            = ignored -> Mono.just(activationResponse);
+        Function<PollingContext<TestResponse>, TestResponse>> activationOperation
+            = ignored -> activationResponse);
 
         int[] callCount = new int[1];
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = ignored -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = ignored -> {
             switch (callCount[0]++) {
                 case 0:
-                    return Mono.just(response0);
+                    return response0);
 
                 case 1:
-                    return Mono.just(response1);
+                    return response1);
 
                 case 2:
-                    return Mono.just(response2);
+                    return response2);
 
                 default:
                     return Mono.error(new IllegalStateException("Too many requests"));
@@ -320,10 +320,10 @@ public class PollerTests {
         };
 
         final List<Object> cancelParameters = new ArrayList<>();
-        BiFunction<PollingContext<TestResponse>, PollResponse<TestResponse>, Mono<TestResponse>> cancelOperation
+        BiFunction<PollingContext<TestResponse>, PollResponse<TestResponse>, TestResponse>> cancelOperation
             = (pollingContext, pollResponse) -> {
                 Collections.addAll(cancelParameters, pollingContext, pollResponse);
-                return Mono.just(new TestResponse("OperationCancelled"));
+                return new TestResponse("OperationCancelled"));
             };
 
         PollerFlux<TestResponse, CertificateOutput> pollerFlux = new PollerFlux<>(Duration.ofMillis(10),
@@ -355,20 +355,20 @@ public class PollerTests {
             = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, new TestResponse("2"), retryAfter);
         final TestResponse activationResponse = new TestResponse("Foo");
 
-        Function<PollingContext<TestResponse>, Mono<TestResponse>> activationOperation
-            = ignored -> Mono.just(activationResponse);
+        Function<PollingContext<TestResponse>, TestResponse>> activationOperation
+            = ignored -> activationResponse);
 
         int[] callCount = new int[1];
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = ignored -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = ignored -> {
             switch (callCount[0]++) {
                 case 0:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("0"), retryAfter));
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), retryAfter));
 
                 case 1:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("1"), retryAfter));
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), retryAfter));
 
                 case 2:
-                    return Mono.just(response2);
+                    return response2);
 
                 default:
                     return Mono.error(new IllegalStateException("Too many requests"));
@@ -376,9 +376,9 @@ public class PollerTests {
         };
 
         final List<PollingContext<TestResponse>> fetchResultParameters = new ArrayList<>();
-        Function<PollingContext<TestResponse>, Mono<CertificateOutput>> fetchResultOperation = pollingContext -> {
+        Function<PollingContext<TestResponse>, CertificateOutput>> fetchResultOperation = pollingContext -> {
             fetchResultParameters.add(pollingContext);
-            return Mono.just(new CertificateOutput("LROFinalResult"));
+            return new CertificateOutput("LROFinalResult"));
         };
 
         PollerFlux<TestResponse, CertificateOutput> pollerFlux = new PollerFlux<>(Duration.ofMillis(10),
@@ -390,7 +390,7 @@ public class PollerTests {
         CertificateOutput lroResult = pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
             .last()
             .flatMap(
-                (Function<AsyncPollResponse<TestResponse, CertificateOutput>, Mono<CertificateOutput>>) asyncPollResponse -> {
+                (Function<AsyncPollResponse<TestResponse, CertificateOutput>, CertificateOutput>>) asyncPollResponse -> {
                     terminalAsyncResponse.set(asyncPollResponse);
                     return asyncPollResponse.getFinalResult();
                 })
@@ -409,20 +409,20 @@ public class PollerTests {
     @Test
     public void verifyExceptionPropagationFromPollingOperation() {
         final TestResponse activationResponse = new TestResponse("Foo");
-        Function<PollingContext<TestResponse>, Mono<TestResponse>> activationOperation
-            = ignored -> Mono.just(activationResponse);
+        Function<PollingContext<TestResponse>, TestResponse>> activationOperation
+            = ignored -> activationResponse);
 
         final AtomicInteger cnt = new AtomicInteger();
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = (pollingContext) -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = (pollingContext) -> {
             int count = cnt.incrementAndGet();
             if (count <= 2) {
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("1")));
+                return new PollResponse<>(IN_PROGRESS, new TestResponse("1")));
             } else if (count == 3) {
                 return Mono.error(new RuntimeException("Polling operation failed!"));
             } else if (count == 4) {
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("2")));
+                return new PollResponse<>(IN_PROGRESS, new TestResponse("2")));
             } else {
-                return Mono.just(new PollResponse<>(SUCCESSFULLY_COMPLETED, new TestResponse("3")));
+                return new PollResponse<>(SUCCESSFULLY_COMPLETED, new TestResponse("3")));
             }
         };
 
@@ -440,20 +440,20 @@ public class PollerTests {
     @Test
     public void verifyErrorFromPollingOperation() {
         final TestResponse activationResponse = new TestResponse("Foo");
-        Function<PollingContext<TestResponse>, Mono<TestResponse>> activationOperation
-            = ignored -> Mono.just(activationResponse);
+        Function<PollingContext<TestResponse>, TestResponse>> activationOperation
+            = ignored -> activationResponse);
 
         final AtomicInteger cnt = new AtomicInteger();
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = (pollingContext) -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = (pollingContext) -> {
             int count = cnt.incrementAndGet();
             if (count <= 2) {
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("1")));
+                return new PollResponse<>(IN_PROGRESS, new TestResponse("1")));
             } else if (count == 3) {
-                return Mono.just(new PollResponse<>(FAILED, new TestResponse("2")));
+                return new PollResponse<>(FAILED, new TestResponse("2")));
             } else if (count == 4) {
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("3")));
+                return new PollResponse<>(IN_PROGRESS, new TestResponse("3")));
             } else {
-                return Mono.just(new PollResponse<>(SUCCESSFULLY_COMPLETED, new TestResponse("4")));
+                return new PollResponse<>(SUCCESSFULLY_COMPLETED, new TestResponse("4")));
             }
         };
 
@@ -527,7 +527,7 @@ public class PollerTests {
     public void syncPollerShouldCallActivationFromConstructor() {
         Boolean[] activationCalled = new Boolean[1];
         activationCalled[0] = false;
-        Function<PollingContext<TestResponse>, Mono<TestResponse>> activationOperation
+        Function<PollingContext<TestResponse>, TestResponse>> activationOperation
             = ignored -> Mono.fromCallable(() -> {
                 activationCalled[0] = true;
                 return new TestResponse("ActivationDone");
@@ -542,12 +542,12 @@ public class PollerTests {
 
     @Test
     public void eachPollShouldReceiveLastPollResponse() {
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = pollingContext -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = pollingContext -> {
             Assertions.assertNotNull(pollingContext.getActivationResponse());
             Assertions.assertNotNull(pollingContext.getLatestResponse());
             PollResponse<TestResponse> latestResponse = pollingContext.getLatestResponse();
             Assertions.assertNotNull(latestResponse);
-            return Mono.just(new PollResponse<>(IN_PROGRESS,
+            return new PollResponse<>(IN_PROGRESS,
                 new TestResponse(latestResponse.getValue().toString() + "A"), Duration.ofMillis(10)));
         };
 
@@ -580,16 +580,16 @@ public class PollerTests {
         final TestResponse activationResponse = new TestResponse("Activated");
 
         int[] pollCallCount = new int[1];
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = ignored -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = ignored -> {
             switch (pollCallCount[0]++) {
                 case 0:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("0"), Duration.ofMillis(10)));
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), Duration.ofMillis(10)));
 
                 case 1:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("1"), Duration.ofMillis(10)));
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), Duration.ofMillis(10)));
 
                 case 2:
-                    return Mono.just(response2);
+                    return response2);
 
                 default:
                     return Mono.error(new IllegalStateException("Too many requests"));
@@ -612,17 +612,17 @@ public class PollerTests {
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = ignored -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = ignored -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
                 case 0:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("0"), Duration.ofMillis(10)));
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), Duration.ofMillis(10)));
 
                 case 1:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("1"), Duration.ofMillis(10)));
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), Duration.ofMillis(10)));
 
                 case 2:
-                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                         new TestResponse("2"), Duration.ofMillis(10)));
 
                 default:
@@ -630,8 +630,8 @@ public class PollerTests {
             }
         };
 
-        Function<PollingContext<TestResponse>, Mono<CertificateOutput>> fetchResultOperation
-            = ignored -> Mono.just(new CertificateOutput("cert1"));
+        Function<PollingContext<TestResponse>, CertificateOutput>> fetchResultOperation
+            = ignored -> new CertificateOutput("cert1"));
 
         SyncPoller<TestResponse, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationResponse), pollOperation,
@@ -650,20 +650,20 @@ public class PollerTests {
 
         final TestResponse activationResponse = new TestResponse("Activated");
 
-        Function<PollingContext<TestResponse>, Mono<CertificateOutput>> fetchResultOperation
-            = ignored -> Mono.just(new CertificateOutput("cert1"));
+        Function<PollingContext<TestResponse>, CertificateOutput>> fetchResultOperation
+            = ignored -> new CertificateOutput("cert1"));
 
         int[] pollCallCount = new int[1];
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = ignored -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = ignored -> {
             switch (pollCallCount[0]++) {
                 case 0:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("0"), Duration.ofMillis(10)));
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), Duration.ofMillis(10)));
 
                 case 1:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("1"), Duration.ofMillis(10)));
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), Duration.ofMillis(10)));
 
                 case 2:
-                    return Mono.just(response2);
+                    return response2);
 
                 default:
                     return Mono.error(new IllegalStateException("Too many requests"));
@@ -692,17 +692,17 @@ public class PollerTests {
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = ignored -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = ignored -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
                 case 0:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("0"), Duration.ofMillis(10)));
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), Duration.ofMillis(10)));
 
                 case 1:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("1"), Duration.ofMillis(10)));
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), Duration.ofMillis(10)));
 
                 case 2:
-                    return Mono.just(new PollResponse<>(matchStatus, new TestResponse("1"), Duration.ofMillis(10)));
+                    return new PollResponse<>(matchStatus, new TestResponse("1"), Duration.ofMillis(10)));
 
                 default:
                     return Mono.error(new RuntimeException("Poll should not be called after matching response"));
@@ -723,16 +723,16 @@ public class PollerTests {
         final TestResponse activationResponse = new TestResponse("Foo");
 
         final AtomicInteger cnt = new AtomicInteger();
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation = (pollingContext) -> {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation = (pollingContext) -> {
             int count = cnt.incrementAndGet();
             if (count <= 2) {
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("1")));
+                return new PollResponse<>(IN_PROGRESS, new TestResponse("1")));
             } else if (count == 3) {
                 return Mono.error(new RuntimeException("Polling operation failed!"));
             } else if (count == 4) {
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new TestResponse("2")));
+                return new PollResponse<>(IN_PROGRESS, new TestResponse("2")));
             } else {
-                return Mono.just(new PollResponse<>(SUCCESSFULLY_COMPLETED, new TestResponse("3")));
+                return new PollResponse<>(SUCCESSFULLY_COMPLETED, new TestResponse("3")));
             }
         };
 
@@ -767,9 +767,9 @@ public class PollerTests {
     @Test
     public void testUpdatePollingIntervalWithoutVirtualTimer() {
         PollerFlux<String, String> pollerFlux = PollerFlux.create(Duration.ofMillis(10),
-            context -> Mono.just(new PollResponse<>(IN_PROGRESS, "Activation")),
-            context -> Mono.just(new PollResponse<>(IN_PROGRESS, "PollOperation")),
-            (context, response) -> Mono.just("Cancel"), context -> Mono.just("FinalResult"));
+            context -> new PollResponse<>(IN_PROGRESS, "Activation")),
+            context -> new PollResponse<>(IN_PROGRESS, "PollOperation")),
+            (context, response) -> "Cancel"), context -> "FinalResult"));
 
         pollerFlux.setPollInterval(Duration.ofMillis(200));
         StepVerifier.create(pollerFlux.take(5))
@@ -782,9 +782,9 @@ public class PollerTests {
     @Test
     public void testUpdatePollingInterval() {
         PollerFlux<String, String> pollerFlux = PollerFlux.create(Duration.ofMillis(10),
-            context -> Mono.just(new PollResponse<>(IN_PROGRESS, "Activation")),
-            context -> Mono.just(new PollResponse<>(IN_PROGRESS, "PollOperation")),
-            (context, response) -> Mono.just("Cancel"), context -> Mono.just("FinalResult"));
+            context -> new PollResponse<>(IN_PROGRESS, "Activation")),
+            context -> new PollResponse<>(IN_PROGRESS, "PollOperation")),
+            (context, response) -> "Cancel"), context -> "FinalResult"));
 
         StepVerifier.create(pollerFlux.take(5))
             .thenAwait(Duration.ofMillis(55))

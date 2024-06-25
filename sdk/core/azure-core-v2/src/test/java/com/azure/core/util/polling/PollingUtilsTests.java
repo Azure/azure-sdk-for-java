@@ -3,7 +3,7 @@
 
 package com.azure.core.util.polling;
 
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.util.ClientLogger;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.core.util.polling.implementation.PollingUtils.getAbsolutePath;

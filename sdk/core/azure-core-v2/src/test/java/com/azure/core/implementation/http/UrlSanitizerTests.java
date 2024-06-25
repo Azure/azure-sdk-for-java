@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.http;
 
+import com.azure.core.v2.implementation.http.UrlSanitizer;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

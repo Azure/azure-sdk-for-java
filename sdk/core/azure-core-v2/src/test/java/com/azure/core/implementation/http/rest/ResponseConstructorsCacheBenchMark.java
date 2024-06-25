@@ -4,8 +4,8 @@
 package com.azure.core.implementation.http.rest;
 
 import io.clientcore.core.http.rest.Response;
-import com.azure.core.implementation.ReflectiveInvoker;
-import com.azure.core.implementation.TypeUtil;
+import io.clientcore.core.implementation.ReflectiveInvoker;
+import com.azure.core.v2.implementation.TypeUtil;
 import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -19,7 +19,6 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.RunnerException;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -79,7 +78,7 @@ public class ResponseConstructorsCacheBenchMark {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
             }
             // Step2: Invoke Constructor using LambdaMetaFactory functional interface.
-            Mono<Response<?>> response = constructor.invoke(inputs[i].decodedResponse(), inputs[i].bodyAsObject());
+            Response<?>> response = constructor.invoke(inputs[i].decodedResponse(), inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response.block());
         }
@@ -99,7 +98,7 @@ public class ResponseConstructorsCacheBenchMark {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
             }
             // Step2: Invoke Constructor using Reflection.
-            Mono<Response<?>> response
+            Response<?>> response
                 = reflectionNoCache.invoke(constructor, inputs[i].decodedResponse(), inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response.block());

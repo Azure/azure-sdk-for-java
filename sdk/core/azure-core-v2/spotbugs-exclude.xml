@@ -5,7 +5,7 @@
   <Match>
     <Bug pattern="CT_CONSTRUCTOR_THROW" />
     <Or>
-      <Class name="com.azure.core.credential.KeyCredential" />
+      <Class name="com.azure.core.v2.credential.KeyCredential" />
       <Class name="com.azure.core.http.HttpRequest" />
       <Class name="com.azure.core.http.policy.ExponentialBackoff" />
       <Class name="com.azure.core.http.policy.FixedDelay" />
@@ -23,7 +23,7 @@
   <Match>
     <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
     <Or>
-      <Class name="com.azure.core.credential.SimpleTokenCache" />
+      <Class name="com.azure.core.v2.credential.SimpleTokenCache" />
       <Class name="com.azure.core.http.HttpHeaders" />
     </Or>
     <Method name="&lt;init&gt;" />
@@ -203,7 +203,7 @@
     <Bug pattern="EI_EXPOSE_REP" />
     <Or>
       <And>
-        <Class name="com.azure.core.credential.TokenRequestContext" />
+        <Class name="com.azure.core.v2.credential.TokenRequestContext" />
         <Method name="getScopes" />
       </And>
       <And>

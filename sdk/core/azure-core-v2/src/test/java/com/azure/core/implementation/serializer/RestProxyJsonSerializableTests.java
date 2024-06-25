@@ -3,13 +3,13 @@
 
 package com.azure.core.implementation.serializer;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.exception.HttpResponseException;
+import com.azure.core.v2.annotation.BodyParam;
+import com.azure.core.v2.annotation.ExpectedResponses;
+import com.azure.core.v2.annotation.Get;
+import com.azure.core.v2.annotation.Host;
+import com.azure.core.v2.annotation.Put;
+import com.azure.core.v2.annotation.ServiceInterface;
+import com.azure.core.v2.exception.HttpResponseException;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.HttpPipeline;
 import io.clientcore.core.http.HttpPipelineBuilder;
@@ -17,7 +17,6 @@ import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.rest.RestProxy;
 import com.azure.json.JsonSerializable;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
@@ -52,7 +51,7 @@ public class RestProxyJsonSerializableTests {
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             assertEquals(expectedBody, request.getBodyAsBinaryData().toString());
-            return Mono.just(new MockHttpResponse(request, 200));
+            return new MockHttpResponse(request, 200));
         }).build();
 
         SimpleJsonSerializableProxy proxy = RestProxy.create(SimpleJsonSerializableProxy.class, pipeline);

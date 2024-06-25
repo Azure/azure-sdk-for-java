@@ -3,15 +3,15 @@
 
 package com.azure.core.implementation.serializer;
 
-import com.azure.core.annotation.HeaderCollection;
-import com.azure.core.exception.HttpResponseException;
+import com.azure.core.v2.annotation.HeaderCollection;
+import com.azure.core.v2.exception.HttpResponseException;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.MockHttpResponse;
-import com.azure.core.util.mocking.MockSerializerAdapter;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.v2.util.mocking.MockSerializerAdapter;
+import com.azure.core.v2.util.serializer.JacksonAdapter;
+import com.azure.core.v2.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -43,7 +43,7 @@ public class HttpResponseHeaderDecoderTests {
             }
         };
 
-        try (HttpResponse response = new MockHttpResponse(null, 200)) {
+        try (Response<?> response = new MockHttpResponse(null, 200)) {
             assertThrows(HttpResponseException.class,
                 () -> HttpResponseHeaderDecoder.decode(response, serializer, MockHeaders.class));
         }
@@ -51,7 +51,7 @@ public class HttpResponseHeaderDecoderTests {
 
     @Test
     public void headersAreDeserializedToType() {
-        try (HttpResponse response
+        try (Response<?> response
             = new MockHttpResponse(null, 200, new HttpHeaders().set(HttpHeaderName.fromString("mock-a"), "a"))) {
 
             Object actual = assertDoesNotThrow(

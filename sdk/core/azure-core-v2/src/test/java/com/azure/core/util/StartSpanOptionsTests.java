@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.core.util;
 
-import com.azure.core.util.tracing.SpanKind;
-import com.azure.core.util.tracing.StartSpanOptions;
+import com.azure.core.v2.util.tracing.SpanKind;
+import com.azure.core.v2.util.tracing.StartSpanOptions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -10,9 +10,9 @@ import io.clientcore.core.http.pipeline.FixedDelayOptions;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.rest.Response;
 import io.clientcore.core.http.rest.SimpleResponse;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.mocking.MockAsynchronousFileChannel;
-import com.azure.core.util.mocking.MockFileChannel;
+import io.clientcore.core.util.ClientLogger;
+import com.azure.core.v2.util.mocking.MockAsynchronousFileChannel;
+import com.azure.core.v2.util.mocking.MockFileChannel;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
@@ -21,7 +21,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
@@ -98,7 +98,7 @@ public class FluxUtilTest {
 
     @Test
     public void toReactorContextContextNone() {
-        assertTrue(FluxUtil.toReactorContext(Context.NONE).isEmpty());
+        assertTrue(FluxUtil.toReactorContext(Context.none()).isEmpty());
     }
 
     @Test
@@ -520,7 +520,7 @@ public class FluxUtilTest {
         Files.write(file, "some random data".getBytes(StandardCharsets.UTF_8));
         FileInputStream fileInputStream = new FileInputStream(file.toFile());
 
-        Mono<Void> convertThenDeleteFile = FluxUtil.toFluxByteBuffer(fileInputStream).then(Mono.create(sink -> {
+        Void> convertThenDeleteFile = FluxUtil.toFluxByteBuffer(fileInputStream).then(Mono.create(sink -> {
             try {
                 fileInputStream.close();
                 Files.delete(file);
@@ -538,7 +538,7 @@ public class FluxUtilTest {
         return Flux.just(ByteBuffer.wrap(new byte[0]));
     }
 
-    private Mono<String> getSingle() {
+    private String> getSingle() {
         return FluxUtil.withContext(this::serviceCallSingle);
     }
 
@@ -546,15 +546,15 @@ public class FluxUtilTest {
         return FluxUtil.fluxContext(this::serviceCallCollection);
     }
 
-    private Mono<String> getSingleWithContextAttributes() {
+    private String> getSingleWithContextAttributes() {
         return FluxUtil.withContext(this::serviceCallWithContextMetadata,
             Collections.singletonMap("additionalContextKey", "additionalContextValue"));
     }
 
-    private Mono<String> serviceCallSingle(Context context) {
+    private String> serviceCallSingle(Context context) {
         String msg = "Hello, " + context.getData("FirstName").orElse("Stranger") + " "
             + context.getData("LastName").orElse("");
-        return Mono.just(msg);
+        return msg);
     }
 
     private Flux<String> serviceCallCollection(Context context) {
@@ -564,10 +564,10 @@ public class FluxUtilTest {
         return Flux.just(msg.split(" "));
     }
 
-    private Mono<String> serviceCallWithContextMetadata(Context context) {
+    private String> serviceCallWithContextMetadata(Context context) {
         String msg = "Hello, " + context.getData("FirstName").orElse("Stranger") + " "
             + context.getData("additionalContextKey").orElse("Not found");
-        return Mono.just(msg);
+        return msg);
     }
 
     private File createFileIfNotExist() {

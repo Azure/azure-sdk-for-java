@@ -3,7 +3,7 @@
 
 package com.azure.core;
 
-import com.azure.core.util.UrlBuilder;
+import io.clientcore.core.implementation.util.UrlBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;

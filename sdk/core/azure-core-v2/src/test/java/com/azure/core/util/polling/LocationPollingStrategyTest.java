@@ -11,13 +11,13 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.rest.Response;
 import io.clientcore.core.http.rest.SimpleResponse;
-import com.azure.core.implementation.serializer.DefaultJsonSerializer;
+import com.azure.core.v2.implementation.serializer.DefaultJsonSerializer;
 import io.clientcore.core.util.Context;
-import com.azure.core.util.serializer.TypeReference;
+import com.azure.core.v2.util.serializer.TypeReference;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import reactor.core.publisher.Mono;
+
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -39,7 +39,7 @@ public class LocationPollingStrategyTest {
         String mockPollAbsolutePath = endpointUrl + mockPollRelativePath;
 
         // Mocking
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost/post"), 200,
                 new HttpHeaders().set(HttpHeaderName.LOCATION, mockPollRelativePath), new TestPollResult("InProgress"));
@@ -49,7 +49,7 @@ public class LocationPollingStrategyTest {
 
         HttpClient httpClient = request -> {
             if (mockPollAbsolutePath.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200,
+                return new MockHttpResponse(pollRequest, 200,
                     new HttpHeaders().set(HttpHeaderName.LOCATION, finalResultAbsolutePath),
                     new TestPollResult("Succeeded")));
             } else if (finalResultAbsolutePath.equals(request.getUrl().toString())) {
@@ -63,7 +63,7 @@ public class LocationPollingStrategyTest {
         // Create LocationPollingStrategy
         PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(
             Duration.ofMillis(1), activationOperation::get, new LocationPollingStrategy<>(createPipeline(httpClient),
-                endpointUrl, new DefaultJsonSerializer(), Context.NONE),
+                endpointUrl, new DefaultJsonSerializer(), Context.none()),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
         StepVerifier.create(pollerFlux)
@@ -85,7 +85,7 @@ public class LocationPollingStrategyTest {
         int[] activationCallCount = new int[1];
         String mockPollUrl = "http://localhost/poll";
 
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
                 new HttpHeaders().set(HttpHeaderName.LOCATION, mockPollUrl), new TestPollResult("InProgress"));
@@ -126,7 +126,7 @@ public class LocationPollingStrategyTest {
         String mockPollUrl = "http://localhost/poll";
         String finalResultUrl = "http://localhost/final";
 
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
                 new HttpHeaders().set(HttpHeaderName.LOCATION, mockPollUrl), new TestPollResult("InProgress"));
@@ -136,7 +136,7 @@ public class LocationPollingStrategyTest {
 
         HttpClient httpClient = request -> {
             if (mockPollUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200,
+                return new MockHttpResponse(pollRequest, 200,
                     new HttpHeaders().set(HttpHeaderName.LOCATION, finalResultUrl), new TestPollResult("Succeeded")));
             } else if (finalResultUrl.equals(request.getUrl().toString())) {
                 return Mono
@@ -172,7 +172,7 @@ public class LocationPollingStrategyTest {
         String requestFinalResultUrl, String responseFinalResultUrl) {
         int[] activationCallCount = new int[1];
 
-        Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
+        Supplier<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
                 new HttpHeaders().set(HttpHeaderName.LOCATION, responsePollUrl), new TestPollResult("InProgress"));
@@ -182,7 +182,7 @@ public class LocationPollingStrategyTest {
 
         HttpClient httpClient = request -> {
             if (requestPollUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200,
+                return new MockHttpResponse(pollRequest, 200,
                     new HttpHeaders().set(HttpHeaderName.LOCATION, responseFinalResultUrl),
                     new TestPollResult("Succeeded")));
             } else if (requestFinalResultUrl.equals(request.getUrl().toString())) {

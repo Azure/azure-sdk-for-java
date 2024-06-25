@@ -4,9 +4,9 @@
 package com.azure.core.implementation;
 
 import com.azure.core.TestByteArrayOutputStream;
-import com.azure.core.util.PartialWriteChannel;
-import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.mocking.MockWritableByteChannel;
+import com.azure.core.v2.util.PartialWriteChannel;
+import com.azure.core.v2.util.ProgressReporter;
+import com.azure.core.v2.util.mocking.MockWritableByteChannel;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

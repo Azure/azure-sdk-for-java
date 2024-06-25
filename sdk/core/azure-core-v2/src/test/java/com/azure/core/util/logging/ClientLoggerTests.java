@@ -3,9 +3,9 @@
 
 package com.azure.core.util.logging;
 
-import com.azure.core.implementation.AccessibleByteArrayOutputStream;
-import com.azure.core.implementation.logging.DefaultLogger;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.v2.implementation.AccessibleByteArrayOutputStream;
+import com.azure.core.v2.implementation.logging.DefaultLogger;
+import com.azure.core.v2.util.CoreUtils;
 import com.fasterxml.jackson.core.io.JsonStringEncoder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -127,14 +127,14 @@ public class ClientLoggerTests {
      * configured log level.
      */
     @ParameterizedTest
-    @MethodSource("logExceptionAsWarningSupplier")
-    public void logExceptionAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
+    @MethodSource("logThrowableAsWarningSupplier")
+    public void logThrowableAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
         IllegalStateException illegalStateException = createIllegalStateException(exceptionMessage);
 
         assertThrows(IllegalStateException.class, () -> {
-            throw setupLogLevelAndGetLogger(logLevelToConfigure).logExceptionAsWarning(illegalStateException);
+            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsWarning(illegalStateException);
         });
 
         String logValues = byteArraySteamToString(logCaptureStream);
@@ -147,7 +147,7 @@ public class ClientLoggerTests {
      * configured log level.
      */
     @ParameterizedTest
-    @MethodSource("logExceptionAsWarningSupplier")
+    @MethodSource("logThrowableAsWarningSupplier")
     public void logCheckedExceptionAsWarning(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
@@ -167,14 +167,14 @@ public class ClientLoggerTests {
      * configured log level.
      */
     @ParameterizedTest
-    @MethodSource("logExceptionAsErrorSupplier")
-    public void logExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
+    @MethodSource("logThrowableAsErrorSupplier")
+    public void logThrowableAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) throws UnsupportedEncodingException {
         String exceptionMessage = "An exception message";
         IllegalStateException illegalStateException = createIllegalStateException(exceptionMessage);
 
         assertThrows(IllegalStateException.class, () -> {
-            throw setupLogLevelAndGetLogger(logLevelToConfigure).logExceptionAsError(illegalStateException);
+            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsError(illegalStateException);
         });
 
         String logValues = byteArraySteamToString(logCaptureStream);
@@ -187,7 +187,7 @@ public class ClientLoggerTests {
      * log level.
      */
     @ParameterizedTest
-    @MethodSource("logExceptionAsErrorSupplier")
+    @MethodSource("logThrowableAsErrorSupplier")
     public void logCheckedExceptionAsError(LogLevel logLevelToConfigure, boolean logContainsMessage,
         boolean logContainsStackTrace) {
         String exceptionMessage = "An exception message";
@@ -238,7 +238,7 @@ public class ClientLoggerTests {
         String message = String.format("Param 1: %s%s, Param 2: %s%s, Param 3: %s", "test1", System.lineSeparator(),
             "test2", System.lineSeparator(), "test3");
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
-        logger.log(LogLevel.INFORMATIONAL, () -> message);
+        LOGGER.atInfo().log(message);
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertTrue(logValues.contains("Param 1: test1, Param 2: test2, Param 3: test3"));
@@ -345,7 +345,7 @@ public class ClientLoggerTests {
     @Test
     public void logVerboseWithGlobalContext() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalContext);
-        logger.verbose("message");
+        LOGGER.atVerbose().log("message");
 
         assertMessage(
             "{\"az.sdk.message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
@@ -444,8 +444,7 @@ public class ClientLoggerTests {
     public void logWithGlobalContextMessageSupplier(LogLevel logLevelToConfigure) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure, globalContext);
 
-        logger.log(LogLevel.INFORMATIONAL,
-            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+        LOGGER.atInfo().log(String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"az.sdk.message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\","
@@ -516,7 +515,7 @@ public class ClientLoggerTests {
 
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalCtx);
 
-        logger.verbose("\"message\"");
+        LOGGER.atVerbose().log("\"message\"");
 
         assertMessage(
             "{\"az.sdk.message\":\"\\\"message\\\"\",\"link\\tName\":1,"
@@ -808,7 +807,8 @@ public class ClientLoggerTests {
 
         switch (logLevel) {
             case VERBOSE:
-                logHelper(() -> logger.verbose(logFormat), (args) -> logger.verbose(logFormat, args), arguments);
+                logHelper(() -> LOGGER.atVerbose().log(logFormat), (args) -> LOGGER.atVerbose().log(logFormat, args),
+                    arguments);
                 break;
 
             case INFORMATIONAL:
@@ -1073,13 +1073,13 @@ public class ClientLoggerTests {
             Arguments.of(LogLevel.ERROR));
     }
 
-    private static Stream<Arguments> logExceptionAsWarningSupplier() {
+    private static Stream<Arguments> logThrowableAsWarningSupplier() {
         return Stream.of(Arguments.of(LogLevel.VERBOSE, true, true), Arguments.of(LogLevel.INFORMATIONAL, true, false),
             Arguments.of(LogLevel.WARNING, true, false), Arguments.of(LogLevel.ERROR, false, false),
             Arguments.of(LogLevel.NOT_SET, false, false));
     }
 
-    private static Stream<Arguments> logExceptionAsErrorSupplier() {
+    private static Stream<Arguments> logThrowableAsErrorSupplier() {
         return Stream.of(Arguments.of(LogLevel.VERBOSE, true, true), Arguments.of(LogLevel.INFORMATIONAL, true, false),
             Arguments.of(LogLevel.WARNING, true, false), Arguments.of(LogLevel.ERROR, true, false),
             Arguments.of(LogLevel.NOT_SET, false, false));

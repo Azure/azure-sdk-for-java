@@ -3,8 +3,8 @@
 
 package com.azure.core;
 
-import com.azure.core.util.serializer.HttpBinJSON;
-import com.azure.core.exception.HttpResponseException;
+import com.azure.core.v2.util.serializer.HttpBinJSON;
+import com.azure.core.v2.exception.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 
 public class MyRestException extends HttpResponseException {
@@ -15,7 +15,7 @@ public class MyRestException extends HttpResponseException {
      * @param response HttpResponse associated with the exception.
      * @param body Deserialized body of {@code response}.
      */
-    public MyRestException(String message, HttpResponse response, HttpBinJSON body) {
+    public MyRestException(String message, Response<?> response, HttpBinJSON body) {
         super(message, response, body);
     }
 

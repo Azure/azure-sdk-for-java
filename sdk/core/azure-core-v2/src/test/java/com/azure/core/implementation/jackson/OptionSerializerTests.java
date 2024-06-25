@@ -3,9 +3,9 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.implementation.Option;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.v2.implementation.Option;
+import com.azure.core.v2.util.serializer.JacksonAdapter;
+import com.azure.core.v2.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

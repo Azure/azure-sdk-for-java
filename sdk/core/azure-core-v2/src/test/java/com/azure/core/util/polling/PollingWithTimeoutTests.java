@@ -4,7 +4,6 @@ package com.azure.core.util.polling;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
-import reactor.core.publisher.Mono;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -41,7 +40,7 @@ public class PollingWithTimeoutTests {
             return RESPONSE_ZERO;
         };
 
-    private static final Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> ASYNC_NEVER_COMPLETES
+    private static final Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> ASYNC_NEVER_COMPLETES
         = ignored -> Mono.delay(Duration.ofSeconds(10)).map(ignored2 -> RESPONSE_ZERO);
 
     /**
@@ -190,7 +189,7 @@ public class PollingWithTimeoutTests {
     }
 
     private static SyncPoller<TestResponse, CertificateOutput> createSyncOverAsyncPoller(
-        Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>> pollOperation) {
+        Function<PollingContext<TestResponse>, PollResponse<TestResponse>>> pollOperation) {
         return new SyncOverAsyncPoller<>(TEN_MILLIS, cxt -> ACTIVATION_RESPONSE, pollOperation,
             (ignored1, ignored2) -> null, ignored -> null);
     }
@@ -236,10 +235,10 @@ public class PollingWithTimeoutTests {
         };
     }
 
-    private static Function<PollingContext<TestResponse>, Mono<PollResponse<TestResponse>>>
+    private static Function<PollingContext<TestResponse>, PollResponse<TestResponse>>>
         asyncRunsOnce(AtomicBoolean hasBeenRan) {
         return ignored -> (hasBeenRan.compareAndSet(false, true))
-            ? Mono.just(RESPONSE_ZERO)
+            ? RESPONSE_ZERO)
             : Mono.delay(Duration.ofSeconds(10)).map(ignored2 -> RESPONSE_ONE);
     }
 

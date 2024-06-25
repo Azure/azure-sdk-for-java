@@ -3,8 +3,8 @@
 
 package com.azure.core.implementation.util;
 
-import com.azure.core.util.ConfigurationSource;
-import com.azure.core.util.TestConfigurationSource;
+import com.azure.core.v2.util.ConfigurationSource;
+import com.azure.core.v2.util.TestConfigurationSource;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

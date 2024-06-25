@@ -5,7 +5,7 @@ package com.azure.core.util;
 
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.pipeline.HttpLogOptions;
-import com.azure.core.util.logging.ClientLogger;
+import io.clientcore.core.util.ClientLogger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -309,14 +309,14 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> invalidContextMergeSupplier() {
-        return Stream.of(Arguments.of(null, Context.NONE), Arguments.of(Context.NONE, null));
+        return Stream.of(Arguments.of(null, Context.none()), Arguments.of(Context.none(), null));
     }
 
     @Test
     public void mergingContextNoneReturnsIntoContext() {
         Context into = new Context("key", "value");
 
-        Context merged = CoreUtils.mergeContexts(into, Context.NONE);
+        Context merged = CoreUtils.mergeContexts(into, Context.none());
         assertEquals(into, merged);
     }
 
