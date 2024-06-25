@@ -4,52 +4,50 @@
 
 package com.azure.digitaltwins.core.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A route which directs notification and telemetry events to an endpoint. Endpoints are a destination outside of Azure
  * Digital Twins such as an EventHub.
  */
-@Fluent
-public final class EventRoute {
+@Immutable
+public final class EventRoute implements JsonSerializable<EventRoute> {
     /*
      * The id of the event route.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the endpoint this event route is bound to.
      */
-    @JsonProperty(value = "endpointName", required = true)
-    private String endpointName;
+    private final String endpointName;
 
     /*
-     * An expression which describes the events which are routed to the
-     * endpoint.
+     * An expression which describes the events which are routed to the endpoint.
      */
-    @JsonProperty(value = "filter", required = true)
-    private String filter;
+    private final String filter;
 
     /**
      * Creates an instance of EventRoute class.
-     *
+     * 
      * @param endpointName the endpointName value to set.
      * @param filter the filter value to set.
      */
-    @JsonCreator
-    public EventRoute(
-            @JsonProperty(value = "endpointName", required = true) String endpointName,
-            @JsonProperty(value = "filter", required = true) String filter) {
+    public EventRoute(String endpointName, String filter) {
         this.endpointName = endpointName;
         this.filter = filter;
     }
 
     /**
      * Get the id property: The id of the event route.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -58,7 +56,7 @@ public final class EventRoute {
 
     /**
      * Get the endpointName property: The name of the endpoint this event route is bound to.
-     *
+     * 
      * @return the endpointName value.
      */
     public String getEndpointName() {
@@ -67,7 +65,7 @@ public final class EventRoute {
 
     /**
      * Get the filter property: An expression which describes the events which are routed to the endpoint.
-     *
+     * 
      * @return the filter value.
      */
     public String getFilter() {
@@ -75,16 +73,64 @@ public final class EventRoute {
     }
 
     /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * {@inheritDoc}
      */
-    public void validate() {
-        if (getEndpointName() == null) {
-            throw new IllegalArgumentException("Missing required property endpointName in model EventRoute");
-        }
-        if (getFilter() == null) {
-            throw new IllegalArgumentException("Missing required property filter in model EventRoute");
-        }
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointName", this.endpointName);
+        jsonWriter.writeStringField("filter", this.filter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventRoute from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventRoute if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventRoute.
+     */
+    public static EventRoute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean endpointNameFound = false;
+            String endpointName = null;
+            boolean filterFound = false;
+            String filter = null;
+            String id = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointName".equals(fieldName)) {
+                    endpointName = reader.getString();
+                    endpointNameFound = true;
+                } else if ("filter".equals(fieldName)) {
+                    filter = reader.getString();
+                    filterFound = true;
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (endpointNameFound && filterFound) {
+                EventRoute deserializedEventRoute = new EventRoute(endpointName, filter);
+                deserializedEventRoute.id = id;
+
+                return deserializedEventRoute;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!endpointNameFound) {
+                missingProperties.add("endpointName");
+            }
+            if (!filterFound) {
+                missingProperties.add("filter");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

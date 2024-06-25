@@ -4,12 +4,18 @@
 package com.azure.digitaltwins.core.models;
 
 /**
- * String constants for use in JSON de/serialization for digital twins, digital twin relationships,
- * and digital twin components.
+ * String constants for use in JSON de/serialization for digital twins, digital twin relationships, and digital twin
+ * components.
  */
 public class DigitalTwinsJsonPropertyNames {
     /**
-     * The JSON property name for the Id field on a digital twin.
+     * Creates a new instance of {@link DigitalTwinsJsonPropertyNames}.
+     */
+    public DigitalTwinsJsonPropertyNames() {
+    }
+
+    /**
+     * The JSON property name for the ID field on a digital twin.
      */
     public static final String DIGITAL_TWIN_ID = "$dtId";
 
@@ -29,17 +35,17 @@ public class DigitalTwinsJsonPropertyNames {
     public static final String METADATA_MODEL = "$model";
 
     /**
-     * The JSON property name for the Id field on a relationship.
+     * The JSON property name for the ID field on a relationship.
      */
     public static final String RELATIONSHIP_ID = "$relationshipId";
 
     /**
-     * The JSON property name for the source Id field on a relationship.
+     * The JSON property name for the source ID field on a relationship.
      */
     public static final String RELATIONSHIP_SOURCE_ID = "$sourceId";
 
     /**
-     * The JSON property name for the target Id field on a relationship.
+     * The JSON property name for the target ID field on a relationship.
      */
     public static final String RELATIONSHIP_TARGET_ID = "$targetId";
 
@@ -57,7 +63,7 @@ public class DigitalTwinsJsonPropertyNames {
      * The JSON property name for the lastUpdateTime field on a digital twin component's property metadata.
      */
     public static final String METADATA_PROPERTY_LAST_UPDATE_TIME = "lastUpdateTime";
-    
+
     /**
      * The JSON property name for the sourceTime field on a digital twin component's property metadata.
      */

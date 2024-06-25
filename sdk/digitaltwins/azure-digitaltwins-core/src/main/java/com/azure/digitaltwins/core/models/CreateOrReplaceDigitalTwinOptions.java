@@ -5,28 +5,36 @@ package com.azure.digitaltwins.core.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Context;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
+import com.azure.digitaltwins.core.DigitalTwinsClient;
 
 /**
  * The optional parameters for
- * {@link com.azure.digitaltwins.core.DigitalTwinsClient#createOrReplaceDigitalTwinWithResponse(String, Object, Class, CreateOrReplaceDigitalTwinOptions, Context)} and
- * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#createOrReplaceDigitalTwinWithResponse(String, Object, Class, CreateOrReplaceDigitalTwinOptions)}
+ * {@link DigitalTwinsClient#createOrReplaceDigitalTwinWithResponse(String, Object, Class, CreateOrReplaceDigitalTwinOptions, Context)} and
+ * {@link DigitalTwinsAsyncClient#createOrReplaceDigitalTwinWithResponse(String, Object, Class, CreateOrReplaceDigitalTwinOptions)}
  */
 @Fluent
 public final class CreateOrReplaceDigitalTwinOptions {
     /*
-     * If-Non-Match header that makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
+     * If-Non-Match header that makes the request method conditional on a recipient cache or origin server either not
+     * having any current representation of the target resource.
      * Acceptable values are null or "*".
      * If IfNonMatch option is null the service will replace the existing entity with the new entity.
      * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
      */
-    @JsonProperty(value = "If-None-Match")
     private String ifNoneMatch;
 
     /**
+     * Creates a new instance of {@link CreateOrReplaceDigitalTwinOptions}.
+     */
+    public CreateOrReplaceDigitalTwinOptions() {
+    }
+
+    /**
      * Get the ifNoneMatch property
-     *
-     * If-Non-Match header makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
+     * <p>
+     * If-Non-Match header makes the request method conditional on a recipient cache or origin server either not having
+     * any current representation of the target resource.
      * Acceptable values are null or "*".
      * If IfNonMatch option is null the service will replace the existing entity with the new entity.
      * If IfNonMatch option is "*" the service will reject the request if the entity already exists.
@@ -39,8 +47,9 @@ public final class CreateOrReplaceDigitalTwinOptions {
 
     /**
      * Set the ifNoneMatch property.
-     *
-     * If-Non-Match header makes the request method conditional on a recipient cache or origin server either not having any current representation of the target resource.
+     * <p>
+     * If-Non-Match header makes the request method conditional on a recipient cache or origin server either not having
+     * any current representation of the target resource.
      * Acceptable values are null or "*".
      * If IfNonMatch option is null the service will replace the existing entity with the new entity.
      * If IfNonMatch option is "*" the service will reject the request if the entity already exists.

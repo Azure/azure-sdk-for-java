@@ -30,8 +30,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.TracingOptions;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.tracing.Tracer;
@@ -44,17 +44,16 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help aid the configuration and instantiation of {@link DigitalTwinsClient
- * DigitalTwinsClients} and {@link DigitalTwinsAsyncClient DigitalTwinsAsyncClients}, call {@link #buildClient() buildClient} and {@link
- * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
+ * This class provides a fluent builder API to help aid the configuration and instantiation of
+ * {@link DigitalTwinsClient DigitalTwinsClients} and {@link DigitalTwinsAsyncClient DigitalTwinsAsyncClients}, call
+ * {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an
+ * instance of the desired client.
  */
-@ServiceClientBuilder(serviceClients = {DigitalTwinsClient.class, DigitalTwinsAsyncClient.class})
-public final class DigitalTwinsClientBuilder implements
-    ConfigurationTrait<DigitalTwinsClientBuilder>,
-    EndpointTrait<DigitalTwinsClientBuilder>,
-    HttpTrait<DigitalTwinsClientBuilder>,
-    TokenCredentialTrait<DigitalTwinsClientBuilder> {
-    private static final String[] ADT_PUBLIC_SCOPE = new String[]{"https://digitaltwins.azure.net" + "/.default"};
+@ServiceClientBuilder(serviceClients = { DigitalTwinsClient.class, DigitalTwinsAsyncClient.class })
+public final class DigitalTwinsClientBuilder
+    implements ConfigurationTrait<DigitalTwinsClientBuilder>, EndpointTrait<DigitalTwinsClientBuilder>,
+    HttpTrait<DigitalTwinsClientBuilder>, TokenCredentialTrait<DigitalTwinsClientBuilder> {
+    private static final String[] ADT_PUBLIC_SCOPE = new String[] { "https://digitaltwins.azure.net/.default" };
 
     // This is the name of the properties file in this repo that contains the default properties
     private static final String DIGITAL_TWINS_PROPERTIES = "azure-digital-twins.properties";
@@ -81,11 +80,11 @@ public final class DigitalTwinsClientBuilder implements
     private RetryOptions retryOptions;
     private JsonSerializer jsonSerializer;
 
-    // Right now, Azure Digital Twins does not send a retry-after header on its throttling messages. If it adds support later, then
-    // these values should match the header name (for instance, "x-ms-retry-after-ms" or "Retry-After") and the time unit
-    // of the header's value. These null values are equivalent to just constructing "new RetryPolicy()". It is safe
-    // to use a null retryAfterHeader and a null retryAfterTimeUnit when constructing this retry policy as this
-    // constructor interprets that as saying "this service does not support retry after headers"
+    // Right now, Azure Digital Twins does not send a retry-after header on its throttling messages. If it adds support
+    // later, then these values should match the header name (for instance, "x-ms-retry-after-ms" or "Retry-After") and
+    // the time unit of the header's value. These null values are equivalent to just constructing "new RetryPolicy()".
+    // It is safe to use a null retryAfterHeader and a null retryAfterTimeUnit when constructing this retry policy as
+    // this constructor interprets that as saying "this service does not support retry after headers"
     private static final String RETRY_AFTER_HEADER = null;
     private static final ChronoUnit RETRY_AFTER_TIME_UNIT = null;
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy(RETRY_AFTER_HEADER, RETRY_AFTER_TIME_UNIT);
@@ -102,16 +101,9 @@ public final class DigitalTwinsClientBuilder implements
         httpLogOptions = new HttpLogOptions();
     }
 
-    private static HttpPipeline setupPipeline(
-        TokenCredential tokenCredential,
-        String endpoint,
-        HttpLogOptions httpLogOptions,
-        ClientOptions clientOptions,
-        HttpClient httpClient,
-        List<HttpPipelinePolicy> perCallPolicies,
-        List<HttpPipelinePolicy> perRetryPolicies,
-        HttpPipelinePolicy retryPolicy,
-        Configuration configuration,
+    private static HttpPipeline setupPipeline(TokenCredential tokenCredential, HttpLogOptions httpLogOptions,
+        ClientOptions clientOptions, HttpClient httpClient, List<HttpPipelinePolicy> perCallPolicies,
+        List<HttpPipelinePolicy> perRetryPolicies, HttpPipelinePolicy retryPolicy, Configuration configuration,
         Map<String, String> properties) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -121,19 +113,18 @@ public final class DigitalTwinsClientBuilder implements
 
         // Give precedence to applicationId configured in clientOptions over the one configured in httpLogOptions.
         // Azure.Core deprecated setting the applicationId in httpLogOptions, but we should still support it.
-        String applicationId = clientOptions == null
-            ? httpLogOptions.getApplicationId()
-            : clientOptions.getApplicationId();
+        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
 
-        // Adds a "x-ms-client-request-id" header to each request. This header is useful for tracing requests through Azure ecosystems
+        // Adds "x-ms-client-request-id" header to each request. This header is useful for tracing requests through
+        // Azure ecosystems
         policies.add(new RequestIdPolicy());
 
         policies.addAll(perCallPolicies);
 
-        // Only the RequestIdPolicy  and UserAgentPolicy will take effect prior to the retry policy since neither of those need
-        // to change in any way upon retry
+        // Only the RequestIdPolicy  and UserAgentPolicy will take effect prior to the retry policy since neither of
+        // those need to change in any way upon retry
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(retryPolicy);
@@ -150,8 +141,8 @@ public final class DigitalTwinsClientBuilder implements
         // If client options has headers configured, add a policy for each
         if (clientOptions != null) {
             List<HttpHeader> httpHeaderList = new ArrayList<>();
-            clientOptions.getHeaders().forEach(header ->
-                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            clientOptions.getHeaders()
+                .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
             policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
         }
 
@@ -169,12 +160,11 @@ public final class DigitalTwinsClientBuilder implements
         if (clientOptions != null) {
             tracingOptions = clientOptions.getTracingOptions();
         }
-        
+
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .build();
@@ -185,7 +175,7 @@ public final class DigitalTwinsClientBuilder implements
      *
      * @return the created synchronous DigitalTwinsClient
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
-     *      and {@link #retryPolicy(RetryPolicy)} have been set.
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public DigitalTwinsClient buildClient() {
         return new DigitalTwinsClient(buildAsyncClient());
@@ -196,7 +186,7 @@ public final class DigitalTwinsClientBuilder implements
      *
      * @return the created asynchronous DigitalTwinsAsyncClient
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
-     *      and {@link #retryPolicy(RetryPolicy)} have been set.
+     * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public DigitalTwinsAsyncClient buildAsyncClient() {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
@@ -214,24 +204,16 @@ public final class DigitalTwinsClientBuilder implements
         }
 
         // Default is exponential backoff
-        HttpPipelinePolicy retryPolicy = ClientBuilderUtil.validateAndGetRetryPolicy(this.retryPolicy,
-            retryOptions, DEFAULT_RETRY_POLICY);
+        HttpPipelinePolicy retryPolicy = ClientBuilderUtil.validateAndGetRetryPolicy(this.retryPolicy, retryOptions,
+            DEFAULT_RETRY_POLICY);
 
-        if (this.httpPipeline == null) {
-            this.httpPipeline = setupPipeline(
-                this.tokenCredential,
-                this.endpoint,
-                this.httpLogOptions,
-                this.clientOptions,
-                this.httpClient,
-                this.perCallPolicies,
-                this.perRetryPolicies,
-                retryPolicy,
-                buildConfiguration,
-                this.properties);
+        HttpPipeline pipeline = this.httpPipeline;
+        if (pipeline == null) {
+            pipeline = setupPipeline(tokenCredential, httpLogOptions, clientOptions, httpClient, perCallPolicies,
+                perRetryPolicies, retryPolicy, buildConfiguration, properties);
         }
 
-        return new DigitalTwinsAsyncClient(this.endpoint, this.httpPipeline, serviceVersion, this.jsonSerializer);
+        return new DigitalTwinsAsyncClient(this.endpoint, pipeline, serviceVersion, this.jsonSerializer);
     }
 
     /**
@@ -346,10 +328,10 @@ public final class DigitalTwinsClientBuilder implements
 
     /**
      * Sets the {@link HttpPipelinePolicy} that is used as the retry policy for each request that is sent.
-     *
-     * The default retry policy will be used if not provided. The default retry policy is {@link RetryPolicy#RetryPolicy()}.
-     * For implementing custom retry logic, see {@link RetryPolicy} as an example.
-     *
+     * <p>
+     * The default retry policy will be used if not provided. The default retry policy is
+     * {@link RetryPolicy#RetryPolicy()}. For implementing custom retry logic, see {@link RetryPolicy} as an example.
+     * <p>
      * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy the retry policy applied to each request.
@@ -404,7 +386,7 @@ public final class DigitalTwinsClientBuilder implements
 
     /**
      * Sets the configuration store that is used during construction of the service client.
-     *
+     * <p>
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
@@ -418,7 +400,8 @@ public final class DigitalTwinsClientBuilder implements
     }
 
     /**
-     * Custom JSON serializer that is used to handle model types that are not contained in the Azure Digital Twins library.
+     * Custom JSON serializer that is used to handle model types that are not contained in the Azure Digital Twins
+     * library.
      *
      * @param jsonSerializer The serializer to deserialize response payloads into user defined models.
      * @return The updated DigitalTwinsClientBuilder object.

@@ -5,20 +5,32 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The DigitalTwinsGetComponentHeaders model. */
+/**
+ * The DigitalTwinsGetComponentHeaders model.
+ */
 @Fluent
 public final class DigitalTwinsGetComponentHeaders {
     /*
      * The ETag property.
      */
-    @JsonProperty(value = "ETag")
     private String eTag;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of DigitalTwinsGetComponentHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public DigitalTwinsGetComponentHeaders(HttpHeaders rawHeaders) {
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+    }
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -27,7 +39,7 @@ public final class DigitalTwinsGetComponentHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the DigitalTwinsGetComponentHeaders object itself.
      */
@@ -35,11 +47,4 @@ public final class DigitalTwinsGetComponentHeaders {
         this.eTag = eTag;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }
