@@ -2276,7 +2276,7 @@ public class CosmosAsyncContainer {
                 effectiveOptions.getConsistencyLevel(),
                 OperationType.Replace,
                 ResourceType.Document,
-                effectiveOptions,
+                requestOptions,
                 trackingId);
     }
 
