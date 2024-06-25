@@ -126,8 +126,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 .setIndexMetricsEnabled(Boolean.parseBoolean(prop.getProperty(INDEX_METRICS)))
                 .setMaxPrefetchPageCount(Integer.parseInt(prop.getProperty(MAX_PREFETCH_PAGE_COUNT)))
                 .setQueryName(prop.getProperty(QUERY_NAME))
-                .setConsistencyLevel(ConsistencyLevel.valueOf(prop.getProperty(CONSISTENCY_LEVEL)));
-
+                .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)));
         }
     }
 
@@ -144,7 +143,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setResponseContinuationTokenLimitInKb(Integer.parseInt(prop.getProperty(RESPONSE_CONTINUATION_TOKEN_LIMIT_KB)))
                     .setQueryMetricsEnabled(Boolean.parseBoolean(prop.getProperty(QUERY_METRICS)))
                     .setIndexMetricsEnabled(Boolean.parseBoolean(prop.getProperty(INDEX_METRICS)))
-                    .setConsistencyLevel(ConsistencyLevel.valueOf(prop.getProperty(CONSISTENCY_LEVEL)));
+                    .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)));
         }
     }
 
@@ -224,7 +223,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    @AfterMethod()
+    @AfterMethod(alwaysRun = true)
     public void afterMethod() {
         changeProperties(initialOptions);
     }
@@ -670,8 +669,9 @@ public class OperationPoliciesTest extends TestSuiteBase {
     private void validateOptions(String[] options, CosmosItemResponse<?> response) {
        OverridableRequestOptions requestOptions = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor().getRequestOptions(
            response.getDiagnostics().getDiagnosticsContext());
-       assertThat(requestOptions.getCosmosEndToEndLatencyPolicyConfig().getEndToEndOperationTimeout().getSeconds())
-           .isEqualTo(Long.parseLong(options[0]));
+       // expected 20 but was 8
+       assertThat(requestOptions.getCosmosEndToEndLatencyPolicyConfig().getEndToEndOperationTimeout().getSeconds()) // 8
+           .isEqualTo(Long.parseLong(options[0])); // 20
        assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[1].toUpperCase(Locale.ROOT));
        assertThat(requestOptions.isContentResponseOnWriteEnabled()).isEqualTo(Boolean.parseBoolean(options[2]));
        assertThat(requestOptions.getNonIdempotentWriteRetriesEnabled()).isEqualTo(Boolean.parseBoolean(options[3]));
@@ -684,7 +684,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
     private void validateOptions(String[] options, CosmosBatchResponse response) {
         OverridableRequestOptions requestOptions = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor().getRequestOptions(
             response.getDiagnostics().getDiagnosticsContext());
-        assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase()).isEqualTo(options[1]);
+        assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[1].toUpperCase(Locale.ROOT));
         assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(options[6]));
         assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
     }
@@ -708,7 +708,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else if (isReadMany) {
             assertThat(requestOptions.getCosmosEndToEndLatencyPolicyConfig().getEndToEndOperationTimeout().getSeconds())
                 .isEqualTo(Long.parseLong(changedOptions[0]));
-            assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase()).isEqualTo(changedOptions[1]);
+            assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(changedOptions[1].toUpperCase(Locale.ROOT));
             assertThat(requestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()).isEqualTo(Boolean.parseBoolean(changedOptions[4]));
             assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(changedOptions[5]);
             assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(changedOptions[6]));
@@ -720,7 +720,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else {
             assertThat(requestOptions.getCosmosEndToEndLatencyPolicyConfig().getEndToEndOperationTimeout().getSeconds())
                 .isEqualTo(Long.parseLong(changedOptions[0]));
-            assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase()).isEqualTo(changedOptions[1]);
+            assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(changedOptions[1].toUpperCase(Locale.ROOT));
             assertThat(requestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()).isEqualTo(Boolean.parseBoolean(changedOptions[4]));
             assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(changedOptions[5]);
             assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(changedOptions[6]));
