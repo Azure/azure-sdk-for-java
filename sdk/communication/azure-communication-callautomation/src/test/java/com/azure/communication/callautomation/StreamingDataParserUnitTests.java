@@ -10,7 +10,6 @@ import com.azure.communication.callautomation.models.TextFormat;
 import com.azure.communication.callautomation.models.TranscriptionData;
 import com.azure.communication.callautomation.models.TranscriptionMetadata;
 import com.azure.communication.callautomation.models.WordData;
-import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
