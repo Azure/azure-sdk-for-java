@@ -361,25 +361,9 @@ directive:
     $.enum.push("IncrementalCopyOfEralierVersionSnapshotNotAllowed");
 ```
 
-### BlobServiceProperties, BlobAnalyticsLogging, BlobMetrics, BlobCorsRule, and BlobRetentionPolicy
+### BlobServiceProperties, BlobAnalyticsLogging, BlobMetrics, BlobCorsRule, CpkInfo and BlobRetentionPolicy
 ``` yaml
 directive:
-- rename-model:
-    from: Logging
-    to: BlobAnalyticsLogging
-- rename-model:
-    from: Metrics
-    to: BlobMetrics
-- rename-model:
-    from: CorsRule
-    to: BlobCorsRule
-- rename-model:
-    from: RetentionPolicy
-    to: BlobRetentionPolicy
-- rename-model:
-    from: StorageServiceProperties
-    to: BlobServiceProperties
-      
 - from: swagger-document
   where: $.definitions
   transform: >
@@ -387,7 +371,13 @@ directive:
     delete $.BlobRetentionPolicy.properties.AllowPermanentDelete;
     $.BlobServiceProperties.xml = {"name": "StorageServiceProperties"};
     $.BlobCorsRule.xml = {"name": "CorsRule"};
-    
+    $.Metrics["x-ms-client-name"] = "BlobMetrics";
+    $.Logging["x-ms-client-name"] = "BlobAnalyticsLogging";
+    $.RetentionPolicy["x-ms-client-name"] = "BlobRetentionPolicy";
+    $.CorsRule["x-ms-client-name"] = "BlobCorsRule";
+    $.StorageServiceProperties["x-ms-client-name"] = "BlobServiceProperties";
+    $.cpk-info["x-ms-client-name"] = "CpkInfo";
+
 - from: swagger-document
   where: $.parameters
   transform: >
@@ -397,29 +387,24 @@ directive:
 ### BlobServiceStatistics and BlobPrefixInternal
 ``` yaml
 directive:
-- rename-model:
-    from: StorageServiceStats
-    to: BlobServiceStatistics
-- rename-model:
-    from: BlobPrefix
-    to: BlobPrefixInternal
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.StorageServiceStats["x-ms-client-name"] = "BlobServiceStatistics";
+    $.BlobPrefix["x-ms-client-name"] = "BlobPrefixInternal";
 ```
 
 ### BlobAccessPolicy and BlobSignedIdentifier
 ``` yaml
 directive:
-- rename-model:
-    from: SignedIdentifier
-    to: BlobSignedIdentifier
-- rename-model:
-    from: AccessPolicy
-    to: BlobAccessPolicy
 - from: swagger-document
   where: $.definitions
   transform: >
     $.BlobAccessPolicy.properties.Start["x-ms-client-name"] = "StartsOn";
     $.BlobAccessPolicy.properties.Expiry["x-ms-client-name"] = "ExpiresOn";
     $.BlobAccessPolicy.properties.Permission["x-ms-client-name"] = "Permissions";
+    $.SignedIdentifier["x-ms-client-name"] = "BlobSignedIdentifier";
+    $.AccessPolicy["x-ms-client-name"] = "BlobAccessPolicy";
 ```
 
 ### Rename BlobHttpHeaders to BlobHttpHeader
@@ -441,6 +426,11 @@ directive:
     $.BlobContentMD5.description = "Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks were validated when each was uploaded. The value does not need to be base64 encoded as the SDK will perform the encoding.";
     $.BlobContentType["x-ms-parameter-grouping"].name = "blob-http-headers";
     $.BlobContentType["x-ms-client-name"] = "contentType";
+    
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.blob-http-headers["x-ms-client-name"] = "BlobHttpHeaders";
 ```
 
 ### Rename UserDelegationKey SignedOid and SignedTid
@@ -498,6 +488,11 @@ directive:
     $.DenyEncryptionScopeOverride["x-ms-client-name"] = "EncryptionScopeOverridePrevented";
     $.DefaultEncryptionScope["x-ms-parameter-grouping"]["name"] = "blob-container-encryption-scope";
     $.DenyEncryptionScopeOverride["x-ms-parameter-grouping"]["name"] = "blob-container-encryption-scope";
+    
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.blob-container-encryption-scope["x-ms-client-name"] = "BlobContainerEncryptionScope";
 ```
 
 ### Rename cpk-scope-info to encryption-scope
