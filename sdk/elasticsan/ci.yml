@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: elasticsan
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-elasticsan
         groupId: com.azure.resourcemanager

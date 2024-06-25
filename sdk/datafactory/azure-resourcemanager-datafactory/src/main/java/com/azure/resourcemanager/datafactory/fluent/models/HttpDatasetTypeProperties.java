@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HttpDatasetTypeProperties {
     /*
-     * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression with resultType string).
+     * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;

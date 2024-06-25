@@ -11,15 +11,16 @@ public final class AzureSqlMITableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSqlMITableDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"datacjy\",\"schema\":\"datadcizeqqfop\",\"table\":\"dataopmotdsf\"}")
+            .fromString("{\"tableName\":\"datawjjirmu\",\"schema\":\"datagftt\",\"table\":\"dataofgeoagf\"}")
             .toObject(AzureSqlMITableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSqlMITableDatasetTypeProperties model = new AzureSqlMITableDatasetTypeProperties().withTableName("datacjy")
-            .withSchema("datadcizeqqfop")
-            .withTable("dataopmotdsf");
+        AzureSqlMITableDatasetTypeProperties model
+            = new AzureSqlMITableDatasetTypeProperties().withTableName("datawjjirmu")
+                .withSchema("datagftt")
+                .withTable("dataofgeoagf");
         model = BinaryData.fromObject(model).toObject(AzureSqlMITableDatasetTypeProperties.class);
     }
 }

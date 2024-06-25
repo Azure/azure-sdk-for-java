@@ -5,60 +5,57 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * virtualNetworkAddress resource properties.
  */
 @Fluent
-public final class VirtualNetworkAddressProperties {
+public final class VirtualNetworkAddressProperties implements JsonSerializable<VirtualNetworkAddressProperties> {
     /*
      * Virtual network Address address.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * Virtual Machine OCID.
      */
-    @JsonProperty(value = "vmOcid")
     private String vmOcid;
 
     /*
      * Application VIP OCID.
      */
-    @JsonProperty(value = "ocid", access = JsonProperty.Access.WRITE_ONLY)
     private String ocid;
 
     /*
      * Virtual network address fully qualified domain name.
      */
-    @JsonProperty(value = "domain", access = JsonProperty.Access.WRITE_ONLY)
     private String domain;
 
     /*
      * Additional information about the current lifecycle state of the application virtual IP (VIP) address.
      */
-    @JsonProperty(value = "lifecycleDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String lifecycleDetails;
 
     /*
      * Azure resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AzureResourceProvisioningState provisioningState;
 
     /*
      * virtual network address lifecycle state.
      */
-    @JsonProperty(value = "lifecycleState", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkAddressLifecycleState lifecycleState;
 
     /*
      * The date and time when the create operation for the application virtual IP (VIP) address completed.
      */
-    @JsonProperty(value = "timeAssigned", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeAssigned;
 
     /**
@@ -169,5 +166,60 @@ public final class VirtualNetworkAddressProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("vmOcid", this.vmOcid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkAddressProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkAddressProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkAddressProperties.
+     */
+    public static VirtualNetworkAddressProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkAddressProperties deserializedVirtualNetworkAddressProperties
+                = new VirtualNetworkAddressProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipAddress".equals(fieldName)) {
+                    deserializedVirtualNetworkAddressProperties.ipAddress = reader.getString();
+                } else if ("vmOcid".equals(fieldName)) {
+                    deserializedVirtualNetworkAddressProperties.vmOcid = reader.getString();
+                } else if ("ocid".equals(fieldName)) {
+                    deserializedVirtualNetworkAddressProperties.ocid = reader.getString();
+                } else if ("domain".equals(fieldName)) {
+                    deserializedVirtualNetworkAddressProperties.domain = reader.getString();
+                } else if ("lifecycleDetails".equals(fieldName)) {
+                    deserializedVirtualNetworkAddressProperties.lifecycleDetails = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualNetworkAddressProperties.provisioningState
+                        = AzureResourceProvisioningState.fromString(reader.getString());
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedVirtualNetworkAddressProperties.lifecycleState
+                        = VirtualNetworkAddressLifecycleState.fromString(reader.getString());
+                } else if ("timeAssigned".equals(fieldName)) {
+                    deserializedVirtualNetworkAddressProperties.timeAssigned = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkAddressProperties;
+        });
     }
 }

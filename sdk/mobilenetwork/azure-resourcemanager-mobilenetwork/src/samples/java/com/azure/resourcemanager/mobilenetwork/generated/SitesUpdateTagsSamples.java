@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class SitesUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/SiteUpdateTags.
-     * json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SiteUpdateTags.json
      */
     /**
      * Sample code: Update mobile network site tags.
@@ -25,7 +23,8 @@ public final class SitesUpdateTagsSamples {
     public static void
         updateMobileNetworkSiteTags(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
         Site resource = manager.sites()
-            .getWithResponse("rg1", "testMobileNetwork", "testSite", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("rg1", "testMobileNetwork", "testSite", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

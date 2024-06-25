@@ -13,22 +13,22 @@ public final class SalesforceV2SinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceV2Sink model = BinaryData.fromString(
-            "{\"type\":\"z\",\"writeBehavior\":\"Upsert\",\"externalIdFieldName\":\"datadqgavcwxwkjambf\",\"ignoreNullValues\":\"datasrxjfapiodsnz\",\"writeBatchSize\":\"dataqbgcxlg\",\"writeBatchTimeout\":\"dataxoymjx\",\"sinkRetryCount\":\"datantjhvcorobmqudz\",\"sinkRetryWait\":\"datazkkl\",\"maxConcurrentConnections\":\"datazkcygyqgvofhpgu\",\"disableMetricsCollection\":\"databkwwyfsqgass\",\"\":{\"ohpwnrmhlotknb\":\"dataazvrmulsje\",\"zqmudmefsxmdmlow\":\"datau\",\"meqirxwkomjsfkd\":\"datasixpwfvtwg\"}}")
+            "{\"type\":\"SalesforceV2Sink\",\"writeBehavior\":\"Upsert\",\"externalIdFieldName\":\"datakpumzda\",\"ignoreNullValues\":\"dataoqeteavphup\",\"writeBatchSize\":\"datarp\",\"writeBatchTimeout\":\"datavgihknnvjgccq\",\"sinkRetryCount\":\"dataewofhjonqkbnr\",\"sinkRetryWait\":\"dataattzxvfsrufj\",\"maxConcurrentConnections\":\"datavryfb\",\"disableMetricsCollection\":\"datavzgy\",\"\":{\"dngtylvdumpmx\":\"dataveiy\",\"kmrvgdjbl\":\"datafkbbchdypc\"}}")
             .toObject(SalesforceV2Sink.class);
         Assertions.assertEquals(SalesforceV2SinkWriteBehavior.UPSERT, model.writeBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceV2Sink model = new SalesforceV2Sink().withWriteBatchSize("dataqbgcxlg")
-            .withWriteBatchTimeout("dataxoymjx")
-            .withSinkRetryCount("datantjhvcorobmqudz")
-            .withSinkRetryWait("datazkkl")
-            .withMaxConcurrentConnections("datazkcygyqgvofhpgu")
-            .withDisableMetricsCollection("databkwwyfsqgass")
+        SalesforceV2Sink model = new SalesforceV2Sink().withWriteBatchSize("datarp")
+            .withWriteBatchTimeout("datavgihknnvjgccq")
+            .withSinkRetryCount("dataewofhjonqkbnr")
+            .withSinkRetryWait("dataattzxvfsrufj")
+            .withMaxConcurrentConnections("datavryfb")
+            .withDisableMetricsCollection("datavzgy")
             .withWriteBehavior(SalesforceV2SinkWriteBehavior.UPSERT)
-            .withExternalIdFieldName("datadqgavcwxwkjambf")
-            .withIgnoreNullValues("datasrxjfapiodsnz");
+            .withExternalIdFieldName("datakpumzda")
+            .withIgnoreNullValues("dataoqeteavphup");
         model = BinaryData.fromObject(model).toObject(SalesforceV2Sink.class);
         Assertions.assertEquals(SalesforceV2SinkWriteBehavior.UPSERT, model.writeBehavior());
     }

@@ -31,7 +31,8 @@ public final class SalesforceSource extends TabularSource {
     private Object query;
 
     /*
-     * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or Expression with resultType string).
+     * The read behavior for the operation. Default is Query. Allowed values: Query/QueryAll. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "readBehavior")
     private Object readBehavior;

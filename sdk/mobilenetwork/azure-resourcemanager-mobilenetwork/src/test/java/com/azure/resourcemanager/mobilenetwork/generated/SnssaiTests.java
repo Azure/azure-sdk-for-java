@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SnssaiTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Snssai model = BinaryData.fromString("{\"sst\":1010160642,\"sd\":\"xakvvjgslor\"}").toObject(Snssai.class);
-        Assertions.assertEquals(1010160642, model.sst());
-        Assertions.assertEquals("xakvvjgslor", model.sd());
+        Snssai model = BinaryData.fromString("{\"sst\":2108712904,\"sd\":\"whryvycytdcl\"}").toObject(Snssai.class);
+        Assertions.assertEquals(2108712904, model.sst());
+        Assertions.assertEquals("whryvycytdcl", model.sd());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Snssai model = new Snssai().withSst(1010160642).withSd("xakvvjgslor");
+        Snssai model = new Snssai().withSst(2108712904).withSd("whryvycytdcl");
         model = BinaryData.fromObject(model).toObject(Snssai.class);
-        Assertions.assertEquals(1010160642, model.sst());
-        Assertions.assertEquals("xakvvjgslor", model.sd());
+        Assertions.assertEquals(2108712904, model.sst());
+        Assertions.assertEquals("whryvycytdcl", model.sd());
     }
 }

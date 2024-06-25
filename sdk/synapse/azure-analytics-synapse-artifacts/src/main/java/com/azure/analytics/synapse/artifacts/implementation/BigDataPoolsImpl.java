@@ -24,22 +24,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BigDataPools. */
+/**
+ * An instance of this class provides access to all the operations defined in BigDataPools.
+ */
 public final class BigDataPoolsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BigDataPoolsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ArtifactsClientImpl client;
 
     /**
      * Initializes an instance of BigDataPoolsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BigDataPoolsImpl(ArtifactsClientImpl client) {
-        this.service =
-                RestProxy.create(BigDataPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(BigDataPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,28 +57,22 @@ public final class BigDataPoolsImpl {
     @ServiceInterface(name = "ArtifactsClientBigDa")
     public interface BigDataPoolsService {
         @Get("/bigDataPools")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<Response<BigDataPoolResourceInfoListResult>> list(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<BigDataPoolResourceInfoListResult>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/bigDataPools/{bigDataPoolName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<Response<BigDataPoolResourceInfo>> get(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("bigDataPoolName") String bigDataPoolName,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<BigDataPoolResourceInfo>> get(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("bigDataPoolName") String bigDataPoolName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List Big Data Pools.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools along with {@link Response} on successful completion of {@link Mono}.
@@ -86,7 +86,7 @@ public final class BigDataPoolsImpl {
 
     /**
      * List Big Data Pools.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -102,7 +102,7 @@ public final class BigDataPoolsImpl {
 
     /**
      * List Big Data Pools.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools on successful completion of {@link Mono}.
@@ -114,7 +114,7 @@ public final class BigDataPoolsImpl {
 
     /**
      * List Big Data Pools.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -128,7 +128,7 @@ public final class BigDataPoolsImpl {
 
     /**
      * List Big Data Pools.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -142,7 +142,7 @@ public final class BigDataPoolsImpl {
 
     /**
      * List Big Data Pools.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools.
@@ -154,7 +154,7 @@ public final class BigDataPoolsImpl {
 
     /**
      * Get Big Data Pool.
-     *
+     * 
      * @param bigDataPoolName The Big Data Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -166,12 +166,12 @@ public final class BigDataPoolsImpl {
         final String apiVersion = "2020-12-01";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.get(this.client.getEndpoint(), apiVersion, bigDataPoolName, accept, context));
+            context -> service.get(this.client.getEndpoint(), apiVersion, bigDataPoolName, accept, context));
     }
 
     /**
      * Get Big Data Pool.
-     *
+     * 
      * @param bigDataPoolName The Big Data Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -188,7 +188,7 @@ public final class BigDataPoolsImpl {
 
     /**
      * Get Big Data Pool.
-     *
+     * 
      * @param bigDataPoolName The Big Data Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -202,7 +202,7 @@ public final class BigDataPoolsImpl {
 
     /**
      * Get Big Data Pool.
-     *
+     * 
      * @param bigDataPoolName The Big Data Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,7 +217,7 @@ public final class BigDataPoolsImpl {
 
     /**
      * Get Big Data Pool.
-     *
+     * 
      * @param bigDataPoolName The Big Data Pool name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +232,7 @@ public final class BigDataPoolsImpl {
 
     /**
      * Get Big Data Pool.
-     *
+     * 
      * @param bigDataPoolName The Big Data Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.

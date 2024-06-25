@@ -16,35 +16,35 @@ public final class NaptConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NaptConfiguration model = BinaryData.fromString(
-            "{\"enabled\":\"Disabled\",\"portRange\":{\"minPort\":1991761310,\"maxPort\":1674535960},\"portReuseHoldTime\":{\"tcp\":14804050,\"udp\":2045600331},\"pinholeLimits\":1132741350,\"pinholeTimeouts\":{\"tcp\":1617618462,\"udp\":1833864756,\"icmp\":1656493513}}")
+            "{\"enabled\":\"Enabled\",\"portRange\":{\"minPort\":1719373799,\"maxPort\":1302147866},\"portReuseHoldTime\":{\"tcp\":2025512378,\"udp\":230645799},\"pinholeLimits\":127605943,\"pinholeTimeouts\":{\"tcp\":1912467695,\"udp\":220700122,\"icmp\":672653689}}")
             .toObject(NaptConfiguration.class);
-        Assertions.assertEquals(NaptEnabled.DISABLED, model.enabled());
-        Assertions.assertEquals(1991761310, model.portRange().minPort());
-        Assertions.assertEquals(1674535960, model.portRange().maxPort());
-        Assertions.assertEquals(14804050, model.portReuseHoldTime().tcp());
-        Assertions.assertEquals(2045600331, model.portReuseHoldTime().udp());
-        Assertions.assertEquals(1132741350, model.pinholeLimits());
-        Assertions.assertEquals(1617618462, model.pinholeTimeouts().tcp());
-        Assertions.assertEquals(1833864756, model.pinholeTimeouts().udp());
-        Assertions.assertEquals(1656493513, model.pinholeTimeouts().icmp());
+        Assertions.assertEquals(NaptEnabled.ENABLED, model.enabled());
+        Assertions.assertEquals(1719373799, model.portRange().minPort());
+        Assertions.assertEquals(1302147866, model.portRange().maxPort());
+        Assertions.assertEquals(2025512378, model.portReuseHoldTime().tcp());
+        Assertions.assertEquals(230645799, model.portReuseHoldTime().udp());
+        Assertions.assertEquals(127605943, model.pinholeLimits());
+        Assertions.assertEquals(1912467695, model.pinholeTimeouts().tcp());
+        Assertions.assertEquals(220700122, model.pinholeTimeouts().udp());
+        Assertions.assertEquals(672653689, model.pinholeTimeouts().icmp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NaptConfiguration model = new NaptConfiguration().withEnabled(NaptEnabled.DISABLED)
-            .withPortRange(new PortRange().withMinPort(1991761310).withMaxPort(1674535960))
-            .withPortReuseHoldTime(new PortReuseHoldTimes().withTcp(14804050).withUdp(2045600331))
-            .withPinholeLimits(1132741350)
-            .withPinholeTimeouts(new PinholeTimeouts().withTcp(1617618462).withUdp(1833864756).withIcmp(1656493513));
+        NaptConfiguration model = new NaptConfiguration().withEnabled(NaptEnabled.ENABLED)
+            .withPortRange(new PortRange().withMinPort(1719373799).withMaxPort(1302147866))
+            .withPortReuseHoldTime(new PortReuseHoldTimes().withTcp(2025512378).withUdp(230645799))
+            .withPinholeLimits(127605943)
+            .withPinholeTimeouts(new PinholeTimeouts().withTcp(1912467695).withUdp(220700122).withIcmp(672653689));
         model = BinaryData.fromObject(model).toObject(NaptConfiguration.class);
-        Assertions.assertEquals(NaptEnabled.DISABLED, model.enabled());
-        Assertions.assertEquals(1991761310, model.portRange().minPort());
-        Assertions.assertEquals(1674535960, model.portRange().maxPort());
-        Assertions.assertEquals(14804050, model.portReuseHoldTime().tcp());
-        Assertions.assertEquals(2045600331, model.portReuseHoldTime().udp());
-        Assertions.assertEquals(1132741350, model.pinholeLimits());
-        Assertions.assertEquals(1617618462, model.pinholeTimeouts().tcp());
-        Assertions.assertEquals(1833864756, model.pinholeTimeouts().udp());
-        Assertions.assertEquals(1656493513, model.pinholeTimeouts().icmp());
+        Assertions.assertEquals(NaptEnabled.ENABLED, model.enabled());
+        Assertions.assertEquals(1719373799, model.portRange().minPort());
+        Assertions.assertEquals(1302147866, model.portRange().maxPort());
+        Assertions.assertEquals(2025512378, model.portReuseHoldTime().tcp());
+        Assertions.assertEquals(230645799, model.portReuseHoldTime().udp());
+        Assertions.assertEquals(127605943, model.pinholeLimits());
+        Assertions.assertEquals(1912467695, model.pinholeTimeouts().tcp());
+        Assertions.assertEquals(220700122, model.pinholeTimeouts().udp());
+        Assertions.assertEquals(672653689, model.pinholeTimeouts().icmp());
     }
 }

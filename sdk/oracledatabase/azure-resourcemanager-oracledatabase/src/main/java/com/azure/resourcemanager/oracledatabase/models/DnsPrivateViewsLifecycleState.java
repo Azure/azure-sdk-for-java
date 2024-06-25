@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * DnsPrivateViews lifecycle state enum.
+ * DNS Private Views lifecycle state enum.
  */
 public final class DnsPrivateViewsLifecycleState extends ExpandableStringEnum<DnsPrivateViewsLifecycleState> {
     /**
@@ -47,7 +46,6 @@ public final class DnsPrivateViewsLifecycleState extends ExpandableStringEnum<Dn
      * @param name a name to look for.
      * @return the corresponding DnsPrivateViewsLifecycleState.
      */
-    @JsonCreator
     public static DnsPrivateViewsLifecycleState fromString(String name) {
         return fromString(name, DnsPrivateViewsLifecycleState.class);
     }

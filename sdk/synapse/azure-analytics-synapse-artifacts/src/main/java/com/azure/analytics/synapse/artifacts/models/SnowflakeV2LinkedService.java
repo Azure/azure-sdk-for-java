@@ -5,105 +5,109 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Snowflake linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SnowflakeV2")
-@JsonFlatten
+/**
+ * Snowflake linked service.
+ */
 @Fluent
 public class SnowflakeV2LinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "SnowflakeV2";
+
+    /*
      * The account identifier of your Snowflake account, e.g. xy12345.east-us-2.azure
      */
-    @JsonProperty(value = "typeProperties.accountIdentifier", required = true)
     private Object accountIdentifier;
 
     /*
      * The name of the Snowflake user.
      */
-    @JsonProperty(value = "typeProperties.user")
     private Object user;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
      * The name of the Snowflake database.
      */
-    @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
     /*
      * The name of the Snowflake warehouse.
      */
-    @JsonProperty(value = "typeProperties.warehouse", required = true)
     private Object warehouse;
 
     /*
      * The type used for authentication. Type: string.
      */
-    @JsonProperty(value = "typeProperties.authenticationType")
     private SnowflakeAuthenticationType authenticationType;
 
     /*
      * The client ID of the application registered in Azure Active Directory for AADServicePrincipal authentication.
      */
-    @JsonProperty(value = "typeProperties.clientId")
     private Object clientId;
 
     /*
      * The Azure key vault secret reference of client secret for AADServicePrincipal authentication.
      */
-    @JsonProperty(value = "typeProperties.clientSecret")
     private SecretBase clientSecret;
 
     /*
      * The tenant ID of the application registered in Azure Active Directory for AADServicePrincipal authentication.
      */
-    @JsonProperty(value = "typeProperties.tenantId")
     private Object tenantId;
 
     /*
      * The scope of the application registered in Azure Active Directory for AADServicePrincipal authentication.
      */
-    @JsonProperty(value = "typeProperties.scope")
     private Object scope;
 
     /*
      * The Azure key vault secret reference of privateKey for KeyPair auth.
      */
-    @JsonProperty(value = "typeProperties.privateKey")
     private SecretBase privateKey;
 
     /*
      * The Azure key vault secret reference of private key password for KeyPair auth with encrypted private key.
      */
-    @JsonProperty(value = "typeProperties.privateKeyPassphrase")
     private SecretBase privateKeyPassphrase;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
 
-    /** Creates an instance of SnowflakeV2LinkedService class. */
-    public SnowflakeV2LinkedService() {}
+    /**
+     * Creates an instance of SnowflakeV2LinkedService class.
+     */
+    public SnowflakeV2LinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the accountIdentifier property: The account identifier of your Snowflake account, e.g.
      * xy12345.east-us-2.azure.
-     *
+     * 
      * @return the accountIdentifier value.
      */
     public Object getAccountIdentifier() {
@@ -113,7 +117,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Set the accountIdentifier property: The account identifier of your Snowflake account, e.g.
      * xy12345.east-us-2.azure.
-     *
+     * 
      * @param accountIdentifier the accountIdentifier value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -124,7 +128,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Get the user property: The name of the Snowflake user.
-     *
+     * 
      * @return the user value.
      */
     public Object getUser() {
@@ -133,7 +137,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Set the user property: The name of the Snowflake user.
-     *
+     * 
      * @param user the user value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -144,7 +148,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -153,7 +157,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param password the password value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -164,7 +168,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Get the database property: The name of the Snowflake database.
-     *
+     * 
      * @return the database value.
      */
     public Object getDatabase() {
@@ -173,7 +177,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Set the database property: The name of the Snowflake database.
-     *
+     * 
      * @param database the database value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -184,7 +188,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Get the warehouse property: The name of the Snowflake warehouse.
-     *
+     * 
      * @return the warehouse value.
      */
     public Object getWarehouse() {
@@ -193,7 +197,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Set the warehouse property: The name of the Snowflake warehouse.
-     *
+     * 
      * @param warehouse the warehouse value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -204,7 +208,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Get the authenticationType property: The type used for authentication. Type: string.
-     *
+     * 
      * @return the authenticationType value.
      */
     public SnowflakeAuthenticationType getAuthenticationType() {
@@ -213,7 +217,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: The type used for authentication. Type: string.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -225,7 +229,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Get the clientId property: The client ID of the application registered in Azure Active Directory for
      * AADServicePrincipal authentication.
-     *
+     * 
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -235,7 +239,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Set the clientId property: The client ID of the application registered in Azure Active Directory for
      * AADServicePrincipal authentication.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -247,7 +251,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Get the clientSecret property: The Azure key vault secret reference of client secret for AADServicePrincipal
      * authentication.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase getClientSecret() {
@@ -257,7 +261,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Set the clientSecret property: The Azure key vault secret reference of client secret for AADServicePrincipal
      * authentication.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -269,7 +273,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Get the tenantId property: The tenant ID of the application registered in Azure Active Directory for
      * AADServicePrincipal authentication.
-     *
+     * 
      * @return the tenantId value.
      */
     public Object getTenantId() {
@@ -279,7 +283,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Set the tenantId property: The tenant ID of the application registered in Azure Active Directory for
      * AADServicePrincipal authentication.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -291,7 +295,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Get the scope property: The scope of the application registered in Azure Active Directory for AADServicePrincipal
      * authentication.
-     *
+     * 
      * @return the scope value.
      */
     public Object getScope() {
@@ -301,7 +305,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Set the scope property: The scope of the application registered in Azure Active Directory for AADServicePrincipal
      * authentication.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -312,7 +316,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Get the privateKey property: The Azure key vault secret reference of privateKey for KeyPair auth.
-     *
+     * 
      * @return the privateKey value.
      */
     public SecretBase getPrivateKey() {
@@ -321,7 +325,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
 
     /**
      * Set the privateKey property: The Azure key vault secret reference of privateKey for KeyPair auth.
-     *
+     * 
      * @param privateKey the privateKey value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -333,7 +337,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Get the privateKeyPassphrase property: The Azure key vault secret reference of private key password for KeyPair
      * auth with encrypted private key.
-     *
+     * 
      * @return the privateKeyPassphrase value.
      */
     public SecretBase getPrivateKeyPassphrase() {
@@ -343,7 +347,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Set the privateKeyPassphrase property: The Azure key vault secret reference of private key password for KeyPair
      * auth with encrypted private key.
-     *
+     * 
      * @param privateKeyPassphrase the privateKeyPassphrase value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -355,7 +359,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public String getEncryptedCredential() {
@@ -365,7 +369,7 @@ public class SnowflakeV2LinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string.
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SnowflakeV2LinkedService object itself.
      */
@@ -374,31 +378,168 @@ public class SnowflakeV2LinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2LinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (accountIdentifier != null
+            || user != null
+            || password != null
+            || database != null
+            || warehouse != null
+            || authenticationType != null
+            || clientId != null
+            || clientSecret != null
+            || tenantId != null
+            || scope != null
+            || privateKey != null
+            || privateKeyPassphrase != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("accountIdentifier", this.accountIdentifier);
+            jsonWriter.writeUntypedField("user", this.user);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeUntypedField("database", this.database);
+            jsonWriter.writeUntypedField("warehouse", this.warehouse);
+            jsonWriter.writeStringField("authenticationType",
+                this.authenticationType == null ? null : this.authenticationType.toString());
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+            jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+            jsonWriter.writeUntypedField("tenantId", this.tenantId);
+            jsonWriter.writeUntypedField("scope", this.scope);
+            jsonWriter.writeJsonField("privateKey", this.privateKey);
+            jsonWriter.writeJsonField("privateKeyPassphrase", this.privateKeyPassphrase);
+            jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnowflakeV2LinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnowflakeV2LinkedService if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnowflakeV2LinkedService.
+     */
+    public static SnowflakeV2LinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnowflakeV2LinkedService deserializedSnowflakeV2LinkedService = new SnowflakeV2LinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedSnowflakeV2LinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSnowflakeV2LinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedSnowflakeV2LinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSnowflakeV2LinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSnowflakeV2LinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("accountIdentifier".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.accountIdentifier = reader.readUntyped();
+                        } else if ("user".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.user = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("database".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.database = reader.readUntyped();
+                        } else if ("warehouse".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.warehouse = reader.readUntyped();
+                        } else if ("authenticationType".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.authenticationType
+                                = SnowflakeAuthenticationType.fromString(reader.getString());
+                        } else if ("clientId".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.clientId = reader.readUntyped();
+                        } else if ("clientSecret".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.clientSecret = SecretBase.fromJson(reader);
+                        } else if ("tenantId".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.tenantId = reader.readUntyped();
+                        } else if ("scope".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.scope = reader.readUntyped();
+                        } else if ("privateKey".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.privateKey = SecretBase.fromJson(reader);
+                        } else if ("privateKeyPassphrase".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.privateKeyPassphrase = SecretBase.fromJson(reader);
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedSnowflakeV2LinkedService.encryptedCredential = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSnowflakeV2LinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedSnowflakeV2LinkedService;
+        });
     }
 }

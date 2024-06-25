@@ -5,39 +5,44 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The write behavior for the operation. Default is Insert. */
+/**
+ * The write behavior for the operation. Default is Insert.
+ */
 public final class SalesforceSinkWriteBehavior extends ExpandableStringEnum<SalesforceSinkWriteBehavior> {
-    /** Static value Insert for SalesforceSinkWriteBehavior. */
+    /**
+     * Static value Insert for SalesforceSinkWriteBehavior.
+     */
     public static final SalesforceSinkWriteBehavior INSERT = fromString("Insert");
 
-    /** Static value Upsert for SalesforceSinkWriteBehavior. */
+    /**
+     * Static value Upsert for SalesforceSinkWriteBehavior.
+     */
     public static final SalesforceSinkWriteBehavior UPSERT = fromString("Upsert");
 
     /**
      * Creates a new instance of SalesforceSinkWriteBehavior value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SalesforceSinkWriteBehavior() {}
+    public SalesforceSinkWriteBehavior() {
+    }
 
     /**
      * Creates or finds a SalesforceSinkWriteBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SalesforceSinkWriteBehavior.
      */
-    @JsonCreator
     public static SalesforceSinkWriteBehavior fromString(String name) {
         return fromString(name, SalesforceSinkWriteBehavior.class);
     }
 
     /**
      * Gets known SalesforceSinkWriteBehavior values.
-     *
+     * 
      * @return known SalesforceSinkWriteBehavior values.
      */
     public static Collection<SalesforceSinkWriteBehavior> values() {

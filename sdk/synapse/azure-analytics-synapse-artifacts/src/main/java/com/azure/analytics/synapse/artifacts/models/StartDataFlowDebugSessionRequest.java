@@ -5,66 +5,67 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Request body structure for starting data flow debug session. */
+/**
+ * Request body structure for starting data flow debug session.
+ */
 @Fluent
-public final class StartDataFlowDebugSessionRequest {
+public final class StartDataFlowDebugSessionRequest implements JsonSerializable<StartDataFlowDebugSessionRequest> {
     /*
      * The ID of data flow debug session.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * Data flow instance.
      */
-    @JsonProperty(value = "dataFlow")
     private DataFlowResource dataFlow;
 
     /*
      * List of Data flows
      */
-    @JsonProperty(value = "dataFlows")
     private List<DataFlowResource> dataFlows;
 
     /*
      * List of datasets.
      */
-    @JsonProperty(value = "datasets")
     private List<DatasetResource> datasets;
 
     /*
      * List of linked services.
      */
-    @JsonProperty(value = "linkedServices")
     private List<LinkedServiceResource> linkedServices;
 
     /*
      * Staging info for debug session.
      */
-    @JsonProperty(value = "staging")
     private Object staging;
 
     /*
      * Data flow debug settings.
      */
-    @JsonProperty(value = "debugSettings")
     private Object debugSettings;
 
     /*
      * The type of new Databricks cluster.
      */
-    @JsonProperty(value = "incrementalDebug")
     private Boolean incrementalDebug;
 
-    /** Creates an instance of StartDataFlowDebugSessionRequest class. */
-    public StartDataFlowDebugSessionRequest() {}
+    /**
+     * Creates an instance of StartDataFlowDebugSessionRequest class.
+     */
+    public StartDataFlowDebugSessionRequest() {
+    }
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -73,7 +74,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -84,7 +85,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the dataFlow property: Data flow instance.
-     *
+     * 
      * @return the dataFlow value.
      */
     public DataFlowResource getDataFlow() {
@@ -93,7 +94,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the dataFlow property: Data flow instance.
-     *
+     * 
      * @param dataFlow the dataFlow value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -104,7 +105,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the dataFlows property: List of Data flows.
-     *
+     * 
      * @return the dataFlows value.
      */
     public List<DataFlowResource> getDataFlows() {
@@ -113,7 +114,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the dataFlows property: List of Data flows.
-     *
+     * 
      * @param dataFlows the dataFlows value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -124,7 +125,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the datasets property: List of datasets.
-     *
+     * 
      * @return the datasets value.
      */
     public List<DatasetResource> getDatasets() {
@@ -133,7 +134,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the datasets property: List of datasets.
-     *
+     * 
      * @param datasets the datasets value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -144,7 +145,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the linkedServices property: List of linked services.
-     *
+     * 
      * @return the linkedServices value.
      */
     public List<LinkedServiceResource> getLinkedServices() {
@@ -153,7 +154,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the linkedServices property: List of linked services.
-     *
+     * 
      * @param linkedServices the linkedServices value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -164,7 +165,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the staging property: Staging info for debug session.
-     *
+     * 
      * @return the staging value.
      */
     public Object getStaging() {
@@ -173,7 +174,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the staging property: Staging info for debug session.
-     *
+     * 
      * @param staging the staging value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -184,7 +185,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the debugSettings property: Data flow debug settings.
-     *
+     * 
      * @return the debugSettings value.
      */
     public Object getDebugSettings() {
@@ -193,7 +194,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the debugSettings property: Data flow debug settings.
-     *
+     * 
      * @param debugSettings the debugSettings value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
@@ -204,7 +205,7 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Get the incrementalDebug property: The type of new Databricks cluster.
-     *
+     * 
      * @return the incrementalDebug value.
      */
     public Boolean isIncrementalDebug() {
@@ -213,12 +214,76 @@ public final class StartDataFlowDebugSessionRequest {
 
     /**
      * Set the incrementalDebug property: The type of new Databricks cluster.
-     *
+     * 
      * @param incrementalDebug the incrementalDebug value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
     public StartDataFlowDebugSessionRequest setIncrementalDebug(Boolean incrementalDebug) {
         this.incrementalDebug = incrementalDebug;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeJsonField("dataFlow", this.dataFlow);
+        jsonWriter.writeArrayField("dataFlows", this.dataFlows, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("linkedServices", this.linkedServices,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeUntypedField("staging", this.staging);
+        jsonWriter.writeUntypedField("debugSettings", this.debugSettings);
+        jsonWriter.writeBooleanField("incrementalDebug", this.incrementalDebug);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StartDataFlowDebugSessionRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StartDataFlowDebugSessionRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StartDataFlowDebugSessionRequest.
+     */
+    public static StartDataFlowDebugSessionRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StartDataFlowDebugSessionRequest deserializedStartDataFlowDebugSessionRequest
+                = new StartDataFlowDebugSessionRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sessionId".equals(fieldName)) {
+                    deserializedStartDataFlowDebugSessionRequest.sessionId = reader.getString();
+                } else if ("dataFlow".equals(fieldName)) {
+                    deserializedStartDataFlowDebugSessionRequest.dataFlow = DataFlowResource.fromJson(reader);
+                } else if ("dataFlows".equals(fieldName)) {
+                    List<DataFlowResource> dataFlows = reader.readArray(reader1 -> DataFlowResource.fromJson(reader1));
+                    deserializedStartDataFlowDebugSessionRequest.dataFlows = dataFlows;
+                } else if ("datasets".equals(fieldName)) {
+                    List<DatasetResource> datasets = reader.readArray(reader1 -> DatasetResource.fromJson(reader1));
+                    deserializedStartDataFlowDebugSessionRequest.datasets = datasets;
+                } else if ("linkedServices".equals(fieldName)) {
+                    List<LinkedServiceResource> linkedServices
+                        = reader.readArray(reader1 -> LinkedServiceResource.fromJson(reader1));
+                    deserializedStartDataFlowDebugSessionRequest.linkedServices = linkedServices;
+                } else if ("staging".equals(fieldName)) {
+                    deserializedStartDataFlowDebugSessionRequest.staging = reader.readUntyped();
+                } else if ("debugSettings".equals(fieldName)) {
+                    deserializedStartDataFlowDebugSessionRequest.debugSettings = reader.readUntyped();
+                } else if ("incrementalDebug".equals(fieldName)) {
+                    deserializedStartDataFlowDebugSessionRequest.incrementalDebug
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStartDataFlowDebugSessionRequest;
+        });
     }
 }

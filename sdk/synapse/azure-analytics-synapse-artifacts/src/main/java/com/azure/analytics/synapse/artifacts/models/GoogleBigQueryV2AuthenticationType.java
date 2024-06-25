@@ -5,39 +5,44 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The OAuth 2.0 authentication mechanism used for authentication. */
+/**
+ * The OAuth 2.0 authentication mechanism used for authentication.
+ */
 public final class GoogleBigQueryV2AuthenticationType extends ExpandableStringEnum<GoogleBigQueryV2AuthenticationType> {
-    /** Static value ServiceAuthentication for GoogleBigQueryV2AuthenticationType. */
+    /**
+     * Static value ServiceAuthentication for GoogleBigQueryV2AuthenticationType.
+     */
     public static final GoogleBigQueryV2AuthenticationType SERVICE_AUTHENTICATION = fromString("ServiceAuthentication");
 
-    /** Static value UserAuthentication for GoogleBigQueryV2AuthenticationType. */
+    /**
+     * Static value UserAuthentication for GoogleBigQueryV2AuthenticationType.
+     */
     public static final GoogleBigQueryV2AuthenticationType USER_AUTHENTICATION = fromString("UserAuthentication");
 
     /**
      * Creates a new instance of GoogleBigQueryV2AuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public GoogleBigQueryV2AuthenticationType() {}
+    public GoogleBigQueryV2AuthenticationType() {
+    }
 
     /**
      * Creates or finds a GoogleBigQueryV2AuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GoogleBigQueryV2AuthenticationType.
      */
-    @JsonCreator
     public static GoogleBigQueryV2AuthenticationType fromString(String name) {
         return fromString(name, GoogleBigQueryV2AuthenticationType.class);
     }
 
     /**
      * Gets known GoogleBigQueryV2AuthenticationType values.
-     *
+     * 
      * @return known GoogleBigQueryV2AuthenticationType values.
      */
     public static Collection<GoogleBigQueryV2AuthenticationType> values() {

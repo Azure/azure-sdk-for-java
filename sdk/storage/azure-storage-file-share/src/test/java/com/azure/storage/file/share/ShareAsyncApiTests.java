@@ -5,7 +5,9 @@ package com.azure.storage.file.share;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAudience;
@@ -88,6 +90,23 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201)).verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @Test
+    public void createShareSasError() {
+        ShareServiceAsyncClient unauthorizedServiceClient = fileServiceBuilderHelper()
+            .sasToken("sig=dummyToken")
+            .buildAsyncClient();
+
+        ShareAsyncClient share = unauthorizedServiceClient.getShareAsyncClient(generateShareName());
+
+        StepVerifier.create(share.create())
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+                assertTrue(e.getServiceMessage().contains("AuthenticationErrorDetail"));
+            });
+    }
+
     @ParameterizedTest
     @MethodSource("createShareWithArgsSupplier")
     public void createShareWithArgs(Map<String, String> metadata, Integer quota) {
@@ -96,10 +115,12 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     }
 
     private static Stream<Arguments> createShareWithArgsSupplier() {
-        return Stream.of(Arguments.of(null, null),
+        return Stream.of(
+            Arguments.of(null, null),
             Arguments.of(null, 1),
             Arguments.of(testMetadata, null),
-            Arguments.of(testMetadata, 1));
+            Arguments.of(testMetadata, 1),
+            Arguments.of(testMetadata, 6000));
     }
 
     @ParameterizedTest
@@ -113,8 +134,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     private static Stream<Arguments> createShareWithInvalidArgsSupplier() {
         return Stream.of(
             Arguments.of(Collections.singletonMap("", "value"), 1, 400, ShareErrorCode.EMPTY_METADATA_KEY),
-            Arguments.of(Collections.singletonMap("metadata!", "value"), 1, 400, ShareErrorCode.INVALID_METADATA),
-            Arguments.of(testMetadata, 6000, 400, ShareErrorCode.INVALID_HEADER_VALUE));
+            Arguments.of(Collections.singletonMap("metadata!", "value"), 1, 400, ShareErrorCode.INVALID_METADATA));
     }
 
     @Test
@@ -795,4 +815,62 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(r -> assertNotNull(r))
             .verifyComplete();
     }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
+    @ParameterizedTest
+    @MethodSource("createEnableSnapshotVirtualDirectoryAccessSupplier")
+    public void createEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {
+        ShareCreateOptions options = new ShareCreateOptions();
+        ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
+        options.setProtocols(protocols);
+        options.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
+
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(options).block();
+
+        StepVerifier.create(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).getProperties())
+            .assertNext(r -> {
+                assertEquals(protocols.toString(), r.getProtocols().toString());
+                if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
+                    assertTrue(r.isSnapshotVirtualDirectoryAccessEnabled());
+                } else {
+                    assertFalse(r.isSnapshotVirtualDirectoryAccessEnabled());
+                }
+            })
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> createEnableSnapshotVirtualDirectoryAccessSupplier() {
+        return Stream.of(
+            Arguments.of(true),
+            Arguments.of(false),
+            Arguments.of((Boolean) null));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @ParameterizedTest
+    @MethodSource("createEnableSnapshotVirtualDirectoryAccessSupplier")
+    public void setPropertiesEnableSnapshotVirtualDirectoryAccess(Boolean enableSnapshotVirtualDirectoryAccess) {
+        ShareCreateOptions options = new ShareCreateOptions();
+        ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
+        options.setProtocols(protocols);
+
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(options).block();
+
+        ShareSetPropertiesOptions setPropertiesOptions = new ShareSetPropertiesOptions();
+        setPropertiesOptions.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
+
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).setProperties(setPropertiesOptions).block();
+
+        StepVerifier.create(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).getProperties())
+            .assertNext(r -> {
+                assertEquals(protocols.toString(), r.getProtocols().toString());
+                if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
+                    assertTrue(r.isSnapshotVirtualDirectoryAccessEnabled());
+                } else {
+                    assertFalse(r.isSnapshotVirtualDirectoryAccessEnabled());
+                }
+            })
+            .verifyComplete();
+    }
+
 }

@@ -18,7 +18,8 @@ import java.util.Map;
  */
 public final class DataFlowDebugSessionCreateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DataFlowDebugSession_Create.json
      */
     /**
      * Sample code: DataFlowDebugSession_Create.

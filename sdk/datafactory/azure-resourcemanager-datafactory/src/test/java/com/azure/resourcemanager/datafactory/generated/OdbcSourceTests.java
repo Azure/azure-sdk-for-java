@@ -11,19 +11,19 @@ public final class OdbcSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OdbcSource model = BinaryData.fromString(
-            "{\"type\":\"otodprrq\",\"query\":\"dataydmeu\",\"queryTimeout\":\"datalqgyu\",\"additionalColumns\":\"dataoelyjduzapn\",\"sourceRetryCount\":\"dataglytxjcbdpc\",\"sourceRetryWait\":\"datazu\",\"maxConcurrentConnections\":\"datacehfw\",\"disableMetricsCollection\":\"dataclea\",\"\":{\"fccnwmdpb\":\"dataiqskylwpqrc\",\"uckrzwraqaptqy\":\"dataotknhfxpver\",\"b\":\"datanlyuyopwwnqoub\",\"osyl\":\"datasvfzjjflcx\"}}")
+            "{\"type\":\"OdbcSource\",\"query\":\"dataemzdnvnooklgren\",\"queryTimeout\":\"datasgertxicemgsncbb\",\"additionalColumns\":\"datakphaed\",\"sourceRetryCount\":\"datalbnu\",\"sourceRetryWait\":\"dataxswmccykbvia\",\"maxConcurrentConnections\":\"datapxlxbofdchb\",\"disableMetricsCollection\":\"datacfskzwese\",\"\":{\"ojw\":\"dataqj\",\"gvsljk\":\"dataixtrnakytzcm\",\"hzsx\":\"dataarqhpxw\",\"vbu\":\"datamgvygmtyw\"}}")
             .toObject(OdbcSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OdbcSource model = new OdbcSource().withSourceRetryCount("dataglytxjcbdpc")
-            .withSourceRetryWait("datazu")
-            .withMaxConcurrentConnections("datacehfw")
-            .withDisableMetricsCollection("dataclea")
-            .withQueryTimeout("datalqgyu")
-            .withAdditionalColumns("dataoelyjduzapn")
-            .withQuery("dataydmeu");
+        OdbcSource model = new OdbcSource().withSourceRetryCount("datalbnu")
+            .withSourceRetryWait("dataxswmccykbvia")
+            .withMaxConcurrentConnections("datapxlxbofdchb")
+            .withDisableMetricsCollection("datacfskzwese")
+            .withQueryTimeout("datasgertxicemgsncbb")
+            .withAdditionalColumns("datakphaed")
+            .withQuery("dataemzdnvnooklgren");
         model = BinaryData.fromObject(model).toObject(OdbcSource.class);
     }
 }

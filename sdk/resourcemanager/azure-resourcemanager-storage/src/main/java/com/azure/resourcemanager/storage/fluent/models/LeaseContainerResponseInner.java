@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LeaseContainerResponseInner {
     /*
-     * Returned unique lease ID that must be included with any request to delete the container, or to renew, change, or release the lease.
+     * Returned unique lease ID that must be included with any request to delete the container, or to renew, change, or
+     * release the lease.
      */
     @JsonProperty(value = "leaseId")
     private String leaseId;

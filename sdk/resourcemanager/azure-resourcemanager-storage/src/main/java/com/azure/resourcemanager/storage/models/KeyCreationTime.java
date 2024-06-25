@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -34,7 +33,7 @@ public final class KeyCreationTime {
 
     /**
      * Get the key1 property: The key1 property.
-     *
+     * 
      * @return the key1 value.
      */
     public OffsetDateTime key1() {
@@ -43,7 +42,7 @@ public final class KeyCreationTime {
 
     /**
      * Set the key1 property: The key1 property.
-     *
+     * 
      * @param key1 the key1 value to set.
      * @return the KeyCreationTime object itself.
      */
@@ -54,7 +53,7 @@ public final class KeyCreationTime {
 
     /**
      * Get the key2 property: The key2 property.
-     *
+     * 
      * @return the key2 value.
      */
     public OffsetDateTime key2() {
@@ -63,7 +62,7 @@ public final class KeyCreationTime {
 
     /**
      * Set the key2 property: The key2 property.
-     *
+     * 
      * @param key2 the key2 value to set.
      * @return the KeyCreationTime object itself.
      */
@@ -74,7 +73,7 @@ public final class KeyCreationTime {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

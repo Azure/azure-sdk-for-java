@@ -9,7 +9,8 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class StorageAccountsListKeysSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountListKeys.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountListKeys.json
      */
     /**
      * Sample code: StorageAccountListKeys.

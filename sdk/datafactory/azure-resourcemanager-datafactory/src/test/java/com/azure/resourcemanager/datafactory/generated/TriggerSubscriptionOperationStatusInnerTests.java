@@ -11,7 +11,7 @@ public final class TriggerSubscriptionOperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TriggerSubscriptionOperationStatusInner model
-            = BinaryData.fromString("{\"triggerName\":\"nhxk\",\"status\":\"Deprovisioning\"}")
+            = BinaryData.fromString("{\"triggerName\":\"n\",\"status\":\"Provisioning\"}")
                 .toObject(TriggerSubscriptionOperationStatusInner.class);
     }
 

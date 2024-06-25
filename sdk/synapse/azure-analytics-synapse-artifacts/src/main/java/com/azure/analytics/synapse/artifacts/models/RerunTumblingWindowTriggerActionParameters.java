@@ -5,37 +5,45 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Rerun tumbling window trigger Parameters. */
+/**
+ * Rerun tumbling window trigger Parameters.
+ */
 @Fluent
-public final class RerunTumblingWindowTriggerActionParameters {
+public final class RerunTumblingWindowTriggerActionParameters
+    implements JsonSerializable<RerunTumblingWindowTriggerActionParameters> {
     /*
      * The start time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * The end time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
-    @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
      * The max number of parallel time windows (ready for execution) for which a rerun is triggered.
      */
-    @JsonProperty(value = "maxConcurrency", required = true)
     private int maxConcurrency;
 
-    /** Creates an instance of RerunTumblingWindowTriggerActionParameters class. */
-    public RerunTumblingWindowTriggerActionParameters() {}
+    /**
+     * Creates an instance of RerunTumblingWindowTriggerActionParameters class.
+     */
+    public RerunTumblingWindowTriggerActionParameters() {
+    }
 
     /**
      * Get the startTime property: The start time for the time period for which restatement is initiated. Only UTC time
      * is currently supported.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -45,7 +53,7 @@ public final class RerunTumblingWindowTriggerActionParameters {
     /**
      * Set the startTime property: The start time for the time period for which restatement is initiated. Only UTC time
      * is currently supported.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the RerunTumblingWindowTriggerActionParameters object itself.
      */
@@ -57,7 +65,7 @@ public final class RerunTumblingWindowTriggerActionParameters {
     /**
      * Get the endTime property: The end time for the time period for which restatement is initiated. Only UTC time is
      * currently supported.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -67,7 +75,7 @@ public final class RerunTumblingWindowTriggerActionParameters {
     /**
      * Set the endTime property: The end time for the time period for which restatement is initiated. Only UTC time is
      * currently supported.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the RerunTumblingWindowTriggerActionParameters object itself.
      */
@@ -79,7 +87,7 @@ public final class RerunTumblingWindowTriggerActionParameters {
     /**
      * Get the maxConcurrency property: The max number of parallel time windows (ready for execution) for which a rerun
      * is triggered.
-     *
+     * 
      * @return the maxConcurrency value.
      */
     public int getMaxConcurrency() {
@@ -89,12 +97,60 @@ public final class RerunTumblingWindowTriggerActionParameters {
     /**
      * Set the maxConcurrency property: The max number of parallel time windows (ready for execution) for which a rerun
      * is triggered.
-     *
+     * 
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the RerunTumblingWindowTriggerActionParameters object itself.
      */
     public RerunTumblingWindowTriggerActionParameters setMaxConcurrency(int maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeIntField("maxConcurrency", this.maxConcurrency);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RerunTumblingWindowTriggerActionParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RerunTumblingWindowTriggerActionParameters if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RerunTumblingWindowTriggerActionParameters.
+     */
+    public static RerunTumblingWindowTriggerActionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RerunTumblingWindowTriggerActionParameters deserializedRerunTumblingWindowTriggerActionParameters
+                = new RerunTumblingWindowTriggerActionParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedRerunTumblingWindowTriggerActionParameters.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedRerunTumblingWindowTriggerActionParameters.endTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedRerunTumblingWindowTriggerActionParameters.maxConcurrency = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRerunTumblingWindowTriggerActionParameters;
+        });
     }
 }

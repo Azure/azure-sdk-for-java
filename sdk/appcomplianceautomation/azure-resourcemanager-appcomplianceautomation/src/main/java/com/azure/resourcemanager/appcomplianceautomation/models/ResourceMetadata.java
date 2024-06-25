@@ -6,55 +6,53 @@ package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Single resource Id's metadata. */
+/**
+ * Single resource Id's metadata.
+ */
 @Fluent
-public final class ResourceMetadata {
+public final class ResourceMetadata implements JsonSerializable<ResourceMetadata> {
     /*
      * Resource Id - e.g.
-     * "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute"
-         + "/virtualMachines/vm1".
+     * "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1".
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /*
-     * Resource type.
+     * Resource type. e.g. "Microsoft.Compute/virtualMachines"
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * Resource kind.
      */
-    @JsonProperty(value = "resourceKind")
     private String resourceKind;
 
     /*
-     * Resource name.
+     * Resource Origin.
      */
-    @JsonProperty(value = "resourceName")
-    private String resourceName;
+    private ResourceOrigin resourceOrigin;
 
     /*
-     * Resource's tag type.
+     * Account Id. For example - the AWS account id.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
+    private String accountId;
 
-    /** Creates an instance of ResourceMetadata class. */
+    /**
+     * Creates an instance of ResourceMetadata class.
+     */
     public ResourceMetadata() {
     }
 
     /**
      * Get the resourceId property: Resource Id - e.g.
-     * "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute"
-         + "/virtualMachines/vm1".
-     *
+     * "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1".
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -63,9 +61,8 @@ public final class ResourceMetadata {
 
     /**
      * Set the resourceId property: Resource Id - e.g.
-     * "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute"
-         + "/virtualMachines/vm1".
-     *
+     * "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1".
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ResourceMetadata object itself.
      */
@@ -75,8 +72,8 @@ public final class ResourceMetadata {
     }
 
     /**
-     * Get the resourceType property: Resource type.
-     *
+     * Get the resourceType property: Resource type. e.g. "Microsoft.Compute/virtualMachines".
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -84,8 +81,8 @@ public final class ResourceMetadata {
     }
 
     /**
-     * Set the resourceType property: Resource type.
-     *
+     * Set the resourceType property: Resource type. e.g. "Microsoft.Compute/virtualMachines".
+     * 
      * @param resourceType the resourceType value to set.
      * @return the ResourceMetadata object itself.
      */
@@ -96,7 +93,7 @@ public final class ResourceMetadata {
 
     /**
      * Get the resourceKind property: Resource kind.
-     *
+     * 
      * @return the resourceKind value.
      */
     public String resourceKind() {
@@ -105,7 +102,7 @@ public final class ResourceMetadata {
 
     /**
      * Set the resourceKind property: Resource kind.
-     *
+     * 
      * @param resourceKind the resourceKind value to set.
      * @return the ResourceMetadata object itself.
      */
@@ -115,57 +112,106 @@ public final class ResourceMetadata {
     }
 
     /**
-     * Get the resourceName property: Resource name.
-     *
-     * @return the resourceName value.
+     * Get the resourceOrigin property: Resource Origin.
+     * 
+     * @return the resourceOrigin value.
      */
-    public String resourceName() {
-        return this.resourceName;
+    public ResourceOrigin resourceOrigin() {
+        return this.resourceOrigin;
     }
 
     /**
-     * Set the resourceName property: Resource name.
-     *
-     * @param resourceName the resourceName value to set.
+     * Set the resourceOrigin property: Resource Origin.
+     * 
+     * @param resourceOrigin the resourceOrigin value to set.
      * @return the ResourceMetadata object itself.
      */
-    public ResourceMetadata withResourceName(String resourceName) {
-        this.resourceName = resourceName;
+    public ResourceMetadata withResourceOrigin(ResourceOrigin resourceOrigin) {
+        this.resourceOrigin = resourceOrigin;
         return this;
     }
 
     /**
-     * Get the tags property: Resource's tag type.
-     *
-     * @return the tags value.
+     * Get the accountId property: Account Id. For example - the AWS account id.
+     * 
+     * @return the accountId value.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    public String accountId() {
+        return this.accountId;
     }
 
     /**
-     * Set the tags property: Resource's tag type.
-     *
-     * @param tags the tags value to set.
+     * Set the accountId property: Account Id. For example - the AWS account id.
+     * 
+     * @param accountId the accountId value to set.
      * @return the ResourceMetadata object itself.
      */
-    public ResourceMetadata withTags(Map<String, String> tags) {
-        this.tags = tags;
+    public ResourceMetadata withAccountId(String accountId) {
+        this.accountId = accountId;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model ResourceMetadata"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property resourceId in model ResourceMetadata"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceMetadata.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("resourceKind", this.resourceKind);
+        jsonWriter.writeStringField("resourceOrigin",
+            this.resourceOrigin == null ? null : this.resourceOrigin.toString());
+        jsonWriter.writeStringField("accountId", this.accountId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceMetadata.
+     */
+    public static ResourceMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceMetadata deserializedResourceMetadata = new ResourceMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedResourceMetadata.resourceId = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedResourceMetadata.resourceType = reader.getString();
+                } else if ("resourceKind".equals(fieldName)) {
+                    deserializedResourceMetadata.resourceKind = reader.getString();
+                } else if ("resourceOrigin".equals(fieldName)) {
+                    deserializedResourceMetadata.resourceOrigin = ResourceOrigin.fromString(reader.getString());
+                } else if ("accountId".equals(fieldName)) {
+                    deserializedResourceMetadata.accountId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceMetadata;
+        });
+    }
 }

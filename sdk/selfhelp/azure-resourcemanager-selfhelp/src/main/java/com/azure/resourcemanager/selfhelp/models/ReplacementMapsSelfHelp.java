@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Solution replacement maps.
  */
 @Fluent
-public final class ReplacementMapsSelfHelp {
+public final class ReplacementMapsSelfHelp implements JsonSerializable<ReplacementMapsSelfHelp> {
     /*
      * Solution AzureKB results
      */
-    @JsonProperty(value = "webResults")
     private List<WebResult> webResults;
 
     /*
      * Video solutions, which have the power to engage the customer by stimulating their senses
      */
-    @JsonProperty(value = "videos")
     private List<Video> videos;
 
     /*
      * Group of Videos
      */
-    @JsonProperty(value = "videoGroups")
     private List<VideoGroup> videoGroups;
 
     /**
@@ -114,5 +115,50 @@ public final class ReplacementMapsSelfHelp {
         if (videoGroups() != null) {
             videoGroups().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("webResults", this.webResults, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("videos", this.videos, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("videoGroups", this.videoGroups, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplacementMapsSelfHelp from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplacementMapsSelfHelp if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplacementMapsSelfHelp.
+     */
+    public static ReplacementMapsSelfHelp fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplacementMapsSelfHelp deserializedReplacementMapsSelfHelp = new ReplacementMapsSelfHelp();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("webResults".equals(fieldName)) {
+                    List<WebResult> webResults = reader.readArray(reader1 -> WebResult.fromJson(reader1));
+                    deserializedReplacementMapsSelfHelp.webResults = webResults;
+                } else if ("videos".equals(fieldName)) {
+                    List<Video> videos = reader.readArray(reader1 -> Video.fromJson(reader1));
+                    deserializedReplacementMapsSelfHelp.videos = videos;
+                } else if ("videoGroups".equals(fieldName)) {
+                    List<VideoGroup> videoGroups = reader.readArray(reader1 -> VideoGroup.fromJson(reader1));
+                    deserializedReplacementMapsSelfHelp.videoGroups = videoGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplacementMapsSelfHelp;
+        });
     }
 }

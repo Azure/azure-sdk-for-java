@@ -5,36 +5,53 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** Azure Databricks Delta Lake export command settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureDatabricksDeltaLakeExportCommand")
+/**
+ * Azure Databricks Delta Lake export command settings.
+ */
 @Fluent
 public final class AzureDatabricksDeltaLakeExportCommand extends ExportSettings {
     /*
-     * Specify the date format for the csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with
-     * resultType string).
+     * The export setting type.
      */
-    @JsonProperty(value = "dateFormat")
+    private String type = "AzureDatabricksDeltaLakeExportCommand";
+
+    /*
+     * Specify the date format for the csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType string).
+     */
     private Object dateFormat;
 
     /*
-     * Specify the timestamp format for the csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with
-     * resultType string).
+     * Specify the timestamp format for the csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "timestampFormat")
     private Object timestampFormat;
 
-    /** Creates an instance of AzureDatabricksDeltaLakeExportCommand class. */
-    public AzureDatabricksDeltaLakeExportCommand() {}
+    /**
+     * Creates an instance of AzureDatabricksDeltaLakeExportCommand class.
+     */
+    public AzureDatabricksDeltaLakeExportCommand() {
+    }
+
+    /**
+     * Get the type property: The export setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the dateFormat property: Specify the date format for the csv in Azure Databricks Delta Lake Copy. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the dateFormat value.
      */
     public Object getDateFormat() {
@@ -44,7 +61,7 @@ public final class AzureDatabricksDeltaLakeExportCommand extends ExportSettings 
     /**
      * Set the dateFormat property: Specify the date format for the csv in Azure Databricks Delta Lake Copy. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param dateFormat the dateFormat value to set.
      * @return the AzureDatabricksDeltaLakeExportCommand object itself.
      */
@@ -56,7 +73,7 @@ public final class AzureDatabricksDeltaLakeExportCommand extends ExportSettings 
     /**
      * Get the timestampFormat property: Specify the timestamp format for the csv in Azure Databricks Delta Lake Copy.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the timestampFormat value.
      */
     public Object getTimestampFormat() {
@@ -66,12 +83,66 @@ public final class AzureDatabricksDeltaLakeExportCommand extends ExportSettings 
     /**
      * Set the timestampFormat property: Specify the timestamp format for the csv in Azure Databricks Delta Lake Copy.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param timestampFormat the timestampFormat value to set.
      * @return the AzureDatabricksDeltaLakeExportCommand object itself.
      */
     public AzureDatabricksDeltaLakeExportCommand setTimestampFormat(Object timestampFormat) {
         this.timestampFormat = timestampFormat;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("dateFormat", this.dateFormat);
+        jsonWriter.writeUntypedField("timestampFormat", this.timestampFormat);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDatabricksDeltaLakeExportCommand from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDatabricksDeltaLakeExportCommand if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureDatabricksDeltaLakeExportCommand.
+     */
+    public static AzureDatabricksDeltaLakeExportCommand fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDatabricksDeltaLakeExportCommand deserializedAzureDatabricksDeltaLakeExportCommand
+                = new AzureDatabricksDeltaLakeExportCommand();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeExportCommand.type = reader.getString();
+                } else if ("dateFormat".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeExportCommand.dateFormat = reader.readUntyped();
+                } else if ("timestampFormat".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeExportCommand.timestampFormat = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureDatabricksDeltaLakeExportCommand.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureDatabricksDeltaLakeExportCommand;
+        });
     }
 }

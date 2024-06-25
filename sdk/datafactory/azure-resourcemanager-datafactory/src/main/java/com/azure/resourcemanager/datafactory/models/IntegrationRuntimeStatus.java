@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -35,7 +35,7 @@ public class IntegrationRuntimeStatus {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private IntegrationRuntimeType type;
+    private IntegrationRuntimeType type = IntegrationRuntimeType.fromString("IntegrationRuntimeStatus");
 
     /*
      * The data factory name which the integration runtime belong to.
@@ -59,7 +59,6 @@ public class IntegrationRuntimeStatus {
      * Creates an instance of IntegrationRuntimeStatus class.
      */
     public IntegrationRuntimeStatus() {
-        this.type = IntegrationRuntimeType.fromString("IntegrationRuntimeStatus");
     }
 
     /**
@@ -113,7 +112,7 @@ public class IntegrationRuntimeStatus {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

@@ -1,17 +1,27 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.3 (2024-06-12)
 
 ### Breaking Changes
 
 - Modified the final result of `beginAnalyzeDocument` API in `DocumentIntelligenceClient` to `AnalyzeResult` class.
 - Modified the final result of `beginClassifyDocument` API in `DocumentIntelligenceClient` to `AnalyzeResult` class.
 
-### Bugs Fixed
-
 ### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` to version`1.15.1`.
+- Upgraded `azure-core` to version `1.49.1`.
 
 ## 1.0.0-beta.2 (2024-03-06)
 

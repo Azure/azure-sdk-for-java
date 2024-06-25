@@ -5,26 +5,27 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The type used for update operations of the StandbyContainerGroupPoolResource.
  */
 @Fluent
-public final class StandbyContainerGroupPoolResourceUpdate {
+public final class StandbyContainerGroupPoolResourceUpdate
+    implements JsonSerializable<StandbyContainerGroupPoolResourceUpdate> {
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private StandbyContainerGroupPoolResourceUpdateProperties properties;
 
     /**
@@ -83,5 +84,47 @@ public final class StandbyContainerGroupPoolResourceUpdate {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StandbyContainerGroupPoolResourceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StandbyContainerGroupPoolResourceUpdate if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StandbyContainerGroupPoolResourceUpdate.
+     */
+    public static StandbyContainerGroupPoolResourceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StandbyContainerGroupPoolResourceUpdate deserializedStandbyContainerGroupPoolResourceUpdate
+                = new StandbyContainerGroupPoolResourceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStandbyContainerGroupPoolResourceUpdate.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStandbyContainerGroupPoolResourceUpdate.properties
+                        = StandbyContainerGroupPoolResourceUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStandbyContainerGroupPoolResourceUpdate;
+        });
     }
 }

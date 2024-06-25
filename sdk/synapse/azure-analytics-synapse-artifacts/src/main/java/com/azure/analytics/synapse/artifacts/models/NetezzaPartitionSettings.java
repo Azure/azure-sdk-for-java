@@ -5,39 +5,42 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The settings that will be leveraged for Netezza source partitioning. */
+/**
+ * The settings that will be leveraged for Netezza source partitioning.
+ */
 @Fluent
-public final class NetezzaPartitionSettings {
+public final class NetezzaPartitionSettings implements JsonSerializable<NetezzaPartitionSettings> {
     /*
-     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or
-     * Expression with resultType string).
+     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;
 
     /*
-     * The maximum value of column specified in partitionColumnName that will be used for proceeding range
-     * partitioning. Type: string (or Expression with resultType string).
+     * The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionUpperBound")
     private Object partitionUpperBound;
 
     /*
-     * The minimum value of column specified in partitionColumnName that will be used for proceeding range
-     * partitioning. Type: string (or Expression with resultType string).
+     * The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
 
-    /** Creates an instance of NetezzaPartitionSettings class. */
-    public NetezzaPartitionSettings() {}
+    /**
+     * Creates an instance of NetezzaPartitionSettings class.
+     */
+    public NetezzaPartitionSettings() {
+    }
 
     /**
      * Get the partitionColumnName property: The name of the column in integer type that will be used for proceeding
      * range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the partitionColumnName value.
      */
     public Object getPartitionColumnName() {
@@ -47,7 +50,7 @@ public final class NetezzaPartitionSettings {
     /**
      * Set the partitionColumnName property: The name of the column in integer type that will be used for proceeding
      * range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param partitionColumnName the partitionColumnName value to set.
      * @return the NetezzaPartitionSettings object itself.
      */
@@ -59,7 +62,7 @@ public final class NetezzaPartitionSettings {
     /**
      * Get the partitionUpperBound property: The maximum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the partitionUpperBound value.
      */
     public Object getPartitionUpperBound() {
@@ -69,7 +72,7 @@ public final class NetezzaPartitionSettings {
     /**
      * Set the partitionUpperBound property: The maximum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param partitionUpperBound the partitionUpperBound value to set.
      * @return the NetezzaPartitionSettings object itself.
      */
@@ -81,7 +84,7 @@ public final class NetezzaPartitionSettings {
     /**
      * Get the partitionLowerBound property: The minimum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the partitionLowerBound value.
      */
     public Object getPartitionLowerBound() {
@@ -91,12 +94,54 @@ public final class NetezzaPartitionSettings {
     /**
      * Set the partitionLowerBound property: The minimum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param partitionLowerBound the partitionLowerBound value to set.
      * @return the NetezzaPartitionSettings object itself.
      */
     public NetezzaPartitionSettings setPartitionLowerBound(Object partitionLowerBound) {
         this.partitionLowerBound = partitionLowerBound;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
+        jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetezzaPartitionSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetezzaPartitionSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetezzaPartitionSettings.
+     */
+    public static NetezzaPartitionSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetezzaPartitionSettings deserializedNetezzaPartitionSettings = new NetezzaPartitionSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partitionColumnName".equals(fieldName)) {
+                    deserializedNetezzaPartitionSettings.partitionColumnName = reader.readUntyped();
+                } else if ("partitionUpperBound".equals(fieldName)) {
+                    deserializedNetezzaPartitionSettings.partitionUpperBound = reader.readUntyped();
+                } else if ("partitionLowerBound".equals(fieldName)) {
+                    deserializedNetezzaPartitionSettings.partitionLowerBound = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetezzaPartitionSettings;
+        });
     }
 }
