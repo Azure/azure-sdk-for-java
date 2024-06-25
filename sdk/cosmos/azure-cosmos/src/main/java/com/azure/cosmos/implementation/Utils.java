@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
@@ -79,8 +80,8 @@ public class Utils {
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
 
-    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
-        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+    private static AtomicReference<ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor> itemSerializerAccessor =
+        new AtomicReference<>(null);
 
     // NOTE DateTimeFormatter.RFC_1123_DATE_TIME cannot be used.
     // because cosmos db rfc1123 validation requires two digits for day.
@@ -88,6 +89,21 @@ public class Utils {
     // but Thu, 4 Jan 2018 00:30:37 GMT is not.
     // Therefore, we need a custom date time formatter.
     private static final DateTimeFormatter RFC_1123_DATE_TIME = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+
+    private static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor ensureItemSerializerAccessor() {
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor snapshot = itemSerializerAccessor.get();
+        if (snapshot != null) {
+            return snapshot;
+        }
+
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor newInstance =
+            ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
+        if (itemSerializerAccessor.compareAndSet(null, newInstance)) {
+            return newInstance;
+        }
+
+        return itemSerializerAccessor.get();
+    }
 
     private static ObjectMapper createAndInitializeObjectMapper(boolean allowDuplicateProperties) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -596,7 +612,7 @@ public class Utils {
                     ? itemSerializer
                     : CosmosItemSerializer.DEFAULT_SERIALIZER;
 
-                T result = itemSerializerAccessor.deserializeSafe(
+                T result = ensureItemSerializerAccessor().deserializeSafe(
                     effectiveSerializer,
                     getSimpleObjectMapper().convertValue(jsonTree, ObjectNodeMap.JACKSON_MAP_TYPE),
                     itemClassType);
@@ -614,7 +630,7 @@ public class Utils {
         CosmosItemSerializer effectiveItemSerializer= itemSerializer == null ?
                 CosmosItemSerializer.DEFAULT_SERIALIZER : itemSerializer;
 
-        return itemSerializerAccessor.deserializeSafe(effectiveItemSerializer, new ObjectNodeMap(jsonNode), itemClassType);
+        return ensureItemSerializerAccessor().deserializeSafe(effectiveItemSerializer, new ObjectNodeMap(jsonNode), itemClassType);
     }
 
     @SuppressWarnings("unchecked")
@@ -624,7 +640,7 @@ public class Utils {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
                 ? (Map<String, Object>) object
-                : itemSerializerAccessor.serializeSafe(serializer, object);
+                : ensureItemSerializerAccessor().serializeSafe(serializer, object);
 
             if (onAfterSerialization != null) {
                 onAfterSerialization.accept(jsonTreeMap);

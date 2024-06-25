@@ -84,6 +84,8 @@ public final class CosmosEncryptionAsyncContainer {
 
     private final CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient;
 
+    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
+        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
     private final static ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor cosmosItemResponseBuilderAccessor = ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
     private final static ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor cosmosItemRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
     private final static ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor cosmosQueryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
@@ -1380,12 +1382,9 @@ public final class CosmosEncryptionAsyncContainer {
                     .flatMap(encryptedIdPartitionKeyTuple -> {
 
 
-                        Map<String, Object> jsonTree = ImplementationBridgeHelpers
-                            .CosmosItemSerializerHelper
-                            .getCosmosItemSerializerAccessor()
-                            .serializeSafe(
-                                effectiveItemSerializer,
-                                itemBatchOperation.getItem());
+                        Map<String, Object> jsonTree = itemSerializerAccessor.serializeSafe(
+                            effectiveItemSerializer,
+                            itemBatchOperation.getItem());
 
                         ObjectNode objectNode = jsonTree instanceof ObjectNodeMap
                             ? ((ObjectNodeMap)jsonTree).getObjectNode().deepCopy()
@@ -1582,12 +1581,9 @@ public final class CosmosEncryptionAsyncContainer {
                         }
                     })
                     .flatMap(encryptedIdPartitionKeyTuple -> {
-                        Map<String, Object> jsonTree = ImplementationBridgeHelpers
-                            .CosmosItemSerializerHelper
-                            .getCosmosItemSerializerAccessor()
-                            .serializeSafe(
-                                effectiveItemSerializer,
-                                cosmosItemOperation.getItem());
+                        Map<String, Object> jsonTree = itemSerializerAccessor.serializeSafe(
+                            effectiveItemSerializer,
+                            cosmosItemOperation.getItem());
 
                         ObjectNode objectNode = jsonTree instanceof ObjectNodeMap
                             ? ((ObjectNodeMap)jsonTree).getObjectNode().deepCopy()
