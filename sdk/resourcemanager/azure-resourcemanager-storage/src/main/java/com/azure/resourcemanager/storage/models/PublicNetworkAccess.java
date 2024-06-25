@@ -9,19 +9,28 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Allow or disallow public network access to Storage Account. Value is optional but if passed in, must be 'Enabled' or
- * 'Disabled'.
+ * Allow, disallow, or let Network Security Perimeter configuration to evaluate public network access to Storage
+ * Account. Value is optional but if passed in, must be 'Enabled', 'Disabled' or 'SecuredByPerimeter'.
  */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
-    /** Static value Enabled for PublicNetworkAccess. */
+    /**
+     * Static value Enabled for PublicNetworkAccess.
+     */
     public static final PublicNetworkAccess ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for PublicNetworkAccess. */
+    /**
+     * Static value Disabled for PublicNetworkAccess.
+     */
     public static final PublicNetworkAccess DISABLED = fromString("Disabled");
 
     /**
+     * Static value SecuredByPerimeter for PublicNetworkAccess.
+     */
+    public static final PublicNetworkAccess SECURED_BY_PERIMETER = fromString("SecuredByPerimeter");
+
+    /**
      * Creates a new instance of PublicNetworkAccess value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +39,7 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
 
     /**
      * Creates or finds a PublicNetworkAccess from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PublicNetworkAccess.
      */
@@ -41,7 +50,7 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
 
     /**
      * Gets known PublicNetworkAccess values.
-     *
+     * 
      * @return known PublicNetworkAccess values.
      */
     public static Collection<PublicNetworkAccess> values() {

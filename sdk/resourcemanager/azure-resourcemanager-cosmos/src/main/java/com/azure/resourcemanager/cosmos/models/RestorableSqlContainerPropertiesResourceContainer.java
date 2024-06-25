@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -44,9 +45,8 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
     }
 
     /**
-     * Get the self property: A system generated property that specifies the addressable path of the container
-     * resource.
-     * 
+     * Get the self property: A system generated property that specifies the addressable path of the container resource.
+     *
      * @return the self value.
      */
     public String self() {
@@ -55,7 +55,7 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
 
     /**
      * Get the rid property: A system generated property. A unique identifier.
-     * 
+     *
      * @return the rid value.
      */
     public String rid() {
@@ -64,7 +64,7 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
 
     /**
      * Get the ts property: A system generated property that denotes the last updated timestamp of the resource.
-     * 
+     *
      * @return the ts value.
      */
     public Float ts() {
@@ -74,7 +74,7 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
     /**
      * Get the etag property: A system generated property representing the resource etag required for optimistic
      * concurrency control.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -186,7 +186,7 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

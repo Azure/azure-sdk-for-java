@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import static com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.getLoginUri;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_VERSION_POSTFIX;
@@ -23,11 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class AccessTokenUtilTest {
     /**
      * Test getAuthorizationToken method.
-     *
-     * @throws Exception when a serious error occurs.
      */
     @Test
-    public void testGetAuthorizationToken() throws Exception {
+    public void testGetAuthorizationToken() throws URISyntaxException {
         String tenantId = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID");
         String clientId = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID");
         String clientSecret = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET");
@@ -42,7 +41,7 @@ public class AccessTokenUtilTest {
     }
 
     @Test
-    public void testGetLoginUri() throws Exception {
+    public void testGetLoginUri() throws URISyntaxException {
         String keyVaultEndpoint = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT");
         String result = getLoginUri(new URI(keyVaultEndpoint + "certificates" + API_VERSION_POSTFIX), false);
 

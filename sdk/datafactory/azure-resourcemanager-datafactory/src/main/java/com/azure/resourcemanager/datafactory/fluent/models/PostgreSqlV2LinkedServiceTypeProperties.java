@@ -39,7 +39,8 @@ public final class PostgreSqlV2LinkedServiceTypeProperties {
     private Object database;
 
     /*
-     * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full. Type: integer.
+     * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full.
+     * Type: integer.
      */
     @JsonProperty(value = "sslMode", required = true)
     private Object sslMode;
@@ -57,13 +58,15 @@ public final class PostgreSqlV2LinkedServiceTypeProperties {
     private Object pooling;
 
     /*
-     * The time to wait (in seconds) while trying to establish a connection before terminating the attempt and generating an error. Type: integer.
+     * The time to wait (in seconds) while trying to establish a connection before terminating the attempt and
+     * generating an error. Type: integer.
      */
     @JsonProperty(value = "connectionTimeout")
     private Object connectionTimeout;
 
     /*
-     * The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an error. Set to zero for infinity. Type: integer.
+     * The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an
+     * error. Set to zero for infinity. Type: integer.
      */
     @JsonProperty(value = "commandTimeout")
     private Object commandTimeout;
@@ -93,7 +96,8 @@ public final class PostgreSqlV2LinkedServiceTypeProperties {
     private Object sslPassword;
 
     /*
-     * Determines the size of the internal buffer uses when reading. Increasing may improve performance if transferring large values from the database. Type: integer.
+     * Determines the size of the internal buffer uses when reading. Increasing may improve performance if transferring
+     * large values from the database. Type: integer.
      */
     @JsonProperty(value = "readBufferSize")
     private Object readBufferSize;
@@ -123,7 +127,8 @@ public final class PostgreSqlV2LinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added support for `injectionRate` for `FaultInjectionServerErrorResult` - See [PR 40213](https://github.com/Azure/azure-sdk-for-java/pull/40213)
+* Added support for `FaultInjectionServerErrorType.PARTITION_IS_GONE` - See [PR 40738(https://github.com/Azure/azure-sdk-for-java/pull/40738)
 
 #### Breaking Changes
 

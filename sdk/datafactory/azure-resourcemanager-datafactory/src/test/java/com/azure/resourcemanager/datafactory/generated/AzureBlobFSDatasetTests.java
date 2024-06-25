@@ -21,38 +21,38 @@ public final class AzureBlobFSDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSDataset model = BinaryData.fromString(
-            "{\"type\":\"bjsdj\",\"typeProperties\":{\"folderPath\":\"datakfnyskwwunqhc\",\"fileName\":\"datavoj\",\"format\":{\"type\":\"hipcukvbljpx\",\"serializer\":\"datarvchyluqalp\",\"deserializer\":\"datafjjfxtizt\",\"\":{\"xxsri\":\"datatahhhsa\",\"yyefmxwoqotiiqb\":\"datarcwbaae\",\"sty\":\"datapasrvrmt\",\"k\":\"datakjhorlxkpy\"}},\"compression\":{\"type\":\"datanycntr\",\"level\":\"dataxwtdmbqjtsuhqh\",\"\":{\"x\":\"datatdyqav\",\"npaami\":\"dataqmzxsyaks\",\"hvwt\":\"datawb\",\"kiy\":\"datapbgchcgsfzhb\"}}},\"description\":\"xeysgwkcffe\",\"structure\":\"datanzcbivove\",\"schema\":\"datakhfeqcooplfpo\",\"linkedServiceName\":{\"referenceName\":\"imgckycjpeebznbz\",\"parameters\":{\"tn\":\"dataulo\",\"hgpncdmwkhupfhs\":\"databmxooq\"}},\"parameters\":{\"iunyevdyzdsytc\":{\"type\":\"Float\",\"defaultValue\":\"dataa\"}},\"annotations\":[\"datawhcamwuynfxkc\",\"datasfcmvhadrpb\",\"datatvyrkljqkq\"],\"folder\":{\"name\":\"jtvjkowggxawwd\"},\"\":{\"lprgeganihkjcner\":\"datapnkteiidlbovwb\"}}")
+            "{\"type\":\"AzureBlobFSFile\",\"typeProperties\":{\"folderPath\":\"datamdrcjlvkrkegtyc\",\"fileName\":\"datappiyxlzmiyddeeqz\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"databm\",\"deserializer\":\"datas\",\"\":{\"trlq\":\"datauetbapfczew\",\"pirgzxvbczwhy\":\"datapxyazk\"}},\"compression\":{\"type\":\"databthmsritj\",\"level\":\"dataiggrunoz\",\"\":{\"krfihscjv\":\"dataaljthoivsdwsn\"}}},\"description\":\"mhzbhwahfbwih\",\"structure\":\"datanx\",\"schema\":\"datavynuqqkotauratn\",\"linkedServiceName\":{\"referenceName\":\"cppfzsclefyrle\",\"parameters\":{\"n\":\"dataqlmfdg\",\"fleev\":\"databuypwovvv\",\"pxrl\":\"dataoqayrehjuqwv\"}},\"parameters\":{\"qzlxn\":{\"type\":\"Object\",\"defaultValue\":\"datahacen\"}},\"annotations\":[\"databfonfdbgmkfwmj\",\"datawtewf\",\"dataxwyrkbrehzlr\"],\"folder\":{\"name\":\"pcha\"},\"\":{\"rieikmwlaoklfnis\":\"dataeplrajubowuywevt\"}}")
             .toObject(AzureBlobFSDataset.class);
-        Assertions.assertEquals("xeysgwkcffe", model.description());
-        Assertions.assertEquals("imgckycjpeebznbz", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("iunyevdyzdsytc").type());
-        Assertions.assertEquals("jtvjkowggxawwd", model.folder().name());
+        Assertions.assertEquals("mhzbhwahfbwih", model.description());
+        Assertions.assertEquals("cppfzsclefyrle", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("qzlxn").type());
+        Assertions.assertEquals("pcha", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSDataset model = new AzureBlobFSDataset().withDescription("xeysgwkcffe")
-            .withStructure("datanzcbivove")
-            .withSchema("datakhfeqcooplfpo")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("imgckycjpeebznbz")
-                .withParameters(mapOf("tn", "dataulo", "hgpncdmwkhupfhs", "databmxooq")))
-            .withParameters(mapOf("iunyevdyzdsytc",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataa")))
-            .withAnnotations(Arrays.asList("datawhcamwuynfxkc", "datasfcmvhadrpb", "datatvyrkljqkq"))
-            .withFolder(new DatasetFolder().withName("jtvjkowggxawwd"))
-            .withFolderPath("datakfnyskwwunqhc")
-            .withFileName("datavoj")
-            .withFormat(new DatasetStorageFormat().withSerializer("datarvchyluqalp")
-                .withDeserializer("datafjjfxtizt")
-                .withAdditionalProperties(mapOf("type", "hipcukvbljpx")))
-            .withCompression(new DatasetCompression().withType("datanycntr")
-                .withLevel("dataxwtdmbqjtsuhqh")
+        AzureBlobFSDataset model = new AzureBlobFSDataset().withDescription("mhzbhwahfbwih")
+            .withStructure("datanx")
+            .withSchema("datavynuqqkotauratn")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cppfzsclefyrle")
+                .withParameters(mapOf("n", "dataqlmfdg", "fleev", "databuypwovvv", "pxrl", "dataoqayrehjuqwv")))
+            .withParameters(mapOf("qzlxn",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datahacen")))
+            .withAnnotations(Arrays.asList("databfonfdbgmkfwmj", "datawtewf", "dataxwyrkbrehzlr"))
+            .withFolder(new DatasetFolder().withName("pcha"))
+            .withFolderPath("datamdrcjlvkrkegtyc")
+            .withFileName("datappiyxlzmiyddeeqz")
+            .withFormat(new DatasetStorageFormat().withSerializer("databm")
+                .withDeserializer("datas")
+                .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
+            .withCompression(new DatasetCompression().withType("databthmsritj")
+                .withLevel("dataiggrunoz")
                 .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(AzureBlobFSDataset.class);
-        Assertions.assertEquals("xeysgwkcffe", model.description());
-        Assertions.assertEquals("imgckycjpeebznbz", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("iunyevdyzdsytc").type());
-        Assertions.assertEquals("jtvjkowggxawwd", model.folder().name());
+        Assertions.assertEquals("mhzbhwahfbwih", model.description());
+        Assertions.assertEquals("cppfzsclefyrle", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("qzlxn").type());
+        Assertions.assertEquals("pcha", model.folder().name());
     }
 
     // Use "Map.of" if available

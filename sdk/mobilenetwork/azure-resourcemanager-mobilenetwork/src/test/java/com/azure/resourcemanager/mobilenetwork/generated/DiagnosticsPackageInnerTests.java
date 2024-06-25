@@ -11,7 +11,7 @@ public final class DiagnosticsPackageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticsPackageInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"Collected\",\"reason\":\"majtjaod\"},\"id\":\"bnbdxkqpxokajion\",\"name\":\"imexgstxgcpodgma\",\"type\":\"jrmvdjwzrlo\"}")
+            "{\"properties\":{\"provisioningState\":\"Unknown\",\"status\":\"Collected\",\"reason\":\"zgpphrcgyncocpe\"},\"id\":\"vmmcoofs\",\"name\":\"lzevgbmqjqab\",\"type\":\"y\"}")
             .toObject(DiagnosticsPackageInner.class);
     }
 

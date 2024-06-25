@@ -5,35 +5,35 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The LinkTableResource model.
  */
 @Fluent
-public final class LinkTableResource {
+public final class LinkTableResource implements JsonSerializable<LinkTableResource> {
     /*
      * Link table id
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Link table name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Source table properties for link table request
      */
-    @JsonProperty(value = "source")
     private LinkTableRequestSource source;
 
     /*
      * Target table properties for link table request
      */
-    @JsonProperty(value = "target")
     private LinkTableRequestTarget target;
 
     /**
@@ -120,5 +120,50 @@ public final class LinkTableResource {
     public LinkTableResource setTarget(LinkTableRequestTarget target) {
         this.target = target;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeJsonField("target", this.target);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkTableResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkTableResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkTableResource.
+     */
+    public static LinkTableResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkTableResource deserializedLinkTableResource = new LinkTableResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLinkTableResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLinkTableResource.name = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedLinkTableResource.source = LinkTableRequestSource.fromJson(reader);
+                } else if ("target".equals(fieldName)) {
+                    deserializedLinkTableResource.target = LinkTableRequestTarget.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkTableResource;
+        });
     }
 }

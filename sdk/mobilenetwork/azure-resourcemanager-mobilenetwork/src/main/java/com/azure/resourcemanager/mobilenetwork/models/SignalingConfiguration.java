@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
  * Signaling configuration for the packet core.
@@ -17,6 +18,12 @@ public final class SignalingConfiguration {
      */
     @JsonProperty(value = "nasReroute")
     private NasRerouteConfiguration nasReroute;
+
+    /*
+     * An ordered list of NAS encryption algorithms, used to encrypt control plane traffic between the UE and packet core, in order from most to least preferred. If not specified, the packet core will use a built-in default ordering.
+     */
+    @JsonProperty(value = "nasEncryption")
+    private List<NasEncryptionType> nasEncryption;
 
     /**
      * Creates an instance of SignalingConfiguration class.
@@ -41,6 +48,30 @@ public final class SignalingConfiguration {
      */
     public SignalingConfiguration withNasReroute(NasRerouteConfiguration nasReroute) {
         this.nasReroute = nasReroute;
+        return this;
+    }
+
+    /**
+     * Get the nasEncryption property: An ordered list of NAS encryption algorithms, used to encrypt control plane
+     * traffic between the UE and packet core, in order from most to least preferred. If not specified, the packet core
+     * will use a built-in default ordering.
+     * 
+     * @return the nasEncryption value.
+     */
+    public List<NasEncryptionType> nasEncryption() {
+        return this.nasEncryption;
+    }
+
+    /**
+     * Set the nasEncryption property: An ordered list of NAS encryption algorithms, used to encrypt control plane
+     * traffic between the UE and packet core, in order from most to least preferred. If not specified, the packet core
+     * will use a built-in default ordering.
+     * 
+     * @param nasEncryption the nasEncryption value to set.
+     * @return the SignalingConfiguration object itself.
+     */
+    public SignalingConfiguration withNasEncryption(List<NasEncryptionType> nasEncryption) {
+        this.nasEncryption = nasEncryption;
         return this;
     }
 

@@ -7,15 +7,18 @@ package com.azure.resourcemanager.storagemover.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The Endpoint resource, which contains information about file sources and targets. */
+/**
+ * The Endpoint resource, which contains information about file sources and targets.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "endpointType",
-    defaultImpl = EndpointBaseUpdateProperties.class)
+    defaultImpl = EndpointBaseUpdateProperties.class,
+    visible = true)
 @JsonTypeName("EndpointBaseUpdateProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -25,23 +28,40 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(
         name = "AzureStorageSmbFileShare",
         value = AzureStorageSmbFileShareEndpointUpdateProperties.class),
-    @JsonSubTypes.Type(name = "SmbMount", value = SmbMountEndpointUpdateProperties.class)
-})
+    @JsonSubTypes.Type(name = "SmbMount", value = SmbMountEndpointUpdateProperties.class) })
 @Fluent
 public class EndpointBaseUpdateProperties {
+    /*
+     * The Endpoint resource type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private EndpointType endpointType = EndpointType.fromString("EndpointBaseUpdateProperties");
+
     /*
      * A description for the Endpoint.
      */
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of EndpointBaseUpdateProperties class. */
+    /**
+     * Creates an instance of EndpointBaseUpdateProperties class.
+     */
     public EndpointBaseUpdateProperties() {
     }
 
     /**
+     * Get the endpointType property: The Endpoint resource type.
+     * 
+     * @return the endpointType value.
+     */
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
      * Get the description property: A description for the Endpoint.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -50,7 +70,7 @@ public class EndpointBaseUpdateProperties {
 
     /**
      * Set the description property: A description for the Endpoint.
-     *
+     * 
      * @param description the description value to set.
      * @return the EndpointBaseUpdateProperties object itself.
      */
@@ -61,7 +81,7 @@ public class EndpointBaseUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

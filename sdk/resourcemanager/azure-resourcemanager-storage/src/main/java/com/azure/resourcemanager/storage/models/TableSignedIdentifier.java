@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Object to set Table Access Policy. */
+/**
+ * Object to set Table Access Policy.
+ */
 @Fluent
 public final class TableSignedIdentifier {
     /*
@@ -23,13 +25,15 @@ public final class TableSignedIdentifier {
     @JsonProperty(value = "accessPolicy")
     private TableAccessPolicy accessPolicy;
 
-    /** Creates an instance of TableSignedIdentifier class. */
+    /**
+     * Creates an instance of TableSignedIdentifier class.
+     */
     public TableSignedIdentifier() {
     }
 
     /**
      * Get the id property: unique-64-character-value of the stored access policy.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -38,7 +42,7 @@ public final class TableSignedIdentifier {
 
     /**
      * Set the id property: unique-64-character-value of the stored access policy.
-     *
+     * 
      * @param id the id value to set.
      * @return the TableSignedIdentifier object itself.
      */
@@ -49,7 +53,7 @@ public final class TableSignedIdentifier {
 
     /**
      * Get the accessPolicy property: Access policy.
-     *
+     * 
      * @return the accessPolicy value.
      */
     public TableAccessPolicy accessPolicy() {
@@ -58,7 +62,7 @@ public final class TableSignedIdentifier {
 
     /**
      * Set the accessPolicy property: Access policy.
-     *
+     * 
      * @param accessPolicy the accessPolicy value to set.
      * @return the TableSignedIdentifier object itself.
      */
@@ -69,14 +73,13 @@ public final class TableSignedIdentifier {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model TableSignedIdentifier"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model TableSignedIdentifier"));
         }
         if (accessPolicy() != null) {
             accessPolicy().validate();

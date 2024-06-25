@@ -52,8 +52,9 @@ public final class AttachedDataNetworkResourceId {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model AttachedDataNetworkResourceId"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model AttachedDataNetworkResourceId"));
         }
     }
 

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -36,7 +36,7 @@ public class CompressionReadSettings {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "CompressionReadSettings";
 
     /*
      * Compression read settings.
@@ -48,7 +48,6 @@ public class CompressionReadSettings {
      * Creates an instance of CompressionReadSettings class.
      */
     public CompressionReadSettings() {
-        this.type = "CompressionReadSettings";
     }
 
     /**
@@ -84,7 +83,7 @@ public class CompressionReadSettings {
     @JsonAnySetter
     void withAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }

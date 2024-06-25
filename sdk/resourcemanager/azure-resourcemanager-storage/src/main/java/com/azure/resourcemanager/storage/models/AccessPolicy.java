@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AccessPolicy model. */
+/**
+ * The AccessPolicy model.
+ */
 @Fluent
 public final class AccessPolicy {
     /*
@@ -29,13 +31,15 @@ public final class AccessPolicy {
     @JsonProperty(value = "permission")
     private String permission;
 
-    /** Creates an instance of AccessPolicy class. */
+    /**
+     * Creates an instance of AccessPolicy class.
+     */
     public AccessPolicy() {
     }
 
     /**
      * Get the startTime property: Start time of the access policy.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -44,7 +48,7 @@ public final class AccessPolicy {
 
     /**
      * Set the startTime property: Start time of the access policy.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the AccessPolicy object itself.
      */
@@ -55,7 +59,7 @@ public final class AccessPolicy {
 
     /**
      * Get the expiryTime property: Expiry time of the access policy.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -64,7 +68,7 @@ public final class AccessPolicy {
 
     /**
      * Set the expiryTime property: Expiry time of the access policy.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the AccessPolicy object itself.
      */
@@ -75,7 +79,7 @@ public final class AccessPolicy {
 
     /**
      * Get the permission property: List of abbreviated permissions.
-     *
+     * 
      * @return the permission value.
      */
     public String permission() {
@@ -84,7 +88,7 @@ public final class AccessPolicy {
 
     /**
      * Set the permission property: List of abbreviated permissions.
-     *
+     * 
      * @param permission the permission value to set.
      * @return the AccessPolicy object itself.
      */
@@ -95,7 +99,7 @@ public final class AccessPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

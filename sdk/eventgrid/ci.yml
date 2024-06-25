@@ -58,7 +58,6 @@ extends:
   parameters:
     ServiceDirectory: eventgrid
     JavadocSafeJavaBuildVersion: '1.21'
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-messaging-eventgrid
         groupId: com.azure
@@ -67,7 +66,7 @@ extends:
       - name: azure-messaging-eventgrid-namespaces
         groupId: com.azure
         safeName: azuremessagingeventgridnamespaces
-        releaseInBatch: ${{ parameters.release_azuremessagingeventgridnamespaces }}        
+        releaseInBatch: ${{ parameters.release_azuremessagingeventgridnamespaces }}
       - name: azure-messaging-eventgrid-cloudnative-cloudevents
         groupId: com.azure
         safeName: azuremessagingeventgridcloudnativecloudevents

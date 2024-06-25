@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The RecognizeRequest model. */
 @Fluent
@@ -21,6 +22,12 @@ public final class RecognizeRequest {
      */
     @JsonProperty(value = "playPrompt")
     private PlaySourceInternal playPrompt;
+
+    /*
+     * The source of the audio to be played for recognition.
+     */
+    @JsonProperty(value = "playPrompts")
+    private List<PlaySourceInternal> playPrompts;
 
     /*
      * If set recognize can barge into other existing
@@ -87,6 +94,26 @@ public final class RecognizeRequest {
      */
     public RecognizeRequest setPlayPrompt(PlaySourceInternal playPrompt) {
         this.playPrompt = playPrompt;
+        return this;
+    }
+
+    /**
+     * Get the playPrompts property: The source of the audio to be played for recognition.
+     *
+     * @return the playPrompts value.
+     */
+    public List<PlaySourceInternal> getPlayPrompts() {
+        return this.playPrompts;
+    }
+
+    /**
+     * Set the playPrompts property: The source of the audio to be played for recognition.
+     *
+     * @param playPrompts the playPrompts value to set.
+     * @return the RecognizeRequest object itself.
+     */
+    public RecognizeRequest setPlayPrompts(List<PlaySourceInternal> playPrompts) {
+        this.playPrompts = playPrompts;
         return this;
     }
 

@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.storage.generated;
 
-/** Samples for TableServices List. */
+/**
+ * Samples for TableServices List.
+ */
 public final class TableServicesListSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-01-01/examples/TableServicesList.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/TableServicesList.json
      */
     /**
      * Sample code: TableServicesList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tableServicesList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .storageAccounts()
+        azure.storageAccounts()
             .manager()
             .serviceClient()
             .getTableServices()

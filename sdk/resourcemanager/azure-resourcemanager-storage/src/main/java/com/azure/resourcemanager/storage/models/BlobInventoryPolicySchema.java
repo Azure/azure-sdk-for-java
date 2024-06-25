@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The storage account blob inventory policy rules. */
+/**
+ * The storage account blob inventory policy rules.
+ */
 @Fluent
 public final class BlobInventoryPolicySchema {
     /*
@@ -37,13 +39,15 @@ public final class BlobInventoryPolicySchema {
     @JsonProperty(value = "rules", required = true)
     private List<BlobInventoryPolicyRule> rules;
 
-    /** Creates an instance of BlobInventoryPolicySchema class. */
+    /**
+     * Creates an instance of BlobInventoryPolicySchema class.
+     */
     public BlobInventoryPolicySchema() {
     }
 
     /**
      * Get the enabled property: Policy is enabled if set to true.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -52,7 +56,7 @@ public final class BlobInventoryPolicySchema {
 
     /**
      * Set the enabled property: Policy is enabled if set to true.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the BlobInventoryPolicySchema object itself.
      */
@@ -64,7 +68,7 @@ public final class BlobInventoryPolicySchema {
     /**
      * Get the destination property: Deprecated Property from API version 2021-04-01 onwards, the required destination
      * container name must be specified at the rule level 'policy.rule.destination'.
-     *
+     * 
      * @return the destination value.
      */
     public String destination() {
@@ -73,7 +77,7 @@ public final class BlobInventoryPolicySchema {
 
     /**
      * Get the type property: The valid value is Inventory.
-     *
+     * 
      * @return the type value.
      */
     public InventoryRuleType type() {
@@ -82,7 +86,7 @@ public final class BlobInventoryPolicySchema {
 
     /**
      * Set the type property: The valid value is Inventory.
-     *
+     * 
      * @param type the type value to set.
      * @return the BlobInventoryPolicySchema object itself.
      */
@@ -93,7 +97,7 @@ public final class BlobInventoryPolicySchema {
 
     /**
      * Get the rules property: The storage account blob inventory policy rules. The rule is applied when it is enabled.
-     *
+     * 
      * @return the rules value.
      */
     public List<BlobInventoryPolicyRule> rules() {
@@ -102,7 +106,7 @@ public final class BlobInventoryPolicySchema {
 
     /**
      * Set the rules property: The storage account blob inventory policy rules. The rule is applied when it is enabled.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the BlobInventoryPolicySchema object itself.
      */
@@ -113,18 +117,17 @@ public final class BlobInventoryPolicySchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model BlobInventoryPolicySchema"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model BlobInventoryPolicySchema"));
         }
         if (rules() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property rules in model BlobInventoryPolicySchema"));
         } else {
             rules().forEach(e -> e.validate());

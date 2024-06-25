@@ -11,19 +11,19 @@ public final class SparkSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SparkSource model = BinaryData.fromString(
-            "{\"type\":\"d\",\"query\":\"datartxggmp\",\"queryTimeout\":\"dataukn\",\"additionalColumns\":\"datanjhywgziqcwn\",\"sourceRetryCount\":\"dataptln\",\"sourceRetryWait\":\"datal\",\"maxConcurrentConnections\":\"datawbneszxnmgeuoih\",\"disableMetricsCollection\":\"datakfiwpgxyavcbdsu\",\"\":{\"p\":\"datavbhcjfgxtljyrey\",\"ivhk\":\"datatwzr\"}}")
+            "{\"type\":\"SparkSource\",\"query\":\"dataskzw\",\"queryTimeout\":\"datah\",\"additionalColumns\":\"datahz\",\"sourceRetryCount\":\"datac\",\"sourceRetryWait\":\"datasoxoavlwwpv\",\"maxConcurrentConnections\":\"datanjwvc\",\"disableMetricsCollection\":\"datarqlceflgsndur\",\"\":{\"kuxedpqwzz\":\"datazjwmwkdehjlozzcw\",\"vucvebdfmdjnfe\":\"dataimgbxjgxrhajrub\"}}")
             .toObject(SparkSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkSource model = new SparkSource().withSourceRetryCount("dataptln")
-            .withSourceRetryWait("datal")
-            .withMaxConcurrentConnections("datawbneszxnmgeuoih")
-            .withDisableMetricsCollection("datakfiwpgxyavcbdsu")
-            .withQueryTimeout("dataukn")
-            .withAdditionalColumns("datanjhywgziqcwn")
-            .withQuery("datartxggmp");
+        SparkSource model = new SparkSource().withSourceRetryCount("datac")
+            .withSourceRetryWait("datasoxoavlwwpv")
+            .withMaxConcurrentConnections("datanjwvc")
+            .withDisableMetricsCollection("datarqlceflgsndur")
+            .withQueryTimeout("datah")
+            .withAdditionalColumns("datahz")
+            .withQuery("dataskzw");
         model = BinaryData.fromObject(model).toObject(SparkSource.class);
     }
 }

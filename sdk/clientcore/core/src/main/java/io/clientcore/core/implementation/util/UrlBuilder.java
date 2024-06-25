@@ -16,6 +16,8 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+
 /**
  * A builder class that is used to create URLs.
  */
@@ -100,7 +102,7 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder setPort(String port) {
-        if (CoreUtils.isNullOrEmpty(port)) {
+        if (isNullOrEmpty(port)) {
             this.port = null;
             return this;
         }
@@ -211,7 +213,7 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder clearQuery() {
-        if (CoreUtils.isNullOrEmpty(query)) {
+        if (isNullOrEmpty(query)) {
             return this;
         }
 
@@ -244,7 +246,7 @@ public final class UrlBuilder {
      * @return A String containing the currently configured query string.
      */
     public String getQueryString() {
-        if (CoreUtils.isNullOrEmpty(queryToCopy) && CoreUtils.isNullOrEmpty(query)) {
+        if (isNullOrEmpty(queryToCopy) && isNullOrEmpty(query)) {
             return "";
         }
 
@@ -255,7 +257,7 @@ public final class UrlBuilder {
     }
 
     private void appendQueryString(StringBuilder stringBuilder) {
-        if (CoreUtils.isNullOrEmpty(queryToCopy) && CoreUtils.isNullOrEmpty(query)) {
+        if (isNullOrEmpty(queryToCopy) && isNullOrEmpty(query)) {
             return;
         }
 
@@ -282,7 +284,7 @@ public final class UrlBuilder {
     }
 
     private static boolean writeQueryValues(StringBuilder builder, String key, List<String> values, boolean first) {
-        if (CoreUtils.isNullOrEmpty(values)) {
+        if (isNullOrEmpty(values)) {
             if (!first) {
                 builder.append('&');
             }
@@ -543,7 +545,7 @@ public final class UrlBuilder {
      * @return An {@link Iterator} over the query parameter key-value pairs.
      */
     private static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
-        return (CoreUtils.isNullOrEmpty(queryParameters))
+        return (isNullOrEmpty(queryParameters))
             ? Collections.emptyIterator()
             : new QueryParameterIterator(queryParameters);
     }

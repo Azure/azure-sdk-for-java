@@ -13,18 +13,29 @@ import java.util.Collection;
  * property.
  */
 public final class MinimumTlsVersion extends ExpandableStringEnum<MinimumTlsVersion> {
-    /** Static value TLS1_0 for MinimumTlsVersion. */
+    /**
+     * Static value TLS1_0 for MinimumTlsVersion.
+     */
     public static final MinimumTlsVersion TLS1_0 = fromString("TLS1_0");
 
-    /** Static value TLS1_1 for MinimumTlsVersion. */
+    /**
+     * Static value TLS1_1 for MinimumTlsVersion.
+     */
     public static final MinimumTlsVersion TLS1_1 = fromString("TLS1_1");
 
-    /** Static value TLS1_2 for MinimumTlsVersion. */
+    /**
+     * Static value TLS1_2 for MinimumTlsVersion.
+     */
     public static final MinimumTlsVersion TLS1_2 = fromString("TLS1_2");
 
     /**
+     * Static value TLS1_3 for MinimumTlsVersion.
+     */
+    public static final MinimumTlsVersion TLS1_3 = fromString("TLS1_3");
+
+    /**
      * Creates a new instance of MinimumTlsVersion value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +44,7 @@ public final class MinimumTlsVersion extends ExpandableStringEnum<MinimumTlsVers
 
     /**
      * Creates or finds a MinimumTlsVersion from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MinimumTlsVersion.
      */
@@ -44,7 +55,7 @@ public final class MinimumTlsVersion extends ExpandableStringEnum<MinimumTlsVers
 
     /**
      * Gets known MinimumTlsVersion values.
-     *
+     * 
      * @return known MinimumTlsVersion values.
      */
     public static Collection<MinimumTlsVersion> values() {

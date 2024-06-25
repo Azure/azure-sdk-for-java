@@ -9,7 +9,9 @@ import com.azure.resourcemanager.storage.fluent.models.ObjectReplicationPolicyIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List storage account object replication policies. */
+/**
+ * List storage account object replication policies.
+ */
 @Fluent
 public final class ObjectReplicationPolicies {
     /*
@@ -18,13 +20,15 @@ public final class ObjectReplicationPolicies {
     @JsonProperty(value = "value")
     private List<ObjectReplicationPolicyInner> value;
 
-    /** Creates an instance of ObjectReplicationPolicies class. */
+    /**
+     * Creates an instance of ObjectReplicationPolicies class.
+     */
     public ObjectReplicationPolicies() {
     }
 
     /**
      * Get the value property: The replication policy between two storage accounts.
-     *
+     * 
      * @return the value value.
      */
     public List<ObjectReplicationPolicyInner> value() {
@@ -33,7 +37,7 @@ public final class ObjectReplicationPolicies {
 
     /**
      * Set the value property: The replication policy between two storage accounts.
-     *
+     * 
      * @param value the value value to set.
      * @return the ObjectReplicationPolicies object itself.
      */
@@ -44,7 +48,7 @@ public final class ObjectReplicationPolicies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

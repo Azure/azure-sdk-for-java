@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The ImmutabilityPolicy update type of a blob container, possible values include: put, lock and extend. */
+/**
+ * The ImmutabilityPolicy update type of a blob container, possible values include: put, lock and extend.
+ */
 public final class ImmutabilityPolicyUpdateType extends ExpandableStringEnum<ImmutabilityPolicyUpdateType> {
-    /** Static value put for ImmutabilityPolicyUpdateType. */
+    /**
+     * Static value put for ImmutabilityPolicyUpdateType.
+     */
     public static final ImmutabilityPolicyUpdateType PUT = fromString("put");
 
-    /** Static value lock for ImmutabilityPolicyUpdateType. */
+    /**
+     * Static value lock for ImmutabilityPolicyUpdateType.
+     */
     public static final ImmutabilityPolicyUpdateType LOCK = fromString("lock");
 
-    /** Static value extend for ImmutabilityPolicyUpdateType. */
+    /**
+     * Static value extend for ImmutabilityPolicyUpdateType.
+     */
     public static final ImmutabilityPolicyUpdateType EXTEND = fromString("extend");
 
     /**
      * Creates a new instance of ImmutabilityPolicyUpdateType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ImmutabilityPolicyUpdateType extends ExpandableStringEnum<Imm
 
     /**
      * Creates or finds a ImmutabilityPolicyUpdateType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImmutabilityPolicyUpdateType.
      */
@@ -41,7 +49,7 @@ public final class ImmutabilityPolicyUpdateType extends ExpandableStringEnum<Imm
 
     /**
      * Gets known ImmutabilityPolicyUpdateType values.
-     *
+     * 
      * @return known ImmutabilityPolicyUpdateType values.
      */
     public static Collection<ImmutabilityPolicyUpdateType> values() {

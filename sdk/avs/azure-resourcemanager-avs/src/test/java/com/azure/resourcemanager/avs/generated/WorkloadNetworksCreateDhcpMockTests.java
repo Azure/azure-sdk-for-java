@@ -6,70 +6,39 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpEntity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkloadNetworksCreateDhcpMockTests {
     @Test
     public void testCreateDhcp() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"zlanrupdwvnph\",\"segments\":[\"q\",\"pjhmqrhvthl\"],\"provisioningState\":\"Succeeded\",\"revision\":1106480050332233961},\"id\":\"mlzzhzdtxetlgyd\",\"name\":\"hqvlnnpxybafiqg\",\"type\":\"aarbgjekg\"}";
 
-        String responseStr =
-            "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"fuughtuqfec\",\"segments\":[\"ygtuhx\"],\"provisioningState\":\"Succeeded\",\"revision\":8894754548360108244},\"id\":\"wmrswnjlxuzrh\",\"name\":\"pusxjb\",\"type\":\"qehgpd\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AvsManager manager = AvsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        WorkloadNetworkDhcp response = manager.workloadNetworks()
+            .defineDhcp("dxfzzzwyjaf")
+            .withExistingPrivateCloud("pcrrk", "lawjmjsmwrok")
+            .withProperties(
+                new WorkloadNetworkDhcpEntity().withDisplayName("hguynuchlgmltxdw").withRevision(3582867417304549284L))
+            .create();
 
-        AvsManager manager =
-            AvsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        WorkloadNetworkDhcp response =
-            manager
-                .workloadNetworks()
-                .defineDhcp("ixjawrtm")
-                .withExistingPrivateCloud("opionszon", "pngajin")
-                .withProperties(
-                    new WorkloadNetworkDhcpEntity().withDisplayName("myccx").withRevision(6733942550770793710L))
-                .create();
-
-        Assertions.assertEquals("fuughtuqfec", response.properties().displayName());
-        Assertions.assertEquals(8894754548360108244L, response.properties().revision());
+        Assertions.assertEquals("zlanrupdwvnph", response.properties().displayName());
+        Assertions.assertEquals(1106480050332233961L, response.properties().revision());
     }
 }

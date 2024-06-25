@@ -28,7 +28,7 @@ public final class MessageImageFileContent extends MessageContent {
      * @param imageFile the imageFile value to set.
      */
     @Generated
-    private MessageImageFileContent(MessageImageFileDetails imageFile) {
+    public MessageImageFileContent(MessageImageFileDetails imageFile) {
         this.imageFile = imageFile;
     }
 
