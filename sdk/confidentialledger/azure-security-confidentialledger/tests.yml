@@ -4,6 +4,7 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
     ServiceDirectory: confidentialledger
+    UseFederatedAuth: true
     Artifacts:
       - name: azure-security-confidentialledger
         groupId: com.azure
