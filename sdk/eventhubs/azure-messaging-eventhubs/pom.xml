@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs</artifactId>
-  <version>5.19.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+  <version>5.18.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
 
   <name>Microsoft Azure client library for Event Hubs</name>
   <description>Libraries built on Microsoft Azure Event Hubs</description>
@@ -56,7 +56,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.12.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

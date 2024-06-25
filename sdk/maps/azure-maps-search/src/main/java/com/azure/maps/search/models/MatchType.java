@@ -5,34 +5,49 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Types of match for a reverse address search operation. */
+/**
+ * Types of match for a reverse address search operation.
+ */
 public final class MatchType extends ExpandableStringEnum<MatchType> {
-    /** Static value AddressPoint for MatchType. */
+    /**
+     * Static value AddressPoint for MatchType.
+     */
     public static final MatchType ADDRESS_POINT = fromString("AddressPoint");
 
-    /** Static value HouseNumberRange for MatchType. */
+    /**
+     * Static value HouseNumberRange for MatchType.
+     */
     public static final MatchType HOUSE_NUMBER_RANGE = fromString("HouseNumberRange");
 
-    /** Static value Street for MatchType. */
+    /**
+     * Static value Street for MatchType.
+     */
     public static final MatchType STREET = fromString("Street");
 
     /**
+     * Creates a new instance of MatchType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MatchType() {
+    }
+
+    /**
      * Creates or finds a MatchType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MatchType.
      */
-    @JsonCreator
     public static MatchType fromString(String name) {
         return fromString(name, MatchType.class);
     }
 
     /**
      * Gets known MatchType values.
-     *
+     * 
      * @return known MatchType values.
      */
     public static Collection<MatchType> values() {

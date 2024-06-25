@@ -6,24 +6,31 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An Azure NetApp Files volume from Microsoft.NetApp provider. */
+/**
+ * An Azure NetApp Files volume from Microsoft.NetApp provider.
+ */
 @Fluent
-public final class NetAppVolume {
+public final class NetAppVolume implements JsonSerializable<NetAppVolume> {
     /*
      * Azure resource ID of the NetApp volume
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of NetAppVolume class. */
+    /**
+     * Creates an instance of NetAppVolume class.
+     */
     public NetAppVolume() {
     }
 
     /**
      * Get the id property: Azure resource ID of the NetApp volume.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +39,7 @@ public final class NetAppVolume {
 
     /**
      * Set the id property: Azure resource ID of the NetApp volume.
-     *
+     * 
      * @param id the id value to set.
      * @return the NetAppVolume object itself.
      */
@@ -43,16 +50,52 @@ public final class NetAppVolume {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model NetAppVolume"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model NetAppVolume"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetAppVolume.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetAppVolume from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetAppVolume if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetAppVolume.
+     */
+    public static NetAppVolume fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetAppVolume deserializedNetAppVolume = new NetAppVolume();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetAppVolume.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetAppVolume;
+        });
+    }
 }

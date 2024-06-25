@@ -5,27 +5,74 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.maps.search.models.BatchResultSummary;
+import java.io.IOException;
 import java.util.List;
 
-/** This object is returned from a successful Search Address Batch service call. */
+/**
+ * This object is returned from a successful Search Address Batch service call.
+ */
 @Immutable
 public final class SearchAddressBatchResult extends BatchResult {
     /*
      * Array containing the batch results.
      */
-    @JsonProperty(value = "batchItems", access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchAddressBatchItemPrivate> batchItems;
 
-    /** Creates an instance of SearchAddressBatchResult class. */
-    public SearchAddressBatchResult() {}
+    /**
+     * Creates an instance of SearchAddressBatchResult class.
+     */
+    public SearchAddressBatchResult() {
+    }
 
     /**
      * Get the batchItems property: Array containing the batch results.
-     *
+     * 
      * @return the batchItems value.
      */
     public List<SearchAddressBatchItemPrivate> getBatchItems() {
         return this.batchItems;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchAddressBatchResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchAddressBatchResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchAddressBatchResult.
+     */
+    public static SearchAddressBatchResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchAddressBatchResult deserializedSearchAddressBatchResult = new SearchAddressBatchResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("summary".equals(fieldName)) {
+                    deserializedSearchAddressBatchResult.setBatchSummary(BatchResultSummary.fromJson(reader));
+                } else if ("batchItems".equals(fieldName)) {
+                    List<SearchAddressBatchItemPrivate> batchItems
+                        = reader.readArray(reader1 -> SearchAddressBatchItemPrivate.fromJson(reader1));
+                    deserializedSearchAddressBatchResult.batchItems = batchItems;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchAddressBatchResult;
+        });
     }
 }

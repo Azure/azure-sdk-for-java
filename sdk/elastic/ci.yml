@@ -33,7 +33,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: elastic
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-elastic
         groupId: com.azure.resourcemanager

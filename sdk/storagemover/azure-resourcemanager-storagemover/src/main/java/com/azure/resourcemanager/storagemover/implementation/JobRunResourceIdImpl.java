@@ -12,8 +12,8 @@ public final class JobRunResourceIdImpl implements JobRunResourceId {
 
     private final com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager;
 
-    JobRunResourceIdImpl(
-        JobRunResourceIdInner innerObject, com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
+    JobRunResourceIdImpl(JobRunResourceIdInner innerObject,
+        com.azure.resourcemanager.storagemover.StorageMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

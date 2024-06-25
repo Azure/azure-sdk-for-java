@@ -5,79 +5,124 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LocalizedMapView. */
+/**
+ * Defines values for LocalizedMapView.
+ */
 public final class LocalizedMapView extends ExpandableStringEnum<LocalizedMapView> {
-    /** Static value AE for LocalizedMapView. */
+    /**
+     * United Arab Emirates (Arabic View).
+     */
     public static final LocalizedMapView AE = fromString("AE");
 
-    /** Static value AR for LocalizedMapView. */
+    /**
+     * Argentina (Argentinian View).
+     */
     public static final LocalizedMapView AR = fromString("AR");
 
-    /** Static value BH for LocalizedMapView. */
+    /**
+     * Bahrain (Arabic View).
+     */
     public static final LocalizedMapView BH = fromString("BH");
 
-    /** Static value IN for LocalizedMapView. */
+    /**
+     * India (Indian View).
+     */
     public static final LocalizedMapView IN = fromString("IN");
 
-    /** Static value IQ for LocalizedMapView. */
+    /**
+     * Iraq (Arabic View).
+     */
     public static final LocalizedMapView IQ = fromString("IQ");
 
-    /** Static value JO for LocalizedMapView. */
+    /**
+     * Jordan (Arabic View).
+     */
     public static final LocalizedMapView JO = fromString("JO");
 
-    /** Static value KW for LocalizedMapView. */
+    /**
+     * Kuwait (Arabic View).
+     */
     public static final LocalizedMapView KW = fromString("KW");
 
-    /** Static value LB for LocalizedMapView. */
+    /**
+     * Lebanon (Arabic View).
+     */
     public static final LocalizedMapView LB = fromString("LB");
 
-    /** Static value MA for LocalizedMapView. */
+    /**
+     * Morocco (Moroccan View).
+     */
     public static final LocalizedMapView MA = fromString("MA");
 
-    /** Static value OM for LocalizedMapView. */
+    /**
+     * Oman (Arabic View).
+     */
     public static final LocalizedMapView OM = fromString("OM");
 
-    /** Static value PK for LocalizedMapView. */
+    /**
+     * Pakistan (Pakistani View).
+     */
     public static final LocalizedMapView PK = fromString("PK");
 
-    /** Static value PS for LocalizedMapView. */
+    /**
+     * Palestinian Authority (Arabic View).
+     */
     public static final LocalizedMapView PS = fromString("PS");
 
-    /** Static value QA for LocalizedMapView. */
+    /**
+     * Qatar (Arabic View).
+     */
     public static final LocalizedMapView QA = fromString("QA");
 
-    /** Static value SA for LocalizedMapView. */
+    /**
+     * Saudi Arabia (Arabic View).
+     */
     public static final LocalizedMapView SA = fromString("SA");
 
-    /** Static value SY for LocalizedMapView. */
+    /**
+     * Syria (Arabic View).
+     */
     public static final LocalizedMapView SY = fromString("SY");
 
-    /** Static value YE for LocalizedMapView. */
+    /**
+     * Yemen (Arabic View).
+     */
     public static final LocalizedMapView YE = fromString("YE");
 
-    /** Static value Auto for LocalizedMapView. */
+    /**
+     * Return the map data based on the IP address of the request.
+     */
     public static final LocalizedMapView AUTO = fromString("Auto");
 
-    /** Static value Unified for LocalizedMapView. */
+    /**
+     * Unified View (Others).
+     */
     public static final LocalizedMapView UNIFIED = fromString("Unified");
 
     /**
+     * Creates a new instance of LocalizedMapView value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LocalizedMapView() {
+    }
+
+    /**
      * Creates or finds a LocalizedMapView from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LocalizedMapView.
      */
-    @JsonCreator
     public static LocalizedMapView fromString(String name) {
         return fromString(name, LocalizedMapView.class);
     }
 
     /**
      * Gets known LocalizedMapView values.
-     *
+     * 
      * @return known LocalizedMapView values.
      */
     public static Collection<LocalizedMapView> values() {

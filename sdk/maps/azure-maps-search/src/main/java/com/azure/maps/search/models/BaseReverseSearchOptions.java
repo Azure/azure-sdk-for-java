@@ -8,6 +8,8 @@ import com.azure.core.models.GeoPosition;
 
 /**
  * Class holding optional parameters for reverse search.
+ *
+ * @param <T> The extending type.
  */
 @Fluent
 public abstract class BaseReverseSearchOptions<T extends BaseReverseSearchOptions<T>> {
@@ -16,6 +18,12 @@ public abstract class BaseReverseSearchOptions<T extends BaseReverseSearchOption
     private Integer radiusInMeters;
     private LocalizedMapView localizedMapView;
     private GeoPosition coordinates;
+
+    /**
+     * Creates a new instance of {@link BaseReverseSearchOptions}.
+     */
+    public BaseReverseSearchOptions() {
+    }
 
     /**
      * Returns an Integer with the radius, in meters.
