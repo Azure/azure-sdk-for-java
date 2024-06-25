@@ -244,7 +244,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         validateItemResponse(item, itemResponse);
-        validateOptions(initialOptions, itemResponse);
+        validateOptions(initialOptions, itemResponse, false);
 
         changeProperties(changedOptions);
         item = getDocumentDefinition(UUID.randomUUID().toString());
@@ -255,7 +255,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else {
             assertThat(BridgeInternal.getProperties(itemResponse)).isNull();
         }
-        validateOptions(changedOptions, itemResponse);
+        validateOptions(changedOptions, itemResponse, false);
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -269,7 +269,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             new PartitionKey(item.get("mypk")),
             options).block();
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
-        validateOptions(initialOptions, deleteResponse);
+        validateOptions(initialOptions, deleteResponse, false);
 
         changeProperties(changedOptions);
 
@@ -278,7 +278,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             new PartitionKey(item.get("mypk")),
             options).block();
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
-        validateOptions(changedOptions, deleteResponse);
+        validateOptions(changedOptions, deleteResponse, false);
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -291,7 +291,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             new CosmosItemRequestOptions(),
             InternalObjectNode.class).block();
         validateItemResponse(item, readResponse);
-        validateOptions(initialOptions, readResponse);
+        validateOptions(initialOptions, readResponse, true);
 
         changeProperties(changedOptions);
 
@@ -300,7 +300,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             new CosmosItemRequestOptions(),
             InternalObjectNode.class).block();
         validateItemResponse(item, readResponse);
-        validateOptions(changedOptions, readResponse);
+        validateOptions(changedOptions, readResponse, true);
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -310,7 +310,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         CosmosItemResponse<InternalObjectNode> upsertResponse = container.upsertItem(item, new CosmosItemRequestOptions()).block();
         assertThat(upsertResponse.getRequestCharge()).isGreaterThan(0);
         validateItemResponse(item, upsertResponse);
-        validateOptions(initialOptions, upsertResponse);
+        validateOptions(initialOptions, upsertResponse, false);
 
         changeProperties(changedOptions);
 
@@ -325,8 +325,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else {
             assertThat(BridgeInternal.getProperties(upsertResponse)).isNull();
         }
-        validateOptions(changedOptions, upsertResponse);
-
+        validateOptions(changedOptions, upsertResponse, false);
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -344,7 +343,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             item.getId(), partitionKey, patchOperations, InternalObjectNode.class).block();
         assertThat(patchResponse.getRequestCharge()).isGreaterThan(0);
         assertThat(BridgeInternal.getProperties(patchResponse).get(newPropLabel)).isEqualTo(newPropValue);
-        validateOptions(initialOptions, patchResponse);
+        validateOptions(initialOptions, patchResponse, false);
 
         changeProperties(changedOptions);
 
@@ -360,8 +359,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else {
             assertThat(BridgeInternal.getProperties(patchResponse)).isNull();
         }
-        validateOptions(changedOptions, patchResponse);
 
+        validateOptions(changedOptions, patchResponse, false);
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -382,7 +381,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             pk,
             options).block();
         assertThat(BridgeInternal.getProperties(replace).get(newPropLabel)).isEqualTo(newPropValue);
-        validateOptions(initialOptions, replace);
+        validateOptions(initialOptions, replace, false);
         changeProperties(changedOptions);
 
         newPropValue = UUID.randomUUID().toString();
@@ -398,9 +397,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else {
             assertThat(BridgeInternal.getProperties(replace)).isNull();
         }
-        validateOptions(changedOptions, replace);
-
-
+        validateOptions(changedOptions, replace, false);
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -666,13 +663,16 @@ public class OperationPoliciesTest extends TestSuiteBase {
             .isEqualTo(containerProperties.getId());
     }
 
-    private void validateOptions(String[] options, CosmosItemResponse<?> response) {
+    private void validateOptions(String[] options, CosmosItemResponse<?> response, boolean doesRequestLevelConsistencyOverrideMatter) {
        OverridableRequestOptions requestOptions = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor().getRequestOptions(
            response.getDiagnostics().getDiagnosticsContext());
-       // expected 20 but was 8
        assertThat(requestOptions.getCosmosEndToEndLatencyPolicyConfig().getEndToEndOperationTimeout().getSeconds()) // 8
-           .isEqualTo(Long.parseLong(options[0])); // 20
-       assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[1].toUpperCase(Locale.ROOT));
+           .isEqualTo(Long.parseLong(options[0]));
+
+       if (doesRequestLevelConsistencyOverrideMatter) {
+           assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[1].toUpperCase(Locale.ROOT));
+       }
+
        assertThat(requestOptions.isContentResponseOnWriteEnabled()).isEqualTo(Boolean.parseBoolean(options[2]));
        assertThat(requestOptions.getNonIdempotentWriteRetriesEnabled()).isEqualTo(Boolean.parseBoolean(options[3]));
        assertThat(requestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()).isEqualTo(Boolean.parseBoolean(options[4]));

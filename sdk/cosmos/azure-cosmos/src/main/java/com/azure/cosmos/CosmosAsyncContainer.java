@@ -2223,7 +2223,7 @@ public class CosmosAsyncContainer {
         RequestOptions options) {
 
         RequestOptions effectiveOptions = new RequestOptions(options);
-//        effectiveOptions.setConsistencyLevel(null);
+        effectiveOptions.setConsistencyLevel(null);
         if (nonIdempotentWriteRetryPolicy.isEnabled()) {
             effectiveOptions.setNonIdempotentWriteRetriesEnabled(true);
             effectiveOptions.setUseTrackingIds(nonIdempotentWriteRetryPolicy.useTrackingIdProperty());
