@@ -9,8 +9,9 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class DbSystemShapesListByLocationSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/
-     * dbSystemShapes_listByLocation.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/dbSystemShapes_listByLocation.
+     * json
      */
     /**
      * Sample code: List DbSystemShapes by location.

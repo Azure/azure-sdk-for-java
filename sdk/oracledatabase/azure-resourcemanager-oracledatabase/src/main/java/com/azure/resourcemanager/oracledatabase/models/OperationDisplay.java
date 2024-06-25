@@ -42,7 +42,7 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     /**
      * Creates an instance of OperationDisplay class.
      */
-    public OperationDisplay() {
+    private OperationDisplay() {
     }
 
     /**

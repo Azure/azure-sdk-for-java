@@ -81,7 +81,7 @@ public final class SaasSubscriptionDetailsInner implements JsonSerializable<Saas
     /**
      * Creates an instance of SaasSubscriptionDetailsInner class.
      */
-    public SaasSubscriptionDetailsInner() {
+    private SaasSubscriptionDetailsInner() {
     }
 
     /**
