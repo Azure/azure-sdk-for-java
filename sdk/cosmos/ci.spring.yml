@@ -1,0 +1,14 @@
+extends:
+  template: /sdk/cosmos/ci.yml
+  parameters:
+    AdditionalModules:
+      - name: azure-cosmos-tests
+        groupId: com.azure
+      - name: azure-cosmos-benchmark
+        groupId: com.azure
+      - name: azure-cosmos-spark_3_2-12
+        groupId: com.azure.cosmos.spark
+      - name: azure-spring-data-cosmos
+        groupId: com.azure
+    MatrixFilters:
+      - JavaTestVersion=^(?!1.8|1.11).*
