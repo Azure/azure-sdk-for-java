@@ -15,7 +15,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -52,12 +51,12 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -94,14 +93,15 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     private static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
     private static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
     private static final String API_VERSION = "2021-04-01";
-    private static final TokenCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
-    private static final BearerTokenAuthenticationPolicy CREDENTIAL_POLICY =
-        new BearerTokenAuthenticationPolicy(CREDENTIAL, "https://management.azure.com/.default");
+    private BearerTokenAuthenticationPolicy CREDENTIAL_POLICY;
     private BlobContainerClient vlwContainer;
     private BlobClient vlwBlob;
 
-    @BeforeAll
-    public static void setupSpec() throws JsonProcessingException, MalformedURLException {
+    @BeforeEach
+    public void setup() throws JsonProcessingException, MalformedURLException {
+        TokenCredential credential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+        CREDENTIAL_POLICY = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default");
+
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             vlwContainerName = CoreUtils.randomUuid().toString();
 
@@ -135,10 +135,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
             }
             assertEquals(201, response.getStatusCode());
         }
-    }
 
-    @BeforeEach
-    public void setup() {
         vlwContainer = versionedBlobServiceClient.getBlobContainerClient(
             testResourceNamer.recordValueFromConfig(vlwContainerName));
         vlwBlob = vlwContainer.getBlobClient(generateBlobName());
@@ -206,8 +203,8 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         }
     }
 
-    @AfterAll
-    public static void cleanupSpec() throws MalformedURLException {
+    @AfterEach
+    public void cleanupSpec() throws MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .policies(CREDENTIAL_POLICY)
