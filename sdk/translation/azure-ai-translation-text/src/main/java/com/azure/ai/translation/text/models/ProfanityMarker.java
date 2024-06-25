@@ -4,9 +4,6 @@
 
 package com.azure.ai.translation.text.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Translator profanity markers.
  */
@@ -36,7 +33,6 @@ public enum ProfanityMarker {
      * @param value the serialized value to parse.
      * @return the parsed ProfanityMarker object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProfanityMarker fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum ProfanityMarker {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

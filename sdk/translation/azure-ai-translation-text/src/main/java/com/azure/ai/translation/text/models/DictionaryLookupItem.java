@@ -5,15 +5,18 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Dictionary Lookup Element.
  */
 @Immutable
-public final class DictionaryLookupItem {
+public final class DictionaryLookupItem implements JsonSerializable<DictionaryLookupItem> {
 
     /*
      * A string giving the normalized form of the source term.
@@ -21,7 +24,6 @@ public final class DictionaryLookupItem {
      * The content of this field becomes the input to lookup examples.
      */
     @Generated
-    @JsonProperty(value = "normalizedSource")
     private final String normalizedSource;
 
     /*
@@ -30,14 +32,12 @@ public final class DictionaryLookupItem {
      * spelling of the name: "John".
      */
     @Generated
-    @JsonProperty(value = "displaySource")
     private final String displaySource;
 
     /*
      * A list of translations for the source term.
      */
     @Generated
-    @JsonProperty(value = "translations")
     private final List<DictionaryTranslation> translations;
 
     /**
@@ -48,10 +48,8 @@ public final class DictionaryLookupItem {
      * @param translations the translations value to set.
      */
     @Generated
-    @JsonCreator
-    private DictionaryLookupItem(@JsonProperty(value = "normalizedSource") String normalizedSource,
-        @JsonProperty(value = "displaySource") String displaySource,
-        @JsonProperty(value = "translations") List<DictionaryTranslation> translations) {
+    private DictionaryLookupItem(String normalizedSource, String displaySource,
+        List<DictionaryTranslation> translations) {
         this.normalizedSource = normalizedSource;
         this.displaySource = displaySource;
         this.translations = translations;
@@ -89,5 +87,50 @@ public final class DictionaryLookupItem {
     @Generated
     public List<DictionaryTranslation> getTranslations() {
         return this.translations;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("normalizedSource", this.normalizedSource);
+        jsonWriter.writeStringField("displaySource", this.displaySource);
+        jsonWriter.writeArrayField("translations", this.translations, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DictionaryLookupItem from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DictionaryLookupItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DictionaryLookupItem.
+     */
+    @Generated
+    public static DictionaryLookupItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String normalizedSource = null;
+            String displaySource = null;
+            List<DictionaryTranslation> translations = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("normalizedSource".equals(fieldName)) {
+                    normalizedSource = reader.getString();
+                } else if ("displaySource".equals(fieldName)) {
+                    displaySource = reader.getString();
+                } else if ("translations".equals(fieldName)) {
+                    translations = reader.readArray(reader1 -> DictionaryTranslation.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new DictionaryLookupItem(normalizedSource, displaySource, translations);
+        });
     }
 }
