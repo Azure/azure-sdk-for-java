@@ -1,8 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-- Introduced `TeamsRecordingStateChanged` and `TeamsComplianceRecordingStateChanged` events.
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -11,7 +9,6 @@
 ### Bugs Fixed
 
 ### Other Changes
-
 
 ## 1.1.4 (2024-04-23)
 
