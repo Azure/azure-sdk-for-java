@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Get the value property: Array of private endpoint connections.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionInner> value() {
@@ -38,7 +37,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Set the value property: Array of private endpoint connections.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionListResult object itself.
      */
@@ -49,7 +48,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

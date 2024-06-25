@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: migrationdiscoverysap
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-migrationdiscoverysap
         groupId: com.azure.resourcemanager

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -15,7 +14,9 @@ import java.util.List;
 @Fluent
 public final class LegalHoldProperties {
     /*
-     * The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
+     * The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold
+     * public property is set to false by SRP if all existing legal hold tags are cleared out. There can be a maximum of
+     * 1000 blob containers with hasLegalHold=true for a given account.
      */
     @JsonProperty(value = "hasLegalHold", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasLegalHold;
@@ -42,7 +43,7 @@ public final class LegalHoldProperties {
      * Get the hasLegalHold property: The hasLegalHold public property is set to true by SRP if there are at least one
      * existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared
      * out. There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
-     *
+     * 
      * @return the hasLegalHold value.
      */
     public Boolean hasLegalHold() {
@@ -51,7 +52,7 @@ public final class LegalHoldProperties {
 
     /**
      * Get the tags property: The list of LegalHold tags of a blob container.
-     *
+     * 
      * @return the tags value.
      */
     public List<TagProperty> tags() {
@@ -60,7 +61,7 @@ public final class LegalHoldProperties {
 
     /**
      * Set the tags property: The list of LegalHold tags of a blob container.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the LegalHoldProperties object itself.
      */
@@ -71,7 +72,7 @@ public final class LegalHoldProperties {
 
     /**
      * Get the protectedAppendWritesHistory property: Protected append blob writes history.
-     *
+     * 
      * @return the protectedAppendWritesHistory value.
      */
     public ProtectedAppendWritesHistory protectedAppendWritesHistory() {
@@ -80,7 +81,7 @@ public final class LegalHoldProperties {
 
     /**
      * Set the protectedAppendWritesHistory property: Protected append blob writes history.
-     *
+     * 
      * @param protectedAppendWritesHistory the protectedAppendWritesHistory value to set.
      * @return the LegalHoldProperties object itself.
      */
@@ -92,7 +93,7 @@ public final class LegalHoldProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for WorkloadNetworks GetSegment. */
+/**
+ * Samples for WorkloadNetworks GetSegment.
+ */
 public final class WorkloadNetworksGetSegmentSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_GetSegments.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_GetSegment.json
      */
     /**
      * Sample code: WorkloadNetworks_GetSegment.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetSegment(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager
-            .workloadNetworks()
+        manager.workloadNetworks()
             .getSegmentWithResponse("group1", "cloud1", "segment1", com.azure.core.util.Context.NONE);
     }
 }
