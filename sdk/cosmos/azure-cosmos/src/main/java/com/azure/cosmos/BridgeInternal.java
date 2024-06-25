@@ -607,7 +607,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void  initializeAllAccessors() {
-        CosmosClient.initialize();
+        CosmosClient.initialize(); 
         CosmosAsyncClientEncryptionKey.initialize();
         CosmosAsyncContainer.initialize();
         CosmosAsyncDatabase.initialize();
