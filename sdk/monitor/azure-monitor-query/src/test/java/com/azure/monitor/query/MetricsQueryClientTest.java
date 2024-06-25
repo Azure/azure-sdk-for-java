@@ -201,9 +201,13 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
             "NamespaceCpuUsage",
             "NamespaceMemoryUsage"
         );
-        assertTrue(metricsDefinitions.stream()
-                .map(MetricDefinition::getName)
-                .collect(Collectors.toList())
+
+        List<String> metricsDefinitionNames = metricsDefinitions.stream()
+            .map(MetricDefinition::getName)
+            .collect(Collectors.toList());
+
+        System.out.println("Printing all metrics definitions " + metricsDefinitionNames);
+        assertTrue(metricsDefinitionNames
                 .containsAll(knownMetricsDefinitions));
     }
 

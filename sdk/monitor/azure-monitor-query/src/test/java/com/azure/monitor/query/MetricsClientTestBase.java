@@ -29,7 +29,9 @@ public class MetricsClientTestBase extends TestProxyTestBase {
         MetricsClientBuilder clientBuilder = new MetricsClientBuilder()
             .credential(credential);
 
+        String appConfigEndpoint = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_ENDPOINT", "https://fake.azconfig.io");
         ConfigurationClientBuilder configClientBuilder = new ConfigurationClientBuilder()
+            .endpoint(appConfigEndpoint)
             .credential(credential);
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -41,7 +43,6 @@ public class MetricsClientTestBase extends TestProxyTestBase {
                 .httpClient(interceptorManager.getPlaybackClient());
 
             configClientBuilder
-                .endpoint("https://fake.azconfig.io")
                 .httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
             interceptorManager.addMatchers(new CustomMatcher()

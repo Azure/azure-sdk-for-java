@@ -207,10 +207,14 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
         StepVerifier.create(client
                         .listMetricDefinitions(resourceUri)
                         .collectList())
-                .assertNext(metricDefinitions -> assertTrue(metricDefinitions.stream()
+                .assertNext(metricDefinitions -> {
+                    List<String> metricsDefinitionNames = metricDefinitions.stream()
                         .map(MetricDefinition::getName)
-                        .collect(Collectors.toList())
-                        .containsAll(knownMetricsDefinitions)))
+                        .collect(Collectors.toList());
+
+                    assertTrue(metricsDefinitionNames
+                            .containsAll(knownMetricsDefinitions));
+                })
                 .verifyComplete();
     }
 
