@@ -79,9 +79,6 @@ public class Utils {
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
 
-    private final static ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor itemSerializerAccessor =
-        ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor();
-
     // NOTE DateTimeFormatter.RFC_1123_DATE_TIME cannot be used.
     // because cosmos db rfc1123 validation requires two digits for day.
     // so Thu, 04 Jan 2018 00:30:37 GMT is accepted by the cosmos db service,
@@ -596,7 +593,7 @@ public class Utils {
                     ? itemSerializer
                     : CosmosItemSerializer.DEFAULT_SERIALIZER;
 
-                T result = itemSerializerAccessor.deserializeSafe(
+                T result = ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().deserializeSafe(
                     effectiveSerializer,
                     getSimpleObjectMapper().convertValue(jsonTree, ObjectNodeMap.JACKSON_MAP_TYPE),
                     itemClassType);
@@ -614,7 +611,7 @@ public class Utils {
         CosmosItemSerializer effectiveItemSerializer= itemSerializer == null ?
                 CosmosItemSerializer.DEFAULT_SERIALIZER : itemSerializer;
 
-        return itemSerializerAccessor.deserializeSafe(effectiveItemSerializer, new ObjectNodeMap(jsonNode), itemClassType);
+        return    ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().deserializeSafe(effectiveItemSerializer, new ObjectNodeMap(jsonNode), itemClassType);
     }
 
     @SuppressWarnings("unchecked")
@@ -624,7 +621,7 @@ public class Utils {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
                 ? (Map<String, Object>) object
-                : itemSerializerAccessor.serializeSafe(serializer, object);
+                :    ImplementationBridgeHelpers.CosmosItemSerializerHelper.getCosmosItemSerializerAccessor().serializeSafe(serializer, object);
 
             if (onAfterSerialization != null) {
                 onAfterSerialization.accept(jsonTreeMap);
