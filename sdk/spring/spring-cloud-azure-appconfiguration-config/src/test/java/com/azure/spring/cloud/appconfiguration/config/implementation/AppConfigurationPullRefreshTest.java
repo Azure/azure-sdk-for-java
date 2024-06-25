@@ -72,12 +72,12 @@ public class AppConfigurationPullRefreshTest {
 
     @Test
     public void refreshNoChangeAsync() throws InterruptedException, ExecutionException {
-       when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(eventDataMock);
+        when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(eventDataMock);
 
-       AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval, (long) 0, replicaLookUpMock, refreshUtilMock);
-       refresh.refreshAsync();
-       Thread.sleep(100);
-       verify(eventDataMock, times(1)).getDoRefresh(); 
+        AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval, (long) 0, replicaLookUpMock, refreshUtilMock);
+        refresh.refreshAsync();
+        Thread.sleep(100);
+        verify(eventDataMock, times(1)).getDoRefresh(); 
     }
 
     @Test
