@@ -3,7 +3,7 @@
     "extension": "revapi.java",
     "configuration": {
       "missing-classes": {
-        "behavior": "report",
+        "behavior": "ignore",
         "ignoreMissingAnnotations": false
       },
       "matchOverloads": true
@@ -313,19 +313,6 @@
           "justification": "Previous value did was incorrect."
         },
         {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.(containers\\.containerregistry|search\\.documents(\\.indexes)?|security\\.keyvault\\.(administration|certificates|keys|keys\\.cryptography)|ai\\.textanalytics|ai\\.formrecognizer(\\.(documentanalysis(\\.administration)?|training))?|ai\\.metricsadvisor(\\.administration)?|messaging.servicebus(\\.administration)?)\\.models.*",
-          "description": ".*com.fasterxml.jackson.*",
-          "justification": "Removing Jackson annotations from ACR, Form Recognizer, KeyVault, Metrics Advisor, Search, ServiceBus, and Text Analytics in transition to stream-style."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.messaging\\.eventgrid\\.systemevents.*",
-          "justification": "Removing Jackson annotations from EventGrid in transition to stream-style."
-        },
-        {
           "code": "java.field.removed",
           "old": "field com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties.AZURE_GERMANY",
           "justification": "Remove this because AZURE_GERMANY is deprecated."
@@ -411,24 +398,10 @@
         },
         {
           "regex": true,
-          "code": "java\\.method\\.returnTypeTypeParametersChanged",
+          "code": "java\\.method\\.(parameterTypeChanged|returnTypeTypeParametersChanged|returnTypeChanged)",
           "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
           "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Return Router models rather than BinaryData."
-        },
-        {
-          "regex": true,
-          "code": "java\\.method\\.parameterTypeChanged",
-          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
-          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Accept Router models rather than BinaryData."
-        },
-        {
-          "regex": true,
-          "code": "java\\.method\\.returnTypeChanged",
-          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
-          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Return Router models rather than BinaryData."
+          "justification": "Accept and return Router models rather than BinaryData."
         },
         {
           "ignore": true,
@@ -444,21 +417,12 @@
           "justification": "Additional schema formats are supported by Schema Registry."
         },
         {
-          "ignore": true,
-          "code": "java.annotation.removed",
-          "package": "com.azure.ai.contentsafety.models",
-          "annotationType": "com.fasterxml.jackson.annotation.JsonProperty",
-          "justification": "Migrate to azure-json."
+          "regex": true,
+          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded|removed)",
+          "old": ".*? com\\.azure\\.resourcemanager\\..*\\.models.*",
+          "justification": "Migration to azure-json."
         },
         {
-          "ignore": true,
-          "code": "java.annotation.removed",
-          "package": "com.azure.ai.contentsafety.models",
-          "annotationType": "com.fasterxml.jackson.annotation.JsonCreator",
-          "justification": "Migrate to azure-json."
-        },
-        {
-          "ignore": true,
           "regex": true,
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.storage\\.queue\\.models.*",
@@ -507,13 +471,7 @@
         {
           "regex": true,
           "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
-          "old": ".*? com\\.azure\\.resourcemanager\\.network\\.models.*",
-          "justification": "Jackson annotation changed."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
-          "old": ".*? com\\.azure\\.resourcemanager\\.cosmos\\.models.*",
+          "old": ".*? com\\.azure\\.communication\\.messages\\.models.*",
           "justification": "Jackson annotation changed."
         },
         {
@@ -545,6 +503,27 @@
           "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters com.azure.resourcemanager.cosmos.models.ServiceResourceCreateUpdateParameters::withServiceType(com.azure.resourcemanager.cosmos.models.ServiceType)",
           "justification": "The property flatten disabled due to model changed to polymorphic."
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.communication\\.phonenumbers\\.models.*",
+          "new" : ".*? com\\.azure\\.communication\\.phonenumbers\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
+          "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.models.*",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "regex": true,
+          "code" : "java\\.annotation\\.removed",
+          "old" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
+          "new" : ".*? com\\.azure\\.messaging\\.webpubsub\\.client\\.models.*",
+          "justification": "Migration to azure-json"
         }
       ]
     }

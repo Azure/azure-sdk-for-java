@@ -9,6 +9,7 @@ import com.azure.resourcemanager.oracledatabase.fluent.models.GiVersionInner;
 import com.azure.resourcemanager.oracledatabase.models.GiVersionListResult;
 import com.azure.resourcemanager.oracledatabase.models.GiVersionProperties;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class GiVersionListResultTests {
     @org.junit.jupiter.api.Test
@@ -16,6 +17,7 @@ public final class GiVersionListResultTests {
         GiVersionListResult model = BinaryData.fromString(
             "{\"value\":[{\"properties\":{\"version\":\"humaqolbgyc\"},\"id\":\"iertgccymvaolp\",\"name\":\"slqlfmmdn\",\"type\":\"bglzpswi\"},{\"properties\":{\"version\":\"mcwyhzdxssadb\"},\"id\":\"nvdfznuda\",\"name\":\"dvxzbncblylpst\",\"type\":\"bhhxsrzdzuc\"},{\"properties\":{\"version\":\"scdntnevf\"},\"id\":\"jmygtdsslswtmwer\",\"name\":\"ofz\",\"type\":\"yqsemwa\"},{\"properties\":{\"version\":\"ets\"},\"id\":\"szhedplvw\",\"name\":\"wubmwmbesldn\",\"type\":\"wwtppj\"}],\"nextLink\":\"cxogaokonzm\"}")
             .toObject(GiVersionListResult.class);
+        Assertions.assertEquals("cxogaokonzm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -24,7 +26,9 @@ public final class GiVersionListResultTests {
             .withValue(Arrays.asList(new GiVersionInner().withProperties(new GiVersionProperties()),
                 new GiVersionInner().withProperties(new GiVersionProperties()),
                 new GiVersionInner().withProperties(new GiVersionProperties()),
-                new GiVersionInner().withProperties(new GiVersionProperties())));
+                new GiVersionInner().withProperties(new GiVersionProperties())))
+            .withNextLink("cxogaokonzm");
         model = BinaryData.fromObject(model).toObject(GiVersionListResult.class);
+        Assertions.assertEquals("cxogaokonzm", model.nextLink());
     }
 }

@@ -5,42 +5,45 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The updatable properties of the CloudExadataInfrastructure.
  */
 @Fluent
-public final class CloudExadataInfrastructureUpdateProperties {
+public final class CloudExadataInfrastructureUpdateProperties
+    implements JsonSerializable<CloudExadataInfrastructureUpdateProperties> {
     /*
      * The number of compute servers for the cloud Exadata infrastructure.
      */
-    @JsonProperty(value = "computeCount")
     private Integer computeCount;
 
     /*
      * The number of storage servers for the cloud Exadata infrastructure.
      */
-    @JsonProperty(value = "storageCount")
     private Integer storageCount;
 
     /*
      * maintenanceWindow property
      */
-    @JsonProperty(value = "maintenanceWindow")
     private MaintenanceWindow maintenanceWindow;
 
     /*
-     * The list of customer email addresses that receive information from Oracle about the specified OCI Database service resource. Oracle uses these email addresses to send notifications about planned and unplanned software maintenance updates, information about system hardware, and other information needed by administrators. Up to 10 email addresses can be added to the customer contacts for a cloud Exadata infrastructure instance. 
+     * The list of customer email addresses that receive information from Oracle about the specified OCI Database
+     * service resource. Oracle uses these email addresses to send notifications about planned and unplanned software
+     * maintenance updates, information about system hardware, and other information needed by administrators. Up to 10
+     * email addresses can be added to the customer contacts for a cloud Exadata infrastructure instance.
      */
-    @JsonProperty(value = "customerContacts")
     private List<CustomerContact> customerContacts;
 
     /*
      * The name for the Exadata infrastructure.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
@@ -169,5 +172,60 @@ public final class CloudExadataInfrastructureUpdateProperties {
         if (customerContacts() != null) {
             customerContacts().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("computeCount", this.computeCount);
+        jsonWriter.writeNumberField("storageCount", this.storageCount);
+        jsonWriter.writeJsonField("maintenanceWindow", this.maintenanceWindow);
+        jsonWriter.writeArrayField("customerContacts", this.customerContacts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudExadataInfrastructureUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudExadataInfrastructureUpdateProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudExadataInfrastructureUpdateProperties.
+     */
+    public static CloudExadataInfrastructureUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudExadataInfrastructureUpdateProperties deserializedCloudExadataInfrastructureUpdateProperties
+                = new CloudExadataInfrastructureUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeCount".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureUpdateProperties.computeCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("storageCount".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureUpdateProperties.storageCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maintenanceWindow".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureUpdateProperties.maintenanceWindow
+                        = MaintenanceWindow.fromJson(reader);
+                } else if ("customerContacts".equals(fieldName)) {
+                    List<CustomerContact> customerContacts
+                        = reader.readArray(reader1 -> CustomerContact.fromJson(reader1));
+                    deserializedCloudExadataInfrastructureUpdateProperties.customerContacts = customerContacts;
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedCloudExadataInfrastructureUpdateProperties.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudExadataInfrastructureUpdateProperties;
+        });
     }
 }

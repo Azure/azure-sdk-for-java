@@ -28,7 +28,7 @@ public class SsisObjectMetadata {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private SsisObjectMetadataType type;
+    private SsisObjectMetadataType type = SsisObjectMetadataType.fromString("SsisObjectMetadata");
 
     /*
      * Metadata id.
@@ -52,7 +52,6 @@ public class SsisObjectMetadata {
      * Creates an instance of SsisObjectMetadata class.
      */
     public SsisObjectMetadata() {
-        this.type = SsisObjectMetadataType.fromString("SsisObjectMetadata");
     }
 
     /**

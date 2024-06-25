@@ -5,28 +5,48 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** The location of azure blob dataset. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureBlobStorageLocation")
+/**
+ * The location of azure blob dataset.
+ */
 @Fluent
 public final class AzureBlobStorageLocation extends DatasetLocation {
     /*
+     * Type of dataset storage location.
+     */
+    private String type = "AzureBlobStorageLocation";
+
+    /*
      * Specify the container of azure blob. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "container")
     private Object container;
 
-    /** Creates an instance of AzureBlobStorageLocation class. */
-    public AzureBlobStorageLocation() {}
+    /**
+     * Creates an instance of AzureBlobStorageLocation class.
+     */
+    public AzureBlobStorageLocation() {
+    }
+
+    /**
+     * Get the type property: Type of dataset storage location.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the container property: Specify the container of azure blob. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the container value.
      */
     public Object getContainer() {
@@ -36,7 +56,7 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
     /**
      * Set the container property: Specify the container of azure blob. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param container the container value to set.
      * @return the AzureBlobStorageLocation object itself.
      */
@@ -45,17 +65,77 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobStorageLocation setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobStorageLocation setFileName(Object fileName) {
         super.setFileName(fileName);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", getFolderPath());
+        jsonWriter.writeUntypedField("fileName", getFileName());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("container", this.container);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobStorageLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobStorageLocation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBlobStorageLocation.
+     */
+    public static AzureBlobStorageLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobStorageLocation deserializedAzureBlobStorageLocation = new AzureBlobStorageLocation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedAzureBlobStorageLocation.setFolderPath(reader.readUntyped());
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedAzureBlobStorageLocation.setFileName(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureBlobStorageLocation.type = reader.getString();
+                } else if ("container".equals(fieldName)) {
+                    deserializedAzureBlobStorageLocation.container = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureBlobStorageLocation.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureBlobStorageLocation;
+        });
     }
 }

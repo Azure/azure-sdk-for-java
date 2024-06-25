@@ -5,42 +5,58 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Execute SQL pool stored procedure activity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SqlPoolStoredProcedure")
-@JsonFlatten
+/**
+ * Execute SQL pool stored procedure activity.
+ */
 @Fluent
 public class SqlPoolStoredProcedureActivity extends Activity {
     /*
+     * Type of activity.
+     */
+    private String type = "SqlPoolStoredProcedure";
+
+    /*
      * SQL pool stored procedure reference.
      */
-    @JsonProperty(value = "sqlPool", required = true)
     private SqlPoolReference sqlPool;
 
     /*
      * Stored procedure name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.storedProcedureName", required = true)
     private Object storedProcedureName;
 
     /*
      * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
-    @JsonProperty(value = "typeProperties.storedProcedureParameters")
     private Object storedProcedureParameters;
 
-    /** Creates an instance of SqlPoolStoredProcedureActivity class. */
-    public SqlPoolStoredProcedureActivity() {}
+    /**
+     * Creates an instance of SqlPoolStoredProcedureActivity class.
+     */
+    public SqlPoolStoredProcedureActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the sqlPool property: SQL pool stored procedure reference.
-     *
+     * 
      * @return the sqlPool value.
      */
     public SqlPoolReference getSqlPool() {
@@ -49,7 +65,7 @@ public class SqlPoolStoredProcedureActivity extends Activity {
 
     /**
      * Set the sqlPool property: SQL pool stored procedure reference.
-     *
+     * 
      * @param sqlPool the sqlPool value to set.
      * @return the SqlPoolStoredProcedureActivity object itself.
      */
@@ -60,7 +76,7 @@ public class SqlPoolStoredProcedureActivity extends Activity {
 
     /**
      * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the storedProcedureName value.
      */
     public Object getStoredProcedureName() {
@@ -69,7 +85,7 @@ public class SqlPoolStoredProcedureActivity extends Activity {
 
     /**
      * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param storedProcedureName the storedProcedureName value to set.
      * @return the SqlPoolStoredProcedureActivity object itself.
      */
@@ -81,7 +97,7 @@ public class SqlPoolStoredProcedureActivity extends Activity {
     /**
      * Get the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @return the storedProcedureParameters value.
      */
     public Object getStoredProcedureParameters() {
@@ -91,7 +107,7 @@ public class SqlPoolStoredProcedureActivity extends Activity {
     /**
      * Set the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlPoolStoredProcedureActivity object itself.
      */
@@ -100,45 +116,152 @@ public class SqlPoolStoredProcedureActivity extends Activity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("sqlPool", this.sqlPool);
+        jsonWriter.writeStringField("type", this.type);
+        if (storedProcedureName != null || storedProcedureParameters != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("storedProcedureName", this.storedProcedureName);
+            jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlPoolStoredProcedureActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlPoolStoredProcedureActivity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlPoolStoredProcedureActivity.
+     */
+    public static SqlPoolStoredProcedureActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlPoolStoredProcedureActivity deserializedSqlPoolStoredProcedureActivity
+                = new SqlPoolStoredProcedureActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSqlPoolStoredProcedureActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSqlPoolStoredProcedureActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedSqlPoolStoredProcedureActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedSqlPoolStoredProcedureActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedSqlPoolStoredProcedureActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedSqlPoolStoredProcedureActivity.setUserProperties(userProperties);
+                } else if ("sqlPool".equals(fieldName)) {
+                    deserializedSqlPoolStoredProcedureActivity.sqlPool = SqlPoolReference.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlPoolStoredProcedureActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("storedProcedureName".equals(fieldName)) {
+                            deserializedSqlPoolStoredProcedureActivity.storedProcedureName = reader.readUntyped();
+                        } else if ("storedProcedureParameters".equals(fieldName)) {
+                            deserializedSqlPoolStoredProcedureActivity.storedProcedureParameters = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSqlPoolStoredProcedureActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedSqlPoolStoredProcedureActivity;
+        });
     }
 }

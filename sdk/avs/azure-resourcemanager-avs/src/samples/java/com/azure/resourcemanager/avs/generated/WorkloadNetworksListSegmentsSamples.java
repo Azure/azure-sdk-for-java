@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for WorkloadNetworks ListSegments. */
+/**
+ * Samples for WorkloadNetworks ListSegments.
+ */
 public final class WorkloadNetworksListSegmentsSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_ListSegments.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_ListSegments.json
      */
     /**
      * Sample code: WorkloadNetworks_ListSegments.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListSegments(com.azure.resourcemanager.avs.AvsManager manager) {

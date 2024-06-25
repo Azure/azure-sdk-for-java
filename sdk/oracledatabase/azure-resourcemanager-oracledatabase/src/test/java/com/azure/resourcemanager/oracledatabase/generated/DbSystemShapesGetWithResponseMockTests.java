@@ -20,7 +20,7 @@ public final class DbSystemShapesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"shapeFamily\":\"lvidizozs\",\"availableCoreCount\":1027236790,\"minimumCoreCount\":1862070997,\"runtimeMinimumCoreCount\":2054216522,\"coreCountIncrement\":325656680,\"minStorageCount\":1695386943,\"maxStorageCount\":1268563330,\"availableDataStoragePerServerInTbs\":3.818836897741773,\"availableMemoryPerNodeInGbs\":2083395580,\"availableDbNodePerNodeInGbs\":1666658010,\"minCoreCountPerNode\":19355637,\"availableMemoryInGbs\":575797032,\"minMemoryPerNodeInGbs\":36862007,\"availableDbNodeStorageInGbs\":740306752,\"minDbNodeStoragePerNodeInGbs\":1798680046,\"availableDataStorageInTbs\":1231214883,\"minDataStorageInTbs\":1577867001,\"minimumNodeCount\":2021110592,\"maximumNodeCount\":347039984,\"availableCoreCountPerNode\":904194330},\"id\":\"mkdasv\",\"name\":\"lyhb\",\"type\":\"cu\"}";
+            = "{\"properties\":{\"shapeFamily\":\"r\",\"availableCoreCount\":396602814,\"minimumCoreCount\":920933381,\"runtimeMinimumCoreCount\":181506173,\"coreCountIncrement\":1029083448,\"minStorageCount\":1002121154,\"maxStorageCount\":1218728383,\"availableDataStoragePerServerInTbs\":64.3780520505485,\"availableMemoryPerNodeInGbs\":465765494,\"availableDbNodePerNodeInGbs\":1541278105,\"minCoreCountPerNode\":1492295803,\"availableMemoryInGbs\":1140941505,\"minMemoryPerNodeInGbs\":197247971,\"availableDbNodeStorageInGbs\":193344927,\"minDbNodeStoragePerNodeInGbs\":2039990607,\"availableDataStorageInTbs\":1842642996,\"minDataStorageInTbs\":1256025401,\"minimumNodeCount\":231724213,\"maximumNodeCount\":1431120696,\"availableCoreCountPerNode\":1576157803},\"id\":\"yjdfqwmky\",\"name\":\"qufdvruzslzojh\",\"type\":\"ctfnmdxotng\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +29,8 @@ public final class DbSystemShapesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DbSystemShape response = manager.dbSystemShapes()
-            .getWithResponse("urvzmlovuanashc", "lpmjerb", com.azure.core.util.Context.NONE)
-            .getValue();
+        DbSystemShape response
+            = manager.dbSystemShapes().getWithResponse("cw", "oxjumvqqo", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

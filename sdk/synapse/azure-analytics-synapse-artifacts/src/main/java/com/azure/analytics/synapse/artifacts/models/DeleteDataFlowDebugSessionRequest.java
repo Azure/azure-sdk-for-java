@@ -5,29 +5,36 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request body structure for deleting data flow debug session. */
+/**
+ * Request body structure for deleting data flow debug session.
+ */
 @Fluent
-public final class DeleteDataFlowDebugSessionRequest {
+public final class DeleteDataFlowDebugSessionRequest implements JsonSerializable<DeleteDataFlowDebugSessionRequest> {
     /*
      * The ID of data flow debug session.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * The data flow which contains the debug session.
      */
-    @JsonProperty(value = "dataFlowName")
     private String dataFlowName;
 
-    /** Creates an instance of DeleteDataFlowDebugSessionRequest class. */
-    public DeleteDataFlowDebugSessionRequest() {}
+    /**
+     * Creates an instance of DeleteDataFlowDebugSessionRequest class.
+     */
+    public DeleteDataFlowDebugSessionRequest() {
+    }
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -36,7 +43,7 @@ public final class DeleteDataFlowDebugSessionRequest {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the DeleteDataFlowDebugSessionRequest object itself.
      */
@@ -47,7 +54,7 @@ public final class DeleteDataFlowDebugSessionRequest {
 
     /**
      * Get the dataFlowName property: The data flow which contains the debug session.
-     *
+     * 
      * @return the dataFlowName value.
      */
     public String getDataFlowName() {
@@ -56,12 +63,52 @@ public final class DeleteDataFlowDebugSessionRequest {
 
     /**
      * Set the dataFlowName property: The data flow which contains the debug session.
-     *
+     * 
      * @param dataFlowName the dataFlowName value to set.
      * @return the DeleteDataFlowDebugSessionRequest object itself.
      */
     public DeleteDataFlowDebugSessionRequest setDataFlowName(String dataFlowName) {
         this.dataFlowName = dataFlowName;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeStringField("dataFlowName", this.dataFlowName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeleteDataFlowDebugSessionRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeleteDataFlowDebugSessionRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeleteDataFlowDebugSessionRequest.
+     */
+    public static DeleteDataFlowDebugSessionRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeleteDataFlowDebugSessionRequest deserializedDeleteDataFlowDebugSessionRequest
+                = new DeleteDataFlowDebugSessionRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sessionId".equals(fieldName)) {
+                    deserializedDeleteDataFlowDebugSessionRequest.sessionId = reader.getString();
+                } else if ("dataFlowName".equals(fieldName)) {
+                    deserializedDeleteDataFlowDebugSessionRequest.dataFlowName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeleteDataFlowDebugSessionRequest;
+        });
     }
 }

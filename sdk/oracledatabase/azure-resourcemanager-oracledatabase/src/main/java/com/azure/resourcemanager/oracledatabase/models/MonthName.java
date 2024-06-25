@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -87,7 +86,6 @@ public final class MonthName extends ExpandableStringEnum<MonthName> {
      * @param name a name to look for.
      * @return the corresponding MonthName.
      */
-    @JsonCreator
     public static MonthName fromString(String name) {
         return fromString(name, MonthName.class);
     }

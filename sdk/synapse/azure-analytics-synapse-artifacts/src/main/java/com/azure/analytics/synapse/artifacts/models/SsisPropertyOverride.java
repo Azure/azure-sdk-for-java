@@ -5,30 +5,37 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SSIS property override. */
+/**
+ * SSIS property override.
+ */
 @Fluent
-public final class SsisPropertyOverride {
+public final class SsisPropertyOverride implements JsonSerializable<SsisPropertyOverride> {
     /*
      * SSIS package property override value. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "value", required = true)
     private Object value;
 
     /*
      * Whether SSIS package property override value is sensitive data. Value will be encrypted in SSISDB if it is true
      */
-    @JsonProperty(value = "isSensitive")
     private Boolean isSensitive;
 
-    /** Creates an instance of SsisPropertyOverride class. */
-    public SsisPropertyOverride() {}
+    /**
+     * Creates an instance of SsisPropertyOverride class.
+     */
+    public SsisPropertyOverride() {
+    }
 
     /**
      * Get the value property: SSIS package property override value. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the value value.
      */
     public Object getValue() {
@@ -38,7 +45,7 @@ public final class SsisPropertyOverride {
     /**
      * Set the value property: SSIS package property override value. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param value the value value to set.
      * @return the SsisPropertyOverride object itself.
      */
@@ -50,7 +57,7 @@ public final class SsisPropertyOverride {
     /**
      * Get the isSensitive property: Whether SSIS package property override value is sensitive data. Value will be
      * encrypted in SSISDB if it is true.
-     *
+     * 
      * @return the isSensitive value.
      */
     public Boolean isSensitive() {
@@ -60,12 +67,52 @@ public final class SsisPropertyOverride {
     /**
      * Set the isSensitive property: Whether SSIS package property override value is sensitive data. Value will be
      * encrypted in SSISDB if it is true.
-     *
+     * 
      * @param isSensitive the isSensitive value to set.
      * @return the SsisPropertyOverride object itself.
      */
     public SsisPropertyOverride setIsSensitive(Boolean isSensitive) {
         this.isSensitive = isSensitive;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("value", this.value);
+        jsonWriter.writeBooleanField("isSensitive", this.isSensitive);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisPropertyOverride from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisPropertyOverride if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SsisPropertyOverride.
+     */
+    public static SsisPropertyOverride fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisPropertyOverride deserializedSsisPropertyOverride = new SsisPropertyOverride();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedSsisPropertyOverride.value = reader.readUntyped();
+                } else if ("isSensitive".equals(fieldName)) {
+                    deserializedSsisPropertyOverride.isSensitive = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisPropertyOverride;
+        });
     }
 }

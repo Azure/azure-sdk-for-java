@@ -5,42 +5,47 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Nested representation of a complex expression. */
+/**
+ * Nested representation of a complex expression.
+ */
 @Fluent
-public final class ExpressionV2 {
+public final class ExpressionV2 implements JsonSerializable<ExpressionV2> {
     /*
      * Type of expressions supported by the system. Type: string.
      */
-    @JsonProperty(value = "type")
     private ExpressionV2Type type;
 
     /*
      * Value for Constant/Field Type: string.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Expression operator value Type: string.
      */
-    @JsonProperty(value = "operator")
     private String operator;
 
     /*
      * List of nested expressions.
      */
-    @JsonProperty(value = "operands")
     private List<ExpressionV2> operands;
 
-    /** Creates an instance of ExpressionV2 class. */
-    public ExpressionV2() {}
+    /**
+     * Creates an instance of ExpressionV2 class.
+     */
+    public ExpressionV2() {
+    }
 
     /**
      * Get the type property: Type of expressions supported by the system. Type: string.
-     *
+     * 
      * @return the type value.
      */
     public ExpressionV2Type getType() {
@@ -49,7 +54,7 @@ public final class ExpressionV2 {
 
     /**
      * Set the type property: Type of expressions supported by the system. Type: string.
-     *
+     * 
      * @param type the type value to set.
      * @return the ExpressionV2 object itself.
      */
@@ -60,7 +65,7 @@ public final class ExpressionV2 {
 
     /**
      * Get the value property: Value for Constant/Field Type: string.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {
@@ -69,7 +74,7 @@ public final class ExpressionV2 {
 
     /**
      * Set the value property: Value for Constant/Field Type: string.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressionV2 object itself.
      */
@@ -80,7 +85,7 @@ public final class ExpressionV2 {
 
     /**
      * Get the operator property: Expression operator value Type: string.
-     *
+     * 
      * @return the operator value.
      */
     public String getOperator() {
@@ -89,7 +94,7 @@ public final class ExpressionV2 {
 
     /**
      * Set the operator property: Expression operator value Type: string.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the ExpressionV2 object itself.
      */
@@ -100,7 +105,7 @@ public final class ExpressionV2 {
 
     /**
      * Get the operands property: List of nested expressions.
-     *
+     * 
      * @return the operands value.
      */
     public List<ExpressionV2> getOperands() {
@@ -109,12 +114,58 @@ public final class ExpressionV2 {
 
     /**
      * Set the operands property: List of nested expressions.
-     *
+     * 
      * @param operands the operands value to set.
      * @return the ExpressionV2 object itself.
      */
     public ExpressionV2 setOperands(List<ExpressionV2> operands) {
         this.operands = operands;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("operator", this.operator);
+        jsonWriter.writeArrayField("operands", this.operands, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressionV2 from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressionV2 if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressionV2.
+     */
+    public static ExpressionV2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressionV2 deserializedExpressionV2 = new ExpressionV2();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedExpressionV2.type = ExpressionV2Type.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedExpressionV2.value = reader.getString();
+                } else if ("operator".equals(fieldName)) {
+                    deserializedExpressionV2.operator = reader.getString();
+                } else if ("operands".equals(fieldName)) {
+                    List<ExpressionV2> operands = reader.readArray(reader1 -> ExpressionV2.fromJson(reader1));
+                    deserializedExpressionV2.operands = operands;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressionV2;
+        });
     }
 }

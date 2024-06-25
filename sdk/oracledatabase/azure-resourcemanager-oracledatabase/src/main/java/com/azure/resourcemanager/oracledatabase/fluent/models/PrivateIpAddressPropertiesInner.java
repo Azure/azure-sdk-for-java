@@ -6,41 +6,40 @@ package com.azure.resourcemanager.oracledatabase.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * PrivateIpAddress resource properties.
  */
 @Fluent
-public final class PrivateIpAddressPropertiesInner {
+public final class PrivateIpAddressPropertiesInner implements JsonSerializable<PrivateIpAddressPropertiesInner> {
     /*
      * PrivateIpAddresses displayName
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * PrivateIpAddresses hostnameLabel
      */
-    @JsonProperty(value = "hostnameLabel", required = true)
     private String hostnameLabel;
 
     /*
      * PrivateIpAddresses Id
      */
-    @JsonProperty(value = "ocid", required = true)
     private String ocid;
 
     /*
      * PrivateIpAddresses ipAddress
      */
-    @JsonProperty(value = "ipAddress", required = true)
     private String ipAddress;
 
     /*
      * PrivateIpAddresses subnetId
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /**
@@ -183,4 +182,54 @@ public final class PrivateIpAddressPropertiesInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateIpAddressPropertiesInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("hostnameLabel", this.hostnameLabel);
+        jsonWriter.writeStringField("ocid", this.ocid);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateIpAddressPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateIpAddressPropertiesInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateIpAddressPropertiesInner.
+     */
+    public static PrivateIpAddressPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateIpAddressPropertiesInner deserializedPrivateIpAddressPropertiesInner
+                = new PrivateIpAddressPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedPrivateIpAddressPropertiesInner.displayName = reader.getString();
+                } else if ("hostnameLabel".equals(fieldName)) {
+                    deserializedPrivateIpAddressPropertiesInner.hostnameLabel = reader.getString();
+                } else if ("ocid".equals(fieldName)) {
+                    deserializedPrivateIpAddressPropertiesInner.ocid = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedPrivateIpAddressPropertiesInner.ipAddress = reader.getString();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedPrivateIpAddressPropertiesInner.subnetId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateIpAddressPropertiesInner;
+        });
+    }
 }
