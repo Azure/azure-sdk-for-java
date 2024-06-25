@@ -25,7 +25,7 @@ public class TestUtil {
         } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().build();
         } else {
-            return getPlaybackTokenCredential();
+            return new MockTokenCredential();
         }
     }
 
