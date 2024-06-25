@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * DbServer Patching Properties.
  */
 @Immutable
-public final class DbServerPatchingDetails {
+public final class DbServerPatchingDetails implements JsonSerializable<DbServerPatchingDetails> {
     /*
      * Estimated Patch Duration
      */
-    @JsonProperty(value = "estimatedPatchDuration", access = JsonProperty.Access.WRITE_ONLY)
     private Integer estimatedPatchDuration;
 
     /*
      * Patching Status
      */
-    @JsonProperty(value = "patchingStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DbServerPatchingStatus patchingStatus;
 
     /*
      * Time Patching Ended
      */
-    @JsonProperty(value = "timePatchingEnded", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timePatchingEnded;
 
     /*
      * Time Patching Started
      */
-    @JsonProperty(value = "timePatchingStarted", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timePatchingStarted;
 
     /**
@@ -85,5 +86,49 @@ public final class DbServerPatchingDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DbServerPatchingDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DbServerPatchingDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DbServerPatchingDetails.
+     */
+    public static DbServerPatchingDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DbServerPatchingDetails deserializedDbServerPatchingDetails = new DbServerPatchingDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("estimatedPatchDuration".equals(fieldName)) {
+                    deserializedDbServerPatchingDetails.estimatedPatchDuration = reader.getNullable(JsonReader::getInt);
+                } else if ("patchingStatus".equals(fieldName)) {
+                    deserializedDbServerPatchingDetails.patchingStatus
+                        = DbServerPatchingStatus.fromString(reader.getString());
+                } else if ("timePatchingEnded".equals(fieldName)) {
+                    deserializedDbServerPatchingDetails.timePatchingEnded = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timePatchingStarted".equals(fieldName)) {
+                    deserializedDbServerPatchingDetails.timePatchingStarted = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDbServerPatchingDetails;
+        });
     }
 }

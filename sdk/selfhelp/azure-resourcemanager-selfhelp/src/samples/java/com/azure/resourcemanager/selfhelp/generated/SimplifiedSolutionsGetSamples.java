@@ -9,7 +9,9 @@ package com.azure.resourcemanager.selfhelp.generated;
  */
 public final class SimplifiedSolutionsGetSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/SimplifiedSolutions_Get.json
+     * x-ms-original-file:
+     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/SimplifiedSolutions_Get.
+     * json
      */
     /**
      * Sample code: Solution_Get.

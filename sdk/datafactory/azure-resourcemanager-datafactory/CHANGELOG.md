@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.29 (Unreleased)
+## 1.0.0-beta.30 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,345 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.29 (2024-06-19)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ManagedIdentityCredentialResource` was removed
+
+* `models.ServicePrincipalCredentialResource` was removed
+
+#### `models.CredentialOperations` was modified
+
+* `createOrUpdateWithResponse(java.lang.String,java.lang.String,java.lang.String,fluent.models.CredentialResourceInner,java.lang.String,com.azure.core.util.Context)` was removed
+* `createOrUpdate(java.lang.String,java.lang.String,java.lang.String,fluent.models.CredentialResourceInner)` was removed
+
+#### `models.ExpressionV2` was modified
+
+* `operator()` was removed
+* `withOperator(java.lang.String)` was removed
+
+### Features Added
+
+* `models.CredentialResource$Update` was added
+
+* `models.SqlServerBaseLinkedServiceTypeProperties` was added
+
+* `models.CredentialResource$DefinitionStages` was added
+
+* `models.CredentialResource$UpdateStages` was added
+
+* `models.CredentialResource$Definition` was added
+
+* `models.AmazonRdsForSqlAuthenticationType` was added
+
+* `models.AzureSqlMIAuthenticationType` was added
+
+* `models.ContinuationSettingsReference` was added
+
+* `models.SqlServerAuthenticationType` was added
+
+* `models.AzureSqlDWAuthenticationType` was added
+
+* `models.AzureSqlDatabaseAuthenticationType` was added
+
+#### `models.CredentialOperations` was modified
+
+* `getById(java.lang.String)` was added
+* `deleteById(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.SalesforceV2Source` was modified
+
+* `withQuery(java.lang.Object)` was added
+* `query()` was added
+
+#### `models.ExpressionV2` was modified
+
+* `withOperators(java.util.List)` was added
+* `operators()` was added
+
+#### `models.ExecuteWranglingDataflowActivity` was modified
+
+* `continuationSettings()` was added
+* `withContinuationSettings(models.ContinuationSettingsReference)` was added
+
+#### `models.LakeHouseTableDataset` was modified
+
+* `withSchemaTypePropertiesSchema(java.lang.Object)` was added
+* `schemaTypePropertiesSchema()` was added
+
+#### `models.SalesforceServiceCloudV2Source` was modified
+
+* `withQuery(java.lang.Object)` was added
+* `query()` was added
+
+#### `models.AzureSqlDatabaseLinkedService` was modified
+
+* `withConnectTimeout(java.lang.Object)` was added
+* `multipleActiveResultSets()` was added
+* `withLoadBalanceTimeout(java.lang.Object)` was added
+* `integratedSecurity()` was added
+* `withServer(java.lang.Object)` was added
+* `withDatabase(java.lang.Object)` was added
+* `withMultiSubnetFailover(java.lang.Object)` was added
+* `withIntegratedSecurity(java.lang.Object)` was added
+* `withMinPoolSize(java.lang.Object)` was added
+* `server()` was added
+* `withMaxPoolSize(java.lang.Object)` was added
+* `withAuthenticationType(models.AzureSqlDatabaseAuthenticationType)` was added
+* `withConnectRetryCount(java.lang.Object)` was added
+* `withUsername(java.lang.Object)` was added
+* `withConnectRetryInterval(java.lang.Object)` was added
+* `username()` was added
+* `connectTimeout()` was added
+* `connectRetryCount()` was added
+* `database()` was added
+* `authenticationType()` was added
+* `trustServerCertificate()` was added
+* `withEncrypt(java.lang.Object)` was added
+* `multiSubnetFailover()` was added
+* `minPoolSize()` was added
+* `servicePrincipalCredential()` was added
+* `withHostnameInCertificate(java.lang.Object)` was added
+* `failoverPartner()` was added
+* `withServicePrincipalCredential(models.SecretBase)` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
+* `servicePrincipalCredentialType()` was added
+* `withPacketSize(java.lang.Object)` was added
+* `loadBalanceTimeout()` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `applicationIntent()` was added
+* `packetSize()` was added
+* `commandTimeout()` was added
+* `withServicePrincipalCredentialType(java.lang.Object)` was added
+* `connectRetryInterval()` was added
+* `hostnameInCertificate()` was added
+* `maxPoolSize()` was added
+* `withFailoverPartner(java.lang.Object)` was added
+* `encrypt()` was added
+* `withMultipleActiveResultSets(java.lang.Object)` was added
+* `withPooling(java.lang.Object)` was added
+* `withApplicationIntent(java.lang.Object)` was added
+* `pooling()` was added
+
+#### `models.AzureSqlDWLinkedService` was modified
+
+* `withMultipleActiveResultSets(java.lang.Object)` was added
+* `withLoadBalanceTimeout(java.lang.Object)` was added
+* `commandTimeout()` was added
+* `withDatabase(java.lang.Object)` was added
+* `connectTimeout()` was added
+* `connectRetryInterval()` was added
+* `minPoolSize()` was added
+* `applicationIntent()` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `withServer(java.lang.Object)` was added
+* `integratedSecurity()` was added
+* `withConnectTimeout(java.lang.Object)` was added
+* `database()` was added
+* `withFailoverPartner(java.lang.Object)` was added
+* `withEncrypt(java.lang.Object)` was added
+* `withHostnameInCertificate(java.lang.Object)` was added
+* `withMaxPoolSize(java.lang.Object)` was added
+* `withPacketSize(java.lang.Object)` was added
+* `multiSubnetFailover()` was added
+* `withIntegratedSecurity(java.lang.Object)` was added
+* `connectRetryCount()` was added
+* `encrypt()` was added
+* `withServicePrincipalCredential(models.SecretBase)` was added
+* `username()` was added
+* `withAuthenticationType(models.AzureSqlDWAuthenticationType)` was added
+* `authenticationType()` was added
+* `trustServerCertificate()` was added
+* `maxPoolSize()` was added
+* `withPooling(java.lang.Object)` was added
+* `withApplicationIntent(java.lang.Object)` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
+* `packetSize()` was added
+* `withMultiSubnetFailover(java.lang.Object)` was added
+* `failoverPartner()` was added
+* `servicePrincipalCredentialType()` was added
+* `server()` was added
+* `pooling()` was added
+* `withMinPoolSize(java.lang.Object)` was added
+* `loadBalanceTimeout()` was added
+* `multipleActiveResultSets()` was added
+* `servicePrincipalCredential()` was added
+* `hostnameInCertificate()` was added
+* `withConnectRetryCount(java.lang.Object)` was added
+* `withConnectRetryInterval(java.lang.Object)` was added
+* `withServicePrincipalCredentialType(java.lang.Object)` was added
+* `withUsername(java.lang.Object)` was added
+
+#### `models.SnowflakeExportCopyCommand` was modified
+
+* `storageIntegration()` was added
+* `withStorageIntegration(java.lang.Object)` was added
+
+#### `models.CredentialResource` was modified
+
+* `resourceGroupName()` was added
+* `refresh()` was added
+* `update()` was added
+* `refresh(com.azure.core.util.Context)` was added
+
+#### `models.SnowflakeImportCopyCommand` was modified
+
+* `withStorageIntegration(java.lang.Object)` was added
+* `storageIntegration()` was added
+
+#### `models.ExecuteDataFlowActivity` was modified
+
+* `withContinuationSettings(models.ContinuationSettingsReference)` was added
+* `continuationSettings()` was added
+
+#### `models.SqlServerLinkedService` was modified
+
+* `connectRetryCount()` was added
+* `applicationIntent()` was added
+* `withDatabase(java.lang.Object)` was added
+* `withMultipleActiveResultSets(java.lang.Object)` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `maxPoolSize()` was added
+* `withMultiSubnetFailover(java.lang.Object)` was added
+* `connectTimeout()` was added
+* `withEncrypt(java.lang.Object)` was added
+* `withCredential(models.CredentialReference)` was added
+* `withPacketSize(java.lang.Object)` was added
+* `minPoolSize()` was added
+* `multipleActiveResultSets()` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
+* `packetSize()` was added
+* `credential()` was added
+* `withMaxPoolSize(java.lang.Object)` was added
+* `withIntegratedSecurity(java.lang.Object)` was added
+* `withLoadBalanceTimeout(java.lang.Object)` was added
+* `withConnectRetryCount(java.lang.Object)` was added
+* `integratedSecurity()` was added
+* `withHostnameInCertificate(java.lang.Object)` was added
+* `pooling()` was added
+* `multiSubnetFailover()` was added
+* `trustServerCertificate()` was added
+* `withConnectRetryInterval(java.lang.Object)` was added
+* `withPooling(java.lang.Object)` was added
+* `hostnameInCertificate()` was added
+* `failoverPartner()` was added
+* `authenticationType()` was added
+* `withConnectTimeout(java.lang.Object)` was added
+* `loadBalanceTimeout()` was added
+* `withMinPoolSize(java.lang.Object)` was added
+* `withAuthenticationType(models.SqlServerAuthenticationType)` was added
+* `commandTimeout()` was added
+* `withApplicationIntent(java.lang.Object)` was added
+* `withServer(java.lang.Object)` was added
+* `connectRetryInterval()` was added
+* `withFailoverPartner(java.lang.Object)` was added
+* `encrypt()` was added
+* `server()` was added
+* `database()` was added
+
+#### `models.DynamicsCrmLinkedService` was modified
+
+* `withCredential(models.CredentialReference)` was added
+* `credential()` was added
+
+#### `models.AzureSqlMILinkedService` was modified
+
+* `withHostnameInCertificate(java.lang.Object)` was added
+* `multipleActiveResultSets()` was added
+* `trustServerCertificate()` was added
+* `server()` was added
+* `packetSize()` was added
+* `withMinPoolSize(java.lang.Object)` was added
+* `hostnameInCertificate()` was added
+* `encrypt()` was added
+* `connectRetryCount()` was added
+* `withIntegratedSecurity(java.lang.Object)` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `maxPoolSize()` was added
+* `withPooling(java.lang.Object)` was added
+* `withDatabase(java.lang.Object)` was added
+* `username()` was added
+* `withLoadBalanceTimeout(java.lang.Object)` was added
+* `loadBalanceTimeout()` was added
+* `withUsername(java.lang.Object)` was added
+* `integratedSecurity()` was added
+* `database()` was added
+* `withServer(java.lang.Object)` was added
+* `pooling()` was added
+* `withEncrypt(java.lang.Object)` was added
+* `withFailoverPartner(java.lang.Object)` was added
+* `commandTimeout()` was added
+* `multiSubnetFailover()` was added
+* `withConnectRetryCount(java.lang.Object)` was added
+* `withMultiSubnetFailover(java.lang.Object)` was added
+* `withMultipleActiveResultSets(java.lang.Object)` was added
+* `withApplicationIntent(java.lang.Object)` was added
+* `connectRetryInterval()` was added
+* `servicePrincipalCredentialType()` was added
+* `servicePrincipalCredential()` was added
+* `connectTimeout()` was added
+* `failoverPartner()` was added
+* `withMaxPoolSize(java.lang.Object)` was added
+* `applicationIntent()` was added
+* `withAuthenticationType(models.AzureSqlMIAuthenticationType)` was added
+* `minPoolSize()` was added
+* `withConnectTimeout(java.lang.Object)` was added
+* `withServicePrincipalCredentialType(java.lang.Object)` was added
+* `withServicePrincipalCredential(models.SecretBase)` was added
+* `withPacketSize(java.lang.Object)` was added
+* `withConnectRetryInterval(java.lang.Object)` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
+* `authenticationType()` was added
+
+#### `models.AmazonRdsForSqlServerLinkedService` was modified
+
+* `withFailoverPartner(java.lang.Object)` was added
+* `withPacketSize(java.lang.Object)` was added
+* `authenticationType()` was added
+* `minPoolSize()` was added
+* `multipleActiveResultSets()` was added
+* `withConnectRetryInterval(java.lang.Object)` was added
+* `withConnectTimeout(java.lang.Object)` was added
+* `failoverPartner()` was added
+* `hostnameInCertificate()` was added
+* `withLoadBalanceTimeout(java.lang.Object)` was added
+* `withMaxPoolSize(java.lang.Object)` was added
+* `applicationIntent()` was added
+* `connectRetryCount()` was added
+* `encrypt()` was added
+* `withAuthenticationType(models.AmazonRdsForSqlAuthenticationType)` was added
+* `loadBalanceTimeout()` was added
+* `multiSubnetFailover()` was added
+* `connectRetryInterval()` was added
+* `withConnectRetryCount(java.lang.Object)` was added
+* `withHostnameInCertificate(java.lang.Object)` was added
+* `withCommandTimeout(java.lang.Object)` was added
+* `withEncrypt(java.lang.Object)` was added
+* `packetSize()` was added
+* `withPooling(java.lang.Object)` was added
+* `connectTimeout()` was added
+* `trustServerCertificate()` was added
+* `integratedSecurity()` was added
+* `withMinPoolSize(java.lang.Object)` was added
+* `server()` was added
+* `withIntegratedSecurity(java.lang.Object)` was added
+* `commandTimeout()` was added
+* `withDatabase(java.lang.Object)` was added
+* `withServer(java.lang.Object)` was added
+* `database()` was added
+* `maxPoolSize()` was added
+* `withApplicationIntent(java.lang.Object)` was added
+* `withMultiSubnetFailover(java.lang.Object)` was added
+* `pooling()` was added
+* `withMultipleActiveResultSets(java.lang.Object)` was added
+* `withTrustServerCertificate(java.lang.Object)` was added
 
 ## 1.0.0-beta.28 (2024-04-18)
 

@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.33.0-beta.1 (Unreleased)
+### 4.34.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,14 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.33.0 (2024-06-22)
+
+#### Features Added
+* Added a service trait `CosmosClinetBuilderInterceptor` to allow intercepting and customizing the CosmosClient creation. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
+
+#### Bugs Fixed
+* Fixed a race condition resulting in not always re-enqueueing retries for bulk writes. - See [PR 40714](https://github.com/Azure/azure-sdk-for-java/pull/40714)
 
 ### 4.32.1 (2024-06-07)
 

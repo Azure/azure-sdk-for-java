@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Agent status. */
+/**
+ * The Agent status.
+ */
 public final class AgentStatus extends ExpandableStringEnum<AgentStatus> {
-    /** Static value Registering for AgentStatus. */
+    /**
+     * Static value Registering for AgentStatus.
+     */
     public static final AgentStatus REGISTERING = fromString("Registering");
 
-    /** Static value Offline for AgentStatus. */
+    /**
+     * Static value Offline for AgentStatus.
+     */
     public static final AgentStatus OFFLINE = fromString("Offline");
 
-    /** Static value Online for AgentStatus. */
+    /**
+     * Static value Online for AgentStatus.
+     */
     public static final AgentStatus ONLINE = fromString("Online");
 
-    /** Static value Executing for AgentStatus. */
+    /**
+     * Static value Executing for AgentStatus.
+     */
     public static final AgentStatus EXECUTING = fromString("Executing");
 
-    /** Static value RequiresAttention for AgentStatus. */
+    /**
+     * Static value RequiresAttention for AgentStatus.
+     */
     public static final AgentStatus REQUIRES_ATTENTION = fromString("RequiresAttention");
 
-    /** Static value Unregistering for AgentStatus. */
+    /**
+     * Static value Unregistering for AgentStatus.
+     */
     public static final AgentStatus UNREGISTERING = fromString("Unregistering");
 
     /**
      * Creates a new instance of AgentStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class AgentStatus extends ExpandableStringEnum<AgentStatus> {
 
     /**
      * Creates or finds a AgentStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgentStatus.
      */
@@ -50,7 +64,7 @@ public final class AgentStatus extends ExpandableStringEnum<AgentStatus> {
 
     /**
      * Gets known AgentStatus values.
-     *
+     * 
      * @return known AgentStatus values.
      */
     public static Collection<AgentStatus> values() {

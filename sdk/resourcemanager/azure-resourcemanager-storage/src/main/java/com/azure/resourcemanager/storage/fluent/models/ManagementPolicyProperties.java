@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -23,7 +22,8 @@ public final class ManagementPolicyProperties {
     private OffsetDateTime lastModifiedTime;
 
     /*
-     * The Storage Account ManagementPolicy, in JSON format. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * The Storage Account ManagementPolicy, in JSON format. See more details in:
+     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      */
     @JsonProperty(value = "policy", required = true)
     private ManagementPolicySchema policy;
@@ -36,7 +36,7 @@ public final class ManagementPolicyProperties {
 
     /**
      * Get the lastModifiedTime property: Returns the date and time the ManagementPolicies was last modified.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -46,7 +46,7 @@ public final class ManagementPolicyProperties {
     /**
      * Get the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     *
+     * 
      * @return the policy value.
      */
     public ManagementPolicySchema policy() {
@@ -56,7 +56,7 @@ public final class ManagementPolicyProperties {
     /**
      * Set the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the ManagementPolicyProperties object itself.
      */
@@ -67,7 +67,7 @@ public final class ManagementPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

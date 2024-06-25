@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ProjectUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProjectUpdateProperties model =
-            BinaryData.fromString("{\"description\":\"lnrosfqp\"}").toObject(ProjectUpdateProperties.class);
-        Assertions.assertEquals("lnrosfqp", model.description());
+        ProjectUpdateProperties model
+            = BinaryData.fromString("{\"description\":\"c\"}").toObject(ProjectUpdateProperties.class);
+        Assertions.assertEquals("c", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectUpdateProperties model = new ProjectUpdateProperties().withDescription("lnrosfqp");
+        ProjectUpdateProperties model = new ProjectUpdateProperties().withDescription("c");
         model = BinaryData.fromObject(model).toObject(ProjectUpdateProperties.class);
-        Assertions.assertEquals("lnrosfqp", model.description());
+        Assertions.assertEquals("c", model.description());
     }
 }
