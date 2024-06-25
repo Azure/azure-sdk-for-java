@@ -11,7 +11,7 @@
         },
         "tenantId": {
             "type": "string",
-            "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "defaultValue": "[subscription().tenantId]",
             "metadata": {
                 "description": "The tenant ID to which the application and resources belong."
             }
@@ -21,6 +21,9 @@
             "metadata": {
                 "description": "The principal to assign the role to. This is application object id."
             }
+        },
+        "testApplicationId": {
+          "type": "string"
         }
     },
     "variables": {
