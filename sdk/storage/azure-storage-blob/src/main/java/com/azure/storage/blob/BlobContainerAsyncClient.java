@@ -315,6 +315,19 @@ public final class BlobContainerAsyncClient {
     }
 
     /**
+     * Gets the {@link EncryptionScope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    BlobContainerEncryptionScope getBlobContainerEncryptionScope() {
+        if (blobContainerEncryptionScope == null) {
+            return null;
+        }
+        return blobContainerEncryptionScope;
+    }
+
+
+    /**
      * Gets if the container this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
@@ -564,7 +577,7 @@ public final class BlobContainerAsyncClient {
     Mono<Response<Void>> deleteWithResponse(BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        if (!validateNoETag(requestConditions)) {
+        if (!ModelHelper.validateNoETag(requestConditions)) {
             // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
             // subscription.
             throw LOGGER.logExceptionAsError(
@@ -790,7 +803,7 @@ public final class BlobContainerAsyncClient {
         BlobRequestConditions requestConditions, Context context) {
         context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-        if (!validateNoETag(requestConditions) || requestConditions.getIfUnmodifiedSince() != null) {
+        if (!ModelHelper.validateNoETag(requestConditions) || requestConditions.getIfUnmodifiedSince() != null) {
             // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
             // subscription.
             throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
@@ -868,7 +881,7 @@ public final class BlobContainerAsyncClient {
             containerName, null, leaseId, null, context)
             .map(response -> new SimpleResponse<>(response,
                 new BlobContainerAccessPolicies(response.getDeserializedHeaders().getXMsBlobPublicAccess(),
-                response.getValue())));
+                response.getValue().items())));
     }
 
     /**
@@ -960,7 +973,7 @@ public final class BlobContainerAsyncClient {
         List<BlobSignedIdentifier> identifiers, BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
-        if (!validateNoETag(requestConditions)) {
+        if (!ModelHelper.validateNoETag(requestConditions)) {
             // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
             // subscription.
             throw LOGGER.logExceptionAsError(
@@ -1520,8 +1533,7 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, null,
-            null, context)
+        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, context)
             .map(rb -> {
                 ContainersGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
                 return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));
@@ -1686,13 +1698,6 @@ public final class BlobContainerAsyncClient {
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
-    }
-
-    private static boolean validateNoETag(BlobRequestConditions modifiedRequestConditions) {
-        if (modifiedRequestConditions == null) {
-            return true;
-        }
-        return modifiedRequestConditions.getIfMatch() == null && modifiedRequestConditions.getIfNoneMatch() == null;
     }
 
 //    private boolean validateNoTime(BlobRequestConditions modifiedRequestConditions) {
