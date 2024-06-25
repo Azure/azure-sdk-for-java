@@ -21,6 +21,7 @@ public final class GetClientAccessTokenOptions {
     private List<String> roles;
     private List<String> groups;
     private ClientEndpointType clientEndpointType;
+
     /**
      * Creates an instance of GetClientAccessTokenOptions.
      */
@@ -41,6 +42,7 @@ public final class GetClientAccessTokenOptions {
 
     /**
      * Returns the duration after which the requested authentication token will expire.
+     *
      * @return The duration after which the requested authentication token will expire.
      */
     public Duration getExpiresAfter() {
@@ -60,6 +62,7 @@ public final class GetClientAccessTokenOptions {
         roles.add(role);
         return this;
     }
+
     /**
      * Specifies the complete set of roles to be included when creating the authentication token, overwriting any other
      * roles previously set on this instance.
@@ -74,6 +77,7 @@ public final class GetClientAccessTokenOptions {
 
     /**
      * Returns the complete set of roles to be included when creating the authentication token.
+     *
      * @return The complete set of roles to be included when creating the authentication token.
      */
     public List<String> getRoles() {
@@ -93,6 +97,7 @@ public final class GetClientAccessTokenOptions {
 
     /**
      * Returns the user ID to be used when creating the authentication token.
+     *
      * @return The user ID to be used when creating the authentication token.
      */
     public String getUserId() {
@@ -101,6 +106,7 @@ public final class GetClientAccessTokenOptions {
 
     /**
      * Returns the complete set of groups to be included when creating the authentication token.
+     *
      * @return The complete set of groups to be included when creating the authentication token
      */
     public List<String> getGroups() {
@@ -121,9 +127,12 @@ public final class GetClientAccessTokenOptions {
 
     /**
      * Returns the endpoint type of the client.
+     *
      * @return The same instance of this type, modified based on the value provided in this set method.
      */
-    public ClientEndpointType getClientEndpointType() { return clientEndpointType; }
+    public ClientEndpointType getClientEndpointType() {
+        return clientEndpointType;
+    }
 
     /**
      * Specifies the endpoint type of the client. Default type is <code>default</code>
@@ -135,6 +144,7 @@ public final class GetClientAccessTokenOptions {
         this.clientEndpointType = clientEndpointType;
         return this;
     }
+
     /**
      * Adds a group to the requested authentication token.
      *

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.webpubsub.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -6,16 +9,24 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  * Defines values for ClientEndpointType
  */
 public enum ClientEndpointType {
-    /** Default WebPubSub Client Endpoint. E.g: <code>wss://exampleHost.com/client/hubs/exampleHub</code> */
+    /**
+     * Default WebPubSub Client Endpoint. E.g: <code>wss://exampleHost.com/client/hubs/exampleHub</code>
+     */
     DEFAULT("default"),
 
-    /** MQTT Client Endpoint. E.g: <code>wss://exampleHost.com/clients/mqtt/hubs/exampleHub</code> */
+    /**
+     * MQTT Client Endpoint. E.g: <code>wss://exampleHost.com/clients/mqtt/hubs/exampleHub</code>
+     */
     MQTT("mqtt");
 
-    /** The actual serialized value for a ClientEndpointType. */
+    /**
+     * The actual serialized value for a ClientEndpointType.
+     */
     private final String value;
 
-    ClientEndpointType(String value) { this.value = value; }
+    ClientEndpointType(String value) {
+        this.value = value;
+    }
 
     /**
      * Parses a serialized value to a ClientEndpointType instance.
@@ -35,5 +46,7 @@ public enum ClientEndpointType {
     }
 
     @Override
-    public String toString() { return this.value; }
+    public String toString() {
+        return this.value;
+    }
 }
