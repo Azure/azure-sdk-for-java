@@ -56,7 +56,7 @@ public final class BlobServiceStatistics implements XmlSerializable<BlobServiceS
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobServiceStatistics" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceStats" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.geoReplication, "GeoReplication");
         return xmlWriter.writeEndElement();
@@ -86,7 +86,7 @@ public final class BlobServiceStatistics implements XmlSerializable<BlobServiceS
      */
     public static BlobServiceStatistics fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName
-            = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobServiceStatistics" : rootElementName;
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceStats" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobServiceStatistics deserializedBlobServiceStatistics = new BlobServiceStatistics();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

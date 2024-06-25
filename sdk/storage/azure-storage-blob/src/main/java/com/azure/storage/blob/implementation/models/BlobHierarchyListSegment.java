@@ -87,7 +87,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
         xmlWriter.writeStartElement(rootElementName);
         if (this.blobPrefixes != null) {
             for (BlobPrefixInternal element : this.blobPrefixes) {
-                xmlWriter.writeXml(element, "BlobPrefixInternal");
+                xmlWriter.writeXml(element, "BlobPrefix");
             }
         }
         if (this.blobItems != null) {
@@ -129,12 +129,12 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
             BlobHierarchyListSegment deserializedBlobHierarchyListSegment = new BlobHierarchyListSegment();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
-                if ("BlobPrefixInternal".equals(elementName.getLocalPart())) {
+                if ("BlobPrefix".equals(elementName.getLocalPart())) {
                     if (deserializedBlobHierarchyListSegment.blobPrefixes == null) {
                         deserializedBlobHierarchyListSegment.blobPrefixes = new ArrayList<>();
                     }
                     deserializedBlobHierarchyListSegment.blobPrefixes
-                        .add(BlobPrefixInternal.fromXml(reader, "BlobPrefixInternal"));
+                        .add(BlobPrefixInternal.fromXml(reader, "BlobPrefix"));
                 } else if ("Blob".equals(elementName.getLocalPart())) {
                     if (deserializedBlobHierarchyListSegment.blobItems == null) {
                         deserializedBlobHierarchyListSegment.blobItems = new ArrayList<>();

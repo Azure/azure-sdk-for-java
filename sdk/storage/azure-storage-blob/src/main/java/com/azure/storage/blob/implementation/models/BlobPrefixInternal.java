@@ -56,7 +56,7 @@ public final class BlobPrefixInternal implements XmlSerializable<BlobPrefixInter
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobPrefixInternal" : rootElementName;
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobPrefix" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.name, "Name");
         return xmlWriter.writeEndElement();
@@ -87,7 +87,7 @@ public final class BlobPrefixInternal implements XmlSerializable<BlobPrefixInter
      * @throws XMLStreamException If an error occurs while reading the BlobPrefixInternal.
      */
     public static BlobPrefixInternal fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobPrefixInternal" : rootElementName;
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlobPrefix" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobPrefixInternal deserializedBlobPrefixInternal = new BlobPrefixInternal();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
