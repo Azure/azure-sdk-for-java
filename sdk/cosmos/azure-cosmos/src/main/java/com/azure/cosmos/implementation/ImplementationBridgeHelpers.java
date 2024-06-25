@@ -96,9 +96,9 @@ public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
 
     private static void  initializeAllAccessors() {
-        BridgeInternal.initializeAllAccessors();
         ModelBridgeInternal.initializeAllAccessors();
         UtilBridgeInternal.initializeAllAccessors();
+        BridgeInternal.initializeAllAccessors();
     }
 
     public static final class CosmosClientBuilderHelper {
