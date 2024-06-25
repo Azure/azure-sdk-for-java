@@ -1252,7 +1252,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return feedResponseFlux
             .timeout(endToEndTimeout)
-            .onErrorMap(throwable -> {
+            .onErrorMap(throwable -> { 
                 if (throwable instanceof TimeoutException) {
                     CosmosException exception = new OperationCancelledException();
                     exception.setStackTrace(throwable.getStackTrace());
