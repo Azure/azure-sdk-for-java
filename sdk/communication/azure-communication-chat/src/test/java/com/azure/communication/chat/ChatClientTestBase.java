@@ -8,13 +8,15 @@ import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -26,16 +28,15 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
 /**
  * Abstract base class for all Chat tests
  */
 public class ChatClientTestBase extends TestProxyTestBase {
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
-
-    protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ACCESS_KEY", "pw==");
-
 
     protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
@@ -100,7 +101,7 @@ public class ChatClientTestBase extends TestProxyTestBase {
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(ACCESS_KEY))
+            .credential(getTestTokenCredential(interceptorManager))
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
@@ -132,6 +133,22 @@ public class ChatClientTestBase extends TestProxyTestBase {
         JWTClaimsSet claims =  builder.build();
         JWT idToken = new PlainJWT(claims);
         return idToken.serialize();
+    }
+
+    /**
+     * Retrieve the appropriate TokenCredential based on the test mode.
+     *
+     * @param interceptorManager the interceptor manager
+     * @return The appropriate token credential
+     */
+    public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isLiveMode()) {
+            return new AzurePowerShellCredentialBuilder().build();
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new MockTokenCredential();
+        }
     }
 
     protected boolean checkParticipantsListContainsParticipantId(List<ChatParticipant> participantList, String participantId) {
