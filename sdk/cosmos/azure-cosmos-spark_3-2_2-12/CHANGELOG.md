@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed a regression introduced in [PR 40506](https://github.com/Azure/azure-sdk-for-java/pull/40506) in version 4.32.1 which could cause Spark queries to fail when they retrieve many records (and take longer than 65 seconds to complete). - See [PR 40806](https://github.com/Azure/azure-sdk-for-java/pull/40806)
 
 #### Other Changes
 
