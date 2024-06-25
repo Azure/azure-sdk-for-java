@@ -9,6 +9,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -121,7 +122,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeRawField("content", this.content.toString());
+        jsonWriter.writeBinaryField("content", this.content.toBytes());
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
@@ -145,7 +146,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
-                    content = BinaryData.fromObject(reader.readUntyped());
+                    content = BinaryData.fromBytes(reader.getBinary());
                 } else if ("role".equals(fieldName)) {
                     role = ChatRole.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
