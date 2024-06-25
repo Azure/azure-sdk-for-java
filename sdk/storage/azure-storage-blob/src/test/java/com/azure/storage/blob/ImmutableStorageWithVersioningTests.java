@@ -204,7 +204,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     }
 
     @AfterEach
-    public void cleanupSpec() throws MalformedURLException {
+    public void cleanup() throws MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .policies(CREDENTIAL_POLICY)
