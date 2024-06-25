@@ -561,7 +561,7 @@ public class CosmosAsyncContainer {
                 effectiveOptions.getConsistencyLevel(),
                 OperationType.Create,
                 ResourceType.Document,
-                requestOptions,
+                effectiveOptions,
                 trackingId);
     }
 
@@ -2146,7 +2146,7 @@ public class CosmosAsyncContainer {
 
         effectiveOptions.setEffectiveItemSerializer(this.database.getClient().getEffectiveItemSerializer(effectiveOptions.getEffectiveItemSerializer()));
 
-        return this.deleteItemInternalCore(itemId, internalObjectNode, requestOptions, context);
+        return this.deleteItemInternalCore(itemId, internalObjectNode, effectiveOptions, context);
     }
 
     private Mono<CosmosItemResponse<Object>> deleteItemInternalCore(
@@ -2223,7 +2223,7 @@ public class CosmosAsyncContainer {
         RequestOptions options) {
 
         RequestOptions effectiveOptions = new RequestOptions(options);
-        effectiveOptions.setConsistencyLevel(null);
+//        effectiveOptions.setConsistencyLevel(null);
         if (nonIdempotentWriteRetryPolicy.isEnabled()) {
             effectiveOptions.setNonIdempotentWriteRetriesEnabled(true);
             effectiveOptions.setUseTrackingIds(nonIdempotentWriteRetryPolicy.useTrackingIdProperty());
@@ -2276,7 +2276,7 @@ public class CosmosAsyncContainer {
                 effectiveOptions.getConsistencyLevel(),
                 OperationType.Replace,
                 ResourceType.Document,
-                requestOptions,
+                effectiveOptions,
                 trackingId);
     }
 
@@ -2359,7 +2359,7 @@ public class CosmosAsyncContainer {
                 effectiveOptions.getConsistencyLevel(),
                 OperationType.Upsert,
                 ResourceType.Document,
-                requestOptions,
+                effectiveOptions,
                 null);
     }
 
