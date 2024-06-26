@@ -136,16 +136,17 @@ stages:
             value: '${{ convertToJson(parameters.AdditionalModules) }}'
           - ${{ parameters.AdditionalVariables }}
         jobs:
-        - job:
-          pool:
-            name: $(LINUXPOOL)
-            image: $(LINUXVMIMAGE)
-            os: linux
-          steps:
-            - checkout: none
-            - pwsh: |
-                Write-Host "UseFederatedAuth: ${{ parameters.UseFederatedAuth }}"
-              displayName: Template thinks UseFederatedAuth is true
+        - ${{ if parameters.UseFederatedAuth }}:
+          - job:
+            pool:
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
+              os: linux
+            steps:
+              - checkout: none
+              - pwsh: |
+                  Write-Host "UseFederatedAuth: ${{ parameters.UseFederatedAuth }}"
+                displayName: Template thinks UseFederatedAuth is true
         - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
           parameters:
             SparseCheckoutPaths:
