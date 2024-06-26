@@ -5,46 +5,41 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AzureApplicationInsightsParameter model.
- */
+/** The AzureApplicationInsightsParameter model. */
 @Fluent
-public final class AzureApplicationInsightsParameter implements JsonSerializable<AzureApplicationInsightsParameter> {
+public final class AzureApplicationInsightsParameter {
     /*
      * The Azure cloud that this Azure Application Insights in
      */
+    @JsonProperty(value = "azureCloud")
     private String azureCloud;
 
     /*
      * The application id of this Azure Application Insights
      */
+    @JsonProperty(value = "applicationId")
     private String applicationId;
 
     /*
      * The API Key that can access this Azure Application Insights
      */
+    @JsonProperty(value = "apiKey")
     private String apiKey;
 
     /*
      * The statement to query this Azure Application Insights
      */
+    @JsonProperty(value = "query", required = true)
     private String query;
 
-    /**
-     * Creates an instance of AzureApplicationInsightsParameter class.
-     */
-    public AzureApplicationInsightsParameter() {
-    }
+    /** Creates an instance of AzureApplicationInsightsParameter class. */
+    public AzureApplicationInsightsParameter() {}
 
     /**
      * Get the azureCloud property: The Azure cloud that this Azure Application Insights in.
-     * 
+     *
      * @return the azureCloud value.
      */
     public String getAzureCloud() {
@@ -53,7 +48,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
 
     /**
      * Set the azureCloud property: The Azure cloud that this Azure Application Insights in.
-     * 
+     *
      * @param azureCloud the azureCloud value to set.
      * @return the AzureApplicationInsightsParameter object itself.
      */
@@ -64,7 +59,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
 
     /**
      * Get the applicationId property: The application id of this Azure Application Insights.
-     * 
+     *
      * @return the applicationId value.
      */
     public String getApplicationId() {
@@ -73,7 +68,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
 
     /**
      * Set the applicationId property: The application id of this Azure Application Insights.
-     * 
+     *
      * @param applicationId the applicationId value to set.
      * @return the AzureApplicationInsightsParameter object itself.
      */
@@ -84,7 +79,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
 
     /**
      * Get the apiKey property: The API Key that can access this Azure Application Insights.
-     * 
+     *
      * @return the apiKey value.
      */
     public String getApiKey() {
@@ -93,7 +88,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
 
     /**
      * Set the apiKey property: The API Key that can access this Azure Application Insights.
-     * 
+     *
      * @param apiKey the apiKey value to set.
      * @return the AzureApplicationInsightsParameter object itself.
      */
@@ -104,7 +99,7 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
 
     /**
      * Get the query property: The statement to query this Azure Application Insights.
-     * 
+     *
      * @return the query value.
      */
     public String getQuery() {
@@ -113,56 +108,12 @@ public final class AzureApplicationInsightsParameter implements JsonSerializable
 
     /**
      * Set the query property: The statement to query this Azure Application Insights.
-     * 
+     *
      * @param query the query value to set.
      * @return the AzureApplicationInsightsParameter object itself.
      */
     public AzureApplicationInsightsParameter setQuery(String query) {
         this.query = query;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("query", this.query);
-        jsonWriter.writeStringField("azureCloud", this.azureCloud);
-        jsonWriter.writeStringField("applicationId", this.applicationId);
-        jsonWriter.writeStringField("apiKey", this.apiKey);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureApplicationInsightsParameter from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureApplicationInsightsParameter if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AzureApplicationInsightsParameter.
-     */
-    public static AzureApplicationInsightsParameter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AzureApplicationInsightsParameter deserializedAzureApplicationInsightsParameter
-                = new AzureApplicationInsightsParameter();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("query".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsParameter.query = reader.getString();
-                } else if ("azureCloud".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsParameter.azureCloud = reader.getString();
-                } else if ("applicationId".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsParameter.applicationId = reader.getString();
-                } else if ("apiKey".equals(fieldName)) {
-                    deserializedAzureApplicationInsightsParameter.apiKey = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAzureApplicationInsightsParameter;
-        });
     }
 }
