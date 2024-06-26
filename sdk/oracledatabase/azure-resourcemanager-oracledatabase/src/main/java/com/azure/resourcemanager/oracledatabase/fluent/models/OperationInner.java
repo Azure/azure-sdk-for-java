@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.oracledatabase.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,7 +19,7 @@ import java.io.IOException;
  * 
  * Details of a REST API operation, returned from the Resource Provider Operations API.
  */
-@Fluent
+@Immutable
 public final class OperationInner implements JsonSerializable<OperationInner> {
     /*
      * The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
@@ -52,7 +52,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     /**
      * Creates an instance of OperationInner class.
      */
-    public OperationInner() {
+    private OperationInner() {
     }
 
     /**
@@ -82,17 +82,6 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
      */
     public OperationDisplay display() {
         return this.display;
-    }
-
-    /**
-     * Set the display property: Localized display information for this particular operation.
-     * 
-     * @param display the display value to set.
-     * @return the OperationInner object itself.
-     */
-    public OperationInner withDisplay(OperationDisplay display) {
-        this.display = display;
-        return this;
     }
 
     /**
