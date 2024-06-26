@@ -775,7 +775,7 @@
 
 # ServiceLabel: %Text Translation
 # PRLabel:  %Text Translation
-/sdk/translation/azure-ai-translation-text/         @MikeyMCZ @cpouline
+/sdk/translation/azure-ai-translation-text/         @MikeyMCZ @cpoulain
 
 # PRLabel: %EngSys
 /sdk/template/                                       @hallipr @weshaggard @JimSuplizio
