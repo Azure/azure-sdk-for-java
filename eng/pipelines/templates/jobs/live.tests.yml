@@ -93,12 +93,22 @@ jobs:
           JdkVersion: $(JavaTestVersion)
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+        - pwsh: |
+            Write-Host "UseFederatedAuth: ${{ parameters.UseFederatedAuth }}"
+          displayName: Use federated auth ${{ parameters.UseFederatedAuth }}
+
+        - ${{ if parameters.UseFederatedAuth }}:
+          - pwsh: |
+              Write-Host "hello world"
+            displayName: Template things UseFederatedAuth is true
+
         - template: /eng/common/TestResources/build-test-resource-config.yml
           parameters:
             SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
             SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
             EnvVars: ${{ parameters.EnvVars }}
             ${{ if parameters.UseFederatedAuth }}:
+              FederatedAuthIsUsed: true
               SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
 
         - ${{ if parameters.TestResourceDirectories }}:
