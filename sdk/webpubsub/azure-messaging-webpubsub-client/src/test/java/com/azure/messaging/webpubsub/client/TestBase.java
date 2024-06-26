@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
 
-/*
+/**
  * Required environment variable for LIVE test:
  * - WEB_PUB_SUB_ENDPOINT: endpoint of the Web PubSub Service
  */
