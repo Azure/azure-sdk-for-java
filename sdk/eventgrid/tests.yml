@@ -8,7 +8,6 @@ extends:
     Location: eastus
     TimeoutInMinutes: 60
     MaxParallel: 7
-    Location: eastus
     Artifacts:
       - name: azure-messaging-eventgrid
         groupId: com.azure
