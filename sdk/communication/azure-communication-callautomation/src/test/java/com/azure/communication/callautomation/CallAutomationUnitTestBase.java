@@ -199,7 +199,7 @@ public class CallAutomationUnitTestBase {
         };
     }
 
-    static <T extends JsonSerializable<T>> String serializeObject(JsonSerializable<T> o) {
+    static String serializeObject(JsonSerializable<?> o) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
              JsonWriter writer = JsonProviders.createWriter(outputStream)) {
             o.toJson(writer);

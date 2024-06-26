@@ -67,7 +67,7 @@ public final class RecognizeCompleted extends CallAutomationEventBaseWithReasonC
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("resultInformation", resultInformation);
-        jsonWriter.writeStringField("recognitionType", recognitionType.toString());
+        jsonWriter.writeStringField("recognitionType", recognitionType != null ? recognitionType.toString() : null);
         jsonWriter.writeJsonField("dtmfResult", dtmfResult);
         jsonWriter.writeJsonField("speechResult", speechResult);
         jsonWriter.writeJsonField("choiceResult", collectChoiceResult);

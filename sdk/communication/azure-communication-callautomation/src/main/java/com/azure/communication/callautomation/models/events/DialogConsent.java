@@ -82,7 +82,7 @@ public final class DialogConsent extends CallAutomationEventBase {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("resultInformation", resultInformation);
-        jsonWriter.writeStringField("dialogInputType", dialogInputType.toString());
+        jsonWriter.writeStringField("dialogInputType", dialogInputType != null ? dialogInputType.toString() : null);
         jsonWriter.writeJsonField("userConsent", userConsent);
         jsonWriter.writeStringField("dialogId", dialogId);
         super.writeFields(jsonWriter);

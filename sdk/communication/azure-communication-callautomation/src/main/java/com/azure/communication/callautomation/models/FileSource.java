@@ -38,9 +38,15 @@ public final class FileSource extends PlaySource {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    void writeJsonImpl(JsonWriter jsonWriter) throws IOException {
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
         jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("playSourceCacheId", this.getPlaySourceCacheId());
+        return jsonWriter.writeEndObject();
     }
 
     /**
@@ -59,6 +65,9 @@ public final class FileSource extends PlaySource {
                 reader.nextToken();
                 if ("url".equals(fieldName)) {
                     source.url = reader.getString();
+                } else if ("playSourceCacheId".equals(fieldName)) {
+                    // Set the property of the base class 'PlaySource'.
+                    source.setPlaySourceCacheId(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -45,7 +45,7 @@ public final class ParticipantsUpdated extends CallAutomationEventBase {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("sequenceNumber", sequenceNumber);
+        jsonWriter.writeNumberField("sequenceNumber", sequenceNumber);
         jsonWriter.writeStartArray("participants");
         for (CallParticipant participant : participants) {
             final CallParticipantInternal inner = new CallParticipantInternal();

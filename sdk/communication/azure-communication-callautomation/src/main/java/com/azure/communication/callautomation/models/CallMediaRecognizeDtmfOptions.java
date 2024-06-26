@@ -186,21 +186,22 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
     void toJsonImpl(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStringField("interToneTimeout", CoreUtils.durationToStringWithDays(this.interToneTimeout));
         if (this.maxTonesToCollect != null) {
-            jsonWriter.writeIntField("maxTonesToCollect", this.maxTonesToCollect);
+            jsonWriter.writeNumberField("maxTonesToCollect", this.maxTonesToCollect);
         }
         jsonWriter.writeArrayField("stopTones", this.stopDtmfTones, (writer, element) -> writer.writeString(element.toString()));
     }
 
-    static CallMediaRecognizeDtmfOptions fromJsonImpl(JsonReader jsonReader) throws IOException {
+    static CallMediaRecognizeDtmfOptions fromJsonImpl(CommunicationIdentifier targetParticipant, JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CallMediaRecognizeDtmfOptions options = new CallMediaRecognizeDtmfOptions(null, 0);
+            CallMediaRecognizeDtmfOptions options = new CallMediaRecognizeDtmfOptions(targetParticipant, 0);
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("interToneTimeout".equals(fieldName)) {
-                    options.interToneTimeout = Duration.parse(reader.getString());
+                    final String value = reader.getString();
+                    options.interToneTimeout = value != null ? Duration.parse(value) : null;
                 } else if ("maxTonesToCollect".equals(fieldName)) {
-                    options.maxTonesToCollect = reader.getInt();
+                    options.maxTonesToCollect = reader.getNullable(JsonReader::getInt);
                 } else if ("stopTones".equals(fieldName)) {
                     options.stopDtmfTones = reader.readArray(r -> DtmfTone.fromString(r.getString()));
                 } else {

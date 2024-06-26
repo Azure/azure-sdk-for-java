@@ -306,56 +306,66 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      */
     public static CallMediaRecognizeOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String type = null;
+            Boolean interruptCallMediaOperation = null;
+            Boolean stopCurrentOperations = null;
+            String operationContext = null;
+            Boolean interruptPrompt = null;
+            Duration initialSilenceTimeout = null;
+            String speechModelEndpointId = null;
+            String operationCallbackUrl = null;
+            CommunicationIdentifier targetParticipant = null;
+            // The discriminator value to identity the actual type.
+            String recognizeInputType = null;
             final JsonReader reader1 = reader.bufferObject();
-            reader1.nextToken(); // Prepare for reading
+            reader1.nextToken();
             while (reader1.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader1.getFieldName();
                 reader1.nextToken();
                 if ("recognizeInputType".equals(fieldName)) {
-                    type = reader1.getString();
-                } else {
+                    recognizeInputType = reader1.getString();
+                } else if ("interruptCallMediaOperation".equals(fieldName)) {
+                    interruptCallMediaOperation = reader1.getNullable(JsonReader::getBoolean);
+                } else if ("stopCurrentOperations".equals(fieldName)) {
+                    stopCurrentOperations = reader1.getNullable(JsonReader::getBoolean);
+                } else if ("operationContext".equals(fieldName)) {
+                    operationContext = reader1.getString();
+                } else if ("interruptPrompt".equals(fieldName)) {
+                    interruptPrompt = reader1.getNullable(JsonReader::getBoolean);
+                } else if ("initialSilenceTimeout".equals(fieldName)) {
+                    final String value = reader1.getString();
+                    initialSilenceTimeout = value != null ? Duration.parse(value) : null;
+                } else if ("speechModelEndpointId".equals(fieldName)) {
+                    speechModelEndpointId = reader1.getString();
+                } else if ("operationCallbackUrl".equals(fieldName)) {
+                    operationCallbackUrl = reader1.getString();
+                } else if ("targetParticipant".equals(fieldName)) {
+                    final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader1);
+                    targetParticipant = CommunicationIdentifierConverter.convert(inner);
+                }  else {
                     reader1.skipChildren();
                 }
             }
             final CallMediaRecognizeOptions options;
-            if ("dtmf".equals(type)) {
-                options = CallMediaRecognizeDtmfOptions.fromJsonImpl(reader1.reset());
-            } else if ("choices".equals(type)) {
-                options = CallMediaRecognizeChoiceOptions.fromJsonImpl(reader1.reset());
-            } else if ("speech".equals(type)) {
-                options = CallMediaRecognizeSpeechOptions.fromJsonImpl(reader1.reset());
-            } else if ("speechordtmf".equals(type)) {
-                options = CallMediaRecognizeSpeechOrDtmfOptions.fromJsonImpl(reader1.reset());
+            if ("dtmf".equals(recognizeInputType)) {
+                options = CallMediaRecognizeDtmfOptions.fromJsonImpl(targetParticipant, reader1.reset());
+            } else if ("choices".equals(recognizeInputType)) {
+                options = CallMediaRecognizeChoiceOptions.fromJsonImpl(targetParticipant, reader1.reset());
+            } else if ("speech".equals(recognizeInputType)) {
+                options = CallMediaRecognizeSpeechOptions.fromJsonImpl(targetParticipant, reader1.reset());
+            } else if ("speechordtmf".equals(recognizeInputType)) {
+                options = CallMediaRecognizeSpeechOrDtmfOptions.fromJsonImpl(targetParticipant, reader1.reset());
             } else {
                 options = null;
             }
             if (options != null) {
-                final JsonReader reader2 = reader1.reset();
-                while (reader2.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = reader1.getFieldName();
-                    reader2.nextToken();
-                    if ("interruptCallMediaOperation".equals(fieldName)) {
-                        options.interruptCallMediaOperation = reader2.getBoolean();
-                    } else if ("stopCurrentOperations".equals(fieldName)) {
-                        options.stopCurrentOperations = reader2.getBoolean();
-                    } else if ("operationContext".equals(fieldName)) {
-                        options.operationContext = reader2.getString();
-                    } else if ("interruptPrompt".equals(fieldName)) {
-                        options.interruptPrompt = reader2.getBoolean();
-                    } else if ("initialSilenceTimeout".equals(fieldName)) {
-                        options.initialSilenceTimeout = Duration.parse(reader2.getString());
-                    } else if ("speechModelEndpointId".equals(fieldName)) {
-                        options.speechModelEndpointId = reader2.getString();
-                    } else if ("operationCallbackUrl".equals(fieldName)) {
-                        options.operationCallbackUrl = reader2.getString();
-                    } else if ("targetParticipant".equals(fieldName)) {
-                        final CommunicationIdentifierModel inner = CommunicationIdentifierModel.fromJson(reader);
-                        options.targetParticipant = CommunicationIdentifierConverter.convert(inner);
-                    } else {
-                        reader2.skipChildren();
-                    }
-                }
+                options.interruptCallMediaOperation = interruptCallMediaOperation;
+                options.stopCurrentOperations = stopCurrentOperations;
+                options.operationContext = operationContext;
+                options.interruptPrompt = interruptPrompt;
+                options.initialSilenceTimeout = initialSilenceTimeout;
+                options.speechModelEndpointId = speechModelEndpointId;
+                options.operationCallbackUrl = operationCallbackUrl;
+                options.targetParticipant = targetParticipant;
             }
             return options;
         });

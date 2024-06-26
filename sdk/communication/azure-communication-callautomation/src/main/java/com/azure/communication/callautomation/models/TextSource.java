@@ -138,13 +138,19 @@ public final class TextSource extends PlaySource {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    void writeJsonImpl(JsonWriter jsonWriter) throws IOException {
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("sourceLocale", this.sourceLocale);
         jsonWriter.writeStringField("voiceKind", this.voiceKind.toString());
         jsonWriter.writeStringField("voiceName", this.voiceName);
         jsonWriter.writeStringField("customVoiceEndpointId", this.customVoiceEndpointId);
+        jsonWriter.writeStringField("playSourceCacheId", this.getPlaySourceCacheId());
+        return jsonWriter.writeEndObject();
     }
 
     /**
@@ -171,6 +177,9 @@ public final class TextSource extends PlaySource {
                     source.voiceName = reader.getString();
                 } else if ("customVoiceEndpointId".equals(fieldName)) {
                     source.customVoiceEndpointId = reader.getString();
+                } else if ("playSourceCacheId".equals(fieldName)) {
+                    // Set the property of the base class 'PlaySource'.
+                    source.setPlaySourceCacheId(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

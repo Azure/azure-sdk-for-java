@@ -45,7 +45,7 @@ public final class UserConsent implements JsonSerializable<UserConsent> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("recording", this.recording);
+        jsonWriter.writeNumberField("recording", recording);
         return jsonWriter.writeEndObject();
     }
 
@@ -64,7 +64,7 @@ public final class UserConsent implements JsonSerializable<UserConsent> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("recording".equals(fieldName)) {
-                    consent.recording = reader.getInt();
+                    consent.recording = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

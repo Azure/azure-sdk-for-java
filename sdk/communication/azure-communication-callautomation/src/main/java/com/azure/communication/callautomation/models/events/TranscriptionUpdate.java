@@ -78,8 +78,8 @@ public final class TranscriptionUpdate implements JsonSerializable<Transcription
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transcriptionStatus", transcriptionStatus.toString());
-        jsonWriter.writeStringField("transcriptionStatusDetails", transcriptionStatusDetails.toString());
+        jsonWriter.writeStringField("transcriptionStatus", transcriptionStatus != null ? transcriptionStatus.toString() : null);
+        jsonWriter.writeStringField("transcriptionStatusDetails", transcriptionStatusDetails != null ? transcriptionStatusDetails.toString() : null);
         return jsonWriter.writeEndObject();
     }
 

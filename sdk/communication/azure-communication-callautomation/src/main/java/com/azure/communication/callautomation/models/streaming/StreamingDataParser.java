@@ -57,107 +57,53 @@ public final class StreamingDataParser {
      * @return a MediaStreamingPackageBase object.
      */
     public static StreamingData parse(String stringJson) {
-        //region Audio
-        if (stringJson.contains("AudioData")) {
-            try (JsonReader jsonReader = JsonProviders.createReader(stringJson)) {
-                final AudioDataConverter audioInternal = jsonReader.readObject(reader -> {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-                        if ("audioData".equals(fieldName)) {
-                            return AudioDataConverter.fromJson(reader);
+        try (JsonReader jsonReader = JsonProviders.createReader(stringJson)) {
+            return jsonReader.readObject(reader -> {
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("audioData".equals(fieldName)) {
+                        // Possible return of AudioData
+                        final AudioDataConverter audioInternal = AudioDataConverter.fromJson(reader);
+                        if (audioInternal != null) {
+                            return new AudioData(audioInternal.getData(), audioInternal.getTimestamp(), audioInternal.getParticipantRawID(), audioInternal.isSilent());
                         } else {
-                            reader.skipChildren();
+                            return null;
                         }
-                    }
-                    return null;
-                });
-                if (audioInternal != null) {
-                    return new AudioData(audioInternal.getData(), audioInternal.getTimestamp(), audioInternal.getParticipantRawID(), audioInternal.isSilent());
-                } else {
-                    return null;
-                }
-            } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
-        }
-
-        if (stringJson.contains("AudioMetadata")) {
-            try (JsonReader jsonReader = JsonProviders.createReader(stringJson)) {
-                final AudioMetadataConverter metadataInternal = jsonReader.readObject(reader -> {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-                        if ("audioMetadata".equals(fieldName)) {
-                            return AudioMetadataConverter.fromJson(reader);
+                    } else if ("audioMetadata".equals(fieldName)) {
+                        // Possible return of AudioMetadata
+                        final AudioMetadataConverter metadataInternal = AudioMetadataConverter.fromJson(reader);
+                        if (metadataInternal != null) {
+                            return new AudioMetadata(metadataInternal.getMediaSubscriptionId(), metadataInternal.getEncoding(), metadataInternal.getSampleRate(), metadataInternal.getChannels(), metadataInternal.getLength());
                         } else {
-                            reader.skipChildren();
+                            return null;
                         }
-                    }
-                    return null;
-                });
-                if (metadataInternal != null) {
-                    return new AudioMetadata(metadataInternal.getMediaSubscriptionId(), metadataInternal.getEncoding(), metadataInternal.getSampleRate(), metadataInternal.getChannels(), metadataInternal.getLength());
-                } else {
-                    return null;
-                }
-            } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
-        }
-
-        //endregion
-
-        //region Transcription
-        if (stringJson.contains("TranscriptionData")) {
-            try (JsonReader jsonReader = JsonProviders.createReader(stringJson)) {
-                final TranscriptionDataConverter transcriptionInternal = jsonReader.readObject(reader -> {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-                        if ("transcriptionData".equals(fieldName)) {
-                            return TranscriptionDataConverter.fromJson(reader);
+                    } else if ("transcriptionData".equals(fieldName)) {
+                        // Possible return of TranscriptionData
+                        final TranscriptionDataConverter transcriptionInternal = TranscriptionDataConverter.fromJson(reader);
+                        if (transcriptionInternal != null) {
+                            return new TranscriptionData(transcriptionInternal.getText(), transcriptionInternal.getFormat(), transcriptionInternal.getConfidence(), transcriptionInternal.getOffset(), transcriptionInternal.getDuration(), transcriptionInternal.getWords(), transcriptionInternal.getParticipantRawID(), transcriptionInternal.getResultStatus());
                         } else {
-                            reader.skipChildren();
+                            return null;
                         }
-                    }
-                    return null;
-                });
-                if (transcriptionInternal != null) {
-                    return new TranscriptionData(transcriptionInternal.getText(), transcriptionInternal.getFormat(), transcriptionInternal.getConfidence(), transcriptionInternal.getOffset(), transcriptionInternal.getDuration(), transcriptionInternal.getWords(), transcriptionInternal.getParticipantRawID(), transcriptionInternal.getResultStatus());
-                } else {
-                    return null;
-                }
-            } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
-        }
-
-        if (stringJson.contains("TranscriptionMetadata")) {
-            try (JsonReader jsonReader = JsonProviders.createReader(stringJson)) {
-                final TranscriptionMetadataConverter transcriptionMetadataInternal = jsonReader.readObject(reader -> {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-                        if ("transcriptionMetadata".equals(fieldName)) {
-                            return TranscriptionMetadataConverter.fromJson(reader);
+                    } else if ("transcriptionMetadata".equals(fieldName)) {
+                        // Possible return of TranscriptionMetadata.
+                        final TranscriptionMetadataConverter transcriptionMetadataInternal = TranscriptionMetadataConverter.fromJson(reader);
+                        if (transcriptionMetadataInternal != null) {
+                            return new TranscriptionMetadata(transcriptionMetadataInternal.getTranscriptionSubscriptionId(), transcriptionMetadataInternal.getLocale(), transcriptionMetadataInternal.getCallConnectionId(), transcriptionMetadataInternal.getCorrelationId());
                         } else {
-                            reader.skipChildren();
+                            return null;
                         }
+                    } else {
+                        reader.skipChildren();
                     }
-                    return null;
-                });
-                if (transcriptionMetadataInternal != null) {
-                    return new TranscriptionMetadata(transcriptionMetadataInternal.getTranscriptionSubscriptionId(), transcriptionMetadataInternal.getLocale(), transcriptionMetadataInternal.getCallConnectionId(), transcriptionMetadataInternal.getCorrelationId());
-                } else {
-                    return null;
                 }
-            } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
-        }
-        //endregion
 
-        return null;
+                return null; // cases triggered.
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -70,7 +70,7 @@ public final class TeamsRecordingStateChanged extends CallAutomationEventBase {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("recordingId", recordingId);
-        jsonWriter.writeStringField("state", recordingState.toString());
+        jsonWriter.writeStringField("state", recordingState != null ? recordingState.toString() : null);
         jsonWriter.writeStringField("startDateTime", startDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();

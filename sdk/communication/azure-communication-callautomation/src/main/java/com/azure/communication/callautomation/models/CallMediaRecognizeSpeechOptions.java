@@ -186,14 +186,15 @@ public class CallMediaRecognizeSpeechOptions extends CallMediaRecognizeOptions {
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", speechRecognitionModelEndpointId);
     }
 
-    static CallMediaRecognizeSpeechOptions fromJsonImpl(JsonReader jsonReader) throws IOException {
+    static CallMediaRecognizeSpeechOptions fromJsonImpl(CommunicationIdentifier targetParticipant, JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final CallMediaRecognizeSpeechOptions options = new CallMediaRecognizeSpeechOptions(null, null);
+            final CallMediaRecognizeSpeechOptions options = new CallMediaRecognizeSpeechOptions(targetParticipant, null);
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("endSilenceTimeout".equals(fieldName)) {
-                    options.endSilenceTimeout = Duration.parse(reader.getString());
+                    final String value = reader.getString();
+                    options.endSilenceTimeout = value != null ? Duration.parse(value) : null;
                 } else if ("speechLanguage".equals(fieldName)) {
                     options.speechLanguage = reader.getString();
                 } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {

@@ -17,22 +17,22 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
     /*
      * Transport URL for media streaming
      */
-    private String transportUrl;
+    private final String transportUrl;
 
     /*
      * The type of transport to be used for media streaming, eg. Websocket
      */
-    private MediaStreamingTransport transportType;
+    private final MediaStreamingTransport transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
-    private MediaStreamingContent contentType;
+    private final MediaStreamingContent contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
      */
-    private MediaStreamingAudioChannel audioChannelType;
+    private final MediaStreamingAudioChannel audioChannelType;
 
     /**
      * Creates a new instance of MediaStreamingConfiguration
@@ -87,10 +87,10 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transportUrl", this.transportUrl);
-        jsonWriter.writeStringField("transportType", this.transportType.toString());
-        jsonWriter.writeStringField("contentType", this.contentType.toString());
-        jsonWriter.writeStringField("audioChannelType", this.audioChannelType.toString());
+        jsonWriter.writeStringField("transportUrl", transportUrl);
+        jsonWriter.writeStringField("transportType", transportType != null ? transportType.toString() : null);
+        jsonWriter.writeStringField("contentType", contentType != null ? contentType.toString() : null);
+        jsonWriter.writeStringField("audioChannelType", audioChannelType != null ? audioChannelType.toString() : null);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,23 +104,26 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
      */
     public static MediaStreamingOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            MediaStreamingOptions options = new MediaStreamingOptions(null, null, null, null);
+            String transportUrl = null;
+            MediaStreamingTransport transportType = null;
+            MediaStreamingContent contentType = null;
+            MediaStreamingAudioChannel audioChannelType = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("transportUrl".equals(fieldName)) {
-                    options.transportUrl = reader.getString();
+                    transportUrl = reader.getString();
                 } else if ("transportType".equals(fieldName)) {
-                    options.transportType = MediaStreamingTransport.fromString(reader.getString());
+                    transportType = MediaStreamingTransport.fromString(reader.getString());
                 } else if ("contentType".equals(fieldName)) {
-                    options.contentType = MediaStreamingContent.fromString(reader.getString());
+                    contentType = MediaStreamingContent.fromString(reader.getString());
                 } else if ("audioChannelType".equals(fieldName)) {
-                    options.audioChannelType = MediaStreamingAudioChannel.fromString(reader.getString());
+                    audioChannelType = MediaStreamingAudioChannel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return options;
+            return new MediaStreamingOptions(transportUrl, transportType, contentType, audioChannelType);
         });
     }
 }

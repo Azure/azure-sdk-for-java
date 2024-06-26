@@ -19,7 +19,7 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     /*
      * List of recognition choices.
      */
-    private List<RecognitionChoice> choices;
+    private final List<RecognitionChoice> choices;
 
     /*
      * Speech language to be recognized, If not set default is en-US
@@ -184,22 +184,27 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
         jsonWriter.writeArrayField("choices", this.choices, (writer, choice) -> choice.toJson(writer));
     }
 
-    static CallMediaRecognizeChoiceOptions fromJsonImpl(JsonReader jsonReader) throws IOException {
+    static CallMediaRecognizeChoiceOptions fromJsonImpl(CommunicationIdentifier targetParticipant, JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final CallMediaRecognizeChoiceOptions options = new CallMediaRecognizeChoiceOptions(null, null);
+            String speechLanguage = null;
+            String speechRecognitionModelEndpointId = null;
+            List<RecognitionChoice> choices = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("speechLanguage".equals(fieldName)) {
-                    options.speechLanguage = reader.getString();
+                    speechLanguage = reader.getString();
                 } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
-                    options.speechRecognitionModelEndpointId = reader.getString();
+                    speechRecognitionModelEndpointId = reader.getString();
                 } else if ("choices".equals(fieldName)) {
-                    options.choices = reader.readArray(RecognitionChoice::fromJson);
+                    choices = reader.readArray(RecognitionChoice::fromJson);
                 } else {
                     reader.skipChildren();
                 }
             }
+            final CallMediaRecognizeChoiceOptions options = new CallMediaRecognizeChoiceOptions(targetParticipant, choices);
+            options.speechLanguage = speechLanguage;
+            options.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
             return options;
         });
     }

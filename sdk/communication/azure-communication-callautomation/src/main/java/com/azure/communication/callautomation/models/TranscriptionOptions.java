@@ -17,22 +17,22 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     /*
      * Transport URL for live transcription
      */
-    private String transportUrl;
+    private final String transportUrl;
 
     /*
      * The type of transport to be used for live transcription, eg. Websocket
      */
-    private TranscriptionTransportType transportType;
+    private final TranscriptionTransportType transportType;
 
     /*
      * Defines the locale for the data e.g en-CA, en-AU
      */
-    private String locale;
+    private final String locale;
 
     /*
      * Determines if the transcription should be started immediately after call is answered or not.
      */
-    private boolean startTranscription;
+    private final boolean startTranscription;
 
     /**
      * Creates a new instance of MediaStreamingConfiguration
@@ -87,10 +87,10 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("transportUrl", this.transportUrl);
-        jsonWriter.writeStringField("transportType", this.transportType.toString());
-        jsonWriter.writeStringField("locale", this.locale);
-        jsonWriter.writeBooleanField("startTranscription", this.startTranscription);
+        jsonWriter.writeStringField("transportUrl", transportUrl);
+        jsonWriter.writeStringField("transportType", transportType != null ? transportType.toString() : null);
+        jsonWriter.writeStringField("locale", locale);
+        jsonWriter.writeBooleanField("startTranscription", startTranscription);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,23 +104,26 @@ public final class TranscriptionOptions implements JsonSerializable<Transcriptio
      */
     public static TranscriptionOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TranscriptionOptions options = new TranscriptionOptions(null, null, null, false);
+            String transportUrl = null;
+            TranscriptionTransportType transportType = null;
+            String locale = null;
+            boolean startTranscription = false;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("transportUrl".equals(fieldName)) {
-                    options.transportUrl = reader.getString();
+                    transportUrl = reader.getString();
                 } else if ("transportType".equals(fieldName)) {
-                    options.transportType = TranscriptionTransportType.fromString(reader.getString());
+                    transportType = TranscriptionTransportType.fromString(reader.getString());
                 } else if ("locale".equals(fieldName)) {
-                    options.locale = reader.getString();
+                    locale = reader.getString();
                 } else if ("startTranscription".equals(fieldName)) {
-                    options.startTranscription = reader.getBoolean();
+                    startTranscription = reader.getBoolean();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return options;
+            return new TranscriptionOptions(transportUrl, transportType, locale, startTranscription);
         });
     }
 }

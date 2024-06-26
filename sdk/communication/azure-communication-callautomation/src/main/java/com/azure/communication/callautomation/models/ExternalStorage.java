@@ -38,7 +38,7 @@ public abstract class ExternalStorage implements JsonSerializable<ExternalStorag
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         this.writeJsonImpl(jsonWriter);
-        jsonWriter.writeStringField("storageType", this.storageType == null ? null : this.storageType.toString());
+        jsonWriter.writeStringField("storageType", this.storageType != null ? this.storageType.toString() : null);
         return jsonWriter.writeEndObject();
     }
 

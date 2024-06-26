@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 /** The RecognitionChoice model. */
-public final class RecognitionChoice implements JsonSerializable<CallMediaRecognizeOptions> {
+public final class RecognitionChoice implements JsonSerializable<RecognitionChoice> {
     /*
      * Identifier for a given choice
      */

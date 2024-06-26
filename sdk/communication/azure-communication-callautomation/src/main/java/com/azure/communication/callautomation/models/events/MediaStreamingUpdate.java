@@ -97,8 +97,8 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("contentType", contentType);
-        jsonWriter.writeStringField("mediaStreamingStatus", mediaStreamingStatus.toString());
-        jsonWriter.writeStringField("mediaStreamingStatusDetails", mediaStreamingStatusDetails.toString());
+        jsonWriter.writeStringField("mediaStreamingStatus", mediaStreamingStatus != null ? mediaStreamingStatus.toString() : null);
+        jsonWriter.writeStringField("mediaStreamingStatusDetails", mediaStreamingStatusDetails != null ? mediaStreamingStatusDetails.toString() : null);
         return jsonWriter.writeEndObject();
     }
 

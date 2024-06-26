@@ -73,7 +73,7 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("sequenceId", sequenceId);
+        jsonWriter.writeNumberField("sequenceId", sequenceId);
         jsonWriter.writeStringField("tone", tone.toString());
         jsonWriter.writeJsonField("resultInformation", resultInformation);
         super.writeFields(jsonWriter);

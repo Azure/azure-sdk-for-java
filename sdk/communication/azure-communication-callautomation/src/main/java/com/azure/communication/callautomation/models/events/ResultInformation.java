@@ -17,22 +17,22 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     /*
      * The code property.
      */
-    private Integer code;
+    private final Integer code;
 
     /*
      * The subCode property.
      */
-    private Integer subCode;
+    private final Integer subCode;
 
     /*
      * The message property.
      */
-    private String message;
+    private final String message;
 
-    private ResultInformation() {
-        code = null;
-        subCode = null;
-        message = null;
+    private ResultInformation(Integer code, Integer subCode, String message) {
+        this.code = code;
+        this.subCode = subCode;
+        this.message = message;
     }
 
     /**
@@ -69,8 +69,8 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("code", this.code);
-        jsonWriter.writeIntField("subCode", this.subCode);
+        jsonWriter.writeNumberField("code", this.code);
+        jsonWriter.writeNumberField("subCode", this.subCode);
         jsonWriter.writeStringField("message", this.message);
         return jsonWriter.writeEndObject();
     }
@@ -85,21 +85,23 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
      */
     public static ResultInformation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final ResultInformation information = new ResultInformation();
+            Integer code = null;
+            Integer subCode = null;
+            String message = null;
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("code".equals(fieldName)) {
-                    information.code = reader.getInt();
+                    code = reader.getNullable(JsonReader::getInt);
                 } else if ("subCode".equals(fieldName)) {
-                    information.subCode = reader.getInt();
+                    subCode = reader.getNullable(JsonReader::getInt);
                 } else if ("message".equals(fieldName)) {
-                    information.message = reader.getString();
+                    message = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return information;
+            return new ResultInformation(code, subCode, message);
         });
     }
 }

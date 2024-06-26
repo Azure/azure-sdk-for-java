@@ -168,14 +168,14 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", speechRecognitionModelEndpointId);
         jsonWriter.writeStringField("interToneTimeout", CoreUtils.durationToStringWithDays(interToneTimeout));
         if (maxTonesToCollect != null) {
-            jsonWriter.writeIntField("maxTonesToCollect", maxTonesToCollect);
+            jsonWriter.writeNumberField("maxTonesToCollect", maxTonesToCollect);
         }
         jsonWriter.writeArrayField("stopTones", this.stopDtmfTones, (writer, element) -> writer.writeString(element.toString()));
     }
 
-    static CallMediaRecognizeSpeechOrDtmfOptions fromJsonImpl(JsonReader jsonReader) throws IOException {
+    static CallMediaRecognizeSpeechOrDtmfOptions fromJsonImpl(CommunicationIdentifier targetParticipant, JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            final CallMediaRecognizeSpeechOrDtmfOptions options = new CallMediaRecognizeSpeechOrDtmfOptions(null, 0, null);
+            final CallMediaRecognizeSpeechOrDtmfOptions options = new CallMediaRecognizeSpeechOrDtmfOptions(targetParticipant, 0, null);
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -186,9 +186,10 @@ public class CallMediaRecognizeSpeechOrDtmfOptions extends CallMediaRecognizeOpt
                 } else if ("speechRecognitionModelEndpointId".equals(fieldName)) {
                     options.speechRecognitionModelEndpointId = reader.getString();
                 } else if ("interToneTimeout".equals(fieldName)) {
-                    options.interToneTimeout = Duration.parse(reader.getString());
+                    final String value = reader.getString();
+                    options.interToneTimeout = value != null ? Duration.parse(value) : null;
                 } else if ("maxTonesToCollect".equals(fieldName)) {
-                    options.maxTonesToCollect = reader.getInt();
+                    options.maxTonesToCollect = reader.getNullable(JsonReader::getInt);
                 } else if ("stopTones".equals(fieldName)) {
                     options.stopDtmfTones = reader.readArray(r -> DtmfTone.fromString(r.getString()));
                 } else {

@@ -71,7 +71,7 @@ public final class RecordingStateChanged extends CallAutomationEventBase {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("startDateTime", startDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
         jsonWriter.writeStringField("recordingId", recordingId);
-        jsonWriter.writeStringField("state", recordingState.toString());
+        jsonWriter.writeStringField("state", recordingState != null ? recordingState.toString() : null);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
     }
