@@ -424,52 +424,6 @@
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.storage\\.queue\\.models.*",
-          "justification": "Removing Jackson annotations from Storage Queue in transition to stream-style."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.monitor\\.query.*",
-          "justification": "Removing Jackson annotations from Monitor Query in transition to stream-style."
-        },
-        {
-          "ignore": true,
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.storage\\.file\\.share\\.models.*",
-          "justification": "Removing Jackson annotations from Storage File Share in transition to stream-style."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.data\\.tables\\.models.*",
-          "justification": "Removing Jackson annotations from Tables in transition to stream-style."
-        },
-        {
-          "ignore": true,
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.storage\\.file\\.datalake\\.models.*",
-          "justification": "Removing Jackson annotations from Storage File Datalake in transition to stream-style."
-        },
-        {
-          "ignore": true,
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.storage\\.blob\\.models.*",
-          "justification": "Removing Jackson annotations from Storage Blob in transition to stream-style."
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
-          "justification": "Removing Jackson annotations from Job Router in transition to stream-style."
-        },
-        {
-          "regex": true,
           "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
           "old": ".*? com\\.azure\\.communication\\.messages\\.models.*",
           "justification": "Jackson annotation changed."
