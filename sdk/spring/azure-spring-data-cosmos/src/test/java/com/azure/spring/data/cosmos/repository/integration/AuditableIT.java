@@ -17,7 +17,9 @@ import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AuditableIdGeneratedRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.util.Lists;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -59,6 +61,12 @@ public class AuditableIT {
     @Before
     public void setup() {
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, AuditableEntity.class, AuditableIdGeneratedEntity.class);
+    }
+
+    @AfterClass
+    public static void cleanUp() {
+        collectionManager.deleteContainer(new CosmosEntityInformation<>(AuditableEntity.class));
+        collectionManager.deleteContainer(new CosmosEntityInformation<>(AuditableIdGeneratedEntity.class));
     }
 
     @Test
