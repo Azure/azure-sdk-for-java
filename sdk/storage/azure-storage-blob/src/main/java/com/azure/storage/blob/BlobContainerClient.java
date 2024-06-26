@@ -1074,11 +1074,14 @@ public final class BlobContainerClient {
             if (pageSize != null) {
                 finalOptions.setMaxResultsPerPage(pageSize);
             }
+            ArrayList<ListBlobsIncludeItem> include =
+                finalOptions.getDetails().toList().isEmpty() ? null : finalOptions.getDetails().toList();
+
             Supplier<PagedResponse<BlobItem>> operation = () -> {
                 ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response =
                     this.azureBlobStorage.getContainers().listBlobFlatSegmentWithResponse(
                         containerName, finalOptions.getPrefix(), nextMarker, finalOptions.getMaxResultsPerPage(),
-                        finalOptions.getDetails().toList(), null, null, Context.NONE);
+                        include, null, null, Context.NONE);
 
                 List<BlobItem> value = response.getValue().getSegment() == null ? Collections.emptyList() :
                     response.getValue().getSegment().getBlobItems().stream()
