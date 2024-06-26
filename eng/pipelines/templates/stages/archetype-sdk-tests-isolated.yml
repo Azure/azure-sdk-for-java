@@ -136,6 +136,12 @@ stages:
             value: '${{ convertToJson(parameters.AdditionalModules) }}'
           - ${{ parameters.AdditionalVariables }}
         jobs:
+        - job:
+          steps:
+            - checkout: false
+            - pwsh: |
+                Write-Host "UseFederatedAuth: ${{ parameters.UseFederatedAuth }}"
+              displayName: Template thinks UseFederatedAuth is true
         - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
           parameters:
             SparseCheckoutPaths:
