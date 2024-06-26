@@ -13,11 +13,28 @@ import io.clientcore.core.http.client.HttpClientProvider;
  * introduced.
  */
 public final class JdkHttpClientProvider extends HttpClientProvider {
-    public JdkHttpClientProvider() {
+    // Enum Singleton Pattern
+    private enum GlobalJdkHttpClient {
+        HTTP_CLIENT(new JdkHttpClientBuilder().build());
+
+        private final HttpClient httpClient;
+
+        GlobalJdkHttpClient(HttpClient httpClient) {
+            this.httpClient = httpClient;
+        }
+
+        private HttpClient getHttpClient() {
+            return httpClient;
+        }
     }
 
     @Override
     public HttpClient getNewInstance() {
         return new JdkHttpClientBuilder().build();
+    }
+
+    @Override
+    public HttpClient getSharedInstance() {
+        return GlobalJdkHttpClient.HTTP_CLIENT.getHttpClient();
     }
 }
