@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.ObjectNodeMap;
@@ -58,9 +59,13 @@ public abstract class CosmosItemSerializer {
                 inner = new RuntimeException(throwable);
             }
 
-            throw new BadRequestException(
+            BadRequestException exception = new BadRequestException(
                 "Custom serializer '" + this.getClass().getSimpleName() + "' failed to serialize item.",
                 inner);
+
+            BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.CUSTOM_SERIALIZER_EXCEPTION);
+
+            throw exception;
         }
     }
 
@@ -84,9 +89,13 @@ public abstract class CosmosItemSerializer {
                 inner = new RuntimeException(throwable);
             }
 
-            throw new BadRequestException(
+            BadRequestException exception = new BadRequestException(
                 "Custom serializer '" + this.getClass().getSimpleName() + "' failed to deserialize item.",
                 inner);
+
+            BridgeInternal.setSubStatusCode(exception, HttpConstants.SubStatusCodes.CUSTOM_SERIALIZER_EXCEPTION);
+
+            throw exception;
         }
     }
 
