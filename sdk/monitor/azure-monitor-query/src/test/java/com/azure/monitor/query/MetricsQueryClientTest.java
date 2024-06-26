@@ -198,15 +198,15 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
             "EHABL",
             "EHAMSGS",
             "EHAMBS",
-            "NamespaceCpuUsage",
-            "NamespaceMemoryUsage"
+            "ReplicationLagDuration",
+            "ReplicationLagCount"
         );
+
 
         List<String> metricsDefinitionNames = metricsDefinitions.stream()
             .map(MetricDefinition::getName)
             .collect(Collectors.toList());
 
-        System.out.println("Printing all metrics definitions " + metricsDefinitionNames);
         assertTrue(metricsDefinitionNames
                 .containsAll(knownMetricsDefinitions));
     }

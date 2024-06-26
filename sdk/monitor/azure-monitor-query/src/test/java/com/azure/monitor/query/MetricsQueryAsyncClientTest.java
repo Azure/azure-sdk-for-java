@@ -200,8 +200,8 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
             "EHABL",
             "EHAMSGS",
             "EHAMBS",
-            "NamespaceCpuUsage",
-            "NamespaceMemoryUsage"
+            "ReplicationLagDuration",
+            "ReplicationLagCount"
         );
 
         StepVerifier.create(client
