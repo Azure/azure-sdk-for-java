@@ -6,8 +6,9 @@ package com.azure.messaging.webpubsub;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
@@ -32,32 +33,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Unit tests for {@link WebPubSubServiceAsyncClient#getClientAccessToken(GetClientAccessTokenOptions)
  * getAuthenticationToken} method.
  */
-public class TokenGenerationTest extends TestProxyTestBase {
-
-    private WebPubSubServiceClientBuilder builder;
-
-    @Override
-    protected void beforeTest() {
-        builder = new WebPubSubServiceClientBuilder()
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .retryOptions(TestUtils.getRetryOptions())
-            .hub(TestUtils.HUB_NAME);
-    }
-
-    /**
-     * Testing token generation with connection string.
-     */
+public class TokenGenerationTest  extends TestBase {
     @ParameterizedTest
     @MethodSource("getTokenOptions")
-    @DoNotRecord
     public void testTokenGeneration(GetClientAccessTokenOptions tokenOptions, String connectionString,
                                     String expectedUrlPrefix, String expectedSubject,
                                     List<String> expectedRoles, List<String> expectedGroups) throws ParseException {
-
-        WebPubSubServiceClient client = builder
+        WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
+            .hub("test")
             .connectionString(connectionString)
             .buildClient();
-
         WebPubSubClientAccessToken authenticationToken = client.getClientAccessToken(tokenOptions);
 
         assertNotNull(authenticationToken.getToken());
@@ -68,22 +53,23 @@ public class TokenGenerationTest extends TestProxyTestBase {
         assertEquals(expectedSubject, jwtClaimsSet.getSubject());
         assertEquals(expectedRoles, jwtClaimsSet.getClaim("role"));
         assertEquals(expectedGroups, jwtClaimsSet.getClaim("webpubsub.group"));
+
     }
 
     @ParameterizedTest
     @MethodSource("getTokenOptions")
     @DoNotRecord(skipInPlayback = true)
     public void testTokenGenerationFromAadCredential(GetClientAccessTokenOptions tokenOptions, String connectionString,
-        String expectedUrlPrefix, String expectedSubject, List<String> expectedRoles, List<String> expectedGroups)
-        throws ParseException {
-
-        String endpoint = TestUtils.getEndpoint();
-
+                                                     String expectedUrlPrefix, String expectedSubject,
+                                                     List<String> expectedRoles, List<String> expectedGroups) throws ParseException {
+        String endpoint = Configuration.getGlobalConfiguration()
+            .get("WEB_PUB_SUB_ENDPOINT", "http://testendpoint.webpubsubdev.azure.com");
         WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .credential(new DefaultAzureCredentialBuilder().build())
-            .hub(TestUtils.HUB_NAME);
+            .hub("test");
 
         WebPubSubServiceClient client = webPubSubServiceClientBuilder.buildClient();
         WebPubSubClientAccessToken authenticationToken = client.getClientAccessToken(tokenOptions);
