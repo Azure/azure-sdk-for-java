@@ -1431,6 +1431,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         CosmosAsyncClient asyncClient = null;
         FaultInjectionOperationType faultInjectionOperationType = faultInjectionRuleParamsWrapper.getFaultInjectionOperationType();
+        faultInjectionRuleParamsWrapper.withFaultInjectionConnectionType(evaluateFaultInjectionConnectionType(connectionPolicy.getConnectionMode()));
 
         try {
 
@@ -1520,7 +1521,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitingHasKickedIn,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenExceptionBubblesUp,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
-        ConnectionMode allowedConnectionMode) {
+        Set<ConnectionMode> allowedConnectionModes) {
 
         List<String> preferredRegions = this.writeRegions;
 
@@ -1536,9 +1537,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
 
-        if (connectionPolicy.getConnectionMode() != allowedConnectionMode) {
-            throw new SkipException(String.format("Test is not applicable to %s connectivity mode!", allowedConnectionMode));
+        if (!allowedConnectionModes.contains(connectionPolicy.getConnectionMode())) {
+            throw new SkipException(String.format("Test is not applicable to %s connectivity mode!", connectionPolicy.getConnectionMode()));
         }
+
+        faultInjectionRuleParamsWrapper.withFaultInjectionConnectionType(evaluateFaultInjectionConnectionType(connectionPolicy.getConnectionMode()));
 
         try {
 
@@ -1622,7 +1625,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitingHasKickedIn,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenExceptionBubblesUp,
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
-        ConnectionMode allowedConnectionMode) {
+        Set<ConnectionMode> allowedConnectionModes) {
 
         CosmosAsyncClient asyncClient = null;
 
@@ -1638,9 +1641,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
 
-        if (connectionPolicy.getConnectionMode() != allowedConnectionMode) {
+        if (!allowedConnectionModes.contains(connectionPolicy.getConnectionMode())) {
             throw new SkipException(String.format("Test is not applicable to %s connectivity mode!", connectionPolicy.getConnectionMode()));
         }
+
+        faultInjectionRuleParamsWrapper.withFaultInjectionConnectionType(evaluateFaultInjectionConnectionType(connectionPolicy.getConnectionMode()));
 
         try {
 
@@ -2334,7 +2339,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         private List<String> faultInjectionApplicableRegions;
         private FeedRange faultInjectionApplicableFeedRange;
         private FaultInjectionOperationType faultInjectionOperationType;
-        private List<CosmosItemIdentity> itemIdentitiesForReadMany;
+        private FaultInjectionConnectionType faultInjectionConnectionType;
 
         public CosmosAsyncContainer getFaultInjectionApplicableAsyncContainer() {
             return faultInjectionApplicableAsyncContainer;
@@ -2398,6 +2403,15 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             this.faultInjectionOperationType = faultInjectionOperationType;
             return this;
         }
+
+        public FaultInjectionConnectionType getFaultInjectionConnectionType() {
+            return faultInjectionConnectionType;
+        }
+
+        public FaultInjectionRuleParamsWrapper withFaultInjectionConnectionType(FaultInjectionConnectionType faultInjectionConnectionType) {
+            this.faultInjectionConnectionType = faultInjectionConnectionType;
+            return this;
+        }
     }
 
     private static Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
@@ -2421,7 +2435,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
                 .operationType(paramsWrapper.getFaultInjectionOperationType())
-                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .connectionType(paramsWrapper.getFaultInjectionConnectionType())
                 .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
                 .region(applicableRegion)
                 .build();
@@ -2454,7 +2468,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
                 .operationType(paramsWrapper.getFaultInjectionOperationType())
-                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .connectionType(paramsWrapper.getFaultInjectionConnectionType())
                 .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
                 .region(applicableRegion)
                 .build();
@@ -2485,7 +2499,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
                 .operationType(paramsWrapper.getFaultInjectionOperationType())
-                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .connectionType(paramsWrapper.getFaultInjectionConnectionType())
                 .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
                 .region(applicableRegion)
                 .build();
@@ -2514,7 +2528,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
                 .operationType(paramsWrapper.getFaultInjectionOperationType())
-                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .connectionType(paramsWrapper.getFaultInjectionConnectionType())
                 .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
                 .region(applicableRegion)
                 .build();
@@ -2543,7 +2557,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
                 .operationType(paramsWrapper.getFaultInjectionOperationType())
-                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .connectionType(paramsWrapper.getFaultInjectionConnectionType())
                 .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
                 .region(applicableRegion)
                 .build();
@@ -2572,7 +2586,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
                 .operationType(paramsWrapper.getFaultInjectionOperationType())
-                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .connectionType(paramsWrapper.getFaultInjectionConnectionType())
                 .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
                 .region(applicableRegion)
                 .build();
@@ -2600,7 +2614,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
                 .operationType(paramsWrapper.getFaultInjectionOperationType())
-                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .connectionType(paramsWrapper.getFaultInjectionConnectionType())
                 .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
                 .region(applicableRegion)
                 .build();
@@ -2696,6 +2710,17 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         return 0;
 
+    }
+
+    private static FaultInjectionConnectionType evaluateFaultInjectionConnectionType(ConnectionMode connectionMode) {
+
+        if (connectionMode == ConnectionMode.DIRECT) {
+            return FaultInjectionConnectionType.DIRECT;
+        } else if (connectionMode == ConnectionMode.GATEWAY) {
+            return FaultInjectionConnectionType.GATEWAY;
+        }
+
+        throw new IllegalArgumentException("Unsupported connection mode : " + connectionMode);
     }
 
     private enum QueryType {
