@@ -18,7 +18,6 @@ import java.time.Duration;
  * Required environment variable for LIVE test:
  * - WEB_PUB_SUB_ENDPOINT: endpoint of the Web PubSub Service
  */
-
 public class TestBase extends com.azure.core.test.TestBase {
 
     protected static WebPubSubClientBuilder getClientBuilder() {
