@@ -19,7 +19,7 @@ autorest
 ```yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/Personalizer/preview/v1.1-preview.3/Personalizer.json
 java: true
-use: '@autorest/java@4.1.17'
+use: '@autorest/java@4.1.29'
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.ai.personalizer
@@ -31,6 +31,7 @@ context-client-method-parameter: true
 service-interface-as-public: true
 custom-strongly-typed-header-deserialization: true
 generic-response-type: true
+stream-style-serialization: true
 custom-types-subpackage: administration.models
 custom-types: PersonalizerDateRange,PersonalizerEvaluation,PersonalizerEvaluationOptions,PersonalizerEvaluationJobStatus,PersonalizerCreateEvaluationOperation,PersonalizerEvaluationType,PersonalizerLearningMode,PersonalizerLogProperties,PersonalizerLogPropertiesDateRange,PersonalizerModelProperties,PersonalizerPolicy,PersonalizerPolicyResult,PersonalizerPolicyResultSummary,PersonalizerPolicyResultTotalSummary,PersonalizerPolicySource,PersonalizerServiceProperties,EvaluationsCreateHeaders,PersonalizerPolicyReferenceOptions
 customization-class: src/main/java/PersonalizerCustomization.java

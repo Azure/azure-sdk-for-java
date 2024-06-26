@@ -5,34 +5,49 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LearningMode. */
+/**
+ * Learning Modes for Personalizer.
+ */
 public final class LearningMode extends ExpandableStringEnum<LearningMode> {
-    /** Static value Online for LearningMode. */
+    /**
+     * Static value Online for LearningMode.
+     */
     public static final LearningMode ONLINE = fromString("Online");
 
-    /** Static value Apprentice for LearningMode. */
+    /**
+     * Static value Apprentice for LearningMode.
+     */
     public static final LearningMode APPRENTICE = fromString("Apprentice");
 
-    /** Static value LoggingOnly for LearningMode. */
+    /**
+     * Static value LoggingOnly for LearningMode.
+     */
     public static final LearningMode LOGGING_ONLY = fromString("LoggingOnly");
 
     /**
+     * Creates a new instance of LearningMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LearningMode() {
+    }
+
+    /**
      * Creates or finds a LearningMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LearningMode.
      */
-    @JsonCreator
     public static LearningMode fromString(String name) {
         return fromString(name, LearningMode.class);
     }
 
     /**
      * Gets known LearningMode values.
-     *
+     * 
      * @return known LearningMode values.
      */
     public static Collection<LearningMode> values() {

@@ -30,22 +30,28 @@ import com.azure.core.util.FluxUtil;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Evaluations. */
+/**
+ * An instance of this class provides access to all the operations defined in Evaluations.
+ */
 public final class EvaluationsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EvaluationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PersonalizerClientV1Preview3Impl client;
 
     /**
      * Initializes an instance of EvaluationsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EvaluationsImpl(PersonalizerClientV1Preview3Impl client) {
-        this.service =
-                RestProxy.create(EvaluationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EvaluationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,93 +59,78 @@ public final class EvaluationsImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3Evaluations to be used by the proxy
      * service to perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/{ApiVersion}")
+    @Host("{Endpoint}/personalizer/v1.1-preview.3")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface EvaluationsService {
         @Get("/evaluations/{evaluationId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<PersonalizerEvaluation>> get(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @PathParam("evaluationId") String evaluationId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PersonalizerEvaluation>> get(@HostParam("Endpoint") String endpoint,
+            @PathParam("evaluationId") String evaluationId, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/evaluations/{evaluationId}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @PathParam("evaluationId") String evaluationId,
-                Context context);
+        Mono<Response<Void>> delete(@HostParam("Endpoint") String endpoint,
+            @PathParam("evaluationId") String evaluationId, Context context);
 
         @Get("/evaluations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<List<PersonalizerEvaluation>>> list(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<List<PersonalizerEvaluation>>> list(@HostParam("Endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/evaluations")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> create(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @BodyParam("application/json") PersonalizerEvaluationOptions evaluation,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @HostParam("Endpoint") String endpoint,
+            @BodyParam("application/json") PersonalizerEvaluationOptions evaluation,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Evaluation.
-     *
-     * <p>Get the Offline Evaluation associated with the Id.
-     *
+     * 
+     * Get the Offline Evaluation associated with the Id.
+     * 
      * @param evaluationId Id of the Offline Evaluation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Offline Evaluation associated with the Id along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerEvaluation>> getWithResponseAsync(String evaluationId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(), this.client.getApiVersion(), evaluationId, accept, context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), evaluationId, accept, context));
     }
 
     /**
      * Get Evaluation.
-     *
-     * <p>Get the Offline Evaluation associated with the Id.
-     *
+     * 
+     * Get the Offline Evaluation associated with the Id.
+     * 
      * @param evaluationId Id of the Offline Evaluation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Offline Evaluation associated with the Id along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerEvaluation>> getWithResponseAsync(String evaluationId, Context context) {
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), evaluationId, accept, context);
+        return service.get(this.client.getEndpoint(), evaluationId, accept, context);
     }
 
     /**
      * Get Evaluation.
-     *
-     * <p>Get the Offline Evaluation associated with the Id.
-     *
+     * 
+     * Get the Offline Evaluation associated with the Id.
+     * 
      * @param evaluationId Id of the Offline Evaluation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -153,9 +144,9 @@ public final class EvaluationsImpl {
 
     /**
      * Get Evaluation.
-     *
-     * <p>Get the Offline Evaluation associated with the Id.
-     *
+     * 
+     * Get the Offline Evaluation associated with the Id.
+     * 
      * @param evaluationId Id of the Offline Evaluation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,25 +161,9 @@ public final class EvaluationsImpl {
 
     /**
      * Get Evaluation.
-     *
-     * <p>Get the Offline Evaluation associated with the Id.
-     *
-     * @param evaluationId Id of the Offline Evaluation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Offline Evaluation associated with the Id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerEvaluation get(String evaluationId) {
-        return getAsync(evaluationId).block();
-    }
-
-    /**
-     * Get Evaluation.
-     *
-     * <p>Get the Offline Evaluation associated with the Id.
-     *
+     * 
+     * Get the Offline Evaluation associated with the Id.
+     * 
      * @param evaluationId Id of the Offline Evaluation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,10 +177,26 @@ public final class EvaluationsImpl {
     }
 
     /**
+     * Get Evaluation.
+     * 
+     * Get the Offline Evaluation associated with the Id.
+     * 
+     * @param evaluationId Id of the Offline Evaluation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Offline Evaluation associated with the Id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PersonalizerEvaluation get(String evaluationId) {
+        return getWithResponse(evaluationId, Context.NONE).getValue();
+    }
+
+    /**
      * Delete Evaluation.
-     *
-     * <p>Delete the Offline Evaluation associated with the Id.
-     *
+     * 
+     * Delete the Offline Evaluation associated with the Id.
+     * 
      * @param evaluationId Id of the Offline Evaluation to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -214,16 +205,14 @@ public final class EvaluationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String evaluationId) {
-        return FluxUtil.withContext(
-                context ->
-                        service.delete(this.client.getEndpoint(), this.client.getApiVersion(), evaluationId, context));
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), evaluationId, context));
     }
 
     /**
      * Delete Evaluation.
-     *
-     * <p>Delete the Offline Evaluation associated with the Id.
-     *
+     * 
+     * Delete the Offline Evaluation associated with the Id.
+     * 
      * @param evaluationId Id of the Offline Evaluation to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,14 +222,14 @@ public final class EvaluationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String evaluationId, Context context) {
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), evaluationId, context);
+        return service.delete(this.client.getEndpoint(), evaluationId, context);
     }
 
     /**
      * Delete Evaluation.
-     *
-     * <p>Delete the Offline Evaluation associated with the Id.
-     *
+     * 
+     * Delete the Offline Evaluation associated with the Id.
+     * 
      * @param evaluationId Id of the Offline Evaluation to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -254,9 +243,9 @@ public final class EvaluationsImpl {
 
     /**
      * Delete Evaluation.
-     *
-     * <p>Delete the Offline Evaluation associated with the Id.
-     *
+     * 
+     * Delete the Offline Evaluation associated with the Id.
+     * 
      * @param evaluationId Id of the Offline Evaluation to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,24 +260,9 @@ public final class EvaluationsImpl {
 
     /**
      * Delete Evaluation.
-     *
-     * <p>Delete the Offline Evaluation associated with the Id.
-     *
-     * @param evaluationId Id of the Offline Evaluation to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String evaluationId) {
-        deleteAsync(evaluationId).block();
-    }
-
-    /**
-     * Delete Evaluation.
-     *
-     * <p>Delete the Offline Evaluation associated with the Id.
-     *
+     * 
+     * Delete the Offline Evaluation associated with the Id.
+     * 
      * @param evaluationId Id of the Offline Evaluation to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -302,10 +276,25 @@ public final class EvaluationsImpl {
     }
 
     /**
+     * Delete Evaluation.
+     * 
+     * Delete the Offline Evaluation associated with the Id.
+     * 
+     * @param evaluationId Id of the Offline Evaluation to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String evaluationId) {
+        deleteWithResponse(evaluationId, Context.NONE);
+    }
+
+    /**
      * List Offline Evaluations.
-     *
-     * <p>List of all Offline Evaluations.
-     *
+     * 
+     * List of all Offline Evaluations.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of PersonalizerEvaluation along with {@link Response} on successful completion of {@link Mono}.
@@ -313,15 +302,14 @@ public final class EvaluationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<PersonalizerEvaluation>>> listWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), accept, context));
     }
 
     /**
      * List Offline Evaluations.
-     *
-     * <p>List of all Offline Evaluations.
-     *
+     * 
+     * List of all Offline Evaluations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -331,14 +319,14 @@ public final class EvaluationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<PersonalizerEvaluation>>> listWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.list(this.client.getEndpoint(), accept, context);
     }
 
     /**
      * List Offline Evaluations.
-     *
-     * <p>List of all Offline Evaluations.
-     *
+     * 
+     * List of all Offline Evaluations.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of PersonalizerEvaluation on successful completion of {@link Mono}.
@@ -350,9 +338,9 @@ public final class EvaluationsImpl {
 
     /**
      * List Offline Evaluations.
-     *
-     * <p>List of all Offline Evaluations.
-     *
+     * 
+     * List of all Offline Evaluations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -366,23 +354,9 @@ public final class EvaluationsImpl {
 
     /**
      * List Offline Evaluations.
-     *
-     * <p>List of all Offline Evaluations.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of PersonalizerEvaluation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<PersonalizerEvaluation> list() {
-        return listAsync().block();
-    }
-
-    /**
-     * List Offline Evaluations.
-     *
-     * <p>List of all Offline Evaluations.
-     *
+     * 
+     * List of all Offline Evaluations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -395,10 +369,24 @@ public final class EvaluationsImpl {
     }
 
     /**
+     * List Offline Evaluations.
+     * 
+     * List of all Offline Evaluations.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of PersonalizerEvaluation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<PersonalizerEvaluation> list() {
+        return listWithResponse(Context.NONE).getValue();
+    }
+
+    /**
      * Create Offline Evaluation.
-     *
-     * <p>Submit a new Offline Evaluation job.
-     *
+     * 
+     * Submit a new Offline Evaluation job.
+     * 
      * @param evaluation The Offline Evaluation job definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -406,20 +394,17 @@ public final class EvaluationsImpl {
      * @return a counterfactual evaluation along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> createWithResponseAsync(
-            PersonalizerEvaluationOptions evaluation) {
+    public Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>>
+        createWithResponseAsync(PersonalizerEvaluationOptions evaluation) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.create(
-                                this.client.getEndpoint(), this.client.getApiVersion(), evaluation, accept, context));
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), evaluation, accept, context));
     }
 
     /**
      * Create Offline Evaluation.
-     *
-     * <p>Submit a new Offline Evaluation job.
-     *
+     * 
+     * Submit a new Offline Evaluation job.
+     * 
      * @param evaluation The Offline Evaluation job definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -428,17 +413,17 @@ public final class EvaluationsImpl {
      * @return a counterfactual evaluation along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>> createWithResponseAsync(
-            PersonalizerEvaluationOptions evaluation, Context context) {
+    public Mono<ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>>
+        createWithResponseAsync(PersonalizerEvaluationOptions evaluation, Context context) {
         final String accept = "application/json";
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), evaluation, accept, context);
+        return service.create(this.client.getEndpoint(), evaluation, accept, context);
     }
 
     /**
      * Create Offline Evaluation.
-     *
-     * <p>Submit a new Offline Evaluation job.
-     *
+     * 
+     * Submit a new Offline Evaluation job.
+     * 
      * @param evaluation The Offline Evaluation job definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -452,9 +437,9 @@ public final class EvaluationsImpl {
 
     /**
      * Create Offline Evaluation.
-     *
-     * <p>Submit a new Offline Evaluation job.
-     *
+     * 
+     * Submit a new Offline Evaluation job.
+     * 
      * @param evaluation The Offline Evaluation job definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -469,25 +454,9 @@ public final class EvaluationsImpl {
 
     /**
      * Create Offline Evaluation.
-     *
-     * <p>Submit a new Offline Evaluation job.
-     *
-     * @param evaluation The Offline Evaluation job definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a counterfactual evaluation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerEvaluation create(PersonalizerEvaluationOptions evaluation) {
-        return createAsync(evaluation).block();
-    }
-
-    /**
-     * Create Offline Evaluation.
-     *
-     * <p>Submit a new Offline Evaluation job.
-     *
+     * 
+     * Submit a new Offline Evaluation job.
+     * 
      * @param evaluation The Offline Evaluation job definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -496,8 +465,24 @@ public final class EvaluationsImpl {
      * @return a counterfactual evaluation along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation> createWithResponse(
-            PersonalizerEvaluationOptions evaluation, Context context) {
+    public ResponseBase<EvaluationsCreateHeaders, PersonalizerEvaluation>
+        createWithResponse(PersonalizerEvaluationOptions evaluation, Context context) {
         return createWithResponseAsync(evaluation, context).block();
+    }
+
+    /**
+     * Create Offline Evaluation.
+     * 
+     * Submit a new Offline Evaluation job.
+     * 
+     * @param evaluation The Offline Evaluation job definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a counterfactual evaluation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PersonalizerEvaluation create(PersonalizerEvaluationOptions evaluation) {
+        return createWithResponse(evaluation, Context.NONE).getValue();
     }
 }

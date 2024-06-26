@@ -4,25 +4,73 @@
 
 package com.azure.ai.personalizer.administration.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties related to data used to train the model. */
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+/**
+ * Properties related to data used to train the model.
+ */
 @Immutable
-public final class PersonalizerLogProperties {
+public final class PersonalizerLogProperties implements JsonSerializable<PersonalizerLogProperties> {
     /*
      * Date range.
      */
-    @JsonProperty(value = "dateRange", access = JsonProperty.Access.WRITE_ONLY)
     private PersonalizerLogPropertiesDateRange dateRange;
 
     /**
+     * Creates an instance of PersonalizerLogProperties class.
+     */
+    public PersonalizerLogProperties() {
+    }
+
+    /**
      * Get the dateRange property: Date range.
-     *
+     * 
      * @return the dateRange value.
      */
     public PersonalizerDateRange getDateRange() {
         PersonalizerLogPropertiesDateRange returnValue = this.dateRange;
         return returnValue;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerLogProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerLogProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PersonalizerLogProperties.
+     */
+    public static PersonalizerLogProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerLogProperties deserializedPersonalizerLogProperties = new PersonalizerLogProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dateRange".equals(fieldName)) {
+                    deserializedPersonalizerLogProperties.dateRange
+                        = PersonalizerLogPropertiesDateRange.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerLogProperties;
+        });
     }
 }

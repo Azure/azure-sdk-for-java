@@ -26,23 +26,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServiceConfigurations. */
+/**
+ * An instance of this class provides access to all the operations defined in ServiceConfigurations.
+ */
 public final class ServiceConfigurationsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServiceConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PersonalizerClientV1Preview3Impl client;
 
     /**
      * Initializes an instance of ServiceConfigurationsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServiceConfigurationsImpl(PersonalizerClientV1Preview3Impl client) {
-        this.service =
-                RestProxy.create(
-                        ServiceConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ServiceConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,79 +55,69 @@ public final class ServiceConfigurationsImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3ServiceConfigurations to be used by the
      * proxy service to perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/{ApiVersion}")
+    @Host("{Endpoint}/personalizer/v1.1-preview.3")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface ServiceConfigurationsService {
         @Get("/configurations/service")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<PersonalizerServiceProperties>> get(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PersonalizerServiceProperties>> get(@HostParam("Endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/configurations/service")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<PersonalizerServiceProperties>> update(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @BodyParam("application/json") PersonalizerServiceProperties config,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PersonalizerServiceProperties>> update(@HostParam("Endpoint") String endpoint,
+            @BodyParam("application/json") PersonalizerServiceProperties config, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/configurations/applyFromEvaluation")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> applyFromEvaluation(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @BodyParam("application/json") PersonalizerPolicyReferenceOptions body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> applyFromEvaluation(@HostParam("Endpoint") String endpoint,
+            @BodyParam("application/json") PersonalizerPolicyReferenceOptions body,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Service Configuration.
-     *
-     * <p>Get the Personalizer service configuration.
-     *
+     * 
+     * Get the Personalizer service configuration.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Personalizer service configuration along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Personalizer service configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerServiceProperties>> getWithResponseAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), accept, context));
     }
 
     /**
      * Get Service Configuration.
-     *
-     * <p>Get the Personalizer service configuration.
-     *
+     * 
+     * Get the Personalizer service configuration.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Personalizer service configuration along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Personalizer service configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerServiceProperties>> getWithResponseAsync(Context context) {
         final String accept = "application/json";
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return service.get(this.client.getEndpoint(), accept, context);
     }
 
     /**
      * Get Service Configuration.
-     *
-     * <p>Get the Personalizer service configuration.
-     *
+     * 
+     * Get the Personalizer service configuration.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Personalizer service configuration on successful completion of {@link Mono}.
@@ -134,9 +129,9 @@ public final class ServiceConfigurationsImpl {
 
     /**
      * Get Service Configuration.
-     *
-     * <p>Get the Personalizer service configuration.
-     *
+     * 
+     * Get the Personalizer service configuration.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -150,23 +145,9 @@ public final class ServiceConfigurationsImpl {
 
     /**
      * Get Service Configuration.
-     *
-     * <p>Get the Personalizer service configuration.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Personalizer service configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerServiceProperties get() {
-        return getAsync().block();
-    }
-
-    /**
-     * Get Service Configuration.
-     *
-     * <p>Get the Personalizer service configuration.
-     *
+     * 
+     * Get the Personalizer service configuration.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -179,10 +160,24 @@ public final class ServiceConfigurationsImpl {
     }
 
     /**
+     * Get Service Configuration.
+     * 
+     * Get the Personalizer service configuration.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Personalizer service configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PersonalizerServiceProperties get() {
+        return getWithResponse(Context.NONE).getValue();
+    }
+
+    /**
      * Update Service Configuration.
-     *
-     * <p>Update the Personalizer service configuration.
-     *
+     * 
+     * Update the Personalizer service configuration.
+     * 
      * @param config The personalizer service configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -192,17 +187,14 @@ public final class ServiceConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PersonalizerServiceProperties>> updateWithResponseAsync(PersonalizerServiceProperties config) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.update(
-                                this.client.getEndpoint(), this.client.getApiVersion(), config, accept, context));
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), config, accept, context));
     }
 
     /**
      * Update Service Configuration.
-     *
-     * <p>Update the Personalizer service configuration.
-     *
+     * 
+     * Update the Personalizer service configuration.
+     * 
      * @param config The personalizer service configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,17 +203,17 @@ public final class ServiceConfigurationsImpl {
      * @return the configuration of the service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PersonalizerServiceProperties>> updateWithResponseAsync(
-            PersonalizerServiceProperties config, Context context) {
+    public Mono<Response<PersonalizerServiceProperties>> updateWithResponseAsync(PersonalizerServiceProperties config,
+        Context context) {
         final String accept = "application/json";
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), config, accept, context);
+        return service.update(this.client.getEndpoint(), config, accept, context);
     }
 
     /**
      * Update Service Configuration.
-     *
-     * <p>Update the Personalizer service configuration.
-     *
+     * 
+     * Update the Personalizer service configuration.
+     * 
      * @param config The personalizer service configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -235,9 +227,9 @@ public final class ServiceConfigurationsImpl {
 
     /**
      * Update Service Configuration.
-     *
-     * <p>Update the Personalizer service configuration.
-     *
+     * 
+     * Update the Personalizer service configuration.
+     * 
      * @param config The personalizer service configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,25 +244,9 @@ public final class ServiceConfigurationsImpl {
 
     /**
      * Update Service Configuration.
-     *
-     * <p>Update the Personalizer service configuration.
-     *
-     * @param config The personalizer service configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configuration of the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PersonalizerServiceProperties update(PersonalizerServiceProperties config) {
-        return updateAsync(config).block();
-    }
-
-    /**
-     * Update Service Configuration.
-     *
-     * <p>Update the Personalizer service configuration.
-     *
+     * 
+     * Update the Personalizer service configuration.
+     * 
      * @param config The personalizer service configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,15 +255,31 @@ public final class ServiceConfigurationsImpl {
      * @return the configuration of the service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PersonalizerServiceProperties> updateWithResponse(
-            PersonalizerServiceProperties config, Context context) {
+    public Response<PersonalizerServiceProperties> updateWithResponse(PersonalizerServiceProperties config,
+        Context context) {
         return updateWithResponseAsync(config, context).block();
+    }
+
+    /**
+     * Update Service Configuration.
+     * 
+     * Update the Personalizer service configuration.
+     * 
+     * @param config The personalizer service configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configuration of the service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PersonalizerServiceProperties update(PersonalizerServiceProperties config) {
+        return updateWithResponse(config, Context.NONE).getValue();
     }
 
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     *
+     * 
      * @param body Reference to the policy within the evaluation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -297,16 +289,14 @@ public final class ServiceConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(PersonalizerPolicyReferenceOptions body) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.applyFromEvaluation(
-                                this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
+        return FluxUtil
+            .withContext(context -> service.applyFromEvaluation(this.client.getEndpoint(), body, accept, context));
     }
 
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     *
+     * 
      * @param body Reference to the policy within the evaluation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,17 +305,16 @@ public final class ServiceConfigurationsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(
-            PersonalizerPolicyReferenceOptions body, Context context) {
+    public Mono<Response<Void>> applyFromEvaluationWithResponseAsync(PersonalizerPolicyReferenceOptions body,
+        Context context) {
         final String accept = "application/json";
-        return service.applyFromEvaluation(
-                this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
+        return service.applyFromEvaluation(this.client.getEndpoint(), body, accept, context);
     }
 
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     *
+     * 
      * @param body Reference to the policy within the evaluation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -340,7 +329,7 @@ public final class ServiceConfigurationsImpl {
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     *
+     * 
      * @param body Reference to the policy within the evaluation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -356,21 +345,7 @@ public final class ServiceConfigurationsImpl {
     /**
      * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
      * Settings and model and replacing the previous ones.
-     *
-     * @param body Reference to the policy within the evaluation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void applyFromEvaluation(PersonalizerPolicyReferenceOptions body) {
-        applyFromEvaluationAsync(body).block();
-    }
-
-    /**
-     * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
-     * Settings and model and replacing the previous ones.
-     *
+     * 
      * @param body Reference to the policy within the evaluation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -381,5 +356,19 @@ public final class ServiceConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> applyFromEvaluationWithResponse(PersonalizerPolicyReferenceOptions body, Context context) {
         return applyFromEvaluationWithResponseAsync(body, context).block();
+    }
+
+    /**
+     * Apply Learning Settings and model from a pre-existing Offline Evaluation, making them the current online Learning
+     * Settings and model and replacing the previous ones.
+     * 
+     * @param body Reference to the policy within the evaluation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void applyFromEvaluation(PersonalizerPolicyReferenceOptions body) {
+        applyFromEvaluationWithResponse(body, Context.NONE);
     }
 }

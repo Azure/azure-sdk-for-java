@@ -4,49 +4,55 @@
 
 package com.azure.ai.personalizer.administration.models;
 
+import java.io.IOException;
+import java.util.List;
+
 import com.azure.ai.personalizer.models.PolicySource;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
 /**
  * This class contains the Learning Settings information and the results of the Offline Evaluation using that policy.
  */
 @Immutable
-public final class PersonalizerPolicyResult {
+public final class PersonalizerPolicyResult implements JsonSerializable<PersonalizerPolicyResult> {
     /*
      * The name of the Learning Settings.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The arguments of the Learning Settings.
      */
-    @JsonProperty(value = "arguments", access = JsonProperty.Access.WRITE_ONLY)
     private String arguments;
 
     /*
      * The source of the Learning Settings.
      */
-    @JsonProperty(value = "policySource", access = JsonProperty.Access.WRITE_ONLY)
     private PolicySource policySource;
 
     /*
      * The aggregate results of the Offline Evaluation.
      */
-    @JsonProperty(value = "summary", access = JsonProperty.Access.WRITE_ONLY)
     private List<PersonalizerPolicyResultSummary> summary;
 
     /*
      * The aggregate total of the Offline Evaluation.
      */
-    @JsonProperty(value = "totalSummary", access = JsonProperty.Access.WRITE_ONLY)
     private PersonalizerPolicyResultTotalSummary totalSummary;
 
     /**
+     * Creates an instance of PersonalizerPolicyResult class.
+     */
+    public PersonalizerPolicyResult() {
+    }
+
+    /**
      * Get the name property: The name of the Learning Settings.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -55,7 +61,7 @@ public final class PersonalizerPolicyResult {
 
     /**
      * Get the arguments property: The arguments of the Learning Settings.
-     *
+     * 
      * @return the arguments value.
      */
     public String getArguments() {
@@ -64,7 +70,7 @@ public final class PersonalizerPolicyResult {
 
     /**
      * Get the policySource property: The source of the Learning Settings.
-     *
+     * 
      * @return the policySource value.
      */
     public PolicySource getPolicySource() {
@@ -73,7 +79,7 @@ public final class PersonalizerPolicyResult {
 
     /**
      * Get the summary property: The aggregate results of the Offline Evaluation.
-     *
+     * 
      * @return the summary value.
      */
     public List<PersonalizerPolicyResultSummary> getSummary() {
@@ -82,11 +88,57 @@ public final class PersonalizerPolicyResult {
 
     /**
      * Get the totalSummary property: The aggregate total of the Offline Evaluation.
-     *
+     * 
      * @return the totalSummary value.
      */
     public PersonalizerPolicyResultSummary getTotalSummary() {
         PersonalizerPolicyResultTotalSummary returnValue = this.totalSummary;
         return returnValue;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerPolicyResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerPolicyResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PersonalizerPolicyResult.
+     */
+    public static PersonalizerPolicyResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerPolicyResult deserializedPersonalizerPolicyResult = new PersonalizerPolicyResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResult.name = reader.getString();
+                } else if ("arguments".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResult.arguments = reader.getString();
+                } else if ("policySource".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResult.policySource = PolicySource.fromString(reader.getString());
+                } else if ("summary".equals(fieldName)) {
+                    List<PersonalizerPolicyResultSummary> summary
+                        = reader.readArray(reader1 -> PersonalizerPolicyResultSummary.fromJson(reader1));
+                    deserializedPersonalizerPolicyResult.summary = summary;
+                } else if ("totalSummary".equals(fieldName)) {
+                    deserializedPersonalizerPolicyResult.totalSummary
+                        = PersonalizerPolicyResultTotalSummary.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerPolicyResult;
+        });
     }
 }
