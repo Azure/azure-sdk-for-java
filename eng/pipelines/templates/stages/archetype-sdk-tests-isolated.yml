@@ -137,6 +137,10 @@ stages:
           - ${{ parameters.AdditionalVariables }}
         jobs:
         - job:
+          pool:
+            name: $(LINUXPOOL)
+            image: $(LINUXVMIMAGE)
+            os: linux
           steps:
             - checkout: none
             - pwsh: |
