@@ -9,5 +9,5 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class CallTransferFailed extends CallAutomationEventBase {
     private CallTransferFailed() {
-     }
+    }
 }

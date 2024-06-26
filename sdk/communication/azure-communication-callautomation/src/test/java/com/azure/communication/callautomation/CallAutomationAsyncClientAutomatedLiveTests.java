@@ -16,7 +16,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.DoNotRecord;
+// import com.azure.core.test.annotation.DoNotRecord;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -239,8 +239,8 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
             // Create call automation client and use source as the caller.
             CallAutomationAsyncClient connectAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("createVOIPCallAndConnectCallTest", next))
-            .buildAsyncClient();
+                .addPolicy((context, next) -> logHeaders("createVOIPCallAndConnectCallTest", next))
+                .buildAsyncClient();
             String uniqueId = serviceBusWithNewCall(caller, target);
 
             // create a call
@@ -285,8 +285,8 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             //Connect call
             String serverCallId = answerCallResult.getCallConnectionProperties().getServerCallId();
             ServerCallLocator serverCallLocator = new ServerCallLocator(serverCallId);
-            ConnectCallOptions connectCallOptions= new ConnectCallOptions(serverCallLocator, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            ConnectCallResult connectCallResult =Objects.requireNonNull(connectAsyncClient.connectCallWithResponse(connectCallOptions).block()).getValue();
+            ConnectCallOptions connectCallOptions = new ConnectCallOptions(serverCallLocator, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            ConnectCallResult connectCallResult = Objects.requireNonNull(connectAsyncClient.connectCallWithResponse(connectCallOptions).block()).getValue();
             String callConnectionId = connectCallResult.getCallConnectionProperties().getCallConnectionId();
             CallConnected connectCallConnectedEvent = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(10));
             assertNotNull(connectCallConnectedEvent);
