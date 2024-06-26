@@ -136,17 +136,6 @@ stages:
             value: '${{ convertToJson(parameters.AdditionalModules) }}'
           - ${{ parameters.AdditionalVariables }}
         jobs:
-        - ${{ if parameters.UseFederatedAuth }}:
-          - job:
-            pool:
-              name: $(LINUXPOOL)
-              image: $(LINUXVMIMAGE)
-              os: linux
-            steps:
-              - checkout: none
-              - pwsh: |
-                  Write-Host "UseFederatedAuth: ${{ parameters.UseFederatedAuth }}"
-                displayName: Template thinks UseFederatedAuth is true
         - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
           parameters:
             SparseCheckoutPaths:
@@ -193,7 +182,7 @@ stages:
             CloudConfig:
               SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
               SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
-              SubscriptionConfigurationFilePaths: ${{ cloud.value.SubscriptionConfigurationFilePaths }}
+              SubscriptionConfigurationFilePaths: ${{ cloud.value.SubscriptionConfigurationFilePaths}}
               Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
               Cloud: ${{ cloud.key }}
               ServiceConnection: ${{ cloud.value.ServiceConnection }}
