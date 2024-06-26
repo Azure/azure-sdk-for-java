@@ -36,7 +36,9 @@ public class KeyVaultSecretIT {
 
     @Test
     public void testKeyVaultSecretByDefaultAzureCredential() {
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+            .additionallyAllowedTenants("*")
+            .build();
         SecretClient newClient = new SecretClientBuilder()
             .credential(credential)
             .vaultUrl(System.getenv("AZURE_KEYVAULT_SECRET_ENDPOINT"))
