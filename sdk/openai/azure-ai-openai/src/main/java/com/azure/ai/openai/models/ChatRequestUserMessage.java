@@ -154,7 +154,8 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                     } else if (reader.currentToken() == JsonToken.NULL) {
                         content = null;
                     } else {
-                        throw new IllegalStateException("Unexpected token: " + reader.currentToken());
+                        throw new IllegalStateException("Unexpected 'content' type found when deserializing"
+                            + " ChatRequestUserMessage JSON object: " + reader.currentToken());
                     }
                 } else if ("role".equals(fieldName)) {
                     role = ChatRole.fromString(reader.getString());
