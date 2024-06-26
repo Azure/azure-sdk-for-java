@@ -5,31 +5,20 @@
 package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The phone number search purchase request.
- */
+/** The PhoneNumberPurchaseRequest model. */
 @Fluent
-public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneNumberPurchaseRequest> {
+public final class PhoneNumberPurchaseRequest {
     /*
      * The search id.
      */
+    @JsonProperty(value = "searchId")
     private String searchId;
 
     /**
-     * Creates an instance of PhoneNumberPurchaseRequest class.
-     */
-    public PhoneNumberPurchaseRequest() {
-    }
-
-    /**
      * Get the searchId property: The search id.
-     * 
+     *
      * @return the searchId value.
      */
     public String getSearchId() {
@@ -38,48 +27,12 @@ public final class PhoneNumberPurchaseRequest implements JsonSerializable<PhoneN
 
     /**
      * Set the searchId property: The search id.
-     * 
+     *
      * @param searchId the searchId value to set.
      * @return the PhoneNumberPurchaseRequest object itself.
      */
     public PhoneNumberPurchaseRequest setSearchId(String searchId) {
         this.searchId = searchId;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("searchId", this.searchId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PhoneNumberPurchaseRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PhoneNumberPurchaseRequest if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the PhoneNumberPurchaseRequest.
-     */
-    public static PhoneNumberPurchaseRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PhoneNumberPurchaseRequest deserializedPhoneNumberPurchaseRequest = new PhoneNumberPurchaseRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("searchId".equals(fieldName)) {
-                    deserializedPhoneNumberPurchaseRequest.searchId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPhoneNumberPurchaseRequest;
-        });
     }
 }
