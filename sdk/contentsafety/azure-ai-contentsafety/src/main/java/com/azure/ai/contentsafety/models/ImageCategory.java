@@ -5,6 +5,7 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,6 +54,7 @@ public final class ImageCategory extends ExpandableStringEnum<ImageCategory> {
      * @return the corresponding ImageCategory.
      */
     @Generated
+    @JsonCreator
     public static ImageCategory fromString(String name) {
         return fromString(name, ImageCategory.class);
     }
