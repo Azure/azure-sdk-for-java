@@ -47,8 +47,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -69,7 +67,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * Tests Vector search functionality.
  */
-@Execution(ExecutionMode.CONCURRENT)
 public class VectorSearchTests extends SearchTestBase {
     private static void assertKeysEqual(List<SearchResult> results, Function<SearchResult, String> keyAccessor,
                                         String[] expectedKeys) {
@@ -82,6 +79,8 @@ public class VectorSearchTests extends SearchTestBase {
     @BeforeAll
     public static void setupClass() {
         TestBase.setupClass();
+
+        //new TestHelpers();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
@@ -357,7 +356,6 @@ public class VectorSearchTests extends SearchTestBase {
                 SearchField vectorField = new SearchField("DescriptionVector",
                     SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
                     .setSearchable(true)
-                    .setHidden(false)
                     .setVectorSearchDimensions(1536)
                     .setVectorSearchProfileName("my-vector-profile");
 
@@ -450,7 +448,6 @@ public class VectorSearchTests extends SearchTestBase {
         SearchField vectorField = new SearchField("DescriptionVector",
             SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
             .setSearchable(true)
-            .setHidden(false)
             .setVectorSearchDimensions(1536)
             .setVectorSearchProfileName("my-vector-profile");
 

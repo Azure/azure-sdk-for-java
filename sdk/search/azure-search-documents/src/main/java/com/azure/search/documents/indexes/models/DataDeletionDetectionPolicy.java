@@ -13,16 +13,11 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * Base type for data deletion detection policies.
- */
+/** Base type for data deletion detection policies. */
 @Immutable
-public class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletionDetectionPolicy> {
-    /**
-     * Creates an instance of DataDeletionDetectionPolicy class.
-     */
-    public DataDeletionDetectionPolicy() {
-    }
+public abstract class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletionDetectionPolicy> {
+    /** Creates an instance of DataDeletionDetectionPolicy class. */
+    public DataDeletionDetectionPolicy() {}
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -32,52 +27,41 @@ public class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletio
 
     /**
      * Reads an instance of DataDeletionDetectionPolicy from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DataDeletionDetectionPolicy if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     *     if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the DataDeletionDetectionPolicy.
      */
     public static DataDeletionDetectionPolicy fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
+        return jsonReader.readObject(
+                reader -> {
+                    String discriminatorValue = null;
+                    JsonReader readerToUse = reader.bufferObject();
 
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
-                }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy".equals(discriminatorValue)) {
-                return SoftDeleteColumnDeletionDetectionPolicy.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy"
-                .equals(discriminatorValue)) {
-                return NativeBlobSoftDeleteDeletionDetectionPolicy.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
-            }
-        });
-    }
+                    readerToUse.nextToken(); // Prepare for reading
+                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = readerToUse.getFieldName();
+                        readerToUse.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            discriminatorValue = readerToUse.getString();
+                            break;
+                        } else {
+                            readerToUse.skipChildren();
+                        }
+                    }
 
-    static DataDeletionDetectionPolicy fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DataDeletionDetectionPolicy deserializedDataDeletionDetectionPolicy = new DataDeletionDetectionPolicy();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                reader.skipChildren();
-            }
-
-            return deserializedDataDeletionDetectionPolicy;
-        });
+                    if (discriminatorValue != null) {
+                        readerToUse = readerToUse.reset();
+                    }
+                    // Use the discriminator value to determine which subtype should be deserialized.
+                    if ("#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy".equals(discriminatorValue)) {
+                        return SoftDeleteColumnDeletionDetectionPolicy.fromJson(readerToUse);
+                    } else {
+                        throw new IllegalStateException(
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy'");
+                    }
+                });
     }
 }

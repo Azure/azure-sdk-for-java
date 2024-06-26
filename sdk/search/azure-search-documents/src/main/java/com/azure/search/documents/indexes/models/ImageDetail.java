@@ -9,32 +9,25 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * A string indicating which domain-specific details to return.
- */
+/** A string indicating which domain-specific details to return. */
 public final class ImageDetail extends ExpandableStringEnum<ImageDetail> {
-    /**
-     * Details recognized as celebrities.
-     */
+    /** Details recognized as celebrities. */
     public static final ImageDetail CELEBRITIES = fromString("celebrities");
 
-    /**
-     * Details recognized as landmarks.
-     */
+    /** Details recognized as landmarks. */
     public static final ImageDetail LANDMARKS = fromString("landmarks");
 
     /**
      * Creates a new instance of ImageDetail value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ImageDetail() {
-    }
+    public ImageDetail() {}
 
     /**
      * Creates or finds a ImageDetail from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ImageDetail.
      */
@@ -44,7 +37,7 @@ public final class ImageDetail extends ExpandableStringEnum<ImageDetail> {
 
     /**
      * Gets known ImageDetail values.
-     * 
+     *
      * @return known ImageDetail values.
      */
     public static Collection<ImageDetail> values() {

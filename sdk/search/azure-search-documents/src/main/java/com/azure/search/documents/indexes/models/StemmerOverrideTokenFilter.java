@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Provides the ability to override other stemming filters with custom dictionary-based stemming. Any
- * dictionary-stemmed terms will be marked as keywords so that they will not be stemmed with stemmers down the chain.
- * Must be placed before any stemming filters. This token filter is implemented using Apache Lucene.
+ * Provides the ability to override other stemming filters with custom dictionary-based stemming. Any dictionary-stemmed
+ * terms will be marked as keywords so that they will not be stemmed with stemmers down the chain. Must be placed before
+ * any stemming filters. This token filter is implemented using Apache Lucene.
  */
 @Immutable
 public final class StemmerOverrideTokenFilter extends TokenFilter {
@@ -28,7 +28,7 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
 
     /**
      * Creates an instance of StemmerOverrideTokenFilter class.
-     * 
+     *
      * @param name the name value to set.
      * @param rules the rules value to set.
      */
@@ -40,7 +40,7 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
     /**
      * Get the rules property: A list of stemming rules in the following format: "word =&gt; stem", for example: "ran
      * =&gt; run".
-     * 
+     *
      * @return the rules value.
      */
     public List<String> getRules() {
@@ -58,54 +58,59 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
 
     /**
      * Reads an instance of StemmerOverrideTokenFilter from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of StemmerOverrideTokenFilter if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the StemmerOverrideTokenFilter.
      */
     public static StemmerOverrideTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            boolean rulesFound = false;
-            List<String> rules = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean rulesFound = false;
+                    List<String> rules = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.StemmerOverrideTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StemmerOverrideTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.StemmerOverrideTokenFilter".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StemmerOverrideTokenFilter'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("rules".equals(fieldName)) {
+                            rules = reader.readArray(reader1 -> reader1.getString());
+                            rulesFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("rules".equals(fieldName)) {
-                    rules = reader.readArray(reader1 -> reader1.getString());
-                    rulesFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound && rulesFound) {
-                return new StemmerOverrideTokenFilter(name, rules);
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!nameFound) {
-                missingProperties.add("name");
-            }
-            if (!rulesFound) {
-                missingProperties.add("rules");
-            }
+                    if (nameFound && rulesFound) {
+                        StemmerOverrideTokenFilter deserializedStemmerOverrideTokenFilter =
+                                new StemmerOverrideTokenFilter(name, rules);
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                        return deserializedStemmerOverrideTokenFilter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!rulesFound) {
+                        missingProperties.add("rules");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

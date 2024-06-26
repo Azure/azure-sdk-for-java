@@ -9,57 +9,40 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * The strings indicating what visual feature types to return.
- */
+/** The strings indicating what visual feature types to return. */
 public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
-    /**
-     * Visual features recognized as adult persons.
-     */
+    /** Visual features recognized as adult persons. */
     public static final VisualFeature ADULT = fromString("adult");
 
-    /**
-     * Visual features recognized as commercial brands.
-     */
+    /** Visual features recognized as commercial brands. */
     public static final VisualFeature BRANDS = fromString("brands");
 
-    /**
-     * Categories.
-     */
+    /** Categories. */
     public static final VisualFeature CATEGORIES = fromString("categories");
 
-    /**
-     * Description.
-     */
+    /** Description. */
     public static final VisualFeature DESCRIPTION = fromString("description");
 
-    /**
-     * Visual features recognized as people faces.
-     */
+    /** Visual features recognized as people faces. */
     public static final VisualFeature FACES = fromString("faces");
 
-    /**
-     * Visual features recognized as objects.
-     */
+    /** Visual features recognized as objects. */
     public static final VisualFeature OBJECTS = fromString("objects");
 
-    /**
-     * Tags.
-     */
+    /** Tags. */
     public static final VisualFeature TAGS = fromString("tags");
 
     /**
      * Creates a new instance of VisualFeature value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public VisualFeature() {
-    }
+    public VisualFeature() {}
 
     /**
      * Creates or finds a VisualFeature from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding VisualFeature.
      */
@@ -69,7 +52,7 @@ public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
 
     /**
      * Gets known VisualFeature values.
-     * 
+     *
      * @return known VisualFeature values.
      */
     public static Collection<VisualFeature> values() {

@@ -14,9 +14,7 @@ import com.azure.search.documents.implementation.util.MappingUtils;
 import java.io.IOException;
 import java.util.Map;
 
-/**
- * Represents parameters for indexer execution.
- */
+/** Represents parameters for indexer execution. */
 @Fluent
 public final class IndexingParameters implements JsonSerializable<IndexingParameters> {
 
@@ -44,11 +42,8 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      */
     private IndexingParametersConfiguration configuration;
 
-    /**
-     * Creates an instance of IndexingParameters class.
-     */
-    public IndexingParameters() {
-    }
+    /** Creates an instance of IndexingParameters class. */
+    public IndexingParameters() {}
 
     /**
      * Get the batchSize property: The number of items that are read from the data source and indexed as a single batch
@@ -95,8 +90,8 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
     }
 
     /**
-     * Get the maxFailedItemsPerBatch property: The maximum number of items in a single batch that can fail indexing
-     * for the batch to still be considered successful. -1 means no limit. Default is 0.
+     * Get the maxFailedItemsPerBatch property: The maximum number of items in a single batch that can fail indexing for
+     * the batch to still be considered successful. -1 means no limit. Default is 0.
      *
      * @return the maxFailedItemsPerBatch value.
      */
@@ -105,8 +100,8 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
     }
 
     /**
-     * Set the maxFailedItemsPerBatch property: The maximum number of items in a single batch that can fail indexing
-     * for the batch to still be considered successful. -1 means no limit. Default is 0.
+     * Set the maxFailedItemsPerBatch property: The maximum number of items in a single batch that can fail indexing for
+     * the batch to still be considered successful. -1 means no limit. Default is 0.
      *
      * @param maxFailedItemsPerBatch the maxFailedItemsPerBatch value to set.
      * @return the IndexingParameters object itself.
@@ -154,29 +149,32 @@ public final class IndexingParameters implements JsonSerializable<IndexingParame
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of IndexingParameters if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the IndexingParameters.
      */
     public static IndexingParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            IndexingParameters deserializedIndexingParameters = new IndexingParameters();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("batchSize".equals(fieldName)) {
-                    deserializedIndexingParameters.batchSize = reader.getNullable(JsonReader::getInt);
-                } else if ("maxFailedItems".equals(fieldName)) {
-                    deserializedIndexingParameters.maxFailedItems = reader.getNullable(JsonReader::getInt);
-                } else if ("maxFailedItemsPerBatch".equals(fieldName)) {
-                    deserializedIndexingParameters.maxFailedItemsPerBatch = reader.getNullable(JsonReader::getInt);
-                } else if ("configuration".equals(fieldName)) {
-                    deserializedIndexingParameters.configuration = IndexingParametersConfiguration.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedIndexingParameters;
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    IndexingParameters deserializedIndexingParameters = new IndexingParameters();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("batchSize".equals(fieldName)) {
+                            deserializedIndexingParameters.batchSize = reader.getNullable(JsonReader::getInt);
+                        } else if ("maxFailedItems".equals(fieldName)) {
+                            deserializedIndexingParameters.maxFailedItems = reader.getNullable(JsonReader::getInt);
+                        } else if ("maxFailedItemsPerBatch".equals(fieldName)) {
+                            deserializedIndexingParameters.maxFailedItemsPerBatch =
+                                    reader.getNullable(JsonReader::getInt);
+                        } else if ("configuration".equals(fieldName)) {
+                            deserializedIndexingParameters.configuration =
+                                    IndexingParametersConfiguration.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    return deserializedIndexingParameters;
+                });
     }
 
     private Map<String, Object> configurationMap;

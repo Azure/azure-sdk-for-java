@@ -9,47 +9,28 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * The similarity metric to use for vector comparisons. It is recommended to choose the same similarity metric as the
- * embedding model was trained on.
- */
+/** The similarity metric to use for vector comparisons. */
 public final class VectorSearchAlgorithmMetric extends ExpandableStringEnum<VectorSearchAlgorithmMetric> {
-    /**
-     * Measures the angle between vectors to quantify their similarity, disregarding magnitude. The smaller the angle,
-     * the closer the similarity.
-     */
+    /** Static value cosine for VectorSearchAlgorithmMetric. */
     public static final VectorSearchAlgorithmMetric COSINE = fromString("cosine");
 
-    /**
-     * Computes the straight-line distance between vectors in a multi-dimensional space. The smaller the distance, the
-     * closer the similarity.
-     */
+    /** Static value euclidean for VectorSearchAlgorithmMetric. */
     public static final VectorSearchAlgorithmMetric EUCLIDEAN = fromString("euclidean");
 
-    /**
-     * Calculates the sum of element-wise products to gauge alignment and magnitude similarity. The larger and more
-     * positive, the closer the similarity.
-     */
+    /** Static value dotProduct for VectorSearchAlgorithmMetric. */
     public static final VectorSearchAlgorithmMetric DOT_PRODUCT = fromString("dotProduct");
 
     /**
-     * Only applicable to bit-packed binary data types. Determines dissimilarity by counting differing positions in
-     * binary vectors. The fewer differences, the closer the similarity.
-     */
-    public static final VectorSearchAlgorithmMetric HAMMING = fromString("hamming");
-
-    /**
      * Creates a new instance of VectorSearchAlgorithmMetric value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public VectorSearchAlgorithmMetric() {
-    }
+    public VectorSearchAlgorithmMetric() {}
 
     /**
      * Creates or finds a VectorSearchAlgorithmMetric from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding VectorSearchAlgorithmMetric.
      */
@@ -59,7 +40,7 @@ public final class VectorSearchAlgorithmMetric extends ExpandableStringEnum<Vect
 
     /**
      * Gets known VectorSearchAlgorithmMetric values.
-     * 
+     *
      * @return known VectorSearchAlgorithmMetric values.
      */
     public static Collection<VectorSearchAlgorithmMetric> values() {

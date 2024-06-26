@@ -13,11 +13,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Response from a list skillset request. If successful, it includes the full definitions of all skillsets.
- */
+/** Response from a list skillset request. If successful, it includes the full definitions of all skillsets. */
 @Immutable
 public final class ListSkillsetsResult implements JsonSerializable<ListSkillsetsResult> {
     /*
@@ -27,7 +26,7 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
 
     /**
      * Creates an instance of ListSkillsetsResult class.
-     * 
+     *
      * @param skillsets the skillsets value to set.
      */
     public ListSkillsetsResult(List<SearchIndexerSkillset> skillsets) {
@@ -36,7 +35,7 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
 
     /**
      * Get the skillsets property: The skillsets defined in the Search service.
-     * 
+     *
      * @return the skillsets value.
      */
     public List<SearchIndexerSkillset> getSkillsets() {
@@ -51,32 +50,41 @@ public final class ListSkillsetsResult implements JsonSerializable<ListSkillsets
 
     /**
      * Reads an instance of ListSkillsetsResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ListSkillsetsResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ListSkillsetsResult.
      */
     public static ListSkillsetsResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean skillsetsFound = false;
-            List<SearchIndexerSkillset> skillsets = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean skillsetsFound = false;
+                    List<SearchIndexerSkillset> skillsets = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("value".equals(fieldName)) {
-                    skillsets = reader.readArray(reader1 -> SearchIndexerSkillset.fromJson(reader1));
-                    skillsetsFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (skillsetsFound) {
-                return new ListSkillsetsResult(skillsets);
-            }
-            throw new IllegalStateException("Missing required property: value");
-        });
+                        if ("value".equals(fieldName)) {
+                            skillsets = reader.readArray(reader1 -> SearchIndexerSkillset.fromJson(reader1));
+                            skillsetsFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (skillsetsFound) {
+                        ListSkillsetsResult deserializedListSkillsetsResult = new ListSkillsetsResult(skillsets);
+
+                        return deserializedListSkillsetsResult;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!skillsetsFound) {
+                        missingProperties.add("value");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

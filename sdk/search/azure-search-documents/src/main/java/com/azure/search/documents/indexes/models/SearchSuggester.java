@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Defines how the Suggest API should apply to a group of fields in the index.
- */
+/** Defines how the Suggest API should apply to a group of fields in the index. */
 @Fluent
 public final class SearchSuggester implements JsonSerializable<SearchSuggester> {
 
@@ -89,46 +87,47 @@ public final class SearchSuggester implements JsonSerializable<SearchSuggester> 
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchSuggester if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchSuggester.
      */
     public static SearchSuggester fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            boolean sourceFieldsFound = false;
-            List<String> sourceFields = null;
-            String searchMode = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("sourceFields".equals(fieldName)) {
-                    sourceFields = reader.readArray(reader1 -> reader1.getString());
-                    sourceFieldsFound = true;
-                } else if ("searchMode".equals(fieldName)) {
-                    searchMode = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound && sourceFieldsFound) {
-                SearchSuggester deserializedSearchSuggester = new SearchSuggester(name, sourceFields);
-                deserializedSearchSuggester.searchMode = searchMode;
-                return deserializedSearchSuggester;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!nameFound) {
-                missingProperties.add("name");
-            }
-            if (!sourceFieldsFound) {
-                missingProperties.add("sourceFields");
-            }
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean sourceFieldsFound = false;
+                    List<String> sourceFields = null;
+                    String searchMode = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("sourceFields".equals(fieldName)) {
+                            sourceFields = reader.readArray(reader1 -> reader1.getString());
+                            sourceFieldsFound = true;
+                        } else if ("searchMode".equals(fieldName)) {
+                            searchMode = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound && sourceFieldsFound) {
+                        SearchSuggester deserializedSearchSuggester = new SearchSuggester(name, sourceFields);
+                        deserializedSearchSuggester.searchMode = searchMode;
+                        return deserializedSearchSuggester;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!sourceFieldsFound) {
+                        missingProperties.add("sourceFields");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

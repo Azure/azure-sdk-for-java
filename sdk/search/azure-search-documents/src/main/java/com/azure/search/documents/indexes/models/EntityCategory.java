@@ -9,57 +9,40 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * A string indicating what entity categories to return.
- */
+/** A string indicating what entity categories to return. */
 public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
-    /**
-     * Entities describing a physical location.
-     */
+    /** Entities describing a physical location. */
     public static final EntityCategory LOCATION = fromString("location");
 
-    /**
-     * Entities describing an organization.
-     */
+    /** Entities describing an organization. */
     public static final EntityCategory ORGANIZATION = fromString("organization");
 
-    /**
-     * Entities describing a person.
-     */
+    /** Entities describing a person. */
     public static final EntityCategory PERSON = fromString("person");
 
-    /**
-     * Entities describing a quantity.
-     */
+    /** Entities describing a quantity. */
     public static final EntityCategory QUANTITY = fromString("quantity");
 
-    /**
-     * Entities describing a date and time.
-     */
+    /** Entities describing a date and time. */
     public static final EntityCategory DATETIME = fromString("datetime");
 
-    /**
-     * Entities describing a URL.
-     */
+    /** Entities describing a URL. */
     public static final EntityCategory URL = fromString("url");
 
-    /**
-     * Entities describing an email address.
-     */
+    /** Entities describing an email address. */
     public static final EntityCategory EMAIL = fromString("email");
 
     /**
      * Creates a new instance of EntityCategory value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public EntityCategory() {
-    }
+    public EntityCategory() {}
 
     /**
      * Creates or finds a EntityCategory from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding EntityCategory.
      */
@@ -69,7 +52,7 @@ public final class EntityCategory extends ExpandableStringEnum<EntityCategory> {
 
     /**
      * Gets known EntityCategory values.
-     * 
+     *
      * @return known EntityCategory values.
      */
     public static Collection<EntityCategory> values() {

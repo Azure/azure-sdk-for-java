@@ -11,10 +11,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Removes words that are too long or too short. This token filter is implemented using Apache Lucene.
- */
+/** Removes words that are too long or too short. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class LengthTokenFilter extends TokenFilter {
     /*
@@ -29,7 +29,7 @@ public final class LengthTokenFilter extends TokenFilter {
 
     /**
      * Creates an instance of LengthTokenFilter class.
-     * 
+     *
      * @param name the name value to set.
      */
     public LengthTokenFilter(String name) {
@@ -37,9 +37,9 @@ public final class LengthTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the minLength property: The minimum length in characters. Default is 0. Maximum is 300. Must be less than
-     * the value of max.
-     * 
+     * Get the minLength property: The minimum length in characters. Default is 0. Maximum is 300. Must be less than the
+     * value of max.
+     *
      * @return the minLength value.
      */
     public Integer getMinLength() {
@@ -47,9 +47,9 @@ public final class LengthTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the minLength property: The minimum length in characters. Default is 0. Maximum is 300. Must be less than
-     * the value of max.
-     * 
+     * Set the minLength property: The minimum length in characters. Default is 0. Maximum is 300. Must be less than the
+     * value of max.
+     *
      * @param minLength the minLength value to set.
      * @return the LengthTokenFilter object itself.
      */
@@ -60,7 +60,7 @@ public final class LengthTokenFilter extends TokenFilter {
 
     /**
      * Get the maxLength property: The maximum length in characters. Default and maximum is 300.
-     * 
+     *
      * @return the maxLength value.
      */
     public Integer getMaxLength() {
@@ -69,7 +69,7 @@ public final class LengthTokenFilter extends TokenFilter {
 
     /**
      * Set the maxLength property: The maximum length in characters. Default and maximum is 300.
-     * 
+     *
      * @param maxLength the maxLength value to set.
      * @return the LengthTokenFilter object itself.
      */
@@ -90,50 +90,58 @@ public final class LengthTokenFilter extends TokenFilter {
 
     /**
      * Reads an instance of LengthTokenFilter from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of LengthTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the LengthTokenFilter.
      */
     public static LengthTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            Integer minLength = null;
-            Integer maxLength = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer minLength = null;
+                    Integer maxLength = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.LengthTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.LengthTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.LengthTokenFilter".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.LengthTokenFilter'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("min".equals(fieldName)) {
+                            minLength = reader.getNullable(JsonReader::getInt);
+                        } else if ("max".equals(fieldName)) {
+                            maxLength = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("min".equals(fieldName)) {
-                    minLength = reader.getNullable(JsonReader::getInt);
-                } else if ("max".equals(fieldName)) {
-                    maxLength = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                LengthTokenFilter deserializedLengthTokenFilter = new LengthTokenFilter(name);
-                deserializedLengthTokenFilter.minLength = minLength;
-                deserializedLengthTokenFilter.maxLength = maxLength;
+                    if (nameFound) {
+                        LengthTokenFilter deserializedLengthTokenFilter = new LengthTokenFilter(name);
+                        deserializedLengthTokenFilter.minLength = minLength;
+                        deserializedLengthTokenFilter.maxLength = maxLength;
 
-                return deserializedLengthTokenFilter;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                        return deserializedLengthTokenFilter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

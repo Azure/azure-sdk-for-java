@@ -13,10 +13,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * Defines a function that boosts scores based on the magnitude of a numeric field.
- */
+/** Defines a function that boosts scores based on the magnitude of a numeric field. */
 @Fluent
 public final class MagnitudeScoringFunction extends ScoringFunction {
     /*
@@ -26,7 +25,7 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
 
     /**
      * Creates an instance of MagnitudeScoringFunction class.
-     * 
+     *
      * @param fieldName the fieldName value to set.
      * @param boost the boost value to set.
      * @param parameters the parameters value to set.
@@ -38,16 +37,14 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
 
     /**
      * Get the parameters property: Parameter values for the magnitude scoring function.
-     * 
+     *
      * @return the parameters value.
      */
     public MagnitudeScoringParameters getParameters() {
         return this.parameters;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MagnitudeScoringFunction setInterpolation(ScoringFunctionInterpolation interpolation) {
         super.setInterpolation(interpolation);
@@ -60,76 +57,78 @@ public final class MagnitudeScoringFunction extends ScoringFunction {
         jsonWriter.writeStringField("type", "magnitude");
         jsonWriter.writeStringField("fieldName", getFieldName());
         jsonWriter.writeDoubleField("boost", getBoost());
-        jsonWriter.writeStringField("interpolation", getInterpolation() == null ? null : getInterpolation().toString());
+        jsonWriter.writeStringField("interpolation", Objects.toString(getInterpolation(), null));
         jsonWriter.writeJsonField("magnitude", this.parameters);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of MagnitudeScoringFunction from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of MagnitudeScoringFunction if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the MagnitudeScoringFunction.
      */
     public static MagnitudeScoringFunction fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean fieldNameFound = false;
-            String fieldName = null;
-            boolean boostFound = false;
-            double boost = 0.0;
-            ScoringFunctionInterpolation interpolation = null;
-            boolean parametersFound = false;
-            MagnitudeScoringParameters parameters = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String jsonFieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean fieldNameFound = false;
+                    String fieldName = null;
+                    boolean boostFound = false;
+                    double boost = 0.0;
+                    ScoringFunctionInterpolation interpolation = null;
+                    boolean parametersFound = false;
+                    MagnitudeScoringParameters parameters = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String jsonFieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("type".equals(jsonFieldName)) {
-                    String type = reader.getString();
-                    if (!"magnitude".equals(type)) {
-                        throw new IllegalStateException(
-                            "'type' was expected to be non-null and equal to 'magnitude'. The found 'type' was '" + type
-                                + "'.");
+                        if ("type".equals(jsonFieldName)) {
+                            String type = reader.getString();
+                            if (!"magnitude".equals(type)) {
+                                throw new IllegalStateException(
+                                        "'type' was expected to be non-null and equal to 'magnitude'. The found 'type' was '"
+                                                + type
+                                                + "'.");
+                            }
+                        } else if ("fieldName".equals(jsonFieldName)) {
+                            fieldName = reader.getString();
+                            fieldNameFound = true;
+                        } else if ("boost".equals(jsonFieldName)) {
+                            boost = reader.getDouble();
+                            boostFound = true;
+                        } else if ("interpolation".equals(jsonFieldName)) {
+                            interpolation = ScoringFunctionInterpolation.fromString(reader.getString());
+                        } else if ("magnitude".equals(jsonFieldName)) {
+                            parameters = MagnitudeScoringParameters.fromJson(reader);
+                            parametersFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("fieldName".equals(jsonFieldName)) {
-                    fieldName = reader.getString();
-                    fieldNameFound = true;
-                } else if ("boost".equals(jsonFieldName)) {
-                    boost = reader.getDouble();
-                    boostFound = true;
-                } else if ("interpolation".equals(jsonFieldName)) {
-                    interpolation = ScoringFunctionInterpolation.fromString(reader.getString());
-                } else if ("magnitude".equals(jsonFieldName)) {
-                    parameters = MagnitudeScoringParameters.fromJson(reader);
-                    parametersFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (fieldNameFound && boostFound && parametersFound) {
-                MagnitudeScoringFunction deserializedMagnitudeScoringFunction
-                    = new MagnitudeScoringFunction(fieldName, boost, parameters);
-                deserializedMagnitudeScoringFunction.setInterpolation(interpolation);
+                    if (fieldNameFound && boostFound && parametersFound) {
+                        MagnitudeScoringFunction deserializedMagnitudeScoringFunction =
+                                new MagnitudeScoringFunction(fieldName, boost, parameters);
+                        deserializedMagnitudeScoringFunction.setInterpolation(interpolation);
 
-                return deserializedMagnitudeScoringFunction;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!fieldNameFound) {
-                missingProperties.add("fieldName");
-            }
-            if (!boostFound) {
-                missingProperties.add("boost");
-            }
-            if (!parametersFound) {
-                missingProperties.add("magnitude");
-            }
+                        return deserializedMagnitudeScoringFunction;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!fieldNameFound) {
+                        missingProperties.add("fieldName");
+                    }
+                    if (!boostFound) {
+                        missingProperties.add("boost");
+                    }
+                    if (!parametersFound) {
+                        missingProperties.add("magnitude");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
