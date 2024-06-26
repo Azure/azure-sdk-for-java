@@ -88,14 +88,14 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     private static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
     private static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
     private static final String API_VERSION = "2021-04-01";
-    private BearerTokenAuthenticationPolicy CREDENTIAL_POLICY;
+    private BearerTokenAuthenticationPolicy credentialPolicy;
     private BlobContainerAsyncClient vlwContainer;
     private BlobAsyncClient vlwBlob;
 
     @BeforeEach
     public void setup() throws JsonProcessingException, MalformedURLException {
         TokenCredential credential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
-        CREDENTIAL_POLICY = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default");
+        credentialPolicy = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default");
 
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             vlwContainerName = UUID.randomUUID().toString();
@@ -104,7 +104,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                     + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s",
                 SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, API_VERSION);
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .policies(CREDENTIAL_POLICY)
+                .policies(credentialPolicy)
                 .build();
 
             ImmutableStorageWithVersioning immutableStorageWithVersioning = new ImmutableStorageWithVersioning();
@@ -203,7 +203,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     public void cleanup() throws MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .policies(CREDENTIAL_POLICY)
+                .policies(credentialPolicy)
                 .build();
             BlobServiceClient cleanupClient = new BlobServiceClientBuilder()
                 .credential(ENVIRONMENT.getVersionedAccount().getCredential())
