@@ -20,6 +20,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.AfterEach;
@@ -42,6 +43,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -55,9 +57,12 @@ import static com.azure.containers.containerregistry.TestUtils.LAYER_DIGEST;
 import static com.azure.containers.containerregistry.TestUtils.MANIFEST;
 import static com.azure.containers.containerregistry.TestUtils.MANIFEST_DIGEST;
 import static com.azure.containers.containerregistry.TestUtils.OCI_INDEX_MEDIA_TYPE;
+import static com.azure.containers.containerregistry.TestUtils.REGISTRY_ENDPOINT;
+import static com.azure.containers.containerregistry.TestUtils.REGISTRY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.importImage;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.CHUNK_SIZE;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.computeDigest;
+import static com.azure.core.test.implementation.TestingHelpers.AZURE_TEST_MODE;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -84,8 +89,13 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     }
 
     @BeforeAll
-    static void beforeAll() {
-        importImage(TestUtils.getTestMode(), HELLO_WORLD_REPOSITORY_NAME, Collections.singletonList("latest"));
+    static void beforeAll() throws InterruptedException {
+        String testMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
+        importImage(testMode != null ? TestMode.valueOf(testMode.toUpperCase(Locale.US)) : TestMode.PLAYBACK,
+            REGISTRY_NAME,
+            HELLO_WORLD_REPOSITORY_NAME,
+            Collections.singletonList("latest"),
+            REGISTRY_ENDPOINT);
     }
 
     @AfterEach

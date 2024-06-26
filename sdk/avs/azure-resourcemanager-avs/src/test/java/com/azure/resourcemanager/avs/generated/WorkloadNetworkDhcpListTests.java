@@ -5,21 +5,38 @@
 package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDhcpInner;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpEntity;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpList;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class WorkloadNetworkDhcpListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkDhcpList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"gjltdtbnnhado\",\"segments\":[\"kvci\",\"hnvpamqgxq\",\"u\"],\"provisioningState\":\"Canceled\",\"revision\":5551509476153562500},\"id\":\"ggxkallatmelwuip\",\"name\":\"ccjzkzivgvv\",\"type\":\"nayrhyrnxxmueedn\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"v\",\"segments\":[\"wq\",\"tchealmf\",\"tdaaygdvwvg\"],\"provisioningState\":\"Updating\",\"revision\":492065479137109444},\"id\":\"xrtfudxep\",\"name\":\"gyqagvrvmnpkuk\",\"type\":\"himdbl\"}],\"nextLink\":\"wi\"}")
-                .toObject(WorkloadNetworkDhcpList.class);
+        WorkloadNetworkDhcpList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"xdy\",\"segments\":[\"y\",\"cogjltdtbn\",\"hadoocrk\",\"cikhnv\"],\"provisioningState\":\"Succeeded\",\"revision\":1095041786802242377},\"id\":\"queziky\",\"name\":\"ggxkallatmelwuip\",\"type\":\"ccjzkzivgvv\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"y\",\"segments\":[\"rnxxmueed\",\"drd\",\"stkwqqtch\"],\"provisioningState\":\"Canceled\",\"revision\":6465025791585269802},\"id\":\"d\",\"name\":\"aygdvwvgpioh\",\"type\":\"wxrt\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"xepxgyqagvrvmn\",\"segments\":[\"kghimdblxgwimfnj\",\"fjxwmsz\",\"kfoqreyfkzikfj\"],\"provisioningState\":\"Succeeded\",\"revision\":488040231209258224},\"id\":\"xwczelpcire\",\"name\":\"sfeaenwabfat\",\"type\":\"lddxbjhwua\"},{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"zjosp\",\"segments\":[\"ulpjr\",\"xagl\"],\"provisioningState\":\"Updating\",\"revision\":7892134745945256266},\"id\":\"sytxitcskfcktqum\",\"name\":\"ekkezzikhlyfjh\",\"type\":\"gqggebdunygae\"}],\"nextLink\":\"db\"}")
+            .toObject(WorkloadNetworkDhcpList.class);
+        Assertions.assertEquals("xdy", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(1095041786802242377L, model.value().get(0).properties().revision());
+        Assertions.assertEquals("db", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkDhcpList model = new WorkloadNetworkDhcpList();
+        WorkloadNetworkDhcpList model = new WorkloadNetworkDhcpList().withValue(Arrays.asList(
+            new WorkloadNetworkDhcpInner().withProperties(
+                new WorkloadNetworkDhcpEntity().withDisplayName("xdy").withRevision(1095041786802242377L)),
+            new WorkloadNetworkDhcpInner().withProperties(
+                new WorkloadNetworkDhcpEntity().withDisplayName("y").withRevision(6465025791585269802L)),
+            new WorkloadNetworkDhcpInner().withProperties(
+                new WorkloadNetworkDhcpEntity().withDisplayName("xepxgyqagvrvmn").withRevision(488040231209258224L)),
+            new WorkloadNetworkDhcpInner().withProperties(
+                new WorkloadNetworkDhcpEntity().withDisplayName("zjosp").withRevision(7892134745945256266L))))
+            .withNextLink("db");
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDhcpList.class);
+        Assertions.assertEquals("xdy", model.value().get(0).properties().displayName());
+        Assertions.assertEquals(1095041786802242377L, model.value().get(0).properties().revision());
+        Assertions.assertEquals("db", model.nextLink());
     }
 }

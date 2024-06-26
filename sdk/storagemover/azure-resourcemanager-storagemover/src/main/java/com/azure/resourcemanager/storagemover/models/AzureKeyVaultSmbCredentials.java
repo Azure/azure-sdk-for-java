@@ -6,14 +6,28 @@ package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The Azure Key Vault secret URIs which store the credentials. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+/**
+ * The Azure Key Vault secret URIs which store the credentials.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureKeyVaultSmbCredentials.class,
+    visible = true)
 @JsonTypeName("AzureKeyVaultSmb")
 @Fluent
 public final class AzureKeyVaultSmbCredentials extends Credentials {
+    /*
+     * The Credentials type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private CredentialType type = CredentialType.AZURE_KEY_VAULT_SMB;
+
     /*
      * The Azure Key Vault secret URI which stores the username. Use empty string to clean-up existing value.
      */
@@ -26,14 +40,26 @@ public final class AzureKeyVaultSmbCredentials extends Credentials {
     @JsonProperty(value = "passwordUri")
     private String passwordUri;
 
-    /** Creates an instance of AzureKeyVaultSmbCredentials class. */
+    /**
+     * Creates an instance of AzureKeyVaultSmbCredentials class.
+     */
     public AzureKeyVaultSmbCredentials() {
+    }
+
+    /**
+     * Get the type property: The Credentials type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public CredentialType type() {
+        return this.type;
     }
 
     /**
      * Get the usernameUri property: The Azure Key Vault secret URI which stores the username. Use empty string to
      * clean-up existing value.
-     *
+     * 
      * @return the usernameUri value.
      */
     public String usernameUri() {
@@ -43,7 +69,7 @@ public final class AzureKeyVaultSmbCredentials extends Credentials {
     /**
      * Set the usernameUri property: The Azure Key Vault secret URI which stores the username. Use empty string to
      * clean-up existing value.
-     *
+     * 
      * @param usernameUri the usernameUri value to set.
      * @return the AzureKeyVaultSmbCredentials object itself.
      */
@@ -55,7 +81,7 @@ public final class AzureKeyVaultSmbCredentials extends Credentials {
     /**
      * Get the passwordUri property: The Azure Key Vault secret URI which stores the password. Use empty string to
      * clean-up existing value.
-     *
+     * 
      * @return the passwordUri value.
      */
     public String passwordUri() {
@@ -65,7 +91,7 @@ public final class AzureKeyVaultSmbCredentials extends Credentials {
     /**
      * Set the passwordUri property: The Azure Key Vault secret URI which stores the password. Use empty string to
      * clean-up existing value.
-     *
+     * 
      * @param passwordUri the passwordUri value to set.
      * @return the AzureKeyVaultSmbCredentials object itself.
      */
@@ -76,7 +102,7 @@ public final class AzureKeyVaultSmbCredentials extends Credentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

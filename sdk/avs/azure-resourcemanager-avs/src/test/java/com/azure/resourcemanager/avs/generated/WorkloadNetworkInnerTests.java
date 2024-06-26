@@ -10,10 +10,9 @@ import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkInner;
 public final class WorkloadNetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkInner model =
-            BinaryData
-                .fromString("{\"id\":\"wab\",\"name\":\"ets\",\"type\":\"hszhedplvwiwu\"}")
-                .toObject(WorkloadNetworkInner.class);
+        WorkloadNetworkInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Building\"},\"id\":\"mnzgmwznmabi\",\"name\":\"nsorgjhxbldt\",\"type\":\"wwrlkdmtncv\"}")
+            .toObject(WorkloadNetworkInner.class);
     }
 
     @org.junit.jupiter.api.Test
