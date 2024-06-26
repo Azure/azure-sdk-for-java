@@ -214,8 +214,8 @@ public final class CallConnectionProperties {
         MediaStreamingSubscription mediaStreamingSubscription = new MediaStreamingSubscription();
         mediaStreamingSubscription.setId(mediaStreamingSubscriptionInternal.getId());
         mediaStreamingSubscription.setState(MediaStreamingSubscriptionState.fromString(mediaStreamingSubscriptionInternal.getState().toString()));
-        if(mediaStreamingSubscriptionInternal.getSubscribedContentTypes() != null) {
-        mediaStreamingSubscription.setSubscribedContentTypes(mediaStreamingSubscriptionInternal.getSubscribedContentTypes().stream()
+        if (mediaStreamingSubscriptionInternal.getSubscribedContentTypes() != null) {
+            mediaStreamingSubscription.setSubscribedContentTypes(mediaStreamingSubscriptionInternal.getSubscribedContentTypes().stream()
                 .map(contentType -> MediaStreamingContentType.fromString(contentType.toString()))
                 .collect(Collectors.toList()));
         }

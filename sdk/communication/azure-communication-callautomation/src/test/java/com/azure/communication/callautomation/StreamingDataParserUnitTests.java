@@ -10,7 +10,7 @@ import com.azure.communication.callautomation.models.TextFormat;
 import com.azure.communication.callautomation.models.TranscriptionData;
 import com.azure.communication.callautomation.models.TranscriptionMetadata;
 import com.azure.communication.callautomation.models.WordData;
-import com.azure.core.util.BinaryData;
+// import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -66,7 +66,7 @@ public class StreamingDataParserUnitTests {
     private void checkAudioDataNoParticipant(AudioData mediaStreamingAudio) {
         assertEquals(OffsetDateTime.parse("2022-10-03T19:16:12.925Z"), mediaStreamingAudio.getTimestamp());
         assertNull(mediaStreamingAudio.getParticipant());
-        assertEquals( "AQIDBAU=", mediaStreamingAudio.getData());
+        assertEquals("AQIDBAU=", mediaStreamingAudio.getData());
         assertFalse(mediaStreamingAudio.isSilent());
     }
 
