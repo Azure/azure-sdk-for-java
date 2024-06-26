@@ -37,8 +37,16 @@ function SetCurrentVersion($GroupId, $ArtifactId, $Version) {
 # Update dependencies of the artifact.
 function UpdateDependencyOfClientSDK() {
   $repoRoot = Resolve-Path "${PSScriptRoot}../../.."
+
+  Write-Output "repo root is $repoRoot"
+
   $updateVersionFilePath = Join-Path $repoRoot "eng" "versioning" "update_versions.py"
+
+  Write-Output "python $updateVersionFilePath --ut all --bt client --sr"
+
   $cmdOutput = python $updateVersionFilePath --ut all --bt client --sr
+
+  Write-Output "python $cmdOutput --ut all --bt client --sr --increment-version"
 }
 
 # Get all azure com client artifacts from Maven.
@@ -339,12 +347,19 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   $pomFilePath = Join-Path $artifactDirPath "pom.xml"
   $oldDependencyNameToVersion = GetDependencyToVersion -PomFilePath $pomFilePath
   $cmdOutput = SetCurrentVersion -GroupId $GroupId -ArtifactId $artifactId -Version $patchVersion
+
+
+  Write-Output "cmd out 11 is $cmdOutput"
+
+
   if ($LASTEXITCODE -ne 0) {
     LogError "Could not set the dependencies for $artifactId"
     exit $LASTEXITCODE
   }
-
   $cmdOutput = UpdateDependencyOfClientSDK
+
+  Write-Output "cmd out 22 is $cmdOutput"
+
   if ($LASTEXITCODE -ne 0) {
     LogError "Could not update all references for for $artifactId"
     exit $LASTEXITCODE
