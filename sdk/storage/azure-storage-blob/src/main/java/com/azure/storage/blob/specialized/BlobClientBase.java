@@ -244,7 +244,6 @@ public class BlobClientBase {
         return new BlobClientBase(this.client, getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope,
             getVersionId());
-        //return new BlobClientBase(client.getSnapshotClient(snapshot));
     }
 
     /**
