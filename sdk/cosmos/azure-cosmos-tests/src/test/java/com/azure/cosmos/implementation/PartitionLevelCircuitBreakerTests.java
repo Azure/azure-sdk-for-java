@@ -265,29 +265,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
-    @DataProvider(name = "partitionLevelCircuitBreakerTestConfigs")
-    public Object[][] partitionLevelCircuitBreakerTestConfigs() {
-
-//        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateServiceUnavailableRules
-//            = PartitionLevelCircuitBreakerTests::buildServiceUnavailableRules;
-//
-//        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateServerGeneratedGoneRules
-//            = PartitionLevelCircuitBreakerTests::buildServerGeneratedGoneRules;
-//
-//        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateTransitTimeoutRules
-//            = PartitionLevelCircuitBreakerTests::buildTransitTimeoutRules;
-//
-//        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateInternalServerErrorRules
-//            = PartitionLevelCircuitBreakerTests::buildInternalServerErrorRules;
-//
-//        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateTooManyRequestsRules
-//            = PartitionLevelCircuitBreakerTests::buildTooManyRequestsRules;
-//
-//        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateReadOrWriteSessionNotAvailableRules
-//            = PartitionLevelCircuitBreakerTests::buildReadWriteSessionNotAvailableRules;
-//
-//        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateRetryWithRules
-//            = PartitionLevelCircuitBreakerTests::buildRetryWithFaultInjectionRules;
+    @DataProvider(name = "miscellaneousOpTestConfigs")
+    public Object[][] miscellaneousOpTestConfigs() {
 
         // General testing flow:
         // Below tests choose a fault type to inject, regions to inject the fault in
@@ -957,7 +936,29 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ONLY_DIRECT_MODE
+                ALL_CONNECTION_MODES_INCLUDED
+            },
+            // 449 injected into first preferred region for REPLACE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed when
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
+            {
+                String.format("Test with faulty %s with retry with service error in the first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildRetryWithFaultInjectionRules,
+                TWO_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ALL_CONNECTION_MODES_INCLUDED
             },
             // 503 injected into all regions for READ_ITEM operation
             // injected into all replicas of the faulty EPK range.
@@ -1153,10 +1154,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 executeReadManyOperation,
                 NO_END_TO_END_TIMEOUT,
                 NO_REGION_SWITCH_HINT,
-                this.validateResponseHasSuccess,
+                this.validateResponseHasInternalServerError,
                 this.validateResponseHasSuccess,
                 this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ALL_CONNECTION_MODES_INCLUDED
             },
@@ -1321,7 +1322,28 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ALL_CONNECTION_MODES_INCLUDED
             },
-            // 429 injected into first preferred region for read all operation
+            // Internal server error injected into first preferred region for read all operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit InternalServerError and bubble it from the first preferred region
+            // and only to succeed when moved over to the second preferred region when the first preferred region has been short-circuited.
+            {
+                "Test read all operation injected with internal server error injected in first preferred region.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withHitLimit(11)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1)),
+                this.buildInternalServerErrorFaultInjectionRules,
+                executeReadAllOperation,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ALL_CONNECTION_MODES_INCLUDED
+            },
+            // 410 injected into first preferred region for read all operation
             // injected into all replicas of the faulty EPK range.
             // Expectation is for the operation to hit OperationCancelledException and only to succeed when
             // moved over to the second preferred region when the first preferred region has been short-circuited.
@@ -1430,8 +1452,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "partitionLevelCircuitBreakerTestConfigs", timeOut = 80 * TIMEOUT)
-    public void operationHitsTerminalExceptionAcrossKRegions(
+    @Test(groups = {"multi-master"}, dataProvider = "miscellaneousOpTestConfigs", timeOut = 80 * TIMEOUT)
+    public void miscellaneousDocumentOperationHitsTerminalExceptionAcrossKRegions(
         String testId,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
         Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateFaultInjectionRules,
@@ -1949,8 +1971,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     }
                 }
 
-                logger.info("Sleep for 90 seconds");
-                Thread.sleep(90_000);
+                logger.info("Sleep for 70 seconds to allow Unavailable partitions to be HealthyTentative");
+                Thread.sleep(70_000);
 
                 for (int i = operationIterationCountInFailureFlow + 1; i <= operationIterationCountInFailureFlow + operationIterationCountInRecoveryFlow; i++) {
 
@@ -2304,7 +2326,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             }
         }
     }
-
 
     private static class ResponseWrapper<T> {
 
