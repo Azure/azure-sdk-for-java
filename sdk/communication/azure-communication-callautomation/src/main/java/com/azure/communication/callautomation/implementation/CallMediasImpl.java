@@ -12,8 +12,10 @@ import com.azure.communication.callautomation.implementation.models.RecognizeReq
 import com.azure.communication.callautomation.implementation.models.SendDtmfTonesRequestInternal;
 import com.azure.communication.callautomation.implementation.models.SendDtmfTonesResultInternal;
 import com.azure.communication.callautomation.implementation.models.StartHoldMusicRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StartMediaStreamingRequest;
 import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopHoldMusicRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StopMediaStreamingRequest;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.UnholdRequest;
 import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionRequestInternal;
@@ -207,6 +209,28 @@ public final class CallMediasImpl {
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") StopHoldMusicRequestInternal stopHoldMusicRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}:startMediaStreaming")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> startMediaStreaming(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") StartMediaStreamingRequest startMediaStreamingRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}:stopMediaStreaming")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<Void>> stopMediaStreaming(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") StopMediaStreamingRequest stopMediaStreamingRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -1779,5 +1803,235 @@ public final class CallMediasImpl {
     public Response<Void> stopHoldMusicWithResponse(
             String callConnectionId, StopHoldMusicRequestInternal stopHoldMusicRequest, Context context) {
         return stopHoldMusicWithResponseAsync(callConnectionId, stopHoldMusicRequest, context).block();
+    }
+
+    /**
+     * Starts media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startMediaStreamingRequest The startMediaStreamingRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startMediaStreamingWithResponseAsync(
+            String callConnectionId, StartMediaStreamingRequest startMediaStreamingRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.startMediaStreaming(
+                                this.client.getEndpoint(),
+                                callConnectionId,
+                                this.client.getApiVersion(),
+                                startMediaStreamingRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Starts media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startMediaStreamingRequest The startMediaStreamingRequest parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startMediaStreamingWithResponseAsync(
+            String callConnectionId, StartMediaStreamingRequest startMediaStreamingRequest, Context context) {
+        final String accept = "application/json";
+        return service.startMediaStreaming(
+                this.client.getEndpoint(),
+                callConnectionId,
+                this.client.getApiVersion(),
+                startMediaStreamingRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Starts media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startMediaStreamingRequest The startMediaStreamingRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startMediaStreamingAsync(
+            String callConnectionId, StartMediaStreamingRequest startMediaStreamingRequest) {
+        return startMediaStreamingWithResponseAsync(callConnectionId, startMediaStreamingRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Starts media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startMediaStreamingRequest The startMediaStreamingRequest parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startMediaStreamingAsync(
+            String callConnectionId, StartMediaStreamingRequest startMediaStreamingRequest, Context context) {
+        return startMediaStreamingWithResponseAsync(callConnectionId, startMediaStreamingRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Starts media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startMediaStreamingRequest The startMediaStreamingRequest parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startMediaStreaming(String callConnectionId, StartMediaStreamingRequest startMediaStreamingRequest) {
+        startMediaStreamingAsync(callConnectionId, startMediaStreamingRequest).block();
+    }
+
+    /**
+     * Starts media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param startMediaStreamingRequest The startMediaStreamingRequest parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startMediaStreamingWithResponse(
+            String callConnectionId, StartMediaStreamingRequest startMediaStreamingRequest, Context context) {
+        return startMediaStreamingWithResponseAsync(callConnectionId, startMediaStreamingRequest, context).block();
+    }
+
+    /**
+     * Stops media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopMediaStreamingRequest stop media streaming request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopMediaStreamingWithResponseAsync(
+            String callConnectionId, StopMediaStreamingRequest stopMediaStreamingRequest) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.stopMediaStreaming(
+                                this.client.getEndpoint(),
+                                callConnectionId,
+                                this.client.getApiVersion(),
+                                stopMediaStreamingRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Stops media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopMediaStreamingRequest stop media streaming request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopMediaStreamingWithResponseAsync(
+            String callConnectionId, StopMediaStreamingRequest stopMediaStreamingRequest, Context context) {
+        final String accept = "application/json";
+        return service.stopMediaStreaming(
+                this.client.getEndpoint(),
+                callConnectionId,
+                this.client.getApiVersion(),
+                stopMediaStreamingRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Stops media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopMediaStreamingRequest stop media streaming request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopMediaStreamingAsync(
+            String callConnectionId, StopMediaStreamingRequest stopMediaStreamingRequest) {
+        return stopMediaStreamingWithResponseAsync(callConnectionId, stopMediaStreamingRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Stops media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopMediaStreamingRequest stop media streaming request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopMediaStreamingAsync(
+            String callConnectionId, StopMediaStreamingRequest stopMediaStreamingRequest, Context context) {
+        return stopMediaStreamingWithResponseAsync(callConnectionId, stopMediaStreamingRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Stops media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopMediaStreamingRequest stop media streaming request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopMediaStreaming(String callConnectionId, StopMediaStreamingRequest stopMediaStreamingRequest) {
+        stopMediaStreamingAsync(callConnectionId, stopMediaStreamingRequest).block();
+    }
+
+    /**
+     * Stops media streaming in the call.
+     *
+     * @param callConnectionId The call connection id.
+     * @param stopMediaStreamingRequest stop media streaming request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopMediaStreamingWithResponse(
+            String callConnectionId, StopMediaStreamingRequest stopMediaStreamingRequest, Context context) {
+        return stopMediaStreamingWithResponseAsync(callConnectionId, stopMediaStreamingRequest, context).block();
     }
 }

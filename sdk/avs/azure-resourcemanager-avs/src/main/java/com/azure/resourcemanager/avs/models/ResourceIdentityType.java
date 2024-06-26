@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The type of identity used for the private cloud. The type 'SystemAssigned' refers to an implicitly created identity.
- * The type 'None' will remove any identities from the Private Cloud.
+ * Type of managed service identity (either system assigned, or none).
  */
 public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIdentityType> {
-    /** Static value SystemAssigned for ResourceIdentityType. */
-    public static final ResourceIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
-
-    /** Static value None for ResourceIdentityType. */
+    /**
+     * Static value None for ResourceIdentityType.
+     */
     public static final ResourceIdentityType NONE = fromString("None");
 
     /**
+     * Static value SystemAssigned for ResourceIdentityType.
+     */
+    public static final ResourceIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
+
+    /**
      * Creates a new instance of ResourceIdentityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +32,17 @@ public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIde
 
     /**
      * Creates or finds a ResourceIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceIdentityType.
      */
-    @JsonCreator
     public static ResourceIdentityType fromString(String name) {
         return fromString(name, ResourceIdentityType.class);
     }
 
     /**
      * Gets known ResourceIdentityType values.
-     *
+     * 
      * @return known ResourceIdentityType values.
      */
     public static Collection<ResourceIdentityType> values() {
