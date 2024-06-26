@@ -147,7 +147,8 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     }
 
     /**
-     * Get a value indicating if challenge resource verification is disabled.
+     * Get a value indicating a check verifying if the authentication challenge resource matches the Key Vault or
+     * Managed HSM domain will be performed. This verification is performed by default.
      *
      * @return A value indicating if challenge resource verification is disabled.
      */
@@ -156,7 +157,8 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     }
 
     /**
-     * Disables challenge resource verification when authenticating against the service.
+     * Disables verifying if the authentication challenge resource matches the Key Vault or Managed HSM domain. This
+     * verification is performed by default.
      */
     public void disableChallengeResourceVerification() {
         disableChallengeResourceVerification = true;
