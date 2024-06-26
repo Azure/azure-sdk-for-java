@@ -23,22 +23,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MultiSlotEvents. */
+/**
+ * An instance of this class provides access to all the operations defined in MultiSlotEvents.
+ */
 public final class MultiSlotEventsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MultiSlotEventsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PersonalizerClientV1Preview3Impl client;
 
     /**
      * Initializes an instance of MultiSlotEventsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MultiSlotEventsImpl(PersonalizerClientV1Preview3Impl client) {
-        this.service =
-                RestProxy.create(MultiSlotEventsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MultiSlotEventsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -46,39 +52,31 @@ public final class MultiSlotEventsImpl {
      * The interface defining all the services for PersonalizerClientV1Preview3MultiSlotEvents to be used by the proxy
      * service to perform REST calls.
      */
-    @Host("{Endpoint}/personalizer/{ApiVersion}")
+    @Host("{Endpoint}/personalizer/v1.1-preview.3")
     @ServiceInterface(name = "PersonalizerClientV1")
     public interface MultiSlotEventsService {
         @Post("/multislot/events/{eventId}/reward")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> reward(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @PathParam("eventId") String eventId,
-                @BodyParam("application/json") PersonalizerRewardMultiSlotOptions body,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> reward(@HostParam("Endpoint") String endpoint, @PathParam("eventId") String eventId,
+            @BodyParam("application/json") PersonalizerRewardMultiSlotOptions body,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/multislot/events/{eventId}/activate")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> activate(
-                @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
-                @PathParam("eventId") String eventId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> activate(@HostParam("Endpoint") String endpoint, @PathParam("eventId") String eventId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Post multi-slot Rewards.
-     *
-     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
-     *
+     * 
+     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * 
      * @param eventId The event id this reward applies to.
      * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
-     *     and 1.
+     * and 1.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -87,25 +85,18 @@ public final class MultiSlotEventsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rewardWithResponseAsync(String eventId, PersonalizerRewardMultiSlotOptions body) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.reward(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                eventId,
-                                body,
-                                accept,
-                                context));
+        return FluxUtil
+            .withContext(context -> service.reward(this.client.getEndpoint(), eventId, body, accept, context));
     }
 
     /**
      * Post multi-slot Rewards.
-     *
-     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
-     *
+     * 
+     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * 
      * @param eventId The event id this reward applies to.
      * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
-     *     and 1.
+     * and 1.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -113,20 +104,20 @@ public final class MultiSlotEventsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rewardWithResponseAsync(
-            String eventId, PersonalizerRewardMultiSlotOptions body, Context context) {
+    public Mono<Response<Void>> rewardWithResponseAsync(String eventId, PersonalizerRewardMultiSlotOptions body,
+        Context context) {
         final String accept = "application/json";
-        return service.reward(this.client.getEndpoint(), this.client.getApiVersion(), eventId, body, accept, context);
+        return service.reward(this.client.getEndpoint(), eventId, body, accept, context);
     }
 
     /**
      * Post multi-slot Rewards.
-     *
-     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
-     *
+     * 
+     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * 
      * @param eventId The event id this reward applies to.
      * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
-     *     and 1.
+     * and 1.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -139,12 +130,12 @@ public final class MultiSlotEventsImpl {
 
     /**
      * Post multi-slot Rewards.
-     *
-     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
-     *
+     * 
+     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * 
      * @param eventId The event id this reward applies to.
      * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
-     *     and 1.
+     * and 1.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -158,29 +149,12 @@ public final class MultiSlotEventsImpl {
 
     /**
      * Post multi-slot Rewards.
-     *
-     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
-     *
+     * 
+     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * 
      * @param eventId The event id this reward applies to.
      * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
-     *     and 1.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reward(String eventId, PersonalizerRewardMultiSlotOptions body) {
-        rewardAsync(eventId, body).block();
-    }
-
-    /**
-     * Post multi-slot Rewards.
-     *
-     * <p>Report reward that resulted from using the action specified in rewardActionId for the slot.
-     *
-     * @param eventId The event id this reward applies to.
-     * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
-     *     and 1.
+     * and 1.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -193,11 +167,28 @@ public final class MultiSlotEventsImpl {
     }
 
     /**
+     * Post multi-slot Rewards.
+     * 
+     * Report reward that resulted from using the action specified in rewardActionId for the slot.
+     * 
+     * @param eventId The event id this reward applies to.
+     * @param body List of slot id and reward values. The reward should be a floating point number, typically between 0
+     * and 1.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reward(String eventId, PersonalizerRewardMultiSlotOptions body) {
+        rewardWithResponse(eventId, body, Context.NONE);
+    }
+
+    /**
      * Activate multi-slot Event.
-     *
-     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
-     * for it.
-     *
+     * 
+     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
+     * it.
+     * 
      * @param eventId The event ID this activation applies to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -207,18 +198,15 @@ public final class MultiSlotEventsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> activateWithResponseAsync(String eventId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.activate(
-                                this.client.getEndpoint(), this.client.getApiVersion(), eventId, accept, context));
+        return FluxUtil.withContext(context -> service.activate(this.client.getEndpoint(), eventId, accept, context));
     }
 
     /**
      * Activate multi-slot Event.
-     *
-     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
-     * for it.
-     *
+     * 
+     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
+     * it.
+     * 
      * @param eventId The event ID this activation applies to.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,15 +217,15 @@ public final class MultiSlotEventsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> activateWithResponseAsync(String eventId, Context context) {
         final String accept = "application/json";
-        return service.activate(this.client.getEndpoint(), this.client.getApiVersion(), eventId, accept, context);
+        return service.activate(this.client.getEndpoint(), eventId, accept, context);
     }
 
     /**
      * Activate multi-slot Event.
-     *
-     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
-     * for it.
-     *
+     * 
+     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
+     * it.
+     * 
      * @param eventId The event ID this activation applies to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -251,10 +239,10 @@ public final class MultiSlotEventsImpl {
 
     /**
      * Activate multi-slot Event.
-     *
-     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
-     * for it.
-     *
+     * 
+     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
+     * it.
+     * 
      * @param eventId The event ID this activation applies to.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,26 +257,10 @@ public final class MultiSlotEventsImpl {
 
     /**
      * Activate multi-slot Event.
-     *
-     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
-     * for it.
-     *
-     * @param eventId The event ID this activation applies to.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void activate(String eventId) {
-        activateAsync(eventId).block();
-    }
-
-    /**
-     * Activate multi-slot Event.
-     *
-     * <p>Report that the specified event was actually used or displayed to the user and a rewards should be expected
-     * for it.
-     *
+     * 
+     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
+     * it.
+     * 
      * @param eventId The event ID this activation applies to.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,5 +271,21 @@ public final class MultiSlotEventsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> activateWithResponse(String eventId, Context context) {
         return activateWithResponseAsync(eventId, context).block();
+    }
+
+    /**
+     * Activate multi-slot Event.
+     * 
+     * Report that the specified event was actually used or displayed to the user and a rewards should be expected for
+     * it.
+     * 
+     * @param eventId The event ID this activation applies to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void activate(String eventId) {
+        activateWithResponse(eventId, Context.NONE);
     }
 }

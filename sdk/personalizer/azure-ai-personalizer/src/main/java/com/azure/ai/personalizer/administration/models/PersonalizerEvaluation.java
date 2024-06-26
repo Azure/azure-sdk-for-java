@@ -7,82 +7,84 @@ package com.azure.ai.personalizer.administration.models;
 import com.azure.ai.personalizer.models.EvaluationJobStatus;
 import com.azure.ai.personalizer.models.EvaluationType;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** A counterfactual evaluation. */
+/**
+ * A counterfactual evaluation.
+ */
 @Fluent
-public final class PersonalizerEvaluation {
+public final class PersonalizerEvaluation implements JsonSerializable<PersonalizerEvaluation> {
     /*
      * The ID of the evaluation.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the evaluation.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The start time of the evaluation.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The end time of the evaluation.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * The ID of the job processing the evaluation.
      */
-    @JsonProperty(value = "jobId", access = JsonProperty.Access.WRITE_ONLY)
     private String jobId;
 
     /*
      * The status of the job processing the evaluation.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private EvaluationJobStatus status;
 
     /*
      * The results of the evaluation.
      */
-    @JsonProperty(value = "policyResults")
     private List<PersonalizerPolicyResult> policyResults;
 
     /*
      * Feature Importance.
      */
-    @JsonProperty(value = "featureImportance")
     private List<List<String>> featureImportance;
 
     /*
      * Evaluation type (manual or through Automatic Optimization).
      */
-    @JsonProperty(value = "evaluationType")
     private EvaluationType evaluationType;
 
     /*
      * Thr optimal policy.
      */
-    @JsonProperty(value = "optimalPolicy")
     private String optimalPolicy;
 
     /*
      * Creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /**
+     * Creates an instance of PersonalizerEvaluation class.
+     */
+    public PersonalizerEvaluation() {
+    }
+
+    /**
      * Get the id property: The ID of the evaluation.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -91,7 +93,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Get the name property: The name of the evaluation.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -100,7 +102,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Get the startTime property: The start time of the evaluation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -109,7 +111,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Get the endTime property: The end time of the evaluation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -118,7 +120,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Get the jobId property: The ID of the job processing the evaluation.
-     *
+     * 
      * @return the jobId value.
      */
     String getJobId() {
@@ -127,7 +129,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Get the status property: The status of the job processing the evaluation.
-     *
+     * 
      * @return the status value.
      */
     public EvaluationJobStatus getStatus() {
@@ -136,7 +138,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Get the policyResults property: The results of the evaluation.
-     *
+     * 
      * @return the policyResults value.
      */
     public List<PersonalizerPolicyResult> getPolicyResults() {
@@ -145,7 +147,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Set the policyResults property: The results of the evaluation.
-     *
+     * 
      * @param policyResults the policyResults value to set.
      * @return the PersonalizerEvaluation object itself.
      */
@@ -156,7 +158,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Get the featureImportance property: Feature Importance.
-     *
+     * 
      * @return the featureImportance value.
      */
     public List<List<String>> getFeatureImportance() {
@@ -165,7 +167,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Set the featureImportance property: Feature Importance.
-     *
+     * 
      * @param featureImportance the featureImportance value to set.
      * @return the PersonalizerEvaluation object itself.
      */
@@ -176,7 +178,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Get the evaluationType property: Evaluation type (manual or through Automatic Optimization).
-     *
+     * 
      * @return the evaluationType value.
      */
     public EvaluationType getEvaluationType() {
@@ -185,7 +187,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Set the evaluationType property: Evaluation type (manual or through Automatic Optimization).
-     *
+     * 
      * @param evaluationType the evaluationType value to set.
      * @return the PersonalizerEvaluation object itself.
      */
@@ -196,7 +198,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Get the optimalPolicy property: Thr optimal policy.
-     *
+     * 
      * @return the optimalPolicy value.
      */
     public String getOptimalPolicy() {
@@ -205,7 +207,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Set the optimalPolicy property: Thr optimal policy.
-     *
+     * 
      * @param optimalPolicy the optimalPolicy value to set.
      * @return the PersonalizerEvaluation object itself.
      */
@@ -216,7 +218,7 @@ public final class PersonalizerEvaluation {
 
     /**
      * Get the creationTime property: Creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime getCreationTime() {
@@ -225,12 +227,82 @@ public final class PersonalizerEvaluation {
 
     /**
      * Set the creationTime property: Creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the PersonalizerEvaluation object itself.
      */
     PersonalizerEvaluation setCreationTime(OffsetDateTime creationTime) {
         this.creationTime = creationTime;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("policyResults", this.policyResults, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("featureImportance", this.featureImportance,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeStringField("evaluationType",
+            this.evaluationType == null ? null : this.evaluationType.toString());
+        jsonWriter.writeStringField("optimalPolicy", this.optimalPolicy);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerEvaluation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerEvaluation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PersonalizerEvaluation.
+     */
+    public static PersonalizerEvaluation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerEvaluation deserializedPersonalizerEvaluation = new PersonalizerEvaluation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPersonalizerEvaluation.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPersonalizerEvaluation.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedPersonalizerEvaluation.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedPersonalizerEvaluation.endTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedPersonalizerEvaluation.jobId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedPersonalizerEvaluation.status = EvaluationJobStatus.fromString(reader.getString());
+                } else if ("policyResults".equals(fieldName)) {
+                    List<PersonalizerPolicyResult> policyResults
+                        = reader.readArray(reader1 -> PersonalizerPolicyResult.fromJson(reader1));
+                    deserializedPersonalizerEvaluation.policyResults = policyResults;
+                } else if ("featureImportance".equals(fieldName)) {
+                    List<List<String>> featureImportance
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedPersonalizerEvaluation.featureImportance = featureImportance;
+                } else if ("evaluationType".equals(fieldName)) {
+                    deserializedPersonalizerEvaluation.evaluationType = EvaluationType.fromString(reader.getString());
+                } else if ("optimalPolicy".equals(fieldName)) {
+                    deserializedPersonalizerEvaluation.optimalPolicy = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedPersonalizerEvaluation.creationTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerEvaluation;
+        });
     }
 }
