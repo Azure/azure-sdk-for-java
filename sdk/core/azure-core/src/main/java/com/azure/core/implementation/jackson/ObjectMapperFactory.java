@@ -3,9 +3,6 @@
 
 package com.azure.core.implementation.jackson;
 
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -92,10 +89,10 @@ final class ObjectMapperFactory {
             try {
                 if (USE_ACCESS_HELPER) {
                     try {
-                        return java.security.AccessController
-                            .doPrivileged((PrivilegedExceptionAction<ObjectMapper>) () -> JacksonDatabind215
-                                .mutateStreamReadConstraints(objectMapper));
-                    } catch (PrivilegedActionException ex) {
+                        java.security.PrivilegedExceptionAction<ObjectMapper> action
+                            = () -> JacksonDatabind215.mutateStreamReadConstraints(objectMapper);
+                        return java.security.AccessController.doPrivileged(action);
+                    } catch (java.security.PrivilegedActionException ex) {
                         final Throwable cause = ex.getCause();
                         if (cause instanceof Error) {
                             throw LOGGER.logThrowableAsError((Error) cause);

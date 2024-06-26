@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class GetDataFactoryOperationStatusResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetDataFactoryOperationStatusResponse model = BinaryData.fromString(
-            "{\"status\":\"br\",\"\":{\"pglaoh\":\"datamdyfoebojtj\",\"jtnqjil\":\"dataqk\",\"ilm\":\"dataywkdcwmqsy\"}}")
-            .toObject(GetDataFactoryOperationStatusResponse.class);
-        Assertions.assertEquals("br", model.status());
+        GetDataFactoryOperationStatusResponse model
+            = BinaryData.fromString("{\"status\":\"n\",\"\":{\"pusllywpv\":\"dataqjrhuzgfxonj\"}}")
+                .toObject(GetDataFactoryOperationStatusResponse.class);
+        Assertions.assertEquals("n", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GetDataFactoryOperationStatusResponse model
-            = new GetDataFactoryOperationStatusResponse().withStatus("br").withAdditionalProperties(mapOf());
+            = new GetDataFactoryOperationStatusResponse().withStatus("n").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(GetDataFactoryOperationStatusResponse.class);
-        Assertions.assertEquals("br", model.status());
+        Assertions.assertEquals("n", model.status());
     }
 
     // Use "Map.of" if available

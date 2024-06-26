@@ -47,6 +47,7 @@ public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions {
         return this;
     }
 
+    @Override
     RequestOptions toRequestOptions() {
         RequestOptions requestOptions = super.toRequestOptions();
         requestOptions.setFilterPredicate(filterPredicate);

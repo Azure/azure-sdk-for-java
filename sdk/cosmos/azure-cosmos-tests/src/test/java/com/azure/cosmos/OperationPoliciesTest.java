@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
@@ -54,11 +55,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class OperationPoliciesTest extends TestSuiteBase {
-
     private CosmosAsyncClient client;
     private CosmosAsyncContainer container;
-    private static final ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor
-        = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
     private static final Properties prop = new Properties();
     private static final String E2E_TIMEOUT = "timeout.seconds";
     private static final String CONSISTENCY_LEVEL = "consistency.level";
@@ -78,9 +76,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
     private static final String MAX_PREFETCH_PAGE_COUNT = "maxPrefetchPageCount";
     private static final String QUERY_NAME = "queryName";
     private static final String keywordIdentifiers = "keywordIdentifiers";
-
     private static final String[] optionLabels = {E2E_TIMEOUT, CONSISTENCY_LEVEL, CONTENT_RESPONSE_ON_WRITE, NON_IDEMPOTENT_WRITE_RETRIES, BYPASS_CACHE, THROUGHPUT_CONTROL_GROUP_NAME, REQUEST_CHARGE_THRESHOLD, SCAN_IN_QUERY, EXCLUDE_REGIONS, MAX_DEGREE_OF_PARALLELISM, MAX_BUFFERED_ITEM_COUNT, RESPONSE_CONTINUATION_TOKEN_LIMIT_KB, MAX_ITEM_COUNT, QUERY_METRICS, INDEX_METRICS, MAX_PREFETCH_PAGE_COUNT, QUERY_NAME, keywordIdentifiers};
-    private static final String[] initialOptions = {"20", ConsistencyLevel.STRONG.toString().toUpperCase(), "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "true", "true", "10", "QueryName", "111222333,3456"};
+    private static final String[] initialOptions = {"20", "Session", "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "false", "false", "10", "QueryName", "59409493805"};
 
     @Factory(dataProvider = "clientBuildersWithApplyPolicies")
     public OperationPoliciesTest(CosmosClientBuilder clientBuilder) {
@@ -99,7 +96,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     Duration.ofSeconds(Long.parseLong(prop.getProperty(E2E_TIMEOUT))),
                     new ThresholdBasedAvailabilityStrategy()))
                 .setThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
-                .setConsistencyLevel(ConsistencyLevel.valueOf(prop.getProperty(CONSISTENCY_LEVEL)))
+                .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)))
                 .setContentResponseOnWriteEnabled(Boolean.parseBoolean(prop.getProperty(CONTENT_RESPONSE_ON_WRITE)))
                 .setNonIdempotentWriteRetriesEnabled(Boolean.parseBoolean(prop.getProperty(NON_IDEMPOTENT_WRITE_RETRIES)))
                 .setDedicatedGatewayRequestOptions(new DedicatedGatewayRequestOptions()
@@ -131,11 +128,11 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 .setIndexMetricsEnabled(Boolean.parseBoolean(prop.getProperty(INDEX_METRICS)))
                 .setMaxPrefetchPageCount(Integer.parseInt(prop.getProperty(MAX_PREFETCH_PAGE_COUNT)))
                 .setQueryName(prop.getProperty(QUERY_NAME))
-                .setConsistencyLevel(ConsistencyLevel.valueOf(prop.getProperty(CONSISTENCY_LEVEL)))
+                .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)))
                 .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(keywordIdentifiers).split(","))));
-
         }
     }
+
     private static void createReadManyOptions(String spanName, CosmosRequestOptions cosmosRequestOptions) {
         if (spanName.contains("readMany")) {
                 cosmosRequestOptions.setCosmosEndToEndLatencyPolicyConfig(new CosmosEndToEndOperationLatencyPolicyConfig(true,
@@ -149,8 +146,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setResponseContinuationTokenLimitInKb(Integer.parseInt(prop.getProperty(RESPONSE_CONTINUATION_TOKEN_LIMIT_KB)))
                     .setQueryMetricsEnabled(Boolean.parseBoolean(prop.getProperty(QUERY_METRICS)))
                     .setIndexMetricsEnabled(Boolean.parseBoolean(prop.getProperty(INDEX_METRICS)))
-                    .setConsistencyLevel(ConsistencyLevel.valueOf(prop.getProperty(CONSISTENCY_LEVEL)))
-                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(keywordIdentifiers).split(","))));
+                    .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(keywordIdentifiers).split(","))))
+                    .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)));
         }
     }
 
@@ -172,8 +169,9 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(keywordIdentifiers).split(","))));
         }
     }
+
     @DataProvider
-    public static CosmosClientBuilder[] clientBuildersWithApplyPolicies() {
+    public static Object[] clientBuildersWithApplyPolicies() {
         CosmosOperationPolicy policy = (cosmosOperationDetails) -> {
             // Figure out Operation
             CosmosDiagnosticsContext cosmosDiagnosticsContext = cosmosOperationDetails.getDiagnosticsContext();
@@ -185,7 +183,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             createReadManyOptions(spanName, cosmosRequestOptions);
             createBulkOptions(operationType, spanName, cosmosRequestOptions);
             createChangeFeedOptions(spanName, cosmosRequestOptions);
-            cosmosOperationDetails.setCommonOptions(cosmosRequestOptions);
+            cosmosOperationDetails.setRequestOptions(cosmosRequestOptions);
         };
 
         CosmosClientBuilder[] clientBuilders = new CosmosClientBuilder[3];
@@ -202,19 +200,19 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 CosmosDiagnosticsContext cosmosDiagnosticsContext = cosmosOperationDetails.getDiagnosticsContext();
                 String operationType = cosmosDiagnosticsContext.getOperationType();
                 String spanName = cosmosDiagnosticsContext.getSpanName();
-                CosmosRequestOptions cosmosCommonRequestOptions = new CosmosRequestOptions();
-                createReadDeleteBatchEtcOptions(operationType, spanName, cosmosCommonRequestOptions);
-                createQueryReadAllItemsOptions(operationType, spanName, cosmosCommonRequestOptions);
-                createReadManyOptions(spanName, cosmosCommonRequestOptions);
-                cosmosOperationDetails.setCommonOptions(cosmosCommonRequestOptions);
+                CosmosRequestOptions cosmosRequestOptions = new CosmosRequestOptions();
+                createReadDeleteBatchEtcOptions(operationType, spanName, cosmosRequestOptions);
+                createQueryReadAllItemsOptions(operationType, spanName, cosmosRequestOptions);
+                createReadManyOptions(spanName, cosmosRequestOptions);
+                cosmosOperationDetails.setRequestOptions(cosmosRequestOptions);
             }).addOperationPolicy((cosmosOperationDetails) -> {
                 CosmosDiagnosticsContext cosmosDiagnosticsContext = cosmosOperationDetails.getDiagnosticsContext();
                 String operationType = cosmosDiagnosticsContext.getOperationType();
                 String spanName = cosmosDiagnosticsContext.getSpanName();
-                CosmosRequestOptions cosmosCommonRequestOptions = new CosmosRequestOptions();
-                createBulkOptions(operationType, spanName, cosmosCommonRequestOptions);
-                createChangeFeedOptions(spanName, cosmosCommonRequestOptions);
-                cosmosOperationDetails.setCommonOptions(cosmosCommonRequestOptions);
+                CosmosRequestOptions cosmosRequestOptions = new CosmosRequestOptions();
+                createBulkOptions(operationType, spanName, cosmosRequestOptions);
+                createChangeFeedOptions(spanName, cosmosRequestOptions);
+                cosmosOperationDetails.setRequestOptions(cosmosRequestOptions);
             });
         return clientBuilders;
     }
@@ -223,17 +221,15 @@ public class OperationPoliciesTest extends TestSuiteBase {
     public void before_OperationPoliciesTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildAsyncClient();
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client);
-        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        container = getSharedMultiPartitionCosmosContainer(this.client);
     }
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.client).isNotNull();
-        this.client.close();
+        safeClose(client);
     }
 
-    @AfterMethod()
+    @AfterMethod(alwaysRun = true)
     public void afterMethod() {
         changeProperties(initialOptions);
     }
@@ -241,8 +237,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
     @DataProvider(name = "changedOptions")
     private String[][] createChangedOptions() {
         return new String[][] {
-            { "8", ConsistencyLevel.SESSION.toString().toUpperCase(), "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "false", "20", "QueryNameChanged", "112" },
-            { "4", ConsistencyLevel.EVENTUAL.toString().toUpperCase(), "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "false", "20", "QueryNameChanged", "221" },
+            { "8", "ConsistentPrefix", "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "true", "20", "QueryNameChanged", "112" },
+            { "4", "Eventual", "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "true", "false", "20", "QueryNameChanged", "221" },
             initialOptions
         };
     }
@@ -254,7 +250,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         validateItemResponse(item, itemResponse);
-        validateOptions(initialOptions, itemResponse);
+        validateOptions(initialOptions, itemResponse, false);
 
         changeProperties(changedOptions);
         item = getDocumentDefinition(UUID.randomUUID().toString());
@@ -265,11 +261,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else {
             assertThat(BridgeInternal.getProperties(itemResponse)).isNull();
         }
-        validateOptions(changedOptions, itemResponse);
+        validateOptions(changedOptions, itemResponse, false);
     }
-
-
-
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
     public void deleteItem(String[] changedOptions) throws Exception {
@@ -282,7 +275,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             new PartitionKey(item.get("mypk")),
             options).block();
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
-        validateOptions(initialOptions, deleteResponse);
+        validateOptions(initialOptions, deleteResponse, false);
 
         changeProperties(changedOptions);
 
@@ -291,7 +284,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             new PartitionKey(item.get("mypk")),
             options).block();
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
-        validateOptions(changedOptions, deleteResponse);
+        validateOptions(changedOptions, deleteResponse, false);
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -304,7 +297,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             new CosmosItemRequestOptions(),
             InternalObjectNode.class).block();
         validateItemResponse(item, readResponse);
-        validateOptions(initialOptions, readResponse);
+        validateOptions(initialOptions, readResponse, true);
 
         changeProperties(changedOptions);
 
@@ -313,7 +306,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             new CosmosItemRequestOptions(),
             InternalObjectNode.class).block();
         validateItemResponse(item, readResponse);
-        validateOptions(changedOptions, readResponse);
+        validateOptions(changedOptions, readResponse, true);
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -323,7 +316,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         CosmosItemResponse<InternalObjectNode> upsertResponse = container.upsertItem(item, new CosmosItemRequestOptions()).block();
         assertThat(upsertResponse.getRequestCharge()).isGreaterThan(0);
         validateItemResponse(item, upsertResponse);
-        validateOptions(initialOptions, upsertResponse);
+        validateOptions(initialOptions, upsertResponse, false);
 
         changeProperties(changedOptions);
 
@@ -338,8 +331,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else {
             assertThat(BridgeInternal.getProperties(upsertResponse)).isNull();
         }
-        validateOptions(changedOptions, upsertResponse);
-
+        validateOptions(changedOptions, upsertResponse, false);
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -357,7 +349,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             item.getId(), partitionKey, patchOperations, InternalObjectNode.class).block();
         assertThat(patchResponse.getRequestCharge()).isGreaterThan(0);
         assertThat(BridgeInternal.getProperties(patchResponse).get(newPropLabel)).isEqualTo(newPropValue);
-        validateOptions(initialOptions, patchResponse);
+        validateOptions(initialOptions, patchResponse, false);
 
         changeProperties(changedOptions);
 
@@ -373,10 +365,9 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else {
             assertThat(BridgeInternal.getProperties(patchResponse)).isNull();
         }
-        validateOptions(changedOptions, patchResponse);
 
+        validateOptions(changedOptions, patchResponse, false);
     }
-
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
     public void replaceItem(String[] changedOptions) throws Exception {
@@ -396,7 +387,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             pk,
             options).block();
         assertThat(BridgeInternal.getProperties(replace).get(newPropLabel)).isEqualTo(newPropValue);
-        validateOptions(initialOptions, replace);
+        validateOptions(initialOptions, replace, false);
         changeProperties(changedOptions);
 
         newPropValue = UUID.randomUUID().toString();
@@ -412,9 +403,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else {
             assertThat(BridgeInternal.getProperties(replace)).isNull();
         }
-        validateOptions(changedOptions, replace);
-
-
+        validateOptions(changedOptions, replace, false);
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -524,16 +513,12 @@ public class OperationPoliciesTest extends TestSuiteBase {
         assertThat(batchResponse.getRequestCharge()).isPositive();
         assertThat(batchResponse.getDiagnostics().toString()).isNotEmpty();
         validateOptions(changedOptions, batchResponse);
-
-
     }
 
-    @Test(groups = { "fast" }, dataProvider = "changedOptions"/*, timeOut = TIMEOUT*/)
+    @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
     public void query(String[] changedOptions) {
         String id = UUID.randomUUID().toString();
         container.createItem(getDocumentDefinition(id)).block();
-
-
 
         String query = String.format("SELECT * from c where c.id = '%s'", id);
         container.queryItems(query, InternalObjectNode.class).byPage()
@@ -545,11 +530,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 validateOptions(initialOptions, feedResponse, false, false);
                 return Flux.empty();
             }).blockLast();
-
-
         changeProperties(changedOptions);
-
-       container.queryItems(query, InternalObjectNode.class).byPage()
+        container.queryItems(query, InternalObjectNode.class).byPage()
             .flatMap(feedResponse -> {
                 List<InternalObjectNode> results = feedResponse.getResults();
                 assertThat(feedResponse.getRequestCharge()).isGreaterThan(0);
@@ -558,15 +540,12 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 validateOptions(changedOptions, feedResponse, false, false);
                 return Flux.empty();
             }).blockLast();
-
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
     public void readAllItems(String[] changedOptions) throws Exception {
         String id = UUID.randomUUID().toString();
         container.createItem(getDocumentDefinition(id)).block();
-
-
         container.readAllItems(InternalObjectNode.class).byPage()
             .flatMap(feedResponse -> {
                 List<InternalObjectNode> results = feedResponse.getResults();
@@ -593,7 +572,6 @@ public class OperationPoliciesTest extends TestSuiteBase {
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         Set<String> idSet = new HashSet<>();
         int numDocuments = 5;
-
         for (int i = 0; i < numDocuments; i++) {
             InternalObjectNode document = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(document).block();
@@ -615,9 +593,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
             assertThat(idSet.contains(fetchedResult.getId())).isTrue();
         }
         validateOptions(initialOptions, feedResponse, false, true);
-
         changeProperties(changedOptions);
-
         feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class).block();
 
         assertThat(feedResponse).isNotNull();
@@ -630,7 +606,6 @@ public class OperationPoliciesTest extends TestSuiteBase {
         }
 
         validateOptions(changedOptions, feedResponse, false, true);
-
     }
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
@@ -640,10 +615,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
             String id = UUID.randomUUID().toString();
             container.createItem(getDocumentDefinition(id)).block();
         }
-
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
             .createForProcessingFromBeginning(FeedRange.forFullRange());
-
         Iterator<FeedResponse<InternalObjectNode>> responseIterator = container.queryChangeFeed(options, InternalObjectNode.class).byPage()
             .toIterable().iterator();
         String continuationToken = "";
@@ -664,10 +637,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
         options = CosmosChangeFeedRequestOptions
             .createForProcessingFromContinuation(continuationToken);
-
         responseIterator = container.queryChangeFeed(options, InternalObjectNode.class).byPage()
             .toIterable().iterator();
-
         int totalResults = 0;
         while (responseIterator.hasNext()) {
             FeedResponse<InternalObjectNode> response = responseIterator.next();
@@ -675,7 +646,6 @@ public class OperationPoliciesTest extends TestSuiteBase {
             totalResults += response.getResults().size();
             validateOptions(changedOptions, response, true, false);
         }
-
         assertThat(totalResults).isEqualTo(numInserted);
     }
 
@@ -699,12 +669,16 @@ public class OperationPoliciesTest extends TestSuiteBase {
             .isEqualTo(containerProperties.getId());
     }
 
-    private void validateOptions(String[] options, CosmosItemResponse<?> response) {
+    private void validateOptions(String[] options, CosmosItemResponse<?> response, boolean doesRequestLevelConsistencyOverrideMatter) {
        OverridableRequestOptions requestOptions = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor().getRequestOptions(
            response.getDiagnostics().getDiagnosticsContext());
-       assertThat(requestOptions.getCosmosEndToEndLatencyPolicyConfig().getEndToEndOperationTimeout().getSeconds())
+       assertThat(requestOptions.getCosmosEndToEndLatencyPolicyConfig().getEndToEndOperationTimeout().getSeconds()) // 8
            .isEqualTo(Long.parseLong(options[0]));
-       assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase()).isEqualTo(options[1]);
+
+       if (doesRequestLevelConsistencyOverrideMatter) {
+           assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[1].toUpperCase(Locale.ROOT));
+       }
+
        assertThat(requestOptions.isContentResponseOnWriteEnabled()).isEqualTo(Boolean.parseBoolean(options[2]));
        assertThat(requestOptions.getNonIdempotentWriteRetriesEnabled()).isEqualTo(Boolean.parseBoolean(options[3]));
        assertThat(requestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()).isEqualTo(Boolean.parseBoolean(options[4]));
@@ -713,10 +687,11 @@ public class OperationPoliciesTest extends TestSuiteBase {
        assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
        assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
     }
+
     private void validateOptions(String[] options, CosmosBatchResponse response) {
         OverridableRequestOptions requestOptions = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor().getRequestOptions(
             response.getDiagnostics().getDiagnosticsContext());
-        assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase()).isEqualTo(options[1]);
+        assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[1].toUpperCase(Locale.ROOT));
         assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(options[6]));
         assertThat(requestOptions.getExcludedRegions()).isEqualTo(new ArrayList<>(Arrays.asList(options[8].split(","))));
         assertThat(requestOptions.getKeywordIdentifiers()).isEqualTo(new HashSet<>(Arrays.asList(options[17].split(","))));
@@ -742,7 +717,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else if (isReadMany) {
             assertThat(requestOptions.getCosmosEndToEndLatencyPolicyConfig().getEndToEndOperationTimeout().getSeconds())
                 .isEqualTo(Long.parseLong(changedOptions[0]));
-            assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase()).isEqualTo(changedOptions[1]);
+            assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(changedOptions[1].toUpperCase(Locale.ROOT));
             assertThat(requestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()).isEqualTo(Boolean.parseBoolean(changedOptions[4]));
             assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(changedOptions[5]);
             assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(changedOptions[6]));
@@ -754,7 +729,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         } else {
             assertThat(requestOptions.getCosmosEndToEndLatencyPolicyConfig().getEndToEndOperationTimeout().getSeconds())
                 .isEqualTo(Long.parseLong(changedOptions[0]));
-            assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase()).isEqualTo(changedOptions[1]);
+            assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(changedOptions[1].toUpperCase(Locale.ROOT));
             assertThat(requestOptions.getDedicatedGatewayRequestOptions().isIntegratedCacheBypassed()).isEqualTo(Boolean.parseBoolean(changedOptions[4]));
             assertThat(requestOptions.getThroughputControlGroupName()).isEqualTo(changedOptions[5]);
             assertThat(requestOptions.getDiagnosticsThresholds().getRequestChargeThreshold()).isEqualTo(Float.parseFloat(changedOptions[6]));
@@ -776,7 +751,4 @@ public class OperationPoliciesTest extends TestSuiteBase {
            prop.setProperty(optionLabels[i], values[i]);
        }
     }
-
-
-
 }

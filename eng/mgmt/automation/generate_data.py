@@ -17,7 +17,7 @@ from utils import update_service_ci_and_pom
 from utils import update_root_pom
 from utils import ListIndentDumper
 
-from generate_utils import generate_typespec_project
+from generate_utils import generate_typespec_project, clean_sdk_folder_if_swagger
 
 GROUP_ID = "com.azure"
 DPG_ARGUMENTS = "--sdk-integration --generate-samples --generate-tests"
@@ -35,6 +35,15 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         tsp_project, sdk_root, spec_root, head_sha, repo_url
     )
 
+    if not succeeded:
+        # check whether this is migration from Swagger
+        clean_sdk_folder_succeeded = clean_sdk_folder_if_swagger(sdk_root, sdk_folder)
+        if clean_sdk_folder_succeeded:
+            # re-generate
+            succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
+                tsp_project, sdk_root, spec_root, head_sha, repo_url
+            )
+
     if succeeded:
         # TODO (weidxu): move to typespec-java
         if require_sdk_integration:
@@ -44,6 +53,21 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
 
         # compile
         succeeded = compile_package(sdk_root, GROUP_ID, module)
+
+        if not succeeded:
+            # check whether this is migration from Swagger
+            clean_sdk_folder_succeeded = clean_sdk_folder_if_swagger(sdk_root, sdk_folder)
+            if clean_sdk_folder_succeeded:
+                # re-generate
+                succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
+                    tsp_project, sdk_root, spec_root, head_sha, repo_url
+                )
+                if require_sdk_integration:
+                    set_or_default_version(sdk_root, GROUP_ID, module)
+                    update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+                    update_root_pom(sdk_root, service)
+                # compile
+                succeeded = compile_package(sdk_root, GROUP_ID, module)
 
     # output
     if sdk_folder and module and service:
@@ -238,7 +262,7 @@ def generate(
     autorest: str,
     use: str,
     autorest_options: str = "",
-    readme: str = None
+    readme: str = None,
 ) -> bool:
     namespace = "com.{0}".format(module.replace("-", "."))
     output_dir = os.path.join(sdk_root, "sdk", service, module)

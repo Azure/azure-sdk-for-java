@@ -39,7 +39,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the CosmosEndToEndLatencyPolicyConfig.
      *
      * @param endToEndOperationLatencyPolicyConfig the CosmosEndToEndLatencyPolicyConfig.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setCosmosEndToEndLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
         this.endToEndOperationLatencyConfig = endToEndOperationLatencyPolicyConfig;
@@ -50,7 +50,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the consistency level.
      *
      * @param consistencyLevel the consistency level.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
@@ -61,7 +61,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the content response on write enabled.
      *
      * @param contentResponseOnWriteEnabled the content response on write enabled.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
@@ -72,7 +72,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the NonIdempotentWriteRetriesEnabled.
      *
      * @param nonIdempotentWriteRetriesEnabled the NonIdempotentWriteRetriesEnabled.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setNonIdempotentWriteRetriesEnabled(boolean nonIdempotentWriteRetriesEnabled) {
         this.nonIdempotentWriteRetriesEnabled = nonIdempotentWriteRetriesEnabled;
@@ -83,7 +83,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the DedicatedGatewayRequestOptions.
      *
      * @param dedicatedGatewayRequestOptions the DedicatedGatewayRequestOptions.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setDedicatedGatewayRequestOptions(DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions) {
         this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
@@ -94,7 +94,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the exclude regions.
      *
      * @param excludeRegions the ExcludeRegions.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setExcludeRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
@@ -105,7 +105,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the throughput control group name.
      *
      * @param throughputControlGroupName the ThroughputControlGroupName.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
@@ -116,7 +116,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the CosmosDiagnosticsThresholds.
      *
      * @param thresholds the CosmosDiagnosticsThresholds.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setThresholds(CosmosDiagnosticsThresholds thresholds) {
         this.thresholds = thresholds;
@@ -127,7 +127,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the ScanInQueryEnabled.
      *
      * @param scanInQueryEnabled the ScanInQueryEnabled.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setScanInQueryEnabled(Boolean scanInQueryEnabled) {
         this.scanInQueryEnabled = scanInQueryEnabled;
@@ -138,7 +138,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the MaxDegreeOfParallelism.
      *
      * @param maxDegreeOfParallelism the MaxDegreeOfParallelism.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
@@ -149,7 +149,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the MaxBufferedItemCount.
      *
      * @param maxBufferedItemCount the MaxBufferedItemCount.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setMaxBufferedItemCount(int maxBufferedItemCount) {
         this.maxBufferedItemCount = maxBufferedItemCount;
@@ -160,7 +160,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the ResponseContinuationTokenLimitInKb.
      *
      * @param responseContinuationTokenLimitInKb the ResponseContinuationTokenLimitInKb.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setResponseContinuationTokenLimitInKb(int responseContinuationTokenLimitInKb) {
         this.responseContinuationTokenLimitInKb = responseContinuationTokenLimitInKb;
@@ -171,7 +171,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the MaxItemCount.
      *
      * @param maxItemCount the MaxItemCount.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setMaxItemCount(int maxItemCount) {
         this.maxItemCount = maxItemCount;
@@ -182,7 +182,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the QueryMetricsEnabled.
      *
      * @param queryMetricsEnabled the QueryMetricsEnabled.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setQueryMetricsEnabled(boolean queryMetricsEnabled) {
         this.queryMetricsEnabled = queryMetricsEnabled;
@@ -193,7 +193,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the IndexMetricsEnabled.
      *
      * @param indexMetricsEnabled the IndexMetricsEnabled.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setIndexMetricsEnabled(boolean indexMetricsEnabled) {
         this.indexMetricsEnabled = indexMetricsEnabled;
@@ -204,7 +204,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the MaxPrefetchPageCount.
      *
      * @param maxPrefetchPageCount the MaxPrefetchPageCount.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setMaxPrefetchPageCount(int maxPrefetchPageCount) {
         this.maxPrefetchPageCount = maxPrefetchPageCount;
@@ -215,7 +215,7 @@ public final class CosmosRequestOptions implements ReadOnlyRequestOptions {
      * Sets the QueryName.
      *
      * @param queryName the QueryName.
-     * @return current CosmosCommonRequestOptions.
+     * @return current CosmosRequestOptions.
      */
     public CosmosRequestOptions setQueryName(String queryName) {
         this.queryName = queryName;

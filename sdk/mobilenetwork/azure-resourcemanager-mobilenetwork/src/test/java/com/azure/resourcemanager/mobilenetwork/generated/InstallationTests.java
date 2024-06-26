@@ -13,7 +13,7 @@ public final class InstallationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Installation model = BinaryData.fromString(
-            "{\"desiredState\":\"Uninstalled\",\"state\":\"Reinstalling\",\"reinstallRequired\":\"Required\",\"reasons\":[\"NoAttachedDataNetworks\"],\"operation\":{\"id\":\"zntxhdz\"}}")
+            "{\"desiredState\":\"Uninstalled\",\"state\":\"Updating\",\"reinstallRequired\":\"NotRequired\",\"reasons\":[\"ControlPlaneAccessVirtualIpv4AddressesHasChanged\"],\"operation\":{\"id\":\"ahvljuaha\"}}")
             .toObject(Installation.class);
         Assertions.assertEquals(DesiredInstallationState.UNINSTALLED, model.desiredState());
     }

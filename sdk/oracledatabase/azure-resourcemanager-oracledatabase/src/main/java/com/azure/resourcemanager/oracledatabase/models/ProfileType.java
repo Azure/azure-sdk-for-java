@@ -6,66 +6,62 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The connection string profile to allow clients to group, filter and select connection string values based on
  * structured metadata.
  */
 @Fluent
-public final class ProfileType {
+public final class ProfileType implements JsonSerializable<ProfileType> {
     /*
      * Consumer group used by the connection.
      */
-    @JsonProperty(value = "consumerGroup")
     private ConsumerGroup consumerGroup;
 
     /*
      * A user-friendly name for the connection.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Host format used in connection string.
      */
-    @JsonProperty(value = "hostFormat", required = true)
     private HostFormatType hostFormat;
 
     /*
      * True for a regional connection string, applicable to cross-region DG only.
      */
-    @JsonProperty(value = "isRegional")
     private Boolean isRegional;
 
     /*
      * Protocol used by the connection.
      */
-    @JsonProperty(value = "protocol", required = true)
     private ProtocolType protocol;
 
     /*
      * Specifies whether the listener performs a direct hand-off of the session, or redirects the session.
      */
-    @JsonProperty(value = "sessionMode", required = true)
     private SessionModeType sessionMode;
 
     /*
-     * Specifies whether the connection string is using the long (LONG), Easy Connect (EZCONNECT), or Easy Connect Plus (EZCONNECTPLUS) format.
+     * Specifies whether the connection string is using the long (LONG), Easy Connect (EZCONNECT), or Easy Connect Plus
+     * (EZCONNECTPLUS) format.
      */
-    @JsonProperty(value = "syntaxFormat", required = true)
     private SyntaxFormatType syntaxFormat;
 
     /*
      * Specifies whether the TLS handshake is using one-way (SERVER) or mutual (MUTUAL) authentication.
      */
-    @JsonProperty(value = "tlsAuthentication")
     private TlsAuthenticationType tlsAuthentication;
 
     /*
      * Connection string value.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
@@ -293,4 +289,66 @@ public final class ProfileType {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ProfileType.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("hostFormat", this.hostFormat == null ? null : this.hostFormat.toString());
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("sessionMode", this.sessionMode == null ? null : this.sessionMode.toString());
+        jsonWriter.writeStringField("syntaxFormat", this.syntaxFormat == null ? null : this.syntaxFormat.toString());
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("consumerGroup", this.consumerGroup == null ? null : this.consumerGroup.toString());
+        jsonWriter.writeBooleanField("isRegional", this.isRegional);
+        jsonWriter.writeStringField("tlsAuthentication",
+            this.tlsAuthentication == null ? null : this.tlsAuthentication.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileType if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProfileType.
+     */
+    public static ProfileType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileType deserializedProfileType = new ProfileType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedProfileType.displayName = reader.getString();
+                } else if ("hostFormat".equals(fieldName)) {
+                    deserializedProfileType.hostFormat = HostFormatType.fromString(reader.getString());
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedProfileType.protocol = ProtocolType.fromString(reader.getString());
+                } else if ("sessionMode".equals(fieldName)) {
+                    deserializedProfileType.sessionMode = SessionModeType.fromString(reader.getString());
+                } else if ("syntaxFormat".equals(fieldName)) {
+                    deserializedProfileType.syntaxFormat = SyntaxFormatType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedProfileType.value = reader.getString();
+                } else if ("consumerGroup".equals(fieldName)) {
+                    deserializedProfileType.consumerGroup = ConsumerGroup.fromString(reader.getString());
+                } else if ("isRegional".equals(fieldName)) {
+                    deserializedProfileType.isRegional = reader.getNullable(JsonReader::getBoolean);
+                } else if ("tlsAuthentication".equals(fieldName)) {
+                    deserializedProfileType.tlsAuthentication = TlsAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileType;
+        });
+    }
 }

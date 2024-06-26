@@ -18,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class DiagnosticsPackageInner extends ProxyResource {
     /*
-     * Diagnostics package properties. A diagnostics package file derived from the name of this resource will be
-     * uploaded to the Storage Account Container URL in the packet core control plane properties
+     * Diagnostics package properties. A diagnostics package file derived from the name of this resource will be uploaded to the Storage Account Container URL in the packet core control plane properties
      */
     @JsonProperty(value = "properties", required = true)
     private DiagnosticsPackagePropertiesFormat innerProperties = new DiagnosticsPackagePropertiesFormat();
@@ -90,8 +89,9 @@ public final class DiagnosticsPackageInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model DiagnosticsPackageInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model DiagnosticsPackageInner"));
         } else {
             innerProperties().validate();
         }

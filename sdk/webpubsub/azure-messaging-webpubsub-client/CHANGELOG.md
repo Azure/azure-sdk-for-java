@@ -4,7 +4,12 @@
 
 ### Features Added
 
+- Migrated serialization to `azure-json` which offers implementation agnostic serialization, providing support for
+  more serialization frameworks than just Jackson.
+
 ### Breaking Changes
+
+- Removed Jackson annotations from models and removed custom serializer for raw JSON fields.
 
 ### Bugs Fixed
 

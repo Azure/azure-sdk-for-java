@@ -88,6 +88,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -449,26 +450,31 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosBulkExecutionOptionsAccessor {
-            void setOperationContext(
-                CosmosBulkExecutionOptions options,
-                OperationContextAndListenerTuple operationContext);
+
+            void setOperationContext(CosmosBulkExecutionOptions options,
+                                     OperationContextAndListenerTuple operationContextAndListenerTuple);
 
             OperationContextAndListenerTuple getOperationContext(CosmosBulkExecutionOptions options);
 
-            <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
-
-            double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
-
-            double getMaxTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
+            Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
 
             CosmosBulkExecutionOptions setTargetedMicroBatchRetryRate(
                 CosmosBulkExecutionOptions options,
                 double minRetryRate,
                 double maxRetryRate);
 
+            @SuppressWarnings({"unchecked"})
+            <T> T getLegacyBatchScopedContext(CosmosBulkExecutionOptions options);
+
+            double getMinTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
+
+            double getMaxTargetedMicroBatchRetryRate(CosmosBulkExecutionOptions options);
+
             int getMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options);
 
-            CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(CosmosBulkExecutionOptions options, int maxMicroBatchPayloadSizeInBytes);
+            CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(
+                CosmosBulkExecutionOptions options,
+                int maxMicroBatchPayloadSizeInBytes);
 
             int getMaxMicroBatchConcurrency(CosmosBulkExecutionOptions options);
 
@@ -477,17 +483,19 @@ public class ImplementationBridgeHelpers {
             CosmosBulkExecutionOptions setMaxConcurrentCosmosPartitions(
                 CosmosBulkExecutionOptions options, int mxConcurrentCosmosPartitions);
 
-            Duration getMaxMicroBatchInterval(CosmosBulkExecutionOptions options);
-
             CosmosBulkExecutionOptions setHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions,
                                                  String name, String value);
 
             Map<String, String> getHeader(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
 
             Map<String, String> getCustomOptions(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
             int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
             void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
+
             BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
             CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned);
             CosmosBulkExecutionOptionsImpl getImpl(CosmosBulkExecutionOptions options);
         }
@@ -730,6 +738,7 @@ public class ImplementationBridgeHelpers {
                 ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholds);
         }
     }
+
     public static final class CosmosOperationDetailsHelper {
         private final static AtomicBoolean cosmosOperationDetailsClassLoaded = new AtomicBoolean(false);
         private final static AtomicReference<CosmosOperationDetailsAccessor> accessor = new AtomicReference<>();
@@ -1457,7 +1466,7 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosExceptionAccessor {
             CosmosException createCosmosException(int statusCode, Exception innerException);
-            List<String> getReplicaStatusList(CosmosException cosmosException);
+            Map<String, Set<String>> getReplicaStatusList(CosmosException cosmosException);
             CosmosException setRntbdChannelStatistics(CosmosException cosmosException, RntbdChannelStatistics rntbdChannelStatistics);
             RntbdChannelStatistics getRntbdChannelStatistics(CosmosException cosmosException);
 

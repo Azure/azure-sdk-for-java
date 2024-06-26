@@ -5,53 +5,56 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An item of the notebook cell execution output. */
+/**
+ * An item of the notebook cell execution output.
+ */
 @Fluent
-public final class NotebookCellOutputItem {
+public final class NotebookCellOutputItem implements JsonSerializable<NotebookCellOutputItem> {
     /*
      * For output_type=stream, determines the name of stream (stdout / stderr).
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Execution sequence number.
      */
-    @JsonProperty(value = "execution_count")
     private Integer executionCount;
 
     /*
      * Execution, display, or stream outputs.
      */
-    @JsonProperty(value = "output_type", required = true)
     private CellOutputType outputType;
 
     /*
      * For output_type=stream, the stream's text output, represented as a string or an array of strings.
      */
-    @JsonProperty(value = "text")
     private Object text;
 
     /*
      * Output data. Use MIME type as key, and content as value.
      */
-    @JsonProperty(value = "data")
     private Object data;
 
     /*
      * Metadata for the output item.
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
-    /** Creates an instance of NotebookCellOutputItem class. */
-    public NotebookCellOutputItem() {}
+    /**
+     * Creates an instance of NotebookCellOutputItem class.
+     */
+    public NotebookCellOutputItem() {
+    }
 
     /**
      * Get the name property: For output_type=stream, determines the name of stream (stdout / stderr).
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -60,7 +63,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Set the name property: For output_type=stream, determines the name of stream (stdout / stderr).
-     *
+     * 
      * @param name the name value to set.
      * @return the NotebookCellOutputItem object itself.
      */
@@ -71,7 +74,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Get the executionCount property: Execution sequence number.
-     *
+     * 
      * @return the executionCount value.
      */
     public Integer getExecutionCount() {
@@ -80,7 +83,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Set the executionCount property: Execution sequence number.
-     *
+     * 
      * @param executionCount the executionCount value to set.
      * @return the NotebookCellOutputItem object itself.
      */
@@ -91,7 +94,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Get the outputType property: Execution, display, or stream outputs.
-     *
+     * 
      * @return the outputType value.
      */
     public CellOutputType getOutputType() {
@@ -100,7 +103,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Set the outputType property: Execution, display, or stream outputs.
-     *
+     * 
      * @param outputType the outputType value to set.
      * @return the NotebookCellOutputItem object itself.
      */
@@ -112,7 +115,7 @@ public final class NotebookCellOutputItem {
     /**
      * Get the text property: For output_type=stream, the stream's text output, represented as a string or an array of
      * strings.
-     *
+     * 
      * @return the text value.
      */
     public Object getText() {
@@ -122,7 +125,7 @@ public final class NotebookCellOutputItem {
     /**
      * Set the text property: For output_type=stream, the stream's text output, represented as a string or an array of
      * strings.
-     *
+     * 
      * @param text the text value to set.
      * @return the NotebookCellOutputItem object itself.
      */
@@ -133,7 +136,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Get the data property: Output data. Use MIME type as key, and content as value.
-     *
+     * 
      * @return the data value.
      */
     public Object getData() {
@@ -142,7 +145,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Set the data property: Output data. Use MIME type as key, and content as value.
-     *
+     * 
      * @param data the data value to set.
      * @return the NotebookCellOutputItem object itself.
      */
@@ -153,7 +156,7 @@ public final class NotebookCellOutputItem {
 
     /**
      * Get the metadata property: Metadata for the output item.
-     *
+     * 
      * @return the metadata value.
      */
     public Object getMetadata() {
@@ -162,12 +165,64 @@ public final class NotebookCellOutputItem {
 
     /**
      * Set the metadata property: Metadata for the output item.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the NotebookCellOutputItem object itself.
      */
     public NotebookCellOutputItem setMetadata(Object metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("output_type", this.outputType == null ? null : this.outputType.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("execution_count", this.executionCount);
+        jsonWriter.writeUntypedField("text", this.text);
+        jsonWriter.writeUntypedField("data", this.data);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotebookCellOutputItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotebookCellOutputItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NotebookCellOutputItem.
+     */
+    public static NotebookCellOutputItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotebookCellOutputItem deserializedNotebookCellOutputItem = new NotebookCellOutputItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("output_type".equals(fieldName)) {
+                    deserializedNotebookCellOutputItem.outputType = CellOutputType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedNotebookCellOutputItem.name = reader.getString();
+                } else if ("execution_count".equals(fieldName)) {
+                    deserializedNotebookCellOutputItem.executionCount = reader.getNullable(JsonReader::getInt);
+                } else if ("text".equals(fieldName)) {
+                    deserializedNotebookCellOutputItem.text = reader.readUntyped();
+                } else if ("data".equals(fieldName)) {
+                    deserializedNotebookCellOutputItem.data = reader.readUntyped();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedNotebookCellOutputItem.metadata = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotebookCellOutputItem;
+        });
     }
 }

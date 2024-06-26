@@ -5,20 +5,35 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Generates version number based on version number of source image.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "scheme")
-@JsonTypeName("Source")
 @Immutable
 public final class DistributeVersionerSource extends DistributeVersioner {
+    /*
+     * Version numbering scheme to be used.
+     */
+    private String scheme = "Source";
+
     /**
      * Creates an instance of DistributeVersionerSource class.
      */
     public DistributeVersionerSource() {
+    }
+
+    /**
+     * Get the scheme property: Version numbering scheme to be used.
+     * 
+     * @return the scheme value.
+     */
+    @Override
+    public String scheme() {
+        return this.scheme;
     }
 
     /**
@@ -29,5 +44,41 @@ public final class DistributeVersionerSource extends DistributeVersioner {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scheme", this.scheme);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DistributeVersionerSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DistributeVersionerSource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DistributeVersionerSource.
+     */
+    public static DistributeVersionerSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DistributeVersionerSource deserializedDistributeVersionerSource = new DistributeVersionerSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scheme".equals(fieldName)) {
+                    deserializedDistributeVersionerSource.scheme = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDistributeVersionerSource;
+        });
     }
 }

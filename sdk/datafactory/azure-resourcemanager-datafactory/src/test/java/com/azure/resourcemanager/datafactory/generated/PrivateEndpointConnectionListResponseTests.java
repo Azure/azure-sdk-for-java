@@ -17,36 +17,36 @@ public final class PrivateEndpointConnectionListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"mkoisqcssf\",\"privateEndpoint\":{\"id\":\"ifmcsypobkdqzr\"},\"privateLinkServiceConnectionState\":{\"status\":\"ylollgtrczzydmxz\",\"description\":\"jpvuaurkihcirld\",\"actionsRequired\":\"xrdcoxnbkkja\"}},\"name\":\"rnnqb\",\"type\":\"bpizxqltgr\",\"etag\":\"gypxrxvbfihwuhvc\",\"id\":\"fsrb\"}],\"nextLink\":\"blml\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"htomflrytswfp\",\"privateEndpoint\":{\"id\":\"gycxnmskwhqjjys\"},\"privateLinkServiceConnectionState\":{\"status\":\"lpshhkvpedwqslsr\",\"description\":\"pq\",\"actionsRequired\":\"wskondcbrwimuvqe\"}},\"name\":\"so\",\"type\":\"rrleaesinuqt\",\"etag\":\"qobbpihehcec\",\"id\":\"mrqbrjbbmpxdlv\"}],\"nextLink\":\"frexcrseqw\"}")
             .toObject(PrivateEndpointConnectionListResponse.class);
-        Assertions.assertEquals("fsrb", model.value().get(0).id());
-        Assertions.assertEquals("ylollgtrczzydmxz",
+        Assertions.assertEquals("mrqbrjbbmpxdlv", model.value().get(0).id());
+        Assertions.assertEquals("lpshhkvpedwqslsr",
             model.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("jpvuaurkihcirld",
+        Assertions.assertEquals("pq",
             model.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("xrdcoxnbkkja",
+        Assertions.assertEquals("wskondcbrwimuvqe",
             model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("blml", model.nextLink());
+        Assertions.assertEquals("frexcrseqw", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateEndpointConnectionListResponse model = new PrivateEndpointConnectionListResponse()
-            .withValue(Arrays.asList(new PrivateEndpointConnectionResourceInner().withId("fsrb")
+            .withValue(Arrays.asList(new PrivateEndpointConnectionResourceInner().withId("mrqbrjbbmpxdlv")
                 .withProperties(new RemotePrivateEndpointConnection().withPrivateEndpoint(new ArmIdWrapper())
                     .withPrivateLinkServiceConnectionState(
-                        new PrivateLinkConnectionState().withStatus("ylollgtrczzydmxz")
-                            .withDescription("jpvuaurkihcirld")
-                            .withActionsRequired("xrdcoxnbkkja")))))
-            .withNextLink("blml");
+                        new PrivateLinkConnectionState().withStatus("lpshhkvpedwqslsr")
+                            .withDescription("pq")
+                            .withActionsRequired("wskondcbrwimuvqe")))))
+            .withNextLink("frexcrseqw");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionListResponse.class);
-        Assertions.assertEquals("fsrb", model.value().get(0).id());
-        Assertions.assertEquals("ylollgtrczzydmxz",
+        Assertions.assertEquals("mrqbrjbbmpxdlv", model.value().get(0).id());
+        Assertions.assertEquals("lpshhkvpedwqslsr",
             model.value().get(0).properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("jpvuaurkihcirld",
+        Assertions.assertEquals("pq",
             model.value().get(0).properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("xrdcoxnbkkja",
+        Assertions.assertEquals("wskondcbrwimuvqe",
             model.value().get(0).properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("blml", model.nextLink());
+        Assertions.assertEquals("frexcrseqw", model.nextLink());
     }
 }

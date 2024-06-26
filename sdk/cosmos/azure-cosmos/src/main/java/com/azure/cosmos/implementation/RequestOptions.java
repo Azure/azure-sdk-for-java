@@ -513,6 +513,51 @@ public class RequestOptions implements OverridableRequestOptions {
         return this.thresholds;
     }
 
+    @Override
+    public Boolean isScanInQueryEnabled() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxDegreeOfParallelism() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxBufferedItemCount() {
+        return null;
+    }
+
+    @Override
+    public Integer getResponseContinuationTokenLimitInKb() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxItemCount() {
+        return null;
+    }
+
+    @Override
+    public Boolean isQueryMetricsEnabled() {
+        return null;
+    }
+
+    @Override
+    public Boolean isIndexMetricsEnabled() {
+        return null;
+    }
+
+    @Override
+    public Integer getMaxPrefetchPageCount() {
+        return null;
+    }
+
+    @Override
+    public String getQueryNameOrDefault(String defaultQueryName) {
+        return null;
+    }
+
     public void setDiagnosticsThresholds(CosmosDiagnosticsThresholds thresholds) {
         this.thresholds = thresholds;
     }

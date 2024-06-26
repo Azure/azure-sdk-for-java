@@ -243,6 +243,7 @@
     "autoscale",
     "autodetection",
     "awps",
+    "azconfig",
     "azsdk",
     "azsynapse",
     "azurecr",

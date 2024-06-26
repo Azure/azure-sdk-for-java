@@ -22,7 +22,7 @@ repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 
 ```yaml
 java: true
-use: '@autorest/java@4.1.17'
+use: '@autorest/java@4.1.29'
 output-folder: ..\
 generate-client-as-impl: true
 generate-sync-async-clients: true

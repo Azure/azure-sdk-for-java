@@ -45,7 +45,8 @@ public final class FileShareDatasetTypeProperties {
     private DatasetStorageFormat format;
 
     /*
-     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or Expression with resultType string).
+     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "fileFilter")
     private Object fileFilter;

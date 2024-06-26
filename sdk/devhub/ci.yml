@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: devhub
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-devhub
         groupId: com.azure.resourcemanager

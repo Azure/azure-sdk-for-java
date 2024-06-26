@@ -16,24 +16,18 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"tenantId\":\"ufizuckyf\",\"principalId\":\"rfidfvzwdz\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"km\":{\"clientId\":\"wisdkft\",\"principalId\":\"xmnteiwaop\"},\"uf\":{\"clientId\":\"c\",\"principalId\":\"xdcu\"},\"sne\":{\"clientId\":\"pymzidnsezcxtbzs\",\"principalId\":\"yc\"}}}")
+            "{\"principalId\":\"ufizuckyf\",\"tenantId\":\"rfidfvzwdz\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"km\":{\"principalId\":\"wisdkft\",\"clientId\":\"xmnteiwaop\"},\"uf\":{\"principalId\":\"c\",\"clientId\":\"xdcu\"},\"sne\":{\"principalId\":\"pymzidnsezcxtbzs\",\"clientId\":\"yc\"}}}")
             .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("wisdkft", model.userAssignedIdentities().get("km").clientId());
-        Assertions.assertEquals("xmnteiwaop", model.userAssignedIdentities().get("km").principalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(
-                mapOf("km", new UserAssignedIdentity().withClientId("wisdkft").withPrincipalId("xmnteiwaop"), "uf",
-                    new UserAssignedIdentity().withClientId("c").withPrincipalId("xdcu"), "sne",
-                    new UserAssignedIdentity().withClientId("pymzidnsezcxtbzs").withPrincipalId("yc")));
+            .withUserAssignedIdentities(mapOf("km", new UserAssignedIdentity(), "uf", new UserAssignedIdentity(), "sne",
+                new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
-        Assertions.assertEquals("wisdkft", model.userAssignedIdentities().get("km").clientId());
-        Assertions.assertEquals("xmnteiwaop", model.userAssignedIdentities().get("km").principalId());
     }
 
     // Use "Map.of" if available

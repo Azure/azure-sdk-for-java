@@ -5,8 +5,7 @@
         "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session' }",
         "ProfileFlag": "-P integration-test-azure",
         "Pool": "env:LINUXPOOL",
-        "OSVmImage": "env:LINUXVMIMAGE",
-        "AdditionalArgs": "-Dargline=-DCOSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY=true"
+        "OSVmImage": "env:LINUXVMIMAGE"
       }
     },
     "TestFromSource": true,

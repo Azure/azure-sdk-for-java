@@ -285,7 +285,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImage(
             @HostParam("endpoint") String endpoint, @HostParam("apiVersion") String apiVersion,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData createLivenessWithVerifySessionContent,
             RequestOptions requestOptions, Context context);
 
@@ -297,7 +297,7 @@ public final class FaceSessionClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createLivenessWithVerifySessionWithVerifyImageSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData createLivenessWithVerifySessionContent,
             RequestOptions requestOptions, Context context);

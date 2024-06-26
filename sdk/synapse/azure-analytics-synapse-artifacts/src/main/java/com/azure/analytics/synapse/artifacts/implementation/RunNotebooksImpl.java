@@ -8,8 +8,8 @@ import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookRequest;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookResponse;
 import com.azure.analytics.synapse.artifacts.models.RunNotebookResponseException;
-import com.azure.analytics.synapse.artifacts.models.RunNotebookSnapshotResponse;
 import com.azure.analytics.synapse.artifacts.models.RunNotebooksCreateRunResponse;
+import com.azure.analytics.synapse.artifacts.models.RunNotebookSnapshotResponse;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -30,22 +30,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RunNotebooks. */
+/**
+ * An instance of this class provides access to all the operations defined in RunNotebooks.
+ */
 public final class RunNotebooksImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RunNotebooksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ArtifactsClientImpl client;
 
     /**
      * Initializes an instance of RunNotebooksImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RunNotebooksImpl(ArtifactsClientImpl client) {
-        this.service =
-                RestProxy.create(RunNotebooksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RunNotebooksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,53 +63,39 @@ public final class RunNotebooksImpl {
     @ServiceInterface(name = "ArtifactsClientRunNo")
     public interface RunNotebooksService {
         @Put("/notebooks/runs/{runId}")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<RunNotebooksCreateRunResponse> createRun(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("runId") String runId,
-                @BodyParam("application/json") RunNotebookRequest runNotebookRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<RunNotebooksCreateRunResponse> createRun(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("runId") String runId,
+            @BodyParam("application/json") RunNotebookRequest runNotebookRequest, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/notebooks/runs/{runId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<RunNotebookResponse>> getStatus(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("runId") String runId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<RunNotebookResponse>> getStatus(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("runId") String runId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/notebooks/runs/{runId}/cancel")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = RunNotebookResponseException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = RunNotebookResponseException.class, code = { 409 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<RunNotebookResponse>> cancelRun(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("runId") String runId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<RunNotebookResponse>> cancelRun(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("runId") String runId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/notebooks/runs/{runId}/snapshot")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<RunNotebookSnapshotResponse>> getSnapshot(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("runId") String runId,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<RunNotebookSnapshotResponse>> getSnapshot(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("runId") String runId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Run notebook.
-     *
+     * 
      * @param runId Notebook run id.
      * @param runNotebookRequest Run notebook request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,19 +104,17 @@ public final class RunNotebooksImpl {
      * @return run notebook response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RunNotebooksCreateRunResponse> createRunWithResponseAsync(
-            String runId, RunNotebookRequest runNotebookRequest) {
+    public Mono<RunNotebooksCreateRunResponse> createRunWithResponseAsync(String runId,
+        RunNotebookRequest runNotebookRequest) {
         final String apiVersion = "2022-03-01-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createRun(
-                                this.client.getEndpoint(), apiVersion, runId, runNotebookRequest, accept, context));
+        return FluxUtil.withContext(context -> service.createRun(this.client.getEndpoint(), apiVersion, runId,
+            runNotebookRequest, accept, context));
     }
 
     /**
      * Run notebook.
-     *
+     * 
      * @param runId Notebook run id.
      * @param runNotebookRequest Run notebook request payload.
      * @param context The context to associate with this operation.
@@ -134,8 +124,8 @@ public final class RunNotebooksImpl {
      * @return run notebook response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RunNotebooksCreateRunResponse> createRunWithResponseAsync(
-            String runId, RunNotebookRequest runNotebookRequest, Context context) {
+    public Mono<RunNotebooksCreateRunResponse> createRunWithResponseAsync(String runId,
+        RunNotebookRequest runNotebookRequest, Context context) {
         final String apiVersion = "2022-03-01-preview";
         final String accept = "application/json";
         return service.createRun(this.client.getEndpoint(), apiVersion, runId, runNotebookRequest, accept, context);
@@ -143,7 +133,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Run notebook.
-     *
+     * 
      * @param runId Notebook run id.
      * @param runNotebookRequest Run notebook request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,7 +148,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Run notebook.
-     *
+     * 
      * @param runId Notebook run id.
      * @param runNotebookRequest Run notebook request payload.
      * @param context The context to associate with this operation.
@@ -168,15 +158,15 @@ public final class RunNotebooksImpl {
      * @return run notebook response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RunNotebookResponse> createRunAsync(
-            String runId, RunNotebookRequest runNotebookRequest, Context context) {
+    public Mono<RunNotebookResponse> createRunAsync(String runId, RunNotebookRequest runNotebookRequest,
+        Context context) {
         return createRunWithResponseAsync(runId, runNotebookRequest, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Run notebook.
-     *
+     * 
      * @param runId Notebook run id.
      * @param runNotebookRequest Run notebook request payload.
      * @param context The context to associate with this operation.
@@ -186,14 +176,14 @@ public final class RunNotebooksImpl {
      * @return run notebook response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunNotebooksCreateRunResponse createRunWithResponse(
-            String runId, RunNotebookRequest runNotebookRequest, Context context) {
+    public RunNotebooksCreateRunResponse createRunWithResponse(String runId, RunNotebookRequest runNotebookRequest,
+        Context context) {
         return createRunWithResponseAsync(runId, runNotebookRequest, context).block();
     }
 
     /**
      * Run notebook.
-     *
+     * 
      * @param runId Notebook run id.
      * @param runNotebookRequest Run notebook request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,7 +198,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Get RunNotebook Status for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -219,13 +209,13 @@ public final class RunNotebooksImpl {
     public Mono<Response<RunNotebookResponse>> getStatusWithResponseAsync(String runId) {
         final String apiVersion = "2022-03-01-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.getStatus(this.client.getEndpoint(), apiVersion, runId, accept, context));
+        return FluxUtil
+            .withContext(context -> service.getStatus(this.client.getEndpoint(), apiVersion, runId, accept, context));
     }
 
     /**
      * Get RunNotebook Status for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,7 +232,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Get RunNotebook Status for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -256,7 +246,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Get RunNotebook Status for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,7 +261,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Get RunNotebook Status for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -286,7 +276,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Get RunNotebook Status for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -300,7 +290,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Cancel notebook run.
-     *
+     * 
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -312,13 +302,13 @@ public final class RunNotebooksImpl {
     public Mono<Response<RunNotebookResponse>> cancelRunWithResponseAsync(String runId) {
         final String apiVersion = "2022-03-01-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.cancelRun(this.client.getEndpoint(), apiVersion, runId, accept, context));
+        return FluxUtil
+            .withContext(context -> service.cancelRun(this.client.getEndpoint(), apiVersion, runId, accept, context));
     }
 
     /**
      * Cancel notebook run.
-     *
+     * 
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,7 +326,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Cancel notebook run.
-     *
+     * 
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -351,7 +341,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Cancel notebook run.
-     *
+     * 
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,7 +357,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Cancel notebook run.
-     *
+     * 
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -383,7 +373,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Cancel notebook run.
-     *
+     * 
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -398,7 +388,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Get RunNotebook Snapshot for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -409,13 +399,13 @@ public final class RunNotebooksImpl {
     public Mono<Response<RunNotebookSnapshotResponse>> getSnapshotWithResponseAsync(String runId) {
         final String apiVersion = "2022-03-01-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context -> service.getSnapshot(this.client.getEndpoint(), apiVersion, runId, accept, context));
+        return FluxUtil
+            .withContext(context -> service.getSnapshot(this.client.getEndpoint(), apiVersion, runId, accept, context));
     }
 
     /**
      * Get RunNotebook Snapshot for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -432,7 +422,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Get RunNotebook Snapshot for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -446,7 +436,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Get RunNotebook Snapshot for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -461,7 +451,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Get RunNotebook Snapshot for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -476,7 +466,7 @@ public final class RunNotebooksImpl {
 
     /**
      * Get RunNotebook Snapshot for run id.
-     *
+     * 
      * @param runId Notebook run id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

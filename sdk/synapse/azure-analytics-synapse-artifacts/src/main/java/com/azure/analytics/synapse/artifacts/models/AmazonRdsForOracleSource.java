@@ -5,55 +5,68 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity AmazonRdsForOracle source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AmazonRdsForOracleSource")
+/**
+ * A copy activity AmazonRdsForOracle source.
+ */
 @Fluent
 public final class AmazonRdsForOracleSource extends CopySource {
     /*
+     * Copy source type.
+     */
+    private String type = "AmazonRdsForOracleSource";
+
+    /*
      * AmazonRdsForOracle reader query. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "oracleReaderQuery")
     private Object oracleReaderQuery;
 
     /*
-     * Query timeout. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
 
     /*
-     * The partition mechanism that will be used for AmazonRdsForOracle read in parallel. Type: string (or Expression
-     * with resultType string).
+     * The partition mechanism that will be used for AmazonRdsForOracle read in parallel. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionOption")
     private Object partitionOption;
 
     /*
      * The settings that will be leveraged for AmazonRdsForOracle source partitioning.
      */
-    @JsonProperty(value = "partitionSettings")
     private AmazonRdsForOraclePartitionSettings partitionSettings;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
-     * Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of AmazonRdsForOracleSource class. */
-    public AmazonRdsForOracleSource() {}
+    /**
+     * Creates an instance of AmazonRdsForOracleSource class.
+     */
+    public AmazonRdsForOracleSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the oracleReaderQuery property: AmazonRdsForOracle reader query. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the oracleReaderQuery value.
      */
     public Object getOracleReaderQuery() {
@@ -63,7 +76,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Set the oracleReaderQuery property: AmazonRdsForOracle reader query. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param oracleReaderQuery the oracleReaderQuery value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
@@ -75,7 +88,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the queryTimeout value.
      */
     public Object getQueryTimeout() {
@@ -85,7 +98,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Set the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
@@ -97,7 +110,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Get the partitionOption property: The partition mechanism that will be used for AmazonRdsForOracle read in
      * parallel. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the partitionOption value.
      */
     public Object getPartitionOption() {
@@ -107,7 +120,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Set the partitionOption property: The partition mechanism that will be used for AmazonRdsForOracle read in
      * parallel. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param partitionOption the partitionOption value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
@@ -119,7 +132,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Get the partitionSettings property: The settings that will be leveraged for AmazonRdsForOracle source
      * partitioning.
-     *
+     * 
      * @return the partitionSettings value.
      */
     public AmazonRdsForOraclePartitionSettings getPartitionSettings() {
@@ -129,7 +142,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Set the partitionSettings property: The settings that will be leveraged for AmazonRdsForOracle source
      * partitioning.
-     *
+     * 
      * @param partitionSettings the partitionSettings value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
@@ -141,7 +154,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -151,7 +164,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
@@ -160,24 +173,102 @@ public final class AmazonRdsForOracleSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("oracleReaderQuery", this.oracleReaderQuery);
+        jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
+        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonRdsForOracleSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonRdsForOracleSource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonRdsForOracleSource.
+     */
+    public static AmazonRdsForOracleSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonRdsForOracleSource deserializedAmazonRdsForOracleSource = new AmazonRdsForOracleSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleSource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleSource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleSource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleSource.type = reader.getString();
+                } else if ("oracleReaderQuery".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleSource.oracleReaderQuery = reader.readUntyped();
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleSource.queryTimeout = reader.readUntyped();
+                } else if ("partitionOption".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleSource.partitionOption = reader.readUntyped();
+                } else if ("partitionSettings".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleSource.partitionSettings
+                        = AmazonRdsForOraclePartitionSettings.fromJson(reader);
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleSource.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAmazonRdsForOracleSource.setAdditionalProperties(additionalProperties);
+
+            return deserializedAmazonRdsForOracleSource;
+        });
     }
 }

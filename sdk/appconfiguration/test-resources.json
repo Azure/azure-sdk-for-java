@@ -3,7 +3,11 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "baseName": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "[resourceGroup().name]",
+            "metadata": {
+              "description": "The base resource name."
+            }
         },
         "configurationStores_azconfig_java_name": {
             "defaultValue": "azconfig-java",
@@ -30,7 +34,7 @@
     "variables": {
         "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/5ae67dd6-50cb-40e7-96ff-dc2bfa4b606b')]",
         "uniqueAzConfigName": "[concat(parameters('baseName'),'-' , parameters('configurationStores_azconfig_java_name'))]",
-        "endpointValue": "[concat('https://', parameters('baseName'), '-', parameters('configurationStores_azconfig_java_name'), parameters('azConfigEndpointSuffix'))]",
+        "endpointValue": "[format('https://{0}-{1}{2}', parameters('baseName'), parameters('configurationStores_azconfig_java_name'), parameters('azConfigEndpointSuffix'))]",
         "location": "[resourceGroup().location]"
     },
     "resources": [
@@ -57,9 +61,9 @@
         }
     ],
     "outputs": {
-        "AZURE_APPCONFIG_CONNECTION_STRING": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.AppConfiguration/configurationStores',variables('uniqueAzConfigName')), '2019-02-01-preview').value[0].connectionString]"
+        "AZ_CONFIG_ENDPOINT": {
+          "type": "string",
+          "value": "[variables('endpointValue')]"
         },
         "roleDefinitionId": {
             "type": "string",
