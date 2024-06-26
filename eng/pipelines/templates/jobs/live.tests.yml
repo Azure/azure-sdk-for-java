@@ -108,7 +108,6 @@ jobs:
             SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
             EnvVars: ${{ parameters.EnvVars }}
             ${{ if parameters.UseFederatedAuth }}:
-              FederatedAuthIsUsed: true
               SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
 
         - ${{ if parameters.TestResourceDirectories }}:
