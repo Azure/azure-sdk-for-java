@@ -8,55 +8,78 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.scvmm.models.CloudCapacity;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.scvmm.models.CloudProperties;
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
-import com.azure.resourcemanager.scvmm.models.StorageQoSPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import java.io.IOException;
 import java.util.Map;
 
-/** The Clouds resource definition. */
+/**
+ * The Clouds resource definition.
+ */
 @Fluent
 public final class CloudInner extends Resource {
     /*
-     * Resource properties.
+     * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties", required = true)
-    private CloudProperties innerProperties = new CloudProperties();
-
-    /*
-     * The system data.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    private CloudProperties properties;
 
     /*
      * The extended location.
      */
-    @JsonProperty(value = "extendedLocation", required = true)
     private ExtendedLocation extendedLocation;
 
-    /**
-     * Get the innerProperties property: Resource properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private CloudProperties innerProperties() {
-        return this.innerProperties;
+    private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of CloudInner class.
+     */
+    public CloudInner() {
     }
 
     /**
-     * Get the systemData property: The system data.
-     *
-     * @return the systemData value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    public CloudProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the CloudInner object itself.
+     */
+    public CloudInner withProperties(CloudProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the extendedLocation property: The extended location.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -65,7 +88,7 @@ public final class CloudInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the CloudInner object itself.
      */
@@ -74,14 +97,57 @@ public final class CloudInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CloudInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CloudInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -89,131 +155,76 @@ public final class CloudInner extends Resource {
     }
 
     /**
-     * Get the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
-     *
-     * @return the inventoryItemId value.
-     */
-    public String inventoryItemId() {
-        return this.innerProperties() == null ? null : this.innerProperties().inventoryItemId();
-    }
-
-    /**
-     * Set the inventoryItemId property: Gets or sets the inventory Item ID for the resource.
-     *
-     * @param inventoryItemId the inventoryItemId value to set.
-     * @return the CloudInner object itself.
-     */
-    public CloudInner withInventoryItemId(String inventoryItemId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CloudProperties();
-        }
-        this.innerProperties().withInventoryItemId(inventoryItemId);
-        return this;
-    }
-
-    /**
-     * Get the uuid property: Unique ID of the cloud.
-     *
-     * @return the uuid value.
-     */
-    public String uuid() {
-        return this.innerProperties() == null ? null : this.innerProperties().uuid();
-    }
-
-    /**
-     * Set the uuid property: Unique ID of the cloud.
-     *
-     * @param uuid the uuid value to set.
-     * @return the CloudInner object itself.
-     */
-    public CloudInner withUuid(String uuid) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CloudProperties();
-        }
-        this.innerProperties().withUuid(uuid);
-        return this;
-    }
-
-    /**
-     * Get the vmmServerId property: ARM Id of the vmmServer resource in which this resource resides.
-     *
-     * @return the vmmServerId value.
-     */
-    public String vmmServerId() {
-        return this.innerProperties() == null ? null : this.innerProperties().vmmServerId();
-    }
-
-    /**
-     * Set the vmmServerId property: ARM Id of the vmmServer resource in which this resource resides.
-     *
-     * @param vmmServerId the vmmServerId value to set.
-     * @return the CloudInner object itself.
-     */
-    public CloudInner withVmmServerId(String vmmServerId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CloudProperties();
-        }
-        this.innerProperties().withVmmServerId(vmmServerId);
-        return this;
-    }
-
-    /**
-     * Get the cloudName property: Name of the cloud in VMMServer.
-     *
-     * @return the cloudName value.
-     */
-    public String cloudName() {
-        return this.innerProperties() == null ? null : this.innerProperties().cloudName();
-    }
-
-    /**
-     * Get the cloudCapacity property: Capacity of the cloud.
-     *
-     * @return the cloudCapacity value.
-     */
-    public CloudCapacity cloudCapacity() {
-        return this.innerProperties() == null ? null : this.innerProperties().cloudCapacity();
-    }
-
-    /**
-     * Get the storageQoSPolicies property: List of QoS policies available for the cloud.
-     *
-     * @return the storageQoSPolicies value.
-     */
-    public List<StorageQoSPolicy> storageQoSPolicies() {
-        return this.innerProperties() == null ? null : this.innerProperties().storageQoSPolicies();
-    }
-
-    /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model CloudInner"));
-        } else {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
         if (extendedLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property extendedLocation in model CloudInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property extendedLocation in model CloudInner"));
         } else {
             extendedLocation().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CloudInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CloudInner.
+     */
+    public static CloudInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudInner deserializedCloudInner = new CloudInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCloudInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCloudInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCloudInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCloudInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCloudInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedCloudInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCloudInner.properties = CloudProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCloudInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudInner;
+        });
+    }
 }
