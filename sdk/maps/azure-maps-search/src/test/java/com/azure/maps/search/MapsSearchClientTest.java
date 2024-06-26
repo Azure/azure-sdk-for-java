@@ -117,6 +117,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
     }
 
     // Test search point of interest
+    @Disabled("Test expected four points of interest but service only returns one. (Has been failing in live tests)")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testSearchPointOfInterest(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
@@ -129,6 +130,7 @@ public class MapsSearchClientTest extends MapsSearchClientTestBase {
 
     // Test search point of interest with response
     // Case 1: 200
+    @Disabled("Test expected four points of interest but service only returns one. (Has been failing in live tests)")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testSearchPointOfInterestWithResponse(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {

@@ -122,6 +122,7 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
     }
 
     // Test async search point of interest
+    @Disabled("Test expected four points of interest but service only returns one. (Has been failing in live tests)")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchPointOfInterest(HttpClient httpClient, MapsSearchServiceVersion serviceVersion) {
@@ -137,6 +138,7 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
 
     // Test async search point of interest with response
     // Case 1: 200
+    @Disabled("Test expected four points of interest but service only returns one. (Has been failing in live tests)")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.search.TestUtils#getTestParameters")
     public void testAsyncSearchPointOfInterestWithResponse(HttpClient httpClient,
@@ -358,10 +360,11 @@ public class MapsSearchAsyncClientTest extends MapsSearchClientTestBase {
         MapsSearchAsyncClient client = getMapsSearchAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(
             client.reverseSearchAddressWithResponse(new ReverseSearchAddressOptions(new GeoPosition(-121.89, -100)),
-                Context.NONE)).expectErrorSatisfies(ex -> {
-            final HttpResponseException httpResponseException = (HttpResponseException) ex;
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-        }).verify(DEFAULT_TIMEOUT);
+                Context.NONE))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            }).verify(DEFAULT_TIMEOUT);
     }
 
     // Test async reverse search cross street address

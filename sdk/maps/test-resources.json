@@ -17,7 +17,9 @@
     }
   },
   "variables": {
-    "mapsContributorRoleId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+    "contributorRoleId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+    "mapsContributorRoleId": "dba33070-676a-4fb0-87fa-064dc56ff7fb",
+    "mapsDataContributorRoleId": "dba33070-676a-4fb0-87fa-064dc56ff7fb",
     "mapsAccountName": "[guid(resourceGroup().id, deployment().name, parameters('baseName'))]"
   },
   "resources": [
@@ -50,12 +52,38 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2019-04-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('contributorRoleId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('contributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]",
+        "scope": "[resourceGroup().id]"
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2019-04-01-preview",
       "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('mapsContributorRoleId'))]",
       "properties": {
         "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('mapsContributorRoleId'))]",
         "principalId": "[parameters('testApplicationOid')]",
         "scope": "[resourceGroup().id]"
       }
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2019-04-01-preview",
+      "name": "[guid(resourceGroup().id, parameters('testApplicationOid'), variables('mapsDataContributorRoleId'))]",
+      "properties": {
+        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('mapsDataContributorRoleId'))]",
+        "principalId": "[parameters('testApplicationOid')]",
+        "scope": "[resourceGroup().id]"
+      }
     }
-  ]
+  ],
+  "outputs": {
+    "MAPS_CLIENT_ID": {
+      "type": "string",
+      "value": "[reference(resourceId('Microsoft.Maps/accounts', variables('mapsAccountName'))).uniqueId]"
+    }
+  }
 }

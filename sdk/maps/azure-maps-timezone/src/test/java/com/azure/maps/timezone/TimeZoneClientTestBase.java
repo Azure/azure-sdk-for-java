@@ -15,6 +15,7 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Configuration;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.timezone.models.IanaId;
@@ -61,11 +62,14 @@ public class TimeZoneClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build());
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .timezoneClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         } else if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new MockTokenCredential());
+            builder.credential(new MockTokenCredential())
+                .timezoneClientId("timezoneClientId");
         } else {
-            builder.credential(new AzurePowerShellCredentialBuilder().build());
+            builder.credential(new AzurePowerShellCredentialBuilder().build())
+                .timezoneClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         }
 
         return builder.httpClient(

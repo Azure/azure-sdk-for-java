@@ -21,8 +21,6 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class TestUtils {
-    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
-
     static MapTileset getExpectedMapTileset() {
         return deserialize(MapTileset::fromJson, "maptileset.json");
     }
