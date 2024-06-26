@@ -17,6 +17,8 @@ from utils import (
     update_service_ci_and_pom,
     update_root_pom,
     update_version,
+    get_latest_ga_version,
+    get_latest_release_version,
 )
 from generate_data import (
     sdk_automation as sdk_automation_data,
@@ -129,6 +131,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
     api_specs_file = os.path.join(base_dir, API_SPECS_FILE)
 
     packages = []
+    breaking = False
     if "relatedReadmeMdFiles" not in config or not config["relatedReadmeMdFiles"]:
         return packages
 
@@ -178,7 +181,10 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                 tag=tag,
             )
             if succeeded:
-                compile_arm_package(sdk_root, module)
+                compile_succeeded = compile_arm_package(sdk_root, module)
+                if compile_succeeded:
+                    stable_version = get_latest_ga_version(GROUP_ID, module, stable_version)
+                    breaking, changelog = compare_with_maven_package(sdk_root, service, stable_version, current_version, module)
 
             packages.append(
                 {
@@ -196,6 +202,10 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                     "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(output_folder))), None),
                     "language": "Java",
                     "result": "succeeded" if succeeded else "failed",
+                    "changelog": {
+                        "content": changelog,
+                        "hasBreakingChange": breaking
+                    }
                 }
             )
 
@@ -236,10 +246,13 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     spec_root = os.path.abspath(config["specFolder"])
     head_sha: str = config["headSha"]
     repo_url: str = config["repoHttpsUrl"]
+    breaking: bool = False
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project, sdk_root, spec_root, head_sha, repo_url, remove_before_regen=True, group_id=GROUP_ID
     )
+
+    stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module)
 
     if succeeded:
         # TODO (weidxu): move to typespec-java
@@ -250,6 +263,8 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
 
         # compile
         succeeded = compile_arm_package(sdk_root, module)
+        if succeeded:
+            breaking, changelog = compare_with_maven_package(sdk_root, service, get_latest_ga_version(stable_version), current_version, module)
 
     # output
     if sdk_folder and module and service:
@@ -272,6 +287,10 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(sdk_folder))), None),
             "language": "Java",
             "result": result,
+            "changelog": {
+                "content": changelog,
+                "hasBreakingChange": breaking
+            }
         }
     else:
         # no info about package, abort with result=failed
@@ -343,7 +362,8 @@ def main():
     if succeeded:
         succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
-            compare_with_maven_package(sdk_root, service, stable_version, current_version, module)
+            latest_release_version = get_latest_release_version(current_version, stable_version)
+            compare_with_maven_package(sdk_root, service, latest_release_version, current_version, module)
 
             if args.get("auto_commit_external_change") and args.get("user_name") and args.get("user_email"):
                 pwd = os.getcwd()

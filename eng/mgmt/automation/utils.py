@@ -5,6 +5,8 @@ import logging
 import re
 import subprocess
 import platform
+import requests
+from functools import cmp_to_key
 from typing import Tuple
 
 from parameters import CI_HEADER
@@ -12,6 +14,7 @@ from parameters import CI_FORMAT
 from parameters import POM_FORMAT
 from parameters import POM_MODULE_FORMAT
 from parameters import DEFAULT_VERSION
+from parameters import MAVEN_HOST
 
 
 # Add two more indent for list in yaml dump
@@ -350,3 +353,81 @@ def set_or_increase_version(
 
 def is_windows():
     return platform.system().lower() == "windows"
+
+
+def get_latest_release_version(previous_version: str, current_version: str) -> str:
+    if "-beta." in current_version and "-beta." not in previous_version:
+        # if current version is preview, try compare it with a previous preview release
+
+        version_pattern = r"\d+\.\d+\.\d+-beta\.(\d+)?"
+        beta_version_int = int(re.match(version_pattern, current_version).group(1))
+        if beta_version_int > 1:
+            previous_beta_version_int = beta_version_int - 1
+            previous_beta_version = current_version.replace(
+                "-beta." + str(beta_version_int),
+                "-beta." + str(previous_beta_version_int),
+            )
+            previous_version = previous_beta_version
+    return previous_version
+
+
+def get_latest_ga_version(group_id: str, module: str, previous_version: str) -> str:
+    """
+    If previous_version is GA, return previous_version,
+    Otherwise, return previous GA version before previous beta.
+    previous_version itself if no previous GA version.
+    """
+    if "-beta." not in previous_version:
+        return previous_version
+
+    # No previous GA version
+    if previous_version.startswith("1.0.0-beta."):
+        return previous_version
+
+    response = requests.get(
+        f"{MAVEN_HOST}/{group_id.replace("\.", "\/")}/{module}"
+    )
+
+    response.raise_for_status()
+
+    ga_version_pattern = r"<a href=\"(\d+\.\d+\.\d+\/?)"
+    ga_versions = [v.group(1) for v in re.finditer(ga_version_pattern, response.text, re.S)]
+    previous_ga_versions = sorted(
+        [v for v in ga_versions if compare_version(v, previous_version) < 0],
+        key=cmp_to_key(compare_version),
+        reverse=True)
+
+    if len(previous_ga_versions) > 0:
+        return previous_ga_versions[0]
+
+    return previous_version
+
+
+def compare_version(v1: str, v2: str) -> int:
+    """
+    If v1 < v2, return -1;
+    Else if v1 > v2, return 1;
+    Else return 0;
+    """
+    ga_version_pattern = r"(\d+)\.(\d)+\.(\d+)?"
+    v1_major_version = int(re.match(ga_version_pattern, v1).group(1))
+    v1_minor_version = int(re.match(ga_version_pattern, v1).group(2))
+    v1_patch_version = int(re.match(ga_version_pattern, v1).group(3))
+
+    v2_major_version = int(re.match(ga_version_pattern, v2).group(1))
+    v2_minor_version = int(re.match(ga_version_pattern, v2).group(2))
+    v2_patch_version = int(re.match(ga_version_pattern, v2).group(3))
+
+    if v1_major_version < v2_major_version:
+        return -1
+    if v1_major_version > v2_major_version:
+        return 1
+    if v1_minor_version < v2_minor_version:
+        return -1
+    if v1_minor_version > v2_minor_version:
+        return 1
+    if v1_patch_version < v2_patch_version:
+        return -1
+    if v1_patch_version > v2_patch_version:
+        return 1
+    return 0
