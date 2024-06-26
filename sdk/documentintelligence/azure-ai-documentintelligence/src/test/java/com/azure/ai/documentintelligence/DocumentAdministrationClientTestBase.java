@@ -20,6 +20,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.Duration;
@@ -72,7 +73,7 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
                 builder.credential(new DefaultAzureCredentialBuilder().build());
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             } else if (interceptorManager.isLiveMode()) {
-                builder.credential(new DefaultAzureCredentialBuilder().build());
+                builder.credential(new AzurePowerShellCredentialBuilder().build());
             }
         }
         if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
