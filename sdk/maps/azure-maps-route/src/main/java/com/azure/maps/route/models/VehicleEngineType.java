@@ -5,31 +5,44 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VehicleEngineType. */
+/**
+ * Defines values for VehicleEngineType.
+ */
 public final class VehicleEngineType extends ExpandableStringEnum<VehicleEngineType> {
-    /** Static value combustion for VehicleEngineType. */
+    /**
+     * Internal combustion engine.
+     */
     public static final VehicleEngineType COMBUSTION = fromString("combustion");
 
-    /** Static value electric for VehicleEngineType. */
+    /**
+     * Electric engine.
+     */
     public static final VehicleEngineType ELECTRIC = fromString("electric");
 
     /**
+     * Creates a new instance of VehicleEngineType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VehicleEngineType() {
+    }
+
+    /**
      * Creates or finds a VehicleEngineType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VehicleEngineType.
      */
-    @JsonCreator
     public static VehicleEngineType fromString(String name) {
         return fromString(name, VehicleEngineType.class);
     }
 
     /**
      * Gets known VehicleEngineType values.
-     *
+     * 
      * @return known VehicleEngineType values.
      */
     public static Collection<VehicleEngineType> values() {
