@@ -182,7 +182,7 @@ stages:
             CloudConfig:
               SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
               SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
-              SubscriptionConfigurationFilePaths: ${{ cloud.value.SubscriptionConfigurationFilePaths}}
+              SubscriptionConfigurationFilePaths: ${{ cloud.value.SubscriptionConfigurationFilePaths }}
               Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
               Cloud: ${{ cloud.key }}
               ServiceConnection: ${{ cloud.value.ServiceConnection }}
