@@ -36,6 +36,7 @@ public class ApplicationContextEventErrorReactiveIT {
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
         repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1)).collectList().block();
+
     }
 
     @Test(expected = CosmosAccessException.class)
