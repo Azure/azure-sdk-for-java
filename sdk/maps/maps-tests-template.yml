@@ -42,7 +42,7 @@ extends:
           ServiceDirectory: maps
           EnvVars:
             #SKIP_LIVE_TEST: TRUE
-            ${{ each var in parameters.EnVars }}:
+            ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
           MatrixConfigs:
             - ${{ each config in parameters.MatrixConfigs }}:
