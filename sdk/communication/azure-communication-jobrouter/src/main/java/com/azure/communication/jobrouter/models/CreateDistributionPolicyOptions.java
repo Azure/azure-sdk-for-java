@@ -46,7 +46,6 @@ public final class CreateDistributionPolicyOptions {
     }
 
     /**
-     * Sets Distribution Policy name.
      * @param name The human-readable name of the policy.
      * @return this
      */
