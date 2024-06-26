@@ -33,6 +33,12 @@ public class SpELCosmosAnnotationIT {
     @Autowired
     private CosmosTemplate cosmosTemplate;
 
+    final CosmosEntityInformation<SpELPropertyStudent, Object> propertyStudentInfo =
+        new CosmosEntityInformation<>(SpELPropertyStudent.class);
+
+    final CosmosEntityInformation<SpELBeanStudent, Object> beanStudentInfo =
+        new CosmosEntityInformation<>(SpELBeanStudent.class);
+
     @Before
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, SpELPropertyStudent.class);
@@ -40,24 +46,16 @@ public class SpELCosmosAnnotationIT {
 
     @Test
     public void testDynamicContainerNameWithPropertySourceExpression() {
-        final CosmosEntityInformation<SpELPropertyStudent, Object> propertyStudentInfo =
-            new CosmosEntityInformation<>(SpELPropertyStudent.class);
-
         assertEquals(TestConstants.DYNAMIC_PROPERTY_COLLECTION_NAME, propertyStudentInfo.getContainerName());
     }
 
     @Test
     public void testDynamicContainerNameWithBeanExpression() {
-        final CosmosEntityInformation<SpELBeanStudent, Object> beanStudentInfo =
-            new CosmosEntityInformation<>(SpELBeanStudent.class);
-
         assertEquals(TestConstants.DYNAMIC_BEAN_COLLECTION_NAME, beanStudentInfo.getContainerName());
     }
 
     @Test
     public void testDatabaseOperationsOnDynamicallyNamedCollection() throws ClassNotFoundException {
-        final CosmosEntityInformation<SpELPropertyStudent, Object> propertyStudentInfo =
-            new CosmosEntityInformation<>(SpELPropertyStudent.class);
         cosmosTemplate.createContainerIfNotExists(propertyStudentInfo);
 
         final SpELPropertyStudent insertedRecord =
