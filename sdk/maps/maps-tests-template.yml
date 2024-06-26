@@ -1,6 +1,6 @@
 parameters:
-  PackageName: not-specified
-  SafeName: not-specified
+  PackageName: 'not-specified'
+  SafeName: 'not-specified'
   Clouds: 'Public'
   TestMode: 'LIVE'
   EnvVars: {}
