@@ -29,7 +29,7 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testAsyncGetMapTileset(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getMapTileset(TilesetId.MICROSOFT_BASE))
+        StepVerifier.create(client.getMapTileset(TilesetId.MICROSOFT_BASE_HYBRID))
             .assertNext(actualResults -> validateGetMapTileset(TestUtils.getExpectedMapTileset(), actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -41,7 +41,7 @@ public class MapsRenderAsyncClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testAsyncGetMapTilesetWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         MapsRenderAsyncClient client = getRenderAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getMapTilesetWithResponse(TilesetId.MICROSOFT_BASE))
+        StepVerifier.create(client.getMapTilesetWithResponse(TilesetId.MICROSOFT_BASE_HYBRID))
             .assertNext(response -> validateGetMapTilesetWithResponse(TestUtils.getExpectedMapTileset(), response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);

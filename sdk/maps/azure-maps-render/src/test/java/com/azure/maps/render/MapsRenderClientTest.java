@@ -72,7 +72,7 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testGetMapTileset(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
-        MapTileset actualResult = client.getMapTileset(TilesetId.MICROSOFT_BASE);
+        MapTileset actualResult = client.getMapTileset(TilesetId.MICROSOFT_BASE_HYBRID);
         MapTileset expectedResult = TestUtils.getExpectedMapTileset();
         validateGetMapTileset(expectedResult, actualResult);
     }
@@ -84,7 +84,7 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     public void testGetMapTilesetWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
         validateGetMapTilesetWithResponse(TestUtils.getExpectedMapTileset(),
-            client.getMapTilesetWithResponse(TilesetId.MICROSOFT_BASE, null));
+            client.getMapTilesetWithResponse(TilesetId.MICROSOFT_BASE_HYBRID, null));
     }
 
     // Case 2: Respone 400, incorrect input

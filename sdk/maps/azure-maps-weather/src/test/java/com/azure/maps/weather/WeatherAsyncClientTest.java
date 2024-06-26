@@ -647,10 +647,11 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAirQualityDailyForecastsWithResponse(new GeoPosition(-100000, 47.632346), "en",
-            DailyDuration.TWO_DAYS, null)).expectErrorSatisfies(ex -> {
-            final HttpResponseException httpResponseException = (HttpResponseException) ex;
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-        }).verify(DEFAULT_TIMEOUT);
+            DailyDuration.TWO_DAYS, null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            }).verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get air quality hourly forecasts
@@ -691,10 +692,11 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         WeatherServiceVersion serviceVersion) {
         WeatherAsyncClient client = getWeatherAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAirQualityHourlyForecastsWithResponse(new GeoPosition(-100000, 47.632346), "fr",
-            HourlyDuration.ONE_HOUR, false, null)).expectErrorSatisfies(ex -> {
-            final HttpResponseException httpResponseException = (HttpResponseException) ex;
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-        }).verify(DEFAULT_TIMEOUT);
+            HourlyDuration.ONE_HOUR, false, null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            }).verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily historical actuals
@@ -742,10 +744,11 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         LocalDate today = testResourceNamer.now().toLocalDate();
         StepVerifier.create(
             client.getDailyHistoricalActualsWithResponse(new GeoPosition(-100000, 62.6490341), before, today, null,
-                null)).expectErrorSatisfies(ex -> {
-            final HttpResponseException httpResponseException = (HttpResponseException) ex;
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-        }).verify(DEFAULT_TIMEOUT);
+                null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            }).verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily historical records
@@ -793,10 +796,11 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         LocalDate afterYears = beforeYears.plusDays(30);
         StepVerifier.create(
             client.getDailyHistoricalRecordsWithResponse(new GeoPosition(-1000000, 39.952583), beforeYears, afterYears,
-                null)).expectErrorSatisfies(ex -> {
-            final HttpResponseException httpResponseException = (HttpResponseException) ex;
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-        }).verify(DEFAULT_TIMEOUT);
+                null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            }).verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get daily historical normals
@@ -842,9 +846,10 @@ public class WeatherAsyncClientTest extends WeatherTestBase {
         LocalDate today = testResourceNamer.now().toLocalDate();
         StepVerifier.create(
             client.getDailyHistoricalNormalsWithResponse(new GeoPosition(-100000, 62.6490341), before, today, null,
-                null)).expectErrorSatisfies(ex -> {
-            final HttpResponseException httpResponseException = (HttpResponseException) ex;
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-        }).verify(DEFAULT_TIMEOUT);
+                null))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            }).verify(DEFAULT_TIMEOUT);
     }
 }
