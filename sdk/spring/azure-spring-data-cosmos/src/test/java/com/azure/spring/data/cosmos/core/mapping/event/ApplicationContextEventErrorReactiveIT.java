@@ -9,7 +9,9 @@ import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveAddressRepository;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.util.Lists;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -32,10 +34,18 @@ public class ApplicationContextEventErrorReactiveIT {
     @Autowired
     private CosmosTemplate template;
 
+    private static CosmosEntityInformation<Address, String> addressEntityInformation
+        = new CosmosEntityInformation<>(Address.class);
+
     @Before
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
         repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1)).collectList().block();
+    }
+
+    @AfterClass
+    public static void cleanUp() {
+        collectionManager.deleteContainer(addressEntityInformation);
     }
 
     @Test(expected = CosmosAccessException.class)

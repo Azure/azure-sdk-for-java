@@ -9,7 +9,9 @@ import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveAddressRepository;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.util.Lists;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -46,12 +48,20 @@ public class ApplicationContextEventReactiveIT {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
+    private static CosmosEntityInformation<Address, String> addressEntityInformation
+        = new CosmosEntityInformation<>(Address.class);
+
     @Before
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
         repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,
             TEST_ADDRESS2_PARTITION1)).collectList().block();
         simpleCosmosMappingEventListener.onAfterLoadEvents = new ArrayList<>();
+    }
+
+    @AfterClass
+    public static void cleanUp() {
+        collectionManager.deleteContainer(addressEntityInformation);
     }
 
     @Test
