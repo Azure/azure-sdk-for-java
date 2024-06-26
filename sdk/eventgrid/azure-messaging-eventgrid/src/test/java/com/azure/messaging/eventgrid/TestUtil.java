@@ -25,15 +25,7 @@ public class TestUtil {
         } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().build();
         } else {
-            return getPlaybackTokenCredential();
+            return new MockTokenCredential();
         }
-    }
-
-    /**
-     * Gets a playback token credential for use in tests.
-     * @return the TokenCredential
-     */
-    public static TokenCredential getPlaybackTokenCredential() {
-        return new MockTokenCredential();
     }
 }
