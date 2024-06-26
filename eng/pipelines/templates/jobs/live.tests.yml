@@ -92,16 +92,6 @@ jobs:
         parameters:
           JdkVersion: $(JavaTestVersion)
 
-      - ${{ if eq('true', parameters.UseFederatedAuth) }}:
-        - pwsh: |
-            Write-Host "UseFederatedAuth: ${{ parameters.UseFederatedAuth }}"
-          displayName: UseFederatedAuth ${{ parameters.UseFederatedAuth }} (eq true)
-
-      - ${{ if ne('true', parameters.UseFederatedAuth) }}:
-        - pwsh: |
-            Write-Host "UseFederatedAuth: ${{ parameters.UseFederatedAuth }}"
-          displayName: UseFederatedAuth ${{ parameters.UseFederatedAuth }} (ne true)
-
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/build-test-resource-config.yml
           parameters:
