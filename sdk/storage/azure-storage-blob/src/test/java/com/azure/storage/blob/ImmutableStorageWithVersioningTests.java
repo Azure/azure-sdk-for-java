@@ -16,6 +16,9 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -67,6 +70,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -78,6 +83,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -101,7 +107,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     private BlobClient vlwBlob;
 
     @BeforeAll
-    public static void setupSpec() throws JsonProcessingException, MalformedURLException {
+    public static void setupSpec() throws IOException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             vlwContainerName = CoreUtils.randomUuid().toString();
 
@@ -124,11 +130,13 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
             body.setType("Microsoft.Storage/storageAccounts/blobServices/containers");
             body.setProperties(properties);
 
-            String serializedBody = new ObjectMapper().writeValueAsString(body);
+            ByteArrayOutputStream json = new ByteArrayOutputStream();
+            try (JsonWriter jsonWriter = JsonProviders.createWriter(json)) {
+                body.toJson(jsonWriter);
+            }
 
             HttpResponse response = httpPipeline.send(new HttpRequest(HttpMethod.PUT, new URL(url), new HttpHeaders(),
-                    Flux.just(ByteBuffer.wrap(serializedBody.getBytes(StandardCharsets.UTF_8)))))
-                .block();
+                Flux.just(ByteBuffer.wrap(json.toByteArray())))).block();
             assertNotNull(response);
             if (response.getStatusCode() != 201) {
                 LOGGER.warning(response.getBodyAsString().block());
@@ -145,7 +153,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         vlwBlob.upload(new ByteArrayInputStream(new byte[0]), 0);
     }
 
-    public static final class Body {
+    public static final class Body implements JsonSerializable<Body> {
         private String id;
         private String name;
         private String type;
@@ -182,8 +190,18 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         public void setProperties(Properties properties) {
             this.properties = properties;
         }
+
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject()
+                .writeStringField("ID", this.id)
+                .writeStringField("Name", this.name)
+                .writeStringField("Type", this.type)
+                .writeJsonField("Properties", this.properties);
+
+            return jsonWriter.writeEndObject();
+        }
     }
-    public static final class Properties {
+    public static final class Properties implements JsonSerializable<Properties> {
         private ImmutableStorageWithVersioning immutableStorageWithVersioning;
 
         public ImmutableStorageWithVersioning getImmutableStorageWithVersioning() {
@@ -193,8 +211,14 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         public void setImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
             this.immutableStorageWithVersioning = immutableStorageWithVersioning;
         }
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject()
+                .writeJsonField("ImmutableStorageWithVersioning", this.immutableStorageWithVersioning);
+
+            return jsonWriter.writeEndObject();
+        }
     }
-    public static final class ImmutableStorageWithVersioning {
+    public static final class ImmutableStorageWithVersioning implements JsonSerializable<ImmutableStorageWithVersioning>{
         private boolean enabled;
 
         public boolean isEnabled() {
@@ -203,6 +227,13 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
 
         public void setEnabled(boolean enabled) {
             this.enabled = enabled;
+        }
+
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject()
+                .writeBooleanField("Enabled", this.enabled);
+
+            return jsonWriter.writeEndObject();
         }
     }
 
