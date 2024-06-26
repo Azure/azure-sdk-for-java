@@ -54,7 +54,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -614,9 +613,7 @@ public final class BlobServiceAsyncClient {
             this.azureBlobStorage.getServices().filterBlobsWithResponseAsync(null, null,
                 options.getQuery(), marker, options.getMaxResultsPerPage(), null, context), timeout)
             .map(response -> {
-                List<TaggedBlobItem> value = response.getValue().getBlobs() == null
-                    ? Collections.emptyList()
-                    : response.getValue().getBlobs().stream()
+                List<TaggedBlobItem> value = response.getValue().getBlobs().stream()
                     .map(ModelHelper::populateTaggedBlobItem)
                     .collect(Collectors.toList());
 
@@ -838,13 +835,11 @@ public final class BlobServiceAsyncClient {
             }
 
             // CORS
-            if (properties.getCors() != null) {
-                List<BlobCorsRule> corsRules = new ArrayList<>();
-                for (BlobCorsRule rule : properties.getCors()) {
-                    corsRules.add(validatedCorsRule(rule));
-                }
-                finalProperties.setCors(corsRules);
+            List<BlobCorsRule> corsRules = new ArrayList<>();
+            for (BlobCorsRule rule : properties.getCors()) {
+                corsRules.add(validatedCorsRule(rule));
             }
+            finalProperties.setCors(corsRules);
 
             // Default Service Version
             finalProperties.setDefaultServiceVersion(properties.getDefaultServiceVersion());
