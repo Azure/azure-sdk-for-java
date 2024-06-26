@@ -57,8 +57,6 @@ import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,7 +73,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -83,7 +80,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -193,10 +189,10 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
 
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject()
-                .writeStringField("ID", this.id)
-                .writeStringField("Name", this.name)
-                .writeStringField("Type", this.type)
-                .writeJsonField("Properties", this.properties);
+                .writeStringField("id", this.id)
+                .writeStringField("name", this.name)
+                .writeStringField("type", this.type)
+                .writeJsonField("properties", this.properties);
 
             return jsonWriter.writeEndObject();
         }
@@ -213,12 +209,12 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         }
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject()
-                .writeJsonField("ImmutableStorageWithVersioning", this.immutableStorageWithVersioning);
+                .writeJsonField("immutableStorageWithVersioning", this.immutableStorageWithVersioning);
 
             return jsonWriter.writeEndObject();
         }
     }
-    public static final class ImmutableStorageWithVersioning implements JsonSerializable<ImmutableStorageWithVersioning>{
+    public static final class ImmutableStorageWithVersioning implements JsonSerializable<ImmutableStorageWithVersioning> {
         private boolean enabled;
 
         public boolean isEnabled() {
@@ -231,7 +227,7 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
 
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
             jsonWriter.writeStartObject()
-                .writeBooleanField("Enabled", this.enabled);
+                .writeBooleanField("enabled", this.enabled);
 
             return jsonWriter.writeEndObject();
         }
