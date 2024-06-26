@@ -64,6 +64,9 @@ parameters:
     default: $(TestVersionSupport)
   - name: OSName
     type: string
+  - name: UseFederatedAuth
+    type: boolean
+    default: false
 
 jobs:
   - job:
