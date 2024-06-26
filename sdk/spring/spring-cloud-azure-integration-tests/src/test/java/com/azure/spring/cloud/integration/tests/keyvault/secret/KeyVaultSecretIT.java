@@ -37,7 +37,10 @@ public class KeyVaultSecretIT {
     @Test
     public void testKeyVaultSecretByDefaultAzureCredential() {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        SecretClient newClient = new SecretClientBuilder().credential(credential).buildClient();
+        SecretClient newClient = new SecretClientBuilder()
+            .credential(credential)
+            .vaultUrl(System.getenv("AZURE_KEYVAULT_SECRET_ENDPOINT"))
+            .buildClient();
         LOGGER.info("testKeyVaultSecretByDefaultAzureCredential begin.");
         newClient.setSecret(NAME, VALUE);
         KeyVaultSecret secret = newClient.getSecret(NAME);
