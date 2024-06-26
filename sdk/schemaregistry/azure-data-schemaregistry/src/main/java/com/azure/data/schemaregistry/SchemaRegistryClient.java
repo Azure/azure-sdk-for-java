@@ -17,6 +17,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
 import com.azure.data.schemaregistry.implementation.SchemaRegistryHelper;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
+import com.azure.data.schemaregistry.implementation.models.SchemaFormatImpl;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetByIdHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasGetSchemaVersionHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
@@ -25,28 +26,29 @@ import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
  * {@link SchemaRegistryClient} is an HTTP-based client that interacts with Azure Schema Registry service to store and
- * retrieve schemas on demand. Azure Schema Registry supports multiple schema formats such as Avro, JSON, and custom
+ * retrieve schemas on demand.   Azure Schema Registry supports multiple schema formats such as Avro, JSON, and custom
  * formats.
  *
  * <p><strong>Sample: Construct a {@link SchemaRegistryClient}</strong></p>
  *
- * <p>The following code sample demonstrates the creation of the synchronous client {@link SchemaRegistryClient}. The
- * {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.  It is listed under the "Essentials" panel
- * after navigating to the Event Hubs Namespace via Azure Portal. The credential used is {@code DefaultAzureCredential}
- * for authentication, which is appropriate for most scenarios, including local development and production environments.
- * Additionally, we recommend using
+ * <p>The following code sample demonstrates the creation of the synchronous client
+ * {@link com.azure.data.schemaregistry.SchemaRegistryClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs
+ * Namespace's host name.  It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via
+ * Azure Portal.  The credential used is {@code DefaultAzureCredential} for authentication, which is appropriate
+ * for most scenarios, including local development and production environments. Additionally, we recommend using
  * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
- * for authentication in production environments. You can find more information on different ways of authenticating and
- * their corresponding credential types in the
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
  * </p>
  *
@@ -63,9 +65,9 @@ import java.util.Objects;
  *
  * <p><strong>Sample: Register a schema</strong></p>
  *
- * <p>The following code sample demonstrates registering an Avro schema.  The {@link SchemaProperties} returned contains
- * the schema's id.  This id uniquely identifies the schema and can be used to quickly associate payloads with that
- * schema.</p>
+ * <p>The following code sample demonstrates registering an Avro schema.  The
+ * {@link com.azure.data.schemaregistry.models.SchemaProperties} returned contains the schema's id.  This id uniquely
+ * identifies the schema and can be used to quickly associate payloads with that schema.</p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.registerschema-avro -->
  * <pre>
@@ -80,8 +82,8 @@ import java.util.Objects;
  * <p><strong>Sample: Getting the schema using a schema id</strong></p>
  *
  * <p>The following code sample demonstrates how to fetch a schema using its schema id.  The schema id can be found in
- * {@link SchemaProperties#getId()} when a schema is registered or using
- * {@link #getSchemaProperties(String, String, String, SchemaFormat)}.
+ * {@link com.azure.data.schemaregistry.models.SchemaProperties#getId()} when a schema is registered or using
+ * {@link com.azure.data.schemaregistry.SchemaRegistryClient#getSchemaProperties(java.lang.String, java.lang.String, java.lang.String, com.azure.data.schemaregistry.models.SchemaFormat)}.
  * </p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.getschema -->
@@ -171,19 +173,14 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name.  If a schema:
-     * 
-     * <ul>
-     * <li><b>does not exist</b> with the same {@code groupName}, {@code name}, {@code format}, and
-     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a new schema id.</li>
-     * 
-     * <li>exists with the same {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition},
-     * the id of that existing schema is returned.</li>
-     * 
-     * <li>exists with the same {@code groupName}, {@code name}, and {@code format} but the <u>{@code schemaDefinition}
-     * is different</u>, it is considered a new version. A new schema id is assigned to the schema and its schema id is
-     * returned.</li>
-     * </ul>
+     * <p>Registers a new schema in the specified schema group with the given schema name.</p>
+     *
+     * <p>If a schema <b>does not exist</b> with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to Schema Registry. If a schema exists with a matching {@code groupName},
+     * {@code name}, {@code format}, and {@code schemaDefinition}, the id of that schema is returned. If the Schema
+     * Registry instance contains an existing {@code groupName}, {@code name}, and {@code format} but the
+     * {@code schemaDefinition} is different, it is considered a new version; it will receive a new schema id and that
+     * will be returned.</p>
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -203,19 +200,14 @@ public final class SchemaRegistryClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name.  If a schema:
-     * 
-     * <ul>
-     * <li><b>does not exist</b> with the same {@code groupName}, {@code name}, {@code format}, and
-     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a new schema id.</li>
-     * 
-     * <li>exists with the same {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition},
-     * the id of that existing schema is returned.</li>
-     * 
-     * <li>exists with the same {@code groupName}, {@code name}, and {@code format} but the <u>{@code schemaDefinition}
-     * is different</u>, it is considered a new version. A new schema id is assigned to the schema and its schema id is
-     * returned.</li>
-     * </ul>
+     * <p>Registers a new schema in the specified schema group with the given schema name.</p>
+     *
+     * <p>If a schema <b>does not exist</b> with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to Schema Registry. If a schema exists with a matching {@code groupName},
+     * {@code name}, {@code format}, and {@code schemaDefinition}, the id of that schema is returned. If the Schema
+     * Registry instance contains an existing {@code groupName}, {@code name}, and {@code format} but the
+     * {@code schemaDefinition} is different, it is considered a new version; it will receive a new schema id and that
+     * will be returned.</p>
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -245,16 +237,15 @@ public final class SchemaRegistryClient {
         logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
             groupName, name, format, schemaDefinition);
 
+        context = enableSyncRestProxy(context);
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
-        final com.azure.data.schemaregistry.implementation.models.SchemaFormat contentType
-            = SchemaRegistryHelper.getContentType(format);
+        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
-        ResponseBase<SchemasRegisterHeaders, Void> response = restService.getSchemas().registerWithResponse(groupName,
-            name, contentType.toString(), binaryData, binaryData.getLength(), context);
-        final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(),
-            response.getHeaders(), format);
-
-        return new SimpleResponse<>(response, registered);
+        ResponseBase<SchemasRegisterHeaders, Void> response = restService.getSchemas().registerWithResponse(groupName, name, contentType.toString(), binaryData, binaryData.getLength(), context);
+        final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
+        return new SimpleResponse<>(
+            response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), registered);
     }
 
     /**
@@ -312,15 +303,13 @@ public final class SchemaRegistryClient {
         if (Objects.isNull(schemaId)) {
             throw logger.logExceptionAsError(new NullPointerException("'schemaId' should not be null."));
         }
-
+        context = enableSyncRestProxy(context);
         try {
-            ResponseBase<SchemasGetByIdHeaders, BinaryData> response = this.restService.getSchemas()
-                .getByIdWithResponse(schemaId, context);
-            SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(),
-                response.getHeaders());
-
-            return new SimpleResponse<>(response, new SchemaRegistrySchema(schemaObject,
-                convertToString(response.getValue().toStream())));
+            ResponseBase<SchemasGetByIdHeaders, BinaryData> response = this.restService.getSchemas().getByIdWithResponse(schemaId, context);
+            final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
+            final String schema = convertToString(response.getValue().toStream());
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema));
         } catch (ErrorException ex) {
             throw logger.logExceptionAsError(SchemaRegistryAsyncClient.remapError(ex));
         }
@@ -348,21 +337,23 @@ public final class SchemaRegistryClient {
         if (Objects.isNull(groupName)) {
             throw logger.logExceptionAsError(new NullPointerException("'groupName' should not be null."));
         }
+        context = enableSyncRestProxy(context);
 
-        ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> response = this.restService.getSchemas()
-            .getSchemaVersionWithResponse(groupName, schemaName, schemaVersion, context);
-        InputStream schemaInputStream = response.getValue().toStream();
-        SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(),
-            response.getHeaders());
+        ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> response = this.restService.getSchemas().getSchemaVersionWithResponse(groupName, schemaName, schemaVersion,
+            context);
+        final InputStream schemaInputStream = response.getValue().toStream();
+        final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
+        final String schema;
 
         if (schemaInputStream == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "Schema definition should not be null. Group Name: %s. Schema Name: %s. Version: %d",
                 groupName, schemaName, schemaVersion)));
         }
-
-        return new SimpleResponse<>(response,
-            new SchemaRegistrySchema(schemaObject, convertToString(schemaInputStream)));
+        schema = convertToString(schemaInputStream);
+        return new SimpleResponse<>(
+            response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema));
     }
 
     /**
@@ -420,21 +411,25 @@ public final class SchemaRegistryClient {
         if (context == null) {
             context = Context.NONE;
         }
+        context = enableSyncRestProxy(context);
 
         final BinaryData binaryData = BinaryData.fromString(schemaDefinition);
-        final com.azure.data.schemaregistry.implementation.models.SchemaFormat contentType
-            = SchemaRegistryHelper.getContentType(format);
+        final SchemaFormatImpl contentType = SchemaRegistryHelper.getContentType(format);
 
         try {
             ResponseBase<SchemasQueryIdByContentHeaders, Void>  response = restService.getSchemas()
-                .queryIdByContentWithResponse(groupName, name, contentType, binaryData, binaryData.getLength(),
-                    context);
-            final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(
-                response.getDeserializedHeaders(), response.getHeaders(), format);
-            return new SimpleResponse<>(response, properties);
+                .queryIdByContentWithResponse(groupName, name, com.azure.data.schemaregistry.implementation.models.SchemaFormat.fromString(contentType.toString()), binaryData, binaryData.getLength(), context);
+            final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
+            return new SimpleResponse<>(
+                response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), properties);
         } catch (ErrorException ex) {
             throw logger.logExceptionAsError(SchemaRegistryAsyncClient.remapError(ex));
         }
+    }
+
+    private Context enableSyncRestProxy(Context context) {
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     /**
@@ -447,17 +442,17 @@ public final class SchemaRegistryClient {
      * @throws UncheckedIOException if an {@link IOException} is thrown when creating the readers.
      */
     static String convertToString(InputStream inputStream) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[4096];
-        int read;
-        try {
-            while ((read = inputStream.read(buffer, 0, buffer.length)) != -1) {
-                outputStream.write(buffer, 0, read);
+        final StringBuilder builder = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+            String str;
+            while ((str = reader.readLine()) != null) {
+                builder.append(str);
             }
-
-            return outputStream.toString(StandardCharsets.UTF_8.name());
         } catch (IOException exception) {
             throw new UncheckedIOException("Error occurred while deserializing schemaContent.", exception);
         }
+
+        return builder.toString();
     }
 }

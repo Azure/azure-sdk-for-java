@@ -7,13 +7,13 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
 /**
  * Unit tests for {@link SchemaRegistryClientBuilder}.
@@ -41,7 +41,7 @@ public class SchemaRegistryClientBuilderTest {
     @Test
     public void testInvalidEndpoint() {
         // Arrange
-        final TokenCredential credential = new MockTokenCredential();
+        final TokenCredential credential = mock(TokenCredential.class);
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class,
