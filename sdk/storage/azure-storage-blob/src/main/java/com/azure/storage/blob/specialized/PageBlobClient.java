@@ -755,13 +755,13 @@ public final class PageBlobClient extends BlobClientBase {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<ResponseBase<PageBlobsClearPagesHeaders, Void>> operation = () ->
             this.azureBlobStorage.getPageBlobs().clearPagesWithResponse(containerName, blobName, 0, null, pageRangeStr,
-                    pageBlobRequestConditions.getLeaseId(),
-                    pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
-                    pageBlobRequestConditions.getIfSequenceNumberLessThan(),
-                    pageBlobRequestConditions.getIfSequenceNumberEqualTo(),
-                    pageBlobRequestConditions.getIfModifiedSince(),
-                    pageBlobRequestConditions.getIfUnmodifiedSince(), pageBlobRequestConditions.getIfMatch(),
-                    pageBlobRequestConditions.getIfNoneMatch(), pageBlobRequestConditions.getTagsConditions(), null,
+                finalPageBlobRequestConditions.getLeaseId(),
+                finalPageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
+                finalPageBlobRequestConditions.getIfSequenceNumberLessThan(),
+                finalPageBlobRequestConditions.getIfSequenceNumberEqualTo(),
+                finalPageBlobRequestConditions.getIfModifiedSince(),
+                finalPageBlobRequestConditions.getIfUnmodifiedSince(), finalPageBlobRequestConditions.getIfMatch(),
+                finalPageBlobRequestConditions.getIfNoneMatch(), finalPageBlobRequestConditions.getTagsConditions(), null,
                 getCustomerProvidedKey(), encryptionScope, finalContext);
         ResponseBase<PageBlobsClearPagesHeaders, Void> response = sendRequest(operation, timeout,
             BlobStorageException.class);
