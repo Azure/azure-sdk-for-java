@@ -36,9 +36,7 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-      --add-exports com.azure.ai.personalizer/com.azure.ai.personalizer.testmodels=com.fasterxml.jackson.databind
       --add-opens com.azure.ai.personalizer/com.azure.ai.personalizer=ALL-UNNAMED
-      --add-opens com.azure.ai.personalizer/com.azure.ai.personalizer.testmodels=com.fasterxml.jackson.databind
       --add-opens com.azure.ai.personalizer/com.azure.ai.personalizer.testmodels=com.azure.core
     </javaModulesSurefireArgLine>
 
@@ -55,6 +53,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
     </dependency>
 
     <!-- Test Dependencies -->

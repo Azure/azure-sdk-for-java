@@ -42,7 +42,7 @@ public class PersonalizerCustomization extends Customization {
 //                    .setModifier(0); // 0 -> package-private
 //            });
 
-        useBinaryDataForRankApis(libraryCustomization, logger);
+        // useBinaryDataForRankApis(libraryCustomization, logger);
         renameLogMirrorSasUriProperty(libraryCustomization, logger);
         hideMethods(libraryCustomization, logger);
         renameOfflineExperimentationProperties(libraryCustomization, logger);

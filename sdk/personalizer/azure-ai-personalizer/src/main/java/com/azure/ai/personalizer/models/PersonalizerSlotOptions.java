@@ -6,41 +6,47 @@ package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A slot with it's associated features and list of excluded actions. */
+/**
+ * A slot with it's associated features and list of excluded actions.
+ */
 @Fluent
-public final class PersonalizerSlotOptions {
+public final class PersonalizerSlotOptions implements JsonSerializable<PersonalizerSlotOptions> {
     /*
      * Slot ID
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * List of dictionaries containing slot features.
      */
-    @JsonProperty(value = "features")
     private List<BinaryData> features;
 
     /*
      * List of excluded action Ids.
      */
-    @JsonProperty(value = "excludedActions")
     private List<String> excludedActions;
 
     /*
      * The 'baseline action' ID for the slot.
-     * The BaselineAction is the Id of the Action your application would use in
-     * that slot if Personalizer didn't exist.
+     * The BaselineAction is the Id of the Action your application would use in that slot if Personalizer didn't exist.
      * BaselineAction must be defined for every slot.
      * BaselineAction should never be part of ExcludedActions.
-     * Each slot must have a unique BaselineAction which corresponds to an an
-     * action from the event's Actions list.
+     * Each slot must have a unique BaselineAction which corresponds to an an action from the event's Actions list.
      */
-    @JsonProperty(value = "baselineAction", required = true)
     private String baselineAction;
+
+    /**
+     * Creates an instance of PersonalizerSlotOptions class.
+     */
+    public PersonalizerSlotOptions() {
+    }
 
     /**
      * Get the id property: Slot ID.
@@ -103,10 +109,11 @@ public final class PersonalizerSlotOptions {
     }
 
     /**
-     * Get the baselineAction property: The 'baseline action' ID for the slot. The BaselineAction is the Id of the
-     * Action your application would use in that slot if Personalizer didn't exist. BaselineAction must be defined for
-     * every slot. BaselineAction should never be part of ExcludedActions. Each slot must have a unique BaselineAction
-     * which corresponds to an an action from the event's Actions list.
+     * Get the baselineAction property: The 'baseline action' ID for the slot.
+     * The BaselineAction is the Id of the Action your application would use in that slot if Personalizer didn't exist.
+     * BaselineAction must be defined for every slot.
+     * BaselineAction should never be part of ExcludedActions.
+     * Each slot must have a unique BaselineAction which corresponds to an an action from the event's Actions list.
      *
      * @return the baselineAction value.
      */
@@ -115,10 +122,11 @@ public final class PersonalizerSlotOptions {
     }
 
     /**
-     * Set the baselineAction property: The 'baseline action' ID for the slot. The BaselineAction is the Id of the
-     * Action your application would use in that slot if Personalizer didn't exist. BaselineAction must be defined for
-     * every slot. BaselineAction should never be part of ExcludedActions. Each slot must have a unique BaselineAction
-     * which corresponds to an an action from the event's Actions list.
+     * Set the baselineAction property: The 'baseline action' ID for the slot.
+     * The BaselineAction is the Id of the Action your application would use in that slot if Personalizer didn't exist.
+     * BaselineAction must be defined for every slot.
+     * BaselineAction should never be part of ExcludedActions.
+     * Each slot must have a unique BaselineAction which corresponds to an an action from the event's Actions list.
      *
      * @param baselineAction the baselineAction value to set.
      * @return the PersonalizerSlotOptions object itself.
@@ -126,5 +134,54 @@ public final class PersonalizerSlotOptions {
     public PersonalizerSlotOptions setBaselineAction(String baselineAction) {
         this.baselineAction = baselineAction;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("baselineAction", this.baselineAction);
+        jsonWriter.writeArrayField("features", this.features, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("excludedActions", this.excludedActions,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PersonalizerSlotOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PersonalizerSlotOptions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PersonalizerSlotOptions.
+     */
+    public static PersonalizerSlotOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerSlotOptions deserializedPersonalizerSlotOptions = new PersonalizerSlotOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPersonalizerSlotOptions.id = reader.getString();
+                } else if ("baselineAction".equals(fieldName)) {
+                    deserializedPersonalizerSlotOptions.baselineAction = reader.getString();
+                } else if ("features".equals(fieldName)) {
+                    List<BinaryData> features = reader.readArray(reader1 -> BinaryData.fromObject(reader1.readUntyped()));
+                    deserializedPersonalizerSlotOptions.features = features;
+                } else if ("excludedActions".equals(fieldName)) {
+                    List<String> excludedActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPersonalizerSlotOptions.excludedActions = excludedActions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPersonalizerSlotOptions;
+        });
     }
 }

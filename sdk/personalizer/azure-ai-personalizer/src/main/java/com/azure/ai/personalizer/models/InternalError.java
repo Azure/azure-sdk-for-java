@@ -5,27 +5,36 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An object containing more specific information than the parent object about the error. */
+/**
+ * An object containing more specific information than the parent object about the error.
+ */
 @Fluent
-public final class InternalError {
+public final class InternalError implements JsonSerializable<InternalError> {
     /*
      * Detailed error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
-     * An object containing more specific information than the parent object
-     * about the error.
+     * An object containing more specific information than the parent object about the error.
      */
-    @JsonProperty(value = "innererror")
     private InternalError innererror;
 
     /**
+     * Creates an instance of InternalError class.
+     */
+    public InternalError() {
+    }
+
+    /**
      * Get the code property: Detailed error code.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -34,7 +43,7 @@ public final class InternalError {
 
     /**
      * Set the code property: Detailed error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the InternalError object itself.
      */
@@ -46,7 +55,7 @@ public final class InternalError {
     /**
      * Get the innererror property: An object containing more specific information than the parent object about the
      * error.
-     *
+     * 
      * @return the innererror value.
      */
     public InternalError getInnererror() {
@@ -56,12 +65,51 @@ public final class InternalError {
     /**
      * Set the innererror property: An object containing more specific information than the parent object about the
      * error.
-     *
+     * 
      * @param innererror the innererror value to set.
      * @return the InternalError object itself.
      */
     public InternalError setInnererror(InternalError innererror) {
         this.innererror = innererror;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeJsonField("innererror", this.innererror);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InternalError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InternalError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InternalError.
+     */
+    public static InternalError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InternalError deserializedInternalError = new InternalError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedInternalError.code = reader.getString();
+                } else if ("innererror".equals(fieldName)) {
+                    deserializedInternalError.innererror = InternalError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInternalError;
+        });
     }
 }

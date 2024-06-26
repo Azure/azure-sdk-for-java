@@ -12,6 +12,7 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -20,9 +21,8 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -39,24 +39,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
-/** A builder for creating a new instance of the PersonalizerClientV1Preview3 type. */
-@ServiceClientBuilder(serviceClients = {PersonalizerClientV1Preview3Impl.class})
-public final class PersonalizerClientV1Preview3ImplBuilder
-        implements HttpTrait<PersonalizerClientV1Preview3ImplBuilder>,
-                ConfigurationTrait<PersonalizerClientV1Preview3ImplBuilder>,
-                AzureKeyCredentialTrait<PersonalizerClientV1Preview3ImplBuilder>,
-                EndpointTrait<PersonalizerClientV1Preview3ImplBuilder> {
-    @Generated private static final String SDK_NAME = "name";
+/**
+ * A builder for creating a new instance of the PersonalizerClientV1Preview3 type.
+ */
+@ServiceClientBuilder(serviceClients = { PersonalizerClientV1Preview3Impl.class })
+public final class PersonalizerClientV1Preview3ImplBuilder implements
+    HttpTrait<PersonalizerClientV1Preview3ImplBuilder>, ConfigurationTrait<PersonalizerClientV1Preview3ImplBuilder>,
+    AzureKeyCredentialTrait<PersonalizerClientV1Preview3ImplBuilder>,
+    EndpointTrait<PersonalizerClientV1Preview3ImplBuilder> {
+    @Generated
+    private static final String SDK_NAME = "name";
 
-    @Generated private static final String SDK_VERSION = "version";
+    @Generated
+    private static final String SDK_VERSION = "version";
 
-    @Generated private final Map<String, String> properties = new HashMap<>();
+    @Generated
+    private static final Map<String, String> PROPERTIES = new HashMap<>();
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /** Create an instance of the PersonalizerClientV1Preview3ImplBuilder. */
+    /**
+     * Create an instance of the PersonalizerClientV1Preview3ImplBuilder.
+     */
     @Generated
     public PersonalizerClientV1Preview3ImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -65,9 +72,12 @@ public final class PersonalizerClientV1Preview3ImplBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PersonalizerClientV1Preview3ImplBuilder pipeline(HttpPipeline pipeline) {
@@ -78,9 +88,12 @@ public final class PersonalizerClientV1Preview3ImplBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PersonalizerClientV1Preview3ImplBuilder httpClient(HttpClient httpClient) {
@@ -91,9 +104,12 @@ public final class PersonalizerClientV1Preview3ImplBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PersonalizerClientV1Preview3ImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -102,12 +118,14 @@ public final class PersonalizerClientV1Preview3ImplBuilder
     }
 
     /*
-     * The client options such as application ID and custom headers to set on a
-     * request.
+     * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PersonalizerClientV1Preview3ImplBuilder clientOptions(ClientOptions clientOptions) {
@@ -118,9 +136,12 @@ public final class PersonalizerClientV1Preview3ImplBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PersonalizerClientV1Preview3ImplBuilder retryOptions(RetryOptions retryOptions) {
@@ -128,21 +149,26 @@ public final class PersonalizerClientV1Preview3ImplBuilder
         return this;
     }
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PersonalizerClientV1Preview3ImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
     }
 
     /*
-     * The configuration store that is used during construction of the service
-     * client.
+     * The configuration store that is used during construction of the service client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PersonalizerClientV1Preview3ImplBuilder configuration(Configuration configuration) {
@@ -153,9 +179,12 @@ public final class PersonalizerClientV1Preview3ImplBuilder
     /*
      * The AzureKeyCredential used for authentication.
      */
-    @Generated private AzureKeyCredential azureKeyCredential;
+    @Generated
+    private AzureKeyCredential azureKeyCredential;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PersonalizerClientV1Preview3ImplBuilder credential(AzureKeyCredential azureKeyCredential) {
@@ -166,9 +195,12 @@ public final class PersonalizerClientV1Preview3ImplBuilder
     /*
      * The service endpoint
      */
-    @Generated private String endpoint;
+    @Generated
+    private String endpoint;
 
-    /** {@inheritDoc}. */
+    /**
+     * {@inheritDoc}.
+     */
     @Generated
     @Override
     public PersonalizerClientV1Preview3ImplBuilder endpoint(String endpoint) {
@@ -177,30 +209,14 @@ public final class PersonalizerClientV1Preview3ImplBuilder
     }
 
     /*
-     * Personalizer API version (for example, v1.0).
-     */
-    @Generated private String apiVersion;
-
-    /**
-     * Sets Personalizer API version (for example, v1.0).
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the PersonalizerClientV1Preview3ImplBuilder.
-     */
-    @Generated
-    public PersonalizerClientV1Preview3ImplBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
-    /*
      * The serializer to serialize an object into a string
      */
-    @Generated private SerializerAdapter serializerAdapter;
+    @Generated
+    private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the PersonalizerClientV1Preview3ImplBuilder.
      */
@@ -211,14 +227,14 @@ public final class PersonalizerClientV1Preview3ImplBuilder
     }
 
     /*
-     * The retry policy that will attempt to retry failed requests, if
-     * applicable.
+     * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     *
+     * 
      * @param retryPolicy the retryPolicy value.
      * @return the PersonalizerClientV1Preview3ImplBuilder.
      */
@@ -230,70 +246,56 @@ public final class PersonalizerClientV1Preview3ImplBuilder
 
     /**
      * Builds an instance of PersonalizerClientV1Preview3Impl with the provided parameters.
-     *
+     * 
      * @return an instance of PersonalizerClientV1Preview3Impl.
      */
     @Generated
     public PersonalizerClientV1Preview3Impl buildClient() {
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "v1.1-preview.3";
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-        PersonalizerClientV1Preview3Impl client =
-                new PersonalizerClientV1Preview3Impl(pipeline, serializerAdapter, endpoint, apiVersion);
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        SerializerAdapter localSerializerAdapter
+            = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
+        PersonalizerClientV1Preview3Impl client
+            = new PersonalizerClientV1Preview3Impl(localPipeline, localSerializerAdapter, this.endpoint);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders()
+            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
         if (azureKeyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy("Ocp-Apim-Subscription-Key", azureKeyCredential));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(clientOptions)
-                        .build();
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 }
