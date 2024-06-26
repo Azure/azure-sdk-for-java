@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FileSourceInternal model. */
+/**
+ * The FileSourceInternal model.
+ */
 @Fluent
 public final class FileSourceInternal {
     /*
@@ -17,8 +19,14 @@ public final class FileSourceInternal {
     private String uri;
 
     /**
+     * Creates an instance of FileSourceInternal class.
+     */
+    public FileSourceInternal() {
+    }
+
+    /**
      * Get the uri property: Uri for the audio file to be played.
-     *
+     * 
      * @return the uri value.
      */
     public String getUri() {
@@ -27,7 +35,7 @@ public final class FileSourceInternal {
 
     /**
      * Set the uri property: Uri for the audio file to be played.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the FileSourceInternal object itself.
      */

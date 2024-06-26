@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response payload for cancel add participant request. */
+/**
+ * Response payload for cancel add participant request.
+ */
 @Fluent
 public final class CancelAddParticipantResponse {
     /*
@@ -23,8 +25,14 @@ public final class CancelAddParticipantResponse {
     private String operationContext;
 
     /**
+     * Creates an instance of CancelAddParticipantResponse class.
+     */
+    public CancelAddParticipantResponse() {
+    }
+
+    /**
      * Get the invitationId property: Invitation ID used to cancel the add participant action.
-     *
+     * 
      * @return the invitationId value.
      */
     public String getInvitationId() {
@@ -33,7 +41,7 @@ public final class CancelAddParticipantResponse {
 
     /**
      * Set the invitationId property: Invitation ID used to cancel the add participant action.
-     *
+     * 
      * @param invitationId the invitationId value to set.
      * @return the CancelAddParticipantResponse object itself.
      */
@@ -44,7 +52,7 @@ public final class CancelAddParticipantResponse {
 
     /**
      * Get the operationContext property: The operation context provided by client.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -53,7 +61,7 @@ public final class CancelAddParticipantResponse {
 
     /**
      * Set the operationContext property: The operation context provided by client.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the CancelAddParticipantResponse object itself.
      */
